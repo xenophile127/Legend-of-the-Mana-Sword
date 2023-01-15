@@ -176,7 +176,7 @@ jr_03_40c7:
     cp   A, $00                                        ;; 03:40f0 $fe $00
     ret  NZ                                            ;; 03:40f2 $c0
     ld   [HL], A                                       ;; 03:40f3 $77
-    ld   DE, hNegative3                                ;; 03:40f4 $11 $fd $ff
+    ld   DE, -3 ;@=value signed=True                   ;; 03:40f4 $11 $fd $ff
     add  HL, DE                                        ;; 03:40f7 $19
     ld   [HL], $01                                     ;; 03:40f8 $36 $01
     ret                                                ;; 03:40fa $c9
@@ -1921,7 +1921,7 @@ inflictVulnerableNpcsSlep:
     jr   NZ, .jr_03_4ab7                               ;; 03:4aad $20 $08
     pop  DE                                            ;; 03:4aaf $d1
     push DE                                            ;; 03:4ab0 $d5
-    ld   HL, hNegative6                                ;; 03:4ab1 $21 $fa $ff
+    ld   HL, -6 ;@=value signed=True                   ;; 03:4ab1 $21 $fa $ff
     add  HL, DE                                        ;; 03:4ab4 $19
     set  7, [HL]                                       ;; 03:4ab5 $cb $fe
 .jr_03_4ab7:
@@ -1945,7 +1945,7 @@ inflictVulnerableNpcsMute:
     jr   NZ, .jr_03_4ad9                               ;; 03:4acf $20 $08
     pop  DE                                            ;; 03:4ad1 $d1
     push DE                                            ;; 03:4ad2 $d5
-    ld   HL, hNegative6                                ;; 03:4ad3 $21 $fa $ff
+    ld   HL, -6 ;@=value signed=True                   ;; 03:4ad3 $21 $fa $ff
     add  HL, DE                                        ;; 03:4ad6 $19
     set  6, [HL]                                       ;; 03:4ad7 $cb $f6
 .jr_03_4ad9:
@@ -2151,7 +2151,8 @@ objectBehaviorMove:
     inc  A                                             ;; 03:4bde $3c
     ret                                                ;; 03:4bdf $c9
 
-call_03_4be0:
+; Return: A=0 and Z set once (and only once) after the last enemy is defeated, or A=1 and NZ
+checkAllEnemiesDefeated:
     ld   HL, wNpcRuntimeData                           ;; 03:4be0 $21 $e0 $c4
     ld   DE, $18                                       ;; 03:4be3 $11 $18 $00
     ld   B, $08                                        ;; 03:4be6 $06 $08
@@ -2176,28 +2177,28 @@ call_03_4be0:
     pop  HL                                            ;; 03:4c01 $e1
     and  A, $f0                                        ;; 03:4c02 $e6 $f0
     cp   A, $90                                        ;; 03:4c04 $fe $90
-    jr   Z, .jr_03_4c10                                ;; 03:4c06 $28 $08
+    jr   Z, checkAllEnemiesDefeated.enemy              ;; 03:4c06 $28 $08
     cp   A, $b0                                        ;; 03:4c08 $fe $b0
-    jr   Z, .jr_03_4c10                                ;; 03:4c0a $28 $04
+    jr   Z, checkAllEnemiesDefeated.enemy              ;; 03:4c0a $28 $04
     cp   A, $10                                        ;; 03:4c0c $fe $10
     jr   NZ, .jr_03_4c11                               ;; 03:4c0e $20 $01
-.jr_03_4c10:
+.enemy:
     inc  C                                             ;; 03:4c10 $0c
 .jr_03_4c11:
     pop  AF                                            ;; 03:4c11 $f1
     add  HL, DE                                        ;; 03:4c12 $19
     dec  B                                             ;; 03:4c13 $05
-    jr   NZ, call_03_4be0.loop                         ;; 03:4c14 $20 $de
-    ld   A, [wC5AF]                                    ;; 03:4c16 $fa $af $c5
+    jr   NZ, checkAllEnemiesDefeated.loop              ;; 03:4c14 $20 $de
+    ld   A, [wNumberOfLivingEnemies]                   ;; 03:4c16 $fa $af $c5
     cp   A, C                                          ;; 03:4c19 $b9
-    jr   Z, call_03_4be0.return_01                     ;; 03:4c1a $28 $11
+    jr   Z, checkAllEnemiesDefeated.return_01          ;; 03:4c1a $28 $11
     ld   A, C                                          ;; 03:4c1c $79
-    ld   [wC5AF], A                                    ;; 03:4c1d $ea $af $c5
+    ld   [wNumberOfLivingEnemies], A                   ;; 03:4c1d $ea $af $c5
     cp   A, $01                                        ;; 03:4c20 $fe $01
-    jr   NC, call_03_4be0.return_01                    ;; 03:4c22 $30 $09
-    jr   NZ, call_03_4be0.return_00                    ;; 03:4c24 $20 $05
+    jr   NC, checkAllEnemiesDefeated.return_01         ;; 03:4c22 $30 $09
+    jr   NZ, checkAllEnemiesDefeated.return_00         ;; 03:4c24 $20 $05
     call checkForFollower                              ;; 03:4c26 $cd $c2 $28
-    jr   NZ, call_03_4be0.return_01                    ;; 03:4c29 $20 $02
+    jr   NZ, checkAllEnemiesDefeated.return_01         ;; 03:4c29 $20 $02
 .return_00:
     xor  A, A                                          ;; 03:4c2b $af
     ret                                                ;; 03:4c2c $c9
@@ -2207,13 +2208,13 @@ call_03_4be0:
     ret                                                ;; 03:4c2f $c9
 
 runRoomScriptIfAllEnemiesDefeated:
-    call call_03_4be0                                  ;; 03:4c30 $cd $e0 $4b
+    call checkAllEnemiesDefeated                       ;; 03:4c30 $cd $e0 $4b
     ret  NZ                                            ;; 03:4c33 $c0
     call runRoomScriptOnAllEnemiesDefeated             ;; 03:4c34 $cd $a7 $24
     ret                                                ;; 03:4c37 $c9
 
 call_03_4c38:
-    call call_03_4be0                                  ;; 03:4c38 $cd $e0 $4b
+    call checkAllEnemiesDefeated                       ;; 03:4c38 $cd $e0 $4b
     ld   C, $07                                        ;; 03:4c3b $0e $07
     call getObjectCollisionFlags                       ;; 03:4c3d $cd $6d $0c
     and  A, $f0                                        ;; 03:4c40 $e6 $f0
@@ -4024,7 +4025,7 @@ call_03_55fb:
     or   A, $90                                        ;; 03:55fb $f6 $90
     push AF                                            ;; 03:55fd $f5
     push BC                                            ;; 03:55fe $c5
-    call call_00_036f                                  ;; 03:55ff $cd $6f $03
+    call checkPlayfieldBoundaryCollision_trampoline    ;; 03:55ff $cd $6f $03
     ld   A, B                                          ;; 03:5602 $78
     pop  BC                                            ;; 03:5603 $c1
     jr   NZ, .jr_03_5639                               ;; 03:5604 $20 $33

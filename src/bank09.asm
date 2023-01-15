@@ -42,6 +42,7 @@ projectileRunLogicForAll:
     jr   NZ, projectileRunLogicForAll.loop             ;; 09:402e $20 $f0
     ret                                                ;; 09:4030 $c9
 
+; HL = projectile runtime data pointer
 projectileRunLogic:
     inc  HL                                            ;; 09:4031 $23
     dec  [HL]                                          ;; 09:4032 $35
@@ -57,12 +58,14 @@ projectileRunLogic:
     inc  HL                                            ;; 09:403e $23
     ld   B, [HL]                                       ;; 09:403f $46
     ld   A, [BC]                                       ;; 09:4040 $0a
+; Compare against the projectile's collision flags
     cp   A, $62                                        ;; 09:4041 $fe $62
-    jp   Z, .jp_09_40be                                ;; 09:4043 $ca $be $40
+    jp   Z, .cardinal_direction                        ;; 09:4043 $ca $be $40
     cp   A, $72                                        ;; 09:4046 $fe $72
-    jp   Z, .jp_09_4142                                ;; 09:4048 $ca $42 $41
+    jp   Z, .free_direction                            ;; 09:4048 $ca $42 $41
     cp   A, $3a                                        ;; 09:404b $fe $3a
-    jp   Z, .jp_09_40be                                ;; 09:404d $ca $be $40
+    jp   Z, .cardinal_direction                        ;; 09:404d $ca $be $40
+; All other values ($38 and $60) are melee range attacks
     ld   HL, $03                                       ;; 09:4050 $21 $03 $00
     add  HL, DE                                        ;; 09:4053 $19
     ld   A, [HL]                                       ;; 09:4054 $7e
@@ -141,7 +144,7 @@ projectileRunLogic:
     ld   B, $00                                        ;; 09:40b8 $06 $00
     call call_00_08d4                                  ;; 09:40ba $cd $d4 $08
     ret                                                ;; 09:40bd $c9
-.jp_09_40be:
+.cardinal_direction:
     ld   HL, $03                                       ;; 09:40be $21 $03 $00
     add  HL, DE                                        ;; 09:40c1 $19
     ld   A, [HL]                                       ;; 09:40c2 $7e
@@ -236,7 +239,7 @@ projectileRunLogic:
     ld   C, A                                          ;; 09:413d $4f
     call destroyObject                                 ;; 09:413e $cd $e3 $0a
     ret                                                ;; 09:4141 $c9
-.jp_09_4142:
+.free_direction:
     ld   HL, $03                                       ;; 09:4142 $21 $03 $00
     add  HL, DE                                        ;; 09:4145 $19
     ld   A, [HL]                                       ;; 09:4146 $7e
@@ -472,10 +475,10 @@ spawnProjectile:
     pop  BC                                            ;; 09:4273 $c1
     ld   C, A                                          ;; 09:4274 $4f
     push BC                                            ;; 09:4275 $c5
-    jr   Z, .jr_09_42a1                                ;; 09:4276 $28 $29
+    jr   Z, .failed                                    ;; 09:4276 $28 $29
     ld   A, $ff                                        ;; 09:4278 $3e $ff
     call getProjectileRuntimeEntryByIndexA             ;; 09:427a $cd $7a $43
-    jr   NZ, .jr_09_42a1                               ;; 09:427d $20 $22
+    jr   NZ, .failed                                   ;; 09:427d $20 $22
     pop  BC                                            ;; 09:427f $c1
     ld   A, C                                          ;; 09:4280 $79
     ld   [HL+], A                                      ;; 09:4281 $22
@@ -494,7 +497,7 @@ spawnProjectile:
     pop  DE                                            ;; 09:4291 $d1
     ld   A, [DE]                                       ;; 09:4292 $1a
     push DE                                            ;; 09:4293 $d5
-    call call_09_42aa                                  ;; 09:4294 $cd $aa $42
+    call projectileInitLogic                           ;; 09:4294 $cd $aa $42
     pop  DE                                            ;; 09:4297 $d1
     pop  BC                                            ;; 09:4298 $c1
     ld   [HL], C                                       ;; 09:4299 $71
@@ -505,7 +508,7 @@ spawnProjectile:
     inc  HL                                            ;; 09:429e $23
     ld   [HL], D                                       ;; 09:429f $72
     ret                                                ;; 09:42a0 $c9
-.jr_09_42a1:
+.failed:
     pop  BC                                            ;; 09:42a1 $c1
     call destroyObject                                 ;; 09:42a2 $cd $e3 $0a
     pop  DE                                            ;; 09:42a5 $d1
@@ -514,18 +517,19 @@ spawnProjectile:
     xor  A, A                                          ;; 09:42a8 $af
     ret                                                ;; 09:42a9 $c9
 
-call_09_42aa:
+; A = projectile collision flags
+projectileInitLogic:
     cp   A, $62                                        ;; 09:42aa $fe $62
-    jr   Z, .jr_09_42ba                                ;; 09:42ac $28 $0c
+    jr   Z, .cardinal_direction                        ;; 09:42ac $28 $0c
     cp   A, $72                                        ;; 09:42ae $fe $72
-    jr   Z, .jr_09_42cb                                ;; 09:42b0 $28 $19
+    jr   Z, .free_direction                            ;; 09:42b0 $28 $19
     cp   A, $3a                                        ;; 09:42b2 $fe $3a
-    jr   Z, .jr_09_42ba                                ;; 09:42b4 $28 $04
+    jr   Z, .cardinal_direction                        ;; 09:42b4 $28 $04
     inc  HL                                            ;; 09:42b6 $23
     inc  HL                                            ;; 09:42b7 $23
     xor  A, A                                          ;; 09:42b8 $af
     ret                                                ;; 09:42b9 $c9
-.jr_09_42ba:
+.cardinal_direction:
     push HL                                            ;; 09:42ba $e5
     push BC                                            ;; 09:42bb $c5
     call GetObjectY                                    ;; 09:42bc $cd $3e $0c
@@ -539,7 +543,7 @@ call_09_42aa:
     xor  A, A                                          ;; 09:42c8 $af
     dec  A                                             ;; 09:42c9 $3d
     ret                                                ;; 09:42ca $c9
-.jr_09_42cb:
+.free_direction:
     push HL                                            ;; 09:42cb $e5
     push BC                                            ;; 09:42cc $c5
     call GetObjectY                                    ;; 09:42cd $cd $3e $0c
@@ -580,7 +584,7 @@ call_09_42aa:
     rlc  D                                             ;; 09:4306 $cb $02
     rlc  E                                             ;; 09:4308 $cb $03
     dec  B                                             ;; 09:430a $05
-    jr   NZ, call_09_42aa.loop_1                       ;; 09:430b $20 $e3
+    jr   NZ, projectileInitLogic.loop_1                ;; 09:430b $20 $e3
     ld   A, D                                          ;; 09:430d $7a
     cpl                                                ;; 09:430e $2f
     srl  A                                             ;; 09:430f $cb $3f
@@ -600,7 +604,7 @@ call_09_42aa:
     ld   A, E                                          ;; 09:4320 $7b
     ld   [HL+], A                                      ;; 09:4321 $22
     push HL                                            ;; 09:4322 $e5
-    ld   BC, hNegative4                                ;; 09:4323 $01 $fc $ff
+    ld   BC, -4 ;@=value signed=True                   ;; 09:4323 $01 $fc $ff
     add  HL, BC                                        ;; 09:4326 $09
     push HL                                            ;; 09:4327 $e5
     push DE                                            ;; 09:4328 $d5
@@ -633,10 +637,10 @@ call_09_42aa:
     ld   B, $04                                        ;; 09:434f $06 $04
 .loop_2:
     cp   A, [HL]                                       ;; 09:4351 $be
-    jr   NC, call_09_42aa.break                        ;; 09:4352 $30 $04
+    jr   NC, projectileInitLogic.break                 ;; 09:4352 $30 $04
     inc  HL                                            ;; 09:4354 $23
     dec  B                                             ;; 09:4355 $05
-    jr   NZ, call_09_42aa.loop_2                       ;; 09:4356 $20 $f9
+    jr   NZ, projectileInitLogic.loop_2                ;; 09:4356 $20 $f9
 .break:
     ld   A, $04                                        ;; 09:4358 $3e $04
     add  A, B                                          ;; 09:435a $80
