@@ -5838,8 +5838,8 @@ drawNumberOnStatusBar:
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
-    db   $7f, $41, $49, $7f, $7f, $7f, $7f, $7f        ;; 02:6f97 ........
-    db   $46, $49, $7f, $7f, $7f, $7f, $40, $7f        ;; 02:6f9f ........
+    db   $7f, $f0, $f1, $7f, $7f, $7f, $f2, $f3        ;; 02:6f97 ........
+    db   $7f, $7f, $7f, $7f, $7f, $7f, $7f, $7f        ;; 02:6f9f ........
     db   $7f, $7f, $7f, $7f                            ;; 02:6fa7 ....
 
 attackWithWeaponUseWill:
@@ -8080,7 +8080,7 @@ intoScrollText:
 
 ; Assumes HL holds number, H in A, draws the number from the left
 drawLeftNumberOnStatusBar:
-    daa                                                ;; 02:7fda $27
+    and  A, A                                          ;; 02:7fda $a7
     jr   NZ, .jr_02_7fe8                               ;; 02:7fdb $20 $0b
     ld   A, L                                          ;; 02:7fdd $7d
     cp   A, $64                                        ;; 02:7fde $fe $64
@@ -8090,12 +8090,10 @@ drawLeftNumberOnStatusBar:
     jr   NC, .jr_02_7fe8                               ;; 02:7fe5 $30 $01
     dec  DE                                            ;; 02:7fe7 $1b
 .jr_02_7fe8:
-    call drawNumberOnStatusBar                         ;; 02:7fe8 $cd $77 $6f
-    ret                                                ;; 02:7feb $c9
+    jp   drawNumberOnStatusBar                         ;; 02:7fe8 $c3 $77 $6f
 
 ; Simply draws a money label tile at the leftover DE position
 drawMoneyNumberOnStatusBar:
-    call drawNumberOnStatusBar                         ;; 02:7fec $cd $77 $6f
-    ld   A, $f4                                        ;; 02:7fef $fe $f4
-    call storeTileAatWindowPositionDE                  ;; 02:7ff1 $cd $66 $38
-    ret                                                ;; 02:7ff4 $c9
+    call drawNumberOnStatusBar                         ;; 02:7feb $cd $77 $6f
+    ld   A, $f4                                        ;; 02:7fee $fe $f4
+    jp   storeTileAatWindowPositionDE                  ;; 02:7ff0 $c3 $66 $38
