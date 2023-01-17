@@ -8096,6 +8096,6 @@ drawLeftNumberOnStatusBar:
 ; Simply draws a money label tile at the leftover DE position
 drawMoneyNumberOnStatusBar:
     call drawNumberOnStatusBar                         ;; 02:7fec $cd $77 $6f
-    ld   A, $40                                        ;; 02:7fef $fe $40
+    ld   A, $f4                                        ;; 02:7fef $fe $f4
     call storeTileAatWindowPositionDE                  ;; 02:7ff1 $cd $66 $38
     ret                                                ;; 02:7ff4 $c9
