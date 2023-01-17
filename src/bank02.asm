@@ -5763,42 +5763,42 @@ drawDefaultStatusBar:
     ret                                                ;; 02:6f28 $c9
 
 drawHPOnStatuBar:
-    ld   DE, $06                                       ;; 02:6f29 $11 $06 $00
+    ld   DE, $05                                       ;; 02:6f29 $11 $05 $00
     push DE                                            ;; 02:6f2c $d5
-    ld   B, $04                                        ;; 02:6f2d $06 $04
+    ld   B, $03                                        ;; 02:6f2d $06 $03
     call clearStatusBarSection                         ;; 02:6f2f $cd $6b $6f
     pop  DE                                            ;; 02:6f32 $d1
-    ld   A, [wHPHigh]                                  ;; 02:6f33 $fa $b3 $d7
-    ld   H, A                                          ;; 02:6f36 $67
-    ld   A, [wHPLow]                                   ;; 02:6f37 $fa $b2 $d7
-    ld   L, A                                          ;; 02:6f3a $6f
-    call drawNumberOnStatusBar                         ;; 02:6f3b $cd $77 $6f
+    ld   A, [wHPLow]                                   ;; 02:6f33 $fa $b2 $d7
+    ld   L, A                                          ;; 02:6f36 $6f
+    ld   A, [wHPHigh]                                  ;; 02:6f37 $fa $b3 $d7
+    ld   H, A                                          ;; 02:6f3a $67
+    call drawLeftNumberOnStatusBar                     ;; 02:6f3b $cd $da $7f
     ret                                                ;; 02:6f3e $c9
 
 drawManaOnStatusBar:
-    ld   DE, $0c                                       ;; 02:6f3f $11 $0c $00
+    ld   DE, $0a                                       ;; 02:6f3f $11 $0a $00
     push DE                                            ;; 02:6f42 $d5
-    ld   B, $03                                        ;; 02:6f43 $06 $03
+    ld   B, $02                                        ;; 02:6f43 $06 $02
     call clearStatusBarSection                         ;; 02:6f45 $cd $6b $6f
     pop  DE                                            ;; 02:6f48 $d1
-    ld   A, [wManaHigh]                                ;; 02:6f49 $fa $b7 $d7
-    ld   H, A                                          ;; 02:6f4c $67
-    ld   A, [wManaLow]                                 ;; 02:6f4d $fa $b6 $d7
-    ld   L, A                                          ;; 02:6f50 $6f
-    call drawNumberOnStatusBar                         ;; 02:6f51 $cd $77 $6f
+    ld   A, [wManaLow]                                 ;; 02:6f49 $fa $b6 $d7
+    ld   L, A                                          ;; 02:6f4c $6f
+    ld   A, [wManaHigh]                                ;; 02:6f4d $fa $b7 $d7
+    ld   H, A                                          ;; 02:6f50 $67
+    call drawLeftNumberOnStatusBar                     ;; 02:6f51 $cd $da $7f
     ret                                                ;; 02:6f54 $c9
 
 drawMoneyOnStatusBar:
-    ld   DE, $13                                       ;; 02:6f55 $11 $13 $00
+    ld   DE, $11                                       ;; 02:6f55 $11 $11 $00
     push DE                                            ;; 02:6f58 $d5
-    ld   B, $05                                        ;; 02:6f59 $06 $05
+    ld   B, $06                                        ;; 02:6f59 $06 $06
     call clearStatusBarSection                         ;; 02:6f5b $cd $6b $6f
     pop  DE                                            ;; 02:6f5e $d1
     ld   A, [wMoneyHigh]                               ;; 02:6f5f $fa $bf $d7
     ld   H, A                                          ;; 02:6f62 $67
     ld   A, [wMoneyLow]                                ;; 02:6f63 $fa $be $d7
     ld   L, A                                          ;; 02:6f66 $6f
-    call drawNumberOnStatusBar                         ;; 02:6f67 $cd $77 $6f
+    call drawMoneyNumberOnStatusBar                    ;; 02:6f67 $cd $ec $7f
     ret                                                ;; 02:6f6a $c9
 
 clearStatusBarSection:
@@ -8075,8 +8075,27 @@ intoScrollText:
     TXT  " Tree of Mana to<00>"                        ;; 02:7fa4 ?????????????????
     TXT  "  get the mighty<00>"                        ;; 02:7fb5 ?????????????????
     TXT  " power to conquer<00>"                       ;; 02:7fc6 ??????????????????
-    TXT  "    the world.<00>"                          ;; 02:7fd8 ???????????????
-    TXT  "<00>"                                        ;; 02:7fe7 ?
-    db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 02:7fe8 ????????
-    db   $00, $00, $00, $00, $01, $ff, $ff, $ff        ;; 02:7ff0 ????????
-    db   $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff        ;; 02:7ff8 ????????
+    TXT  "<00>"                                        ;; 02:7fd8 ?
+    db   $01                                           ;; 02:7fd9 ?
+
+; Assumes HL holds number, H in A, draws the number from the left
+drawLeftNumberOnStatusBar:
+    daa                                                ;; 02:7fda $27
+    jr   NZ, .jr_02_7fe8                               ;; 02:7fdb $20 $0b
+    ld   A, L                                          ;; 02:7fdd $7d
+    cp   A, $64                                        ;; 02:7fde $fe $64
+    jr   NC, .jr_02_7fe8                               ;; 02:7fe0 $30 $06
+    dec  DE                                            ;; 02:7fe2 $1b
+    cp   A, $0a                                        ;; 02:7fe3 $fe $0a
+    jr   NC, .jr_02_7fe8                               ;; 02:7fe5 $30 $01
+    dec  DE                                            ;; 02:7fe7 $1b
+.jr_02_7fe8:
+    call drawNumberOnStatusBar                         ;; 02:7fe8 $cd $77 $6f
+    ret                                                ;; 02:7feb $c9
+
+; Simply draws a money label tile at the leftover DE position
+drawMoneyNumberOnStatusBar:
+    call drawNumberOnStatusBar                         ;; 02:7fec $cd $77 $6f
+    ld   A, $40                                        ;; 02:7fef $fe $40
+    call storeTileAatWindowPositionDE                  ;; 02:7ff1 $cd $66 $38
+    ret                                                ;; 02:7ff4 $c9
