@@ -8094,13 +8094,11 @@ drawLeftNumberOnStatusBar:
 
 ; Simply draws a money label tile at the leftover DE position
 drawMoneyNumberOnStatusBar:
-    push HL                                            ;; 02:7feb $e5
-    call drawNumberOnStatusBar                         ;; 02:7fec $cd $77 $6f
-    pop  HL                                            ;; 02:7fef $e1
-    ld   A, H                                          ;; 02:7ff0 $7c
-    or   A, L                                          ;; 02:7ff1 $b4
-    jr   NZ, .jr_02_7ff5                               ;; 02:7ff2 $20 $01
-    dec  DE                                            ;; 02:7ff4 $1b
-.jr_02_7ff5:
-    ld   A, $f4                                        ;; 02:7ff5 $fe $f4
-    jp   storeTileAatWindowPositionDE                  ;; 02:7ff7 $c3 $66 $38
+    call drawNumberOnStatusBar                         ;; 02:7feb $cd $77 $6f
+    ld   A, E                                          ;; 02:7fee $7b
+    cp   A, $11                                        ;; 02:7fef $fe $11
+    jr   NZ, .jr_02_7ff4                               ;; 02:7ff1 $20 $01
+    dec  DE                                            ;; 02:7ff3 $1b
+.jr_02_7ff4:
+    ld   A, $f4                                        ;; 02:7ff4 $fe $f4
+    jp   storeTileAatWindowPositionDE                  ;; 02:7ff6 $c3 $66 $38
