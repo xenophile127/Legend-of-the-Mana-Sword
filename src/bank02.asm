@@ -5814,12 +5814,13 @@ clearStatusBarSection:
 drawNumberOnStatusBar:
     ld   A, H                                          ;; 02:6f77 $7c
     or   A, L                                          ;; 02:6f78 $b5
-    jr   Z, .jr_02_6f91                                ;; 02:6f79 $28 $16
+    jr   Z, .jr_02_6f82                                ;; 02:6f79 $28 $07
 .jr_02_6f7b:
     ld   A, $0a                                        ;; 02:6f7b $3e $0a
     push DE                                            ;; 02:6f7d $d5
     call divMod                                        ;; 02:6f7e $cd $8b $2b
     pop  DE                                            ;; 02:6f81 $d1
+.jr_02_6f82:
     push HL                                            ;; 02:6f82 $e5
     push DE                                            ;; 02:6f83 $d5
     add  A, $30                                        ;; 02:6f84 $c6 $30
@@ -5831,7 +5832,7 @@ drawNumberOnStatusBar:
     or   A, L                                          ;; 02:6f8d $b5
     jr   NZ, .jr_02_6f7b                               ;; 02:6f8e $20 $eb
     ret                                                ;; 02:6f90 $c9
-.jr_02_6f91:
+; FREE BYTES UP FOR GRABS
     ld   A, $30                                        ;; 02:6f91 $3e $30
     call storeTileAatWindowPositionDE                  ;; 02:6f93 $cd $66 $38
     ret                                                ;; 02:6f96 $c9
@@ -8095,10 +8096,5 @@ drawLeftNumberOnStatusBar:
 ; Simply draws a money label tile at the leftover DE position
 drawMoneyNumberOnStatusBar:
     call drawNumberOnStatusBar                         ;; 02:7feb $cd $77 $6f
-    ld   A, E                                          ;; 02:7fee $7b
-    cp   A, $11                                        ;; 02:7fef $fe $11
-    jr   NZ, .jr_02_7ff4                               ;; 02:7ff1 $20 $01
-    dec  DE                                            ;; 02:7ff3 $1b
-.jr_02_7ff4:
-    ld   A, $f4                                        ;; 02:7ff4 $fe $f4
-    jp   storeTileAatWindowPositionDE                  ;; 02:7ff6 $c3 $66 $38
+    ld   A, $f4                                        ;; 02:7fee $fe $f4
+    jp   storeTileAatWindowPositionDE                  ;; 02:7ff0 $c3 $66 $38
