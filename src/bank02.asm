@@ -5776,7 +5776,7 @@ drawHPOnStatuBar:
     ret                                                ;; 02:6f3e $c9
 
 drawManaOnStatusBar:
-    ld   DE, $0a                                       ;; 02:6f3f $11 $0a $00
+    ld   DE, $0b                                       ;; 02:6f3f $11 $0a $00
     push DE                                            ;; 02:6f42 $d5
     ld   B, $02                                        ;; 02:6f43 $06 $02
     call clearStatusBarSection                         ;; 02:6f45 $cd $6b $6f
@@ -5838,8 +5838,8 @@ drawNumberOnStatusBar:
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
-    db   $7f, $f0, $f1, $7f, $7f, $7f, $f2, $f3        ;; 02:6f97 ........
-    db   $7f, $7f, $7f, $7f, $7f, $7f, $7f, $7f        ;; 02:6f9f ........
+    db   $7f, $f0, $f1, $7f, $7f, $7f, $7f, $f2        ;; 02:6f97 ........
+    db   $f3, $7f, $7f, $7f, $7f, $7f, $7f, $7f        ;; 02:6f9f ........
     db   $7f, $7f, $7f, $7f                            ;; 02:6fa7 ....
 
 attackWithWeaponUseWill:
