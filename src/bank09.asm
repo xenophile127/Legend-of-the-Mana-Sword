@@ -8,7 +8,7 @@ INCLUDE "include/constants.inc"
 SECTION "bank09", ROMX[$4000], BANK[$09]
 ;@call_to_bank_jumptable
     call_to_bank_target projectileRunLogicForAll       ;; 09:4000 pP
-    call_to_bank_target call_09_4012                   ;; 09:4002 pP
+    call_to_bank_target processPhysicsForObject_9      ;; 09:4002 pP
     call_to_bank_target projectileLoadTiles            ;; 09:4004 pP
     call_to_bank_target projectileDestroy              ;; 09:4006 pP
     call_to_bank_target spawnProjectile                ;; 09:4008 pP
@@ -17,8 +17,8 @@ SECTION "bank09", ROMX[$4000], BANK[$09]
     call_to_bank_target getProjectilePower             ;; 09:400e ??
     call_to_bank_target projectileCollisionHandling    ;; 09:4010 pP
 
-call_09_4012:
-    call call_00_0695                                  ;; 09:4012 $cd $95 $06
+processPhysicsForObject_9:
+    call processPhysicsForObject                       ;; 09:4012 $cd $95 $06
     ret                                                ;; 09:4015 $c9
 
 projectileRunLogicForAll:
@@ -108,7 +108,7 @@ projectileRunLogic:
     push DE                                            ;; 09:4085 $d5
     push BC                                            ;; 09:4086 $c5
     call getObjectDirection                            ;; 09:4087 $cd $99 $0c
-    call call_00_2982                                  ;; 09:408a $cd $82 $29
+    call getBitNumber                                  ;; 09:408a $cd $82 $29
     pop  BC                                            ;; 09:408d $c1
     ld   B, A                                          ;; 09:408e $47
     push BC                                            ;; 09:408f $c5
@@ -128,14 +128,14 @@ projectileRunLogic:
     add  A, E                                          ;; 09:40a1 $83
     ld   E, A                                          ;; 09:40a2 $5f
     ld   A, [HL]                                       ;; 09:40a3 $7e
-    call call_09_41d3                                  ;; 09:40a4 $cd $d3 $41
+    call getDEMinusObjectYX                            ;; 09:40a4 $cd $d3 $41
     pop  BC                                            ;; 09:40a7 $c1
     pop  HL                                            ;; 09:40a8 $e1
     pop  AF                                            ;; 09:40a9 $f1
     ld   C, A                                          ;; 09:40aa $4f
-    call call_00_2982                                  ;; 09:40ab $cd $82 $29
+    call getBitNumber                                  ;; 09:40ab $cd $82 $29
     add  A, B                                          ;; 09:40ae $80
-    call getA_And3Power2                               ;; 09:40af $cd $9a $29
+    call getBitValue                                   ;; 09:40af $cd $9a $29
     ld   B, A                                          ;; 09:40b2 $47
     ld   A, C                                          ;; 09:40b3 $79
     and  A, $f0                                        ;; 09:40b4 $e6 $f0
@@ -204,22 +204,22 @@ projectileRunLogic:
     push HL                                            ;; 09:410c $e5
     ld   A, [BC]                                       ;; 09:410d $0a
     push BC                                            ;; 09:410e $c5
-    call call_09_41d3                                  ;; 09:410f $cd $d3 $41
+    call getDEMinusObjectYX                            ;; 09:410f $cd $d3 $41
     pop  HL                                            ;; 09:4112 $e1
     push HL                                            ;; 09:4113 $e5
     push DE                                            ;; 09:4114 $d5
     ld   C, [HL]                                       ;; 09:4115 $4e
     call getObjectDirection                            ;; 09:4116 $cd $99 $0c
-    call call_00_2982                                  ;; 09:4119 $cd $82 $29
+    call getBitNumber                                  ;; 09:4119 $cd $82 $29
     ld   B, A                                          ;; 09:411c $47
     pop  DE                                            ;; 09:411d $d1
     pop  HL                                            ;; 09:411e $e1
     pop  AF                                            ;; 09:411f $f1
     push HL                                            ;; 09:4120 $e5
     ld   C, A                                          ;; 09:4121 $4f
-    call call_00_2982                                  ;; 09:4122 $cd $82 $29
+    call getBitNumber                                  ;; 09:4122 $cd $82 $29
     add  A, B                                          ;; 09:4125 $80
-    call getA_And3Power2                               ;; 09:4126 $cd $9a $29
+    call getBitValue                                   ;; 09:4126 $cd $9a $29
     ld   B, A                                          ;; 09:4129 $47
     ld   A, C                                          ;; 09:412a $79
     and  A, $f0                                        ;; 09:412b $e6 $f0
@@ -268,7 +268,7 @@ projectileRunLogic:
     ld   B, $00                                        ;; 09:4166 $06 $00
     ld   A, L                                          ;; 09:4168 $7d
     srl  A                                             ;; 09:4169 $cb $3f
-    call getA_And3Power2                               ;; 09:416b $cd $9a $29
+    call getBitValue                                   ;; 09:416b $cd $9a $29
     bit  0, L                                          ;; 09:416e $cb $45
     jr   Z, .jr_09_4174                                ;; 09:4170 $28 $02
     ld   B, $01                                        ;; 09:4172 $06 $01
@@ -295,6 +295,10 @@ projectileRunLogic:
     call destroyObject                                 ;; 09:4193 $cd $e3 $0a
     ret                                                ;; 09:4196 $c9
 
+; DE = projectile runtime data pointer
+; Sets projectile runtime data offset 3 to zero
+; Return: HL = projectile data 0e+1 pointer
+; Return: A = first byte from that data structure
 call_09_4197:
     ld   HL, $03                                       ;; 09:4197 $21 $03 $00
     add  HL, DE                                        ;; 09:419a $19
@@ -312,6 +316,7 @@ call_09_4197:
     ld   A, [HL+]                                      ;; 09:41ab $2a
     ret                                                ;; 09:41ac $c9
 
+; A = object number
 call_09_41ad:
     push DE                                            ;; 09:41ad $d5
     ld   C, A                                          ;; 09:41ae $4f
@@ -320,16 +325,17 @@ call_09_41ad:
     bit  0, A                                          ;; 09:41b3 $cb $47
     ret  NZ                                            ;; 09:41b5 $c0
     bit  1, A                                          ;; 09:41b6 $cb $4f
-    jr   NZ, .jr_09_41c4                               ;; 09:41b8 $20 $0a
+    jr   NZ, .west                                     ;; 09:41b8 $20 $0a
     bit  2, A                                          ;; 09:41ba $cb $57
-    jr   NZ, .jr_09_41cd                               ;; 09:41bc $20 $0f
+    jr   NZ, .north                                    ;; 09:41bc $20 $0f
+; .south:
     ld   A, D                                          ;; 09:41be $7a
     cpl                                                ;; 09:41bf $2f
     inc  A                                             ;; 09:41c0 $3c
     ld   D, E                                          ;; 09:41c1 $53
     ld   E, A                                          ;; 09:41c2 $5f
     ret                                                ;; 09:41c3 $c9
-.jr_09_41c4:
+.west:
     ld   A, D                                          ;; 09:41c4 $7a
     cpl                                                ;; 09:41c5 $2f
     inc  A                                             ;; 09:41c6 $3c
@@ -339,7 +345,7 @@ call_09_41ad:
     inc  A                                             ;; 09:41ca $3c
     ld   E, A                                          ;; 09:41cb $5f
     ret                                                ;; 09:41cc $c9
-.jr_09_41cd:
+.north:
     ld   A, E                                          ;; 09:41cd $7b
     cpl                                                ;; 09:41ce $2f
     inc  A                                             ;; 09:41cf $3c
@@ -347,7 +353,8 @@ call_09_41ad:
     ld   D, A                                          ;; 09:41d1 $57
     ret                                                ;; 09:41d2 $c9
 
-call_09_41d3:
+; A = object number
+getDEMinusObjectYX:
     ld   C, A                                          ;; 09:41d3 $4f
     push DE                                            ;; 09:41d4 $d5
     push BC                                            ;; 09:41d5 $c5
@@ -730,7 +737,7 @@ projectileCollisionHandling:
     cp   A, $02                                        ;; 09:43cf $fe $02
     jr   NC, projectileCollisionHandling.not_immune    ;; 09:43d1 $30 $37
     push HL                                            ;; 09:43d3 $e5
-    call call_00_039a                                  ;; 09:43d4 $cd $9a $03
+    call checkObjectsCollisionDirection                ;; 09:43d4 $cd $9a $03
     call objectReverseDirection                        ;; 09:43d7 $cd $e4 $29
     push AF                                            ;; 09:43da $f5
     call getPlayerDirection                            ;; 09:43db $cd $ab $02

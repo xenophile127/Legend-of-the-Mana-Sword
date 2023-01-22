@@ -10,7 +10,9 @@ SECTION "bank0b", ROMX[$4000], BANK[$0b]
 ;@gfximg name=title_end width=16 height=12
 tilesetGfxTitle:
     INCBIN "title_end.bin"                             ;; 0b:4000
+
 ;@gfximg name=trashbin width=2 height=8
+trashbinGfx:
     INCBIN "trashbin.bin"                              ;; 0b:4c00
 
 ;@gfximg name=boss/vampire width=2 height=12
