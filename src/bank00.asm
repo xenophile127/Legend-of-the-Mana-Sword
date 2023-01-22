@@ -283,8 +283,8 @@ runMainInputHandler_trampoline:
 call_00_0232:
     jp_to_bank 01, call_01_48be                        ;; 00:0232 $f5 $3e $01 $c3 $d7 $1e
 
-call_00_0238:
-    jp_to_bank 01, call_01_4996                        ;; 00:0238 $f5 $3e $02 $c3 $d7 $1e
+processPhysicsForPlayer_trampoline:
+    jp_to_bank 01, processPhysicsForPlayer             ;; 00:0238 $f5 $3e $02 $c3 $d7 $1e
 
 updatePlayerPostion_trampoline:
     jp_to_bank 01, updatePlayerPostion                 ;; 00:023e $f5 $3e $03 $c3 $d7 $1e
@@ -500,7 +500,8 @@ LCDCInterrupt:
 checkPlayfieldBoundaryCollision_trampoline:
     jp_to_bank 04, checkPlayfieldBoundaryCollision     ;; 00:036f $f5 $3e $06 $c3 $64 $1f
 
-call_00_0375:
+; Calls destoryObject on most objects, except the player, companion, their attacks, and reserved (0 to 6) objects.
+removeNpcObjects:
     ld   C, $00                                        ;; 00:0375 $0e $00
     ld   B, $14                                        ;; 00:0377 $06 $14
 .loop:
@@ -522,10 +523,14 @@ call_00_0375:
     pop  BC                                            ;; 00:0394 $c1
     inc  C                                             ;; 00:0395 $0c
     dec  B                                             ;; 00:0396 $05
-    jr   NZ, call_00_0375.loop                         ;; 00:0397 $20 $e0
+    jr   NZ, removeNpcObjects.loop                     ;; 00:0397 $20 $e0
     ret                                                ;; 00:0399 $c9
 
-call_00_039a:
+; B = object number b
+; C = object number c
+; Return: DE = Y and X distances between the two objects.
+; Return: A = flags (unknown)
+checkObjectsCollisionDirection:
     push BC                                            ;; 00:039a $c5
     call GetObjectY                                    ;; 00:039b $cd $3e $0c
     ld   D, A                                          ;; 00:039e $57
@@ -554,9 +559,9 @@ call_00_039a:
     sub  A, E                                          ;; 00:03bb $93
     ld   E, A                                          ;; 00:03bc $5f
     bit  7, D                                          ;; 00:03bd $cb $7a
-    jr   NZ, .jr_00_03ec                               ;; 00:03bf $20 $2b
+    jr   NZ, .b_below_c                                ;; 00:03bf $20 $2b
     bit  7, E                                          ;; 00:03c1 $cb $7b
-    jr   NZ, .jr_00_03de                               ;; 00:03c3 $20 $19
+    jr   NZ, .b_leftof_c                               ;; 00:03c3 $20 $19
     ld   A, D                                          ;; 00:03c5 $7a
     cp   A, E                                          ;; 00:03c6 $bb
     jr   Z, .jr_00_03ce                                ;; 00:03c7 $28 $05
@@ -576,7 +581,7 @@ call_00_039a:
     and  A, $0f                                        ;; 00:03da $e6 $0f
     pop  DE                                            ;; 00:03dc $d1
     ret                                                ;; 00:03dd $c9
-.jr_00_03de:
+.b_leftof_c:
     ld   A, E                                          ;; 00:03de $7b
     cpl                                                ;; 00:03df $2f
     inc  A                                             ;; 00:03e0 $3c
@@ -589,9 +594,9 @@ call_00_039a:
 .jr_00_03e9:
     ld   A, $0a                                        ;; 00:03e9 $3e $0a
     ret                                                ;; 00:03eb $c9
-.jr_00_03ec:
+.b_below_c:
     bit  7, E                                          ;; 00:03ec $cb $7b
-    jr   NZ, .jr_00_03fe                               ;; 00:03ee $20 $0e
+    jr   NZ, checkObjectsCollisionDirection.b_below_and_leftof_c ;; 00:03ee $20 $0e
     ld   A, D                                          ;; 00:03f0 $7a
     cpl                                                ;; 00:03f1 $2f
     inc  A                                             ;; 00:03f2 $3c
@@ -604,7 +609,7 @@ call_00_039a:
 .jr_00_03fb:
     ld   A, $05                                        ;; 00:03fb $3e $05
     ret                                                ;; 00:03fd $c9
-.jr_00_03fe:
+.b_below_and_leftof_c:
     ld   A, E                                          ;; 00:03fe $7b
     cp   A, D                                          ;; 00:03ff $ba
     jr   Z, .jr_00_0407                                ;; 00:0400 $28 $05
@@ -636,14 +641,14 @@ hideSpritesBehindWindow_trampoline:
 showSpritesBehindWindow_trampoline:
     jp_to_bank 02, showSpritesBehindWindow             ;; 00:0435 $f5 $3e $05 $c3 $06 $1f
 
-call_00_043b:
+spriteShuffleDoFlash_trampoline:
     ld   A, [wBossFirstObjectID]                       ;; 00:043b $fa $e8 $d3
     cp   A, $ff                                        ;; 00:043e $fe $ff
     ret  NZ                                            ;; 00:0440 $c0
-    jp_to_bank 02, call_02_44fa                        ;; 00:0441 $f5 $3e $02 $c3 $06 $1f
+    jp_to_bank 02, spriteShuffleDoFlash                ;; 00:0441 $f5 $3e $02 $c3 $06 $1f
 
-call_00_0447:
-    jp_to_bank 02, call_02_44c4                        ;; 00:0447 $f5 $3e $03 $c3 $06 $1f
+spriteShuffleShowHidden_trampoline:
+    jp_to_bank 02, spriteShuffleShowHidden             ;; 00:0447 $f5 $3e $03 $c3 $06 $1f
 
 setSpriteScrollSpeed:
     ld   HL, wSpriteScrollSpeed                        ;; 00:044d $21 $a1 $c4
@@ -678,7 +683,7 @@ getBackgroundDrawAddress:
     ld   C, A                                          ;; 00:0473 $4f
     ld   B, $00                                        ;; 00:0474 $06 $00
     add  HL, BC                                        ;; 00:0476 $09
-    ld   BC, $9800                                     ;; 00:0477 $01 $00 $98
+    ld   BC, _SCRN0 ;@=ptr _SCRN0                      ;; 00:0477 $01 $00 $98
     add  HL, BC                                        ;; 00:047a $09
     ret                                                ;; 00:047b $c9
 
@@ -769,8 +774,8 @@ bossClearObjectsTracking:
 bossCollisionHandling_trampoline:
     jp_to_bank 04, bossCollisionHandling               ;; 00:0511 $f5 $3e $05 $c3 $64 $1f
 
-call_00_0517:
-    jp_to_bank 04, call_04_4735                        ;; 00:0517 $f5 $3e $04 $c3 $64 $1f
+processPhysicsForObject_4_trampoline:
+    jp_to_bank 04, processPhysicsForObject_4           ;; 00:0517 $f5 $3e $04 $c3 $64 $1f
 
 ; Draw the meta tile A (metatile index) at DE (YX tile number)
 ; Uses background requests to copy the bytes into VRAM
@@ -962,6 +967,7 @@ getObjectNearestTilePosition:
     ret                                                ;; 00:0610 $c9
 
 ; Update the object at index C to the position at D,E
+; Object orientation/flags set to A & 7f
 ; Also does something with B
 updateObjectPosition:
     ld   L, A                                          ;; 00:0611 $6f
@@ -993,7 +999,7 @@ updateObjectPosition:
     ld   A, C                                          ;; 00:0633 $79
     bit  5, A                                          ;; 00:0634 $cb $6f
     call NZ, objectReverseDirection                    ;; 00:0636 $c4 $e4 $29
-    call call_00_2982                                  ;; 00:0639 $cd $82 $29
+    call getBitNumber                                  ;; 00:0639 $cd $82 $29
     pop  BC                                            ;; 00:063c $c1
     push BC                                            ;; 00:063d $c5
     sla  B                                             ;; 00:063e $cb $20
@@ -1067,11 +1073,10 @@ getObjectPositionAndCollisionInfo:
     dec  E                                             ;; 00:0693 $1d
     ret                                                ;; 00:0694 $c9
 
-; Main entry point for hit detection? Or possibly it's an "updateObjects" function?
 ; A = ?
 ; B = ?
 ; C = Object ID for the changed/checked object
-call_00_0695:
+processPhysicsForObject:
     ld   D, A                                          ;; 00:0695 $57
     ld   E, B                                          ;; 00:0696 $58
     ld   A, C                                          ;; 00:0697 $79
@@ -1144,11 +1149,11 @@ call_00_0695:
     ld   B, A                                          ;; 00:06fb $47
 .jr_00_06fc:
     bit  0, C                                          ;; 00:06fc $cb $41
-    jr   NZ, call_00_0695.right                        ;; 00:06fe $20 $3f
+    jr   NZ, processPhysicsForObject.right             ;; 00:06fe $20 $3f
     bit  1, C                                          ;; 00:0700 $cb $49
-    jr   NZ, call_00_0695.left                         ;; 00:0702 $20 $70
+    jr   NZ, processPhysicsForObject.left              ;; 00:0702 $20 $70
     bit  2, C                                          ;; 00:0704 $cb $51
-    jp   NZ, call_00_0695.up                           ;; 00:0706 $c2 $ab $07
+    jp   NZ, processPhysicsForObject.up                ;; 00:0706 $c2 $ab $07
 ; .down:
     ld   D, B                                          ;; 00:0709 $50
     ld   E, $00                                        ;; 00:070a $1e $00
@@ -1162,16 +1167,16 @@ call_00_0695:
     and  A, $07                                        ;; 00:071a $e6 $07
     ld   A, B                                          ;; 00:071c $78
     call Z, checkObjectTileCollisions                  ;; 00:071d $cc $c0 $18
-    jp   Z, call_00_0695.blocked                       ;; 00:0720 $ca $e0 $07
+    jp   Z, processPhysicsForObject.blocked            ;; 00:0720 $ca $e0 $07
     call call_00_081d                                  ;; 00:0723 $cd $1d $08
-    jp   Z, call_00_0695.blocked                       ;; 00:0726 $ca $e0 $07
+    jp   Z, processPhysicsForObject.blocked            ;; 00:0726 $ca $e0 $07
     ld   A, [wObjectIDCopy]                            ;; 00:0729 $fa $49 $c3
     ld   C, A                                          ;; 00:072c $4f
     call checkPlayfieldBoundaryCollision_trampoline    ;; 00:072d $cd $6f $03
     jr   NZ, .jr_00_0739                               ;; 00:0730 $20 $07
     bit  3, B                                          ;; 00:0732 $cb $58
     ld   B, $00                                        ;; 00:0734 $06 $00
-    jp   NZ, call_00_0695.blocked                      ;; 00:0736 $c2 $e0 $07
+    jp   NZ, processPhysicsForObject.blocked           ;; 00:0736 $c2 $e0 $07
 .jr_00_0739:
     pop  DE                                            ;; 00:0739 $d1
     pop  HL                                            ;; 00:073a $e1
@@ -1191,16 +1196,16 @@ call_00_0695:
     and  A, $07                                        ;; 00:074f $e6 $07
     ld   A, B                                          ;; 00:0751 $78
     call Z, checkObjectTileCollisions                  ;; 00:0752 $cc $c0 $18
-    jp   Z, call_00_0695.blocked                       ;; 00:0755 $ca $e0 $07
+    jp   Z, processPhysicsForObject.blocked            ;; 00:0755 $ca $e0 $07
     call call_00_081d                                  ;; 00:0758 $cd $1d $08
-    jp   Z, call_00_0695.blocked                       ;; 00:075b $ca $e0 $07
+    jp   Z, processPhysicsForObject.blocked            ;; 00:075b $ca $e0 $07
     ld   A, [wObjectIDCopy]                            ;; 00:075e $fa $49 $c3
     ld   C, A                                          ;; 00:0761 $4f
     call checkPlayfieldBoundaryCollision_trampoline    ;; 00:0762 $cd $6f $03
     jr   NZ, .jr_00_076e                               ;; 00:0765 $20 $07
     bit  0, B                                          ;; 00:0767 $cb $40
     ld   B, $00                                        ;; 00:0769 $06 $00
-    jp   NZ, call_00_0695.blocked                      ;; 00:076b $c2 $e0 $07
+    jp   NZ, processPhysicsForObject.blocked           ;; 00:076b $c2 $e0 $07
 .jr_00_076e:
     pop  DE                                            ;; 00:076e $d1
     pop  HL                                            ;; 00:076f $e1
@@ -1223,16 +1228,16 @@ call_00_0695:
     and  A, $07                                        ;; 00:0787 $e6 $07
     ld   A, B                                          ;; 00:0789 $78
     call Z, checkObjectTileCollisions                  ;; 00:078a $cc $c0 $18
-    jp   Z, call_00_0695.blocked                       ;; 00:078d $ca $e0 $07
+    jp   Z, processPhysicsForObject.blocked            ;; 00:078d $ca $e0 $07
     call call_00_081d                                  ;; 00:0790 $cd $1d $08
-    jp   Z, call_00_0695.blocked                       ;; 00:0793 $ca $e0 $07
+    jp   Z, processPhysicsForObject.blocked            ;; 00:0793 $ca $e0 $07
     ld   A, [wObjectIDCopy]                            ;; 00:0796 $fa $49 $c3
     ld   C, A                                          ;; 00:0799 $4f
     call checkPlayfieldBoundaryCollision_trampoline    ;; 00:079a $cd $6f $03
     jr   NZ, .jr_00_07a5                               ;; 00:079d $20 $06
     bit  1, B                                          ;; 00:079f $cb $48
     ld   B, $00                                        ;; 00:07a1 $06 $00
-    jr   NZ, call_00_0695.blocked                      ;; 00:07a3 $20 $3b
+    jr   NZ, processPhysicsForObject.blocked           ;; 00:07a3 $20 $3b
 .jr_00_07a5:
     pop  DE                                            ;; 00:07a5 $d1
     pop  HL                                            ;; 00:07a6 $e1
@@ -1255,16 +1260,16 @@ call_00_0695:
     and  A, $07                                        ;; 00:07be $e6 $07
     ld   A, B                                          ;; 00:07c0 $78
     call Z, checkObjectTileCollisions                  ;; 00:07c1 $cc $c0 $18
-    jr   Z, call_00_0695.blocked                       ;; 00:07c4 $28 $1a
+    jr   Z, processPhysicsForObject.blocked            ;; 00:07c4 $28 $1a
     call call_00_081d                                  ;; 00:07c6 $cd $1d $08
-    jr   Z, call_00_0695.blocked                       ;; 00:07c9 $28 $15
+    jr   Z, processPhysicsForObject.blocked            ;; 00:07c9 $28 $15
     ld   A, [wObjectIDCopy]                            ;; 00:07cb $fa $49 $c3
     ld   C, A                                          ;; 00:07ce $4f
     call checkPlayfieldBoundaryCollision_trampoline    ;; 00:07cf $cd $6f $03
     jr   NZ, .jr_00_07da                               ;; 00:07d2 $20 $06
     bit  2, B                                          ;; 00:07d4 $cb $50
     ld   B, $00                                        ;; 00:07d6 $06 $00
-    jr   NZ, call_00_0695.blocked                      ;; 00:07d8 $20 $06
+    jr   NZ, processPhysicsForObject.blocked           ;; 00:07d8 $20 $06
 .jr_00_07da:
     pop  DE                                            ;; 00:07da $d1
     pop  HL                                            ;; 00:07db $e1
@@ -1464,7 +1469,7 @@ call_00_08d4:
     ld   A, C                                          ;; 00:08f5 $79
     bit  5, A                                          ;; 00:08f6 $cb $6f
     call NZ, objectReverseDirection                    ;; 00:08f8 $c4 $e4 $29
-    call call_00_2982                                  ;; 00:08fb $cd $82 $29
+    call getBitNumber                                  ;; 00:08fb $cd $82 $29
     pop  BC                                            ;; 00:08fe $c1
     push BC                                            ;; 00:08ff $c5
     sla  B                                             ;; 00:0900 $cb $20
@@ -1983,6 +1988,7 @@ playerMetaspriteTable_bank0:
     db   $20, $02, $00, $00, $00, $02, $00, $00        ;; 00:0bc5 ????????
     db   $02, $00, $00, $02                            ;; 00:0bcd ?...
 
+; Initializes all 20 objects and then reserves the first seven
 initObjects:
     ld   HL, wObjectRuntimeData                        ;; 00:0bd1 $21 $00 $c2
     ld   DE, wOAMBuffer                                ;; 00:0bd4 $11 $00 $c0
@@ -2185,7 +2191,7 @@ setObjectMetaspritePointer:
     ld   [HL], D                                       ;; 00:0cd1 $72
     ret                                                ;; 00:0cd2 $c9
 
-getObjectOffset0a:
+getObjectSliding:
     ld   L, C                                          ;; 00:0cd3 $69
     ld   H, $00                                        ;; 00:0cd4 $26 $00
     add  HL, HL                                        ;; 00:0cd6 $29
@@ -2199,7 +2205,7 @@ getObjectOffset0a:
     ld   A, [HL-]                                      ;; 00:0ce2 $3a
     ret                                                ;; 00:0ce3 $c9
 
-setObjectOffset0a:
+setObjectSliding:
     ld   L, C                                          ;; 00:0ce4 $69
     ld   H, $00                                        ;; 00:0ce5 $26 $00
     add  HL, HL                                        ;; 00:0ce7 $29
@@ -2344,7 +2350,7 @@ scriptOpCodeWaitMapClose:
     ld   C, $00                                        ;; 00:0dcf $0e $00
     ld   B, $00                                        ;; 00:0dd1 $06 $00
     ld   A, $00                                        ;; 00:0dd3 $3e $00
-    call call_00_0695                                  ;; 00:0dd5 $cd $95 $06
+    call processPhysicsForObject                       ;; 00:0dd5 $cd $95 $06
     pop  HL                                            ;; 00:0dd8 $e1
     ret                                                ;; 00:0dd9 $c9
 .hide_marker:
@@ -3064,7 +3070,7 @@ call_00_123e:
     add  A, A                                          ;; 00:1251 $87
     add  A, A                                          ;; 00:1252 $87
     ld   D, A                                          ;; 00:1253 $57
-    call call_00_28aa                                  ;; 00:1254 $cd $aa $28
+    call updateNpcPosition_trampoline                  ;; 00:1254 $cd $aa $28
     pop  HL                                            ;; 00:1257 $e1
     call getNextScriptInstruction                      ;; 00:1258 $cd $27 $37
     ret                                                ;; 00:125b $c9
@@ -3954,7 +3960,7 @@ call_00_177e:
     push BC                                            ;; 00:1794 $c5
     ld   A, $00                                        ;; 00:1795 $3e $00
     ld   C, B                                          ;; 00:1797 $48
-    call setObjectOffset0a                             ;; 00:1798 $cd $e4 $0c
+    call setObjectSliding                              ;; 00:1798 $cd $e4 $0c
     ld   L, A                                          ;; 00:179b $6f
     pop  BC                                            ;; 00:179c $c1
     pop  DE                                            ;; 00:179d $d1
@@ -4017,7 +4023,7 @@ jr_00_17f5:
     ld   A, $90                                        ;; 00:17f5 $3e $90
     or   A, B                                          ;; 00:17f7 $b0
     push BC                                            ;; 00:17f8 $c5
-    call setObjectOffset0a                             ;; 00:17f9 $cd $e4 $0c
+    call setObjectSliding                              ;; 00:17f9 $cd $e4 $0c
     pop  BC                                            ;; 00:17fc $c1
     ld   A, $02                                        ;; 00:17fd $3e $02
     call setObjectOffset0b                             ;; 00:17ff $cd $08 $0d
@@ -4931,7 +4937,7 @@ processBackgroundRenderRequests:
     ld   A, [wBackgroundRenderRequestCount]            ;; 00:1df0 $fa $e8 $ce
     ld   B, A                                          ;; 00:1df3 $47
     ld   HL, wBackgroundRenderRequests                 ;; 00:1df4 $21 $e8 $c8
-.jr_00_1df7:
+.loop_outer:
     push BC                                            ;; 00:1df7 $c5
     push HL                                            ;; 00:1df8 $e5
     ld   C, [HL]                                       ;; 00:1df9 $4e
@@ -4951,7 +4957,7 @@ processBackgroundRenderRequests:
     ld   [$2100], A                                    ;; 00:1e09 $ea $00 $21
     ld   C, $44                                        ;; 00:1e0c $0e $44
 ; check rLY
-.jr_00_1e0e:
+.loop_inner:
     ldh  A, [C]                                        ;; 00:1e0e $f2
     cp   A, $8c                                        ;; 00:1e0f $fe $8c
     jr   NC, .jr_00_1e49                               ;; 00:1e11 $30 $36
@@ -4971,14 +4977,14 @@ processBackgroundRenderRequests:
     pop  DE                                            ;; 00:1e23 $d1
     pop  BC                                            ;; 00:1e24 $c1
     dec  B                                             ;; 00:1e25 $05
-    jr   NZ, .jr_00_1e0e                               ;; 00:1e26 $20 $e6
+    jr   NZ, processBackgroundRenderRequests.loop_inner ;; 00:1e26 $20 $e6
 .jr_00_1e28:
     pop  HL                                            ;; 00:1e28 $e1
     pop  BC                                            ;; 00:1e29 $c1
     ld   DE, $06                                       ;; 00:1e2a $11 $06 $00
     add  HL, DE                                        ;; 00:1e2d $19
     dec  B                                             ;; 00:1e2e $05
-    jr   NZ, .jr_00_1df7                               ;; 00:1e2f $20 $c6
+    jr   NZ, processBackgroundRenderRequests.loop_outer ;; 00:1e2f $20 $c6
     ld   A, $00                                        ;; 00:1e31 $3e $00
     ld   [wBackgroundRenderRequestCount], A            ;; 00:1e33 $ea $e8 $ce
     call popBankNrAndSwitch                            ;; 00:1e36 $cd $0a $2a
@@ -5231,7 +5237,7 @@ Init:
     ld   SP, hInitialSP                                ;; 00:1fcb $31 $fe $ff
     call InitPreIntEnable                              ;; 00:1fce $cd $f0 $1f
     ei                                                 ;; 00:1fd1 $fb
-    call InitPostIntEnable_trampoline                  ;; 00:1fd2 $cd $53 $31
+    call titleScreenInit_trampoline                    ;; 00:1fd2 $cd $53 $31
 
 MainLoop:
     halt                                               ;; 00:1fd5 $76 $00
@@ -5274,11 +5280,11 @@ InitPreIntEnable:
     call CopyHL_to_DE_size_BC                          ;; 00:2027 $cd $40 $2b
     call copyInitialVRAMTiles                          ;; 00:202a $cd $40 $21
     ld   A, $7f                                        ;; 00:202d $3e $7f
-    ld   HL, $9800                                     ;; 00:202f $21 $00 $98
+    ld   HL, _SCRN0 ;@=ptr _SCRN0                      ;; 00:202f $21 $00 $98
     ld   BC, $800                                      ;; 00:2032 $01 $00 $08
     call FillHL_with_A_times_BC                        ;; 00:2035 $cd $54 $2b
     ld   A, $00                                        ;; 00:2038 $3e $00
-    ld   HL, $fe00                                     ;; 00:203a $21 $00 $fe
+    ld   HL, _OAMRAM ;@=ptr _OAMRAM                    ;; 00:203a $21 $00 $fe
     ld   B, $a0                                        ;; 00:203d $06 $a0
     call fillMemory                                    ;; 00:203f $cd $5d $2b
     ld   A, $c0                                        ;; 00:2042 $3e $c0
@@ -5374,7 +5380,7 @@ initialVRAMLoad:
     dw   $87f0, gfxChest + $30                         ;; 00:213c pP.. $1b
 
 copyInitialVRAMTiles:
-    ld   A, $08                                        ;; 00:2140 $3e $08
+    ld   A, BANK(gfxHand) ;@=bank gfxHand              ;; 00:2140 $3e $08
     ld   [$2100], A                                    ;; 00:2142 $ea $00 $21
     ld   HL, initialVRAMLoad                           ;; 00:2145 $21 $d0 $20
     ld   B, $1c                                        ;; 00:2148 $06 $1c
@@ -5405,10 +5411,10 @@ DisableLCD:
     ldh  A, [rLY]                                      ;; 00:2168 $f0 $44
     cp   A, $92                                        ;; 00:216a $fe $92
     jr   NC, DisableLCD                                ;; 00:216c $30 $fa
-.jr_00_216e:
+.loop:
     ldh  A, [rLY]                                      ;; 00:216e $f0 $44
     cp   A, $92                                        ;; 00:2170 $fe $92
-    jr   C, .jr_00_216e                                ;; 00:2172 $38 $fa
+    jr   C, DisableLCD.loop                            ;; 00:2172 $38 $fa
     ldh  A, [rLCDC]                                    ;; 00:2174 $f0 $40
     and  A, $7f                                        ;; 00:2176 $e6 $7f
     ldh  [rLCDC], A                                    ;; 00:2178 $e0 $40
@@ -5419,14 +5425,14 @@ mainLoopPreInput:
     call pushBankNrAndSwitch                           ;; 00:217d $cd $fb $29
     call runSoundEngine                                ;; 00:2180 $cd $00 $40
     call popBankNrAndSwitch                            ;; 00:2183 $cd $0a $2a
-    call call_00_0447                                  ;; 00:2186 $cd $47 $04
+    call spriteShuffleShowHidden_trampoline            ;; 00:2186 $cd $47 $04
     ld   A, [wMainGameStateFlags.nextFrame]            ;; 00:2189 $fa $a2 $c0
     ld   [wMainGameStateFlags], A                      ;; 00:218c $ea $a1 $c0
     ret                                                ;; 00:218f $c9
 
 mainLoopPostInput:
     ld   A, $00                                        ;; 00:2190 $3e $00
-    call call_00_043b                                  ;; 00:2192 $cd $3b $04
+    call spriteShuffleDoFlash_trampoline               ;; 00:2192 $cd $3b $04
     call animateTiles_trampoline                       ;; 00:2195 $cd $70 $1a
     call runRoomScriptIfAllEnemiesDefeated_trampoline  ;; 00:2198 $cd $1a $29
     call startScriptIfRequested                        ;; 00:219b $cd $8f $31
@@ -6139,7 +6145,7 @@ loadRoomMetaTilesTemplated:
 .jr_00_25ab:
     ld   A, $04                                        ;; 00:25ab $3e $04
     sub  A, B                                          ;; 00:25ad $90
-    call getA_And3Power2                               ;; 00:25ae $cd $9a $29
+    call getBitValue                                   ;; 00:25ae $cd $9a $29
     push DE                                            ;; 00:25b1 $d5
     ld   E, A                                          ;; 00:25b2 $5f
     ld   A, [wDoorStates]                              ;; 00:25b3 $fa $f4 $c3
@@ -6500,8 +6506,8 @@ updateNPCsAndBoss:
     call bossUpdate                                    ;; 00:27ce $cd $aa $04
     jp_to_bank 03, npcRunBehaviorForAll                ;; 00:27d1 $f5 $3e $00 $c3 $35 $1f
 
-call_00_27d7:
-    jp_to_bank 03, call_03_4af5                        ;; 00:27d7 $f5 $3e $01 $c3 $35 $1f
+processPhysicsForObject_3_trampoline:
+    jp_to_bank 03, processPhysicsForObject_3           ;; 00:27d7 $f5 $3e $01 $c3 $35 $1f
 
 spawnNPC_trampoline:
     jp_to_bank 03, spawnNPC                            ;; 00:27dd $f5 $3e $02 $c3 $35 $1f
@@ -6628,8 +6634,8 @@ checkForMovingObjects:
     or   A, A                                          ;; 00:28a8 $b7
     ret                                                ;; 00:28a9 $c9
 
-call_00_28aa:
-    jp_to_bank 03, call_03_4af9                        ;; 00:28aa $f5 $3e $0d $c3 $35 $1f
+updateNpcPosition_trampoline:
+    jp_to_bank 03, updateNpcPosition                   ;; 00:28aa $f5 $3e $0d $c3 $35 $1f
 
 moveObjectsDuringScript_trampoline:
     jp_to_bank 03, moveObjectsDuringScript             ;; 00:28b0 $f5 $3e $0e $c3 $35 $1f
@@ -6660,7 +6666,8 @@ checkForFollower:
     ld   A, $01                                        ;; 00:28d2 $3e $01
     ret                                                ;; 00:28d4 $c9
 
-call_00_28d5:
+; Used when you ASK your Chocobo/Chocobot/Chocoboat
+hideFollower:
     call checkForFollower                              ;; 00:28d5 $cd $c2 $28
     ret  NZ                                            ;; 00:28d8 $c0
     ld   A, $00                                        ;; 00:28d9 $3e $00
@@ -6681,7 +6688,8 @@ call_00_28d5:
     ld   [HL+], A                                      ;; 00:28ee $22
     ret                                                ;; 00:28ef $c9
 
-call_00_28f0:
+; Used when you dismount your Chocobo/Chocobot/Chocoboat
+showFollower:
     call checkForFollower                              ;; 00:28f0 $cd $c2 $28
     ret  NZ                                            ;; 00:28f3 $c0
     ld   A, $00                                        ;; 00:28f4 $3e $00
@@ -6716,8 +6724,8 @@ runRoomScriptIfAllEnemiesDefeated_trampoline:
     ret  NZ                                            ;; 00:291f $c0
     jp_to_bank 03, runRoomScriptIfAllEnemiesDefeated   ;; 00:2920 $f5 $3e $13 $c3 $35 $1f
 
-call_00_2926:
-    jp_to_bank 03, call_03_4c38                        ;; 00:2926 $f5 $3e $14 $c3 $35 $1f
+initEnemiesCounterAndMoveFolower_trampoline:
+    jp_to_bank 03, initEnemiesCounterAndMoveFolower    ;; 00:2926 $f5 $3e $14 $c3 $35 $1f
 
 inflictVulnerableNpcsSlep_trampoline:
     jp_to_bank 03, inflictVulnerableNpcsSlep           ;; 00:292c $f5 $3e $10 $c3 $35 $1f
@@ -6791,58 +6799,47 @@ playSFX:
     ldh  [hSFX], A                                     ;; 00:297f $e0 $92
     ret                                                ;; 00:2981 $c9
 
-; 0 -> 3
-; 1 -> 0
-; 2 -> 1
-; 3 -> 0
-; 4 -> 2
-; 5 -> 0
-; 6 -> 1
-; 7 -> 0
-; ... etc
-; All in all it returns 50% 0, 25% 1, 12.5% 2, and 12.5% 3
-; Gets the lowest set bit number of the first three bits, with 0 treated as 8.
-call_00_2982:
+; 01->00, 02->01, 04->02, 08->03
+; Only works for the lowest set bit of bits 0 to 3.
+getBitNumber:
     bit  0, A                                          ;; 00:2982 $cb $47
-    jr   NZ, .jr_00_2991                               ;; 00:2984 $20 $0b
+    jr   NZ, .bit_0                                    ;; 00:2984 $20 $0b
     bit  1, A                                          ;; 00:2986 $cb $4f
-    jr   NZ, .jr_00_2994                               ;; 00:2988 $20 $0a
+    jr   NZ, .bit_1                                    ;; 00:2988 $20 $0a
     bit  2, A                                          ;; 00:298a $cb $57
-    jr   NZ, .jr_00_2997                               ;; 00:298c $20 $09
+    jr   NZ, .bit_2                                    ;; 00:298c $20 $09
+;.bit_3:
     ld   A, $03                                        ;; 00:298e $3e $03
     ret                                                ;; 00:2990 $c9
-.jr_00_2991:
+.bit_0:
     ld   A, $00                                        ;; 00:2991 $3e $00
     ret                                                ;; 00:2993 $c9
-.jr_00_2994:
+.bit_1:
     ld   A, $01                                        ;; 00:2994 $3e $01
     ret                                                ;; 00:2996 $c9
-.jr_00_2997:
+.bit_2:
     ld   A, $02                                        ;; 00:2997 $3e $02
     ret                                                ;; 00:2999 $c9
 
-; A & 3:
-; 0 -> 1
-; 1 -> 2
-; 2 -> 4
-; 3 -> 8
-; Probably considered the inverse of the above function
-getA_And3Power2:
+; 00->01, 01->02, 02->04, 03->08
+; Only works for bits 0 to 3.
+getBitValue:
     and  A, $03                                        ;; 00:299a $e6 $03
-    jr   Z, .jr_00_29a9                                ;; 00:299c $28 $0b
+    jr   Z, .bit_0                                     ;; 00:299c $28 $0b
     cp   A, $01                                        ;; 00:299e $fe $01
-    jr   Z, .jr_00_29ac                                ;; 00:29a0 $28 $0a
+    jr   Z, .bit_1                                     ;; 00:29a0 $28 $0a
     cp   A, $02                                        ;; 00:29a2 $fe $02
-    jr   Z, .jr_00_29af                                ;; 00:29a4 $28 $09
+    jr   Z, .bit_2                                     ;; 00:29a4 $28 $09
+;.bit_3:
     ld   A, $08                                        ;; 00:29a6 $3e $08
     ret                                                ;; 00:29a8 $c9
-.jr_00_29a9:
+.bit_0:
     ld   A, $01                                        ;; 00:29a9 $3e $01
     ret                                                ;; 00:29ab $c9
-.jr_00_29ac:
+.bit_1:
     ld   A, $02                                        ;; 00:29ac $3e $02
     ret                                                ;; 00:29ae $c9
-.jr_00_29af:
+.bit_2:
     ld   A, $04                                        ;; 00:29af $3e $04
     ret                                                ;; 00:29b1 $c9
 
@@ -7128,8 +7125,8 @@ sub_HL_DE:
 projectileRunLogicForAll_trampoline:
     jp_to_bank 09, projectileRunLogicForAll            ;; 00:2bd1 $f5 $3e $00 $c3 $93 $1f
 
-call_00_2bd7:
-    jp_to_bank 09, call_09_4012                        ;; 00:2bd7 $f5 $3e $01 $c3 $93 $1f
+processPhysicsForObject_9_trampoline:
+    jp_to_bank 09, processPhysicsForObject_9           ;; 00:2bd7 $f5 $3e $01 $c3 $93 $1f
 
 projectileLoadTiles_trampoline:
     cp   A, $ff                                        ;; 00:2bdd $fe $ff
@@ -7188,7 +7185,7 @@ call_00_2c2d:
     bit  3, A                                          ;; 00:2c39 $cb $5f
     jr   NZ, .jr_00_2c7f                               ;; 00:2c3b $20 $42
     ld   A, $00                                        ;; 00:2c3d $3e $00
-    call call_00_0695                                  ;; 00:2c3f $cd $95 $06
+    call processPhysicsForObject                       ;; 00:2c3f $cd $95 $06
     ret                                                ;; 00:2c42 $c9
 .jr_00_2c43:
     call checkPlayfieldBoundaryCollision_trampoline    ;; 00:2c43 $cd $6f $03
@@ -7201,7 +7198,7 @@ call_00_2c2d:
 .jr_00_2c4f:
     ld   A, $91                                        ;; 00:2c4f $3e $91
     ld   B, $00                                        ;; 00:2c51 $06 $00
-    call call_00_0695                                  ;; 00:2c53 $cd $95 $06
+    call processPhysicsForObject                       ;; 00:2c53 $cd $95 $06
     ret                                                ;; 00:2c56 $c9
 .jr_00_2c57:
     call checkPlayfieldBoundaryCollision_trampoline    ;; 00:2c57 $cd $6f $03
@@ -7214,7 +7211,7 @@ call_00_2c2d:
 .jr_00_2c63:
     ld   A, $92                                        ;; 00:2c63 $3e $92
     ld   B, $00                                        ;; 00:2c65 $06 $00
-    call call_00_0695                                  ;; 00:2c67 $cd $95 $06
+    call processPhysicsForObject                       ;; 00:2c67 $cd $95 $06
     ret                                                ;; 00:2c6a $c9
 .jr_00_2c6b:
     call checkPlayfieldBoundaryCollision_trampoline    ;; 00:2c6b $cd $6f $03
@@ -7227,7 +7224,7 @@ call_00_2c2d:
 .jr_00_2c77:
     ld   A, $94                                        ;; 00:2c77 $3e $94
     ld   B, $00                                        ;; 00:2c79 $06 $00
-    call call_00_0695                                  ;; 00:2c7b $cd $95 $06
+    call processPhysicsForObject                       ;; 00:2c7b $cd $95 $06
     ret                                                ;; 00:2c7e $c9
 .jr_00_2c7f:
     call checkPlayfieldBoundaryCollision_trampoline    ;; 00:2c7f $cd $6f $03
@@ -7240,7 +7237,7 @@ call_00_2c2d:
 .jr_00_2c8b:
     ld   A, $98                                        ;; 00:2c8b $3e $98
     ld   B, $00                                        ;; 00:2c8d $06 $00
-    call call_00_0695                                  ;; 00:2c8f $cd $95 $06
+    call processPhysicsForObject                       ;; 00:2c8f $cd $95 $06
     ret                                                ;; 00:2c92 $c9
 
 snowmanMetaspriteTable:
@@ -7327,7 +7324,7 @@ call_00_2d22:
     ld   A, B                                          ;; 00:2d3a $78
     ld   B, C                                          ;; 00:2d3b $41
     ld   C, A                                          ;; 00:2d3c $4f
-    call call_00_039a                                  ;; 00:2d3d $cd $9a $03
+    call checkObjectsCollisionDirection                ;; 00:2d3d $cd $9a $03
     pop  BC                                            ;; 00:2d40 $c1
     push BC                                            ;; 00:2d41 $c5
     call call_00_2c2d                                  ;; 00:2d42 $cd $2d $2c
@@ -7580,22 +7577,22 @@ setAToZero:
     ld   A, $00                                        ;; 00:2f09 $3e $00
     ret                                                ;; 00:2f0b $c9
 
-call_00_2f0c:
-    ld   A, [wCF5A]                                    ;; 00:2f0c $fa $5a $cf
+getSelectedX:
+    ld   A, [wSelectedObjectID]                        ;; 00:2f0c $fa $5a $cf
     ld   C, A                                          ;; 00:2f0f $4f
     call GetObjectX                                    ;; 00:2f10 $cd $2d $0c
     ret                                                ;; 00:2f13 $c9
 
-call_00_2f14:
-    ld   A, [wCF5A]                                    ;; 00:2f14 $fa $5a $cf
+getSelectedY:
+    ld   A, [wSelectedObjectID]                        ;; 00:2f14 $fa $5a $cf
     ld   C, A                                          ;; 00:2f17 $4f
     call GetObjectY                                    ;; 00:2f18 $cd $3e $0c
     ret                                                ;; 00:2f1b $c9
     db   $fa, $5a, $cf, $4f, $cd, $4f, $0c, $c9        ;; 00:2f1c ????????
     db   $21, $5a, $cf, $4e, $cd, $5d, $0c, $c9        ;; 00:2f24 ????????
 
-call_00_2f2c:
-    ld   A, [wCF5A]                                    ;; 00:2f2c $fa $5a $cf
+getSelectedDirection:
+    ld   A, [wSelectedObjectID]                        ;; 00:2f2c $fa $5a $cf
     ld   C, A                                          ;; 00:2f2f $4f
     call getObjectDirection                            ;; 00:2f30 $cd $99 $0c
     ret                                                ;; 00:2f33 $c9
@@ -7877,8 +7874,8 @@ drawWindow_trampoline:
 windowMenuStartSpecial_trampoline:
     jp_to_bank 02, windowMenuStartSpecial              ;; 00:30b1 $f5 $3e $15 $c3 $06 $1f
 
-call_00_30b7:
-    jp_to_bank 02, call_02_5b68                        ;; 00:30b7 $f5 $3e $16 $c3 $06 $1f
+windowPrintMenuText_trampoline:
+    jp_to_bank 02, windowPrintMenuText                 ;; 00:30b7 $f5 $3e $16 $c3 $06 $1f
 
 initStartingStatsAndTimers_trampoline:
     jp_to_bank 02, initStartingStatsAndTimers          ;; 00:30bd $f5 $3e $17 $c3 $06 $1f
@@ -7911,8 +7908,8 @@ getEquippedWeaponBonusTypes_trampoline:
     jp_to_bank 02, getEquippedWeaponBonusTypes         ;; 00:30f3 $f5 $3e $20 $c3 $06 $1f
     db   $f5, $3e, $21, $c3, $06, $1f                  ;; 00:30f9 ??????
 
-clearStatusBarTrampoline:
-    jp_to_bank 02, clearStatusBar                      ;; 00:30ff $f5 $3e $22 $c3 $06 $1f
+showFullscreenWindow_trampoline:
+    jp_to_bank 02, showFullscreenWindow                ;; 00:30ff $f5 $3e $22 $c3 $06 $1f
     db   $f5, $3e, $23, $c3, $06, $1f                  ;; 00:3105 ??????
 
 drawHPOnStatuBarTrampoline:
@@ -7949,7 +7946,7 @@ drawWillBarCharge_trampoline:
 drawEmptyWillBar_trampoline:
     jp_to_bank 02, drawEmptyWillBar                    ;; 00:314d $f5 $3e $2f $c3 $06 $1f
 
-InitPostIntEnable_trampoline:
+titleScreenInit_trampoline:
     jp_to_bank 02, titleScreenInit                     ;; 00:3153 $f5 $3e $30 $c3 $06 $1f
 
 gameStateTitleScreen_trampoline:
@@ -8481,14 +8478,14 @@ scriptOpCodeMsg_HandleSimpleCharacters:
     call textDelay                                     ;; 00:3480 $cd $c2 $36
     ret  NZ                                            ;; 00:3483 $c0
     push HL                                            ;; 00:3484 $e5
-    call call_00_3c87                                  ;; 00:3485 $cd $87 $3c
+    call loadRegisterState2_bank0                      ;; 00:3485 $cd $87 $3c
     pop  HL                                            ;; 00:3488 $e1
     call drawText                                      ;; 00:3489 $cd $77 $37
     ld   A, [wWindowTextLength]                        ;; 00:348c $fa $9b $d8
     ld   B, A                                          ;; 00:348f $47
     ld   A, [wWindowTextRows]                          ;; 00:3490 $fa $9a $d8
     ld   C, A                                          ;; 00:3493 $4f
-    call call_00_3c73                                  ;; 00:3494 $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:3494 $cd $73 $3c
     dec  HL                                            ;; 00:3497 $2b
     ld   A, H                                          ;; 00:3498 $7c
     ld   [wScriptPointerHigh], A                       ;; 00:3499 $ea $b7 $d8
@@ -8506,7 +8503,7 @@ scriptOpCodeMsg_HandleDualCharacters:
     ld   A, B                                          ;; 00:34ab $78
     push HL                                            ;; 00:34ac $e5
     push AF                                            ;; 00:34ad $f5
-    call call_00_3c87                                  ;; 00:34ae $cd $87 $3c
+    call loadRegisterState2_bank0                      ;; 00:34ae $cd $87 $3c
     pop  AF                                            ;; 00:34b1 $f1
     ld   HL, dualCharMapping                           ;; 00:34b2 $21 $1d $3f
     sub  A, $20                                        ;; 00:34b5 $d6 $20
@@ -8531,7 +8528,7 @@ scriptOpCodeMsg_HandleDualCharacters:
     inc  A                                             ;; 00:34d1 $3c
     ld   [wDualCharacterPosition], A                   ;; 00:34d2 $ea $83 $d8
     call drawText                                      ;; 00:34d5 $cd $77 $37
-    call call_00_3c73                                  ;; 00:34d8 $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:34d8 $cd $73 $3c
     pop  HL                                            ;; 00:34db $e1
     ld   A, [wDualCharacterPosition]                   ;; 00:34dc $fa $83 $d8
     and  A, A                                          ;; 00:34df $a7
@@ -8622,7 +8619,7 @@ yesNoWindowFinish:
     pop  DE                                            ;; 00:3570 $d1
     pop  BC                                            ;; 00:3571 $c1
     call setDialogTextInsertionPoint                   ;; 00:3572 $cd $36 $37
-    call call_00_3c73                                  ;; 00:3575 $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:3575 $cd $73 $3c
     pop  HL                                            ;; 00:3578 $e1
     call startDialog                                   ;; 00:3579 $cd $d0 $36
     ret                                                ;; 00:357c $c9
@@ -8643,14 +8640,14 @@ printName:
     ld   B, $01                                        ;; 00:358e $06 $01
     call runVirtualScriptOpCodeFF                      ;; 00:3590 $cd $69 $3c
     pop  BC                                            ;; 00:3593 $c1
-    call call_00_3c73                                  ;; 00:3594 $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:3594 $cd $73 $3c
 
 call_00_3597:
     call textDelay                                     ;; 00:3597 $cd $c2 $36
     jr   NZ, .jr_00_35ae                               ;; 00:359a $20 $12
-    call call_00_3c87                                  ;; 00:359c $cd $87 $3c
+    call loadRegisterState2_bank0                      ;; 00:359c $cd $87 $3c
     call drawText                                      ;; 00:359f $cd $77 $37
-    call call_00_3c73                                  ;; 00:35a2 $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:35a2 $cd $73 $3c
     jr   NZ, .jr_00_35ae                               ;; 00:35a5 $20 $07
     ld   A, $01                                        ;; 00:35a7 $3e $01
     ld   [wTextSpeedTimer], A                          ;; 00:35a9 $ea $64 $d8
@@ -8660,9 +8657,9 @@ call_00_3597:
     ret                                                ;; 00:35af $c9
 
 textCtrlCodeNewline:
-    call call_00_3c87                                  ;; 00:35b0 $cd $87 $3c
+    call loadRegisterState2_bank0                      ;; 00:35b0 $cd $87 $3c
     call call_00_380b                                  ;; 00:35b3 $cd $0b $38
-    call call_00_3c73                                  ;; 00:35b6 $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:35b6 $cd $73 $3c
     call setDialogTextInsertionPoint                   ;; 00:35b9 $cd $36 $37
     pop  HL                                            ;; 00:35bc $e1
     call startDialog                                   ;; 00:35bd $cd $d0 $36
@@ -8674,19 +8671,19 @@ textCtrlCodeClearDialog:
     ret                                                ;; 00:35c5 $c9
 
 textCtrlCodeMoveInsertionPointRight:
-    call call_00_3c87                                  ;; 00:35c6 $cd $87 $3c
+    call loadRegisterState2_bank0                      ;; 00:35c6 $cd $87 $3c
     inc  E                                             ;; 00:35c9 $1c
     dec  C                                             ;; 00:35ca $0d
     jr   jr_00_35e4                                    ;; 00:35cb $18 $17
 
 textCtrlCodeMoveInsertionPointLeft:
-    call call_00_3c87                                  ;; 00:35cd $cd $87 $3c
+    call loadRegisterState2_bank0                      ;; 00:35cd $cd $87 $3c
     dec  E                                             ;; 00:35d0 $1d
     inc  C                                             ;; 00:35d1 $0c
     jr   jr_00_35e4                                    ;; 00:35d2 $18 $10
 
 textCtrlCodeMoveInsertionPointUp:
-    call call_00_3c87                                  ;; 00:35d4 $cd $87 $3c
+    call loadRegisterState2_bank0                      ;; 00:35d4 $cd $87 $3c
     dec  D                                             ;; 00:35d7 $15
     dec  D                                             ;; 00:35d8 $15
     inc  B                                             ;; 00:35d9 $04
@@ -8694,7 +8691,7 @@ textCtrlCodeMoveInsertionPointUp:
     jr   jr_00_35e4                                    ;; 00:35db $18 $07
 
 textCtrlCodeMoveInsertionPointDown:
-    call call_00_3c87                                  ;; 00:35dd $cd $87 $3c
+    call loadRegisterState2_bank0                      ;; 00:35dd $cd $87 $3c
     inc  D                                             ;; 00:35e0 $14
     inc  D                                             ;; 00:35e1 $14
     dec  B                                             ;; 00:35e2 $05
@@ -8702,7 +8699,7 @@ textCtrlCodeMoveInsertionPointDown:
 
 jr_00_35e4:
     call setDialogTextInsertionPoint                   ;; 00:35e4 $cd $36 $37
-    call call_00_3c73                                  ;; 00:35e7 $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:35e7 $cd $73 $3c
     pop  HL                                            ;; 00:35ea $e1
     call startDialog                                   ;; 00:35eb $cd $d0 $36
     ret                                                ;; 00:35ee $c9
@@ -8846,7 +8843,7 @@ jr_00_36a8:
     ld   C, A                                          ;; 00:36b7 $4f
     ld   DE, $201                                      ;; 00:36b8 $11 $01 $02
     call setDialogTextInsertionPoint                   ;; 00:36bb $cd $36 $37
-    call call_00_3c73                                  ;; 00:36be $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:36be $cd $73 $3c
     ret                                                ;; 00:36c1 $c9
 
 textDelay:
@@ -9073,7 +9070,7 @@ call_00_380b:
     ld   E, A                                          ;; 00:3826 $5f
 .jr_00_3827:
     inc  E                                             ;; 00:3827 $1c
-    call call_00_3c73                                  ;; 00:3828 $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:3828 $cd $73 $3c
     ret                                                ;; 00:382b $c9
 .jr_00_382c:
     ld   E, $02                                        ;; 00:382c $1e $02
@@ -9089,7 +9086,7 @@ call_00_380b:
     inc  D                                             ;; 00:383c $14
     dec  C                                             ;; 00:383d $0d
     push AF                                            ;; 00:383e $f5
-    call call_00_3c73                                  ;; 00:383f $cd $73 $3c
+    call saveRegisterState2_bank0                      ;; 00:383f $cd $73 $3c
     pop  AF                                            ;; 00:3842 $f1
     ret                                                ;; 00:3843 $c9
 
@@ -9183,7 +9180,7 @@ tilePositionToWindowVRAMaddress:
     add  A, L                                          ;; 00:38d5 $85
     ld   E, A                                          ;; 00:38d6 $5f
     ld   D, H                                          ;; 00:38d7 $54
-    ld   HL, $9c00                                     ;; 00:38d8 $21 $00 $9c
+    ld   HL, _SCRN1 ;@=ptr _SCRN1                      ;; 00:38d8 $21 $00 $9c
     add  HL, DE                                        ;; 00:38db $19
     scf                                                ;; 00:38dc $37
     ret                                                ;; 00:38dd $c9
@@ -9356,7 +9353,7 @@ scriptOpCodeStartNameEntry:
     ld   [wWindowMainGameStateBackup], A               ;; 00:39cf $ea $62 $d8
     ld   A, [HL+]                                      ;; 00:39d2 $2a
     ld   [wScriptSavedNextOpcode], A                   ;; 00:39d3 $ea $6c $d8
-    call clearStatusBarTrampoline                      ;; 00:39d6 $cd $ff $30
+    call showFullscreenWindow_trampoline               ;; 00:39d6 $cd $ff $30
     ld   A, $01                                        ;; 00:39d9 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 00:39db $ea $53 $d8
     ld   A, $1d                                        ;; 00:39de $3e $1d
@@ -9682,7 +9679,7 @@ scriptOpCodeFFJumpTable:
     dw   call_00_3b0d                                  ;; 00:3baf ??
     dw   call_00_3b21                                  ;; 00:3bb1 ??
     dw   copyMainGameStateBackupFromScriptToWindow     ;; 00:3bb3 pP
-    dw   call_00_3bcb                                  ;; 00:3bb5 ??
+    dw   opCodeFFPrintMenuText                         ;; 00:3bb5 ??
 
 ; Clears the boy and girl name, and all the script flags.
 clearNamesAndScriptFlags:
@@ -9701,9 +9698,9 @@ clearNamesAndScriptFlags:
     jr   NZ, clearNamesAndScriptFlags.loop_flags       ;; 00:3bc8 $20 $fc
     ret                                                ;; 00:3bca $c9
 
-call_00_3bcb:
+opCodeFFPrintMenuText:
     pop  HL                                            ;; 00:3bcb $e1
-    call call_00_30b7                                  ;; 00:3bcc $cd $b7 $30
+    call windowPrintMenuText_trampoline                ;; 00:3bcc $cd $b7 $30
     ret                                                ;; 00:3bcf $c9
 
 scriptOpCodeSetFlag:
@@ -9820,7 +9817,8 @@ runVirtualScriptOpCodeFF:
     ld   [wScriptCommand], A                           ;; 00:3c6f $ea $5a $d8
     ret                                                ;; 00:3c72 $c9
 
-call_00_3c73:
+; Trampoline handling does not preserve the value of F, so F is fixed after the call.
+saveRegisterState2_bank0:
     push AF                                            ;; 00:3c73 $f5
     push AF                                            ;; 00:3c74 $f5
     call saveRegisterState2_trampoline                 ;; 00:3c75 $cd $99 $30
@@ -9836,7 +9834,8 @@ call_00_3c73:
     pop  AF                                            ;; 00:3c85 $f1
     ret                                                ;; 00:3c86 $c9
 
-call_00_3c87:
+; Trampoline handling does not preserve the value of F, so F is fixed after the call.
+loadRegisterState2_bank0:
     call loadRegisterState2_trampoline                 ;; 00:3c87 $cd $81 $30
     push BC                                            ;; 00:3c8a $c5
     ld   A, [wRegisterSave2.A]                         ;; 00:3c8b $fa $b1 $d8
@@ -9856,7 +9855,7 @@ scriptOpCodeOpenShop:
     ld   [wVendorNumber], A                            ;; 00:3c9f $ea $6d $d8
     ld   A, [HL+]                                      ;; 00:3ca2 $2a
     ld   [wScriptSavedNextOpcode], A                   ;; 00:3ca3 $ea $6c $d8
-    call clearStatusBarTrampoline                      ;; 00:3ca6 $cd $ff $30
+    call showFullscreenWindow_trampoline               ;; 00:3ca6 $cd $ff $30
     ld   HL, wD8D7                                     ;; 00:3ca9 $21 $d7 $d8
     xor  A, A                                          ;; 00:3cac $af
     ld   B, $04                                        ;; 00:3cad $06 $04

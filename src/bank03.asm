@@ -8,7 +8,7 @@ INCLUDE "include/constants.inc"
 SECTION "bank03", ROMX[$4000], BANK[$03]
 ;@call_to_bank_jumptable
     call_to_bank_target npcRunBehaviorForAll           ;; 03:4000 pP
-    call_to_bank_target call_03_4af5                   ;; 03:4002 pP
+    call_to_bank_target processPhysicsForObject_3      ;; 03:4002 pP
     call_to_bank_target spawnNPC                       ;; 03:4004 pP
     call_to_bank_target destroyNPC                     ;; 03:4006 pP
     call_to_bank_target spawnNpcsFromTable             ;; 03:4008 pP
@@ -20,14 +20,14 @@ SECTION "bank03", ROMX[$4000], BANK[$03]
     call_to_bank_target objectBehaviorMove             ;; 03:4014 pP
     call_to_bank_target call_03_4aed                   ;; 03:4016 pP
     call_to_bank_target updateObjectPosition_3         ;; 03:4018 pP
-    call_to_bank_target call_03_4af9                   ;; 03:401a pP
+    call_to_bank_target updateNpcPosition              ;; 03:401a pP
     call_to_bank_target moveObjectsDuringScript        ;; 03:401c pP
     call_to_bank_target giveFollower                   ;; 03:401e pP
     call_to_bank_target inflictVulnerableNpcsSlep      ;; 03:4020 ??
     call_to_bank_target inflictVulnerableNpcsMute      ;; 03:4022 ??
     call_to_bank_target getEmptyObjectsMovingDuringScriptSlot ;; 03:4024 pP
     call_to_bank_target runRoomScriptIfAllEnemiesDefeated ;; 03:4026 pP
-    call_to_bank_target call_03_4c38                   ;; 03:4028 pP
+    call_to_bank_target initEnemiesCounterAndMoveFolower ;; 03:4028 pP
     call_to_bank_target getNpcScriptIndex              ;; 03:402a pP
 
 npcRunBehaviorForAll:
@@ -90,7 +90,7 @@ npcRunBehavior:
     or   A, D                                          ;; 03:4079 $b2
     jr   Z, jr_03_40fb                                 ;; 03:407a $28 $7f
     push DE                                            ;; 03:407c $d5
-    call getObjectOffset0a                             ;; 03:407d $cd $d3 $0c
+    call getObjectSliding                              ;; 03:407d $cd $d3 $0c
     pop  DE                                            ;; 03:4080 $d1
     cp   A, $00                                        ;; 03:4081 $fe $00
     jp   NZ, jp_03_40ff                                ;; 03:4083 $c2 $ff $40
@@ -1023,7 +1023,7 @@ call_03_4561:
     pop  BC                                            ;; 03:4587 $c1
     push HL                                            ;; 03:4588 $e5
     push BC                                            ;; 03:4589 $c5
-    call call_00_039a                                  ;; 03:458a $cd $9a $03
+    call checkObjectsCollisionDirection                ;; 03:458a $cd $9a $03
     pop  BC                                            ;; 03:458d $c1
     ld   B, A                                          ;; 03:458e $47
     push BC                                            ;; 03:458f $c5
@@ -1161,7 +1161,7 @@ enemyCollisionHandling:
     ld   A, [wMainGameState]                           ;; 03:465a $fa $a0 $c0
     cp   A, $02                                        ;; 03:465d $fe $02
     jr   NC, .jr_03_46d4                               ;; 03:465f $30 $73
-    call call_00_039a                                  ;; 03:4661 $cd $9a $03
+    call checkObjectsCollisionDirection                ;; 03:4661 $cd $9a $03
     call objectReverseDirection                        ;; 03:4664 $cd $e4 $29
     push AF                                            ;; 03:4667 $f5
     call getPlayerDirection                            ;; 03:4668 $cd $ab $02
@@ -1651,7 +1651,7 @@ call_03_4931:
     ret  Z                                             ;; 03:4943 $c8
     push DE                                            ;; 03:4944 $d5
     push BC                                            ;; 03:4945 $c5
-    call call_00_039a                                  ;; 03:4946 $cd $9a $03
+    call checkObjectsCollisionDirection                ;; 03:4946 $cd $9a $03
     pop  BC                                            ;; 03:4949 $c1
     push BC                                            ;; 03:494a $c5
     push AF                                            ;; 03:494b $f5
@@ -1868,7 +1868,7 @@ processHitNpc:
     ld   L, E                                          ;; 03:4a60 $6b
     pop  BC                                            ;; 03:4a61 $c1
     push HL                                            ;; 03:4a62 $e5
-    call call_00_039a                                  ;; 03:4a63 $cd $9a $03
+    call checkObjectsCollisionDirection                ;; 03:4a63 $cd $9a $03
     pop  HL                                            ;; 03:4a66 $e1
     ld   C, [HL]                                       ;; 03:4a67 $4e
     call setObjectDirection                            ;; 03:4a68 $cd $a6 $0c
@@ -1977,11 +1977,15 @@ updateObjectPosition_3:
     call updateObjectPosition                          ;; 03:4af1 $cd $11 $06
     ret                                                ;; 03:4af4 $c9
 
-call_03_4af5:
-    call call_00_0695                                  ;; 03:4af5 $cd $95 $06
+processPhysicsForObject_3:
+    call processPhysicsForObject                       ;; 03:4af5 $cd $95 $06
     ret                                                ;; 03:4af8 $c9
 
-call_03_4af9:
+; C = npc number
+; DE = YX coordinates
+; This seems to be a wrapper for updateObjectPosition that takes a npc number instead of an object number.
+; As far as I can tell, it's only used for companion npcs, which always have the same object number anyway.
+updateNpcPosition:
     push DE                                            ;; 03:4af9 $d5
     ld   A, C                                          ;; 03:4afa $79
     ld   L, A                                          ;; 03:4afb $6f
@@ -2213,7 +2217,10 @@ runRoomScriptIfAllEnemiesDefeated:
     call runRoomScriptOnAllEnemiesDefeated             ;; 03:4c34 $cd $a7 $24
     ret                                                ;; 03:4c37 $c9
 
-call_03_4c38:
+; Called when entering any new room.
+; The call to checkAllEnemiesDefeated is probably necessary so the script does not fire in an empty room.
+; If you have a follower it also teleports them to your location.
+initEnemiesCounterAndMoveFolower:
     call checkAllEnemiesDefeated                       ;; 03:4c38 $cd $e0 $4b
     ld   C, $07                                        ;; 03:4c3b $0e $07
     call getObjectCollisionFlags                       ;; 03:4c3d $cd $6d $0c
@@ -2227,7 +2234,7 @@ call_03_4c38:
     pop  DE                                            ;; 03:4c4d $d1
     ld   E, A                                          ;; 03:4c4e $5f
     ld   C, $00                                        ;; 03:4c4f $0e $00
-    call call_03_4af9                                  ;; 03:4c51 $cd $f9 $4a
+    call updateNpcPosition                             ;; 03:4c51 $cd $f9 $4a
     ret                                                ;; 03:4c54 $c9
 
 ;@jumptable amount=224
@@ -2507,7 +2514,7 @@ npcKilledExplosion:
     ld   A, $02                                        ;; 03:4e6c $3e $02
 .jr_03_4e6e:
     ld   B, $00                                        ;; 03:4e6e $06 $00
-    call call_00_0695                                  ;; 03:4e70 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4e70 $cd $95 $06
     pop  AF                                            ;; 03:4e73 $f1
     inc  A                                             ;; 03:4e74 $3c
     ret                                                ;; 03:4e75 $c9
@@ -2563,7 +2570,7 @@ call_03_4eb5:
     ld   C, A                                          ;; 03:4ebc $4f
     ld   B, $00                                        ;; 03:4ebd $06 $00
     ld   A, $00                                        ;; 03:4ebf $3e $00
-    call call_00_0695                                  ;; 03:4ec1 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4ec1 $cd $95 $06
     ld   A, $00                                        ;; 03:4ec4 $3e $00
     ret  Z                                             ;; 03:4ec6 $c8
     inc  A                                             ;; 03:4ec7 $3c
@@ -2606,7 +2613,7 @@ call_03_4ef0:
     call getObjectDirection                            ;; 03:4efc $cd $99 $0c
     and  A, $0f                                        ;; 03:4eff $e6 $0f
     pop  BC                                            ;; 03:4f01 $c1
-    call call_00_0695                                  ;; 03:4f02 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4f02 $cd $95 $06
     pop  AF                                            ;; 03:4f05 $f1
     ret                                                ;; 03:4f06 $c9
 
@@ -2643,7 +2650,7 @@ npcStepBackward:
     ld   A, [DE]                                       ;; 03:4f2f $1a
     ld   C, A                                          ;; 03:4f30 $4f
     push BC                                            ;; 03:4f31 $c5
-    call call_03_55ae                                  ;; 03:4f32 $cd $ae $55
+    call getObjectDirectionReversed                    ;; 03:4f32 $cd $ae $55
     pop  BC                                            ;; 03:4f35 $c1
 .jr_03_4f36:
     and  A, $0f                                        ;; 03:4f36 $e6 $0f
@@ -2654,7 +2661,7 @@ npcStepBackward:
     ld   A, $01                                        ;; 03:4f3f $3e $01
     ret  NZ                                            ;; 03:4f41 $c0
     push BC                                            ;; 03:4f42 $c5
-    call call_03_55ae                                  ;; 03:4f43 $cd $ae $55
+    call getObjectDirectionReversed                    ;; 03:4f43 $cd $ae $55
     pop  BC                                            ;; 03:4f46 $c1
     call setObjectDirection                            ;; 03:4f47 $cd $a6 $0c
     ld   A, $02                                        ;; 03:4f4a $3e $02
@@ -2664,9 +2671,9 @@ call_03_4f4d:
     ld   A, [DE]                                       ;; 03:4f4d $1a
     ld   C, A                                          ;; 03:4f4e $4f
     push BC                                            ;; 03:4f4f $c5
-    call call_03_5574                                  ;; 03:4f50 $cd $74 $55
+    call getObjectDirectionRotatedClockwise            ;; 03:4f50 $cd $74 $55
     pop  BC                                            ;; 03:4f53 $c1
-    call call_00_0695                                  ;; 03:4f54 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4f54 $cd $95 $06
     ld   A, $00                                        ;; 03:4f57 $3e $00
     ret                                                ;; 03:4f59 $c9
 
@@ -2674,9 +2681,9 @@ call_03_4f5a:
     ld   A, [DE]                                       ;; 03:4f5a $1a
     ld   C, A                                          ;; 03:4f5b $4f
     push BC                                            ;; 03:4f5c $c5
-    call call_03_5591                                  ;; 03:4f5d $cd $91 $55
+    call getObjectDirectionRotatedCounterclockwise     ;; 03:4f5d $cd $91 $55
     pop  BC                                            ;; 03:4f60 $c1
-    call call_00_0695                                  ;; 03:4f61 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4f61 $cd $95 $06
     ld   A, $00                                        ;; 03:4f64 $3e $00
     ret                                                ;; 03:4f66 $c9
 
@@ -2684,9 +2691,9 @@ call_03_4f67:
     ld   A, [DE]                                       ;; 03:4f67 $1a
     ld   C, A                                          ;; 03:4f68 $4f
     push BC                                            ;; 03:4f69 $c5
-    call call_03_55ae                                  ;; 03:4f6a $cd $ae $55
+    call getObjectDirectionReversed                    ;; 03:4f6a $cd $ae $55
     pop  BC                                            ;; 03:4f6d $c1
-    call call_00_0695                                  ;; 03:4f6e $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4f6e $cd $95 $06
     ld   A, $00                                        ;; 03:4f71 $3e $00
     ret                                                ;; 03:4f73 $c9
 
@@ -2700,9 +2707,9 @@ call_03_4f74:
     ld   A, [DE]                                       ;; 03:4f7b $1a
     ld   C, A                                          ;; 03:4f7c $4f
     push BC                                            ;; 03:4f7d $c5
-    call call_03_5574                                  ;; 03:4f7e $cd $74 $55
+    call getObjectDirectionRotatedClockwise            ;; 03:4f7e $cd $74 $55
     pop  BC                                            ;; 03:4f81 $c1
-    call call_00_0695                                  ;; 03:4f82 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4f82 $cd $95 $06
     pop  AF                                            ;; 03:4f85 $f1
     dec  A                                             ;; 03:4f86 $3d
     ret                                                ;; 03:4f87 $c9
@@ -2723,7 +2730,7 @@ call_03_4f88:
 .jr_03_4f9b:
     ld   A, B                                          ;; 03:4f9b $78
     pop  BC                                            ;; 03:4f9c $c1
-    call call_00_0695                                  ;; 03:4f9d $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4f9d $cd $95 $06
     ld   A, $00                                        ;; 03:4fa0 $3e $00
     ret                                                ;; 03:4fa2 $c9
 
@@ -2743,7 +2750,7 @@ call_03_4fa3:
 .jr_03_4fb6:
     ld   A, B                                          ;; 03:4fb6 $78
     pop  BC                                            ;; 03:4fb7 $c1
-    call call_00_0695                                  ;; 03:4fb8 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4fb8 $cd $95 $06
     ld   A, $00                                        ;; 03:4fbb $3e $00
     ret                                                ;; 03:4fbd $c9
 
@@ -2763,7 +2770,7 @@ call_03_4fbe:
 .jr_03_4fd1:
     ld   A, B                                          ;; 03:4fd1 $78
     pop  BC                                            ;; 03:4fd2 $c1
-    call call_00_0695                                  ;; 03:4fd3 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4fd3 $cd $95 $06
     ld   A, $00                                        ;; 03:4fd6 $3e $00
     ret                                                ;; 03:4fd8 $c9
 
@@ -2783,7 +2790,7 @@ call_03_4fd9:
 .jr_03_4fec:
     ld   A, B                                          ;; 03:4fec $78
     pop  BC                                            ;; 03:4fed $c1
-    call call_00_0695                                  ;; 03:4fee $cd $95 $06
+    call processPhysicsForObject                       ;; 03:4fee $cd $95 $06
     ld   A, $00                                        ;; 03:4ff1 $3e $00
     ret                                                ;; 03:4ff3 $c9
 
@@ -2859,7 +2866,7 @@ npcFaceEast:
     ld   A, [DE]                                       ;; 03:5055 $1a
     ld   C, A                                          ;; 03:5056 $4f
     ld   A, $01                                        ;; 03:5057 $3e $01
-    call call_00_0695                                  ;; 03:5059 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:5059 $cd $95 $06
     ld   A, $00                                        ;; 03:505c $3e $00
     ret                                                ;; 03:505e $c9
 
@@ -2867,7 +2874,7 @@ npcFaceWest:
     ld   A, [DE]                                       ;; 03:505f $1a
     ld   C, A                                          ;; 03:5060 $4f
     ld   A, $02                                        ;; 03:5061 $3e $02
-    call call_00_0695                                  ;; 03:5063 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:5063 $cd $95 $06
     ld   A, $00                                        ;; 03:5066 $3e $00
     ret                                                ;; 03:5068 $c9
 
@@ -2875,7 +2882,7 @@ npcFaceNorth:
     ld   A, [DE]                                       ;; 03:5069 $1a
     ld   C, A                                          ;; 03:506a $4f
     ld   A, $04                                        ;; 03:506b $3e $04
-    call call_00_0695                                  ;; 03:506d $cd $95 $06
+    call processPhysicsForObject                       ;; 03:506d $cd $95 $06
     ld   A, $00                                        ;; 03:5070 $3e $00
     ret                                                ;; 03:5072 $c9
 
@@ -2883,7 +2890,7 @@ npcFaceSouth:
     ld   A, [DE]                                       ;; 03:5073 $1a
     ld   C, A                                          ;; 03:5074 $4f
     ld   A, $08                                        ;; 03:5075 $3e $08
-    call call_00_0695                                  ;; 03:5077 $cd $95 $06
+    call processPhysicsForObject                       ;; 03:5077 $cd $95 $06
     ld   A, $00                                        ;; 03:507a $3e $00
     ret                                                ;; 03:507c $c9
 
@@ -3778,11 +3785,12 @@ call_03_5499:
     pop  BC                                            ;; 03:54b0 $c1
     pop  HL                                            ;; 03:54b1 $e1
     bit  0, A                                          ;; 03:54b2 $cb $47
-    jr   NZ, .jr_03_54ce                               ;; 03:54b4 $20 $18
+    jr   NZ, .east                                     ;; 03:54b4 $20 $18
     bit  1, A                                          ;; 03:54b6 $cb $4f
-    jr   NZ, .jr_03_54de                               ;; 03:54b8 $20 $24
+    jr   NZ, .west                                     ;; 03:54b8 $20 $24
     bit  2, A                                          ;; 03:54ba $cb $57
-    jr   NZ, .jr_03_54ee                               ;; 03:54bc $20 $30
+    jr   NZ, .north                                    ;; 03:54bc $20 $30
+; .south:
     ld   A, D                                          ;; 03:54be $7a
     add  A, H                                          ;; 03:54bf $84
     ld   D, A                                          ;; 03:54c0 $57
@@ -3794,7 +3802,7 @@ call_03_5499:
     jr   Z, .jr_03_54fc                                ;; 03:54c8 $28 $32
     ld   A, $18                                        ;; 03:54ca $3e $18
     jr   .jr_03_54fc                                   ;; 03:54cc $18 $2e
-.jr_03_54ce:
+.east:
     ld   A, D                                          ;; 03:54ce $7a
     add  A, L                                          ;; 03:54cf $85
     ld   D, A                                          ;; 03:54d0 $57
@@ -3806,7 +3814,7 @@ call_03_5499:
     jr   Z, .jr_03_54fc                                ;; 03:54d8 $28 $22
     ld   A, $41                                        ;; 03:54da $3e $41
     jr   .jr_03_54fc                                   ;; 03:54dc $18 $1e
-.jr_03_54de:
+.west:
     ld   A, D                                          ;; 03:54de $7a
     sub  A, L                                          ;; 03:54df $95
     ld   D, A                                          ;; 03:54e0 $57
@@ -3818,7 +3826,7 @@ call_03_5499:
     jr   Z, .jr_03_54fc                                ;; 03:54e8 $28 $12
     ld   A, $82                                        ;; 03:54ea $3e $82
     jr   .jr_03_54fc                                   ;; 03:54ec $18 $0e
-.jr_03_54ee:
+.north:
     ld   A, D                                          ;; 03:54ee $7a
     sub  A, H                                          ;; 03:54ef $94
     ld   D, A                                          ;; 03:54f0 $57
@@ -3915,70 +3923,79 @@ call_03_555e:
     swap A                                             ;; 03:5568 $cb $37
     and  A, $0f                                        ;; 03:556a $e6 $0f
     ld   B, $00                                        ;; 03:556c $06 $00
-    call call_00_0695                                  ;; 03:556e $cd $95 $06
+    call processPhysicsForObject                       ;; 03:556e $cd $95 $06
     ld   A, $00                                        ;; 03:5571 $3e $00
     ret                                                ;; 03:5573 $c9
 
-call_03_5574:
+; C = object number
+; Return: A = object direction rotated 90 degrees clockwise
+getObjectDirectionRotatedClockwise:
     call getObjectDirection                            ;; 03:5574 $cd $99 $0c
     and  A, $0f                                        ;; 03:5577 $e6 $0f
     bit  0, A                                          ;; 03:5579 $cb $47
-    jr   NZ, .jr_03_5588                               ;; 03:557b $20 $0b
+    jr   NZ, .east                                     ;; 03:557b $20 $0b
     bit  1, A                                          ;; 03:557d $cb $4f
-    jr   NZ, .jr_03_558b                               ;; 03:557f $20 $0a
+    jr   NZ, .west                                     ;; 03:557f $20 $0a
     bit  2, A                                          ;; 03:5581 $cb $57
-    jr   NZ, .jr_03_558e                               ;; 03:5583 $20 $09
+    jr   NZ, .north                                    ;; 03:5583 $20 $09
+; .south:
     ld   A, $02                                        ;; 03:5585 $3e $02
     ret                                                ;; 03:5587 $c9
-.jr_03_5588:
+.east:
     ld   A, $08                                        ;; 03:5588 $3e $08
     ret                                                ;; 03:558a $c9
-.jr_03_558b:
+.west:
     ld   A, $04                                        ;; 03:558b $3e $04
     ret                                                ;; 03:558d $c9
-.jr_03_558e:
+.north:
     ld   A, $01                                        ;; 03:558e $3e $01
     ret                                                ;; 03:5590 $c9
 
-call_03_5591:
+; C = object number
+; Return: A = object direction rotated 90 degrees counterclockwise
+getObjectDirectionRotatedCounterclockwise:
     call getObjectDirection                            ;; 03:5591 $cd $99 $0c
     and  A, $0f                                        ;; 03:5594 $e6 $0f
     bit  0, A                                          ;; 03:5596 $cb $47
-    jr   NZ, .jr_03_55a5                               ;; 03:5598 $20 $0b
+    jr   NZ, .east                                     ;; 03:5598 $20 $0b
     bit  1, A                                          ;; 03:559a $cb $4f
-    jr   NZ, .jr_03_55a8                               ;; 03:559c $20 $0a
+    jr   NZ, .west                                     ;; 03:559c $20 $0a
     bit  2, A                                          ;; 03:559e $cb $57
-    jr   NZ, .jr_03_55ab                               ;; 03:55a0 $20 $09
+    jr   NZ, .north                                    ;; 03:55a0 $20 $09
+; .south:
     ld   A, $01                                        ;; 03:55a2 $3e $01
     ret                                                ;; 03:55a4 $c9
-.jr_03_55a5:
+.east:
     ld   A, $04                                        ;; 03:55a5 $3e $04
     ret                                                ;; 03:55a7 $c9
-.jr_03_55a8:
+.west:
     ld   A, $08                                        ;; 03:55a8 $3e $08
     ret                                                ;; 03:55aa $c9
-.jr_03_55ab:
+.north:
     ld   A, $02                                        ;; 03:55ab $3e $02
     ret                                                ;; 03:55ad $c9
 
-call_03_55ae:
+; C = object number
+; Return: A = object direction rotated 180 degrees
+getObjectDirectionReversed:
     call getObjectDirection                            ;; 03:55ae $cd $99 $0c
     and  A, $0f                                        ;; 03:55b1 $e6 $0f
     bit  0, A                                          ;; 03:55b3 $cb $47
-    jr   NZ, .jr_03_55c2                               ;; 03:55b5 $20 $0b
+    jr   NZ, .east                                     ;; 03:55b5 $20 $0b
     bit  1, A                                          ;; 03:55b7 $cb $4f
-    jr   NZ, .jr_03_55c5                               ;; 03:55b9 $20 $0a
+    jr   NZ, .west                                     ;; 03:55b9 $20 $0a
     bit  2, A                                          ;; 03:55bb $cb $57
-    jr   NZ, .jr_03_55c8                               ;; 03:55bd $20 $09
+    jr   NZ, .north                                    ;; 03:55bd $20 $09
+; .south:
     ld   A, $04                                        ;; 03:55bf $3e $04
     ret                                                ;; 03:55c1 $c9
-.jr_03_55c2:
+.east:
     ld   A, $02                                        ;; 03:55c2 $3e $02
     ret                                                ;; 03:55c4 $c9
-.jr_03_55c5:
+.west:
     ld   A, $01                                        ;; 03:55c5 $3e $01
     ret                                                ;; 03:55c7 $c9
-.jr_03_55c8:
+.north:
     ld   A, $08                                        ;; 03:55c8 $3e $08
     ret                                                ;; 03:55ca $c9
 
@@ -4010,7 +4027,7 @@ call_03_55df:
     call getObjectDirection                            ;; 03:55e5 $cd $99 $0c
     and  A, $0f                                        ;; 03:55e8 $e6 $0f
     pop  BC                                            ;; 03:55ea $c1
-    call call_00_0695                                  ;; 03:55eb $cd $95 $06
+    call processPhysicsForObject                       ;; 03:55eb $cd $95 $06
     pop  DE                                            ;; 03:55ee $d1
     pop  AF                                            ;; 03:55ef $f1
     bit  0, A                                          ;; 03:55f0 $cb $47
@@ -4064,7 +4081,7 @@ call_03_55fb:
 .jr_03_5639:
     pop  AF                                            ;; 03:5639 $f1
 .jr_03_563a:
-    call call_00_0695                                  ;; 03:563a $cd $95 $06
+    call processPhysicsForObject                       ;; 03:563a $cd $95 $06
     ret                                                ;; 03:563d $c9
 
 ;@data format=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb amount=30
