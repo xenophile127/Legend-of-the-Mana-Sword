@@ -8950,9 +8950,22 @@ getDialogTextInsertionPoint:
     ld   A, [wWindowTextSpaceLeftOnLine]               ;; 00:375f $fa $ba $d8
     ld   C, A                                          ;; 00:3762 $4f
     ret                                                ;; 00:3763 $c9
-    db   $d5, $3e, $7f, $15, $cd, $44, $38, $14        ;; 00:3764 ????????
-    db   $3e, $7f, $cd, $44, $38, $1c, $05, $20        ;; 00:376c ????????
+    ;db   $d5, $3e, $7f, $15, $cd, $44, $38, $14        ;; 00:3764 ????????
+    db   $3e, ;$7f, $cd, $44, $38, $1c, $05, $20        ;; 00:376c ????????
     db   $f0, $d1, $c9                                 ;; 00:3774 ???
+
+copyBBytesFromHLInBankAToDE:
+    push HL ; 1
+    call pushBankNrAndSwitch ; 3
+    pop  HL ; 1
+.copyBBytes_loop:
+    ld   A,[HL+] ; 1
+    ld   [DE], A ; 1
+    inc  DE ; 1
+    dec  B ; 1
+    jr   NZ, .copyBBytes_loop ; 2
+    call popBankNrAndSwitch ; 3
+    ret ; 1
 
 ; Draw text
 ; HL = pointer to text

@@ -277,9 +277,15 @@ wSoundEffectDurationChannel4:
 wMusicEndedOnChannel4:
     ds 7                                               ;; c15b
 
+UNION
 ; Used to back up everything from c100 to c161, or it would if the functions were ever called
 wMusicDataBackup:
     ds 98                                              ;; c162
+NEXTU
+; Since that's not being used, we're stealing them (for now) to be a buffer for VRAM transfer
+wHPMPTileBuffer: 
+    ds 96
+ENDU
 
 wSoundEffectInstructionPointerChannel1:
     ds 1                                               ;; c1c4

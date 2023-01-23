@@ -5772,30 +5772,28 @@ drawDefaultStatusBar:
     ret                                                ;; 02:6f28 $c9
 
 drawHPOnStatuBar:
-    ld   DE, $05                                       ;; 02:6f29 $11 $05 $00
-    push DE                                            ;; 02:6f2c $d5
-    ld   B, $03                                        ;; 02:6f2d $06 $03
-    call clearStatusBarSection                         ;; 02:6f2f $cd $6b $6f
-    pop  DE                                            ;; 02:6f32 $d1
+    ld   D, $0b
+    ld   E, $0d
     ld   A, [wHPLow]                                   ;; 02:6f33 $fa $b2 $d7
     ld   L, A                                          ;; 02:6f36 $6f
     ld   A, [wHPHigh]                                  ;; 02:6f37 $fa $b3 $d7
     ld   H, A                                          ;; 02:6f3a $67
-    call drawLeftNumberOnStatusBar                     ;; 02:6f3b $cd $da $7f
-    ret                                                ;; 02:6f3e $c9
+    call drawLeftNumberOnStatusBar                     ;; 02:6f51 $cd $da $7f
+    ld   C, $00 ; intentional for 2 bytes
+    ld   B, $40
+    jp   wrapStatusBarRequest                                    ;; 02:6f3e $c9
 
 drawManaOnStatusBar:
-    ld   DE, $0b                                       ;; 02:6f3f $11 $0a $00
-    push DE                                            ;; 02:6f42 $d5
-    ld   B, $02                                        ;; 02:6f43 $06 $02
-    call clearStatusBarSection                         ;; 02:6f45 $cd $6b $6f
-    pop  DE                                            ;; 02:6f48 $d1
+    ld   D, $0e
+    ld   E, $0f
     ld   A, [wManaLow]                                 ;; 02:6f49 $fa $b6 $d7
     ld   L, A                                          ;; 02:6f4c $6f
     ld   A, [wManaHigh]                                ;; 02:6f4d $fa $b7 $d7
     ld   H, A                                          ;; 02:6f50 $67
     call drawLeftNumberOnStatusBar                     ;; 02:6f51 $cd $da $7f
-    ret                                                ;; 02:6f54 $c9
+    ld   C, $40
+    ld   B, $20
+    jp   wrapStatusBarRequest                                    ;; 02:6f3e $c9
 
 drawMoneyOnStatusBar:
     ld   DE, $11                                       ;; 02:6f55 $11 $11 $00
@@ -5807,7 +5805,7 @@ drawMoneyOnStatusBar:
     ld   H, A                                          ;; 02:6f62 $67
     ld   A, [wMoneyLow]                                ;; 02:6f63 $fa $be $d7
     ld   L, A                                          ;; 02:6f66 $6f
-    call drawMoneyNumberOnStatusBar                    ;; 02:6f67 $cd $ec $7f
+    call drawNumberOnStatusBar                    ;; 02:6f67 $cd $ec $7f
     ret                                                ;; 02:6f6a $c9
 
 clearStatusBarSection:
@@ -5840,16 +5838,15 @@ drawNumberOnStatusBar:
     ld   A, H                                          ;; 02:6f8c $7c
     or   A, L                                          ;; 02:6f8d $b5
     jr   NZ, .jr_02_6f7b                               ;; 02:6f8e $20 $eb
-    ret                                                ;; 02:6f90 $c9
-; FREE BYTES UP FOR GRABS
-    ld   A, $30                                        ;; 02:6f91 $3e $30
+    nop                                                ;; 02:6f90 $c9
+    ld   A, $f4                                        ;; 02:6f91 $3e $f4
     call storeTileAatWindowPositionDE                  ;; 02:6f93 $cd $66 $38
     ret                                                ;; 02:6f96 $c9
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
-    db   $7f, $f0, $f1, $7f, $7f, $7f, $7f, $f2        ;; 02:6f97 ........
-    db   $f3, $7f, $7f, $7f, $7f, $7f, $7f, $7f        ;; 02:6f9f ........
+    db   $7f, $f0, $f1, $0a, $0b, $0c, $0d, $f2        ;; 02:6f97 ........
+    db   $f3, $f4, $0e, $0f, $7f, $7f, $7f, $7f        ;; 02:6f9f ........
     db   $7f, $7f, $7f, $7f                            ;; 02:6fa7 ....
 
 attackWithWeaponUseWill:
@@ -8070,46 +8067,186 @@ titleScreenLicenseText:
 ;@ffa_text amount=24
 intoScrollText:
     TXT  "Tree of Mana grows<00>"                      ;; 02:7e8a ...................
-    TXT  "with the energy of<00>"                      ;; 02:7e9d ...................
-    TXT  "will from each and<00>"                      ;; 02:7eb0 ...................
-    TXT  "  every thing of<00>"                        ;; 02:7ec3 .................
-    TXT  "    this world.<00>"                         ;; 02:7ed4 ................
-    TXT  "<00>"                                        ;; 02:7ee4 ?
-    TXT  "  It grows high<00>"                         ;; 02:7ee5 ????????????????
-    TXT  " above the clouds<00>"                       ;; 02:7ef5 ??????????????????
-    TXT  "in the air on top<00>"                       ;; 02:7f07 ??????????????????
-    TXT  "of Mount Illusia.<00>"                       ;; 02:7f19 ??????????????????
-    TXT  "<00>"                                        ;; 02:7f2b ?
-    TXT  "Legend tells that<00>"                       ;; 02:7f2c ??????????????????
-    TXT  "it gives eternal<00>"                        ;; 02:7f3e ?????????????????
-    TXT  "power to the one<00>"                        ;; 02:7f4f ?????????????????
-    TXT  " who touched it.<00>"                        ;; 02:7f60 ?????????????????
-    TXT  "<00>"                                        ;; 02:7f71 ?
-    TXT  "  Dark Lord was<00>"                         ;; 02:7f72 ????????????????
-    TXT  "  trying to find<00>"                        ;; 02:7f82 ????????????????.
-    TXT  "  the way to the<00>"                        ;; 02:7f93 ...........??????
-    TXT  " Tree of Mana to<00>"                        ;; 02:7fa4 ?????????????????
-    TXT  "  get the mighty<00>"                        ;; 02:7fb5 ?????????????????
-    TXT  " power to conquer<00>"                       ;; 02:7fc6 ??????????????????
     TXT  "<00>"                                        ;; 02:7fd8 ?
     db   $01                                           ;; 02:7fd9 ?
 
-; Assumes HL holds number, H in A, draws the number from the left
+; Writes left-justified number HL at starting position 
+; D through end position E
+; 
+; Assumes A==H
+; All registers modified
 drawLeftNumberOnStatusBar:
+    ld   C, $02
     and  A, A                                          ;; 02:7fda $a7
     jr   NZ, .jr_02_7fe8                               ;; 02:7fdb $20 $0b
     ld   A, L                                          ;; 02:7fdd $7d
     cp   A, $64                                        ;; 02:7fde $fe $64
     jr   NC, .jr_02_7fe8                               ;; 02:7fe0 $30 $06
-    dec  DE                                            ;; 02:7fe2 $1b
+    dec  C                                            ;; 02:7fe2 $1b
     cp   A, $0a                                        ;; 02:7fe3 $fe $0a
     jr   NC, .jr_02_7fe8                               ;; 02:7fe5 $30 $01
-    dec  DE                                            ;; 02:7fe7 $1b
+    dec  C                                            ;; 02:7fe7 $1b
 .jr_02_7fe8:
-    jp   drawNumberOnStatusBar                         ;; 02:7fe8 $c3 $77 $6f
+    ; Clear unused tiles
+    ld   A, D
+    add  A, C
+    ld   D, A
+    push HL
+    call clearTilesFromEtoD
+    pop  HL
+    jp   drawDynamicNumberOnStatusBar                         ;; 02:7fe8 $c3 $77 $6f
 
-; Simply draws a money label tile at the leftover DE position
-drawMoneyNumberOnStatusBar:
-    call drawNumberOnStatusBar                         ;; 02:7feb $cd $77 $6f
-    ld   A, $f4                                        ;; 02:7fee $fe $f4
-    jp   storeTileAatWindowPositionDE                  ;; 02:7ff0 $c3 $66 $38
+; clear VRAM tiles at address E down to D (exclusive)
+; E is modified
+; B, C, HL might be modified
+; D is unmodified
+clearTilesFromEtoD:
+    ld   A, E
+    cp   A, D
+    jr   Z, .clear_tiles_done
+.clear_tiles_loop:
+    push DE
+    call writeEmptyTileAtE
+    pop  DE
+    dec  E
+    ld   A, E
+    cp   A, D
+    jr   NZ, .clear_tiles_loop
+.clear_tiles_done:
+    ret
+
+; Fill out the buffer with zeros 
+; For now this writes to our temp storage space
+; All registers may be modified
+writeEmptyTileAtE:
+    ld   HL, wHPMPTileBuffer
+    ld   A, E
+    sub  A, $0a
+    swap A
+    ld   D, $00
+    ld   E, A
+    add  HL, DE
+    ld   E, $10
+    xor  A, A
+.clear_the_bytes:
+    ld   [HL+], A
+    dec  E
+    jr   NZ, .clear_the_bytes
+    ret
+    
+; draws number HL at D
+; A, B, D, HL are modified
+; C might be modified
+; E is unmodified
+drawDynamicNumberOnStatusBar:
+    ld   A, H                                          ;; 02:6f77 $7c
+    or   A, L                                          ;; 02:6f78 $b5
+    jr   Z, .write_number                                ;; 02:6f79 $28 $07
+.divmod_and_write_number:
+    ld   A, $0a                                        ;; 02:6f7b $3e $0a
+    push DE                                            ;; 02:6f7d $d5
+    call divMod                                        ;; 02:6f7e $cd $8b $2b
+    pop  DE                                            ;; 02:6f81 $d1
+.write_number:
+    add  A, $30                                        ;; 02:6f84 $c6 $30
+    ld   B, A
+    push HL                                            ;; 02:6f82 $e5
+    push DE                                            ;; 02:6f83 $d5
+    call writeShiftedTile
+    pop  DE                                            ;; 02:6f89 $d1
+    pop  HL                                            ;; 02:6f8b $e1
+    dec  D                                            ;; 02:6f8a $1b
+    ld   A, H                                          ;; 02:6f8c $7c
+    or   A, L                                          ;; 02:6f8d $b5
+    jr   NZ, .divmod_and_write_number                               ;; 02:6f8e $20 $eb
+    ret                                              ;; 02:6f90 $c9
+
+; Writes a shifted tile from B into tile D
+; For now this writes to our temp storage space
+; All registers may be modified
+writeShiftedTile:
+    ld   A, D
+    sub  A, $0a
+    swap A
+    ld   HL, wHPMPTileBuffer
+    ld   D, $00
+    ld   E, A
+    add  HL, DE
+    ld   D, H
+    ld   E, L
+    ld   HL, $6b00
+    ld   A, B
+    sub  A, $30
+    swap A
+    ld   B, $00
+    ld   C, A
+    add  HL, BC
+    ld   A, $08
+    ld   B, $10
+    push BC
+    push DE
+    call copyBBytesFromHLInBankAToDE
+    pop  HL
+    pop  BC
+.shift_the_bytes:
+    sla  [HL]
+    inc  HL
+    dec  B
+    jr   NZ, .shift_the_bytes
+    ret
+
+wrapStatusBarRequest:
+    ld  HL, wHPMPTileBuffer
+    ld  D, $00
+    ld  E, C
+    add HL, DE
+    ld  A, C
+    and A, A ; Hacky way to know this is HP
+    jp  NZ, .wrap_go_to_request
+    push HL
+    push BC
+    call swapBackHalfTiles
+    pop  BC
+    pop  HL
+.wrap_go_to_request:
+    ld  D, $90
+    ld  A, $a0
+    add A, C
+    ld  E, A
+    ld  A, $02
+    jp requestCopyToVRAM
+
+swapBackHalfTiles:
+    ld   A, B
+    sub  A, $10
+    ld   B, A
+    ld   C, $10
+    ld   D, H
+    ld   E, L
+    xor  A, A
+.clear_the_bytes:
+    ld   [HL+], A
+    dec  C
+    jr   NZ, .clear_the_bytes
+    ; now HL points to one tile ahead
+    ; DE points to current tile
+    ; B holds number of bytes to shift
+.shift_4px:
+    ld   A, [HL]
+    swap A
+    and  A, $0f
+    ld   C, A
+    ld   A, [DE]
+    or   A, C
+    ld   [DE], A
+    ld   A, [HL]
+    swap A
+    and  A, $f0
+    ld   [HL+], A
+    inc  DE
+    dec  B
+    jr   NZ, .shift_4px
+    ret
+
+
+
