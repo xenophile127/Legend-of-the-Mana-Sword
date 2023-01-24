@@ -8209,12 +8209,35 @@ wrapStatusBarRequest:
     pop  BC
     pop  HL
 .wrap_go_to_request:
-    ld  D, $90
-    ld  A, $a0
-    add A, C
-    ld  E, A
-    ld  A, $02
-    jp requestCopyToVRAM
+    ld   D, $90
+    ld   A, $a0
+    add  A, C
+    ld   E, A
+    ld   C, B
+    ld   B, $08
+.request_loop:
+    ld   A, $02
+    push BC
+    push HL
+    call requestCopyToVRAM
+    pop  HL
+    pop  BC
+    ld   A, E
+    add  A, B
+    ld   E, A
+    ld   A, L
+    add  A, B
+    ld   L, A
+    ld   A, H
+    adc  A, $00
+    ld   H, A
+    ld   A, C
+    sub  A, B
+    ld   C, A
+    jr   NZ, .request_loop
+    ret
+
+    
 
 swapBackHalfTiles:
     ld   A, B

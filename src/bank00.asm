@@ -4811,12 +4811,12 @@ loadRoomTile:
     db   $1c, $d1, $e1, $28, $0b, $13, $13, $13        ;; 00:1cd4 ????????
     db   $13, $0d, $20, $ee, $cd, $4e, $1c, $c9        ;; 00:1cdc ????????
     db   $1a, $c6, $10, $12, $3e, $40, $91, $87        ;; 00:1ce4 ????????
-    db   $c9, $43, $11, $70, $cf, $18, $db, $87        ;; 00:1cec ????????
-    db   $6f, $26, $00, $11, $70, $cf, $19, $86        ;; 00:1cf4 ????????
-    db   $d6, $10, $30, $02, $e6, $0f, $77, $c9        ;; 00:1cfc ????????
-    db   $6f, $26, $00, $29, $29, $29, $48, $06        ;; 00:1d04 ????????
-    db   $00, $09, $29, $01, $00, $80, $09, $c9        ;; 00:1d0c ????????
-    db   $cd, $04, $1d, $cd, $b4, $1d, $c9             ;; 00:1d14 ???????
+    ;db   $c9, $43, $11, $70, $cf, $18, $db, $87        ;; 00:1cec ????????
+    ;db   $6f, $26, $00, $11, $70, $cf, $19, $86        ;; 00:1cf4 ????????
+    ;db   $d6, $10, $30, $02, $e6, $0f, $77, $c9        ;; 00:1cfc ????????
+    ;db   $6f, $26, $00, $29, $29, $29, $48, $06        ;; 00:1d04 ????????
+    ;db   $00, $09, $29, $01, $00, $80, $09, $c9        ;; 00:1d0c ????????
+    ;db   $cd, $04, $1d, $cd, $b4, $1d, $c9             ;; 00:1d14 ???????
 
 ; checks for death, increases charge bar, and handles expiring Nectar/Stamina buffs
 playerHousekeeping:
@@ -4900,14 +4900,52 @@ storeDEinVRAM:
     ld   [HL+], A                                      ;; 00:1d87 $22
     ld   [HL], E                                       ;; 00:1d88 $73
     ret                                                ;; 00:1d89 $c9
-    db   $f0, $40, $cb, $7f, $28, $0c, $0e, $41        ;; 00:1d8a ????????
-    db   $f2, $e6, $03, $28, $fb, $f2, $e6, $03        ;; 00:1d92 ????????
-    db   $20, $fb, $7e, $c9, $f0, $40, $cb, $7f        ;; 00:1d9a ????????
-    db   $28, $0c, $0e, $41, $f2, $e6, $03, $28        ;; 00:1da2 ????????
-    db   $fb, $f2, $e6, $03, $20, $fb, $2a, $5e        ;; 00:1daa ????????
-    db   $57, $c9, $7b, $cd, $5e, $1d, $5f, $23        ;; 00:1db2 ????????
-    db   $7a, $cd, $5e, $1d, $57, $c9, $cd, $8a        ;; 00:1dba ????????
-    db   $1d, $5f, $23, $cd, $8a, $1d, $57, $c9        ;; 00:1dc2 ????????
+
+; Write 8 bytes from DE to HL
+storeMono8inVRAM:
+    ldh  A, [rLCDC]                                    ;; 00:1d74 $f0 $40
+    bit  7, A                                          ;; 00:1d76 $cb $7f
+    jr   Z, .jr_00_1d86                                ;; 00:1d78 $28 $0c
+    ld   C, $41                                        ;; 00:1d7a $0e $41
+.jr_00_1d7c:
+    ldh  A, [C]                                        ;; 00:1d7c $f2
+    and  A, $03                                        ;; 00:1d7d $e6 $03
+    jr   Z, .jr_00_1d7c                                ;; 00:1d7f $28 $fb
+.jr_00_1d81:
+    ldh  A, [C]                                        ;; 00:1d81 $f2
+    and  A, $03                                        ;; 00:1d82 $e6 $03
+    jr   NZ, .jr_00_1d81                               ;; 00:1d84 $20 $fb
+.jr_00_1d86:
+    ld   A, [DE]
+    ld   [HL+], A
+    ld   [HL+], A
+    inc  DE
+    inc  DE
+    ld   A, [DE]
+    ld   [HL+], A
+    ld   [HL+], A
+    inc  DE
+    inc  DE
+    ld   A, [DE]
+    ld   [HL+], A
+    ld   [HL+], A
+    inc  DE
+    inc  DE
+    ld   A, [DE]
+    ld   [HL+], A
+    ld   [HL+], A
+    inc  DE
+    inc  DE
+    ret                                                ;; 00:1d89 $c9
+    
+    ;db   $f0, $40, $cb, $7f, $28, $0c, $0e, $41        ;; 00:1d8a ????????
+    ;db   $f2, $e6, $03, $28, $fb, $f2, $e6, $03        ;; 00:1d92 ????????
+    ;db   $20, $fb, $7e, $c9, $f0, $40, $cb, $7f        ;; 00:1d9a ????????
+    ;db   $28, $0c, $0e, $41, $f2, $e6, $03, $28        ;; 00:1da2 ????????
+    ;db   $fb, $f2, $e6, $03, $20, $fb, $2a, $5e        ;; 00:1daa ????????
+    ;db   $57, $c9, $7b, $cd, $5e, $1d, $5f, $23        ;; 00:1db2 ????????
+    ;db   $7a, $cd, $5e, $1d, $57, $c9, $cd, $8a        ;; 00:1dba ????????
+    ;db   $1d, $5f, $23, $cd, $8a, $1d, $57, $c9        ;; 00:1dc2 ????????
 
 getNextBackgroundRequestSlot:
     ld   A, [wBackgroundRenderRequestCount]            ;; 00:1dca $fa $e8 $ce
@@ -4961,6 +4999,21 @@ processBackgroundRenderRequests:
     ldh  A, [C]                                        ;; 00:1e0e $f2
     cp   A, $8c                                        ;; 00:1e0f $fe $8c
     jr   NC, .jr_00_1e49                               ;; 00:1e11 $30 $36
+    ; split
+    ld   A, B
+    cp   A, $08
+    jr   C, .on_my_merry_way
+    ; do a 16 byte transfer
+    push BC
+    call storeMono8inVRAM
+    pop  BC
+    ld   A, B
+    sub  A, $08
+    ld   B, A
+    jr   NZ, processBackgroundRenderRequests.loop_inner ;; 00:1e26 $20 $e6
+    jr   .jr_00_1e28
+.on_my_merry_way:
+    ; split
     ld   A, [DE]                                       ;; 00:1e13 $1a
     dec  B                                             ;; 00:1e14 $05
     jr   Z, .jr_00_1e44                                ;; 00:1e15 $28 $2d
