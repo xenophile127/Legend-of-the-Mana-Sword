@@ -5830,7 +5830,7 @@ drawNumberOnStatusBar:
 .jr_02_6f82:
     push HL                                            ;; 02:6f82 $e5
     push DE                                            ;; 02:6f83 $d5
-    add  A, $00                                        ;; 02:6f84 $c6 $30
+    add  A, $00                                        ;; 02:6f84 $c6 $00
     call storeTileAatWindowPositionDE                  ;; 02:6f86 $cd $66 $38
     pop  DE                                            ;; 02:6f89 $d1
     dec  DE                                            ;; 02:6f8a $1b
