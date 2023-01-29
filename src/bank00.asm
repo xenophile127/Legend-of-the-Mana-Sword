@@ -8954,13 +8954,21 @@ getDialogTextInsertionPoint:
     ;db   $3e, $7f, $cd, $44, $38, $1c, $05, $20        ;; 00:376c ????????
     ;db   $f0, $d1, $c9                                 ;; 00:3774 ???
 
-    ds   8 ; prevent shifting                          ;; 00:3764
-;copy B bytes from HL in bank A to DE
-copyBankAfromHLtoDE:
-    push HL                                            ;; 00:376c $e5
-    call pushBankNrAndSwitch                           ;; 00:376d $cd $fb $29
-    pop  HL                                            ;; 00:3770 $e1
-    call copyHLtoDE                                    ;; 00:3771 $cd $49 $2b
+;copy and left shifts B bytes from HL in bank A to DE
+copyShiftBankAfromHLtoDE:
+    push HL                                            ;; 00:3764 $e5
+    call pushBankNrAndSwitch                           ;; 00:3765 $cd $fb $29
+    pop  HL                                            ;; 00:3768 $e1
+    ld   A, B                                          ;; 00:3769 $78
+    cp   A, $00 ; 2-bytes for alignment                ;; 00:376a $fe $00
+    ret  Z                                             ;; 00:376c $c8
+.loop:
+    ld   A, [HL+]                                      ;; 00:376d $2a
+    add  A, A                                          ;; 00:376e $87
+    ld   [DE], A                                       ;; 00:376f $12
+    inc  DE                                            ;; 00:3770 $13
+    dec  B                                             ;; 00:3771 $05
+    jr   NZ, .loop                                     ;; 00:3772 $20 $fa
     jp   popBankNrAndSwitch                            ;; 00:3774 $c3 $0a $2a
 
 ; Draw text

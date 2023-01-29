@@ -5772,28 +5772,28 @@ drawDefaultStatusBar:
     ret                                                ;; 02:6f28 $c9
 
 drawHPOnStatuBar:
-    ld   D, $0b ; Starting tile position               ;; 02:6f29 $16 $0b
-    ld   E, $0d ; Ending tile position                 ;; 02:6f2b $1e $0d
+    ld   D, $13 ; Mode/Max-digits to write             ;; 02:6f29 $06 $40
+    ld   E, $00 ; WRAM Offset, 2-bytes for alignment   ;; 02:6f2b $0e $00
     ld   A, [wHPLow]                                   ;; 02:6f2d $fa $b2 $d7
     ld   L, A                                          ;; 02:6f30 $6f
     ld   A, [wHPHigh]                                  ;; 02:6f31 $fa $b3 $d7
     ld   H, A                                          ;; 02:6f34 $67
-    call drawLeftAlignedNumberOnStatusBar              ;; 02:6f35 $cd $?? $??
-    ld   C, $00 ; WRAM Offset, 2-bytes for alignment   ;; 02:6f38 $0e $00
-    ld   B, $40 ; Number of bytes to copy              ;; 02:6f3a $06 $40
-    jp   wrapStatusBarRequest                          ;; 02:6f3c $c3 $?? $??
+    call drawLeftAlignedNumberInWRAM                   ;; 02:6f35 $cd $?? $??
+    ld   D, $a0 ; Starting tile position               ;; 02:6f38 $16 $0b
+    ld   E, $04 ; WRAM offset/Tiles to transfer        ;; 02:6f3a $1e $0d
+    jp   requestVRAMStatusBarTransfer                  ;; 02:6f3c $c3 $?? $??
 
 drawManaOnStatusBar:
-    ld   D, $0e ; Starting tile position               ;; 02:6f3f $16 $0e
-    ld   E, $0f ; Ending tile position                 ;; 02:6f41 $1e $0f
+    ld   D, $02 ; Mode/Max-digits to write             ;; 02:6f3f $06 $20
+    ld   E, $40 ; WRAM offset                          ;; 02:6f41 $0e $40
     ld   A, [wManaLow]                                 ;; 02:6f43 $fa $b6 $d7
     ld   L, A                                          ;; 02:6f46 $6f
     ld   A, [wManaHigh]                                ;; 02:6f47 $fa $b7 $d7
     ld   H, A                                          ;; 02:6f4a $67
-    call drawLeftAlignedNumberOnStatusBar              ;; 02:6f4b $cd $?? $??
-    ld   C, $40 ; WRAM offset                          ;; 02:6f4e $0e $40
-    ld   B, $20 ; Number of bytes to copy              ;; 02:6f50 $06 $20
-    jp   wrapStatusBarRequest                          ;; 02:6f52 $c3 $?? $??
+    call drawLeftAlignedNumberInWRAM                   ;; 02:6f4b $cd $?? $??
+    ld   D, $e0 ; Starting tile position               ;; 02:6f4e $16 $0e
+    ld   E, $42 ; WRAM offset/Tiles to transfer        ;; 02:6f50 $1e $0f
+    jp   requestVRAMStatusBarTransfer                  ;; 02:6f52 $c3 $?? $??
 
 drawMoneyOnStatusBar:
     ld   DE, $12 ; Tile position of last number        ;; 02:6f55 $11 $12 $00
@@ -8070,190 +8070,114 @@ intoScrollText:
     TXT  "<00>"                                        ;; 02:7fd8 ?
     db   $01                                           ;; 02:7fd9 ?
 
-; Writes left-justified number HL at starting position 
-; D through end position E
-; 
-; Assumes A==H
-; All registers modified
-drawLeftAlignedNumberOnStatusBar:
-    ; Compute C as number of tiles needed-1
-    ld   C, $02
-    and  A, A                                          ;; 02:7fda $a7
-    jr   NZ, .jr_02_7fe8                               ;; 02:7fdb $20 $0b
-    ld   A, L                                          ;; 02:7fdd $7d
-    cp   A, $64                                        ;; 02:7fde $fe $64
-    jr   NC, .jr_02_7fe8                               ;; 02:7fe0 $30 $06
-    dec  C                                            ;; 02:7fe2 $1b
-    cp   A, $0a                                        ;; 02:7fe3 $fe $0a
-    jr   NC, .jr_02_7fe8                               ;; 02:7fe5 $30 $01
-    dec  C                                            ;; 02:7fe7 $1b
-.jr_02_7fe8:
-    ; Clear unused tiles
-    ld   A, D
-    add  A, C
-    ld   D, A
+; Draws left aligned number HL as modified tiles at WRAM offset E
+; D holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
+; D holds number of max digits in the second nibble
+drawLeftAlignedNumberInWRAM:
+    ld   B, $00 ; digit counter
+    ld   C, D ; use C to hold mode/max-digit-count
+
+    ; Housekeeping, get a copy of proper WRAM starting
+    ;  location on the stack for later use
     push HL
-    call clearTilesFromEtoD
-    pop  HL
-    jp   drawDynamicNumberOnStatusBar                         ;; 02:7fe8 $c3 $77 $6f
-
-; clear VRAM tiles at address E down to D (exclusive)
-; E is modified
-; B, C, HL might be modified
-; D is unmodified
-clearTilesFromEtoD:
-    ld   A, E
-    cp   A, D
-    jr   Z, .clear_tiles_done
-.clear_tiles_loop:
-    push DE
-    call writeEmptyTileAtE
-    pop  DE
-    dec  E
-    ld   A, E
-    cp   A, D
-    jr   NZ, .clear_tiles_loop
-.clear_tiles_done:
-    ret
-
-; Fill out the buffer with zeros 
-; For now this writes to our temp storage space
-; All registers may be modified
-writeEmptyTileAtE:
     ld   HL, wHPMPTileBuffer
-    ld   A, E
-    sub  A, $0a
-    swap A
-    ld   D, $00
-    ld   E, A
-    add  HL, DE
-    ld   E, $10
-    xor  A, A
-.clear_the_bytes:
-    ld   [HL+], A
-    dec  E
-    jr   NZ, .clear_the_bytes
-    ret
-    
-; draws number HL at D
-; A, B, D, HL are modified
-; C might be modified
-; E is unmodified
-drawDynamicNumberOnStatusBar:
-    ld   A, H                                          ;; 02:6f77 $7c
-    or   A, L                                          ;; 02:6f78 $b5
-    jr   Z, .write_number                                ;; 02:6f79 $28 $07
-.divmod_and_write_number:
-    ld   A, $0a                                        ;; 02:6f7b $3e $0a
-    push DE                                            ;; 02:6f7d $d5
-    call divMod                                        ;; 02:6f7e $cd $8b $2b
-    pop  DE                                            ;; 02:6f81 $d1
-.write_number:
-    ld   B, A
-    push HL                                            ;; 02:6f82 $e5
-    push DE                                            ;; 02:6f83 $d5
-    call writeShiftedTile
-    pop  DE                                            ;; 02:6f89 $d1
-    pop  HL                                            ;; 02:6f8b $e1
-    dec  D                                            ;; 02:6f8a $1b
-    ld   A, H                                          ;; 02:6f8c $7c
-    or   A, L                                          ;; 02:6f8d $b5
-    jr   NZ, .divmod_and_write_number                               ;; 02:6f8e $20 $eb
-    ret                                              ;; 02:6f90 $c9
-
-; Writes a shifted tile from B into tile D
-; For now this writes to our temp storage space
-; All registers may be modified
-writeShiftedTile:
-    ld   A, D
-    sub  A, $0a
-    swap A
-    ld   HL, wHPMPTileBuffer
-    ld   D, $00
-    ld   E, A
+    ld   D, B
     add  HL, DE
     ld   D, H
     ld   E, L
-    ld   HL, $6800
-    ld   A, B
-    sub  A, $00 ; note 00 is the starting tile for 0
-    swap A
-    ld   B, $00
-    ld   C, A
-    add  HL, BC
-    ld   A, $08
-    ld   B, $10
+    pop  HL
     push BC
     push DE
-    call copyBankAfromHLtoDE
-    pop  HL
-    pop  BC
-.shift_the_bytes:
-    sla  [HL]
-    inc  HL
-    dec  B
-    jr   NZ, .shift_the_bytes
-    ret
 
-wrapStatusBarRequest:
-    ld  HL, wHPMPTileBuffer
-    ld  D, $00
-    ld  E, C
-    add HL, DE
-    ld  A, C
-    and A, A ; Hacky way to know this is HP
-    jp  NZ, .wrap_go_to_request
-    push HL
-    push BC
-    call swapBackHalfTiles
-    pop  BC
-    pop  HL
-.wrap_go_to_request:
-    ld   D, $90
-    ld   A, $a0
-    add  A, C
-    ld   E, A
-    ld   C, B
-    ld   B, $10
-.request_loop:
-    ld   A, $02
+    ; Load up the digits on the stack
+.divmod_and_store_number:
+    ld   A, $0a
     push BC
     push DE
-    push HL
-    call addTileGraphicCopyRequest
-    pop  HL
+    call divMod
     pop  DE
     pop  BC
-    ld   A, E
-    add  A, B
-    ld   E, A
-    ld   A, L
-    add  A, B
-    ld   L, A
+    push AF
+    inc  B
     ld   A, H
-    adc  A, $00
-    ld   H, A
+    or   A, L
+    jr   NZ, .divmod_and_store_number
+
+    ; Reduce second nibble of C by num digits found
     ld   A, C
     sub  A, B
     ld   C, A
-    jr   NZ, .request_loop
-    ret
 
-swapBackHalfTiles:
-    ld   A, B
-    sub  A, $10
-    ld   B, A
-    ld   C, $10
+    ; Increment DE if in swap mode
+    ld   H, D
+    ld   L, E
+    ld   D, $00
+    and  A, $f0
+    ld   E, A
+    add  HL, DE
     ld   D, H
     ld   E, L
+
+    ; Stack holds B digits to pop, transfer them
+ .grab_digit_and_transfer:
+    ld   HL, $6800
+    pop  AF ; grab digit
+    swap A
+    push DE
+    ld   D, $00
+    ld   E, A
+    add  HL, DE
+    pop  DE
+    ld   A, $08
+    push BC
+    ld   B, $10
+    call copyShiftBankAfromHLtoDE
+    pop  BC
+    dec  B
+    jr   NZ, .grab_digit_and_transfer
+
+    ; Clear remaining tiles
+    ld   A, C
+    and  A, $0f
+    jr   Z, .check_swap
+
+    ld   H, D
+    ld   L, E
+    ld   B, A
     xor  A, A
-.clear_the_bytes:
-    ld   [HL+], A
-    dec  C
-    jr   NZ, .clear_the_bytes
-    ; now HL points to one tile ahead
-    ; DE points to current tile
-    ; B holds number of bytes to shift
+ .clear_remaining_tiles:
+    call memsetTileWithA
+    dec  B
+    jr   NZ, .clear_remaining_tiles
+
+    ; Shifted tiles are in WRAM, check if swap needed
+ .check_swap:
+    pop  DE
+    ld   A, C
+    ld   L, C
+    pop  BC
+    and  A, $f0
+    ret  Z
+
+    ; We need to swap back tiles, prepare...
+    ld   A, C
+    sub  A, L
+    ld   B, A ; B holds tiles to swap
+
+    jp   swapBackHalfTiles
+
+; Swaps tiles back across half tile boundaries
+; B holds number of tiles to shift
+; DE holds address of first tile
+swapBackHalfTiles:
+    swap B ; now B holds bytes to swap
+
+    ; Clear the first tile (it was left untouched so far)
+    ld   H, D
+    ld   L, E
+    xor  A, A
+    call memsetTileWithA
+
 .shift_4px:
     ld   A, [HL]
     swap A
@@ -8271,35 +8195,66 @@ swapBackHalfTiles:
     jr   NZ, .shift_4px
     ret
 
-; Draws left aligned number HL at D through E using WRAM offset C
-; Note, a WRAM offset of 0 also signifies use of shift-swap technique
-drawDynamicNumberOnStatusBar2:
-    ; First load up the digits on the stack
-    ld   B, $00
-    ld   A, H                                          ;; 02:6f77 $7c
-    or   A, L                                          ;; 02:6f78 $b5
-.divmod_and_store_number:
-    ld   A, $0a                                        ;; 02:6f7b $3e $0a
-    push BC
-    push DE                                            ;; 02:6f7d $d5
-    call divMod                                        ;; 02:6f7e $cd $8b $2b
-    pop  DE                                            ;; 02:6f81 $d1
-    pop  BC
-    push AF
-    inc  B
-    ld   A, H                                          ;; 02:6f8c $7c
-    or   A, L                                          ;; 02:6f8d $b5
-    jr   NZ, .divmod_and_store_number
-
-    ; Stack holds B digits to pop, draw them
-
+; Requests transfer of status bar WRAM tiles to VRAM
+; D holds VRAM tile position
+; E holds the WRAM offset in the first nibble (16-byte aligned)
+; E holds the number of tiles to transfer in the second nibble
+requestVRAMStatusBarTransfer:
+    ; Short circuit if nothing to do, else load number of tiles in B
+    ld   A, E
+    and  A, $0f
+    ret  Z
     ld   B, A
-    push HL                                            ;; 02:6f82 $e5
-    push DE                                            ;; 02:6f83 $d5
-    call writeShiftedTile
-    pop  DE                                            ;; 02:6f89 $d1
-    pop  HL                                            ;; 02:6f8b $e1
-    dec  D                                            ;; 02:6f8a $1b
-    ret                                              ;; 02:6f90 $c9
 
+    ; Prep source and destination addresses
+    ld   HL, wHPMPTileBuffer
+    ld   C, D
+    ld   D, $00
+    ld   A, E
+    and  A, $f0
+    ld   E, A
+    add  HL, DE
+    ld   D, $90
+    ld   E, C
+    xor  A, A
+.request_loop:
+    push BC
+    push DE
+    push HL
+    call addTileGraphicCopyRequest
+    pop  HL
+    ld   DE, $0010
+    add  HL, DE
+    ld   B, H
+    ld   C, L
+    pop  HL
+    add  HL, DE
+    ld   D, H
+    ld   E, L
+    ld   H, B
+    ld   L, C
+    pop  BC
+    dec  B
+    jr   NZ, .request_loop
+    ret
+
+; Unrolled 16 byte memset of A onto the address in HL
+memsetTileWithA:
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ret
 
