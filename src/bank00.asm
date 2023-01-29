@@ -8957,16 +8957,17 @@ copyShiftBankAfromHLtoDE:
     call pushBankNrAndSwitch                           ;; 00:3765 $cd $fb $29
     pop  HL                                            ;; 00:3768 $e1
     ld   A, B                                          ;; 00:3769 $78
-    cp   A, $00 ; 2-bytes for alignment                ;; 00:376a $fe $00
-    ret  Z                                             ;; 00:376c $c8
+    and  A, A                                          ;; 00:376a $a7
+    ret  Z                                             ;; 00:376b $c8
 .loop:
-    ld   A, [HL+]                                      ;; 00:376d $2a
-    add  A, A                                          ;; 00:376e $87
-    ld   [DE], A                                       ;; 00:376f $12
-    inc  DE                                            ;; 00:3770 $13
-    dec  B                                             ;; 00:3771 $05
-    jr   NZ, .loop                                     ;; 00:3772 $20 $fa
-    jp   popBankNrAndSwitch                            ;; 00:3774 $c3 $0a $2a
+    ld   A, [HL+]                                      ;; 00:376c $2a
+    add  A, A                                          ;; 00:376d $87
+    ld   [DE], A                                       ;; 00:376e $12
+    inc  DE                                            ;; 00:376f $13
+    dec  B                                             ;; 00:3770 $05
+    jr   NZ, .loop                                     ;; 00:3771 $20 $fa
+    jp   popBankNrAndSwitch                            ;; 00:3773 $c3 $0a $2a
+    nop ; for alignment                                ;; 00:3776 $00
 
 ; Draw text
 ; HL = pointer to text

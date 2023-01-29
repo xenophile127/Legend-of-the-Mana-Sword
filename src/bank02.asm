@@ -5830,18 +5830,16 @@ drawNumberAndSymbolOnStatusBar:
 .jr_02_6f82:
     push HL                                            ;; 02:6f82 $e5
     push DE                                            ;; 02:6f83 $d5
-    add  A, $00 ; Kept to preserve alignment           ;; 02:6f84 $c6 $00
-    call storeTileAatWindowPositionDE                  ;; 02:6f86 $cd $66 $38
-    pop  DE                                            ;; 02:6f89 $d1
-    dec  DE                                            ;; 02:6f8a $1b
-    pop  HL                                            ;; 02:6f8b $e1
-    ld   A, H                                          ;; 02:6f8c $7c
-    or   A, L                                          ;; 02:6f8d $b5
-    jr   NZ, .jr_02_6f7b                               ;; 02:6f8e $20 $eb
-    nop ; For alignment                                ;; 02:6f90 $00
-    ld   A, $f5 ; Lucre symbol tile                    ;; 02:6f91 $3e $f4
-    call storeTileAatWindowPositionDE                  ;; 02:6f93 $cd $66 $38
-    ret                                                ;; 02:6f96 $c9
+    call storeTileAatWindowPositionDE                  ;; 02:6f84 $cd $66 $38
+    pop  DE                                            ;; 02:6f87 $d1
+    dec  DE                                            ;; 02:6f88 $1b
+    pop  HL                                            ;; 02:6f89 $e1
+    ld   A, H                                          ;; 02:6f8a $7c
+    or   A, L                                          ;; 02:6f8b $b5
+    jr   NZ, .jr_02_6f7b                               ;; 02:6f8c $20 $eb
+    ld   A, $f5 ; Lucre symbol tile                    ;; 02:6f8e $3e $f4
+    jp   storeTileAatWindowPositionDE                  ;; 02:6f90 $c3 $66 $38
+    db   $00, $00, $00, $00 ; For alignment            ;; 02:6f93 ....
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
