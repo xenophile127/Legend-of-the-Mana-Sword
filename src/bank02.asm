@@ -5772,40 +5772,40 @@ drawDefaultStatusBar:
     ret                                                ;; 02:6f28 $c9
 
 drawHPOnStatuBar:
-    ld   D, $0b                                        ;; 02:6f29 $16 $0b
-    ld   E, $0d                                        ;; 02:6f2b $1e $0d
+    ld   D, $0b ; Starting tile position               ;; 02:6f29 $16 $0b
+    ld   E, $0d ; Ending tile position                 ;; 02:6f2b $1e $0d
     ld   A, [wHPLow]                                   ;; 02:6f2d $fa $b2 $d7
     ld   L, A                                          ;; 02:6f30 $6f
     ld   A, [wHPHigh]                                  ;; 02:6f31 $fa $b3 $d7
     ld   H, A                                          ;; 02:6f34 $67
-    call drawLeftNumberOnStatusBar                     ;; 02:6f35 $cd $?? $??
-    ld   C, $00 ; intentional 2-bytes to prevent shift ;; 02:6f38 $0e $00
-    ld   B, $40                                        ;; 02:6f3a $06 $40
+    call drawLeftAlignedNumberOnStatusBar              ;; 02:6f35 $cd $?? $??
+    ld   C, $00 ; WRAM Offset, 2-bytes for alignment   ;; 02:6f38 $0e $00
+    ld   B, $40 ; Number of bytes to copy              ;; 02:6f3a $06 $40
     jp   wrapStatusBarRequest                          ;; 02:6f3c $c3 $?? $??
 
 drawManaOnStatusBar:
-    ld   D, $0e                                        ;; 02:6f3f $16 $0e
-    ld   E, $0f                                        ;; 02:6f41 $1e $0f
+    ld   D, $0e ; Starting tile position               ;; 02:6f3f $16 $0e
+    ld   E, $0f ; Ending tile position                 ;; 02:6f41 $1e $0f
     ld   A, [wManaLow]                                 ;; 02:6f43 $fa $b6 $d7
     ld   L, A                                          ;; 02:6f46 $6f
     ld   A, [wManaHigh]                                ;; 02:6f47 $fa $b7 $d7
     ld   H, A                                          ;; 02:6f4a $67
-    call drawLeftNumberOnStatusBar                     ;; 02:6f4b $cd $?? $??
-    ld   C, $40                                        ;; 02:6f4e $0e $40
-    ld   B, $20                                        ;; 02:6f50 $06 $20
+    call drawLeftAlignedNumberOnStatusBar              ;; 02:6f4b $cd $?? $??
+    ld   C, $40 ; WRAM offset                          ;; 02:6f4e $0e $40
+    ld   B, $20 ; Number of bytes to copy              ;; 02:6f50 $06 $20
     jp   wrapStatusBarRequest                          ;; 02:6f52 $c3 $?? $??
 
 drawMoneyOnStatusBar:
-    ld   DE, $12                                       ;; 02:6f55 $11 $12 $00
+    ld   DE, $12 ; Tile position of last number        ;; 02:6f55 $11 $12 $00
     push DE                                            ;; 02:6f58 $d5
-    ld   B, $06                                        ;; 02:6f59 $06 $06
+    ld   B, $06 ; Tiles back to clear                  ;; 02:6f59 $06 $06
     call clearStatusBarSection                         ;; 02:6f5b $cd $6b $6f
     pop  DE                                            ;; 02:6f5e $d1
     ld   A, [wMoneyHigh]                               ;; 02:6f5f $fa $bf $d7
     ld   H, A                                          ;; 02:6f62 $67
     ld   A, [wMoneyLow]                                ;; 02:6f63 $fa $be $d7
     ld   L, A                                          ;; 02:6f66 $6f
-    call drawNumberOnStatusBar                         ;; 02:6f67 $cd $77 $6f
+    call drawNumberAndSymbolOnStatusBar                ;; 02:6f67 $cd $77 $6f
     ret                                                ;; 02:6f6a $c9
 
 clearStatusBarSection:
@@ -5818,7 +5818,7 @@ clearStatusBarSection:
     jr   NZ, clearStatusBarSection                     ;; 02:6f74 $20 $f5
     ret                                                ;; 02:6f76 $c9
 
-drawNumberOnStatusBar:
+drawNumberAndSymbolOnStatusBar:
     ld   A, H                                          ;; 02:6f77 $7c
     or   A, L                                          ;; 02:6f78 $b5
     jr   Z, .jr_02_6f82                                ;; 02:6f79 $28 $07
@@ -5830,7 +5830,7 @@ drawNumberOnStatusBar:
 .jr_02_6f82:
     push HL                                            ;; 02:6f82 $e5
     push DE                                            ;; 02:6f83 $d5
-    add  A, $00                                        ;; 02:6f84 $c6 $00
+    add  A, $00 ; Kept to preserve alignment           ;; 02:6f84 $c6 $00
     call storeTileAatWindowPositionDE                  ;; 02:6f86 $cd $66 $38
     pop  DE                                            ;; 02:6f89 $d1
     dec  DE                                            ;; 02:6f8a $1b
@@ -5838,15 +5838,15 @@ drawNumberOnStatusBar:
     ld   A, H                                          ;; 02:6f8c $7c
     or   A, L                                          ;; 02:6f8d $b5
     jr   NZ, .jr_02_6f7b                               ;; 02:6f8e $20 $eb
-    nop                                                ;; 02:6f90 $00
-    ld   A, $f4                                        ;; 02:6f91 $3e $f4
+    nop ; For alignment                                ;; 02:6f90 $00
+    ld   A, $f5 ; Lucre symbol tile                    ;; 02:6f91 $3e $f4
     call storeTileAatWindowPositionDE                  ;; 02:6f93 $cd $66 $38
     ret                                                ;; 02:6f96 $c9
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
     db   $7f, $f0, $f1, $0a, $0b, $0c, $0d, $f2        ;; 02:6f97 ........
-    db   $f3, $f5, $0e, $0f, $7f, $7f, $7f, $7f        ;; 02:6f9f ........
+    db   $f3, $f4, $0e, $0f, $7f, $7f, $7f, $7f        ;; 02:6f9f ........
     db   $7f, $7f, $7f, $7f                            ;; 02:6fa7 ....
 
 attackWithWeaponUseWill:
@@ -8075,7 +8075,8 @@ intoScrollText:
 ; 
 ; Assumes A==H
 ; All registers modified
-drawLeftNumberOnStatusBar:
+drawLeftAlignedNumberOnStatusBar:
+    ; Compute C as number of tiles needed-1
     ld   C, $02
     and  A, A                                          ;; 02:7fda $a7
     jr   NZ, .jr_02_7fe8                               ;; 02:7fdb $20 $0b
@@ -8148,7 +8149,6 @@ drawDynamicNumberOnStatusBar:
     call divMod                                        ;; 02:6f7e $cd $8b $2b
     pop  DE                                            ;; 02:6f81 $d1
 .write_number:
-    add  A, $00 ; note 00 is the starting tile for 0   ;; 02:6f84 $c6 $30
     ld   B, A
     push HL                                            ;; 02:6f82 $e5
     push DE                                            ;; 02:6f83 $d5
@@ -8271,5 +8271,35 @@ swapBackHalfTiles:
     jr   NZ, .shift_4px
     ret
 
+; Draws left aligned number HL at D through E using WRAM offset C
+; Note, a WRAM offset of 0 also signifies use of shift-swap technique
+drawDynamicNumberOnStatusBar2:
+    ; First load up the digits on the stack
+    ld   B, $00
+    ld   A, H                                          ;; 02:6f77 $7c
+    or   A, L                                          ;; 02:6f78 $b5
+.divmod_and_store_number:
+    ld   A, $0a                                        ;; 02:6f7b $3e $0a
+    push BC
+    push DE                                            ;; 02:6f7d $d5
+    call divMod                                        ;; 02:6f7e $cd $8b $2b
+    pop  DE                                            ;; 02:6f81 $d1
+    pop  BC
+    push AF
+    inc  B
+    ld   A, H                                          ;; 02:6f8c $7c
+    or   A, L                                          ;; 02:6f8d $b5
+    jr   NZ, .divmod_and_store_number
+
+    ; Stack holds B digits to pop, draw them
+
+    ld   B, A
+    push HL                                            ;; 02:6f82 $e5
+    push DE                                            ;; 02:6f83 $d5
+    call writeShiftedTile
+    pop  DE                                            ;; 02:6f89 $d1
+    pop  HL                                            ;; 02:6f8b $e1
+    dec  D                                            ;; 02:6f8a $1b
+    ret                                              ;; 02:6f90 $c9
 
 
