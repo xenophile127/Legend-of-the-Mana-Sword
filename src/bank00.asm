@@ -8950,9 +8950,6 @@ getDialogTextInsertionPoint:
     ld   A, [wWindowTextSpaceLeftOnLine]               ;; 00:375f $fa $ba $d8
     ld   C, A                                          ;; 00:3762 $4f
     ret                                                ;; 00:3763 $c9
-    ;db   $d5, $3e, $7f, $15, $cd, $44, $38, $14        ;; 00:3764 ????????
-    ;db   $3e, $7f, $cd, $44, $38, $1c, $05, $20        ;; 00:376c ????????
-    ;db   $f0, $d1, $c9                                 ;; 00:3774 ???
 
 ;copy and left shifts B bytes from HL in bank A to DE
 copyShiftBankAfromHLtoDE:
