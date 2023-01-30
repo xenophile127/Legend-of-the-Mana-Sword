@@ -8214,10 +8214,9 @@ drawLeftAlignedNumberInWRAM:
     ; Shifted tiles are in WRAM, check if swap needed
  .check_swap:
     pop  DE
-    ld   A, C
     ld   L, C
     pop  BC
-    and  A, $10
+    bit  4, C
     ret  Z
 
     ; We need to swap back tiles, prepare...
@@ -8239,6 +8238,8 @@ swapBackHalfTiles:
     call memsetTileWithA
 
 .shift_4px:
+    ; First "or" in the first 4 bits of the next tile byte
+    ; into the current tile byte
     ld   A, [HL]
     swap A
     and  A, $0f
@@ -8246,6 +8247,7 @@ swapBackHalfTiles:
     ld   A, [DE]
     or   A, C
     ld   [DE], A
+    ; Now shift up the last 4 bits of the next tile byte
     ld   A, [HL]
     swap A
     and  A, $f0
