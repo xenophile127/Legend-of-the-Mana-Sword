@@ -5813,7 +5813,7 @@ drawDefaultStatusBar:
     ret                                                ;; 02:6f28 $c9
 
 drawHPOnStatuBar:
-    ld   D, $13 ; Mode/Max-digits to write             ;; 02:6f29 $06 $40
+    ld   C, $13 ; Mode/Max-digits to write             ;; 02:6f29 $06 $40
     ld   E, $00 ; WRAM Offset, 2-bytes for alignment   ;; 02:6f2b $0e $00
     ld   A, [wHPLow]                                   ;; 02:6f2d $fa $b2 $d7
     ld   L, A                                          ;; 02:6f30 $6f
@@ -5825,7 +5825,7 @@ drawHPOnStatuBar:
     jp   requestVRAMStatusBarTransfer                  ;; 02:6f3c $c3 $?? $??
 
 drawManaOnStatusBar:
-    ld   D, $02 ; Mode/Max-digits to write             ;; 02:6f3f $06 $20
+    ld   C, $02 ; Mode/Max-digits to write             ;; 02:6f3f $06 $20
     ld   E, $40 ; WRAM offset                          ;; 02:6f41 $0e $40
     ld   A, [wManaLow]                                 ;; 02:6f43 $fa $b6 $d7
     ld   L, A                                          ;; 02:6f46 $6f
@@ -8130,11 +8130,10 @@ intoScrollText:
     db   $01                                           ;; 02:7fd9 ?
 
 ; Draws left aligned number HL as modified tiles at WRAM offset E
-; D holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
-; D holds number of max digits in the second nibble
+; C holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
+; C holds number of max digits in the second nibble
 drawLeftAlignedNumberInWRAM:
     ld   B, $00 ; digit counter
-    ld   C, D ; use C to hold mode/max-digit-count
 
     ; Housekeeping, get a copy of proper WRAM starting
     ;  location on the stack for later use
@@ -8179,7 +8178,7 @@ drawLeftAlignedNumberInWRAM:
 
     ; Stack holds B digits to pop, transfer them
  .grab_digit_and_transfer:
-    ld   HL, $6800
+    ld   HL, gfxStatusBar+$100 ; start of number tiles
     pop  AF ; grab digit
     swap A
     push DE
@@ -8187,7 +8186,7 @@ drawLeftAlignedNumberInWRAM:
     ld   E, A
     add  HL, DE
     pop  DE
-    ld   A, $08
+    ld   A, BANK(gfxStatusBar)
     push BC
     ld   B, $10
     call copyShiftBankAfromHLtoDE
