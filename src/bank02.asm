@@ -8237,21 +8237,27 @@ swapBackHalfTiles:
     xor  A, A
     call memsetTileWithA
 
+    ; Swap HL and DE
+    ld   C, H
+    ld   H, D
+    ld   D, C
+    ld   C, L
+    ld   L, E
+    ld   E, C
+
 .shift_4px:
     ; First "or" in the first 4 bits of the next tile byte
     ; into the current tile byte
-    ld   A, [HL]
-    swap A
-    and  A, $0f
-    ld   C, A
     ld   A, [DE]
-    or   A, C
-    ld   [DE], A
-    ; Now shift up the last 4 bits of the next tile byte
-    ld   A, [HL]
     swap A
-    and  A, $f0
+    ld   C, A
+    and  A, $0f
+    or   A, [HL]
     ld   [HL+], A
+    ; Now shift up the last 4 bits of the next tile byte
+    ld   A, C
+    and  A, $f0
+    ld   [DE], A
     inc  DE
     dec  B
     jr   NZ, .shift_4px
@@ -8281,20 +8287,16 @@ requestVRAMStatusBarTransfer:
     xor  A, A
 .request_loop:
     push BC
-    push DE
     push HL
+    push DE
     call addTileGraphicCopyRequest
+    ld   BC, $0010
     pop  HL
-    ld   DE, $0010
-    add  HL, DE
-    ld   B, H
-    ld   C, L
-    pop  HL
-    add  HL, DE
+    add  HL, BC
     ld   D, H
     ld   E, L
-    ld   H, B
-    ld   L, C
+    pop  HL
+    add  HL, BC
     pop  BC
     dec  B
     jr   NZ, .request_loop
