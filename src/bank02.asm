@@ -5814,27 +5814,27 @@ drawDefaultStatusBar:
 
 drawHPOnStatuBar:
     ld   C, $13 ; Mode/Max-digits to write             ;; 02:6f29 $06 $40
-    ld   E, $00 ; WRAM Offset, 2-bytes for alignment   ;; 02:6f2b $0e $00
-    ld   A, [wHPLow]                                   ;; 02:6f2d $fa $b2 $d7
-    ld   L, A                                          ;; 02:6f30 $6f
-    ld   A, [wHPHigh]                                  ;; 02:6f31 $fa $b3 $d7
-    ld   H, A                                          ;; 02:6f34 $67
-    call drawLeftAlignedNumberInWRAM                   ;; 02:6f35 $cd $?? $??
-    ld   D, $a0 ; Starting tile position               ;; 02:6f38 $16 $0b
-    ld   E, $04 ; WRAM offset/Tiles to transfer        ;; 02:6f3a $1e $0d
-    jp   requestVRAMStatusBarTransfer                  ;; 02:6f3c $c3 $?? $??
+    ld   DE, wHPMPTileBuffer ; WRAM address            ;; 02:6f2b $11 $60 $c1
+    ld   A, [wHPLow]                                   ;; 02:6f2e $fa $b2 $d7
+    ld   L, A                                          ;; 02:6f31 $6f
+    ld   A, [wHPHigh]                                  ;; 02:6f32 $fa $b3 $d7
+    ld   H, A                                          ;; 02:6f35 $67
+    call drawLeftAlignedNumberInWRAM                   ;; 02:6f36 $cd $?? $??
+    ld   B, $a0 ; Starting tile position               ;; 02:6f39 $16 $0b
+    jp   requestVRAMStatusBarTransfer                  ;; 02:6f3b $c3 $?? $??
+    db   $00                                           ;; 02:6f3e .
 
 drawManaOnStatusBar:
     ld   C, $02 ; Mode/Max-digits to write             ;; 02:6f3f $06 $20
-    ld   E, $40 ; WRAM offset                          ;; 02:6f41 $0e $40
-    ld   A, [wManaLow]                                 ;; 02:6f43 $fa $b6 $d7
-    ld   L, A                                          ;; 02:6f46 $6f
-    ld   A, [wManaHigh]                                ;; 02:6f47 $fa $b7 $d7
-    ld   H, A                                          ;; 02:6f4a $67
-    call drawLeftAlignedNumberInWRAM                   ;; 02:6f4b $cd $?? $??
-    ld   D, $e0 ; Starting tile position               ;; 02:6f4e $16 $0e
-    ld   E, $42 ; WRAM offset/Tiles to transfer        ;; 02:6f50 $1e $0f
-    jp   requestVRAMStatusBarTransfer                  ;; 02:6f52 $c3 $?? $??
+    ld   DE, wHPMPTileBuffer+$40 ; WRAM address        ;; 02:6f41 $11 $60 $c1
+    ld   A, [wManaLow]                                 ;; 02:6f44 $fa $b6 $d7
+    ld   L, A                                          ;; 02:6f45 $6f
+    ld   A, [wManaHigh]                                ;; 02:6f48 $fa $b7 $d7
+    ld   H, A                                          ;; 02:6f4b $67
+    call drawLeftAlignedNumberInWRAM                   ;; 02:6f4c $cd $?? $??
+    ld   B, $e0 ; Starting tile position               ;; 02:6f4f $16 $0e
+    jp   requestVRAMStatusBarTransfer                  ;; 02:6f51 $c3 $?? $??
+    db   $00                                           ;; 02:6f52 .
 
 drawMoneyOnStatusBar:
     ld   DE, $12 ; Tile position of last number        ;; 02:6f55 $11 $12 $00
@@ -8129,7 +8129,7 @@ intoScrollText:
     TXT  "<00>"                                        ;; 02:7fd8 ?
     db   $01                                           ;; 02:7fd9 ?
 
-; Draws left aligned number HL as modified tiles at WRAM offset E
+; Draws left aligned number HL as modified tiles at WRAM position DE
 ; C holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
 ; C holds number of max digits in the second nibble
 drawLeftAlignedNumberInWRAM:
@@ -8137,13 +8137,6 @@ drawLeftAlignedNumberInWRAM:
 
     ; Housekeeping, get a copy of proper WRAM starting
     ;  location on the stack for later use
-    push HL
-    ld   HL, wHPMPTileBuffer
-    ld   D, B
-    add  HL, DE
-    ld   D, H
-    ld   E, L
-    pop  HL
     push BC
     push DE
 
@@ -8192,7 +8185,7 @@ drawLeftAlignedNumberInWRAM:
     ld   A, BANK(gfxStatusBar)
     push BC
     ld   B, $10
-    call copyAndRollBankAfromHLtoDE
+    call copyAndRotateBankAfromHLtoDE
     pop  BC
     dec  B
     jr   NZ, .grab_digit_and_transfer
@@ -8220,10 +8213,15 @@ drawLeftAlignedNumberInWRAM:
     ret  Z
 
     ; We need to swap back tiles, prepare...
+    push BC
+    push DE
     ld   A, C
     sub  A, L
     ld   B, A ; B holds number of tiles to swap
-    jp   swapBackHalfTiles
+    call swapBackHalfTiles
+    pop  DE
+    pop  BC
+    ret
 
 ; Swaps tiles back across half tile boundaries
 ; B holds number of tiles to shift
@@ -8264,26 +8262,26 @@ swapBackHalfTiles:
     ret
 
 ; Requests transfer of status bar WRAM tiles to VRAM
-; D holds VRAM tile position
-; E holds the WRAM offset in the first nibble (16-byte aligned)
-; E holds the number of tiles to transfer in the second nibble
+; B holds VRAM tile position
+; C holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
+; C holds number of max digits in the second nibble
+; DE holds the WRAM address
 requestVRAMStatusBarTransfer:
-    ; Short circuit if nothing to do, else load number of tiles in B
-    ld   A, E
+    ; Short circuit if nothing to do, else load number of tiles in C
+    ; This logic adds one to max digits if mode is shift-swap
+    ld   A, C
+    and  A, $10
+    swap A
+    add  A, C
     and  A, $0f
     ret  Z
-    ld   B, A
+    ld   C, A
 
     ; Prep source and destination addresses
-    ld   HL, wHPMPTileBuffer
-    ld   C, D
-    ld   D, $00
-    ld   A, E
-    and  A, $f0
-    ld   E, A
-    add  HL, DE
+    ld   H, D
+    ld   L, E
     ld   D, $90
-    ld   E, C
+    ld   E, B
     xor  A, A
 .request_loop:
     push BC
@@ -8298,7 +8296,7 @@ requestVRAMStatusBarTransfer:
     pop  HL
     add  HL, BC
     pop  BC
-    dec  B
+    dec  C
     jr   NZ, .request_loop
     ret
 

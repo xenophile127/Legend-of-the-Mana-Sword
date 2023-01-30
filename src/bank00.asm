@@ -9007,8 +9007,8 @@ getDialogTextInsertionPoint:
     ld   C, A                                          ;; 00:3762 $4f
     ret                                                ;; 00:3763 $c9
 
-;copy and roll-left-by-1 B bytes from HL in bank A to DE
-copyAndRollBankAfromHLtoDE:
+;copy and rotate-left-by-1 B bytes from HL in bank A to DE
+copyAndRotateBankAfromHLtoDE:
     push HL                                            ;; 00:3764 $e5
     call pushBankNrAndSwitch                           ;; 00:3765 $cd $fb $29
     pop  HL                                            ;; 00:3768 $e1
@@ -9017,7 +9017,7 @@ copyAndRollBankAfromHLtoDE:
     ret  Z                                             ;; 00:376b $c8
 .loop:
     ld   A, [HL+]                                      ;; 00:376c $2a
-    rlca ; roll one pixel to the left                  ;; 00:376d $07
+    rlca ; rotate one pixel to the left                ;; 00:376d $07
     ld   [DE], A                                       ;; 00:376e $12
     inc  DE                                            ;; 00:376f $13
     dec  B                                             ;; 00:3770 $05
