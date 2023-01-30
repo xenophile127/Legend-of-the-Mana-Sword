@@ -8162,15 +8162,18 @@ drawLeftAlignedNumberInWRAM:
     jr   NZ, .divmod_and_store_number
 
     ; Reduce second nibble of C by num digits found
+    ; Remainder provides the number of tiles to clear
+    ; after we write the digits
     ld   A, C
     sub  A, B
     ld   C, A
 
-    ; Increment DE if in swap mode
+    ; Increment tile buffer pointer (DE) if in swap mode
+    ; since we will be swapping back 4px to the tile before
     ld   H, D
     ld   L, E
     ld   D, $00
-    and  A, $f0
+    and  A, $10
     ld   E, A
     add  HL, DE
     ld   D, H
@@ -8189,7 +8192,7 @@ drawLeftAlignedNumberInWRAM:
     ld   A, BANK(gfxStatusBar)
     push BC
     ld   B, $10
-    call copyShiftBankAfromHLtoDE
+    call copyAndRollBankAfromHLtoDE
     pop  BC
     dec  B
     jr   NZ, .grab_digit_and_transfer
@@ -8214,21 +8217,20 @@ drawLeftAlignedNumberInWRAM:
     ld   A, C
     ld   L, C
     pop  BC
-    and  A, $f0
+    and  A, $10
     ret  Z
 
     ; We need to swap back tiles, prepare...
     ld   A, C
     sub  A, L
-    ld   B, A ; B holds tiles to swap
-
+    ld   B, A ; B holds number of tiles to swap
     jp   swapBackHalfTiles
 
 ; Swaps tiles back across half tile boundaries
 ; B holds number of tiles to shift
 ; DE holds address of first tile
 swapBackHalfTiles:
-    swap B ; now B holds bytes to swap
+    swap B ; now B holds number of bytes to swap
 
     ; Clear the first tile (it was left untouched so far)
     ld   H, D
