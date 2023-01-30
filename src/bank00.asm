@@ -9023,7 +9023,7 @@ copyAndRotateBankAfromHLtoDE:
     dec  B                                             ;; 00:3770 $05
     jr   NZ, .loop                                     ;; 00:3771 $20 $fa
     jp   popBankNrAndSwitch                            ;; 00:3773 $c3 $0a $2a
-    nop ; for alignment                                ;; 00:3776 $00
+    db   $00                                           ;; 00:3776 .
 
 ; Draw text
 ; HL = pointer to text
