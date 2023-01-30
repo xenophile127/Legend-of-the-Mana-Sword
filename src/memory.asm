@@ -20,8 +20,9 @@ wMainGameState:
     ds 1                                               ;; c0a0
 
 ; bit 0: unknown
-; bit 1-3: certain script types running
-; bit 4-7: scrolling direction (nibbles are swapped for this)
+; bit 1-2: used by scripts and other events that take control from the player
+; bit 3: used to freeze the player by both scripts and scrolling
+; bit 4-7: scrolling direction
 wMainGameStateFlags:
     ds 1                                               ;; c0a1
 .nextFrame:
@@ -84,7 +85,7 @@ wScratchBankCallH:
 wBankStack:
     ds 64                                              ;; c0c0
 
-; START OF AUDIO ENGINE SRAM
+; START OF AUDIO ENGINE WRAM
 wMusicTempoTimeCounter:
     ds 1                                               ;; c100
 
@@ -309,7 +310,7 @@ wMusicBrokenDoubleTimeMode:
 wSoundsMusicRestorePitchChannel1:
     ds 1                                               ;; c1c9
 ; One byte long
-; END OF AUDIO ENGINE SRAM  (c1cb is not included)
+; END OF AUDIO ENGINE WRAM  (c1cb is not included)
 .high:
     ds 54                                              ;; c1ca
 
@@ -466,13 +467,14 @@ wPlayerDamagedTimer:
 wPlayerSpecialFlags:
     ds 12                                              ;; c4d4
 
-; 8 records of $18 size, related to NPCs
-; 0: wObjectRuntimeData entry index
-; 2: Movement speed
-; 10: Status (bit7: Slep, bit6: Mute)
-; 12-13: HP
-; 16-17: npcStatsTable entry pointer
-; 18-19: npcDataTable entry pointer
+; 08 records of $18 size, related to NPCs
+; 00: wObjectRuntimeData entry index
+; 01: Delay until next move (initialized from 02)
+; 02: Movement speed
+; 0a: Status (bit7: Slep, bit6: Mute)
+; 0c-0d: HP
+; 10-11: npcStatsTable entry pointer
+; 12-13: npcDataTable entry pointer
 wNpcRuntimeData:
     ds 16                                              ;; c4e0
 .statsTablePointer:
@@ -493,12 +495,16 @@ wNPCSpawnTableIndex:
 wNumberOfLivingEnemies:
     ds 1                                               ;; c5af
 
-wC5B0:
+; One byte long
+wNPCDroppingChest:
     ds 16                                              ;; c5b0
 
 ; 3 records of $0a size, related to projectiles
+; 00: Object ID of the normal object
 ; 01: Delay until next move (initialized from 02)
 ; 02: Movement speed
+; 04: Y coordinate
+; 05: X coordinate
 ; 08-09: Projectile data table entry pointer
 wProjectileRuntimeData:
     ds 32                                              ;; c5c0
@@ -533,16 +539,18 @@ wBackgroundRenderRequestCount:
 wCEF0:
     ds 8                                               ;; cef0
 
-wCEF8:
+wAttackFrameSteps:
     ds 8                                               ;; cef8
 
-wCF00:
+wAttackFrameSpeedTimers:
     ds 8                                               ;; cf00
 
-wCF08:
+; This stores pointers from the attackFrames table, one for each object that could possible be involved.
+wAttackFramePointers:
     ds 16                                              ;; cf08
 
-wCF18:
+; This stores a pointer to the individual special/normal facing/walking directional attack type for each object.
+wAttackFrameTypePointers:
     ds 16                                              ;; cf18
 
 wCF28:
@@ -565,13 +573,15 @@ wEquippedItemAnimationType:
 wSelectedObjectID:
     ds 1                                               ;; cf5a
 
-wCF5B:
+; The current attack's range in pixels.
+; Objects are first tested for overlap, then their distance is tested against this.
+wAttackRange:
     ds 1                                               ;; cf5b
 
 wPlayerCurrentAttackTypeAndFacing:
     ds 1                                               ;; cf5c
 
-wCF5D:
+wFireHomingTarget:
     ds 1                                               ;; cf5d
 
 wCF5E:
@@ -680,7 +690,8 @@ wTileDataTablePointer:
 .High:
     ds 1                                               ;; d393
 
-wD394:
+; Request a new frame, or set to $ff for no request. Byte past the first are not well understood.
+wPlayerAnimation:
     ds 4                                               ;; d394
 
 wTileAnimationCounter_Unused:
@@ -718,10 +729,11 @@ wBossCurrentPatternStep:
 wBossCurrentKeyframeStep:
     ds 1                                               ;; d3ed
 
-wBoosCurrentHeadActionStep:
+wBossCurrentHeadActionStep:
     ds 1                                               ;; d3ee
 
-wD3EF:
+; The head actions only have one step each, but it looks like they were desinged to have more.
+wBossCurrentHeadActionSubstep:
     ds 1                                               ;; d3ef
 
 wBossCurrentKeyframeHoldtime:
@@ -737,7 +749,8 @@ wCurrentBossHP:
 .high:
     ds 1                                               ;; d3f5
 
-wD3F6:
+; Used by most bosses to track one head object's location, but also used heavily by Megapede.
+wBossCurrentHeadYX:
     ds 66                                              ;; d3f6
 
 wCurrentBossDataPointer:
@@ -768,10 +781,12 @@ wBossCurrentMetatileListPointer:
 ; Six bytes each, 14 total, but the largest boss only uses 11.
 ; 0: Object ID of the normal object
 ; 1-2: Stats pointer
-; 3-5: Unknown
+; 3: Unknown
+; 4: Probably always zero. Used as an index into d3f6.
+; 5: Unknown
 wBossObjectsStatsRuntimeData:
     ds 4                                               ;; d442
-._04:
+.XYSaveIndex:
     ds 82                                              ;; d446
 
 wPlayerJumpArg:
@@ -845,11 +860,9 @@ wWindowBackgroundSaveBuffer:
 ; but with only 3 bytes storage, it just calls an actual script in one of the script banks.
 wOpenChestScript1:
     ds 3                                               ;; d613
-
-wD616:
+._3:
     ds 1                                               ;; d616
-
-wD617:
+._4:
     ds 12                                              ;; d617
 
 ; Script that is run when you open a chest. Actual script code is stored in here,
@@ -859,8 +872,7 @@ wOpenChestScript2:
 
 wOpenChestScript3:
     ds 4                                               ;; d633
-
-wD637:
+._4:
     ds 76                                              ;; d637
 
 ; End of the script stack, used by script call/loop operations
@@ -932,22 +944,22 @@ wEquippedItemAmount:
 wEquippedItemAndWeaponCopy:
     ds 2                                               ;; d6f1
 
-wD6F3:
+wVendorBuyIDs:
     ds 7                                               ;; d6f3
 
-wD6FA:
+wVendorBuyQuantities:
     ds 7                                               ;; d6fa
 
-wD701:
+wVendorBuyPrices:
     ds 14                                              ;; d701
 
-wD70F:
+wVendorSellIDs:
     ds 32                                              ;; d70f
 
-wD72F:
+wVendorSellQuantities:
     ds 32                                              ;; d72f
 
-wD74F:
+wVendorSellPrices:
     ds 64                                              ;; d74f
 
 wStatStaminaLevelUpTmp:
@@ -1116,7 +1128,8 @@ wEquippedWeaponElements:
 wStatStaminaBuffBackup:
     ds 5                                               ;; d7d8
 
-wD7DD:
+; Two blank lines before AP and DP
+wStatusScreenAPDP:
     ds 2                                               ;; d7dd
 
 ;Attack power, depending on stats and equiped weapon
@@ -1159,7 +1172,13 @@ wD846:
 wD848:
     ds 1                                               ;; d848
 
-wD849:
+; bit 0: seems related to having multiple columns, but it's set on the START menu
+; bit 1: has trash can
+; bit 3: button pressed
+; bit 4: scrolling down
+; bit 5: scrolling up
+; bit 7: showing trash can
+wMenuFlags:
     ds 1                                               ;; d849
 
 ; Indicates which dialog is being opened. For example $11 = select menu (save/map/status)
@@ -1178,7 +1197,7 @@ wSelectedMenuIndex2:
 wScriptDelayOpCodeTimerNumber:
     ds 1                                               ;; d84d
 
-wD84E:
+wMenuFlagsBackup:
     ds 1                                               ;; d84e
 
 wD84F:
@@ -1207,7 +1226,7 @@ wMenuSelectionMoveRepeatDelay:
 wWillCharge:
     ds 1                                               ;; d858
 
-wD859:
+wWindowCloseStep:
     ds 1                                               ;; d859
 
 wScriptCommand:
@@ -1216,7 +1235,7 @@ wScriptCommand:
 wD85C:
     ds 1                                               ;; d85c
 
-wD85D:
+wVendorPurchaseID:
     ds 1                                               ;; d85d
 
 wD85E:
@@ -1283,7 +1302,13 @@ wSearchInventoryLength:
 wScriptTriggerCollisionFlags:
     ds 1                                               ;; d871
 
-wD872:
+; bit 0: unknown
+; bit 1: unknown
+; bit 2: trash can tiles are loaded
+; bit 5: unknown
+; bit 6: unknown
+; bit 7: unknown
+wWindowSecondaryFlags:
     ds 1                                               ;; d872
 
 wScriptPlayerFacingDirection:
@@ -1298,7 +1323,7 @@ wScriptPlayerFacingDirection:
 wWindowFlags:
     ds 2                                               ;; d874
 
-wD876:
+wWindowVendorSellItemIndex:
     ds 1                                               ;; d876
 
 wPoisStatusEffectTimeBeforeNextTick:
@@ -1345,7 +1370,7 @@ wDualCharacterPosition:
 wVideoWYBackup:
     ds 1                                               ;; d884
 
-wD885:
+wNameEntryNameLength:
     ds 1                                               ;; d885
 
 wTitleScreenState:
@@ -1384,22 +1409,19 @@ wItemSearchList:
 .high:
     ds 1                                               ;; d891
 
-wD892:
+wWindowFirstPointer:
     ds 1                                               ;; d892
-
-wD893:
+.high:
     ds 1                                               ;; d893
 
-wD894:
+wWindowSecondPointer:
     ds 1                                               ;; d894
-
-wD895:
+.high:
     ds 1                                               ;; d895
 
-wD896:
+wWindowThirdPointer:
     ds 1                                               ;; d896
-
-wD897:
+.high:
     ds 1                                               ;; d897
 
 wD898:
@@ -1518,19 +1540,23 @@ wD8C3:
 wD8C4:
     ds 1                                               ;; d8c4
 
-wD8C5:
+; Used only by the vendor buy message
+wWindowTextInsertionPointFinalX:
     ds 1                                               ;; d8c5
 
-wD8C6:
+; Used only by the vendor buy message
+wWindowTextInsertionPointFinalY:
     ds 1                                               ;; d8c6
 
 wVRAMClearFakeTile:
     ds 16                                              ;; d8c7
 
-wD8D7:
+; Used by the code that opens to the same place in the menu after selling once to the vendor.
+wWindowVendorSellPointerSavedX:
     ds 1                                               ;; d8d7
 
-wD8D8:
+; Used by the code that opens to the same place in the menu after selling once to the vendor.
+wWindowVendorSellPointerSavedY:
     ds 1                                               ;; d8d8
 
 wD8D9:

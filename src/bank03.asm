@@ -15,7 +15,7 @@ SECTION "bank03", ROMX[$4000], BANK[$03]
     call_to_bank_target setNpcSpawnTable               ;; 03:400a pP
     call_to_bank_target setHLToZero_3                  ;; 03:400c ??
     call_to_bank_target enemyCollisionHandling         ;; 03:400e pP
-    call_to_bank_target call_03_4561                   ;; 03:4010 pP
+    call_to_bank_target friendlyCollisionHandling      ;; 03:4010 pP
     call_to_bank_target damageNpc                      ;; 03:4012 ??
     call_to_bank_target objectBehaviorMove             ;; 03:4014 pP
     call_to_bank_target call_03_4aed                   ;; 03:4016 pP
@@ -52,6 +52,7 @@ npcRunBehaviorForAll:
     call projectileRunLogicForAll_trampoline           ;; 03:4046 $cd $d1 $2b
     ret                                                ;; 03:4049 $c9
 
+; HL = Npc Runtime Data entry pointer
 npcRunBehavior:
     inc  HL                                            ;; 03:404a $23
     dec  [HL]                                          ;; 03:404b $35
@@ -73,7 +74,7 @@ npcRunBehavior:
     ld   A, [HL+]                                      ;; 03:4062 $2a
     ld   C, [HL]                                       ;; 03:4063 $4e
     cp   A, $00                                        ;; 03:4064 $fe $00
-    jr   NZ, jr_03_40c7                                ;; 03:4066 $20 $5f
+    jr   NZ, .jr_03_40c7                               ;; 03:4066 $20 $5f
     ld   A, [DE]                                       ;; 03:4068 $1a
     ld   C, A                                          ;; 03:4069 $4f
     push BC                                            ;; 03:406a $c5
@@ -88,12 +89,12 @@ npcRunBehavior:
     ld   D, [HL]                                       ;; 03:4077 $56
     ld   A, E                                          ;; 03:4078 $7b
     or   A, D                                          ;; 03:4079 $b2
-    jr   Z, jr_03_40fb                                 ;; 03:407a $28 $7f
+    jr   Z, .jr_03_40fb                                ;; 03:407a $28 $7f
     push DE                                            ;; 03:407c $d5
     call getObjectSliding                              ;; 03:407d $cd $d3 $0c
     pop  DE                                            ;; 03:4080 $d1
     cp   A, $00                                        ;; 03:4081 $fe $00
-    jp   NZ, jp_03_40ff                                ;; 03:4083 $c2 $ff $40
+    jp   NZ, .jp_03_40ff                               ;; 03:4083 $c2 $ff $40
     pop  HL                                            ;; 03:4086 $e1
     push HL                                            ;; 03:4087 $e5
     call call_03_41fc                                  ;; 03:4088 $cd $fc $41
@@ -132,9 +133,8 @@ npcRunBehavior:
     pop  DE                                            ;; 03:40b6 $d1
     push DE                                            ;; 03:40b7 $d5
     call call_03_418b                                  ;; 03:40b8 $cd $8b $41
-    jr   Z, jr_03_4103                                 ;; 03:40bb $28 $46
-
-jr_03_40bd:
+    jr   Z, .slep_or_mute                              ;; 03:40bb $28 $46
+.jr_03_40bd:
     pop  HL                                            ;; 03:40bd $e1
     push HL                                            ;; 03:40be $e5
     ld   DE, $04                                       ;; 03:40bf $11 $04 $00
@@ -142,8 +142,7 @@ jr_03_40bd:
     ld   [HL+], A                                      ;; 03:40c3 $22
     ld   C, $00                                        ;; 03:40c4 $0e $00
     ld   [HL], C                                       ;; 03:40c6 $71
-
-jr_03_40c7:
+.jr_03_40c7:
     pop  DE                                            ;; 03:40c7 $d1
     push DE                                            ;; 03:40c8 $d5
     push AF                                            ;; 03:40c9 $f5
@@ -180,18 +179,15 @@ jr_03_40c7:
     add  HL, DE                                        ;; 03:40f7 $19
     ld   [HL], $01                                     ;; 03:40f8 $36 $01
     ret                                                ;; 03:40fa $c9
-
-jr_03_40fb:
+.jr_03_40fb:
     ld   A, $01                                        ;; 03:40fb $3e $01
-    jr   jr_03_40bd                                    ;; 03:40fd $18 $be
-
-jp_03_40ff:
+    jr   .jr_03_40bd                                   ;; 03:40fd $18 $be
+.jp_03_40ff:
     ld   A, $1b                                        ;; 03:40ff $3e $1b
-    jr   jr_03_40bd                                    ;; 03:4101 $18 $ba
-
-jr_03_4103:
+    jr   .jr_03_40bd                                   ;; 03:4101 $18 $ba
+.slep_or_mute:
     ld   A, $00                                        ;; 03:4103 $3e $00
-    jr   jr_03_40bd                                    ;; 03:4105 $18 $b6
+    jr   .jr_03_40bd                                   ;; 03:4105 $18 $b6
 
 call_03_4107:
     cp   A, $2c                                        ;; 03:4107 $fe $2c
@@ -528,12 +524,12 @@ spawnNPC:
     ld   A, $02                                        ;; 03:42d8 $3e $02
     call createObject                                  ;; 03:42da $cd $74 $0a
     cp   A, $ff                                        ;; 03:42dd $fe $ff
-    jr   Z, .jr_03_435b                                ;; 03:42df $28 $7a
+    jr   Z, .failed                                    ;; 03:42df $28 $7a
     push BC                                            ;; 03:42e1 $c5
     ld   A, $ff                                        ;; 03:42e2 $3e $ff
     call getNpcRuntimeDataByID                         ;; 03:42e4 $cd $9b $42
     pop  BC                                            ;; 03:42e7 $c1
-    jr   NZ, .jr_03_435b                               ;; 03:42e8 $20 $71
+    jr   NZ, .failed                                   ;; 03:42e8 $20 $71
     ld   [HL], C                                       ;; 03:42ea $71
     ld   D, H                                          ;; 03:42eb $54
     ld   E, L                                          ;; 03:42ec $5d
@@ -611,7 +607,7 @@ spawnNPC:
     ld   A, [DE]                                       ;; 03:4358 $1a
     ld   C, A                                          ;; 03:4359 $4f
     ret                                                ;; 03:435a $c9
-.jr_03_435b:
+.failed:
     pop  DE                                            ;; 03:435b $d1
     ld   C, $ff                                        ;; 03:435c $0e $ff
     ret                                                ;; 03:435e $c9
@@ -639,7 +635,7 @@ destroyNPC:
     jr   NZ, .jr_03_43a8                               ;; 03:4380 $20 $26
 .jr_03_4382:
     push BC                                            ;; 03:4382 $c5
-    call call_00_0b6f                                  ;; 03:4383 $cd $6f $0b
+    call objectCheckTriggerScriptOrSpikeTile           ;; 03:4383 $cd $6f $0b
     pop  BC                                            ;; 03:4386 $c1
     pop  DE                                            ;; 03:4387 $d1
     push DE                                            ;; 03:4388 $d5
@@ -819,7 +815,11 @@ setNpcSpawnTable:
     pop  HL                                            ;; 03:4486 $e1
     ret                                                ;; 03:4487 $c9
 
-call_03_4488:
+; C = npc type
+; DE = yx tile coordinate
+; Checks that the given coordinate is valid for the given npc type to move on, and that it is a minimum distance from the player.
+; Return: Z, fail, NZ, success.
+checkNpcPotentialPlacement:
     push HL                                            ;; 03:4488 $e5
     push BC                                            ;; 03:4489 $c5
     push DE                                            ;; 03:448a $d5
@@ -857,7 +857,7 @@ call_03_4488:
     inc  A                                             ;; 03:44b3 $3c
 .jr_03_44b4:
     cp   A, $04                                        ;; 03:44b4 $fe $04
-    jr   NC, .jr_03_44c7                               ;; 03:44b6 $30 $0f
+    jr   NC, .success                                  ;; 03:44b6 $30 $0f
     ld   A, E                                          ;; 03:44b8 $7b
     sub  A, L                                          ;; 03:44b9 $95
     jr   NC, .jr_03_44be                               ;; 03:44ba $30 $02
@@ -865,13 +865,13 @@ call_03_4488:
     inc  A                                             ;; 03:44bd $3c
 .jr_03_44be:
     cp   A, $04                                        ;; 03:44be $fe $04
-    jr   NC, .jr_03_44c7                               ;; 03:44c0 $30 $05
+    jr   NC, .success                                  ;; 03:44c0 $30 $05
     xor  A, A                                          ;; 03:44c2 $af
     pop  DE                                            ;; 03:44c3 $d1
     pop  BC                                            ;; 03:44c4 $c1
     pop  HL                                            ;; 03:44c5 $e1
     ret                                                ;; 03:44c6 $c9
-.jr_03_44c7:
+.success:
     xor  A, A                                          ;; 03:44c7 $af
     dec  A                                             ;; 03:44c8 $3d
     pop  DE                                            ;; 03:44c9 $d1
@@ -879,22 +879,23 @@ call_03_4488:
     pop  HL                                            ;; 03:44cb $e1
     ret                                                ;; 03:44cc $c9
 
-call_03_44cd:
+; Return: DE = random yx tile number between (02,02) and ($10,$0d)
+getRandomTile:
     push HL                                            ;; 03:44cd $e5
     push BC                                            ;; 03:44ce $c5
-.jr_03_44cf:
+.loop_1:
     call getRandomByte                                 ;; 03:44cf $cd $1e $2b
     and  A, $0f                                        ;; 03:44d2 $e6 $0f
     cp   A, $0f                                        ;; 03:44d4 $fe $0f
-    jr   NC, .jr_03_44cf                               ;; 03:44d6 $30 $f7
+    jr   NC, .loop_1                                   ;; 03:44d6 $30 $f7
     add  A, $02                                        ;; 03:44d8 $c6 $02
     ld   E, A                                          ;; 03:44da $5f
     push DE                                            ;; 03:44db $d5
-.jr_03_44dc:
+.loop_2:
     call getRandomByte                                 ;; 03:44dc $cd $1e $2b
     and  A, $0f                                        ;; 03:44df $e6 $0f
     cp   A, $0b                                        ;; 03:44e1 $fe $0b
-    jr   NC, .jr_03_44dc                               ;; 03:44e3 $30 $f7
+    jr   NC, .loop_2                                   ;; 03:44e3 $30 $f7
     add  A, $02                                        ;; 03:44e5 $c6 $02
     pop  DE                                            ;; 03:44e7 $d1
     ld   D, A                                          ;; 03:44e8 $57
@@ -964,9 +965,9 @@ spawnNpcsFromTable:
     inc  HL                                            ;; 03:4536 $23
     ld   A, $80                                        ;; 03:4537 $3e $80
     cp   A, D                                          ;; 03:4539 $ba
-    jr   Z, .jr_03_454b                                ;; 03:453a $28 $0f
+    jr   Z, .random_location                           ;; 03:453a $28 $0f
     cp   A, E                                          ;; 03:453c $bb
-    jr   Z, .jr_03_454b                                ;; 03:453d $28 $0c
+    jr   Z, .random_location                           ;; 03:453d $28 $0c
     push BC                                            ;; 03:453f $c5
     push HL                                            ;; 03:4540 $e5
     call spawnNPC                                      ;; 03:4541 $cd $bd $42
@@ -977,15 +978,15 @@ spawnNpcsFromTable:
 .return:
     pop  HL                                            ;; 03:4549 $e1
     ret                                                ;; 03:454a $c9
-.jr_03_454b:
-    call call_03_44cd                                  ;; 03:454b $cd $cd $44
-    call call_03_4488                                  ;; 03:454e $cd $88 $44
-    jr   Z, .jr_03_454b                                ;; 03:4551 $28 $f8
+.random_location:
+    call getRandomTile                                 ;; 03:454b $cd $cd $44
+    call checkNpcPotentialPlacement                    ;; 03:454e $cd $88 $44
+    jr   Z, .random_location                           ;; 03:4551 $28 $f8
     push BC                                            ;; 03:4553 $c5
     call spawnNPC                                      ;; 03:4554 $cd $bd $42
     pop  BC                                            ;; 03:4557 $c1
     dec  B                                             ;; 03:4558 $05
-    jr   NZ, .jr_03_454b                               ;; 03:4559 $20 $f0
+    jr   NZ, .random_location                          ;; 03:4559 $20 $f0
     pop  HL                                            ;; 03:455b $e1
     ret                                                ;; 03:455c $c9
 
@@ -993,7 +994,11 @@ setHLToZero_3:
     ld   HL, $00                                       ;; 03:455d $21 $00 $00
     ret                                                ;; 03:4560 $c9
 
-call_03_4561:
+; Handles collisions with objects that run a script when touched.
+; A = interacting object's collision flags
+; B = interacting  object's ID
+; C = target object's ID
+friendlyCollisionHandling:
     cp   A, $c9                                        ;; 03:4561 $fe $c9
     jr   Z, .player                                    ;; 03:4563 $28 $0f
     ld   L, A                                          ;; 03:4565 $6f
@@ -1085,7 +1090,7 @@ call_03_4561:
 .jr_03_45e8:
     ld   E, A                                          ;; 03:45e8 $5f
     ld   A, C                                          ;; 03:45e9 $79
-    ld   [wC5B0], A                                    ;; 03:45ea $ea $b0 $c5
+    ld   [wNPCDroppingChest], A                        ;; 03:45ea $ea $b0 $c5
     ld   A, B                                          ;; 03:45ed $78
     or   A, $00                                        ;; 03:45ee $f6 $00
     ld   C, $81                                        ;; 03:45f0 $0e $81
@@ -1153,7 +1158,7 @@ enemyCollisionHandling:
     jp   Z, .followerAttack                            ;; 03:464e $ca $9d $47
     cp   A, $50                                        ;; 03:4651 $fe $50
     jp   Z, .spell                                     ;; 03:4653 $ca $4a $47
-.jp_03_4656:
+.no_effect:
     ld   A, $00                                        ;; 03:4656 $3e $00
     ret                                                ;; 03:4658 $c9
 .player:
@@ -1218,7 +1223,7 @@ enemyCollisionHandling:
     xor  A, $80                                        ;; 03:46bb $ee $80
     pop  BC                                            ;; 03:46bd $c1
     push BC                                            ;; 03:46be $c5
-    call call_00_2c2d                                  ;; 03:46bf $cd $2d $2c
+    call pushObject                                    ;; 03:46bf $cd $2d $2c
     pop  BC                                            ;; 03:46c2 $c1
     jr   Z, .jr_03_46d1                                ;; 03:46c3 $28 $0c
     push BC                                            ;; 03:46c5 $c5
@@ -1250,8 +1255,8 @@ enemyCollisionHandling:
     ld   A, $c9                                        ;; 03:46ed $3e $c9
     ret                                                ;; 03:46ef $c9
 .weapon:
-    call call_03_4906                                  ;; 03:46f0 $cd $06 $49
-    jp   NZ, .jp_03_4656                               ;; 03:46f3 $c2 $56 $46
+    call npcTestHit                                    ;; 03:46f0 $cd $06 $49
+    jp   NZ, .no_effect                                ;; 03:46f3 $c2 $56 $46
     call call_03_4931                                  ;; 03:46f6 $cd $31 $49
     jp   NZ, enemyCollisionHandling.immune             ;; 03:46f9 $c2 $eb $47
     push BC                                            ;; 03:46fc $c5
@@ -1305,8 +1310,8 @@ enemyCollisionHandling:
     call processHitNpc                                 ;; 03:4746 $cd $26 $4a
     ret                                                ;; 03:4749 $c9
 .spell:
-    call call_03_4906                                  ;; 03:474a $cd $06 $49
-    jp   NZ, .jp_03_4656                               ;; 03:474d $c2 $56 $46
+    call npcTestHit                                    ;; 03:474a $cd $06 $49
+    jp   NZ, .no_effect                                ;; 03:474d $c2 $56 $46
     call call_03_4931                                  ;; 03:4750 $cd $31 $49
     jr   NZ, .jr_03_4769                               ;; 03:4753 $20 $14
     push BC                                            ;; 03:4755 $c5
@@ -1353,8 +1358,8 @@ enemyCollisionHandling:
     call processHitNpc                                 ;; 03:4799 $cd $26 $4a
     ret                                                ;; 03:479c $c9
 .followerAttack:
-    call call_03_4919                                  ;; 03:479d $cd $19 $49
-    jp   NZ, .jp_03_4656                               ;; 03:47a0 $c2 $56 $46
+    call npcTestFollowerHit                            ;; 03:479d $cd $19 $49
+    jp   NZ, .no_effect                                ;; 03:47a0 $c2 $56 $46
     call call_03_4931                                  ;; 03:47a3 $cd $31 $49
     jp   NZ, enemyCollisionHandling.immune             ;; 03:47a6 $c2 $eb $47
     push BC                                            ;; 03:47a9 $c5
@@ -1597,39 +1602,39 @@ damageNpc:
     pop  HL                                            ;; 03:4904 $e1
     ret                                                ;; 03:4905 $c9
 
-call_03_4906:
-    ld   A, [wCF5B]                                    ;; 03:4906 $fa $5b $cf
+npcTestHit:
+    ld   A, [wAttackRange]                             ;; 03:4906 $fa $5b $cf
     cp   A, D                                          ;; 03:4909 $ba
-    jr   C, .jr_03_4916                                ;; 03:490a $38 $0a
+    jr   C, .not_hit                                   ;; 03:490a $38 $0a
     cp   A, E                                          ;; 03:490c $bb
-    jr   C, .jr_03_4916                                ;; 03:490d $38 $07
+    jr   C, .not_hit                                   ;; 03:490d $38 $07
     push BC                                            ;; 03:490f $c5
     ld   A, C                                          ;; 03:4910 $79
     call getNpcRuntimeDataByID                         ;; 03:4911 $cd $9b $42
     pop  BC                                            ;; 03:4914 $c1
     ret                                                ;; 03:4915 $c9
-.jr_03_4916:
+.not_hit:
     xor  A, A                                          ;; 03:4916 $af
     inc  A                                             ;; 03:4917 $3c
     ret                                                ;; 03:4918 $c9
 
-call_03_4919:
+npcTestFollowerHit:
     push DE                                            ;; 03:4919 $d5
     push BC                                            ;; 03:491a $c5
     ld   A, B                                          ;; 03:491b $78
-    call getProjectileOffset02_trampoline              ;; 03:491c $cd $09 $2c
+    call getProjectileSize_trampoline                  ;; 03:491c $cd $09 $2c
     pop  BC                                            ;; 03:491f $c1
     pop  DE                                            ;; 03:4920 $d1
     cp   A, D                                          ;; 03:4921 $ba
-    jr   C, .jr_03_492e                                ;; 03:4922 $38 $0a
+    jr   C, .not_hit                                   ;; 03:4922 $38 $0a
     cp   A, E                                          ;; 03:4924 $bb
-    jr   C, .jr_03_492e                                ;; 03:4925 $38 $07
+    jr   C, .not_hit                                   ;; 03:4925 $38 $07
     push BC                                            ;; 03:4927 $c5
     ld   A, C                                          ;; 03:4928 $79
     call getNpcRuntimeDataByID                         ;; 03:4929 $cd $9b $42
     pop  BC                                            ;; 03:492c $c1
     ret                                                ;; 03:492d $c9
-.jr_03_492e:
+.not_hit:
     xor  A, A                                          ;; 03:492e $af
     inc  A                                             ;; 03:492f $3c
     ret                                                ;; 03:4930 $c9
@@ -2040,7 +2045,7 @@ moveObjectDuringScript:
     pop  BC                                            ;; 03:4b40 $c1
     ret                                                ;; 03:4b41 $c9
 .player:
-    call call_00_02c3                                  ;; 03:4b42 $cd $c3 $02
+    call movePlayerDuringScript_trampoline             ;; 03:4b42 $cd $c3 $02
     jr   NZ, .jr_03_4b3f                               ;; 03:4b45 $20 $f8
 .jr_03_4b47:
     pop  HL                                            ;; 03:4b47 $e1
@@ -2144,7 +2149,7 @@ objectBehaviorMove:
 .jr_03_4bce:
     pop  AF                                            ;; 03:4bce $f1
     ld   B, $00                                        ;; 03:4bcf $06 $00
-    call call_00_0232                                  ;; 03:4bd1 $cd $32 $02
+    call playerSpritesLoadPlayerSpriteTiles_trampoline ;; 03:4bd1 $cd $32 $02
     ld   A, $00                                        ;; 03:4bd4 $3e $00
     call getEmptyObjectsMovingDuringScriptSlot         ;; 03:4bd6 $cd $62 $4b
     ret  NZ                                            ;; 03:4bd9 $c0
@@ -2240,14 +2245,14 @@ initEnemiesCounterAndMoveFolower:
 ;@jumptable amount=224
 npcBehaviorJumptable:
     dw   ld_C_into_A                                   ;; 03:4c55 ??
-    dw   call_03_4e7c                                  ;; 03:4c57 pP
+    dw   npcBehaviorDeath                              ;; 03:4c57 pP
     dw   npcBehaviorSpawnProjectile                    ;; 03:4c59 pP
     dw   call_03_4ef0                                  ;; 03:4c5b pP
     dw   npcStepForward                                ;; 03:4c5d pP
     dw   npcStepBackward                               ;; 03:4c5f pP
-    dw   call_03_4f4d                                  ;; 03:4c61 pP
-    dw   call_03_4f5a                                  ;; 03:4c63 pP
-    dw   call_03_4f67                                  ;; 03:4c65 pP
+    dw   npcTurnRight                                  ;; 03:4c61 pP
+    dw   npcTurnLeft                                   ;; 03:4c63 pP
+    dw   npcReverseDirection                           ;; 03:4c65 pP
     dw   call_03_4f74                                  ;; 03:4c67 pP
     dw   call_03_4f88                                  ;; 03:4c69 pP
     dw   call_03_4fa3                                  ;; 03:4c6b pP
@@ -2506,7 +2511,7 @@ npcKilledExplosion:
     call Z, npcKilledExplosionInit                     ;; 03:4e5d $cc $4a $4e
     ld   A, B                                          ;; 03:4e60 $78
     cp   A, $02                                        ;; 03:4e61 $fe $02
-    jr   Z, .jr_03_4e76                                ;; 03:4e63 $28 $11
+    jr   Z, .finished                                  ;; 03:4e63 $28 $11
     push AF                                            ;; 03:4e65 $f5
     cp   A, $01                                        ;; 03:4e66 $fe $01
     ld   A, $01                                        ;; 03:4e68 $3e $01
@@ -2518,15 +2523,15 @@ npcKilledExplosion:
     pop  AF                                            ;; 03:4e73 $f1
     inc  A                                             ;; 03:4e74 $3c
     ret                                                ;; 03:4e75 $c9
-.jr_03_4e76:
+.finished:
     call processNpcDeath                               ;; 03:4e76 $cd $0a $48
     ld   A, $00                                        ;; 03:4e79 $3e $00
     ret                                                ;; 03:4e7b $c9
 
-call_03_4e7c:
+npcBehaviorDeath:
     ld   A, [DE]                                       ;; 03:4e7c $1a
     cp   A, $ff                                        ;; 03:4e7d $fe $ff
-    jr   Z, .jr_03_4eaa                                ;; 03:4e7f $28 $29
+    jr   Z, .invalid                                   ;; 03:4e7f $28 $29
     ld   B, C                                          ;; 03:4e81 $41
     ld   C, A                                          ;; 03:4e82 $4f
     push DE                                            ;; 03:4e83 $d5
@@ -2538,11 +2543,11 @@ call_03_4e7c:
     cp   A, $d0                                        ;; 03:4e8c $fe $d0
     jr   Z, .follower                                  ;; 03:4e8e $28 $10
     cp   A, $a0                                        ;; 03:4e90 $fe $a0
-    jr   Z, .jr_03_4ead                                ;; 03:4e92 $28 $19
+    jr   Z, .no_explosion                              ;; 03:4e92 $28 $19
     cp   A, $b0                                        ;; 03:4e94 $fe $b0
-    jr   Z, .jr_03_4ead                                ;; 03:4e96 $28 $15
+    jr   Z, .no_explosion                              ;; 03:4e96 $28 $15
     cp   A, $00                                        ;; 03:4e98 $fe $00
-    jr   Z, .jr_03_4ead                                ;; 03:4e9a $28 $11
+    jr   Z, .no_explosion                              ;; 03:4e9a $28 $11
     call npcKilledExplosion                            ;; 03:4e9c $cd $5a $4e
     ret                                                ;; 03:4e9f $c9
 .follower:
@@ -2550,10 +2555,10 @@ call_03_4e7c:
     ld   B, $00                                        ;; 03:4ea3 $06 $00
     ld   A, $00                                        ;; 03:4ea5 $3e $00
     call updateObjectPosition                          ;; 03:4ea7 $cd $11 $06
-.jr_03_4eaa:
+.invalid:
     ld   A, $00                                        ;; 03:4eaa $3e $00
     ret                                                ;; 03:4eac $c9
-.jr_03_4ead:
+.no_explosion:
     call processNpcDeath                               ;; 03:4ead $cd $0a $48
     ld   A, $00                                        ;; 03:4eb0 $3e $00
     ret                                                ;; 03:4eb2 $c9
@@ -2667,7 +2672,7 @@ npcStepBackward:
     ld   A, $02                                        ;; 03:4f4a $3e $02
     ret                                                ;; 03:4f4c $c9
 
-call_03_4f4d:
+npcTurnRight:
     ld   A, [DE]                                       ;; 03:4f4d $1a
     ld   C, A                                          ;; 03:4f4e $4f
     push BC                                            ;; 03:4f4f $c5
@@ -2677,7 +2682,7 @@ call_03_4f4d:
     ld   A, $00                                        ;; 03:4f57 $3e $00
     ret                                                ;; 03:4f59 $c9
 
-call_03_4f5a:
+npcTurnLeft:
     ld   A, [DE]                                       ;; 03:4f5a $1a
     ld   C, A                                          ;; 03:4f5b $4f
     push BC                                            ;; 03:4f5c $c5
@@ -2687,7 +2692,7 @@ call_03_4f5a:
     ld   A, $00                                        ;; 03:4f64 $3e $00
     ret                                                ;; 03:4f66 $c9
 
-call_03_4f67:
+npcReverseDirection:
     ld   A, [DE]                                       ;; 03:4f67 $1a
     ld   C, A                                          ;; 03:4f68 $4f
     push BC                                            ;; 03:4f69 $c5
@@ -3619,7 +3624,7 @@ jr_03_53da:
     and  A, $7f                                        ;; 03:53f8 $e6 $7f
     cp   A, [HL]                                       ;; 03:53fa $be
     call NZ, call_03_5403                              ;; 03:53fb $c4 $03 $54
-    call call_00_28bc                                  ;; 03:53fe $cd $bc $28
+    call getValueFromDEAddOffset03                     ;; 03:53fe $cd $bc $28
     pop  AF                                            ;; 03:5401 $f1
     ret                                                ;; 03:5402 $c9
 
@@ -4034,7 +4039,7 @@ call_03_55df:
     ret  Z                                             ;; 03:55f2 $c8
     push AF                                            ;; 03:55f3 $f5
     ld   A, $01                                        ;; 03:55f4 $3e $01
-    call call_00_28bc                                  ;; 03:55f6 $cd $bc $28
+    call getValueFromDEAddOffset03                     ;; 03:55f6 $cd $bc $28
     pop  AF                                            ;; 03:55f9 $f1
     ret                                                ;; 03:55fa $c9
 
