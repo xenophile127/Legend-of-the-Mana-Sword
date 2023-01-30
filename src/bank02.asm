@@ -5880,7 +5880,7 @@ drawNumberAndSymbolOnStatusBar:
     jr   NZ, .jr_02_6f7b                               ;; 02:6f8c $20 $eb
     ld   A, $f5 ; Lucre symbol tile                    ;; 02:6f8e $3e $f4
     jp   storeTileAatWindowPositionDE                  ;; 02:6f90 $c3 $66 $38
-    db   $00, $00, $00, $00 ; For alignment            ;; 02:6f93 ....
+    db   $00, $00, $00, $00                            ;; 02:6f93 ....
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
