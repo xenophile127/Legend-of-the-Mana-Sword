@@ -8167,15 +8167,10 @@ drawLeftAlignedNumberInWRAM:
     and  A, $10
     jr   Z, .swap_test_skip
 
-    ; Clear the first tile
     ld   H, D
     ld   L, E
     xor  A, A
-    call memsetTileWithA
-
-    ; Increment the DE pointer by 16 bytes
-    ld   HL, $0010
-    add  HL, DE
+    call memsetTileWithA ; increments HL by $10
     ld   D, H
     ld   E, L
  .swap_test_skip:
