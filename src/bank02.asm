@@ -8163,11 +8163,9 @@ drawLeftAlignedNumberInWRAM:
 
     ; Increment tile buffer pointer (DE) if in swap mode
     ; since we will be swapping back 4px to the tile before
-    ld   H, D
-    ld   L, E
-    ld   D, $00
     and  A, $10
-    ld   E, A
+    ld   L, A
+    ld   H, $00
     add  HL, DE
     ld   D, H
     ld   E, L
