@@ -8161,15 +8161,24 @@ drawLeftAlignedNumberInWRAM:
     sub  A, B
     ld   C, A
 
-    ; Increment tile buffer pointer (DE) if in swap mode
-    ; so that there's an empty tile on the left, the swap
-    ; routine will fill it in with 4px from the next tile
+    ; If in swap mode, clear the first tile and increment the
+    ; tile buffer pointer in DE. The upcoming swap routine
+    ; will fill the first tile in with 4px from the next tile
     and  A, $10
-    ld   L, A
-    ld   H, $00
+    jr   Z, .swap_test_skip
+
+    ; Clear the first tile
+    ld   H, D
+    ld   L, E
+    xor  A, A
+    call memsetTileWithA
+
+    ; Increment the DE pointer by 16 bytes
+    ld   HL, $0010
     add  HL, DE
     ld   D, H
     ld   E, L
+ .swap_test_skip:
 
     ; Stack holds B digits to pop, transfer them
  .grab_digit_and_transfer:
@@ -8228,19 +8237,13 @@ drawLeftAlignedNumberInWRAM:
 swapBackHalfTiles:
     swap B ; now B holds number of bytes to swap
 
-    ; Clear the first tile (it was left untouched so far)
-    ld   H, D
-    ld   L, E
-    xor  A, A
-    call memsetTileWithA
-
-    ; Swap HL and DE
-    ld   C, H
-    ld   H, D
-    ld   D, C
-    ld   C, L
-    ld   L, E
-    ld   E, C
+    ; Set HL to start tile address, and DE to next tile address
+    push DE
+    ld   HL, $0010
+    add  HL, DE
+    push HL
+    pop  DE
+    pop  HL
 
 .shift_4px:
     ; First "or" in the first 4 bits of the next tile byte
