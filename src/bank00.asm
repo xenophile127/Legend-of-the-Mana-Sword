@@ -122,7 +122,7 @@ Header:
     db   CART_COMPATIBLE_DMG                           ;; 00:0143
     db   $00, $00                                      ;; 00:0144 ??
     db   CART_INDICATOR_GB                             ;; 00:0146
-    db   CART_ROM_MBC2_BAT, CART_ROM_256KB, CART_SRAM_NONE ;; 00:0147
+    db   CART_ROM_MBC5_RAM_BAT, CART_ROM_512KB, CART_SRAM_8KB ;; 00:0147
     db   CART_DEST_NON_JAPANESE, $c3, $00              ;; 00:014a $01 $c3 $00
     ds   3                                             ;; 00:014d
 
