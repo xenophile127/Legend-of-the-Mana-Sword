@@ -4953,14 +4953,40 @@ storeDEinVRAM:
     ld   [HL+], A                                      ;; 00:1d87 $22
     ld   [HL], E                                       ;; 00:1d88 $73
     ret                                                ;; 00:1d89 $c9
-    db   $f0, $40, $cb, $7f, $28, $0c, $0e, $41        ;; 00:1d8a ????????
-    db   $f2, $e6, $03, $28, $fb, $f2, $e6, $03        ;; 00:1d92 ????????
-    db   $20, $fb, $7e, $c9, $f0, $40, $cb, $7f        ;; 00:1d9a ????????
-    db   $28, $0c, $0e, $41, $f2, $e6, $03, $28        ;; 00:1da2 ????????
-    db   $fb, $f2, $e6, $03, $20, $fb, $2a, $5e        ;; 00:1daa ????????
-    db   $57, $c9, $7b, $cd, $5e, $1d, $5f, $23        ;; 00:1db2 ????????
-    db   $7a, $cd, $5e, $1d, $57, $c9, $cd, $8a        ;; 00:1dba ????????
-    db   $1d, $5f, $23, $cd, $8a, $1d, $57, $c9        ;; 00:1dc2 ????????
+
+;@call_to_bank bank=11
+callFunctionInBank11:
+    ld   [wScratchBankCallFunctionNumber], A           ;; 00:1d8a $ea $b2 $c0
+    pop  AF                                            ;; 00:1d8d $f1
+    ld   [wScratchBankCallA], A                        ;; 00:1d8e $ea $b3 $c0
+    ld   A, H                                          ;; 00:1d91 $7c
+    ld   [wScratchBankCallH], A                        ;; 00:1d92 $ea $b5 $c0
+    ld   A, L                                          ;; 00:1d95 $7d
+    ld   [wScratchBankCallL], A                        ;; 00:1d96 $ea $b4 $c0
+    ld   HL, returnFromBankCall                        ;; 00:1d99 $21 $c2 $1f
+    push HL                                            ;; 00:1d9c $e5
+    ld   A, BANK(entryPointTableBankExpansion) ;@=bank entryPointTableBankExpansion ;; 00:1d9d $3e $01
+    call pushBankNrAndSwitch                           ;; 00:1d9f $cd $fb $29
+    ld   A, [wScratchBankCallFunctionNumber]           ;; 00:1da2 $fa $b2 $c0
+    add  A, A                                          ;; 00:1da5 $87
+    ld   L, A                                          ;; 00:1da6 $6f
+    ld   H, $40                                        ;; 00:1da7 $26 $40
+    ld   A, [HL+]                                      ;; 00:1da9 $2a
+    ld   H, [HL]                                       ;; 00:1daa $66
+    ld   L, A                                          ;; 00:1dab $6f
+    push HL                                            ;; 00:1dac $e5
+    ld   A, [wScratchBankCallH]                        ;; 00:1dad $fa $b5 $c0
+    ld   H, A                                          ;; 00:1db0 $67
+    ld   A, [wScratchBankCallL]                        ;; 00:1db1 $fa $b4 $c0
+    ld   L, A                                          ;; 00:1db4 $6f
+    ld   A, [wScratchBankCallA]                        ;; 00:1db5 $fa $b3 $c0
+    ret                                                ;; 00:1db8 $c9
+
+expansion_test_trampoline:
+    jp_to_bank 11, expansion_test                      ;; 00:1db9 $f5 $3e $01 $c3 $06 $1f
+
+    db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 00:1dbf ????????
+    db   $00, $00, $00                                 ;; 00:1dc7 ?
 
 getNextBackgroundRequestSlot:
     ld   A, [wBackgroundRenderRequestCount]            ;; 00:1dca $fa $e8 $ce
