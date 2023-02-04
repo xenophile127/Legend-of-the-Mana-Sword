@@ -8134,11 +8134,10 @@ intoScrollText:
 ; C holds number of max digits in the second nibble
 drawLeftAlignedNumberInWRAM:
     ld   B, $00 ; digit counter
-
     ; Housekeeping, get a copy of proper WRAM starting
     ;  location on the stack for later use
-    push BC
     push DE
+    push BC
 
     ; Load up the digits on the stack
 .divmod_and_store_number:
@@ -8161,32 +8160,16 @@ drawLeftAlignedNumberInWRAM:
     sub  A, B
     ld   C, A
 
-    ; If in swap mode, clear the first tile and increment the
-    ; tile buffer pointer in DE. The upcoming swap routine
-    ; will fill the first tile in with 4px from the next tile
-    and  A, $10
-    jr   Z, .swap_test_skip
-
-    ld   H, D
-    ld   L, E
-    xor  A, A
-    call memsetTileWithA ; increments HL by $10
-    ld   D, H
-    ld   E, L
- .swap_test_skip:
-
     ; Stack holds B digits to pop, transfer them
  .grab_digit_and_transfer:
     ld   HL, gfxStatusBar+$100 ; start of number tiles
     pop  AF ; grab digit
     swap A
-    push DE
-    ld   D, $00
-    ld   E, A
-    add  HL, DE
-    pop  DE
-    ld   A, BANK(gfxStatusBar)
     push BC
+    ld   B, $00
+    ld   C, A
+    add  HL, BC
+    ld   A, BANK(gfxStatusBar)
     ld   B, $10
     call copyAndRotateBankAfromHLtoDE
     pop  BC
@@ -8195,6 +8178,9 @@ drawLeftAlignedNumberInWRAM:
 
     ; Clear remaining tiles
     ld   A, C
+    and  A, $10 ; add a tile for swap mode
+    swap A
+    add  A, C
     and  A, $0f
     jr   Z, .check_swap
 
@@ -8203,57 +8189,73 @@ drawLeftAlignedNumberInWRAM:
     ld   B, A
     xor  A, A
  .clear_remaining_tiles:
-    call memsetTileWithA
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
     dec  B
     jr   NZ, .clear_remaining_tiles
 
     ; Shifted tiles are in WRAM, check if swap needed
  .check_swap:
-    pop  DE
     ld   L, C
     pop  BC
     bit  4, C
-    ret  Z
+    jr   NZ, .do_the_swap
+    pop  DE
+    ret
 
-    ; We need to swap back tiles, prepare...
+.do_the_swap: ; Swap forward across tilea
     push BC
-    push DE
     ld   A, C
     sub  A, L
     ld   B, A ; B holds number of tiles to swap
-    call swapBackHalfTiles
-    pop  DE
+    call swapForwardHalfTiles
     pop  BC
+    pop  DE
     ret
 
-; Swaps tiles back across half tile boundaries
+; Swaps tiles forward across half tile boundaries.
 ; B holds number of tiles to shift
-; DE holds address of first tile
-swapBackHalfTiles:
+; DE holds address of first byte after last digit tile
+swapForwardHalfTiles:
     swap B ; now B holds number of bytes to swap
-
-    ; Set HL to start tile address, and DE to next tile address
-    push DE
+    dec  DE ; go to last byte of last digit
     ld   HL, $0010
-    add  HL, DE
-    push HL
-    pop  DE
-    pop  HL
+    add  HL, DE ;HL points to last byte of next tile
 
-.shift_4px:
-    ; First "or" in the first 4 bits of the next tile byte
-    ; into the current tile byte
+; Shifts tiles 4 pixels to the right across
+; tile boundaries. DE points to last byte of
+; last digit, HL points to last byte of next
+; empty tile
+.shift_4px: ; loop is 21 cycles/16 bytes
+    ; First "or" in the last 4 bits of the
+    ; previous tile byte into the current
+    ; tile byte
     ld   A, [DE]
     swap A
     ld   C, A
-    and  A, $0f
-    or   A, [HL]
-    ld   [HL+], A
-    ; Now shift up the last 4 bits of the next tile byte
-    ld   A, C
     and  A, $f0
+    or   A, [HL]
+    ld   [HL-], A
+    ; Now shift down the last 4 bits of the
+    ; previous tile byte
+    ld   A, C
+    and  A, $0f
     ld   [DE], A
-    inc  DE
+    dec  DE
     dec  B
     jr   NZ, .shift_4px
     ret
@@ -8295,25 +8297,5 @@ requestVRAMStatusBarTransfer:
     pop  BC
     dec  C
     jr   NZ, .request_loop
-    ret
-
-; Unrolled 16 byte memset of A onto the address in HL
-memsetTileWithA:
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
     ret
 
