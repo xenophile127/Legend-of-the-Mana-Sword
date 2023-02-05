@@ -71,16 +71,15 @@ drawLeftAlignedNumberInWRAM:
 
     ; Stack holds B digits to pop, transfer them
  .grab_digit_and_transfer:
-    ld   HL, gfxStatusBar+$100 ; start of number tiles
+    ld   HL, gfxNumbersBottomLeftAligned
     pop  AF ; grab digit
     swap A
     push BC
     ld   B, $00
     ld   C, A
     add  HL, BC
-    ld   A, BANK(gfxStatusBar)
     ld   B, $10
-    call copyAndRotateBankAfromHLtoDE
+    call copyHLtoDE.loop
     pop  BC
     dec  B
     jr   NZ, .grab_digit_and_transfer
@@ -208,3 +207,5 @@ requestVRAMStatusBarTransfer:
     jr   NZ, .request_loop
     ret
 
+gfxNumbersBottomLeftAligned:
+INCBIN "numbersbottomleftaligned.bin"

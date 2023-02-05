@@ -9042,24 +9042,9 @@ getDialogTextInsertionPoint:
     ld   A, [wWindowTextSpaceLeftOnLine]               ;; 00:375f $fa $ba $d8
     ld   C, A                                          ;; 00:3762 $4f
     ret                                                ;; 00:3763 $c9
-
-;copy and rotate-left-by-1 B bytes from HL in bank A to DE
-copyAndRotateBankAfromHLtoDE:
-    push HL                                            ;; 00:3764 $e5
-    call pushBankNrAndSwitch                           ;; 00:3765 $cd $fb $29
-    pop  HL                                            ;; 00:3768 $e1
-    ld   A, B                                          ;; 00:3769 $78
-    and  A, A                                          ;; 00:376a $a7
-    ret  Z                                             ;; 00:376b $c8
-.loop:
-    ld   A, [HL+]                                      ;; 00:376c $2a
-    rlca ; rotate one pixel to the left                ;; 00:376d $07
-    ld   [DE], A                                       ;; 00:376e $12
-    inc  DE                                            ;; 00:376f $13
-    dec  B                                             ;; 00:3770 $05
-    jr   NZ, .loop                                     ;; 00:3771 $20 $fa
-    jp   popBankNrAndSwitch                            ;; 00:3773 $c3 $0a $2a
-    db   $00                                           ;; 00:3776 .
+    db   $d5, $3e, $7f, $15, $cd, $44, $38, $14        ;; 00:3764 ????????
+    db   $3e, $7f, $cd, $44, $38, $1c, $05, $20        ;; 00:376c ????????
+    db   $f0, $d1, $c9                                 ;; 00:3774 ???
 
 ; Draw text
 ; HL = pointer to text
