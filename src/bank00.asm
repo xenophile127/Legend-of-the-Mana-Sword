@@ -4982,11 +4982,9 @@ callFunctionInBank11:
     ld   A, [wScratchBankCallA]                        ;; 00:1db5 $fa $b3 $c0
     ret                                                ;; 00:1db8 $c9
 
-expansion_test_trampoline:
-    jp_to_bank 11, expansion_test                      ;; 00:1db9 $f5 $3e $01 $c3 $06 $1f
-
-    db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 00:1dbf ????????
-    db   $00, $00, $00                                 ;; 00:1dc7 ?
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00
 
 getNextBackgroundRequestSlot:
     ld   A, [wBackgroundRenderRequestCount]            ;; 00:1dca $fa $e8 $ce
