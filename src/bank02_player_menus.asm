@@ -5800,28 +5800,30 @@ drawDefaultStatusBar:
     ret                                                ;; 02:6f28 $c9
 
 drawHPOnStatusBar_2:
-    ld   C, $13 ; Mode/Max-digits to write             ;; 02:6f29 $06 $40
-    ld   DE, wHPMPTileBuffer ; WRAM address            ;; 02:6f2b $11 $60 $c1
-    ld   A, [wHPLow]                                   ;; 02:6f2e $fa $b2 $d7
-    ld   L, A                                          ;; 02:6f31 $6f
-    ld   A, [wHPHigh]                                  ;; 02:6f32 $fa $b3 $d7
-    ld   H, A                                          ;; 02:6f35 $67
-    call drawLeftAlignedNumberInWRAM                   ;; 02:6f36 $cd $?? $??
-    ld   B, $a0 ; Starting tile position               ;; 02:6f39 $16 $0b
-    jp   requestVRAMStatusBarTransfer                  ;; 02:6f3b $c3 $?? $??
-    db   $00                                           ;; 02:6f3e .
+    ld   DE, $06                                       ;; 02:6f29 $11 $06 $00
+    push DE                                            ;; 02:6f2c $d5
+    ld   B, $04                                        ;; 02:6f2d $06 $04
+    call clearStatusBarSection                         ;; 02:6f2f $cd $6b $6f
+    pop  DE                                            ;; 02:6f32 $d1
+    ld   A, [wHPHigh]                                  ;; 02:6f33 $fa $b3 $d7
+    ld   H, A                                          ;; 02:6f36 $67
+    ld   A, [wHPLow]                                   ;; 02:6f37 $fa $b2 $d7
+    ld   L, A                                          ;; 02:6f3a $6f
+    call drawNumberAndSymbolOnStatusBar                ;; 02:6f3b $cd $77 $6f
+    ret                                                ;; 02:6f3e $c9
 
 drawManaOnStatusBar_2:
-    ld   C, $02 ; Mode/Max-digits to write             ;; 02:6f3f $06 $20
-    ld   DE, wHPMPTileBuffer+$40 ; WRAM address        ;; 02:6f41 $11 $60 $c1
-    ld   A, [wManaLow]                                 ;; 02:6f44 $fa $b6 $d7
-    ld   L, A                                          ;; 02:6f45 $6f
-    ld   A, [wManaHigh]                                ;; 02:6f48 $fa $b7 $d7
-    ld   H, A                                          ;; 02:6f4b $67
-    call drawLeftAlignedNumberInWRAM                   ;; 02:6f4c $cd $?? $??
-    ld   B, $e0 ; Starting tile position               ;; 02:6f4f $16 $0e
-    jp   requestVRAMStatusBarTransfer                  ;; 02:6f51 $c3 $?? $??
-    db   $00                                           ;; 02:6f52 .
+    ld   DE, $0c                                       ;; 02:6f3f $11 $0c $00
+    push DE                                            ;; 02:6f42 $d5
+    ld   B, $03                                        ;; 02:6f43 $06 $03
+    call clearStatusBarSection                         ;; 02:6f45 $cd $6b $6f
+    pop  DE                                            ;; 02:6f48 $d1
+    ld   A, [wManaHigh]                                ;; 02:6f49 $fa $b7 $d7
+    ld   H, A                                          ;; 02:6f4c $67
+    ld   A, [wManaLow]                                 ;; 02:6f4d $fa $b6 $d7
+    ld   L, A                                          ;; 02:6f50 $6f
+    call drawNumberAndSymbolOnStatusBar                ;; 02:6f51 $cd $77 $6f
+    ret                                                ;; 02:6f54 $c9
 
 drawMoneyOnStatusBar:
     ld   DE, $12 ; Tile position of last number        ;; 02:6f55 $11 $12 $00
