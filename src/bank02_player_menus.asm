@@ -5800,42 +5800,40 @@ drawDefaultStatusBar:
     ret                                                ;; 02:6f28 $c9
 
 drawHPOnStatuBar:
-    ld   DE, $06                                       ;; 02:6f29 $11 $06 $00
-    push DE                                            ;; 02:6f2c $d5
-    ld   B, $04                                        ;; 02:6f2d $06 $04
-    call clearStatusBarSection                         ;; 02:6f2f $cd $6b $6f
-    pop  DE                                            ;; 02:6f32 $d1
-    ld   A, [wHPHigh]                                  ;; 02:6f33 $fa $b3 $d7
-    ld   H, A                                          ;; 02:6f36 $67
-    ld   A, [wHPLow]                                   ;; 02:6f37 $fa $b2 $d7
-    ld   L, A                                          ;; 02:6f3a $6f
-    call drawNumberOnStatusBar                         ;; 02:6f3b $cd $77 $6f
-    ret                                                ;; 02:6f3e $c9
+    ld   C, $13 ; Mode/Max-digits to write             ;; 02:6f29 $06 $40
+    ld   DE, wHPMPTileBuffer ; WRAM address            ;; 02:6f2b $11 $60 $c1
+    ld   A, [wHPLow]                                   ;; 02:6f2e $fa $b2 $d7
+    ld   L, A                                          ;; 02:6f31 $6f
+    ld   A, [wHPHigh]                                  ;; 02:6f32 $fa $b3 $d7
+    ld   H, A                                          ;; 02:6f35 $67
+    call drawLeftAlignedNumberInWRAM                   ;; 02:6f36 $cd $?? $??
+    ld   B, $a0 ; Starting tile position               ;; 02:6f39 $16 $0b
+    jp   requestVRAMStatusBarTransfer                  ;; 02:6f3b $c3 $?? $??
+    db   $00                                           ;; 02:6f3e .
 
 drawManaOnStatusBar:
-    ld   DE, $0c                                       ;; 02:6f3f $11 $0c $00
-    push DE                                            ;; 02:6f42 $d5
-    ld   B, $03                                        ;; 02:6f43 $06 $03
-    call clearStatusBarSection                         ;; 02:6f45 $cd $6b $6f
-    pop  DE                                            ;; 02:6f48 $d1
-    ld   A, [wManaHigh]                                ;; 02:6f49 $fa $b7 $d7
-    ld   H, A                                          ;; 02:6f4c $67
-    ld   A, [wManaLow]                                 ;; 02:6f4d $fa $b6 $d7
-    ld   L, A                                          ;; 02:6f50 $6f
-    call drawNumberOnStatusBar                         ;; 02:6f51 $cd $77 $6f
-    ret                                                ;; 02:6f54 $c9
+    ld   C, $02 ; Mode/Max-digits to write             ;; 02:6f3f $06 $20
+    ld   DE, wHPMPTileBuffer+$40 ; WRAM address        ;; 02:6f41 $11 $60 $c1
+    ld   A, [wManaLow]                                 ;; 02:6f44 $fa $b6 $d7
+    ld   L, A                                          ;; 02:6f45 $6f
+    ld   A, [wManaHigh]                                ;; 02:6f48 $fa $b7 $d7
+    ld   H, A                                          ;; 02:6f4b $67
+    call drawLeftAlignedNumberInWRAM                   ;; 02:6f4c $cd $?? $??
+    ld   B, $e0 ; Starting tile position               ;; 02:6f4f $16 $0e
+    jp   requestVRAMStatusBarTransfer                  ;; 02:6f51 $c3 $?? $??
+    db   $00                                           ;; 02:6f52 .
 
 drawMoneyOnStatusBar:
-    ld   DE, $13                                       ;; 02:6f55 $11 $13 $00
+    ld   DE, $12 ; Tile position of last number        ;; 02:6f55 $11 $12 $00
     push DE                                            ;; 02:6f58 $d5
-    ld   B, $05                                        ;; 02:6f59 $06 $05
+    ld   B, $06 ; Tiles back to clear                  ;; 02:6f59 $06 $06
     call clearStatusBarSection                         ;; 02:6f5b $cd $6b $6f
     pop  DE                                            ;; 02:6f5e $d1
     ld   A, [wMoneyHigh]                               ;; 02:6f5f $fa $bf $d7
     ld   H, A                                          ;; 02:6f62 $67
     ld   A, [wMoneyLow]                                ;; 02:6f63 $fa $be $d7
     ld   L, A                                          ;; 02:6f66 $6f
-    call drawNumberOnStatusBar                         ;; 02:6f67 $cd $77 $6f
+    call drawNumberAndSymbolOnStatusBar                ;; 02:6f67 $cd $77 $6f
     ret                                                ;; 02:6f6a $c9
 
 clearStatusBarSection:
@@ -5848,35 +5846,33 @@ clearStatusBarSection:
     jr   NZ, clearStatusBarSection                     ;; 02:6f74 $20 $f5
     ret                                                ;; 02:6f76 $c9
 
-drawNumberOnStatusBar:
+drawNumberAndSymbolOnStatusBar:
     ld   A, H                                          ;; 02:6f77 $7c
     or   A, L                                          ;; 02:6f78 $b5
-    jr   Z, .jr_02_6f91                                ;; 02:6f79 $28 $16
+    jr   Z, .jr_02_6f82                                ;; 02:6f79 $28 $07
 .jr_02_6f7b:
     ld   A, $0a                                        ;; 02:6f7b $3e $0a
     push DE                                            ;; 02:6f7d $d5
     call divMod                                        ;; 02:6f7e $cd $8b $2b
     pop  DE                                            ;; 02:6f81 $d1
+.jr_02_6f82:
     push HL                                            ;; 02:6f82 $e5
     push DE                                            ;; 02:6f83 $d5
-    add  A, $30                                        ;; 02:6f84 $c6 $30
-    call storeTileAatWindowPositionDE                  ;; 02:6f86 $cd $66 $38
-    pop  DE                                            ;; 02:6f89 $d1
-    dec  DE                                            ;; 02:6f8a $1b
-    pop  HL                                            ;; 02:6f8b $e1
-    ld   A, H                                          ;; 02:6f8c $7c
-    or   A, L                                          ;; 02:6f8d $b5
-    jr   NZ, .jr_02_6f7b                               ;; 02:6f8e $20 $eb
-    ret                                                ;; 02:6f90 $c9
-.jr_02_6f91:
-    ld   A, $30                                        ;; 02:6f91 $3e $30
-    call storeTileAatWindowPositionDE                  ;; 02:6f93 $cd $66 $38
-    ret                                                ;; 02:6f96 $c9
+    call storeTileAatWindowPositionDE                  ;; 02:6f84 $cd $66 $38
+    pop  DE                                            ;; 02:6f87 $d1
+    dec  DE                                            ;; 02:6f88 $1b
+    pop  HL                                            ;; 02:6f89 $e1
+    ld   A, H                                          ;; 02:6f8a $7c
+    or   A, L                                          ;; 02:6f8b $b5
+    jr   NZ, .jr_02_6f7b                               ;; 02:6f8c $20 $eb
+    ld   A, $f5 ; Lucre symbol tile                    ;; 02:6f8e $3e $f4
+    jp   storeTileAatWindowPositionDE                  ;; 02:6f90 $c3 $66 $38
+    db   $00, $00, $00, $00                            ;; 02:6f93 ....
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
-    db   $7f, $41, $49, $7f, $7f, $7f, $7f, $7f        ;; 02:6f97 ........
-    db   $46, $49, $7f, $7f, $7f, $7f, $40, $7f        ;; 02:6f9f ........
+    db   $7f, $f0, $f1, $0a, $0b, $0c, $0d, $f2        ;; 02:6f97 ........
+    db   $f3, $f4, $0e, $0f, $7f, $7f, $7f, $7f        ;; 02:6f9f ........
     db   $7f, $7f, $7f, $7f                            ;; 02:6fa7 ....
 
 attackWithWeaponUseWill:
@@ -8118,29 +8114,176 @@ titleScreenLicenseText:
 ;@ffa_text amount=24
 intoScrollText:
     TXT  "Tree of Mana grows<00>"                      ;; 02:7e8a ...................
-    TXT  "with the energy of<00>"                      ;; 02:7e9d ...................
-    TXT  "will from each and<00>"                      ;; 02:7eb0 ...................
-    TXT  "  every thing of<00>"                        ;; 02:7ec3 .................
-    TXT  "    this world.<00>"                         ;; 02:7ed4 ................
-    TXT  "<00>"                                        ;; 02:7ee4 ?
-    TXT  "  It grows high<00>"                         ;; 02:7ee5 ????????????????
-    TXT  " above the clouds<00>"                       ;; 02:7ef5 ??????????????????
-    TXT  "in the air on top<00>"                       ;; 02:7f07 ??????????????????
-    TXT  "of Mount Illusia.<00>"                       ;; 02:7f19 ??????????????????
-    TXT  "<00>"                                        ;; 02:7f2b ?
-    TXT  "Legend tells that<00>"                       ;; 02:7f2c ??????????????????
-    TXT  "it gives eternal<00>"                        ;; 02:7f3e ?????????????????
-    TXT  "power to the one<00>"                        ;; 02:7f4f ?????????????????
-    TXT  " who touched it.<00>"                        ;; 02:7f60 ?????????????????
-    TXT  "<00>"                                        ;; 02:7f71 ?
-    TXT  "  Dark Lord was<00>"                         ;; 02:7f72 ????????????????
-    TXT  "  trying to find<00>"                        ;; 02:7f82 ????????????????.
-    TXT  "  the way to the<00>"                        ;; 02:7f93 ...........??????
-    TXT  " Tree of Mana to<00>"                        ;; 02:7fa4 ?????????????????
-    TXT  "  get the mighty<00>"                        ;; 02:7fb5 ?????????????????
-    TXT  " power to conquer<00>"                       ;; 02:7fc6 ??????????????????
-    TXT  "    the world.<00>"                          ;; 02:7fd8 ???????????????
-    TXT  "<00>"                                        ;; 02:7fe7 ?
-    db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 02:7fe8 ????????
-    db   $00, $00, $00, $00, $01, $ff, $ff, $ff        ;; 02:7ff0 ????????
-    db   $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff        ;; 02:7ff8 ????????
+    TXT  "<00>"                                        ;; 02:7fd8 ?
+    db   $01                                           ;; 02:7fd9 ?
+
+; Draws left aligned number HL as modified tiles at WRAM position DE
+; C holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
+; C holds number of max digits in the second nibble
+drawLeftAlignedNumberInWRAM:
+    ld   B, $00 ; digit counter
+    ; Housekeeping, get a copy of proper WRAM starting
+    ;  location on the stack for later use
+    push DE
+    push BC
+
+    ; Load up the digits on the stack
+.divmod_and_store_number:
+    ld   A, $0a
+    push BC
+    push DE
+    call divMod
+    pop  DE
+    pop  BC
+    push AF
+    inc  B
+    ld   A, H
+    or   A, L
+    jr   NZ, .divmod_and_store_number
+
+    ; Reduce second nibble of C by num digits found
+    ; Remainder provides the number of tiles to clear
+    ; after we write the digits
+    ld   A, C
+    sub  A, B
+    ld   C, A
+
+    ; Stack holds B digits to pop, transfer them
+ .grab_digit_and_transfer:
+    ld   HL, gfxStatusBar+$100 ; start of number tiles
+    pop  AF ; grab digit
+    swap A
+    push BC
+    ld   B, $00
+    ld   C, A
+    add  HL, BC
+    ld   A, BANK(gfxStatusBar)
+    ld   B, $10
+    call copyAndRotateBankAfromHLtoDE
+    pop  BC
+    dec  B
+    jr   NZ, .grab_digit_and_transfer
+
+    ; Clear remaining tiles
+    ld   A, C
+    and  A, $10 ; add a tile for swap mode
+    swap A
+    add  A, C
+    and  A, $0f
+    jr   Z, .check_swap
+
+    ld   H, D
+    ld   L, E
+    ld   B, A
+    xor  A, A
+ .clear_remaining_tiles:
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    dec  B
+    jr   NZ, .clear_remaining_tiles
+
+    ; Shifted tiles are in WRAM, check if swap needed
+ .check_swap:
+    ld   L, C
+    pop  BC
+    bit  4, C
+    jr   NZ, .do_the_swap
+    pop  DE
+    ret
+
+.do_the_swap: ; Swap forward across tilea
+    push BC
+    ld   A, C
+    sub  A, L
+    ld   B, A ; B holds number of tiles to swap
+    call swapForwardHalfTiles
+    pop  BC
+    pop  DE
+    ret
+
+; Swaps tiles forward across half tile boundaries.
+; B holds number of tiles to shift
+; DE holds address of first byte after last digit tile
+swapForwardHalfTiles:
+    swap B ; now B holds number of bytes to swap
+    dec  DE ; go to last byte of last digit
+    ld   HL, $0010
+    add  HL, DE ;HL points to last byte of next tile
+
+; Shifts tiles 4 pixels to the right across
+; tile boundaries. DE points to last byte of
+; last digit, HL points to last byte of next
+; empty tile
+.shift_4px: ; loop is 21 cycles/16 bytes
+    ; First "or" in the last 4 bits of the
+    ; previous tile byte into the current
+    ; tile byte
+    ld   A, [DE]
+    swap A
+    ld   C, A
+    and  A, $f0
+    or   A, [HL]
+    ld   [HL-], A
+    ; Now shift down the last 4 bits of the
+    ; previous tile byte
+    ld   A, C
+    and  A, $0f
+    ld   [DE], A
+    dec  DE
+    dec  B
+    jr   NZ, .shift_4px
+    ret
+
+; Requests transfer of status bar WRAM tiles to VRAM
+; B holds VRAM tile position
+; C holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
+; C holds number of max digits in the second nibble
+; DE holds the WRAM address
+requestVRAMStatusBarTransfer:
+    ; Short circuit if nothing to do, else load number of tiles in C
+    ; This logic adds one to max digits if mode is shift-swap
+    ld   A, C
+    and  A, $10
+    swap A
+    add  A, C
+    and  A, $0f
+    ret  Z
+    ld   C, A
+
+    ; Prep source and destination addresses
+    ld   H, D
+    ld   L, E
+    ld   D, $90
+    ld   E, B
+    xor  A, A
+.request_loop:
+    push BC
+    push HL
+    push DE
+    call addTileGraphicCopyRequest
+    ld   BC, $0010
+    pop  HL
+    add  HL, BC
+    ld   D, H
+    ld   E, L
+    pop  HL
+    add  HL, BC
+    pop  BC
+    dec  C
+    jr   NZ, .request_loop
+    ret
+

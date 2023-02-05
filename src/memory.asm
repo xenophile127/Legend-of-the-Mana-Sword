@@ -276,7 +276,11 @@ wSoundEffectDurationChannel4:
 ; One byte long
 ; Channel 4 is not used for music, only sound effects
 wMusicEndedOnChannel4:
-    ds 7                                               ;; c15b
+    ds 5                                               ;; c15b
+
+; NOTE: we are intentionally using 96 bytes here, overflowing into the unused buffer below
+wHPMPTileBuffer:
+    ds 2                                               ;; c160
 
 ; Used to back up everything from c100 to c161, or it would if the functions were ever called
 wMusicDataBackup:
