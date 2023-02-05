@@ -3184,8 +3184,8 @@ windowReturnToScript:
 
 clearSaveLoadScreen:
     call drawDefaultStatusBar                          ;; 02:564c $cd $16 $6f
-    call drawHPOnStatuBar                              ;; 02:564f $cd $29 $6f
-    call drawManaOnStatusBar                           ;; 02:5652 $cd $3f $6f
+    call drawHPOnStatuBar_trampoline                   ;; 02:564f $cd $29 $6f
+    call drawManaOnStatusBar_trampoline                ;; 02:5652 $cd $3f $6f
     call drawMoneyOnStatusBar                          ;; 02:5655 $cd $55 $6f
     call hideAndSaveMenuMetasprites                    ;; 02:5658 $cd $51 $6b
     ld   DE, $9c40                                     ;; 02:565b $11 $40 $9c
@@ -5979,8 +5979,8 @@ doSpellOrItemEffect:
 .jr_02_704c:
     ld   [wManaLow], A                                 ;; 02:704c $ea $b6 $d7
 .jr_02_704f:
-    call drawHPOnStatuBar                              ;; 02:704f $cd $29 $6f
-    call drawManaOnStatusBar                           ;; 02:7052 $cd $3f $6f
+    call drawHPOnStatuBar_trampoline                   ;; 02:704f $cd $29 $6f
+    call drawManaOnStatusBar_trampoline                ;; 02:7052 $cd $3f $6f
     ret                                                ;; 02:7055 $c9
 .notCure:
     ld   HL, itemsListHealStatus                       ;; 02:7056 $21 $1f $7b
@@ -6191,7 +6191,7 @@ castSpellIfSufficientMana:
     sub  A, B                                          ;; 02:7193 $90
     jr   C, .jr_02_719f                                ;; 02:7194 $38 $09
     ld   [wManaLow], A                                 ;; 02:7196 $ea $b6 $d7
-    call drawManaOnStatusBar                           ;; 02:7199 $cd $3f $6f
+    call drawManaOnStatusBar_trampoline                ;; 02:7199 $cd $3f $6f
     pop  AF                                            ;; 02:719c $f1
     or   A, A                                          ;; 02:719d $b7
     ret                                                ;; 02:719e $c9
@@ -7434,7 +7434,7 @@ tickFujiPoisStatusEffectUpdateHP:
     ld   [wHPHigh], A                                  ;; 02:7965 $ea $b3 $d7
     ld   A, E                                          ;; 02:7968 $7b
     ld   [wHPLow], A                                   ;; 02:7969 $ea $b2 $d7
-    call drawHPOnStatuBar                              ;; 02:796c $cd $29 $6f
+    call drawHPOnStatuBar_trampoline                   ;; 02:796c $cd $29 $6f
     ret                                                ;; 02:796f $c9
 
 ; return: HL = Max HP/20, DE = Current HP
