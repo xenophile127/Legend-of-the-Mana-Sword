@@ -45,8 +45,8 @@ entryPointTableBank02:
     call_to_bank_target getSpellOrBookPower            ;; 02:4042 ??
     call_to_bank_target showFullscreenWindow           ;; 02:4044 pP
     call_to_bank_target drawDefaultStatusBar           ;; 02:4046 ??
-    call_to_bank_target drawHPOnStatusBar              ;; 02:4048 pP
-    call_to_bank_target drawManaOnStatusBar            ;; 02:404a pP
+    call_to_bank_target drawHPOnStatusBar_2            ;; 02:4048 pP
+    call_to_bank_target drawManaOnStatusBar_2          ;; 02:404a pP
     call_to_bank_target drawMoneyOnStatusBar           ;; 02:404c pP
     call_to_bank_target doSpellOrItemEffect            ;; 02:404e pP
     call_to_bank_target getCurrentMagicPower           ;; 02:4050 ??
@@ -5799,7 +5799,7 @@ drawDefaultStatusBar:
     jr   NZ, .loop                                     ;; 02:6f26 $20 $f6
     ret                                                ;; 02:6f28 $c9
 
-drawHPOnStatusBar:
+drawHPOnStatusBar_2:
     ld   C, $13 ; Mode/Max-digits to write             ;; 02:6f29 $06 $40
     ld   DE, wHPMPTileBuffer ; WRAM address            ;; 02:6f2b $11 $60 $c1
     ld   A, [wHPLow]                                   ;; 02:6f2e $fa $b2 $d7
@@ -5811,7 +5811,7 @@ drawHPOnStatusBar:
     jp   requestVRAMStatusBarTransfer                  ;; 02:6f3b $c3 $?? $??
     db   $00                                           ;; 02:6f3e .
 
-drawManaOnStatusBar:
+drawManaOnStatusBar_2:
     ld   C, $02 ; Mode/Max-digits to write             ;; 02:6f3f $06 $20
     ld   DE, wHPMPTileBuffer+$40 ; WRAM address        ;; 02:6f41 $11 $60 $c1
     ld   A, [wManaLow]                                 ;; 02:6f44 $fa $b6 $d7
@@ -8114,176 +8114,29 @@ titleScreenLicenseText:
 ;@ffa_text amount=24
 intoScrollText:
     TXT  "Tree of Mana grows<00>"                      ;; 02:7e8a ...................
-    TXT  "<00>"                                        ;; 02:7fd8 ?
-    db   $01                                           ;; 02:7fd9 ?
-
-; Draws left aligned number HL as modified tiles at WRAM position DE
-; C holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
-; C holds number of max digits in the second nibble
-drawLeftAlignedNumberInWRAM:
-    ld   B, $00 ; digit counter
-    ; Housekeeping, get a copy of proper WRAM starting
-    ;  location on the stack for later use
-    push DE
-    push BC
-
-    ; Load up the digits on the stack
-.divmod_and_store_number:
-    ld   A, $0a
-    push BC
-    push DE
-    call divMod
-    pop  DE
-    pop  BC
-    push AF
-    inc  B
-    ld   A, H
-    or   A, L
-    jr   NZ, .divmod_and_store_number
-
-    ; Reduce second nibble of C by num digits found
-    ; Remainder provides the number of tiles to clear
-    ; after we write the digits
-    ld   A, C
-    sub  A, B
-    ld   C, A
-
-    ; Stack holds B digits to pop, transfer them
- .grab_digit_and_transfer:
-    ld   HL, gfxStatusBar+$100 ; start of number tiles
-    pop  AF ; grab digit
-    swap A
-    push BC
-    ld   B, $00
-    ld   C, A
-    add  HL, BC
-    ld   A, BANK(gfxStatusBar)
-    ld   B, $10
-    call copyAndRotateBankAfromHLtoDE
-    pop  BC
-    dec  B
-    jr   NZ, .grab_digit_and_transfer
-
-    ; Clear remaining tiles
-    ld   A, C
-    and  A, $10 ; add a tile for swap mode
-    swap A
-    add  A, C
-    and  A, $0f
-    jr   Z, .check_swap
-
-    ld   H, D
-    ld   L, E
-    ld   B, A
-    xor  A, A
- .clear_remaining_tiles:
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    ld   [HL+], A
-    dec  B
-    jr   NZ, .clear_remaining_tiles
-
-    ; Shifted tiles are in WRAM, check if swap needed
- .check_swap:
-    ld   L, C
-    pop  BC
-    bit  4, C
-    jr   NZ, .do_the_swap
-    pop  DE
-    ret
-
-.do_the_swap: ; Swap forward across tilea
-    push BC
-    ld   A, C
-    sub  A, L
-    ld   B, A ; B holds number of tiles to swap
-    call swapForwardHalfTiles
-    pop  BC
-    pop  DE
-    ret
-
-; Swaps tiles forward across half tile boundaries.
-; B holds number of tiles to shift
-; DE holds address of first byte after last digit tile
-swapForwardHalfTiles:
-    swap B ; now B holds number of bytes to swap
-    dec  DE ; go to last byte of last digit
-    ld   HL, $0010
-    add  HL, DE ;HL points to last byte of next tile
-
-; Shifts tiles 4 pixels to the right across
-; tile boundaries. DE points to last byte of
-; last digit, HL points to last byte of next
-; empty tile
-.shift_4px: ; loop is 21 cycles/16 bytes
-    ; First "or" in the last 4 bits of the
-    ; previous tile byte into the current
-    ; tile byte
-    ld   A, [DE]
-    swap A
-    ld   C, A
-    and  A, $f0
-    or   A, [HL]
-    ld   [HL-], A
-    ; Now shift down the last 4 bits of the
-    ; previous tile byte
-    ld   A, C
-    and  A, $0f
-    ld   [DE], A
-    dec  DE
-    dec  B
-    jr   NZ, .shift_4px
-    ret
-
-; Requests transfer of status bar WRAM tiles to VRAM
-; B holds VRAM tile position
-; C holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
-; C holds number of max digits in the second nibble
-; DE holds the WRAM address
-requestVRAMStatusBarTransfer:
-    ; Short circuit if nothing to do, else load number of tiles in C
-    ; This logic adds one to max digits if mode is shift-swap
-    ld   A, C
-    and  A, $10
-    swap A
-    add  A, C
-    and  A, $0f
-    ret  Z
-    ld   C, A
-
-    ; Prep source and destination addresses
-    ld   H, D
-    ld   L, E
-    ld   D, $90
-    ld   E, B
-    xor  A, A
-.request_loop:
-    push BC
-    push HL
-    push DE
-    call addTileGraphicCopyRequest
-    ld   BC, $0010
-    pop  HL
-    add  HL, BC
-    ld   D, H
-    ld   E, L
-    pop  HL
-    add  HL, BC
-    pop  BC
-    dec  C
-    jr   NZ, .request_loop
-    ret
-
+    TXT  "with the energy of<00>"                      ;; 02:7e9d ...................
+    TXT  "will from each and<00>"                      ;; 02:7eb0 ...................
+    TXT  "  every thing of<00>"                        ;; 02:7ec3 .................
+    TXT  "    this world.<00>"                         ;; 02:7ed4 ................
+    TXT  "<00>"                                        ;; 02:7ee4 ?
+    TXT  "  It grows high<00>"                         ;; 02:7ee5 ????????????????
+    TXT  " above the clouds<00>"                       ;; 02:7ef5 ??????????????????
+    TXT  "in the air on top<00>"                       ;; 02:7f07 ??????????????????
+    TXT  "of Mount Illusia.<00>"                       ;; 02:7f19 ??????????????????
+    TXT  "<00>"                                        ;; 02:7f2b ?
+    TXT  "Legend tells that<00>"                       ;; 02:7f2c ??????????????????
+    TXT  "it gives eternal<00>"                        ;; 02:7f3e ?????????????????
+    TXT  "power to the one<00>"                        ;; 02:7f4f ?????????????????
+    TXT  " who touched it.<00>"                        ;; 02:7f60 ?????????????????
+    TXT  "<00>"                                        ;; 02:7f71 ?
+    TXT  "  Dark Lord was<00>"                         ;; 02:7f72 ????????????????
+    TXT  "  trying to find<00>"                        ;; 02:7f82 ????????????????.
+    TXT  "  the way to the<00>"                        ;; 02:7f93 ...........??????
+    TXT  " Tree of Mana to<00>"                        ;; 02:7fa4 ?????????????????
+    TXT  "  get the mighty<00>"                        ;; 02:7fb5 ?????????????????
+    TXT  " power to conquer<00>"                       ;; 02:7fc6 ??????????????????
+    TXT  "    the world.<00>"                          ;; 02:7fd8 ???????????????
+    TXT  "<00>"                                        ;; 02:7fe7 ?
+    db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 02:7fe8 ????????
+    db   $00, $00, $00, $00, $01, $ff, $ff, $ff        ;; 02:7ff0 ????????
+    db   $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff        ;; 02:7ff8 ????????

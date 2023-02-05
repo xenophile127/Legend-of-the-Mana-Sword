@@ -8005,10 +8005,10 @@ showFullscreenWindow_trampoline:
     db   $f5, $3e, $23, $c3, $06, $1f                  ;; 00:3105 ??????
 
 drawHPOnStatusBar_trampoline:
-    jp_to_bank 02, drawHPOnStatusBar                   ;; 00:310b $f5 $3e $24 $c3 $06 $1f
+    jp_to_bank 11, drawHPOnStatusBar                   ;; 00:310b $f5 $3e $24 $c3 $06 $1f
 
 drawManaOnStatusBar_trampoline:
-    jp_to_bank 02, drawManaOnStatusBar                 ;; 00:3111 $f5 $3e $25 $c3 $06 $1f
+    jp_to_bank 11, drawManaOnStatusBar                 ;; 00:3111 $f5 $3e $25 $c3 $06 $1f
 
 drawMoneyOnStatusBarTrampoline:
     jp_to_bank 02, drawMoneyOnStatusBar                ;; 00:3117 $f5 $3e $26 $c3 $06 $1f
