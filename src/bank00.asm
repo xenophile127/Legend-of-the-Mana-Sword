@@ -8004,8 +8004,8 @@ showFullscreenWindow_trampoline:
     jp_to_bank 02, showFullscreenWindow                ;; 00:30ff $f5 $3e $22 $c3 $06 $1f
     db   $f5, $3e, $23, $c3, $06, $1f                  ;; 00:3105 ??????
 
-drawHPOnStatuBar_trampoline:
-    jp_to_bank 02, drawHPOnStatuBar                    ;; 00:310b $f5 $3e $24 $c3 $06 $1f
+drawHPOnStatusBar_trampoline:
+    jp_to_bank 02, drawHPOnStatusBar                   ;; 00:310b $f5 $3e $24 $c3 $06 $1f
 
 drawManaOnStatusBar_trampoline:
     jp_to_bank 02, drawManaOnStatusBar                 ;; 00:3111 $f5 $3e $25 $c3 $06 $1f
@@ -9386,7 +9386,7 @@ scriptOpCodeFullHealDummyFA:
     ld   A, E                                          ;; 00:3953 $7b
     ld   [wHPLow], A                                   ;; 00:3954 $ea $b2 $d7
     push HL                                            ;; 00:3957 $e5
-    call drawHPOnStatuBar_trampoline                    ;; 00:3958 $cd $0b $31
+    call drawHPOnStatusBar_trampoline                  ;; 00:3958 $cd $0b $31
     pop  HL                                            ;; 00:395b $e1
     call getNextScriptInstruction                      ;; 00:395c $cd $27 $37
     ret                                                ;; 00:395f $c9
@@ -9401,7 +9401,7 @@ scriptOpCodeFullMana:
     ld   A, E                                          ;; 00:396c $7b
     ld   [wManaLow], A                                 ;; 00:396d $ea $b6 $d7
     push HL                                            ;; 00:3970 $e5
-    call drawManaOnStatusBar_trampoline                 ;; 00:3971 $cd $11 $31
+    call drawManaOnStatusBar_trampoline                ;; 00:3971 $cd $11 $31
     pop  HL                                            ;; 00:3974 $e1
     call getNextScriptInstruction                      ;; 00:3975 $cd $27 $37
     ret                                                ;; 00:3978 $c9
@@ -10190,7 +10190,7 @@ addHP:
     ld   A, L                                          ;; 00:3e1c $7d
     ld   [wHPLow], A                                   ;; 00:3e1d $ea $b2 $d7
     pop  DE                                            ;; 00:3e20 $d1
-    call drawHPOnStatuBar_trampoline                    ;; 00:3e21 $cd $0b $31
+    call drawHPOnStatusBar_trampoline                  ;; 00:3e21 $cd $0b $31
     ret                                                ;; 00:3e24 $c9
 
 subHP:
@@ -10213,7 +10213,7 @@ subHP:
     ld   [wHPHigh], A                                  ;; 00:3e3b $ea $b3 $d7
     ld   A, L                                          ;; 00:3e3e $7d
     ld   [wHPLow], A                                   ;; 00:3e3f $ea $b2 $d7
-    call drawHPOnStatuBar_trampoline                    ;; 00:3e42 $cd $0b $31
+    call drawHPOnStatusBar_trampoline                  ;; 00:3e42 $cd $0b $31
     ret                                                ;; 00:3e45 $c9
 
 checkForPlayerDeath:

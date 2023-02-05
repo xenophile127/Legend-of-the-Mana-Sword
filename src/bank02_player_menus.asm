@@ -45,7 +45,7 @@ entryPointTableBank02:
     call_to_bank_target getSpellOrBookPower            ;; 02:4042 ??
     call_to_bank_target showFullscreenWindow           ;; 02:4044 pP
     call_to_bank_target drawDefaultStatusBar           ;; 02:4046 ??
-    call_to_bank_target drawHPOnStatuBar               ;; 02:4048 pP
+    call_to_bank_target drawHPOnStatusBar              ;; 02:4048 pP
     call_to_bank_target drawManaOnStatusBar            ;; 02:404a pP
     call_to_bank_target drawMoneyOnStatusBar           ;; 02:404c pP
     call_to_bank_target doSpellOrItemEffect            ;; 02:404e pP
@@ -3184,7 +3184,7 @@ windowReturnToScript:
 
 clearSaveLoadScreen:
     call drawDefaultStatusBar                          ;; 02:564c $cd $16 $6f
-    call drawHPOnStatuBar_trampoline                   ;; 02:564f $cd $29 $6f
+    call drawHPOnStatusBar_trampoline                  ;; 02:564f $cd $29 $6f
     call drawManaOnStatusBar_trampoline                ;; 02:5652 $cd $3f $6f
     call drawMoneyOnStatusBar                          ;; 02:5655 $cd $55 $6f
     call hideAndSaveMenuMetasprites                    ;; 02:5658 $cd $51 $6b
@@ -5799,7 +5799,7 @@ drawDefaultStatusBar:
     jr   NZ, .loop                                     ;; 02:6f26 $20 $f6
     ret                                                ;; 02:6f28 $c9
 
-drawHPOnStatuBar:
+drawHPOnStatusBar:
     ld   C, $13 ; Mode/Max-digits to write             ;; 02:6f29 $06 $40
     ld   DE, wHPMPTileBuffer ; WRAM address            ;; 02:6f2b $11 $60 $c1
     ld   A, [wHPLow]                                   ;; 02:6f2e $fa $b2 $d7
@@ -5979,7 +5979,7 @@ doSpellOrItemEffect:
 .jr_02_704c:
     ld   [wManaLow], A                                 ;; 02:704c $ea $b6 $d7
 .jr_02_704f:
-    call drawHPOnStatuBar_trampoline                   ;; 02:704f $cd $29 $6f
+    call drawHPOnStatusBar_trampoline                  ;; 02:704f $cd $29 $6f
     call drawManaOnStatusBar_trampoline                ;; 02:7052 $cd $3f $6f
     ret                                                ;; 02:7055 $c9
 .notCure:
@@ -7434,7 +7434,7 @@ tickFujiPoisStatusEffectUpdateHP:
     ld   [wHPHigh], A                                  ;; 02:7965 $ea $b3 $d7
     ld   A, E                                          ;; 02:7968 $7b
     ld   [wHPLow], A                                   ;; 02:7969 $ea $b2 $d7
-    call drawHPOnStatuBar_trampoline                   ;; 02:796c $cd $29 $6f
+    call drawHPOnStatusBar_trampoline                  ;; 02:796c $cd $29 $6f
     ret                                                ;; 02:796f $c9
 
 ; return: HL = Max HP/20, DE = Current HP
