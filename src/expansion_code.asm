@@ -9,12 +9,8 @@ SECTION "bank11", ROMX[$4000], BANK[$11]
 
 ;@call_to_bank_jumptable
 entryPointTableBankExpansion:
-    call_to_bank_target expansion_test
     call_to_bank_target drawHPOnStatusBar
     call_to_bank_target drawManaOnStatusBar
-
-expansion_test:
-    ret
 
 drawHPOnStatusBar:
     ld   C, $13 ; Mode/Max-digits to write
@@ -208,4 +204,4 @@ requestVRAMStatusBarTransfer:
     ret
 
 gfxNumbersBottomLeftAligned:
-INCBIN "numbersbottomleftaligned.bin"
+INCBIN "numbers_bottom_left_aligned.bin"
