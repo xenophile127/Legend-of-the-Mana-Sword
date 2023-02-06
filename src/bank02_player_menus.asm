@@ -2243,7 +2243,7 @@ call_02_5062:
     jr   NZ, .loop                                     ;; 02:5083 $20 $fc
     ret                                                ;; 02:5085 $c9
 
-jr_02_5086:
+jr_02_5086: ; buy item menu
     ld   B, $00                                        ;; 02:5086 $06 $00
     ld   HL, wVendorBuyPrices                          ;; 02:5088 $21 $01 $d7
     add  HL, BC                                        ;; 02:508b $09
@@ -2255,6 +2255,9 @@ jr_02_5086:
     ld   D, A                                          ;; 02:5093 $57
     ld   A, [wMoneyLow]                                ;; 02:5094 $fa $be $d7
     ld   E, A                                          ;; 02:5097 $5f
+    ld   A, [wStatusEffect]
+    bit  7, A
+    jr   NZ, .jr_02_50a4
     ld   A, D                                          ;; 02:5098 $7a
     cp   A, H                                          ;; 02:5099 $bc
     jp   C, .jp_02_50aa                                ;; 02:509a $da $aa $50
@@ -2274,7 +2277,7 @@ jr_02_5086:
     call setMenuStateCurrentFunction                   ;; 02:50b1 $cd $98 $6c
     ret                                                ;; 02:50b4 $c9
 
-call_02_50b5:
+call_02_50b5: ; buy the item, subtract money
     ld   HL, wMiscFlags                                ;; 02:50b5 $21 $6f $d8
     res  0, [HL]                                       ;; 02:50b8 $cb $86
     ld   C, A                                          ;; 02:50ba $4f
@@ -2331,12 +2334,15 @@ call_02_50b5:
     ld   D, A                                          ;; 02:5114 $57
     ld   A, [wMoneyLow]                                ;; 02:5115 $fa $be $d7
     ld   E, A                                          ;; 02:5118 $5f
-    ld   A, E                                          ;; 02:5119 $7b
     sub  A, L                                          ;; 02:511a $95
     ld   E, A                                          ;; 02:511b $5f
     ld   A, D                                          ;; 02:511c $7a
     sbc  A, H                                          ;; 02:511d $9c
     ld   D, A                                          ;; 02:511e $57
+    jr   NC, .set_money
+    ld   HL, wStatusEffect
+    res  7, [HL]
+.set_money
     ld   A, D                                          ;; 02:511f $7a
     ld   [wMoneyHigh], A                               ;; 02:5120 $ea $bf $d7
     ld   A, E                                          ;; 02:5123 $7b
@@ -2466,7 +2472,7 @@ call_02_51d5:
     ld   [wMenuStateCurrentFunction], A                ;; 02:51f7 $ea $53 $d8
     ret                                                ;; 02:51fa $c9
 
-jp_02_51fb:
+jp_02_51fb: ; sell item
     call getSelectedMenuIndexes                        ;; 02:51fb $cd $b0 $57
     cp   A, $00                                        ;; 02:51fe $fe $00
     jr   NZ, call_02_522d                              ;; 02:5200 $20 $2b
@@ -2488,9 +2494,21 @@ jp_02_51fb:
     ld   A, [wMoneyLow]                                ;; 02:5218 $fa $be $d7
     ld   E, A                                          ;; 02:521b $5f
     add  HL, DE                                        ;; 02:521c $19
-    jr   NC, .jr_02_5222                               ;; 02:521d $30 $03
-    ld   HL, rIE                                       ;; 02:521f $21 $ff $ff
-.jr_02_5222:
+    push HL
+    ld   HL, wStatusEffect
+    jr   NC, .set_1                               ;; 02:521d $30 $03
+    set  7, [HL]
+.set_1:
+    bit  7, [HL]
+    pop  HL
+    jr   Z, .set_2
+    ld   A, L
+    sub  A, $9f
+    ld   A, H
+    sbc  A, $86
+    jr   C, .set_2
+    ld   HL, $869f
+.set_2:
     ld   A, H                                          ;; 02:5222 $7c
     ld   [wMoneyHigh], A                               ;; 02:5223 $ea $bf $d7
     ld   A, L                                          ;; 02:5226 $7d
@@ -5812,14 +5830,13 @@ drawManaOnStatusBar:
 
 drawMoneyOnStatusBar:
     ld   DE, $12 ; Tile position of last number        ;; 02:6f55 $11 $12 $00
-    push DE                                            ;; 02:6f58 $d5
     ld   B, $06 ; Tiles back to clear                  ;; 02:6f59 $06 $06
     call clearStatusBarSection                         ;; 02:6f5b $cd $6b $6f
-    pop  DE                                            ;; 02:6f5e $d1
     ld   A, [wMoneyHigh]                               ;; 02:6f5f $fa $bf $d7
     ld   H, A                                          ;; 02:6f62 $67
     ld   A, [wMoneyLow]                                ;; 02:6f63 $fa $be $d7
     ld   L, A                                          ;; 02:6f66 $6f
+    ld   E, $0b
     call drawNumberAndSymbolOnStatusBar                ;; 02:6f67 $cd $77 $6f
     ret                                                ;; 02:6f6a $c9
 
@@ -5833,28 +5850,69 @@ clearStatusBarSection:
     jr   NZ, clearStatusBarSection                     ;; 02:6f74 $20 $f5
     ret                                                ;; 02:6f76 $c9
 
+;drawNumberAndSymbolOnStatusBar:
+;    ld   A, H                                          ;; 02:6f77 $7c
+;    or   A, L                                          ;; 02:6f78 $b5
+;    jr   Z, .jr_02_6f82                                ;; 02:6f79 $28 $07
+;.jr_02_6f7b:
+;    ld   A, $0a                                        ;; 02:6f7b $3e $0a
+;    push DE                                            ;; 02:6f7d $d5
+;    call divMod                                        ;; 02:6f7e $cd $8b $2b
+;    pop  DE                                            ;; 02:6f81 $d1
+;.jr_02_6f82:
+;    push HL                                            ;; 02:6f82 $e5
+;    push DE                                            ;; 02:6f83 $d5
+;    call storeTileAatWindowPositionDE                  ;; 02:6f84 $cd $66 $38
+;    pop  DE                                            ;; 02:6f87 $d1
+;    dec  DE                                            ;; 02:6f88 $1b
+;    pop  HL                                            ;; 02:6f89 $e1
+;    ld   A, H                                          ;; 02:6f8a $7c
+;    or   A, L                                          ;; 02:6f8b $b5
+;    jr   NZ, .jr_02_6f7b                               ;; 02:6f8c $20 $eb
+;    ld   A, $f5 ; Lucre symbol tile                    ;; 02:6f8e $3e $f4
+;    jp   storeTileAatWindowPositionDE                  ;; 02:6f90 $c3 $66 $38
+;    db   $00, $00, $00, $00                            ;; 02:6f93 ....
 drawNumberAndSymbolOnStatusBar:
-    ld   A, H                                          ;; 02:6f77 $7c
-    or   A, L                                          ;; 02:6f78 $b5
-    jr   Z, .jr_02_6f82                                ;; 02:6f79 $28 $07
-.jr_02_6f7b:
-    ld   A, $0a                                        ;; 02:6f7b $3e $0a
-    push DE                                            ;; 02:6f7d $d5
-    call divMod                                        ;; 02:6f7e $cd $8b $2b
-    pop  DE                                            ;; 02:6f81 $d1
-.jr_02_6f82:
-    push HL                                            ;; 02:6f82 $e5
-    push DE                                            ;; 02:6f83 $d5
+    push DE
+    ld   D, H                                          ;; 02:6f77 $7c
+    ld   E, L                                          ;; 02:6f78 $b5
+    ld   C, $00
+    ld   HL, wStatusEffect
+    bit  7, [HL]
+    jr   Z, .do_bcd_conversion
+    inc  C
+.do_bcd_conversion:
+    ld   HL, wSRAMSaveHeader._1
+    call convertToUnpackedBCD
+    ld   HL, wSRAMSaveHeader._1
+    ld   C, $08
+    pop  DE
+.find_first_digit:
+    ld   A, [HL+]
+    dec  C
+    inc  DE
+    jr   Z, .store_number_in_window
+    and  A, A
+    jr   Z, .find_first_digit
+.store_number_in_window:
+    dec  HL
+    dec  HL
+    inc  C
+    inc  C
+    dec  DE
+    dec  DE
+    ld   [HL], $f5 ; Lucre symbol tile
+.store_number_loop:
+    ld   A, [HL+]
+    push HL
+    push DE
     call storeTileAatWindowPositionDE                  ;; 02:6f84 $cd $66 $38
-    pop  DE                                            ;; 02:6f87 $d1
-    dec  DE                                            ;; 02:6f88 $1b
-    pop  HL                                            ;; 02:6f89 $e1
-    ld   A, H                                          ;; 02:6f8a $7c
-    or   A, L                                          ;; 02:6f8b $b5
-    jr   NZ, .jr_02_6f7b                               ;; 02:6f8c $20 $eb
-    ld   A, $f5 ; Lucre symbol tile                    ;; 02:6f8e $3e $f4
-    jp   storeTileAatWindowPositionDE                  ;; 02:6f90 $c3 $66 $38
-    db   $00, $00, $00, $00                            ;; 02:6f93 ....
+    pop  DE
+    pop  HL
+    inc  DE
+    dec  C
+    jr   NZ, .store_number_loop
+    ret
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
@@ -6865,7 +6923,7 @@ call_02_75c5:
 .data_02_75f3:
     db   $00                                           ;; 02:75f3 .
 
-call_02_75f4:
+call_02_75f4: ; draw lucre in shops/status
     ld   A, [wDialogType]                              ;; 02:75f4 $fa $4a $d8
     push AF                                            ;; 02:75f7 $f5
     call windowInitContents                            ;; 02:75f8 $cd $93 $76
@@ -6884,16 +6942,20 @@ call_02_75f4:
     ld   H, A                                          ;; 02:760d $67
     ld   A, [wMoneyLow]                                ;; 02:760e $fa $be $d7
     ld   L, A                                          ;; 02:7611 $6f
-    ld   A, H                                          ;; 02:7612 $7c
-    or   A, L                                          ;; 02:7613 $b5
-    jr   NZ, .jr_02_761c                               ;; 02:7614 $20 $06
-    add  A, $30                                        ;; 02:7616 $c6 $30
-    call storeTileAatDialogPositionDE                  ;; 02:7618 $cd $44 $38
-    xor  A, A                                          ;; 02:761b $af
 .jr_02_761c:
     push DE                                            ;; 02:761c $d5
     push BC                                            ;; 02:761d $c5
-    call drawNumberAtDialogPositionDE                  ;; 02:761e $cd $18 $5b
+    ld   C, $00
+    ld   A, [wStatusEffect]
+    bit  7, A
+    jr   Z, .do_the_draw
+    inc  C
+.do_the_draw:
+    ld   A, E
+    sub  A, $06
+    ld   E, A
+    call drawNumber24bitOnDialog
+    ;call drawNumberAtDialogPositionDE                  ;; 02:761e $cd $18 $5b
     pop  BC                                            ;; 02:7621 $c1
     pop  DE                                            ;; 02:7622 $d1
     inc  E                                             ;; 02:7623 $1c

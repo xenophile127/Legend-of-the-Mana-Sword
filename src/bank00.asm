@@ -622,8 +622,6 @@ checkObjectsCollisionDirection:
 .ret_northwest:
     ld   A, $06                                        ;; 00:0407 $3e $06
     ret                                                ;; 00:0409 $c9
-    db   $f5, $c5, $3e, $03, $cd, $fb, $29, $c1        ;; 00:040a ????????
-    db   $f1, $cd, $95, $06, $f5, $cd, $0a, $2a        ;; 00:0412 ????????
     db   $f1, $c9                                      ;; 00:041a ??
 
 checkNpcsForCollisions_trampoline:
@@ -9487,25 +9485,16 @@ scriptOpCodeTakeXP:
     call getNextScriptInstruction                      ;; 00:3a43 $cd $27 $37
     ret                                                ;; 00:3a46 $c9
 
+; Not used, untested
 scriptOpCodeGiveMoney:
     ld   E, [HL]                                       ;; 00:3a47 $5e
     inc  HL                                            ;; 00:3a48 $23
     ld   D, [HL]                                       ;; 00:3a49 $56
     inc  HL                                            ;; 00:3a4a $23
     push HL                                            ;; 00:3a4b $e5
-    ld   A, [wMoneyHigh]                               ;; 00:3a4c $fa $bf $d7
-    ld   H, A                                          ;; 00:3a4f $67
-    ld   A, [wMoneyLow]                                ;; 00:3a50 $fa $be $d7
-    ld   L, A                                          ;; 00:3a53 $6f
-    add  HL, DE                                        ;; 00:3a54 $19
-    jr   NC, .set                                      ;; 00:3a55 $30 $03
-    ld   HL, rIE                                       ;; 00:3a57 $21 $ff $ff
-.set:
-    ld   A, H                                          ;; 00:3a5a $7c
-    ld   [wMoneyHigh], A                               ;; 00:3a5b $ea $bf $d7
-    ld   A, L                                          ;; 00:3a5e $7d
-    ld   [wMoneyLow], A                                ;; 00:3a5f $ea $be $d7
-    call drawMoneyOnStatusBarTrampoline                ;; 00:3a62 $cd $17 $31
+    ld   H, D
+    ld   L, E
+    call addMoney
     pop  HL                                            ;; 00:3a65 $e1
     call getNextScriptInstruction                      ;; 00:3a66 $cd $27 $37
     ret                                                ;; 00:3a69 $c9
@@ -9517,23 +9506,30 @@ scriptOpCodeTakeMoney:
     inc  HL                                            ;; 00:3a6d $23
     push HL                                            ;; 00:3a6e $e5
     ld   A, [wMoneyHigh]                               ;; 00:3a6f $fa $bf $d7
-    ld   H, A                                          ;; 00:3a72 $67
+    ld   H, A
     ld   A, [wMoneyLow]                                ;; 00:3a73 $fa $be $d7
-    ld   L, A                                          ;; 00:3a76 $6f
-    ld   A, L                                          ;; 00:3a77 $7d
+    ld   L, A
     sub  A, E                                          ;; 00:3a78 $93
     ld   L, A                                          ;; 00:3a79 $6f
     ld   A, H                                          ;; 00:3a7a $7c
     sbc  A, D                                          ;; 00:3a7b $9a
     ld   H, A                                          ;; 00:3a7c $67
     jr   NC, .jr_00_3a86                               ;; 00:3a7d $30 $07
+    push HL
+    ld   HL, wStatusEffect
+    bit  7, [HL]
+    jr   NZ, .get_poorer
+    pop  HL
     ld   A, $06                                        ;; 00:3a7f $3e $06
     call setScriptFlag                                 ;; 00:3a81 $cd $e4 $3b
     jr   .jr_00_3a93                                   ;; 00:3a84 $18 $0d
+.get_poorer:
+    res  7, [HL]
+    pop  HL
 .jr_00_3a86:
-    ld   A, H                                          ;; 00:3a86 $7c
+    ld   A, H
     ld   [wMoneyHigh], A                               ;; 00:3a87 $ea $bf $d7
-    ld   A, L                                          ;; 00:3a8a $7d
+    ld   A, L
     ld   [wMoneyLow], A                                ;; 00:3a8b $ea $be $d7
     ld   A, $06                                        ;; 00:3a8e $3e $06
     call clearScriptFlag                               ;; 00:3a90 $cd $ee $3b
@@ -10040,25 +10036,32 @@ checkForLevelUp:
 addMoney:
     push DE                                            ;; 00:3d72 $d5
     ld   A, [wMoneyHigh]                               ;; 00:3d73 $fa $bf $d7
-    ld   D, A                                          ;; 00:3d76 $57
+    ld   D, A
     ld   A, [wMoneyLow]                                ;; 00:3d77 $fa $be $d7
-    ld   E, A                                          ;; 00:3d7a $5f
+    ld   E, A
     add  HL, DE                                        ;; 00:3d7b $19
     pop  DE                                            ;; 00:3d7c $d1
-    jr   NC, .set                                      ;; 00:3d7d $30 $03
-    ld   HL, rIE                                       ;; 00:3d7f $21 $ff $ff
-.set:
-    ld   A, H                                          ;; 00:3d82 $7c
-    ld   [wMoneyHigh], A                               ;; 00:3d83 $ea $bf $d7
-    ld   A, L                                          ;; 00:3d86 $7d
-    ld   [wMoneyLow], A                                ;; 00:3d87 $ea $be $d7
+    push HL
+    ld   HL, wStatusEffect
+    jr   NC, .set_1                                      ;; 00:3a55 $30 $03
+    set  7, [HL]
+.set_1:
+    bit  7, [HL]
+    pop  HL
+    jr   Z, .set_2
+    ld   A, L
+    sub  A, $9f
+    ld   A, H
+    sbc  A, $86
+    jr   C, .set_2
+    ld   HL, $869f
+.set_2:
+    ld   A, H
+    ld   [wMoneyHigh], A                               ;; 00:3a5b $ea $bf $d7
+    ld   A, L
+    ld   [wMoneyLow], A                                ;; 00:3a5f $ea $be $d7
     call drawMoneyOnStatusBarTrampoline                ;; 00:3d8a $cd $17 $31
     ret                                                ;; 00:3d8d $c9
-    db   $d5, $fa, $bf, $d7, $57, $fa, $be, $d7        ;; 00:3d8e ????????
-    db   $5f, $7b, $95, $6f, $7a, $9c, $67, $30        ;; 00:3d96 ????????
-    db   $03, $21, $00, $00, $7c, $ea, $bf, $d7        ;; 00:3d9e ????????
-    db   $7d, $ea, $be, $d7, $cd, $17, $31, $d1        ;; 00:3da6 ????????
-    db   $c9                                           ;; 00:3dae ?
 
 ; The Japanese version did not have the overflow check resulting in high level Flare doing little or no damage
 getTotalMagicPower:
@@ -10098,7 +10101,6 @@ getEquippedElementalResistances:
     or   A, B                                          ;; 00:3ddb $b0
     pop  BC                                            ;; 00:3ddc $c1
     ret                                                ;; 00:3ddd $c9
-    db   $cd, $f9, $30, $c5, $47, $fa, $b6, $d7        ;; 00:3dde ????????
     db   $80, $c1, $c9                                 ;; 00:3de6 ???
 
 getEquippedWeaponBonusTypes_wrapped:
