@@ -9493,19 +9493,9 @@ scriptOpCodeGiveMoney:
     ld   D, [HL]                                       ;; 00:3a49 $56
     inc  HL                                            ;; 00:3a4a $23
     push HL                                            ;; 00:3a4b $e5
-    ld   A, [wMoneyHigh]                               ;; 00:3a4c $fa $bf $d7
-    ld   H, A                                          ;; 00:3a4f $67
-    ld   A, [wMoneyLow]                                ;; 00:3a50 $fa $be $d7
-    ld   L, A                                          ;; 00:3a53 $6f
-    add  HL, DE                                        ;; 00:3a54 $19
-    jr   NC, .set                                      ;; 00:3a55 $30 $03
-    ld   HL, rIE                                       ;; 00:3a57 $21 $ff $ff
-.set:
-    ld   A, H                                          ;; 00:3a5a $7c
-    ld   [wMoneyHigh], A                               ;; 00:3a5b $ea $bf $d7
-    ld   A, L                                          ;; 00:3a5e $7d
-    ld   [wMoneyLow], A                                ;; 00:3a5f $ea $be $d7
-    call drawMoneyOnStatusBarTrampoline                ;; 00:3a62 $cd $17 $31
+    ld   H, D
+    ld   L, E
+    call addMoney
     pop  HL                                            ;; 00:3a65 $e1
     call getNextScriptInstruction                      ;; 00:3a66 $cd $27 $37
     ret                                                ;; 00:3a69 $c9
@@ -9520,28 +9510,37 @@ scriptOpCodeTakeMoney:
     ld   H, A                                          ;; 00:3a72 $67
     ld   A, [wMoneyLow]                                ;; 00:3a73 $fa $be $d7
     ld   L, A                                          ;; 00:3a76 $6f
-    ld   A, L                                          ;; 00:3a77 $7d
     sub  A, E                                          ;; 00:3a78 $93
     ld   L, A                                          ;; 00:3a79 $6f
     ld   A, H                                          ;; 00:3a7a $7c
     sbc  A, D                                          ;; 00:3a7b $9a
     ld   H, A                                          ;; 00:3a7c $67
-    jr   NC, .jr_00_3a86                               ;; 00:3a7d $30 $07
+    jr   NC, .write_into_wram
+    push HL
+    ld   HL, wStatusEffect
+    bit  7, [HL]
+    jr   NZ, .unset_rich_flag
+    pop  HL
     ld   A, $06                                        ;; 00:3a7f $3e $06
     call setScriptFlag                                 ;; 00:3a81 $cd $e4 $3b
-    jr   .jr_00_3a93                                   ;; 00:3a84 $18 $0d
-.jr_00_3a86:
+    jr   .draw_and_continue
+.unset_rich_flag:
+    res  7, [HL]
+    pop  HL
+.write_into_wram:
     ld   A, H                                          ;; 00:3a86 $7c
     ld   [wMoneyHigh], A                               ;; 00:3a87 $ea $bf $d7
     ld   A, L                                          ;; 00:3a8a $7d
     ld   [wMoneyLow], A                                ;; 00:3a8b $ea $be $d7
     ld   A, $06                                        ;; 00:3a8e $3e $06
     call clearScriptFlag                               ;; 00:3a90 $cd $ee $3b
-.jr_00_3a93:
+.draw_and_continue:
     call drawMoneyOnStatusBarTrampoline                ;; 00:3a93 $cd $17 $31
     pop  HL                                            ;; 00:3a96 $e1
     call getNextScriptInstruction                      ;; 00:3a97 $cd $27 $37
     ret                                                ;; 00:3a9a $c9
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00
 
 scriptOpCodeHalt:
     dec  HL                                            ;; 00:3a9b $2b
@@ -10045,20 +10044,29 @@ addMoney:
     ld   E, A                                          ;; 00:3d7a $5f
     add  HL, DE                                        ;; 00:3d7b $19
     pop  DE                                            ;; 00:3d7c $d1
-    jr   NC, .set                                      ;; 00:3d7d $30 $03
-    ld   HL, rIE                                       ;; 00:3d7f $21 $ff $ff
-.set:
+    push HL
+    ld   HL, wStatusEffect
+    jr   NC, .set_1
+    set  7, [HL]
+.set_1:
+    bit  7, [HL]
+    pop  HL
+    jr   Z, .set_2
+    ld   A, L
+    sub  A, $9f
+    ld   A, H
+    sbc  A, $86
+    jr   C, .set_2
+    ld   HL, $869f
+.set_2:
     ld   A, H                                          ;; 00:3d82 $7c
     ld   [wMoneyHigh], A                               ;; 00:3d83 $ea $bf $d7
     ld   A, L                                          ;; 00:3d86 $7d
     ld   [wMoneyLow], A                                ;; 00:3d87 $ea $be $d7
     call drawMoneyOnStatusBarTrampoline                ;; 00:3d8a $cd $17 $31
     ret                                                ;; 00:3d8d $c9
-    db   $d5, $fa, $bf, $d7, $57, $fa, $be, $d7        ;; 00:3d8e ????????
-    db   $5f, $7b, $95, $6f, $7a, $9c, $67, $30        ;; 00:3d96 ????????
-    db   $03, $21, $00, $00, $7c, $ea, $bf, $d7        ;; 00:3d9e ????????
-    db   $7d, $ea, $be, $d7, $cd, $17, $31, $d1        ;; 00:3da6 ????????
-    db   $c9                                           ;; 00:3dae ?
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00, $00
 
 ; The Japanese version did not have the overflow check resulting in high level Flare doing little or no damage
 getTotalMagicPower:
