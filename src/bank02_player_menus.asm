@@ -2245,126 +2245,122 @@ call_02_5062:
 
 jr_02_5086: ; buy item menu
     ld   B, $00                                        ;; 02:5086 $06 $00
-    ld   HL, wVendorBuyPrices                          ;; 02:5088 $21 $01 $d7
-    add  HL, BC                                        ;; 02:508b $09
-    add  HL, BC                                        ;; 02:508c $09
-    ld   A, [HL+]                                      ;; 02:508d $2a
-    ld   H, [HL]                                       ;; 02:508e $66
-    ld   L, A                                          ;; 02:508f $6f
-    ld   A, [wMoneyHigh]                               ;; 02:5090 $fa $bf $d7
-    ld   D, A                                          ;; 02:5093 $57
-    ld   A, [wMoneyLow]                                ;; 02:5094 $fa $be $d7
-    ld   E, A                                          ;; 02:5097 $5f
-    ld   A, [wStatusEffect]
-    bit  7, A
-    jr   NZ, .jr_02_50a4
-    ld   A, D                                          ;; 02:5098 $7a
-    cp   A, H                                          ;; 02:5099 $bc
-    jp   C, .jp_02_50aa                                ;; 02:509a $da $aa $50
-    jr   NZ, .jr_02_50a4                               ;; 02:509d $20 $05
-    ld   A, E                                          ;; 02:509f $7b
-    cp   A, L                                          ;; 02:50a0 $bd
-    jp   C, .jp_02_50aa                                ;; 02:50a1 $da $aa $50
-.jr_02_50a4:
-    ld   A, C                                          ;; 02:50a4 $79
-    call call_02_50b5                                  ;; 02:50a5 $cd $b5 $50
-    xor  A, A                                          ;; 02:50a8 $af
-    ret                                                ;; 02:50a9 $c9
-.jp_02_50aa:
-    ld   HL, wMiscFlags                                ;; 02:50aa $21 $6f $d8
-    set  0, [HL]                                       ;; 02:50ad $cb $c6
-    ld   B, $a4                                        ;; 02:50af $06 $a4
-    call setMenuStateCurrentFunction                   ;; 02:50b1 $cd $98 $6c
-    ret                                                ;; 02:50b4 $c9
+    ld   HL, wMoneyLow                                 ;; 02:5088 $21 $be $d7
+    ld   A, [HL+]                                      ;; 02:508b $2a
+    ld   D, [HL]                                       ;; 02:508c $56
+    ld   E, A                                          ;; 02:508d $5f
+    ld   HL, wVendorBuyPrices                          ;; 02:508e $21 $01 $d7
+    add  HL, BC                                        ;; 02:5091 $09
+    add  HL, BC                                        ;; 02:5092 $09
+    ld   A, [HL+]                                      ;; 02:5093 $2a
+    ld   H, [HL]                                       ;; 02:5094 $66
+    ld   L, A                                          ;; 02:5095 $6f
+    ld   A, [wStatusEffect]                            ;; 02:5096 $fa $c0 $d7
+    bit  7, A                                          ;; 02:5099 $cb $7f
+    jr   NZ, .buy_item                                 ;; 02:509b $20 $0a
+    ld   A, D                                          ;; 02:509d $7a
+    cp   A, H                                          ;; 02:509e $bc
+    jr   C, .not_enough_money                          ;; 02:509f $da $0b
+    jr   NZ, .buy_item                                 ;; 02:50a1 $20 $04
+    ld   A, E                                          ;; 02:50a3 $7b
+    cp   A, L                                          ;; 02:50a4 $bd
+    jr   C, .not_enough_money                          ;; 02:50a5 $da $05
+.buy_item:
+    call call_02_50b5                                  ;; 02:50a7 $cd $b5 $50
+    xor  A, A                                          ;; 02:50aa $af
+    ret                                                ;; 02:50ab $c9
+.not_enough_money:
+    ld   HL, wMiscFlags                                ;; 02:50ac $21 $6f $d8
+    set  0, [HL]                                       ;; 02:50af $cb $c6
+    ld   B, $a4                                        ;; 02:50b1 $06 $a4
+    jp   setMenuStateCurrentFunction                   ;; 02:50b3 $c3 $98 $6c
 
 call_02_50b5: ; buy the item, subtract money
-    ld   HL, wMiscFlags                                ;; 02:50b5 $21 $6f $d8
-    res  0, [HL]                                       ;; 02:50b8 $cb $86
-    ld   C, A                                          ;; 02:50ba $4f
-    ld   B, $00                                        ;; 02:50bb $06 $00
-    ld   HL, wVendorBuyIDs                             ;; 02:50bd $21 $f3 $d6
-    add  HL, BC                                        ;; 02:50c0 $09
-    ld   A, [HL]                                       ;; 02:50c1 $7e
-    and  A, $7f                                        ;; 02:50c2 $e6 $7f
-    jp   Z, .jp_02_5149                                ;; 02:50c4 $ca $49 $51
-    ld   [wVendorPurchaseID], A                        ;; 02:50c7 $ea $5d $d8
-    cp   A, $3a                                        ;; 02:50ca $fe $3a
-    ld   A, [HL]                                       ;; 02:50cc $7e
-    push AF                                            ;; 02:50cd $f5
-    call C, giveItem                                   ;; 02:50ce $dc $19 $54
-    ld   A, [wMiscFlags]                               ;; 02:50d1 $fa $6f $d8
-    bit  1, A                                          ;; 02:50d4 $cb $4f
-    jr   NZ, .jr_02_5147                               ;; 02:50d6 $20 $6f
-    pop  AF                                            ;; 02:50d8 $f1
-    push AF                                            ;; 02:50d9 $f5
-    sub  A, $39                                        ;; 02:50da $d6 $39
-    ld   C, A                                          ;; 02:50dc $4f
-    pop  AF                                            ;; 02:50dd $f1
-    ld   A, C                                          ;; 02:50de $79
-    call NC, giveEquipmentAndStorePowers               ;; 02:50df $d4 $f0 $53
-    ld   A, [wMiscFlags]                               ;; 02:50e2 $fa $6f $d8
-    bit  1, A                                          ;; 02:50e5 $cb $4f
-    jr   NZ, .jr_02_5147                               ;; 02:50e7 $20 $5e
-    ld   HL, windowData.vendorScreenGold               ;; 02:50e9 $21 $22 $5c
-    ld   A, [HL+]                                      ;; 02:50ec $2a
-    ld   H, [HL]                                       ;; 02:50ed $66
-    ld   L, A                                          ;; 02:50ee $6f
-    ld   A, H                                          ;; 02:50ef $7c
-    ld   [wDialogY], A                                 ;; 02:50f0 $ea $a8 $d4
-    ld   A, L                                          ;; 02:50f3 $7d
-    ld   [wDialogX], A                                 ;; 02:50f4 $ea $a7 $d4
-    push HL                                            ;; 02:50f7 $e5
-    pop  DE                                            ;; 02:50f8 $d1
-    ld   B, $05                                        ;; 02:50f9 $06 $05
+    ld   HL, wMiscFlags                                ;; 02:50b6 $21 $6f $d8
+    res  0, [HL]                                       ;; 02:50b9 $cb $86
+    ld   HL, wVendorBuyIDs                             ;; 02:50bb $21 $f3 $d6
+    add  HL, BC                                        ;; 02:50be $09
+    ld   A, [HL]                                       ;; 02:50bf $7e
+    and  A, $7f                                        ;; 02:50c0 $e6 $7f
+    jp   Z, .jp_02_5149                                ;; 02:50c2 $ca $49 $51
+    ld   [wVendorPurchaseID], A                        ;; 02:50c5 $ea $5d $d8
+    cp   A, $3a                                        ;; 02:50c8 $fe $3a
+    ld   A, [HL]                                       ;; 02:50ca $7e
+    push AF                                            ;; 02:50cb $f5
+    call C, giveItem                                   ;; 02:50cc $dc $19 $54
+    ld   A, [wMiscFlags]                               ;; 02:50cf $fa $6f $d8
+    bit  1, A                                          ;; 02:50d2 $cb $4f
+    jr   NZ, .jr_02_5147                               ;; 02:50d4 $20 $71
+    pop  AF                                            ;; 02:50d6 $f1
+    push AF                                            ;; 02:50d7 $f5
+    sub  A, $39                                        ;; 02:50d8 $d6 $39
+    ld   C, A                                          ;; 02:50da $4f
+    pop  AF                                            ;; 02:50db $f1
+    ld   A, C                                          ;; 02:50dc $79
+    call NC, giveEquipmentAndStorePowers               ;; 02:50dd $d4 $f0 $53
+    ld   A, [wMiscFlags]                               ;; 02:50e0 $fa $6f $d8
+    bit  1, A                                          ;; 02:50e3 $cb $4f
+    jr   NZ, .jr_02_5147                               ;; 02:50e5 $20 $60
+    ld   HL, windowData.vendorScreenGold               ;; 02:50e7 $21 $22 $5c
+    ld   A, [HL+]                                      ;; 02:50ea $2a
+    ld   H, [HL]                                       ;; 02:50eb $66
+    ld   L, A                                          ;; 02:50ec $6f
+    ld   A, H                                          ;; 02:50ed $7c
+    ld   [wDialogY], A                                 ;; 02:50ee $ea $a8 $d4
+    ld   A, L                                          ;; 02:50f1 $7d
+    ld   [wDialogX], A                                 ;; 02:50f2 $ea $a7 $d4
+    push HL                                            ;; 02:50f5 $e5
+    pop  DE                                            ;; 02:50f6 $d1
+    ld   B, $05                                        ;; 02:50f7 $06 $05
 .loop_1:
-    ld   A, $7f                                        ;; 02:50fb $3e $7f
-    call storeTileAatDialogPositionDE                  ;; 02:50fd $cd $44 $38
-    dec  E                                             ;; 02:5100 $1d
-    dec  B                                             ;; 02:5101 $05
-    jr   NZ, .loop_1                                   ;; 02:5102 $20 $f7
-    call getSelectedMenuIndexes                        ;; 02:5104 $cd $b0 $57
-    ld   B, $00                                        ;; 02:5107 $06 $00
-    ld   HL, wVendorBuyPrices                          ;; 02:5109 $21 $01 $d7
-    add  HL, BC                                        ;; 02:510c $09
-    add  HL, BC                                        ;; 02:510d $09
-    ld   A, [HL+]                                      ;; 02:510e $2a
-    ld   H, [HL]                                       ;; 02:510f $66
-    ld   L, A                                          ;; 02:5110 $6f
-    ld   A, [wMoneyHigh]                               ;; 02:5111 $fa $bf $d7
-    ld   D, A                                          ;; 02:5114 $57
-    ld   A, [wMoneyLow]                                ;; 02:5115 $fa $be $d7
-    ld   E, A                                          ;; 02:5118 $5f
-    sub  A, L                                          ;; 02:511a $95
-    ld   E, A                                          ;; 02:511b $5f
-    ld   A, D                                          ;; 02:511c $7a
-    sbc  A, H                                          ;; 02:511d $9c
-    ld   D, A                                          ;; 02:511e $57
-    jr   NC, .set_money
-    ld   HL, wStatusEffect
-    res  7, [HL]
+    ld   A, $7f                                        ;; 02:50f9 $3e $7f
+    call storeTileAatDialogPositionDE                  ;; 02:50fb $cd $44 $38
+    dec  E                                             ;; 02:51fe $1d
+    dec  B                                             ;; 02:51ff $05
+    jr   NZ, .loop_1                                   ;; 02:5100 $20 $f7
+    call getSelectedMenuIndexes                        ;; 02:5102 $cd $b0 $57
+    ld   B, $00                                        ;; 02:5105 $06 $00
+    ld   HL, wMoneyLow                                 ;; 02:5107 $21 $be $d7
+    ld   A, [HL+]                                      ;; 02:510a $2a
+    ld   D, [HL]                                       ;; 02:510b $56
+    ld   E, A                                          ;; 02:510c $5f
+    ld   HL, wVendorBuyPrices                          ;; 02:510d $21 $01 $d7
+    add  HL, BC                                        ;; 02:5110 $09
+    add  HL, BC                                        ;; 02:5111 $09
+    ld   A, [HL+]                                      ;; 02:5112 $2a
+    ld   H, [HL]                                       ;; 02:5113 $66
+    ld   L, A                                          ;; 02:5114 $6f
+    ld   A, E                                          ;; 02:5115 $7b
+    sub  A, L                                          ;; 02:5116 $95
+    ld   E, A                                          ;; 02:5117 $5f
+    ld   A, D                                          ;; 02:5118 $7a
+    sbc  A, H                                          ;; 02:5119 $9c
+    ld   D, A                                          ;; 02:511a $57
+    jr   NC, .set_money                                ;; 02:511b $30 $05
+    ld   HL, wStatusEffect                             ;; 02:511d $21 $c0 $d7
+    res  7, [HL]                                       ;; 02:5120 $cb $be
 .set_money
-    ld   A, D                                          ;; 02:511f $7a
-    ld   [wMoneyHigh], A                               ;; 02:5120 $ea $bf $d7
-    ld   A, E                                          ;; 02:5123 $7b
-    ld   [wMoneyLow], A                                ;; 02:5124 $ea $be $d7
-    ld   DE, $206                                      ;; 02:5127 $11 $06 $02
-    ld   B, $05                                        ;; 02:512a $06 $05
+    ld   HL, wMoneyLow                                 ;; 02:5122 $21 $be $d7
+    ld   A, E                                          ;; 02:5125 $7b
+    ld   [HL+], A                                      ;; 02:5126 $22
+    ld   [HL], D                                       ;; 02:5127 $77
+    ld   DE, $206                                      ;; 02:5128 $11 $06 $02
+    ld   B, $05                                        ;; 02:512b $06 $05
 .loop_2:
-    ld   A, $7f                                        ;; 02:512c $3e $7f
-    push DE                                            ;; 02:512e $d5
-    push BC                                            ;; 02:512f $c5
-    call storeTileAatDialogPositionDE                  ;; 02:5130 $cd $44 $38
-    pop  BC                                            ;; 02:5133 $c1
-    pop  DE                                            ;; 02:5134 $d1
-    dec  E                                             ;; 02:5135 $1d
-    dec  B                                             ;; 02:5136 $05
-    jr   NZ, .loop_2                                   ;; 02:5137 $20 $f3
-    ld   A, $0c                                        ;; 02:5139 $3e $0c
-    ld   [wDialogType], A                              ;; 02:513b $ea $4a $d8
-    call call_02_75f4                                  ;; 02:513e $cd $f4 $75
-    ld   B, $a4                                        ;; 02:5141 $06 $a4
-    call setMenuStateCurrentFunction                   ;; 02:5143 $cd $98 $6c
-    ret                                                ;; 02:5146 $c9
+    ld   A, $7f                                        ;; 02:512d $3e $7f
+    push DE                                            ;; 02:512f $d5
+    push BC                                            ;; 02:5130 $c5
+    call storeTileAatDialogPositionDE                  ;; 02:5131 $cd $44 $38
+    pop  BC                                            ;; 02:5134 $c1
+    pop  DE                                            ;; 02:5135 $d1
+    dec  E                                             ;; 02:5136 $1d
+    dec  B                                             ;; 02:5137 $05
+    jr   NZ, .loop_2                                   ;; 02:5138 $20 $f3
+    ld   A, $0c                                        ;; 02:513a $3e $0c
+    ld   [wDialogType], A                              ;; 02:513c $ea $4a $d8
+    call call_02_75f4                                  ;; 02:513f $cd $f4 $75
+    ld   B, $a4                                        ;; 02:5142 $06 $a4
+    jp   setMenuStateCurrentFunction                   ;; 02:5144 $c3 $98 $6c
 .jr_02_5147:
     pop  AF                                            ;; 02:5147 $f1
     ret                                                ;; 02:5148 $c9
@@ -2495,7 +2491,7 @@ jp_02_51fb: ; sell item
     ld   E, A                                          ;; 02:521b $5f
     add  HL, DE                                        ;; 02:521c $19
     push HL
-    ld   HL, wStatusEffect
+    ld   HL, wStatusEffect                             ;; $21 $c0 $d7
     jr   NC, .set_1                               ;; 02:521d $30 $03
     set  7, [HL]
 .set_1:
@@ -5877,7 +5873,7 @@ drawNumberAndSymbolOnStatusBar:
     ld   D, H                                          ;; 02:6f77 $7c
     ld   E, L                                          ;; 02:6f78 $b5
     ld   C, $00
-    ld   HL, wStatusEffect
+    ld   HL, wStatusEffect                             ;; $21 $c0 $d7
     bit  7, [HL]
     jr   Z, .do_bcd_conversion
     inc  C
