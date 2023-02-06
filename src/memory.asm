@@ -1049,7 +1049,7 @@ wMoneyHigh:
 ;Bit4: Fuji's ASK
 ;Bit5: ?
 ;Bit6: ?
-;Bit7: Rich
+;Bit7: Rich (used to increase money over 65535)
 wStatusEffect:
     ds 1                                               ;; d7c0
 
