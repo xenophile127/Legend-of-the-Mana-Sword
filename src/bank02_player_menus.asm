@@ -5810,12 +5810,11 @@ drawMoneyOnStatusBar:
     ld   B, $06 ; Tiles back to clear                  ;; 02:6f59 $06 $06
     call clearStatusBarSection                         ;; 02:6f5b $cd $6b $6f
     ld   A, [wMoneyHigh]                               ;; 02:6f5f $fa $bf $d7
-    ld   H, A                                          ;; 02:6f62 $67
+    ld   D, A
     ld   A, [wMoneyLow]                                ;; 02:6f63 $fa $be $d7
-    ld   L, A                                          ;; 02:6f66 $6f
-    ld   E, $0b ; Draw location from left to right
-    call drawNumberAndSymbolOnStatusBar                ;; 02:6f67 $cd $77 $6f
-    ret                                                ;; 02:6f6a $c9
+    ld   E, A
+    ld   HL, $0b ; Draw location from left to right
+    jp   drawNumberAndSymbolOnStatusBar
 
 clearStatusBarSection:
     ld   A, $7f                                        ;; 02:6f6b $3e $7f
@@ -5828,9 +5827,7 @@ clearStatusBarSection:
     ret                                                ;; 02:6f76 $c9
 
 drawNumberAndSymbolOnStatusBar:
-    push DE                                            ;; 02:6f7d $d5
-    ld   D, H
-    ld   E, L
+    push HL
     ld   C, $00
     ld   A, [wStatusEffect]
     rla
@@ -5842,7 +5839,7 @@ drawNumberAndSymbolOnStatusBar:
     call convertToUnpackedBCD
     pop  HL
     ld   C, $08
-    pop  DE                                            ;; 02:6f81 $d1
+    pop  DE
 .find_first_digit:
     ld   A, [HL+]
     dec  C
@@ -5851,24 +5848,7 @@ drawNumberAndSymbolOnStatusBar:
     and  A, A
     jr   Z, .find_first_digit
 .store_number_in_window:
-    dec  HL
-    dec  HL
-    inc  C
-    inc  C
-    dec  DE
-    dec  DE
-    ld   [HL], $f5 ; Lucre symbol tile
-.store_number_loop:
-    ld   A, [HL+]
-    push HL                                            ;; 02:6f82 $e5
-    push DE                                            ;; 02:6f83 $d5
-    call storeTileAatWindowPositionDE                  ;; 02:6f84 $cd $66 $38
-    pop  DE                                            ;; 02:6f87 $d1
-    pop  HL                                            ;; 02:6f89 $e1
-    inc  DE
-    dec  C
-    jr   NZ, .store_number_loop
-    ret
+    jp   finishDrawNumberAndSymbolOnStatusBar
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
@@ -8282,3 +8262,22 @@ requestVRAMStatusBarTransfer:
     jr   NZ, .request_loop
     ret
 
+finishDrawNumberAndSymbolOnStatusBar:
+    dec  HL
+    dec  HL
+    inc  C
+    inc  C
+    dec  DE
+    dec  DE
+    ld   [HL], $f5 ; Lucre symbol tile
+.store_number_loop:
+    ld   A, [HL+]
+    push HL
+    push DE
+    call storeTileAatWindowPositionDE
+    pop  DE
+    pop  HL
+    inc  DE
+    dec  C
+    jr   NZ, .store_number_loop
+    ret
