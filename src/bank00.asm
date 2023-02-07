@@ -10063,7 +10063,7 @@ addMoneyAdjustValues:
     ld   A, H
     sbc  A, $86
     jr   C, .set_2
-    ld   HL, $869f
+    ld   HL, $869f ; fix largest value to 99999
 .set_2:
     ld   A, H                                          ;; 00:3d82 $7c
     ld   [wMoneyHigh], A                               ;; 00:3d83 $ea $bf $d7
