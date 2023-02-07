@@ -2488,17 +2488,9 @@ sellToVendor:
     call addMoneyAdjustValues
     call vendorRemoveSoldItem                          ;; 02:522a $cd $3c $52
     jr   call_02_522d
-
-finalizeDrawMoneyOnDialog:
-    ld   HL, wMoneyLow
-    ld   A, [HL+]
-    ld   H, [HL]
-    ld   L, A
-    call drawNumber24bitOnDialog
-    ld   B, $02
-    ld   HL, statusScreenGoldLabel
-    call drawText
-    ret
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00
 
 call_02_522d:
     xor  A, A                                          ;; 02:522d $af
@@ -5821,7 +5813,7 @@ drawMoneyOnStatusBar:
     ld   H, A                                          ;; 02:6f62 $67
     ld   A, [wMoneyLow]                                ;; 02:6f63 $fa $be $d7
     ld   L, A                                          ;; 02:6f66 $6f
-    ld   E, $0b
+    ld   E, $0b ; Draw location from left to right
     call drawNumberAndSymbolOnStatusBar                ;; 02:6f67 $cd $77 $6f
     ret                                                ;; 02:6f6a $c9
 
@@ -5840,14 +5832,15 @@ drawNumberAndSymbolOnStatusBar:
     ld   D, H
     ld   E, L
     ld   C, $00
-    ld   HL, wStatusEffect                             ;; $21 $c0 $d7
-    bit  7, [HL]
-    jr   Z, .do_bcd_conversion
+    ld   A, [wStatusEffect]
+    rla
+    jr   NC, .do_bcd_conversion
     inc  C
 .do_bcd_conversion:
     ld   HL, wSRAMSaveHeader._1
+    push HL
     call convertToUnpackedBCD
-    ld   HL, wSRAMSaveHeader._1
+    pop  HL
     ld   C, $08
     pop  DE                                            ;; 02:6f81 $d1
 .find_first_digit:
@@ -6903,10 +6896,20 @@ drawMoneyOnDialog:
     jr   NC, .draw_number
     inc  C
 .draw_number:
-    call finalizeDrawMoneyOnDialog
+    ld   HL, wMoneyLow
+    ld   A, [HL+]
+    ld   H, [HL]
+    ld   L, A
+    push DE
+    call drawNumber24bitOnDialog
+    pop  DE
+    ld   B, $02
+    ld   E, $07
+    ld   HL, statusScreenGoldLabel
+    jp   drawText
     pop  BC
     ret
-    db   $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00, $00, $00, $00
 
 ; Formatted for display in the Status window, with a blank in the middle
 initStatusHPMPCurrentAndMax:
