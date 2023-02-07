@@ -2470,7 +2470,7 @@ call_02_51d5:
 
 sellToVendor:
     call getSelectedMenuIndexes                        ;; 02:51fb $cd $b0 $57
-    cp   A, $00                                        ;; 02:51fe $fe $00
+    and  A, A
     jr   NZ, call_02_522d                              ;; 02:5200 $20 $2b
     ld   A, [wWindowVendorSellItemIndex]               ;; 02:5202 $fa $76 $d8
     ld   C, A                                          ;; 02:5205 $4f
@@ -2485,31 +2485,20 @@ sellToVendor:
     ld   [HL+], A                                      ;; 02:5211 $22
     push BC                                            ;; 02:5212 $c5
     pop  HL                                            ;; 02:5213 $e1
-    ld   A, [wMoneyHigh]                               ;; 02:5214 $fa $bf $d7
-    ld   D, A                                          ;; 02:5217 $57
-    ld   A, [wMoneyLow]                                ;; 02:5218 $fa $be $d7
-    ld   E, A                                          ;; 02:521b $5f
-    add  HL, DE                                        ;; 02:521c $19
-    push HL
-    ld   HL, wStatusEffect
-    jr   NC, .set_1
-    set  7, [HL]
-.set_1:
-    bit  7, [HL]
-    pop  HL
-    jr   Z, .set_2
-    ld   A, L
-    sub  A, $9f
-    ld   A, H
-    sbc  A, $86
-    jr   C, .set_2
-    ld   HL, $869f
-.set_2:
-    ld   A, H                                          ;; 02:5222 $7c
-    ld   [wMoneyHigh], A                               ;; 02:5223 $ea $bf $d7
-    ld   A, L                                          ;; 02:5226 $7d
-    ld   [wMoneyLow], A                                ;; 02:5227 $ea $be $d7
+    call addMoneyAdjustValues
     call vendorRemoveSoldItem                          ;; 02:522a $cd $3c $52
+    jr   call_02_522d
+
+finalizeDrawMoneyOnDialog:
+    ld   HL, wMoneyLow
+    ld   A, [HL+]
+    ld   H, [HL]
+    ld   L, A
+    call drawNumber24bitOnDialog
+    ld   B, $02
+    ld   HL, statusScreenGoldLabel
+    call drawText
+    ret
 
 call_02_522d:
     xor  A, A                                          ;; 02:522d $af
@@ -6901,41 +6890,23 @@ drawMoneyOnDialog:
     ld   A, [wDialogType]                              ;; 02:75f4 $fa $4a $d8
     push AF                                            ;; 02:75f7 $f5
     call windowInitContents                            ;; 02:75f8 $cd $93 $76
-    ld   DE, $207                                      ;; 02:75fb $11 $07 $02
+    ld   DE, $200                                      ;; 02:75fb $11 $07 $02
     pop  AF                                            ;; 02:75fe $f1
     cp   A, $13                                        ;; 02:75ff $fe $13
-    jr   NZ, .jr_02_7605                               ;; 02:7601 $20 $02
+    jr   NZ, .jr_02_761c
     dec  D                                             ;; 02:7603 $15
-    dec  E                                             ;; 02:7604 $1d
-.jr_02_7605:
-    cp   A, $0c                                        ;; 02:7605 $fe $0c
-    jr   NZ, .jr_02_760a                               ;; 02:7607 $20 $01
-    dec  E                                             ;; 02:7609 $1d
-.jr_02_760a:
-    ld   A, [wMoneyHigh]                               ;; 02:760a $fa $bf $d7
-    ld   H, A                                          ;; 02:760d $67
-    ld   A, [wMoneyLow]                                ;; 02:760e $fa $be $d7
-    ld   L, A                                          ;; 02:7611 $6f
 .jr_02_761c:
-    push DE                                            ;; 02:761c $d5
     push BC                                            ;; 02:761d $c5
     ld   C, $00
     ld   A, [wStatusEffect]
-    bit  7, A
-    jr   Z, .draw_number
+    rla
+    jr   NC, .draw_number
     inc  C
 .draw_number:
-    ld   A, E
-    sub  A, $06
-    ld   E, A
-    call drawNumber24bitOnDialog
-    pop  BC                                            ;; 02:7621 $c1
-    pop  DE                                            ;; 02:7622 $d1
-    inc  E                                             ;; 02:7623 $1c
-    ld   B, $02                                        ;; 02:7624 $06 $02
-    ld   HL, statusScreenGoldLabel                     ;; 02:7626 $21 $9a $7d
-    call drawText                                      ;; 02:7629 $cd $77 $37
-    ret                                                ;; 02:762c $c9
+    call finalizeDrawMoneyOnDialog
+    pop  BC
+    ret
+    db   $00, $00, $00, $00
 
 ; Formatted for display in the Status window, with a blank in the middle
 initStatusHPMPCurrentAndMax:

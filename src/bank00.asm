@@ -10035,8 +10035,14 @@ checkForLevelUp:
     jp   NC, startLevelUp                              ;; 00:3d6e $d2 $6b $3e
     ret                                                ;; 00:3d71 $c9
 
-; Add HL to the total money amount
+; Add HL to player money, then draw on status bar
 addMoney:
+    call addMoneyAdjustValues
+    call drawMoneyOnStatusBarTrampoline
+    ret
+
+; Add HL to player money accounting for rich bit
+addMoneyAdjustValues:
     push DE                                            ;; 00:3d72 $d5
     ld   A, [wMoneyHigh]                               ;; 00:3d73 $fa $bf $d7
     ld   D, A                                          ;; 00:3d76 $57
@@ -10063,10 +10069,9 @@ addMoney:
     ld   [wMoneyHigh], A                               ;; 00:3d83 $ea $bf $d7
     ld   A, L                                          ;; 00:3d86 $7d
     ld   [wMoneyLow], A                                ;; 00:3d87 $ea $be $d7
-    call drawMoneyOnStatusBarTrampoline                ;; 00:3d8a $cd $17 $31
     ret                                                ;; 00:3d8d $c9
     db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00, $00, $00, $00, $00
+    db   $00, $00
 
 ; The Japanese version did not have the overflow check resulting in high level Flare doing little or no damage
 getTotalMagicPower:
