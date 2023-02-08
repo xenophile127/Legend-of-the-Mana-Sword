@@ -2248,25 +2248,27 @@ call_02_5062:
 
 purchaseFromVendor:
     ld   B, $00                                        ;; 02:5086 $06 $00
+    ld   HL, wMoneyLow
+    ld   A, [HL+]
+    ld   D, [HL]
+    ld   E, A
     ld   HL, wVendorBuyPrices                          ;; 02:5088 $21 $01 $d7
     add  HL, BC                                        ;; 02:508b $09
     add  HL, BC                                        ;; 02:508c $09
     ld   A, [HL+]                                      ;; 02:508d $2a
     ld   H, [HL]                                       ;; 02:508e $66
     ld   L, A                                          ;; 02:508f $6f
-    ld   A, [wMoneyHigh]                               ;; 02:5090 $fa $bf $d7
-    ld   D, A                                          ;; 02:5093 $57
-    ld   A, [wMoneyLow]                                ;; 02:5094 $fa $be $d7
-    ld   E, A                                          ;; 02:5097 $5f
+    ld   A, [wStatusEffect]
+    bit  7, A
+    jr   NZ, .continue_purchase
     ld   A, D                                          ;; 02:5098 $7a
     cp   A, H                                          ;; 02:5099 $bc
-    jp   C, .not_enough_money                          ;; 02:509a $da $aa $50
+    jr   C, .not_enough_money
     jr   NZ, .continue_purchase                        ;; 02:509d $20 $05
     ld   A, E                                          ;; 02:509f $7b
     cp   A, L                                          ;; 02:50a0 $bd
-    jp   C, .not_enough_money                          ;; 02:50a1 $da $aa $50
+    jr   C, .not_enough_money
 .continue_purchase:
-    ld   A, C                                          ;; 02:50a4 $79
     call finalizePurchase                              ;; 02:50a5 $cd $b5 $50
     xor  A, A                                          ;; 02:50a8 $af
     ret                                                ;; 02:50a9 $c9
@@ -2274,14 +2276,11 @@ purchaseFromVendor:
     ld   HL, wMiscFlags                                ;; 02:50aa $21 $6f $d8
     set  0, [HL]                                       ;; 02:50ad $cb $c6
     ld   B, $a4                                        ;; 02:50af $06 $a4
-    call setMenuStateCurrentFunction                   ;; 02:50b1 $cd $98 $6c
-    ret                                                ;; 02:50b4 $c9
+    jp   setMenuStateCurrentFunction
 
 finalizePurchase:
     ld   HL, wMiscFlags                                ;; 02:50b5 $21 $6f $d8
     res  0, [HL]                                       ;; 02:50b8 $cb $86
-    ld   C, A                                          ;; 02:50ba $4f
-    ld   B, $00                                        ;; 02:50bb $06 $00
     ld   HL, wVendorBuyIDs                             ;; 02:50bd $21 $f3 $d6
     add  HL, BC                                        ;; 02:50c0 $09
     ld   A, [HL]                                       ;; 02:50c1 $7e
@@ -2324,26 +2323,30 @@ finalizePurchase:
     jr   NZ, .loop_1                                   ;; 02:5102 $20 $f7
     call getSelectedMenuIndexes                        ;; 02:5104 $cd $b0 $57
     ld   B, $00                                        ;; 02:5107 $06 $00
+    ld   HL, wMoneyLow
+    ld   A, [HL+]
+    ld   D, [HL]
+    ld   E, A
     ld   HL, wVendorBuyPrices                          ;; 02:5109 $21 $01 $d7
     add  HL, BC                                        ;; 02:510c $09
     add  HL, BC                                        ;; 02:510d $09
     ld   A, [HL+]                                      ;; 02:510e $2a
     ld   H, [HL]                                       ;; 02:510f $66
     ld   L, A                                          ;; 02:5110 $6f
-    ld   A, [wMoneyHigh]                               ;; 02:5111 $fa $bf $d7
-    ld   D, A                                          ;; 02:5114 $57
-    ld   A, [wMoneyLow]                                ;; 02:5115 $fa $be $d7
-    ld   E, A                                          ;; 02:5118 $5f
     ld   A, E                                          ;; 02:5119 $7b
     sub  A, L                                          ;; 02:511a $95
     ld   E, A                                          ;; 02:511b $5f
     ld   A, D                                          ;; 02:511c $7a
     sbc  A, H                                          ;; 02:511d $9c
     ld   D, A                                          ;; 02:511e $57
-    ld   A, D                                          ;; 02:511f $7a
-    ld   [wMoneyHigh], A                               ;; 02:5120 $ea $bf $d7
+    jr   NC, .set_money
+    ld   HL, wStatusEffect
+    res  7, [HL]
+.set_money
+    ld   HL, wMoneyLow
     ld   A, E                                          ;; 02:5123 $7b
-    ld   [wMoneyLow], A                                ;; 02:5124 $ea $be $d7
+    ld   [HL+], A
+    ld   [HL], D
     ld   DE, $206                                      ;; 02:5127 $11 $06 $02
     ld   B, $05                                        ;; 02:512a $06 $05
 .loop_2:
@@ -2360,8 +2363,7 @@ finalizePurchase:
     ld   [wDialogType], A                              ;; 02:513b $ea $4a $d8
     call drawMoneyOnDialog                             ;; 02:513e $cd $f4 $75
     ld   B, $a4                                        ;; 02:5141 $06 $a4
-    call setMenuStateCurrentFunction                   ;; 02:5143 $cd $98 $6c
-    ret                                                ;; 02:5146 $c9
+    jp   setMenuStateCurrentFunction
 .jr_02_5147:
     pop  AF                                            ;; 02:5147 $f1
     ret                                                ;; 02:5148 $c9
@@ -2471,7 +2473,7 @@ windowWaitForAnyButton:
 
 sellToVendor:
     call getSelectedMenuIndexes                        ;; 02:51fb $cd $b0 $57
-    cp   A, $00                                        ;; 02:51fe $fe $00
+    and  A, A
     jr   NZ, call_02_522d                              ;; 02:5200 $20 $2b
     ld   A, [wWindowVendorSellItemIndex]               ;; 02:5202 $fa $76 $d8
     ld   C, A                                          ;; 02:5205 $4f
@@ -2486,19 +2488,12 @@ sellToVendor:
     ld   [HL+], A                                      ;; 02:5211 $22
     push BC                                            ;; 02:5212 $c5
     pop  HL                                            ;; 02:5213 $e1
-    ld   A, [wMoneyHigh]                               ;; 02:5214 $fa $bf $d7
-    ld   D, A                                          ;; 02:5217 $57
-    ld   A, [wMoneyLow]                                ;; 02:5218 $fa $be $d7
-    ld   E, A                                          ;; 02:521b $5f
-    add  HL, DE                                        ;; 02:521c $19
-    jr   NC, .jr_02_5222                               ;; 02:521d $30 $03
-    ld   HL, rIE                                       ;; 02:521f $21 $ff $ff
-.jr_02_5222:
-    ld   A, H                                          ;; 02:5222 $7c
-    ld   [wMoneyHigh], A                               ;; 02:5223 $ea $bf $d7
-    ld   A, L                                          ;; 02:5226 $7d
-    ld   [wMoneyLow], A                                ;; 02:5227 $ea $be $d7
+    call addMoneyAdjustValues
     call vendorRemoveSoldItem                          ;; 02:522a $cd $3c $52
+    jr   call_02_522d
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00
 
 call_02_522d:
     xor  A, A                                          ;; 02:522d $af
@@ -5827,16 +5822,14 @@ drawManaOnStatusBar_2:
 
 drawMoneyOnStatusBar:
     ld   DE, $12 ; Tile position of last number        ;; 02:6f55 $11 $12 $00
-    push DE                                            ;; 02:6f58 $d5
     ld   B, $06 ; Tiles back to clear                  ;; 02:6f59 $06 $06
     call clearStatusBarSection                         ;; 02:6f5b $cd $6b $6f
-    pop  DE                                            ;; 02:6f5e $d1
     ld   A, [wMoneyHigh]                               ;; 02:6f5f $fa $bf $d7
-    ld   H, A                                          ;; 02:6f62 $67
+    ld   D, A
     ld   A, [wMoneyLow]                                ;; 02:6f63 $fa $be $d7
-    ld   L, A                                          ;; 02:6f66 $6f
-    call drawNumberAndSymbolOnStatusBar                ;; 02:6f67 $cd $77 $6f
-    ret                                                ;; 02:6f6a $c9
+    ld   E, A
+    ld   HL, $0b ; Draw location from left to right
+    jp   drawNumberAndSymbolOnStatusBar
 
 clearStatusBarSection:
     ld   A, $7f                                        ;; 02:6f6b $3e $7f
@@ -5849,27 +5842,28 @@ clearStatusBarSection:
     ret                                                ;; 02:6f76 $c9
 
 drawNumberAndSymbolOnStatusBar:
-    ld   A, H                                          ;; 02:6f77 $7c
-    or   A, L                                          ;; 02:6f78 $b5
-    jr   Z, .jr_02_6f82                                ;; 02:6f79 $28 $07
-.jr_02_6f7b:
-    ld   A, $0a                                        ;; 02:6f7b $3e $0a
-    push DE                                            ;; 02:6f7d $d5
-    call divMod                                        ;; 02:6f7e $cd $8b $2b
-    pop  DE                                            ;; 02:6f81 $d1
-.jr_02_6f82:
-    push HL                                            ;; 02:6f82 $e5
-    push DE                                            ;; 02:6f83 $d5
-    call storeTileAatWindowPositionDE                  ;; 02:6f84 $cd $66 $38
-    pop  DE                                            ;; 02:6f87 $d1
-    dec  DE                                            ;; 02:6f88 $1b
-    pop  HL                                            ;; 02:6f89 $e1
-    ld   A, H                                          ;; 02:6f8a $7c
-    or   A, L                                          ;; 02:6f8b $b5
-    jr   NZ, .jr_02_6f7b                               ;; 02:6f8c $20 $eb
-    ld   A, $f5 ; Lucre symbol tile                    ;; 02:6f8e $3e $f4
-    jp   storeTileAatWindowPositionDE                  ;; 02:6f90 $c3 $66 $38
-    db   $00, $00, $00, $00                            ;; 02:6f93 ....
+    push HL
+    ld   C, $00
+    ld   A, [wStatusEffect]
+    rla
+    jr   NC, .do_bcd_conversion
+    inc  C
+.do_bcd_conversion:
+    ld   HL, wSRAMSaveHeader._1
+    push HL
+    call convertToUnpackedBCD
+    pop  HL
+    ld   C, $08
+    pop  DE
+.find_first_digit:
+    ld   A, [HL+]
+    dec  C
+    inc  DE
+    jr   Z, .store_number_in_window
+    and  A, A
+    jr   Z, .find_first_digit
+.store_number_in_window:
+    jp   finishDrawNumberAndSymbolOnStatusBar
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
@@ -6884,38 +6878,33 @@ drawMoneyOnDialog:
     ld   A, [wDialogType]                              ;; 02:75f4 $fa $4a $d8
     push AF                                            ;; 02:75f7 $f5
     call windowInitContents                            ;; 02:75f8 $cd $93 $76
-    ld   DE, $207                                      ;; 02:75fb $11 $07 $02
+    ld   DE, $200                                      ;; 02:75fb $11 $07 $02
     pop  AF                                            ;; 02:75fe $f1
     cp   A, $13                                        ;; 02:75ff $fe $13
-    jr   NZ, .jr_02_7605                               ;; 02:7601 $20 $02
+    jr   NZ, .jr_02_761c
     dec  D                                             ;; 02:7603 $15
-    dec  E                                             ;; 02:7604 $1d
-.jr_02_7605:
-    cp   A, $0c                                        ;; 02:7605 $fe $0c
-    jr   NZ, .jr_02_760a                               ;; 02:7607 $20 $01
-    dec  E                                             ;; 02:7609 $1d
-.jr_02_760a:
-    ld   A, [wMoneyHigh]                               ;; 02:760a $fa $bf $d7
-    ld   H, A                                          ;; 02:760d $67
-    ld   A, [wMoneyLow]                                ;; 02:760e $fa $be $d7
-    ld   L, A                                          ;; 02:7611 $6f
-    ld   A, H                                          ;; 02:7612 $7c
-    or   A, L                                          ;; 02:7613 $b5
-    jr   NZ, .jr_02_761c                               ;; 02:7614 $20 $06
-    add  A, $30                                        ;; 02:7616 $c6 $30
-    call storeTileAatDialogPositionDE                  ;; 02:7618 $cd $44 $38
-    xor  A, A                                          ;; 02:761b $af
 .jr_02_761c:
-    push DE                                            ;; 02:761c $d5
     push BC                                            ;; 02:761d $c5
-    call drawNumberAtDialogPositionDE                  ;; 02:761e $cd $18 $5b
-    pop  BC                                            ;; 02:7621 $c1
-    pop  DE                                            ;; 02:7622 $d1
-    inc  E                                             ;; 02:7623 $1c
-    ld   B, $02                                        ;; 02:7624 $06 $02
-    ld   HL, statusScreenGoldLabel                     ;; 02:7626 $21 $9a $7d
-    call drawText                                      ;; 02:7629 $cd $77 $37
-    ret                                                ;; 02:762c $c9
+    ld   C, $00
+    ld   A, [wStatusEffect]
+    rla
+    jr   NC, .draw_number
+    inc  C
+.draw_number:
+    ld   HL, wMoneyLow
+    ld   A, [HL+]
+    ld   H, [HL]
+    ld   L, A
+    push DE
+    call drawNumber24bitOnDialog
+    pop  DE
+    ld   B, $02
+    ld   E, $07
+    ld   HL, statusScreenGoldLabel
+    jp   drawText
+    pop  BC
+    ret
+    db   $00, $00, $00, $00, $00, $00, $00, $00
 
 ; Formatted for display in the Status window, with a blank in the middle
 initStatusHPMPCurrentAndMax:
@@ -8116,29 +8105,195 @@ titleScreenLicenseText:
 ;@ffa_text amount=24
 intoScrollText:
     TXT  "Tree of Mana grows<00>"                      ;; 02:7e8a ...................
-    TXT  "with the energy of<00>"                      ;; 02:7e9d ...................
-    TXT  "will from each and<00>"                      ;; 02:7eb0 ...................
-    TXT  "  every thing of<00>"                        ;; 02:7ec3 .................
-    TXT  "    this world.<00>"                         ;; 02:7ed4 ................
-    TXT  "<00>"                                        ;; 02:7ee4 ?
-    TXT  "  It grows high<00>"                         ;; 02:7ee5 ????????????????
-    TXT  " above the clouds<00>"                       ;; 02:7ef5 ??????????????????
-    TXT  "in the air on top<00>"                       ;; 02:7f07 ??????????????????
-    TXT  "of Mount Illusia.<00>"                       ;; 02:7f19 ??????????????????
-    TXT  "<00>"                                        ;; 02:7f2b ?
-    TXT  "Legend tells that<00>"                       ;; 02:7f2c ??????????????????
-    TXT  "it gives eternal<00>"                        ;; 02:7f3e ?????????????????
-    TXT  "power to the one<00>"                        ;; 02:7f4f ?????????????????
-    TXT  " who touched it.<00>"                        ;; 02:7f60 ?????????????????
-    TXT  "<00>"                                        ;; 02:7f71 ?
-    TXT  "  Dark Lord was<00>"                         ;; 02:7f72 ????????????????
-    TXT  "  trying to find<00>"                        ;; 02:7f82 ????????????????.
-    TXT  "  the way to the<00>"                        ;; 02:7f93 ...........??????
-    TXT  " Tree of Mana to<00>"                        ;; 02:7fa4 ?????????????????
-    TXT  "  get the mighty<00>"                        ;; 02:7fb5 ?????????????????
-    TXT  " power to conquer<00>"                       ;; 02:7fc6 ??????????????????
-    TXT  "    the world.<00>"                          ;; 02:7fd8 ???????????????
-    TXT  "<00>"                                        ;; 02:7fe7 ?
-    db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 02:7fe8 ????????
-    db   $00, $00, $00, $00, $01, $ff, $ff, $ff        ;; 02:7ff0 ????????
-    db   $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff        ;; 02:7ff8 ????????
+    TXT  "<00>"                                        ;; 02:7fd8 ?
+    db   $01                                           ;; 02:7fd9 ?
+
+; Draws left aligned number HL as modified tiles at WRAM position DE
+; C holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
+; C holds number of max digits in the second nibble
+drawLeftAlignedNumberInWRAM:
+    ld   B, $00 ; digit counter
+    ; Housekeeping, get a copy of proper WRAM starting
+    ;  location on the stack for later use
+    push DE
+    push BC
+
+    ; Load up the digits on the stack
+.divmod_and_store_number:
+    ld   A, $0a
+    push BC
+    push DE
+    call divMod
+    pop  DE
+    pop  BC
+    push AF
+    inc  B
+    ld   A, H
+    or   A, L
+    jr   NZ, .divmod_and_store_number
+
+    ; Reduce second nibble of C by num digits found
+    ; Remainder provides the number of tiles to clear
+    ; after we write the digits
+    ld   A, C
+    sub  A, B
+    ld   C, A
+
+    ; Stack holds B digits to pop, transfer them
+ .grab_digit_and_transfer:
+    ld   HL, gfxStatusBar+$100 ; start of number tiles
+    pop  AF ; grab digit
+    swap A
+    push BC
+    ld   B, $00
+    ld   C, A
+    add  HL, BC
+    ld   A, BANK(gfxStatusBar)
+    ld   B, $10
+    call copyAndRotateBankAfromHLtoDE
+    pop  BC
+    dec  B
+    jr   NZ, .grab_digit_and_transfer
+
+    ; Clear remaining tiles
+    ld   A, C
+    and  A, $10 ; add a tile for swap mode
+    swap A
+    add  A, C
+    and  A, $0f
+    jr   Z, .check_swap
+
+    ld   H, D
+    ld   L, E
+    ld   B, A
+    xor  A, A
+ .clear_remaining_tiles:
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    ld   [HL+], A
+    dec  B
+    jr   NZ, .clear_remaining_tiles
+
+    ; Shifted tiles are in WRAM, check if swap needed
+ .check_swap:
+    ld   L, C
+    pop  BC
+    bit  4, C
+    jr   NZ, .do_the_swap
+    pop  DE
+    ret
+
+.do_the_swap: ; Swap forward across tilea
+    push BC
+    ld   A, C
+    sub  A, L
+    ld   B, A ; B holds number of tiles to swap
+    call swapForwardHalfTiles
+    pop  BC
+    pop  DE
+    ret
+
+; Swaps tiles forward across half tile boundaries.
+; B holds number of tiles to shift
+; DE holds address of first byte after last digit tile
+swapForwardHalfTiles:
+    swap B ; now B holds number of bytes to swap
+    dec  DE ; go to last byte of last digit
+    ld   HL, $0010
+    add  HL, DE ;HL points to last byte of next tile
+
+; Shifts tiles 4 pixels to the right across
+; tile boundaries. DE points to last byte of
+; last digit, HL points to last byte of next
+; empty tile
+.shift_4px: ; loop is 21 cycles/16 bytes
+    ; First "or" in the last 4 bits of the
+    ; previous tile byte into the current
+    ; tile byte
+    ld   A, [DE]
+    swap A
+    ld   C, A
+    and  A, $f0
+    or   A, [HL]
+    ld   [HL-], A
+    ; Now shift down the last 4 bits of the
+    ; previous tile byte
+    ld   A, C
+    and  A, $0f
+    ld   [DE], A
+    dec  DE
+    dec  B
+    jr   NZ, .shift_4px
+    ret
+
+; Requests transfer of status bar WRAM tiles to VRAM
+; B holds VRAM tile position
+; C holds the drawing mode in the first nibble (0 for shift, 1 for shift/swap)
+; C holds number of max digits in the second nibble
+; DE holds the WRAM address
+requestVRAMStatusBarTransfer:
+    ; Short circuit if nothing to do, else load number of tiles in C
+    ; This logic adds one to max digits if mode is shift-swap
+    ld   A, C
+    and  A, $10
+    swap A
+    add  A, C
+    and  A, $0f
+    ret  Z
+    ld   C, A
+
+    ; Prep source and destination addresses
+    ld   H, D
+    ld   L, E
+    ld   D, $90
+    ld   E, B
+    xor  A, A
+.request_loop:
+    push BC
+    push HL
+    push DE
+    call addTileGraphicCopyRequest
+    ld   BC, $0010
+    pop  HL
+    add  HL, BC
+    ld   D, H
+    ld   E, L
+    pop  HL
+    add  HL, BC
+    pop  BC
+    dec  C
+    jr   NZ, .request_loop
+    ret
+
+finishDrawNumberAndSymbolOnStatusBar:
+    dec  HL
+    dec  HL
+    inc  C
+    inc  C
+    dec  DE
+    dec  DE
+    ld   [HL], $f5 ; Lucre symbol tile
+.store_number_loop:
+    ld   A, [HL+]
+    push HL
+    push DE
+    call storeTileAatWindowPositionDE
+    pop  DE
+    pop  HL
+    inc  DE
+    dec  C
+    jr   NZ, .store_number_loop
+    ret
