@@ -11,6 +11,7 @@ SECTION "bank11", ROMX[$4000], BANK[$11]
 entryPointTableBankExpansion:
     call_to_bank_target drawHPOnStatusBar
     call_to_bank_target drawManaOnStatusBar
+    call_to_bank_target drawMoneyOnStatusBar_new
 
 drawHPOnStatusBar:
     ld   C, $13 ; Mode/Max-digits to write
@@ -205,3 +206,63 @@ requestVRAMStatusBarTransfer:
 
 gfxNumbersBottomLeftAligned:
 INCBIN "numbers_bottom_left_aligned.bin"
+
+drawMoneyOnStatusBar_new:
+    ld   DE, $12 ; Tile position of last number        ;; 02:6f55 $11 $12 $00
+    ld   B, $06 ; Tiles back to clear                  ;; 02:6f59 $06 $06
+
+.clearStatusBarSection:
+    ld   A, $7f                                        ;; 02:6f6b $3e $7f
+    push DE                                            ;; 02:6f6d $d5
+    call storeTileAatWindowPositionDE                  ;; 02:6f6e $cd $66 $38
+    pop  DE                                            ;; 02:6f71 $d1
+    dec  DE                                            ;; 02:6f72 $1b
+    dec  B                                             ;; 02:6f73 $05
+    jr   NZ, .clearStatusBarSection                    ;; 02:6f74 $20 $f5
+    
+    ld   A, [wMoneyHigh]                               ;; 02:6f5f $fa $bf $d7
+    ld   D, A
+    ld   A, [wMoneyLow]                                ;; 02:6f63 $fa $be $d7
+    ld   E, A
+    ld   HL, $0b ; Draw location from left to right
+
+; drawNumberAndSymbolOnStatusBar:
+    push HL
+    ld   C, $00
+    ld   A, [wStatusEffect]
+    rla
+    jr   NC, .do_bcd_conversion
+    inc  C
+.do_bcd_conversion:
+    ld   HL, wSRAMSaveHeader._1
+    push HL
+    call convertToUnpackedBCD
+    pop  HL
+    ld   C, $08
+    pop  DE
+.find_first_digit:
+    ld   A, [HL+]
+    dec  C
+    inc  DE
+    jr   Z, .store_number_in_window
+    and  A, A
+    jr   Z, .find_first_digit
+.store_number_in_window:
+    dec  HL
+    dec  HL
+    inc  C
+    inc  C
+    dec  DE
+    dec  DE
+    ld   [HL], $f5 ; Lucre symbol tile
+.store_number_loop:
+    ld   A, [HL+]
+    push HL
+    push DE
+    call storeTileAatWindowPositionDE
+    pop  DE
+    pop  HL
+    inc  DE
+    dec  C
+    jr   NZ, .store_number_loop
+    ret

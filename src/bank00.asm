@@ -8008,8 +8008,8 @@ drawHPOnStatusBar_trampoline:
 drawManaOnStatusBar_trampoline:
     jp_to_bank 11, drawManaOnStatusBar                 ;; 00:3111 $f5 $3e $25 $c3 $06 $1f
 
-drawMoneyOnStatusBarTrampoline:
-    jp_to_bank 02, drawMoneyOnStatusBar                ;; 00:3117 $f5 $3e $26 $c3 $06 $1f
+drawMoneyOnStatusBar_trampoline:
+    jp_to_bank 11, drawMoneyOnStatusBar_new            ;; 00:3117 $f5 $3e $26 $c3 $06 $1f
 
 doSpellOrItemEffect_trampoline:
     jp_to_bank 02, doSpellOrItemEffect                 ;; 00:311d $f5 $3e $27 $c3 $06 $1f
@@ -9568,7 +9568,7 @@ scriptOpCodeTakeMoney:
     ld   A, $06                                        ;; 00:3a8e $3e $06
     call clearScriptFlag                               ;; 00:3a90 $cd $ee $3b
 .draw_and_continue:
-    call drawMoneyOnStatusBarTrampoline                ;; 00:3a93 $cd $17 $31
+    call drawMoneyOnStatusBar_trampoline                ;; 00:3a93 $cd $17 $31
     pop  HL                                            ;; 00:3a96 $e1
     call getNextScriptInstruction                      ;; 00:3a97 $cd $27 $37
     ret                                                ;; 00:3a9a $c9
@@ -10071,7 +10071,7 @@ checkForLevelUp:
 ; Add HL to player money, then draw on status bar
 addMoney:
     call addMoneyAdjustValues
-    call drawMoneyOnStatusBarTrampoline
+    call drawMoneyOnStatusBar_trampoline
     ret
 
 ; Add HL to player money accounting for rich bit
