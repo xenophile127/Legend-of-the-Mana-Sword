@@ -1,0 +1,19 @@
+diff --git a/src/bank01.asm b/src/bank01.asm
+index db5365e..0f41091 100644
+--- a/src/bank01.asm
++++ b/src/bank01.asm
+@@ -1033,11 +1033,10 @@ scrollRoomScroll:
+     ld   A, $00                                        ;; 01:46f4 $3e $00
+     call setSpriteScrollSpeed                          ;; 01:46f6 $cd $4d $04
+     call ensureReservedObjectsExist_trampoline         ;; 01:46f9 $cd $f1 $2e
++    ld bc, $0d07
++    call removeNpcObjects.loop
+     ld   A, [wMainGameStateFlags.nextFrame]            ;; 01:46fc $fa $a2 $c0
+-    res  0, A                                          ;; 01:46ff $cb $87
+-    res  1, A                                          ;; 01:4701 $cb $8f
+-    res  3, A                                          ;; 01:4703 $cb $9f
+-    res  2, A                                          ;; 01:4705 $cb $97
++    and $0f
+     swap A                                             ;; 01:4707 $cb $37
+     ld   [wMainGameStateFlags.nextFrame], A            ;; 01:4709 $ea $a2 $c0
+     ld   [wMainGameStateFlags], A                      ;; 01:470c $ea $a1 $c0
