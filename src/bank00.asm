@@ -8076,7 +8076,8 @@ runScriptByIndex:
     ld   [wWindowFlags], A                             ;; 00:31c4 $ea $74 $d8
 
 runScriptFromScriptByIndex:
-    ld   A, $05                                        ;; 00:31c7 $3e $05
+    ; Text speed 2 still allows pressing a button to further speed up text display.
+    ld   A, $02
     ld   [wTextSpeedTimer], A                          ;; 00:31c9 $ea $64 $d8
     ld   A, H                                          ;; 00:31cc $7c
     and  A, A                                          ;; 00:31cd $a7
@@ -8918,7 +8919,8 @@ textDelay:
     dec  A                                             ;; 00:36c5 $3d
     ld   [wTextSpeedTimer], A                          ;; 00:36c6 $ea $64 $d8
     ret  NZ                                            ;; 00:36c9 $c0
-    ld   A, $05                                        ;; 00:36ca $3e $05
+    ; Text speed 2 still allows pressing a button to further speed up text display.
+    ld   A, $02
     ld   [wTextSpeedTimer], A                          ;; 00:36cc $ea $64 $d8
     ret                                                ;; 00:36cf $c9
 
