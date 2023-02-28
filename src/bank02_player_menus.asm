@@ -6060,14 +6060,15 @@ doSpellOrItemEffect:
 useNectarOrStamina:
     push AF                                            ;; 02:70c8 $f5
     swap A                                             ;; 02:70c9 $cb $37
-    and  A, $0f                                        ;; 02:70cb $e6 $0f
     call applyBuff                                     ;; 02:70cd $cd $d7 $70
     pop  AF                                            ;; 02:70d0 $f1
-    and  A, $0f                                        ;; 02:70d1 $e6 $0f
     call applyBuff                                     ;; 02:70d3 $cd $d7 $70
-    ret                                                ;; 02:70d6 $c9
+; This fixes the Nectar and Stamina items to take effect on use instead of requiring opening a window.
+; There is a second bug that Nectar and Stamina do not wear off until a window is opened which is unfixed.
+    jp calulateAPDP
 
 applyBuff:
+    and $0f
     ld   B, A                                          ;; 02:70d7 $47
     ld   A, [DE]                                       ;; 02:70d8 $1a
     add  A, B                                          ;; 02:70d9 $80
