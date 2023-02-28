@@ -1372,23 +1372,50 @@ gameStateNormal:
     jp   NZ, openWindowsSelectButton                   ;; 01:4a26 $c2 $db $51
     ld   A, [wPlayerSpecialFlags]                      ;; 01:4a29 $fa $d4 $c4
     bit  3, A                                          ;; 01:4a2c $cb $5f
-    jr   NZ, .dpad                                     ;; 01:4a2e $20 $08
+; (In)famously, the Moogle item does nothing because you can't use items while Mooged.
+; This allows you to use Moogle ($11), Unicorn ($12), and Heal ($02) while Mooged.
+; These three are already set to break Moog, but the Heal spell especially is a pretty major change.
+    jr z, .not_moogle
+    ld a, [wEquippedItem]
+    cp $02
+    jr z, .b_button_only
+    cp $11
+    jr z, .b_button_only
+    cp $12
+    jr z, .b_button_only
+    jr .dpad
+.not_moogle:
     bit  4, E                                          ;; 01:4a30 $cb $63
     jr   NZ, .a_or_b_button                            ;; 01:4a32 $20 $1b
+.b_button_only:
     bit  5, E                                          ;; 01:4a34 $cb $6b
     jr   NZ, .a_or_b_button                            ;; 01:4a36 $20 $17
 .dpad:
+; Extract some common code from the four direction handlers.
+; This is to make room for the Moogle item fix.
+; More code could be moved here to free up more space.
+    ld a, $0f
+    and d
+    ; If no direction is set then run this with A=0 and return:
+    jp z, playerSpritesLoadPlayerSpriteTiles
+    push de
+    push bc
+    ld c, $04
+    call checkPlayfieldBoundaryCollision_trampoline
+    ld a, b
+    pop bc
+    pop de
+    jp nz, .walk
     bit  0, D                                          ;; 01:4a38 $cb $42
     jr   NZ, .right                                    ;; 01:4a3a $20 $30
     bit  1, D                                          ;; 01:4a3c $cb $4a
     jr   NZ, .left                                     ;; 01:4a3e $20 $5a
     bit  2, D                                          ;; 01:4a40 $cb $52
     jp   NZ, .up                                       ;; 01:4a42 $c2 $c4 $4a
-    bit  3, D                                          ;; 01:4a45 $cb $5a
-    jp   NZ, .down                                     ;; 01:4a47 $c2 $ee $4a
-    xor  A, A                                          ;; 01:4a4a $af
-    call playerSpritesLoadPlayerSpriteTiles            ;; 01:4a4b $cd $be $48
-    ret                                                ;; 01:4a4e $c9
+    jp .down
+; Free space
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00
 .a_or_b_button:
     push DE                                            ;; 01:4a4f $d5
     ld   A, C                                          ;; 01:4a50 $79
@@ -1406,12 +1433,6 @@ gameStateNormal:
     ld   [wMainGameState], A                           ;; 01:4a68 $ea $a0 $c0
     ret                                                ;; 01:4a6b $c9
 .right:
-    push BC                                            ;; 01:4a6c $c5
-    ld   C, $04                                        ;; 01:4a6d $0e $04
-    call checkPlayfieldBoundaryCollision_trampoline    ;; 01:4a6f $cd $6f $03
-    ld   A, B                                          ;; 01:4a72 $78
-    pop  BC                                            ;; 01:4a73 $c1
-    jp   NZ, .walk                                     ;; 01:4a74 $c2 $18 $4b
     bit  0, A                                          ;; 01:4a77 $cb $47
     jp   Z, .walk                                      ;; 01:4a79 $ca $18 $4b
     ld   A, [wPlayerDamagedTimer]                      ;; 01:4a7c $fa $d2 $c4
@@ -1427,12 +1448,6 @@ gameStateNormal:
     call roomExitScreenScrollPrep                      ;; 01:4a96 $cd $24 $4b
     ret                                                ;; 01:4a99 $c9
 .left:
-    push BC                                            ;; 01:4a9a $c5
-    ld   C, $04                                        ;; 01:4a9b $0e $04
-    call checkPlayfieldBoundaryCollision_trampoline    ;; 01:4a9d $cd $6f $03
-    ld   A, B                                          ;; 01:4aa0 $78
-    pop  BC                                            ;; 01:4aa1 $c1
-    jr   NZ, .walk                                     ;; 01:4aa2 $20 $74
     bit  1, A                                          ;; 01:4aa4 $cb $4f
     jr   Z, .walk                                      ;; 01:4aa6 $28 $70
     ld   A, [wPlayerDamagedTimer]                      ;; 01:4aa8 $fa $d2 $c4
@@ -1448,12 +1463,6 @@ gameStateNormal:
     call roomExitScreenScrollPrep                      ;; 01:4ac0 $cd $24 $4b
     ret                                                ;; 01:4ac3 $c9
 .up:
-    push BC                                            ;; 01:4ac4 $c5
-    ld   C, $04                                        ;; 01:4ac5 $0e $04
-    call checkPlayfieldBoundaryCollision_trampoline    ;; 01:4ac7 $cd $6f $03
-    ld   A, B                                          ;; 01:4aca $78
-    pop  BC                                            ;; 01:4acb $c1
-    jr   NZ, .walk                                     ;; 01:4acc $20 $4a
     bit  2, A                                          ;; 01:4ace $cb $57
     jr   Z, .walk                                      ;; 01:4ad0 $28 $46
     ld   A, [wPlayerDamagedTimer]                      ;; 01:4ad2 $fa $d2 $c4
@@ -1469,12 +1478,6 @@ gameStateNormal:
     call roomExitScreenScrollPrep                      ;; 01:4aea $cd $24 $4b
     ret                                                ;; 01:4aed $c9
 .down:
-    push BC                                            ;; 01:4aee $c5
-    ld   C, $04                                        ;; 01:4aef $0e $04
-    call checkPlayfieldBoundaryCollision_trampoline    ;; 01:4af1 $cd $6f $03
-    ld   A, B                                          ;; 01:4af4 $78
-    pop  BC                                            ;; 01:4af5 $c1
-    jr   NZ, .walk                                     ;; 01:4af6 $20 $20
     bit  3, A                                          ;; 01:4af8 $cb $5f
     jr   Z, .walk                                      ;; 01:4afa $28 $1c
     ld   A, [wPlayerDamagedTimer]                      ;; 01:4afc $fa $d2 $c4
