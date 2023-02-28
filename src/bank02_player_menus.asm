@@ -7482,20 +7482,25 @@ endStonStatusEffect:
     call removeStonEffectFlag                          ;; 02:79ab $cd $1a $02
     ld   A, [wStonStatusEffectTimerNumber]             ;; 02:79ae $fa $7b $d8
     ld   B, $fb                                        ;; 02:79b1 $06 $fb
+.clear:
     call clearStatusEffects                            ;; 02:79b3 $cd $dd $79
     call endStatusEffectMusicIfGood                    ;; 02:79b6 $cd $d2 $79
     ret                                                ;; 02:79b9 $c9
 
 endMoogStatusEffect:
-    call removeMoogEffectFlag                          ;; 02:79ba $cd $26 $02
+; Fix the notorious Heal-zero-DP bug.
+; What was happening was attempting to clear the Moog condition would load the last saved DP.
+; If you hadn't been turned into a moogle previously then this value was zero.
+    ld hl, wPlayerSpecialFlags
+    bit 3, [hl]
+    ret z
+    res 3, [hl]
     ld   A, [wMoogleSavedDp]                           ;; 02:79bd $fa $82 $d8
     ld   [wDupTotalDP], A                              ;; 02:79c0 $ea $c3 $d6
     ld   [wTotalDP], A                                 ;; 02:79c3 $ea $e0 $d7
     ld   A, [wMoogStatusEffectTimerNumber]             ;; 02:79c6 $fa $7c $d8
     ld   B, $f7                                        ;; 02:79c9 $06 $f7
-    call clearStatusEffects                            ;; 02:79cb $cd $dd $79
-    call endStatusEffectMusicIfGood                    ;; 02:79ce $cd $d2 $79
-    ret                                                ;; 02:79d1 $c9
+    jr endStonStatusEffect.clear
 
 endStatusEffectMusicIfGood:
     push BC                                            ;; 02:79d2 $c5
