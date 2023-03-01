@@ -68,7 +68,7 @@ initSoundEngineReal:
     ld   [wMusicEndedOnChannel1], A                    ;; 0f:4054 $ea $2b $c1
     ld   [wMusicEndedOnChannel3], A                    ;; 0f:4057 $ea $43 $c1
     ld   [wMusicEndedOnChannel4], A                    ;; 0f:405a $ea $5b $c1
-    ld   A, $10                                        ;; 0f:405d $3e $10
+    ld   A, $00                                        ;; 0f:405d $3e $10
     ldh  [rNR12], A                                    ;; 0f:405f $e0 $12
     ldh  [rNR22], A                                    ;; 0f:4061 $e0 $17
     ldh  [rNR32], A                                    ;; 0f:4063 $e0 $1c
