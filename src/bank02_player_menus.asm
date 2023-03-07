@@ -8024,9 +8024,9 @@ selectMenuOptions:
 
 ;@ffa_text amount=6
 levelUpStatOptions:
-    TXT  "Power<00>"                                   ;; 02:7d18 ......
-    TXT  "Wisdom<00>"                                  ;; 02:7d1e .......
-    TXT  "StaminaWill<00>"                             ;; 02:7d25 ............
+    TXT  "Warrior"
+    TXT  "Wizard<00>"
+    TXT  "Monk<00>Sage<00><00>"
 
 yesNoOptions:
     TXT  "Yes<00>"                                     ;; 02:7d31 ....
@@ -8081,7 +8081,7 @@ statusScreenMPLabel:
 
 ;@ffa_text
 levelUpText2:
-    TXT  " Level up! Selectyour growth type.<00>"      ;; 02:7dc2 ..................................?
+    TXT  " Level up! Selectyour job type.<00><00><00><00>"
 
 ;@ffa_text size=4 amount=5
 statusEffectLabels:
