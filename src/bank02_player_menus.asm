@@ -5747,7 +5747,8 @@ initStartingStatsAndTimers:
     ld   [wScriptStackPointer], A                      ;; 02:6ec2 $ea $bc $d8
     ld   A, $01                                        ;; 02:6ec5 $3e $01
     ld   [wWillCharge], A                              ;; 02:6ec7 $ea $58 $d8
-    ld   HL, $32                                       ;; 02:6eca $21 $32 $00
+; Start the player with zero money.
+    ld   HL, $0000
     ld   A, H                                          ;; 02:6ecd $7c
     ld   [wMoneyHigh], A                               ;; 02:6ece $ea $bf $d7
     ld   A, L                                          ;; 02:6ed1 $7d
