@@ -118,12 +118,13 @@ entry:
 
 Header:
     ds   $30                                           ;; 00:0104
-    db   "SEIKEN DENSETSU"                             ;; 00:0134
+; This title matches the GBC hash to select the red and blue sprite palettes and a white, green, blue, black background palette.
+    db   "FFA-->LOTMS", $00, $00, $00, $00             ;; 00:0134
     db   CART_COMPATIBLE_DMG                           ;; 00:0143
     db   $00, $00                                      ;; 00:0144 ??
     db   CART_INDICATOR_GB                             ;; 00:0146
     db   CART_ROM_MBC2_BAT, CART_ROM_256KB, CART_SRAM_NONE ;; 00:0147
-    db   CART_DEST_NON_JAPANESE, $c3, $00              ;; 00:014a $01 $c3 $00
+    db   CART_DEST_NON_JAPANESE, $01, $00              ;; 00:014a $01 $c3 $00
     ds   3                                             ;; 00:014d
 
 SECTION "bank00_0150", ROM0[$0150]
