@@ -326,7 +326,7 @@ loadMinimapToBackground:
     call copyHLtoDE                                    ;; 01:4234 $cd $49 $2b
     ld   A, [wDoorStates]                              ;; 01:4237 $fa $f4 $c3
     ld   [wDoorStatesMinimapBackup], A                 ;; 01:423a $ea $a4 $d4
-    call getMapEncodingType                            ;; 01:423d $cd $b0 $21
+    ld a, [wMapEncodingType]
     cp   A, $00                                        ;; 01:4240 $fe $00
     jr   Z, .drawFixedMinimap                          ;; 01:4242 $28 $05
     call drawDynamicMinimapBackground                  ;; 01:4244 $cd $79 $42

@@ -5492,16 +5492,14 @@ mainLoopPostInput:
     call runRoomScriptIfAllEnemiesDefeated_trampoline  ;; 00:2198 $cd $1a $29
     call startScriptIfRequested                        ;; 00:219b $cd $8f $31
     call playerHousekeeping                            ;; 00:219e $cd $1b $1d
-    call checkForLevelUp                               ;; 00:21a1 $cd $4b $3d
+; Stop leveling at 99.
+    ld a, [wLevel]
+    cp a, $63
+    call nz, checkForLevelUp
     call updateStatusEffects_trampoline                ;; 00:21a4 $cd $3b $31
     ld   A, $ff                                        ;; 00:21a7 $3e $ff
     call timerCheckExpiredOrTickAllTimers              ;; 00:21a9 $cd $0a $30
-    call processBackgroundRenderRequests               ;; 00:21ac $cd $da $1d
-    ret                                                ;; 00:21af $c9
-
-getMapEncodingType:
-    ld   A, [wMapEncodingType]                         ;; 00:21b0 $fa $f8 $c3
-    ret                                                ;; 00:21b3 $c9
+    jp processBackgroundRenderRequests
 
 clearRoomStatusHistory:
     ld   HL, wRoomClearedStatus                        ;; 00:21b4 $21 $00 $c4
