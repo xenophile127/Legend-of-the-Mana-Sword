@@ -202,7 +202,7 @@ npcDataTable:
     NPC_DATA $81, $08, $20, $08, gfxNpcChocobot, data_03_7b5a, data_03_7f62, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0472, $0000 ;; 03:709a NPC_CHOCOBOT
     NPC_DATA $81, $09, $50, $08, gfxNpcChocobo, data_03_7b5a, data_03_7cfe, $00, $01, $00, $01, $00, $00, $00, $00, $00, $00, script_0472, $0000 ;; 03:70b2 NPC_CHOCOBO_1
     NPC_DATA $81, $09, $20, $08, gfxNpcChocobo, data_03_7b5a, data_03_7f62, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0472, $0000 ;; 03:70ca NPC_CHOCOBO_2
-    NPC_DATA $81, $5e, $50, $02, gfxNpcPrisonBars, data_03_7b5a, data_03_7b96, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:70e2 NPC_PRISION_BARS
+    NPC_DATA $81, $5e, $5c, $02, gfxNpcPrisonBars, data_03_7b5a, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:70e2 NPC_PRISION_BARS
     NPC_DATA $81, $5f, $40, $04, gfxNpcMusic, data_03_7b5a, data_03_7d46, $00, $01, $00, $00, $00, $00, $00, $00, $00, $00, script_003d, $0000 ;; 03:70fa NPC_MUSIC_NOTES
     NPC_DATA $81, $5e, $40, $08, gfxNpcMagicMerchant, data_03_7b5a, data_03_7cb6, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_025d, $0000 ;; 03:7112 NPC_MAGIC_SALESMAN
     NPC_DATA $91, $3f, $60, $08, gfxNpcLastGuy, data_03_7b5a, data_03_7cda, $00, $01, $01, $00, $00, $00, $06, $03, $07, $08, script_003d, $0000 ;; 03:712a NPC_LAST_GUY
