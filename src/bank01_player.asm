@@ -681,7 +681,7 @@ LoadMapEnd:
     call setPlayerCollisionFlags                       ;; 01:4496 $cd $bd $02
     ld   A, $00                                        ;; 01:4499 $3e $00
 .jr_01_449b:
-    call setScriptMainGameStateBackup                  ;; 01:449b $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   A, $00                                        ;; 01:449e $3e $00
     ld   [wScriptOpCounter], A                         ;; 01:44a0 $ea $99 $d4
     pop  HL                                            ;; 01:44a3 $e1
@@ -2406,7 +2406,7 @@ setPlayerNormalSprite:
     and  A, $0f                                        ;; 01:50fc $e6 $0f
     ld   [wPlayerSpecialFlags], A                      ;; 01:50fe $ea $d4 $c4
     ld   A, $00                                        ;; 01:5101 $3e $00
-    call setScriptMainGameStateBackup                  ;; 01:5103 $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:5106 $0e $04
     call snapObjectToNearestTile8                      ;; 01:5108 $cd $ba $29
     ld   C, $04                                        ;; 01:510b $0e $04
@@ -2434,7 +2434,7 @@ setPlayerNormalSprite:
 
 setPlayerOnChocobo:
     ld   A, $0c                                        ;; 01:5136 $3e $0c
-    call setScriptMainGameStateBackup                  ;; 01:5138 $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:513b $0e $04
     call snapObjectToNearestTile8                      ;; 01:513d $cd $ba $29
     ld   C, $04                                        ;; 01:5140 $0e $04
@@ -2450,7 +2450,7 @@ setPlayerOnChocobo:
 
 setPlayerOnChocobot:
     ld   A, $0d                                        ;; 01:5156 $3e $0d
-    call setScriptMainGameStateBackup                  ;; 01:5158 $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:515b $0e $04
     call snapObjectToNearestTile8                      ;; 01:515d $cd $ba $29
     ld   C, $04                                        ;; 01:5160 $0e $04
@@ -2466,7 +2466,7 @@ setPlayerOnChocobot:
 
 setPlayerOnChocoboat:
     ld   A, $0e                                        ;; 01:5176 $3e $0e
-    call setScriptMainGameStateBackup                  ;; 01:5178 $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:517b $0e $04
     call snapObjectToNearestTile8                      ;; 01:517d $cd $ba $29
     ld   C, $04                                        ;; 01:5180 $0e $04

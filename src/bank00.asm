@@ -10209,6 +10209,8 @@ startLevelUp:
     call NZ, clearItemBuff                             ;; 00:3e70 $c4 $44 $1d
     ld   A, [wMusic]                                   ;; 00:3e73 $fa $9b $d4
     ld   [wCurrentMusicLevelUpBackup], A               ;; 00:3e76 $ea $42 $d8
+; Levelup removes the status effect music, so why not remove Pois as well?
+    call clearPoisStatusEffect_trampoline
     ld   A, $1c                                        ;; 00:3e79 $3e $1c
     ldh  [hCurrentMusic], A                            ;; 00:3e7b $e0 $90
     ld   A, $21                                        ;; 00:3e7d $3e $21
@@ -10220,9 +10222,7 @@ startLevelUp:
     res  6, [HL]                                       ;; 00:3e8c $cb $b6
     ret                                                ;; 00:3e8e $c9
 
-setScriptMainGameStateBackup:
-    ld   [wScriptMainGameStateBackup], A               ;; 00:3e8f $ea $6e $d8
-    ret                                                ;; 00:3e92 $c9
+    db   $00
     db   $fa, $58, $d8, $c9                            ;; 00:3e93 ????
 
 setWillBarMax:
