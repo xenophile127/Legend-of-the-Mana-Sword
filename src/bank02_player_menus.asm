@@ -7351,8 +7351,9 @@ moogleTempZeroDP:
 
 updateStatusEffects:
     ld   A, [wMainGameState]                           ;; 02:78c6 $fa $a0 $c0
-    cp   A, $00                                        ;; 02:78c9 $fe $00
-    ret  NZ                                            ;; 02:78cb $c0
+; Fix Pois/Fuji not ticking while attacking.
+    cp a, $0c
+    ret nc
     ld   A, [wHPHigh]                                  ;; 02:78cc $fa $b3 $d7
     ld   B, A                                          ;; 02:78cf $47
     ld   A, [wHPLow]                                   ;; 02:78d0 $fa $b2 $d7
