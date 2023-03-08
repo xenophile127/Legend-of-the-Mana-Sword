@@ -2618,54 +2618,55 @@ attackTileChain:
     ret                                                ;; 01:526c $c9
 
 attackTileMattok:
-    ld   A, B                                          ;; 01:526d $78
-    cp   A, $06                                        ;; 01:526e $fe $06
-    ret  NZ                                            ;; 01:5270 $c0
-    ld   A, $00                                        ;; 01:5271 $3e $00
-    srl  D                                             ;; 01:5273 $cb $3a
-    srl  E                                             ;; 01:5275 $cb $3b
-    call setRoomTile                                   ;; 01:5277 $cd $00 $24
-    ret                                                ;; 01:527a $c9
+    ld a, $06
+    jr attackTileGrassCommon
 
 attackTileMattokWithStairs:
-    ld   A, B                                          ;; 01:527b $78
-    cp   A, $06                                        ;; 01:527c $fe $06
-    ret  NZ                                            ;; 01:527e $c0
-    ld   A, $02                                        ;; 01:527f $3e $02
-    srl  D                                             ;; 01:5281 $cb $3a
-    srl  E                                             ;; 01:5283 $cb $3b
-    call setRoomTile                                   ;; 01:5285 $cd $00 $24
-    ret                                                ;; 01:5288 $c9
+    ld a, $06
+    cp a, b
+    ld h, $02
+    jr attackTileCheckTile
 
 attackTileAxeWithStump:
-    ld   A, B                                          ;; 01:5289 $78
-    cp   A, $02                                        ;; 01:528a $fe $02
-    ret  NZ                                            ;; 01:528c $c0
-    ld   A, $01                                        ;; 01:528d $3e $01
-    srl  D                                             ;; 01:528f $cb $3a
-    srl  E                                             ;; 01:5291 $cb $3b
-    call setRoomTile                                   ;; 01:5293 $cd $00 $24
-    ret                                                ;; 01:5296 $c9
+    ld a, $02
+    cp a, b
+    ld h, $01
+    jr attackTileCheckTile
 
 attackTileAxe:
-    ld   A, B                                          ;; 01:5297 $78
-    cp   A, $02                                        ;; 01:5298 $fe $02
-    ret  NZ                                            ;; 01:529a $c0
-    ld   A, $00                                        ;; 01:529b $3e $00
-    srl  D                                             ;; 01:529d $cb $3a
-    srl  E                                             ;; 01:529f $cb $3b
-    call setRoomTile                                   ;; 01:52a1 $cd $00 $24
-    ret                                                ;; 01:52a4 $c9
+    ld a, $02
+    jr attackTileGrassCommon
 
 attackTileSickle:
-    ld   A, B                                          ;; 01:52a5 $78
-    cp   A, $04                                        ;; 01:52a6 $fe $04
-    ret  NZ                                            ;; 01:52a8 $c0
-    ld   A, $00                                        ;; 01:52a9 $3e $00
-    srl  D                                             ;; 01:52ab $cb $3a
-    srl  E                                             ;; 01:52ad $cb $3b
-    call setRoomTile                                   ;; 01:52af $cd $00 $24
-    ret                                                ;; 01:52b2 $c9
+    ld a, $04
+
+attackTileGrassCommon:
+    cp a, b
+    ld h, $00
+
+; In multiple places attacking with a certain weapon near the edge of the screen could cause a unintended warp.
+; Thank you to radimerry (Radiant Nighte) for this fix.
+attackTileCheckTile:
+    ret nz
+; Check y range
+    ld a, $0f
+    cp a, d
+    ret c
+
+; Check x range
+    ld a, $13
+    cp e
+    ret c
+
+    srl d
+    srl e
+    ld a, h
+    jp setRoomTile
+
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00
 
 runPlayerAttackObjectFunctions:
     ld   C, $00                                        ;; 01:52b3 $0e $00
