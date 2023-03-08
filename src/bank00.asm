@@ -7964,8 +7964,8 @@ removeEquipmentFromInventory_trampoline:
 removeMagicFromInventory_trampoline:
     jp_to_bank 02, removeMagicFromInventory            ;; 00:30e1 $f5 $3e $1d $c3 $06 $1f
 
-getEquippedArmorElementalResistances_Dup_trampoline:
-    jp_to_bank 02, getEquippedArmorElementalResistances_Dup ;; 00:30e7 $f5 $3e $1e $c3 $06 $1f
+getEquippedHelmElementalResistances_trampoline:
+    jp_to_bank 02, getEquippedHelmElementalResistances ;; 00:30e7 $f5 $3e $1e $c3 $06 $1f
 
 getEquippedShieldBlockElements_trampoline:
     jp_to_bank 02, getEquippedShieldBlockElements      ;; 00:30ed $f5 $3e $1f $c3 $06 $1f
@@ -10104,10 +10104,10 @@ getEquippedShieldBlockElements_SaveBC:
     pop  BC                                            ;; 00:3dd1 $c1
     ret                                                ;; 00:3dd2 $c9
 
-; Only works for armor, not helms. The only helm meant to have resistance is the Mithril helm.
+; Originally checked armor twice and nothing checked helmets.
 getEquippedElementalResistances:
     push BC                                            ;; 00:3dd3 $c5
-    call getEquippedArmorElementalResistances_Dup_trampoline ;; 00:3dd4 $cd $e7 $30
+    call getEquippedHelmElementalResistances_trampoline
     ld   B, A                                          ;; 00:3dd7 $47
     call getEquippedArmorElementalResistances_trampoline ;; 00:3dd8 $cd $89 $31
     or   A, B                                          ;; 00:3ddb $b0

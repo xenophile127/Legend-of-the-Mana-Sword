@@ -39,7 +39,7 @@ entryPointTableBank02:
     call_to_bank_target removeItemFromInventory        ;; 02:4036 ??
     call_to_bank_target removeEquipmentFromInventory   ;; 02:4038 ??
     call_to_bank_target removeMagicFromInventory       ;; 02:403a ??
-    call_to_bank_target getEquippedArmorElementalResistances_Dup ;; 02:403c pP
+    call_to_bank_target getEquippedHelmElementalResistances ;; 02:403c pP
     call_to_bank_target getEquippedShieldBlockElements ;; 02:403e pP
     call_to_bank_target getEquippedWeaponBonusTypes    ;; 02:4040 pP
     call_to_bank_target getSpellOrBookPower            ;; 02:4042 ??
@@ -5597,10 +5597,10 @@ getEquippedArmorElementalResistances:
     ld   A, [wEquippedArmor]                           ;; 02:6dd3 $fa $ec $d6
     jr   getEquipmentAOffset0c                         ;; 02:6dd6 $18 $13
 
-; Probably intended to fetch for helmets
-getEquippedArmorElementalResistances_Dup:
+; Probably intended to fetch for helmets. Now changed to actually check helmets.
+getEquippedHelmElementalResistances:
     push HL                                            ;; 02:6dd8 $e5
-    ld   A, [wEquippedArmor]                           ;; 02:6dd9 $fa $ec $d6
+    ld   A, [wEquippedHelm]
     jr   getEquipmentAOffset0c                         ;; 02:6ddc $18 $0d
 
 getEquippedShieldBlockElements:
