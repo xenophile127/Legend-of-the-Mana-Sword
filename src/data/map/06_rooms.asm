@@ -419,7 +419,8 @@ map06_room02_03_script:
     db   $ff                                           ;; 07:790e $ff
 
 map06_room02_03_tiles:
-    db   $02, $05, $02, $02                            ;; 07:790f ????
+; Unlock a door to prevent a possible softlock if you run out of keys.
+    db   $02, $01, $02, $02                            ;; 07:790f ????
     db   $2a, $23                                      ;; 07:7913 ??
     db   $2a, $26                                      ;; 07:7915 ??
     db   $2a, $53                                      ;; 07:7917 ??
