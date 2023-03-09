@@ -409,34 +409,28 @@ initLCDCEffect:
 
 ; HL = buffer address
 ; B = buffer length
+; This routine originally copied the buffer backwards in a pretty inefficient manner.
+; That was probably to ensure that it was always terminated just in case.
+; Testing has not shown any issues with copying it forwards.
+; Thank you to radimerry (Radiant Nighte) for this optimization.
 loadLCDCEffectBuffer:
-    ld   E, B                                          ;; 00:02f3 $58
-    ld   D, $00                                        ;; 00:02f4 $16 $00
-    add  HL, DE                                        ;; 00:02f6 $19
-    ld   B, H                                          ;; 00:02f7 $44
-    ld   C, L                                          ;; 00:02f8 $4d
-    ld   HL, wLCDCEffectBuffer                         ;; 00:02f9 $21 $a0 $d3
-    add  HL, DE                                        ;; 00:02fc $19
-    ld   A, E                                          ;; 00:02fd $7b
-    ld   D, H                                          ;; 00:02fe $54
-    ld   E, L                                          ;; 00:02ff $5d
-    ld   H, B                                          ;; 00:0300 $60
-    ld   L, C                                          ;; 00:0301 $69
-    ld   B, A                                          ;; 00:0302 $47
-    cp   A, $00                                        ;; 00:0303 $fe $00
-    jr   Z, .write_terminator                          ;; 00:0305 $28 $08
-    dec  HL                                            ;; 00:0307 $2b
+    ld a, b
+    srl a
+    srl a
+    dec a
+    ld [wLCDCEffectIndex], a
+    ld de, wLCDCEffectBuffer
 .loop:
-    ld   A, [HL-]                                      ;; 00:0308 $3a
-    dec  DE                                            ;; 00:0309 $1b
-    ld   [DE], A                                       ;; 00:030a $12
-    dec  B                                             ;; 00:030b $05
-    jr   NZ, .loop                                     ;; 00:030c $20 $fa
-    dec  DE                                            ;; 00:030e $1b
-.write_terminator:
-    ld   A, $ff                                        ;; 00:030f $3e $ff
-    ld   [DE], A                                       ;; 00:0311 $12
-    ret                                                ;; 00:0312 $c9
+    ld a, [hl+]
+    ld [de], a
+    inc de
+    dec b
+    jr nz, .loop
+    ret
+
+; Free space freed by changing loadLCDCEffectBuffer
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00
 
 ; Load the default LCDC effect buffer, which handles the status bar not having sprites
 ; on top and the forces the color palette of the status bar.
