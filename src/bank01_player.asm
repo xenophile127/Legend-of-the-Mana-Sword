@@ -153,11 +153,11 @@ lcdcShutterEffectOpen:
 
 lcdcShutterEffectDarkClose:
     db   $00, $fc, $03, $3f, $7c, $fc, $00, $3f        ;; 01:4116 ????????
-    db   $7e, $fc, $01, $3f, $ff                       ;; 01:411e ?????
+    db   $7e, $fc, $01, $e4, $ff                       ;; 01:411e ?????
 
 lcdcShutterEffectDarkOpen:
     db   $3c, $fc, $03, $3f, $40, $fc, $00, $3f        ;; 01:4123 ????????
-    db   $7e, $fc, $01, $3f, $ff                       ;; 01:412b ?????
+    db   $7e, $fc, $01, $e4, $ff                       ;; 01:412b ?????
 
 loadMapWithShutterEffectSequence:
     ld   D, H                                          ;; 01:4130 $54
@@ -560,7 +560,7 @@ loadMapWithShutterFinalSetup:
     ld   A, [wPlayerSpecialFlags]                      ;; 01:43cf $fa $d4 $c4
     bit  1, A                                          ;; 01:43d2 $cb $4f
     jr   Z, .jr_01_43d9                                ;; 01:43d4 $28 $03
-    ld   HL, lcdcShutterEffectDarkClose                ;; 01:43d6 $21 $16 $41
+    ld   HL, lcdcShutterEffectDarkOpen                 ;; 01:43d6 $21 $16 $41
 .jr_01_43d9:
     ld   B, $0d                                        ;; 01:43d9 $06 $0d
     call loadLCDCEffectBuffer                          ;; 01:43db $cd $f3 $02
@@ -625,7 +625,7 @@ openMinimapFinalSetup:
     ld   A, [wPlayerSpecialFlags]                      ;; 01:4430 $fa $d4 $c4
     bit  1, A                                          ;; 01:4433 $cb $4f
     jr   Z, .jr_01_443a                                ;; 01:4435 $28 $03
-    ld   HL, lcdcShutterEffectDarkClose                ;; 01:4437 $21 $16 $41
+    ld   HL, lcdcShutterEffectDarkOpen                 ;; 01:4437 $21 $16 $41
 .jr_01_443a:
     ld   B, $0d                                        ;; 01:443a $06 $0d
     call loadLCDCEffectBuffer                          ;; 01:443c $cd $f3 $02
@@ -646,7 +646,7 @@ shutterEffectOpenInit:
     ld   A, [wPlayerSpecialFlags]                      ;; 01:445a $fa $d4 $c4
     bit  1, A                                          ;; 01:445d $cb $4f
     jr   Z, .jr_01_4464                                ;; 01:445f $28 $03
-    ld   HL, lcdcShutterEffectDarkClose                ;; 01:4461 $21 $16 $41
+    ld   HL, lcdcShutterEffectDarkOpen                 ;; 01:4461 $21 $16 $41
 .jr_01_4464:
     ld   B, $0d                                        ;; 01:4464 $06 $0d
     call loadLCDCEffectBuffer                          ;; 01:4466 $cd $f3 $02
