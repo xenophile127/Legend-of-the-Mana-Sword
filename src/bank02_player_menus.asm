@@ -2678,14 +2678,25 @@ jp_02_531c:
     ld   A, L                                          ;; 02:535e $7d
     ld   [wHPLow], A                                   ;; 02:535f $ea $b2 $d7
     ld   A, [wStatWisdom]                              ;; 02:5362 $fa $c3 $d7
-    ld   H, $00                                        ;; 02:5365 $26 $00
-    ld   L, A                                          ;; 02:5367 $6f
-    ld   A, $5e                                        ;; 02:5368 $3e $5e
-    call MultiplyHL_by_A                               ;; 02:536a $cd $7b $2b
-    ld   A, $64                                        ;; 02:536d $3e $64
-    call divMod                                        ;; 02:536f $cd $8b $2b
-    ld   A, L                                          ;; 02:5372 $7d
-    add  A, $05                                        ;; 02:5373 $c6 $05
+; The original math for MP was (((Wisdom * 94) / 100) + 5).
+; This gave a max of 98 MP at 99 Wisdom, with cases where a point of Wisdom resulted in no additional MP.
+; New equation is (Wisdom + 4),  capped at 99.
+; The plus four keeps the same starting MP (6).
+    add  A, $04
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
     cp   A, $63                                        ;; 02:5375 $fe $63
     jr   C, .jr_02_537b                                ;; 02:5377 $38 $02
     ld   A, $63                                        ;; 02:5379 $3e $63
