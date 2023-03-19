@@ -4473,16 +4473,20 @@ drawWindowStart:
     cp   A, $06                                        ;; 02:6724 $fe $06
     jr   NZ, .set_dimensions                           ;; 02:6726 $20 $11
 .moveWindowIfOverlapsPlayer:
-    push DE                                            ;; 02:6728 $d5
-    push HL                                            ;; 02:6729 $e5
-    call getPlayerY                                    ;; 02:672a $cd $99 $02
-    rrca                                               ;; 02:672d $0f
-    rrca                                               ;; 02:672e $0f
-    rrca                                               ;; 02:672f $0f
-    and  A, $1f                                        ;; 02:6730 $e6 $1f
-    pop  HL                                            ;; 02:6732 $e1
-    pop  DE                                            ;; 02:6733 $d1
-    cp   A, D                                          ;; 02:6734 $ba
+    ; This handles moving the dialog window (or the initial level up window).
+    ; There is exactly a 16 pixel gap between the two window locations.
+    ; So if the player is in the middle there is a decision to be made on where to position the window.
+    ; Originally the window was biased towards the top of the screen,
+    ; but biasing it to the bottom means covering the status bar and less of the play field.
+    ; An exception is made if the player is facing south, which likely implies talking to a character there.
+    ld a, [wObjectRuntimeData.player]
+    bit 3, a                                           ; the bit for facing south
+    ld a, [wObjectRuntimeData.player + 4]              ; y coordinate of the bottom of the player sprite
+    jr z, .check_position
+    ; If the player's facing is south then changing the position check by just one pixel is enough
+    inc a
+.check_position:
+    cp a, $51                                          ;  height of the window plus the player plus one (64+16+1=81)
     jr   C, .set_dimensions                            ;; 02:6735 $38 $02
     ld   D, $00                                        ;; 02:6737 $16 $00
 .set_dimensions:

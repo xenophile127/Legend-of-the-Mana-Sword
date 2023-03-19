@@ -326,9 +326,12 @@ wSoundsMusicRestorePitchChannel1:
 ; 08-09: Shadow OAM memory location
 ; 0a: Sliding on ice or in the minecart. If sliding the top nibble is set to 9 and bottom is set to a direction same as offset 00
 ; 0b-15: Unknown
+; The fourth entry is the player.
 ; The seventh entry is either the first Npc or your follower, if present.
 wObjectRuntimeData:
-    ds 112                                             ;; c200
+    ds 64                                              ;; c200
+.player:
+    ds 48                                              ;; c240
 .npc1:
     ds 208                                             ;; c270
 
