@@ -51,7 +51,7 @@ entryPointTableBank01:
     call_to_bank_target attackTile                     ;; 01:404e pP
 
 lcdcLetterboxEffect:
-    db   $0e, $fc, $03, $e4, $7e, $fc, $01, $e4        ;; 01:4050 ????????
+    db   $0e, $fc, $03, $e4, $7e, $fc, $01, $e0        ;; 01:4050 ????????
     db   $ff                                           ;; 01:4058 ?
 
 prepareLetterboxEffect:
@@ -144,20 +144,23 @@ setDefaultLCDEffectAndBGP:
     ret                                                ;; 01:40fb $c9
 
 lcdcShutterEffectClose:
-    db   $00, $fc, $03, $e4, $7c, $fc, $00, $e4        ;; 01:40fc ........
-    db   $7e, $fc, $01, $e4, $ff                       ;; 01:4104 .....
+    db   $00, $fc, $03, $e4, $7c, $fc, $00, $fc        ;; 01:40fc ........
+    db   $7e, $fc, $01, $e0, $ff                       ;; 01:4104 .....
 
 lcdcShutterEffectOpen:
-    db   $3c, $fc, $03, $e4, $40, $fc, $00, $e4        ;; 01:4109 ........
-    db   $7e, $fc, $01, $e4, $ff                       ;; 01:4111 .....
+    db   $3c, $fc, $03, $e4, $40, $fc, $00, $fc        ;; 01:4109 ........
+    db   $7e, $fc, $01, $e0, $ff                       ;; 01:4111 .....
 
+; This effect originally applied the dark effect to the status bar, now fixed.
 lcdcShutterEffectDarkClose:
-    db   $00, $fc, $03, $3f, $7c, $fc, $00, $3f        ;; 01:4116 ????????
-    db   $7e, $fc, $01, $e4, $ff                       ;; 01:411e ?????
+    db   $00, $fc, $03, $3f, $7c, $fc, $00, $ff        ;; 01:4116 ????????
+    db   $7e, $fc, $01, $e0, $ff                       ;; 01:411e ?????
 
+; This effect was originally not used, with the above close effect accidentally used instead.
+; It also, like the above effect, originally applied the dark effect to the status bar.
 lcdcShutterEffectDarkOpen:
-    db   $3c, $fc, $03, $3f, $40, $fc, $00, $3f        ;; 01:4123 ????????
-    db   $7e, $fc, $01, $e4, $ff                       ;; 01:412b ?????
+    db   $3c, $fc, $03, $3f, $40, $fc, $00, $ff        ;; 01:4123 ????????
+    db   $7e, $fc, $01, $e0, $ff                       ;; 01:412b ?????
 
 loadMapWithShutterEffectSequence:
     ld   D, H                                          ;; 01:4130 $54
