@@ -1537,7 +1537,8 @@ playerDamagedEffect:
     ld   C, A                                          ;; 01:4b4c $4f
     ld   B, $20                                        ;; 01:4b4d $06 $20
 .blinking:
-    bit  3, A                                          ;; 01:4b4f $cb $5f
+; Double the blinking rate compared to the original. Looks better on faster refresh rate screens and still looks fine on DMG.
+    bit  2, A
     jr   Z, .handle_timer                              ;; 01:4b51 $28 $02
     ld   B, $30                                        ;; 01:4b53 $06 $30
 .handle_timer:
