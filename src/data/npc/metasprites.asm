@@ -50,7 +50,7 @@ data_03_7bba:
     db   $10, $68, $6a                                 ;; 03:7bdb ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7bde:
+metaspritesMyconid:
     db   $10, $50, $52                                 ;; 03:7bde ... $00
     db   $10, $50, $52                                 ;; 03:7be1 ... $01
     db   $10, $54, $56                                 ;; 03:7be4 ... $02
@@ -65,7 +65,7 @@ data_03_7bde:
     db   $10, $54, $56                                 ;; 03:7bff ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7c02:
+metaspritesGuardian:
     db   $10, $60, $62                                 ;; 03:7c02 ??? $00
     db   $10, $60, $62                                 ;; 03:7c05 ??? $01
     db   $10, $64, $66                                 ;; 03:7c08 ??? $02
@@ -80,7 +80,7 @@ data_03_7c02:
     db   $10, $64, $66                                 ;; 03:7c23 ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7c26:
+metaspritesEvilSword:
     db   $30, $46, $44                                 ;; 03:7c26 ??? $00
     db   $10, $44, $46                                 ;; 03:7c29 ??? $01
     db   $50, $40, $42                                 ;; 03:7c2c ??? $02
@@ -95,7 +95,7 @@ data_03_7c26:
     db   $10, $40, $42                                 ;; 03:7c47 ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7c4a:
+metaspritesZombie:
     db   $10, $40, $42                                 ;; 03:7c4a ??? $00
     db   $10, $40, $42                                 ;; 03:7c4d ??? $01
     db   $10, $48, $4a                                 ;; 03:7c50 ??? $02
@@ -110,7 +110,7 @@ data_03_7c4a:
     db   $10, $40, $42                                 ;; 03:7c6b ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7c6e:
+metaspritesPumpkin:
     db   $30, $46, $44                                 ;; 03:7c6e ??? $00
     db   $10, $44, $46                                 ;; 03:7c71 ??? $01
     db   $10, $48, $4a                                 ;; 03:7c74 ??? $02
@@ -125,7 +125,7 @@ data_03_7c6e:
     db   $10, $40, $42                                 ;; 03:7c8f ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7c92:
+metaspritesAirElemental:
     db   $30, $4a, $48                                 ;; 03:7c92 ??? $00
     db   $30, $42, $40                                 ;; 03:7c95 ??? $01
     db   $10, $48, $4a                                 ;; 03:7c98 ??? $02
@@ -185,7 +185,7 @@ data_03_7cfe:
     db   $10, $50, $52                                 ;; 03:7d1f ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7d22:
+metaspritesEyeSpy:
     db   $30, $42, $40                                 ;; 03:7d22 ??? $00
     db   $10, $40, $42                                 ;; 03:7d25 ??? $01
     db   $10, $48, $4a                                 ;; 03:7d28 ??? $02
@@ -215,7 +215,7 @@ data_03_7d46:
     db   $30, $46, $44                                 ;; 03:7d67 ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7d6a:
+metaspritesShadowZero:
     db   $30, $6a, $68                                 ;; 03:7d6a ??? $00
     db   $10, $68, $6a                                 ;; 03:7d6d ??? $01
     db   $10, $60, $62                                 ;; 03:7d70 ??? $02
@@ -230,7 +230,7 @@ data_03_7d6a:
     db   $10, $60, $62                                 ;; 03:7d8b ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7d8e:
+metaspritesEarthElemental:
     db   $10, $50, $52                                 ;; 03:7d8e ??? $00
     db   $10, $54, $56                                 ;; 03:7d91 ??? $01
     db   $10, $50, $52                                 ;; 03:7d94 ??? $02
@@ -245,7 +245,7 @@ data_03_7d8e:
     db   $10, $58, $5a                                 ;; 03:7daf ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7db2:
+metaspritesDoppelMirror:
     db   $30, $56, $54                                 ;; 03:7db2 ??? $00
     db   $10, $54, $56                                 ;; 03:7db5 ??? $01
     db   $10, $58, $5a                                 ;; 03:7db8 ??? $02
@@ -260,7 +260,7 @@ data_03_7db2:
     db   $10, $50, $52                                 ;; 03:7dd3 ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7dd6:
+metaspritesPhantasm:
     db   $10, $40, $42                                 ;; 03:7dd6 ??? $00
     db   $10, $44, $46                                 ;; 03:7dd9 ??? $01
     db   $10, $4c, $4e                                 ;; 03:7ddc ??? $02
@@ -305,7 +305,7 @@ data_03_7e1e:
     db   $10, $5c, $5a                                 ;; 03:7e3f ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7e42:
+metaspritesWizard:
     db   $30, $4a, $48                                 ;; 03:7e42 ??? $00
     db   $10, $48, $4a                                 ;; 03:7e45 ??? $01
     db   $10, $44, $46                                 ;; 03:7e48 ??? $02
@@ -320,7 +320,7 @@ data_03_7e42:
     db   $10, $50, $52                                 ;; 03:7e63 ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7e66:
+metaspritesDeathGauntlet:
     db   $30, $5a, $58                                 ;; 03:7e66 ??? $00
     db   $10, $58, $5a                                 ;; 03:7e69 ??? $01
     db   $10, $60, $62                                 ;; 03:7e6c ??? $02
@@ -335,7 +335,7 @@ data_03_7e66:
     db   $10, $54, $56                                 ;; 03:7e87 ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7e8a:
+metaspritesDarkStalker:
     db   $30, $6a, $68                                 ;; 03:7e8a ??? $00
     db   $10, $68, $6a                                 ;; 03:7e8d ??? $01
     db   $10, $60, $62                                 ;; 03:7e90 ??? $02
@@ -350,7 +350,7 @@ data_03_7e8a:
     db   $10, $5c, $5e                                 ;; 03:7eab ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7eae:
+metaspritesShadowKnight:
     db   $30, $52, $50                                 ;; 03:7eae ... $00
     db   $10, $50, $52                                 ;; 03:7eb1 ... $01
     db   $10, $48, $4a                                 ;; 03:7eb4 ... $02
@@ -424,7 +424,7 @@ data_03_7f3e:
     db   $10, $6e, $6e                                 ;; 03:7f5f ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7f62:
+metaspritesCompanion:
     db   $30, $2a, $28                                 ;; 03:7f62 ... $00
     db   $10, $28, $2a                                 ;; 03:7f65 ... $01
     db   $10, $24, $26                                 ;; 03:7f68 ... $02
@@ -439,7 +439,7 @@ data_03_7f62:
     db   $10, $20, $22                                 ;; 03:7f83 ??? $0b
 
 ;@data format=bbb amount=12
-data_03_7f86:
+metaspritesWilly:
     db   $10, $60, $62                                 ;; 03:7f86 ... $00
     db   $10, $60, $62                                 ;; 03:7f89 ... $01
     db   $10, $60, $62                                 ;; 03:7f8c ... $02
