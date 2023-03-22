@@ -16,15 +16,15 @@
 ; Offset $16: chest script index value, or zero if never drops a chest (2 bytes)
 npcDataTable:
     NPC_DATA $a9, $00, $74, $02, gfxSnowman, tileorderNpc, snowmanMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_003d, $0000 ;; 03:5f5a NPC_SNOWMAN_STILL
-    NPC_DATA $d9, $01, $20, $08, gfxNpcGirl, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0202, $0000 ;; 03:5f72 NPC_FUJI_FOLLOWING
-    NPC_DATA $d9, $02, $20, $08, gfxNpcMysteryMan, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $00, $00, $06, $06, $06, $06, script_0203, $0000 ;; 03:5f8a NPC_MYSTERYMAN_FOLLOWING
-    NPC_DATA $d9, $03, $20, $08, gfxNpcWatts, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0204, $0000 ;; 03:5fa2 NPC_WATTS_FOLLOWING
-    NPC_DATA $d9, $04, $20, $08, gfxNpcBogard, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0205, $0000 ;; 03:5fba NPC_BOGARD_FOLLOWING
-    NPC_DATA $d9, $05, $20, $08, gfxNpcAmanda, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0206, $0000 ;; 03:5fd2 NPC_AMANDA_FOLLOWING
-    NPC_DATA $d9, $06, $20, $08, gfxNpcLester, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_01ff, $0000 ;; 03:5fea NPC_LESTER_FOLLOWING
-    NPC_DATA $d9, $07, $20, $08, gfxNpcMarcie, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0200, $0000 ;; 03:6002 NPC_MARCIE_FOLLOWING
-    NPC_DATA $d9, $08, $20, $08, gfxNpcChocobot, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:601a NPC_CHOCOBOT_FOLLOWING
-    NPC_DATA $d9, $09, $20, $08, gfxNpcChocobo, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:6032 NPC_CHOCOBO_FOLLOWING
+    NPC_DATA $d9, $01, $20, $08, gfxNpcGirl, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0202, $0000 ;; 03:5f72 NPC_FUJI_FOLLOWING
+    NPC_DATA $d9, $02, $20, $08, gfxNpcMysteryMan, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $00, $00, $06, $06, $06, $06, script_0203, $0000 ;; 03:5f8a NPC_MYSTERYMAN_FOLLOWING
+    NPC_DATA $d9, $03, $20, $08, gfxNpcWatts, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0204, $0000 ;; 03:5fa2 NPC_WATTS_FOLLOWING
+    NPC_DATA $d9, $04, $20, $08, gfxNpcBogard, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0205, $0000 ;; 03:5fba NPC_BOGARD_FOLLOWING
+    NPC_DATA $d9, $05, $20, $08, gfxNpcAmanda, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0206, $0000 ;; 03:5fd2 NPC_AMANDA_FOLLOWING
+    NPC_DATA $d9, $06, $20, $08, gfxNpcLester, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_01ff, $0000 ;; 03:5fea NPC_LESTER_FOLLOWING
+    NPC_DATA $d9, $07, $20, $08, gfxNpcMarcie, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0200, $0000 ;; 03:6002 NPC_MARCIE_FOLLOWING
+    NPC_DATA $d9, $08, $20, $08, gfxNpcChocobot, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:601a NPC_CHOCOBOT_FOLLOWING
+    NPC_DATA $d9, $09, $20, $08, gfxNpcChocobo, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:6032 NPC_CHOCOBO_FOLLOWING
     NPC_DATA $91, $25, $50, $08, gfxEnemyWerewolf, tileorderNpc, data_03_7cfe, $00, $01, $00, $00, $01, $00, $0f, $05, $05, $05, script_003d, $0000 ;; 03:604a NPC_WEREWOLF_1
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01f1, $0000 ;; 03:6062 NPC_INV_CURE
     NPC_DATA $87, $0c, $78, $02, gfxChest, tileorderNpc, chestMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000b, $0000 ;; 03:607a NPC_CHEST_1
@@ -34,7 +34,7 @@ npcDataTable:
     NPC_DATA $91, $10, $40, $04, gfxEnemyChibidevil, tileorderNpc, data_03_7b72, $00, $01, $00, $00, $00, $00, $0d, $0e, $0d, $0d, script_003d, script_0438 ;; 03:60da NPC_CHIBIDEVIL
     NPC_DATA $91, $11, $50, $06, gfxEnemyRabite, tileorderNpc, data_03_7b96, $00, $01, $02, $00, $00, $00, $0f, $10, $10, $10, script_003d, $0000 ;; 03:60f2 NPC_RABBITE
     NPC_DATA $91, $12, $40, $08, gfxEnemyGoblin, tileorderNpc, data_03_7cb6, $00, $01, $00, $00, $00, $00, $02, $02, $03, $03, script_003d, script_0438 ;; 03:610a NPC_GOBLIN
-    NPC_DATA $91, $13, $50, $04, gfxEnemyMyconid, tileorderNpc, data_03_7bde, $00, $01, $01, $00, $00, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:6122 NPC_MUSHROOM
+    NPC_DATA $91, $13, $50, $04, gfxEnemyMyconid, tileorderNpc, metaspritesMyconid, $00, $01, $01, $00, $00, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:6122 NPC_MUSHROOM
     NPC_DATA $93, $14, $40, $04, gfxEnemyGrell, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $12, $12, $0b, $0b, script_003d, $0000 ;; 03:613a NPC_JELLYFISH
     NPC_DATA $91, $15, $50, $04, gfxEnemyMudman, tileorderNpc, data_03_7b96, $01, $01, $00, $00, $00, $00, $16, $16, $16, $16, script_003d, script_044b ;; 03:6152 NPC_SWAMPMAN
     NPC_DATA $91, $16, $60, $08, gfxEnemyLizardman, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $02, $02, $03, $03, script_003d, script_043a ;; 03:616a NPC_LIZARDMAN
@@ -43,9 +43,9 @@ npcDataTable:
     NPC_DATA $91, $19, $50, $08, gfxEnemySkeleton, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $03, $02, $03, $03, script_003d, script_0442 ;; 03:61b2 NPC_SKELETON
     NPC_DATA $91, $1a, $40, $04, gfxEnemyRoper, tileorderNpc, data_03_7d46, $01, $02, $00, $00, $00, $00, $16, $16, $16, $16, script_003d, $0000 ;; 03:61ca NPC_EVIL_PLANT
     NPC_DATA $91, $1b, $50, $04, gfxEnemyLandLeech, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $00, $00, $0d, $0d, $07, $08, script_003d, script_0443 ;; 03:61e2 NPC_FLYING_FISH
-    NPC_DATA $91, $1c, $40, $06, gfxEnemyZombie, tileorderNpc, data_03_7c4a, $00, $01, $01, $00, $00, $00, $05, $02, $05, $05, script_003d, script_0439 ;; 03:61fa NPC_ZOMBIE
+    NPC_DATA $91, $1c, $40, $06, gfxEnemyZombie, tileorderNpc, metaspritesZombie, $00, $01, $01, $00, $00, $00, $05, $02, $05, $05, script_003d, script_0439 ;; 03:61fa NPC_ZOMBIE
     NPC_DATA $91, $1d, $50, $08, gfxEnemyWarerat, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $02, $02, $07, $08, script_003d, script_043a ;; 03:6212 NPC_MOUSE
-    NPC_DATA $91, $1e, $40, $06, gfxEnemyPumpkinBomb, tileorderNpc, data_03_7c6e, $00, $01, $02, $02, $00, $00, $18, $18, $18, $18, script_003d, script_0453 ;; 03:622a NPC_PUMPKIN
+    NPC_DATA $91, $1e, $40, $06, gfxEnemyPumpkinBomb, tileorderNpc, metaspritesPumpkin, $00, $01, $02, $02, $00, $00, $18, $18, $18, $18, script_003d, script_0453 ;; 03:622a NPC_PUMPKIN
     NPC_DATA $91, $1f, $50, $06, gfxEnemyBloodOwl, tileorderNpc, data_03_7b96, $01, $02, $00, $00, $00, $00, $0b, $0b, $0d, $0d, script_003d, script_0447 ;; 03:6242 NPC_OWL
     NPC_DATA $93, $20, $40, $04, gfxEnemyKillerBee, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $0b, $0b, $0b, $0b, script_003d, $0000 ;; 03:625a NPC_BEE
     NPC_DATA $93, $21, $50, $06, gfxEnemyGasCloud, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $02, $00, $01, $03, $12, $12, script_003d, script_0440 ;; 03:6272 NPC_CLOUD
@@ -60,7 +60,7 @@ npcDataTable:
     NPC_DATA $91, $27, $50, $04, gfxEnemyRuster, tileorderNpc, data_03_7b96, $00, $00, $01, $00, $00, $00, $0f, $10, $0f, $0f, script_003d, $0000 ;; 03:634a NPC_HOPPING_BUG
     NPC_DATA $91, $28, $50, $0a, gfxEnemyPorcupine, tileorderNpc, data_03_7dfa, $00, $01, $02, $00, $02, $00, $02, $03, $03, $03, script_003d, script_0445 ;; 03:6362 NPC_PORCUPINE
     NPC_DATA $91, $29, $40, $06, gfxEnemyMandrake, tileorderNpc, data_03_7b72, $00, $01, $02, $02, $02, $02, $01, $00, $03, $03, script_003d, $0000 ;; 03:637a NPC_CARROT
-    NPC_DATA $91, $2a, $40, $08, gfxEnemyEyeSpy, tileorderNpc, data_03_7d22, $00, $01, $01, $02, $02, $00, $00, $00, $01, $01, script_003d, script_044b ;; 03:6392 NPC_EYE_SPY
+    NPC_DATA $91, $2a, $40, $08, gfxEnemyEyeSpy, tileorderNpc, metaspritesEyeSpy, $00, $01, $01, $02, $02, $00, $00, $00, $01, $01, script_003d, script_044b ;; 03:6392 NPC_EYE_SPY
     NPC_DATA $91, $2b, $50, $08, gfxEnemyWerewolf, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $11, $05, $03, $03, script_003d, script_043a ;; 03:63aa NPC_WEREWOLF_2
     NPC_DATA $93, $2c, $60, $04, gfxEnemyGhost, tileorderNpc, data_03_7bba, $00, $01, $01, $00, $00, $00, $0b, $12, $12, $12, script_003d, script_0439 ;; 03:63c2 NPC_GHOST
     NPC_DATA $91, $2d, $40, $04, gfxEnemyBasilisk, tileorderNpc, data_03_7b72, $00, $01, $01, $01, $00, $00, $0b, $0b, $0b, $0b, script_003d, script_0455 ;; 03:63da NPC_BASILISK
@@ -69,7 +69,7 @@ npcDataTable:
     NPC_DATA $91, $31, $40, $04, gfxEnemyMummy, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $02, $02, $05, $05, script_003d, script_0457 ;; 03:6422 NPC_MUMMY
     NPC_DATA $91, $30, $50, $0a, gfxEnemyPakkunLizard, tileorderNpc, data_03_7dfa, $00, $01, $01, $02, $02, $00, $05, $02, $02, $02, script_003d, $0000 ;; 03:643a NPC_PAKKUN_LIZARD
     NPC_DATA $91, $32, $50, $08, gfxEnemyCobra, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $02, $02, $0d, $0d, script_003d, $0000 ;; 03:6452 NPC_SNAKE
-    NPC_DATA $91, $33, $60, $06, gfxEnemyShadowZero, tileorderNpc, data_03_7d6a, $00, $01, $01, $00, $00, $00, $16, $16, $07, $08, script_003d, script_0439 ;; 03:646a NPC_SHADOW
+    NPC_DATA $91, $33, $60, $06, gfxEnemyShadowZero, tileorderNpc, metaspritesShadowZero, $00, $01, $01, $00, $00, $00, $16, $16, $07, $08, script_003d, script_0439 ;; 03:646a NPC_SHADOW
     NPC_DATA $91, $34, $58, $0c, gfxEnemyMagician, tileorderNpc, data_03_7e1e, $00, $01, $01, $02, $02, $00, $03, $13, $13, $13, script_003d, script_0458 ;; 03:6482 NPC_BLACK_WIZARD
     NPC_DATA $91, $35, $50, $04, gfxEnemyRedWisp, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $00, $00, $0d, $0d, $14, $14, script_003d, script_043e ;; 03:649a NPC_FLAME
     NPC_DATA $91, $36, $60, $08, gfxEnemyGargoyle, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $00, $00, $07, $08, script_003d, script_0447 ;; 03:64b2 NPC_GARGOYLE
@@ -77,11 +77,11 @@ npcDataTable:
     NPC_DATA $91, $38, $50, $08, gfxEnemyMolebear, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $02, $02, $03, $03, script_003d, $0000 ;; 03:64e2 NPC_MOLEBEAR
     NPC_DATA $91, $39, $40, $08, gfxEnemyOrge, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $03, $03, $03, $03, script_003d, script_043e ;; 03:64fa NPC_OGRE
     NPC_DATA $91, $3a, $50, $04, gfxEnemyBarnaclejack, tileorderNpc, data_03_7b96, $01, $00, $00, $00, $00, $00, $0f, $10, $0f, $0f, script_003d, script_0455 ;; 03:6512 NPC_BARNACLEJACK
-    NPC_DATA $91, $3b, $40, $08, gfxEnemyPhantasm, tileorderNpc, data_03_7dd6, $00, $01, $01, $01, $00, $00, $0c, $0c, $12, $12, script_003d, script_0449 ;; 03:652a NPC_PHANTASM
+    NPC_DATA $91, $3b, $40, $08, gfxEnemyPhantasm, tileorderNpc, metaspritesPhantasm, $00, $01, $01, $01, $00, $00, $0c, $0c, $12, $12, script_003d, script_0449 ;; 03:652a NPC_PHANTASM
     NPC_DATA $91, $3c, $50, $08, gfxEnemyMinotaur, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $03, $02, $03, $03, script_003d, script_043a ;; 03:6542 NPC_MINOTAUR
-    NPC_DATA $91, $3d, $40, $0c, gfxEnemyWizard, tileorderNpc, data_03_7e42, $00, $01, $01, $02, $02, $00, $13, $12, $14, $14, script_003d, script_0449 ;; 03:655a NPC_GLAIVE_MAGE
-    NPC_DATA $91, $3e, $58, $0c, gfxEnemyDarkStalker, tileorderNpc, data_03_7e8a, $00, $01, $01, $00, $00, $00, $03, $02, $03, $03, script_003d, script_043e ;; 03:6572 NPC_GLAIVE_KNIGHT
-    NPC_DATA $91, $3f, $40, $0c, gfxEnemyDarkLord, tileorderNpc, data_03_7eae, $00, $01, $01, $00, $00, $00, $06, $06, $07, $08, script_003d, $0000 ;; 03:658a NPC_DARK_LORD
+    NPC_DATA $91, $3d, $40, $0c, gfxEnemyWizard, tileorderNpc, metaspritesWizard, $00, $01, $01, $02, $02, $00, $13, $12, $14, $14, script_003d, script_0449 ;; 03:655a NPC_GLAIVE_MAGE
+    NPC_DATA $91, $3e, $58, $0c, gfxEnemyDarkStalker, tileorderNpc, metaspritesDarkStalker, $00, $01, $01, $00, $00, $00, $03, $02, $03, $03, script_003d, script_043e ;; 03:6572 NPC_GLAIVE_KNIGHT
+    NPC_DATA $91, $3f, $40, $0c, gfxEnemyDarkLord, tileorderNpc, metaspritesShadowKnight, $00, $01, $01, $00, $00, $00, $06, $06, $07, $08, script_003d, $0000 ;; 03:658a NPC_DARK_LORD
     NPC_DATA $91, $40, $40, $04, gfxEnemyMegaXorn, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $03, $02, $01, $01, script_003d, script_0467 ;; 03:65a2 NPC_MEGA_FLYTRAP
     NPC_DATA $93, $41, $50, $04, gfxEnemyDragonfly, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $00, $00, $0c, $0b, $0b, $0b, script_003d, script_0457 ;; 03:65ba NPC_DRAGONFLY
     NPC_DATA $91, $42, $60, $04, gfxEnemyBulette, tileorderNpc, data_03_7bba, $00, $01, $01, $00, $00, $00, $02, $02, $07, $08, script_003d, script_045a ;; 03:65d2 NPC_ARMADILLO
@@ -90,18 +90,18 @@ npcDataTable:
     NPC_DATA $91, $45, $60, $04, gfxEnemyWalrus, tileorderNpc, data_03_7bba, $00, $01, $01, $00, $00, $00, $03, $02, $10, $10, script_003d, script_0458 ;; 03:661a NPC_WALRUS
     NPC_DATA $91, $46, $40, $08, gfxEnemyDuckSolder, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $02, $02, $01, $01, script_003d, $0000 ;; 03:6632 NPC_DUCK_SOLDIER
     NPC_DATA $91, $47, $50, $04, gfxEnemyPoto, tileorderNpc, data_03_7b96, $00, $00, $01, $01, $00, $00, $0f, $10, $10, $10, script_003d, script_0449 ;; 03:664a NPC_POTO_RABBIT
-    NPC_DATA $91, $48, $40, $06, gfxEnemyAirElemental, tileorderNpc, data_03_7c92, $00, $01, $01, $00, $00, $00, $0b, $0b, $07, $08, script_003d, $0000 ;; 03:6662 NPC_CYCLONE
+    NPC_DATA $91, $48, $40, $06, gfxEnemyAirElemental, tileorderNpc, metaspritesAirElemental, $00, $01, $01, $00, $00, $00, $0b, $0b, $07, $08, script_003d, $0000 ;; 03:6662 NPC_CYCLONE
     NPC_DATA $93, $49, $50, $08, gfxEnemyBeholder, tileorderNpc, data_03_7cfe, $00, $01, $01, $02, $00, $00, $0c, $0b, $14, $14, script_003d, $0000 ;; 03:667a NPC_BEHOLDER_EYE
     NPC_DATA $93, $4a, $40, $04, gfxEnemyMantaRay, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $0d, $0d, $0d, $0d, script_003d, script_0452 ;; 03:6692 NPC_MANTA_RAY
     NPC_DATA $91, $4b, $50, $04, gfxEnemyGriffinHand, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $00, $00, $0f, $10, $0f, $0f, script_003d, script_0456 ;; 03:66aa NPC_JUMPING_HAND
     NPC_DATA $91, $4c, $40, $08, gfxEnemyTortoiseKnight, tileorderNpc, data_03_7cb6, $00, $01, $01, $02, $00, $01, $03, $02, $03, $03, script_003d, script_043e ;; 03:66c2 NPC_TORTOISE
     NPC_DATA $91, $4d, $40, $04, gfxEnemyFireMoth, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $0b, $0b, $0b, $0b, script_003d, $0000 ;; 03:66da NPC_FIRE_MOTH
-    NPC_DATA $91, $4e, $50, $06, gfxEnemyEarthElemental, tileorderNpc, data_03_7d8e, $00, $01, $01, $00, $00, $00, $16, $16, $16, $16, script_003d, script_0449 ;; 03:66f2 NPC_EARTH_DIGGER
+    NPC_DATA $91, $4e, $50, $06, gfxEnemyEarthElemental, tileorderNpc, metaspritesEarthElemental, $00, $01, $01, $00, $00, $00, $16, $16, $16, $16, script_003d, script_0449 ;; 03:66f2 NPC_EARTH_DIGGER
     NPC_DATA $91, $4f, $40, $04, gfxEnemyDenden, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $0d, $0d, $0d, $0d, script_003d, script_043e ;; 03:670a NPC_DENDEN_SNAIL
-    NPC_DATA $91, $50, $50, $06, gfxEnemyDoppelMirror, tileorderNpc, data_03_7db2, $00, $01, $01, $00, $00, $00, $12, $12, $13, $13, script_003d, script_044a ;; 03:6722 NPC_DOPPEL_MIRROR
-    NPC_DATA $91, $51, $60, $04, gfxEnemyGuardian, tileorderNpc, data_03_7c02, $00, $01, $01, $00, $00, $00, $02, $02, $03, $03, script_003d, script_0452 ;; 03:673a NPC_GUARDIAN
-    NPC_DATA $91, $52, $40, $04, gfxEnemyEvilSword, tileorderNpc, data_03_7c26, $00, $01, $01, $00, $00, $00, $02, $02, $07, $08, script_003d, $0000 ;; 03:6752 NPC_EVIL_SWORD
-    NPC_DATA $91, $53, $50, $0c, gfxEnemyDeathGauntlet, tileorderNpc, data_03_7e66, $00, $01, $01, $00, $00, $00, $02, $02, $12, $12, script_003d, script_0449 ;; 03:676a NPC_GAUNTLET
+    NPC_DATA $91, $50, $50, $06, gfxEnemyDoppelMirror, tileorderNpc, metaspritesDoppelMirror, $00, $01, $01, $00, $00, $00, $12, $12, $13, $13, script_003d, script_044a ;; 03:6722 NPC_DOPPEL_MIRROR
+    NPC_DATA $91, $51, $60, $04, gfxEnemyGuardian, tileorderNpc, metaspritesGuardian, $00, $01, $01, $00, $00, $00, $02, $02, $03, $03, script_003d, script_0452 ;; 03:673a NPC_GUARDIAN
+    NPC_DATA $91, $52, $40, $04, gfxEnemyEvilSword, tileorderNpc, metaspritesEvilSword, $00, $01, $01, $00, $00, $00, $02, $02, $07, $08, script_003d, $0000 ;; 03:6752 NPC_EVIL_SWORD
+    NPC_DATA $91, $53, $50, $0c, gfxEnemyDeathGauntlet, tileorderNpc, metaspritesDeathGauntlet, $00, $01, $01, $00, $00, $00, $02, $02, $12, $12, script_003d, script_0449 ;; 03:676a NPC_GAUNTLET
     NPC_DATA $91, $54, $40, $08, gfxEnemyGarasha, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $02, $02, $03, $03, script_003d, script_043e ;; 03:6782 NPC_GARASHA_DUCK
     NPC_DATA $91, $55, $50, $04, gfxEnemyWonder, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $00, $00, $03, $03, $12, $12, script_003d, $0000 ;; 03:679a NPC_FUZZY_WONDER
     NPC_DATA $91, $56, $40, $04, gfxEnemyMammoth, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $03, $02, $0d, $0d, script_003d, script_044d ;; 03:67b2 NPC_ELEPHANT
@@ -112,12 +112,12 @@ npcDataTable:
     NPC_DATA $95, $5b, $60, $08, gfxEnemySahagin, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $06, $13, $06, $06, script_003d, $0000 ;; 03:682a NPC_WATER_DEMON
     NPC_DATA $95, $5c, $60, $06, gfxEnemySeaDragon, tileorderNpc, data_03_7bba, $00, $01, $01, $02, $02, $02, $01, $16, $17, $17, script_003d, $0000 ;; 03:6842 NPC_SEA_DRAGON
     NPC_DATA $93, $5d, $60, $08, gfxEnemyGalFish, tileorderNpc, data_03_7cda, $00, $01, $00, $00, $00, $00, $05, $05, $07, $08, script_003d, $0000 ;; 03:685a NPC_GALL_FISH
-    NPC_DATA $81, $5e, $60, $02, gfxNpcWilly, tileorderNpc, data_03_7f86, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0256, $0000 ;; 03:6872 NPC_WILLY
+    NPC_DATA $81, $5e, $60, $02, gfxNpcWilly, tileorderNpc, metaspritesWilly, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0256, $0000 ;; 03:6872 NPC_WILLY
     NPC_DATA $81, $5e, $40, $08, gfxNpcMysteryMan, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $02, $00, $04, $04, $04, $04, script_0259, $0000 ;; 03:688a NPC_MYSTERYMAN_1
     NPC_DATA $81, $5f, $60, $08, gfxNpcAmanda, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0261, $0000 ;; 03:68a2 NPC_AMANDA_1
     NPC_DATA $91, $60, $40, $02, gfxNpcAmandaIll, tileorderNpc, data_03_7b72, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0226, $0000 ;; 03:68ba NPC_AMANDA_ILL
     NPC_DATA $81, $5e, $5c, $02, gfxNpcAmandaDead, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0228, $0000 ;; 03:68d2 NPC_AMANDA_DEAD
-    NPC_DATA $81, $01, $20, $08, gfxNpcGirl, tileorderNpc, data_03_7f62, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:68ea NPC_FUJI_1
+    NPC_DATA $81, $01, $20, $08, gfxNpcGirl, tileorderNpc, metaspritesCompanion, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:68ea NPC_FUJI_1
     NPC_DATA $81, $5e, $40, $02, gfxNpcGirlWindow, tileorderNpc, data_03_7ef6, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0207, $0000 ;; 03:6902 NPC_FUJI_WINDOW
     NPC_DATA $81, $5e, $5c, $02, gfxNpcMother, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01fe, $0000 ;; 03:691a NPC_MOTHER
     NPC_DATA $81, $5f, $60, $08, gfxNpcBogard, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0257, $0000 ;; 03:6932 NPC_BOGARD_1
@@ -194,14 +194,14 @@ npcDataTable:
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0260, $0000 ;; 03:6fda NPC_INV_SALESMAN_1
     NPC_DATA $81, $5f, $40, $08, gfxNpcGirl, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:6ff2 NPC_FUJI_2
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_025e, $0000 ;; 03:700a NPC_INV_SALESMAN_2
-    NPC_DATA $81, $02, $20, $08, gfxNpcMysteryMan, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0259, $0000 ;; 03:7022 NPC_MYSTERYMAN_2
-    NPC_DATA $81, $04, $20, $08, gfxNpcBogard, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $01, $00, $02, $02, $02, $02, script_0257, $0000 ;; 03:703a NPC_BOGARD_3
-    NPC_DATA $81, $05, $20, $08, gfxNpcAmanda, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $01, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:7052 NPC_AMANDA_2
-    NPC_DATA $81, $06, $20, $08, gfxNpcLester, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $01, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:706a NPC_LESTER_2
-    NPC_DATA $81, $07, $20, $08, gfxNpcMarcie, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $01, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:7082 NPC_MARCIE_2
-    NPC_DATA $81, $08, $20, $08, gfxNpcChocobot, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0472, $0000 ;; 03:709a NPC_CHOCOBOT
+    NPC_DATA $81, $02, $20, $08, gfxNpcMysteryMan, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0259, $0000 ;; 03:7022 NPC_MYSTERYMAN_2
+    NPC_DATA $81, $04, $20, $08, gfxNpcBogard, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $02, $02, $02, $02, script_0257, $0000 ;; 03:703a NPC_BOGARD_3
+    NPC_DATA $81, $05, $20, $08, gfxNpcAmanda, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:7052 NPC_AMANDA_2
+    NPC_DATA $81, $06, $20, $08, gfxNpcLester, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:706a NPC_LESTER_2
+    NPC_DATA $81, $07, $20, $08, gfxNpcMarcie, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:7082 NPC_MARCIE_2
+    NPC_DATA $81, $08, $20, $08, gfxNpcChocobot, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0472, $0000 ;; 03:709a NPC_CHOCOBOT
     NPC_DATA $81, $09, $50, $08, gfxNpcChocobo, tileorderNpc, data_03_7cfe, $00, $01, $00, $01, $00, $00, $00, $00, $00, $00, script_0472, $0000 ;; 03:70b2 NPC_CHOCOBO_1
-    NPC_DATA $81, $09, $20, $08, gfxNpcChocobo, tileorderNpc, data_03_7f62, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0472, $0000 ;; 03:70ca NPC_CHOCOBO_2
+    NPC_DATA $81, $09, $20, $08, gfxNpcChocobo, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0472, $0000 ;; 03:70ca NPC_CHOCOBO_2
     NPC_DATA $81, $5e, $5c, $02, gfxNpcPrisonBars, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:70e2 NPC_PRISION_BARS
     NPC_DATA $81, $5f, $40, $04, gfxNpcMusic, tileorderNpc, data_03_7d46, $00, $01, $00, $00, $00, $00, $00, $00, $00, $00, script_003d, $0000 ;; 03:70fa NPC_MUSIC_NOTES
     NPC_DATA $81, $5e, $40, $08, gfxNpcMagicMerchant, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_025d, $0000 ;; 03:7112 NPC_MAGIC_SALESMAN
