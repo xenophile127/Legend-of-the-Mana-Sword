@@ -60,7 +60,7 @@ bossDataTable:
       BOSS_HEADER_GFX $38, $1c, bossGfxLich, tileorderLich, metaspritesLich ;; 04:4849 ????????
       dw data_04_4c39, data_04_5171, data_04_5171, data_04_5435 ;; 04:4851 ????????
     BOSS_HEADER $04, $bb, $d2, $fa, $08, $21, script_0247 ;; 04:4859 ????????
-      BOSS_HEADER_GFX $34, $1e, bossGfxGaruda, tileorderGaruda, metaspritesGaruda ;; 04:4861 ????????
+      BOSS_HEADER_GFX $34, $1e, bossGfxGaruda, tileorderGaruda, metaspritesGaruda_new ;; 04:4861 ????????
       dw data_04_4bb1, data_04_5127, data_04_5127, data_04_5435 ;; 04:4869 ????????
     BOSS_HEADER $08, $6a, $00, $fa, $09, $14, script_024f ;; 04:4871 ????????
       BOSS_HEADER_GFX $38, $1c, bossGfxDragon, tileorderDragon, metaspritesDragon ;; 04:4879 ????????
@@ -934,12 +934,12 @@ data_04_566d:
 
 data_04_56ab:
     db   $01                                           ;; 04:56ab ?
-    dw   data_04_6a52, data_04_7889                    ;; 04:56ac ????
+    dw   data_04_691d, data_04_7889                    ;; 04:56ac ????
     db   $ff, $ff                                      ;; 04:56b0 ??
 
 data_04_56b2:
     db   $01                                           ;; 04:56b2 ?
-    dw   data_04_6a52, data_04_7800                    ;; 04:56b3 ????
+    dw   data_04_691d, data_04_7800                    ;; 04:56b3 ????
     db   $ff, $ff                                      ;; 04:56b7 ??
 
 data_04_56b9:
@@ -3304,61 +3304,61 @@ data_04_6a19:
     db   $02, $6c, $ff                                 ;; 04:6a19 ???
 
 data_04_6a1c:
-    db   $12, $c4, $ff, $19, $c4, $ff                  ;; 04:6a1c ??????
+    db   $16, $c4, $ff, $19, $c4, $ff                  ;; 04:6a1c ??????
 
 data_04_6a22:
-    db   $12, $c2, $ff                                 ;; 04:6a22 ???
+    db   $16, $c2, $ff                                 ;; 04:6a22 ???
 
 data_04_6a25:
-    db   $19, $c2, $ff                                 ;; 04:6a25 ???
+    db   $1b, $c2, $ff                                 ;; 04:6a25 ???
 
 data_04_6a28:
-    db   $12, $c0, $ff                                 ;; 04:6a28 ???
+    db   $16, $c0, $ff                                 ;; 04:6a28 ???
 
 data_04_6a2b:
-    db   $19, $c0, $ff                                 ;; 04:6a2b ???
+    db   $1b, $c0, $ff                                 ;; 04:6a2b ???
 
 data_04_6a2e:
-    db   $12, $0e, $ff                                 ;; 04:6a2e ???
+    db   $16, $0e, $ff                                 ;; 04:6a2e ???
 
 data_04_6a31:
-    db   $19, $0e, $ff                                 ;; 04:6a31 ???
+    db   $1b, $0e, $ff                                 ;; 04:6a31 ???
 
 data_04_6a34:
-    db   $12, $00, $ff                                 ;; 04:6a34 ???
+    db   $16, $00, $ff                                 ;; 04:6a34 ???
 
 data_04_6a37:
-    db   $19, $00, $ff                                 ;; 04:6a37 ???
+    db   $1b, $00, $ff                                 ;; 04:6a37 ???
 
 data_04_6a3a:
-    db   $00, $44, $ff                                 ;; 04:6a3a ???
+    db   $02, $44, $ff                                 ;; 04:6a3a ???
 
 lich_new:
     db   $18, $00, $ff
 
 data_04_6a40:
-    db   $00, $42, $ff                                 ;; 04:6a40 ???
+    db   $02, $42, $ff                                 ;; 04:6a40 ???
 
 data_04_6a43:
-    db   $02, $42, $ff                                 ;; 04:6a43 ???
+    db   $04, $42, $ff                                 ;; 04:6a43 ???
 
 data_04_6a46:
-    db   $00, $40, $ff                                 ;; 04:6a46 ???
+    db   $02, $40, $ff                                 ;; 04:6a46 ???
 
 data_04_6a49:
-    db   $02, $40, $ff                                 ;; 04:6a49 ???
+    db   $04, $40, $ff                                 ;; 04:6a49 ???
 
 data_04_6a4c:
-    db   $00, $0e, $ff                                 ;; 04:6a4c ???
+    db   $02, $0e, $ff                                 ;; 04:6a4c ???
 
 data_04_6a4f:
-    db   $02, $0e, $ff                                 ;; 04:6a4f ???
+    db   $04, $0e, $ff                                 ;; 04:6a4f ???
 
 data_04_6a52:
-    db   $00, $00, $ff                                 ;; 04:6a52 ???
+    db   $02, $00, $ff                                 ;; 04:6a52 ???
 
 data_04_6a55:
-    db   $02, $00, $ff                                 ;; 04:6a55 ???
+    db   $04, $00, $ff                                 ;; 04:6a55 ???
 
 data_04_6a58:
     db   $00, $20, $ff                                 ;; 04:6a58 ???
@@ -3914,29 +3914,29 @@ data_04_7056:
     db   $08, $00, $ff                                 ;; 04:7066 ???
 
 data_04_7069:
-    db   $01, $f0, $f0, $04, $00, $f0, $06, $10        ;; 04:7069 ????????
-    db   $f0, $03, $f0, $00, $07, $10, $00, $05        ;; 04:7071 ????????
-    db   $00, $10, $08, $10, $10, $ff                  ;; 04:7079 ??????
+    db   $03, $f0, $f0, $06, $00, $f0, $08, $10        ;; 04:7069 ????????
+    db   $f0, $05, $f0, $00, $09, $10, $00, $07        ;; 04:7071 ????????
+    db   $00, $10, $0a, $10, $10, $ff                  ;; 04:7079 ??????
 
 data_04_707f:
-    db   $14, $f0, $f0, $11, $00, $f0, $0f, $10        ;; 04:707f ????????
-    db   $f0, $15, $f0, $00, $10, $10, $00, $16        ;; 04:7087 ????????
-    db   $f0, $10, $13, $00, $10, $ff                  ;; 04:708f ??????
+    db   $18, $f0, $f0, $15, $00, $f0, $13, $10        ;; 04:707f ????????
+    db   $f0, $19, $f0, $00, $14, $10, $00, $1a        ;; 04:7087 ????????
+    db   $f0, $10, $17, $00, $10, $ff                  ;; 04:708f ??????
 
 data_04_7095:
-    db   $09, $f0, $00, $0c, $10, $00, $0a, $f0        ;; 04:7095 ????????
-    db   $10, $0b, $00, $10, $0d, $10, $10, $0e        ;; 04:709d ????????
-    db   $20, $10, $0e, $20, $10, $ff                  ;; 04:70a5 ??????
+    db   $0b, $f0, $00, $10, $10, $00, $0e, $f0        ;; 04:7095 ????????
+    db   $10, $0f, $00, $10, $11, $10, $10, $12        ;; 04:709d ????????
+    db   $20, $10, $12, $20, $10, $ff                  ;; 04:70a5 ??????
 
 data_04_70ab:
-    db   $1b, $f0, $00, $17, $10, $00, $1d, $e0        ;; 04:70ab ????????
-    db   $10, $1c, $f0, $10, $1a, $00, $10, $18        ;; 04:70b3 ????????
-    db   $10, $10, $18, $10, $10, $ff                  ;; 04:70bb ??????
+    db   $1d, $f0, $00, $00, $10, $00, $1f, $e0        ;; 04:70ab ????????
+    db   $10, $1e, $f0, $10, $1c, $00, $10, $01        ;; 04:70b3 ????????
+    db   $10, $10, $01, $10, $10, $ff                  ;; 04:70bb ??????
 
 data_04_70c1:
-    db   $09, $f0, $00, $0c, $10, $00, $4a, $f0        ;; 04:70c1 ????????
-    db   $10, $0b, $00, $10, $0d, $10, $10, $4e        ;; 04:70c9 ????????
-    db   $20, $10, $0e, $20, $10, $ff                  ;; 04:70d1 ??????
+    db   $0b, $f0, $00, $10, $10, $00, $4e, $f0        ;; 04:70c1 ????????
+    db   $10, $0f, $00, $10, $11, $10, $10, $52        ;; 04:70c9 ????????
+    db   $20, $10, $12, $20, $10, $ff                  ;; 04:70d1 ??????
 
 data_04_70d7:
     db   $1b, $f0, $00, $17, $10, $00, $5d, $e0        ;; 04:70d7 ????????
@@ -4730,9 +4730,12 @@ metaspritesIflyteMetalCrab:
     db   $30, $6a, $68                                 ;; 04:7db7 ??? $15
     db   $10, $54, $56                                 ;; 04:7dba ??? $16
     db   $10, $58, $5a                                 ;; 04:7dbd ??? $17
+metaspritesGaruda_new:
     db   $30, $56, $54                                 ;; 04:7dc0 ??? $18
     db   $30, $5a, $58                                 ;; 04:7dc3 ??? $19
 
+; Garuda is changed to add two entries so that the death explosion uses the feather projectiles instead of random bits.
+; This is done by using the last two entries from the previous metasprite table instead of duplicate entries in this one.
 ;@data format=bbb amount=30
 metaspritesGaruda:
     db   $10, $40, $42                                 ;; 04:7dc6 ??? $00
@@ -4745,6 +4748,12 @@ metaspritesGaruda:
     db   $10, $4c, $4e                                 ;; 04:7ddb ??? $07
     db   $10, $50, $52                                 ;; 04:7dde ??? $08
     db   $10, $54, $56                                 ;; 04:7de1 ??? $09
+
+; These two entries are added for Garuda's projectile feathers.
+; They are placed at exactly this spot so that the death explosion pattern uses them.
+    db   $00, $30, $32 ; Entry 0x0c
+    db   $20, $32, $30 ; Entry 0x0d
+
     db   $10, $58, $5a                                 ;; 04:7de4 ??? $0a
     db   $10, $60, $62                                 ;; 04:7de7 ??? $0b
     db   $10, $64, $66                                 ;; 04:7dea ??? $0c
@@ -4758,8 +4767,11 @@ metaspritesGaruda:
     db   $30, $4a, $48                                 ;; 04:7e02 ??? $14
     db   $30, $4e, $4c                                 ;; 04:7e05 ??? $15
     db   $30, $52, $50                                 ;; 04:7e08 ??? $16
-    db   $30, $56, $54                                 ;; 04:7e0b ??? $17
-    db   $30, $5a, $58                                 ;; 04:7e0e ??? $18
+
+; Ifrit/Metal Crab has identical entries at the end of their table, so use those instead.
+;    db   $30, $56, $54                                 ;; 04:7e0b ??? $17
+;    db   $30, $5a, $58                                 ;; 04:7e0e ??? $18
+
     db   $30, $5e, $5c                                 ;; 04:7e11 ??? $19
     db   $30, $62, $60                                 ;; 04:7e14 ??? $1a
     db   $30, $66, $64                                 ;; 04:7e17 ??? $1b
