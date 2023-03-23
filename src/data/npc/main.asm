@@ -50,7 +50,7 @@ npcDataTable:
     NPC_DATA $93, $20, $40, $04, gfxEnemyKillerBee, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $0b, $0b, $0b, $0b, script_003d, $0000 ;; 03:625a NPC_BEE
     NPC_DATA $93, $21, $50, $06, gfxEnemyGasCloud, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $02, $00, $01, $03, $12, $12, script_003d, script_0440 ;; 03:6272 NPC_CLOUD
     NPC_DATA $91, $22, $40, $08, gfxEnemyOrc, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $02, $03, $03, $03, script_003d, script_0445 ;; 03:628a NPC_PIG
-    NPC_DATA $91, $23, $50, $06, gfxEnemyDeathCrab, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $02, $00, $0e, $0d, $0e, $0e, script_003d, script_0459 ;; 03:62a2 NPC_CRAB
+    NPC_DATA $91, $23, $50, $06, gfxEnemyDeathCrab, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $01, $00, $02, $00, $0e, $0d, $0e, $0e, script_003d, script_0459 ;; 03:62a2 NPC_CRAB
     NPC_DATA $91, $24, $40, $08, gfxEnemyTarantula, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $02, $00, $03, $02, $03, $03, script_003d, $0000 ;; 03:62ba NPC_SPIDER
     NPC_DATA $81, $0a, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01fa, $0000 ;; 03:62d2 NPC_INV_OPEN_NORTH
     NPC_DATA $81, $0a, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01fb, $0000 ;; 03:62ea NPC_INV_OPEN_SOUTH
