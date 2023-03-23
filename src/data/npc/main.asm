@@ -32,13 +32,13 @@ npcDataTable:
     NPC_DATA $87, $0e, $78, $02, gfxChest, tileorderNpc, chestMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0013, $0000 ;; 03:60aa NPC_CHEST_3
     NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmptyMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_003d, $0000 ;; 03:60c2 NPC_CHEST_4
     NPC_DATA $91, $10, $40, $04, gfxEnemyChibidevil, tileorderNpc, data_03_7b72, $00, $01, $00, $00, $00, $00, $0d, $0e, $0d, $0d, script_003d, script_0438 ;; 03:60da NPC_CHIBIDEVIL
-    NPC_DATA $91, $11, $50, $06, gfxEnemyRabite, tileorderNpc, data_03_7b96, $00, $01, $02, $00, $00, $00, $0f, $10, $10, $10, script_003d, $0000 ;; 03:60f2 NPC_RABBITE
+    NPC_DATA $91, $11, $50, $06, gfxEnemyRabite, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $02, $00, $00, $00, $0f, $10, $10, $10, script_003d, $0000 ;; 03:60f2 NPC_RABBITE
     NPC_DATA $91, $12, $40, $08, gfxEnemyGoblin, tileorderNpc, data_03_7cb6, $00, $01, $00, $00, $00, $00, $02, $02, $03, $03, script_003d, script_0438 ;; 03:610a NPC_GOBLIN
     NPC_DATA $91, $13, $50, $04, gfxEnemyMyconid, tileorderNpc, metaspritesMyconid, $00, $01, $01, $00, $00, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:6122 NPC_MUSHROOM
     NPC_DATA $93, $14, $40, $04, gfxEnemyGrell, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $12, $12, $0b, $0b, script_003d, $0000 ;; 03:613a NPC_JELLYFISH
     NPC_DATA $91, $15, $50, $04, gfxEnemyMudman, tileorderNpc, data_03_7b96, $01, $01, $00, $00, $00, $00, $16, $16, $16, $16, script_003d, script_044b ;; 03:6152 NPC_SWAMPMAN
     NPC_DATA $91, $16, $60, $08, gfxEnemyLizardman, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $02, $02, $03, $03, script_003d, script_043a ;; 03:616a NPC_LIZARDMAN
-    NPC_DATA $91, $17, $50, $04, gfxEnemyDeathFlower, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $01, $00, $0d, $00, $0d, $0d, script_003d, script_043c ;; 03:6182 NPC_FLOWER
+    NPC_DATA $91, $17, $50, $04, gfxEnemyDeathFlower, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $01, $00, $01, $00, $0d, $00, $0d, $0d, script_003d, script_043c ;; 03:6182 NPC_FLOWER
     NPC_DATA $91, $18, $40, $06, gfxEnemyGreenSlime, tileorderNpc, data_03_7b72, $00, $01, $00, $00, $02, $00, $0f, $0d, $10, $10, script_003d, script_0443 ;; 03:619a NPC_FACEORB
     NPC_DATA $91, $19, $50, $08, gfxEnemySkeleton, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $03, $02, $03, $03, script_003d, script_0442 ;; 03:61b2 NPC_SKELETON
     NPC_DATA $91, $1a, $40, $04, gfxEnemyRoper, tileorderNpc, data_03_7d46, $01, $02, $00, $00, $00, $00, $16, $16, $16, $16, script_003d, $0000 ;; 03:61ca NPC_EVIL_PLANT
@@ -71,7 +71,7 @@ npcDataTable:
     NPC_DATA $91, $32, $50, $08, gfxEnemyCobra, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $02, $02, $0d, $0d, script_003d, $0000 ;; 03:6452 NPC_SNAKE
     NPC_DATA $91, $33, $60, $06, gfxEnemyShadowZero, tileorderNpc, metaspritesShadowZero, $00, $01, $01, $00, $00, $00, $16, $16, $07, $08, script_003d, script_0439 ;; 03:646a NPC_SHADOW
     NPC_DATA $91, $34, $58, $0c, gfxEnemyMagician, tileorderNpc, data_03_7e1e, $00, $01, $01, $02, $02, $00, $03, $13, $13, $13, script_003d, script_0458 ;; 03:6482 NPC_BLACK_WIZARD
-    NPC_DATA $91, $35, $50, $04, gfxEnemyRedWisp, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $00, $00, $0d, $0d, $14, $14, script_003d, script_043e ;; 03:649a NPC_FLAME
+    NPC_DATA $91, $35, $50, $04, gfxEnemyRedWisp, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $01, $00, $00, $00, $0d, $0d, $14, $14, script_003d, script_043e ;; 03:649a NPC_FLAME
     NPC_DATA $91, $36, $60, $08, gfxEnemyGargoyle, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $00, $00, $07, $08, script_003d, script_0447 ;; 03:64b2 NPC_GARGOYLE
     NPC_DATA $91, $37, $40, $08, gfxEnemyApe, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $02, $02, $02, $02, script_003d, $0000 ;; 03:64ca NPC_MONKEY
     NPC_DATA $91, $38, $50, $08, gfxEnemyMolebear, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $02, $02, $03, $03, script_003d, $0000 ;; 03:64e2 NPC_MOLEBEAR
