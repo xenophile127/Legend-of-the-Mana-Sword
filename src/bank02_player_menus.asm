@@ -4655,7 +4655,7 @@ call_02_6840:
     dec  [HL]                                          ;; 02:6847 $35
     pop  HL                                            ;; 02:6848 $e1
     ret  NZ                                            ;; 02:6849 $c0
-    ld   A, $06                                        ;; 02:684a $3e $06
+    ld   A, $07                                        ;; 02:684a $3e $06
     ld   [wMenuSelectionMoveRepeatDelay], A            ;; 02:684c $ea $57 $d8
     ld   A, $00                                        ;; 02:684f $3e $00
     ld   [wD856], A                                    ;; 02:6851 $ea $56 $d8
@@ -5790,7 +5790,7 @@ initTimers:
     ld   [wWindowFingerBlinkTimerNumber], A            ;; 02:6ef8 $ea $44 $d8
     ld   A, $01                                        ;; 02:6efb $3e $01
     ld   [wD860], A                                    ;; 02:6efd $ea $60 $d8
-    ld   A, $06                                        ;; 02:6f00 $3e $06
+    ld   A, $07                                        ;; 02:6f00 $3e $06
     ld   [wMenuSelectionMoveRepeatDelay], A            ;; 02:6f02 $ea $57 $d8
     xor  A, A                                          ;; 02:6f05 $af
     ld   [wWindowFlags], A                             ;; 02:6f06 $ea $74 $d8
