@@ -1040,11 +1040,13 @@ scrollRoomScroll:
     ld   A, $00                                        ;; 01:46f4 $3e $00
     call setSpriteScrollSpeed                          ;; 01:46f6 $cd $4d $04
     call ensureReservedObjectsExist_trampoline         ;; 01:46f9 $cd $f1 $2e
-    ld   A, [wMainGameStateFlags.nextFrame]            ;; 01:46fc $fa $a2 $c0
-    res  0, A                                          ;; 01:46ff $cb $87
-    res  1, A                                          ;; 01:4701 $cb $8f
-    res  3, A                                          ;; 01:4703 $cb $9f
-    res  2, A                                          ;; 01:4705 $cb $97
+
+    ; Call remove any enemies that may be lingering. This can happen with jumpers.
+    ld bc, $0d07 ; Start at object 7 and run for 13 total.
+    call removeNpcObjects.loop
+
+    ld a, [wMainGameStateFlags.nextFrame]
+    and $f0
     swap A                                             ;; 01:4707 $cb $37
     ld   [wMainGameStateFlags.nextFrame], A            ;; 01:4709 $ea $a2 $c0
     ld   [wMainGameStateFlags], A                      ;; 01:470c $ea $a1 $c0
