@@ -51,7 +51,7 @@ data_03_7bba:
     db   $10, $68, $6a                                 ;; 03:7bd8 ??? $0a
     db   $10, $68, $6a                                 ;; 03:7bdb ??? $0b
 
-;@data format=bbb amount=12
+;@data format=bbb amount=8
 metaspritesMyconid:
     db   $00, $50, $52                                 ;; 03:7bde ... $00
     db   $00, $50, $52                                 ;; 03:7be1 ... $01
@@ -61,10 +61,20 @@ metaspritesMyconid:
     db   $20, $52, $50                                 ;; 03:7bed ... $05
     db   $20, $56, $54                                 ;; 03:7bf0 ... $06
     db   $20, $52, $50                                 ;; 03:7bf3 ... $07
-    db   $00, $54, $56                                 ;; 03:7bf6 ??? $08
-    db   $00, $54, $56                                 ;; 03:7bf9 ??? $09
-    db   $00, $54, $56                                 ;; 03:7bfc ??? $0a
-    db   $00, $54, $56                                 ;; 03:7bff ??? $0b
+
+; For a standard NPC like a townsperson in the third slot that should be red by using OBP0.
+; Tables on either side are shortened (by removing unused entries) to make room for this one.
+; Unused
+;@data format=bbb amount=8
+metaspritesTable60Red:
+    db   $20, $6a, $68
+    db   $00, $68, $6a
+    db   $00, $64, $66
+    db   $00, $60, $62
+    db   $20, $6e, $6c
+    db   $00, $6c, $6e
+    db   $20, $66, $64
+    db   $20, $62, $60
 
 ;@data format=bbb amount=12
 metaspritesGuardian:
@@ -76,12 +86,8 @@ metaspritesGuardian:
     db   $30, $62, $60                                 ;; 03:7c11 ??? $05
     db   $30, $66, $64                                 ;; 03:7c14 ??? $06
     db   $30, $62, $60                                 ;; 03:7c17 ??? $07
-    db   $10, $64, $66                                 ;; 03:7c1a ??? $08
-    db   $10, $64, $66                                 ;; 03:7c1d ??? $09
-    db   $10, $64, $66                                 ;; 03:7c20 ??? $0a
-    db   $10, $64, $66                                 ;; 03:7c23 ??? $0b
 
-;@data format=bbb amount=12
+;@data format=bbb amount=8
 metaspritesEvilSword:
     db   $30, $46, $44                                 ;; 03:7c26 ??? $00
     db   $10, $44, $46                                 ;; 03:7c29 ??? $01
@@ -91,12 +97,20 @@ metaspritesEvilSword:
     db   $10, $44, $46                                 ;; 03:7c35 ??? $05
     db   $50, $40, $42                                 ;; 03:7c38 ??? $06
     db   $10, $40, $42                                 ;; 03:7c3b ??? $07
-    db   $30, $46, $44                                 ;; 03:7c3e ??? $08
-    db   $10, $44, $46                                 ;; 03:7c41 ??? $09
-    db   $50, $40, $42                                 ;; 03:7c44 ??? $0a
-    db   $10, $40, $42                                 ;; 03:7c47 ??? $0b
 
-;@data format=bbb amount=12
+; Tables on either side are shortened (by removing unused entries) to make room for this one.
+;@data format=bbb amount=8
+metaspritesCompanionRed:
+    db   $20, $2a, $28
+    db   $00, $28, $2a
+    db   $00, $24, $26
+    db   $00, $20, $22
+    db   $20, $2e, $2c
+    db   $00, $2c, $2e
+    db   $20, $26, $24
+    db   $20, $22, $20
+
+;@data format=bbb amount=8
 metaspritesZombie:
     db   $10, $40, $42                                 ;; 03:7c4a ??? $00
     db   $10, $40, $42                                 ;; 03:7c4d ??? $01
@@ -106,10 +120,6 @@ metaspritesZombie:
     db   $30, $42, $40                                 ;; 03:7c59 ??? $05
     db   $30, $4a, $48                                 ;; 03:7c5c ??? $06
     db   $30, $42, $40                                 ;; 03:7c5f ??? $07
-    db   $10, $40, $42                                 ;; 03:7c62 ??? $08
-    db   $10, $40, $42                                 ;; 03:7c65 ??? $09
-    db   $10, $48, $4a                                 ;; 03:7c68 ??? $0a
-    db   $10, $40, $42                                 ;; 03:7c6b ??? $0b
 
 ;@data format=bbb amount=12
 metaspritesPumpkin:
@@ -156,7 +166,7 @@ data_03_7cb6:
     db   $10, $44, $46                                 ;; 03:7cd4 ??? $0a
     db   $10, $40, $42                                 ;; 03:7cd7 ??? $0b
 
-;@data format=bbb amount=12
+;@data format=bbb amount=8
 data_03_7cda:
     db   $30, $6a, $68                                 ;; 03:7cda ... $00
     db   $10, $68, $6a                                 ;; 03:7cdd ... $01
@@ -166,25 +176,31 @@ data_03_7cda:
     db   $10, $6c, $6e                                 ;; 03:7ce9 ... $05
     db   $30, $66, $64                                 ;; 03:7cec ... $06
     db   $30, $62, $60                                 ;; 03:7cef ... $07
-    db   $30, $6a, $68                                 ;; 03:7cf2 ??? $08
-    db   $10, $68, $6a                                 ;; 03:7cf5 ??? $09
-    db   $10, $64, $66                                 ;; 03:7cf8 ??? $0a
-    db   $10, $60, $62                                 ;; 03:7cfb ??? $0b
 
-;@data format=bbb amount=12
+; For Fuji when loaded as a normal NPC. Probably in the Airship.
+; For a standard NPC like a townsperson in the third slot that should be red by using OBP0.
+; Tables on either side are shortened (by removing unused entries) to make room for this one.
+;@data format=bbb amount=8
+metaspritesTable40Red:
+    db   $20, $4a, $48
+    db   $00, $48, $4a
+    db   $00, $44, $46
+    db   $00, $40, $42
+    db   $20, $4e, $4c
+    db   $00, $4c, $4e
+    db   $20, $46, $44
+    db   $20, $42, $40
+
+;@data format=bbb amount=8
 data_03_7cfe:
-    db   $30, $5a, $58                                 ;; 03:7cfe ... $00
-    db   $10, $58, $5a                                 ;; 03:7d01 ... $01
-    db   $10, $54, $56                                 ;; 03:7d04 ... $02
-    db   $10, $50, $52                                 ;; 03:7d07 ... $03
-    db   $30, $5e, $5c                                 ;; 03:7d0a ... $04
-    db   $10, $5c, $5e                                 ;; 03:7d0d ... $05
-    db   $30, $56, $54                                 ;; 03:7d10 ... $06
-    db   $30, $52, $50                                 ;; 03:7d13 ... $07
-    db   $30, $5a, $58                                 ;; 03:7d16 ??? $08
-    db   $10, $58, $5a                                 ;; 03:7d19 ??? $09
-    db   $10, $54, $56                                 ;; 03:7d1c ??? $0a
-    db   $10, $50, $52                                 ;; 03:7d1f ??? $0b
+    db   $30, $5a, $58
+    db   $10, $58, $5a
+    db   $10, $54, $56
+    db   $10, $50, $52
+    db   $30, $5e, $5c
+    db   $10, $5c, $5e
+    db   $30, $56, $54
+    db   $30, $52, $50
 
 ;@data format=bbb amount=12
 metaspritesEyeSpy:
