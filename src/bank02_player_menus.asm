@@ -7351,7 +7351,11 @@ startDarkStatusEffect:
 
 startPoisStatusEffect:
     push AF                                            ;; 02:78a1 $f5
-    ld   A, $01                                        ;; 02:78a2 $3e $01
+    ; Pois ticks every sixty frames.
+    ; Normally this starts the first frame after being afflicted so it can instakill.
+    ; By setting initial timer to just less than the period total damage is unchanged
+    ; but the player gets almost a full second to react.
+    ld a, 59
     ld   [wPoisStatusEffectTimeBeforeNextTick], A      ;; 02:78a4 $ea $77 $d8
     ld   A, [wPoisStatusEffectTimerNumber]             ;; 02:78a7 $fa $79 $d8
     call timerStart                                    ;; 02:78aa $cd $d4 $2f
