@@ -142,7 +142,7 @@ data_03_7402:
     db   $0a, $06, $80, $80                            ;; 03:7408 ????
 
 data_03_740c:
-    db   1, 1, NPC_BOGARD_1, NPC_BOGARD_1, NPC_BOGARD_1, NPC_BOGARD_1 ;; 03:740c ??????
+    db   1, 1, NPC_BOGARD_3, NPC_BOGARD_3, NPC_BOGARD_3, NPC_BOGARD_3 ;; 03:740c ??????
     db   $0a, $08, $80, $80                            ;; 03:7412 ????
 
 data_03_7416:
