@@ -4671,7 +4671,7 @@ script_0531:
       sDELAY 50                                        ;; 0e:6157 $f0 $32
       sUNLOCK_TEXT_SPEED                               ;; 0e:6159 $dd
       sMSG                                             ;; 0e:615a $04
-        db "<10><BOY> and friends\nwere forced to\nfight everyday<12>"
+        db "<10><BOY> and friends\nwere forced to\nfight every day<12>"
         db "<1b>just for the\nentertainment of\nDark Lord.<12>"
         db "<1b>", $00 ;; 0e:615b
       sCALL script_0532                                ;; 0e:6198 $02 $61 $9f
