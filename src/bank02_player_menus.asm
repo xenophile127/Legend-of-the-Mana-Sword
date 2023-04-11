@@ -3660,13 +3660,13 @@ jp_02_5922:
     call saveRegisterState2                            ;; 02:5923 $cd $80 $6d
     call NC, call_02_6c0b                              ;; 02:5926 $d4 $0b $6c
     ld   HL, titleScreenLicenseText                    ;; 02:5929 $21 $62 $7e
-    ld   DE, $71b                                      ;; 02:592c $11 $1b $07
+    ld   DE, $071a                                     ;; 02:592c $11 $1b $07
     ld   BC, $1f01                                     ;; 02:592f $01 $01 $1f
     ld   A, [wDialogType]                              ;; 02:5932 $fa $4a $d8
     cp   A, $1f                                        ;; 02:5935 $fe $1f
     push AF                                            ;; 02:5937 $f5
     call Z, drawText                                   ;; 02:5938 $cc $77 $37
-    ld   DE, $61c                                      ;; 02:593b $11 $1c $06
+    ld   DE, $061b                                     ;; 02:593b $11 $1c $06
     ld   BC, $1f01                                     ;; 02:593e $01 $01 $1f
     pop  AF                                            ;; 02:5941 $f1
     call Z, drawText                                   ;; 02:5942 $cc $77 $37
@@ -4146,7 +4146,7 @@ windowData:
 .namingScreenBottom:
     db   $00, $04, $13, $0d, $06, $09, $51, $01, $09, $02 ;; 02:5cd6 .......... $06
 ; (#1f) Title screen menu (New Game, Continue):
-    db   $05, $09, $09, $05, $02, $08, $02, $00, $01, $00 ;; 02:5ce0 .......... $07
+    db   $06, $09, $09, $05, $02, $08, $02, $00, $01, $00 ;; 02:5ce0 .......... $07
 ; (#20) Status effect inflicted message (Pois, Ston, Moog, Dark):
     db   $0b, $01, $07, $03, $01, $04, $01, $00, $00, $00 ;; 02:5cea ?????????? $08
 ; (#21) Levelup HP/MP recovered message:

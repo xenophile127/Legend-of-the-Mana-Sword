@@ -33,7 +33,7 @@ mapHeader_06:
     MAP_HEADER tilesetGfxIndoor, $00, metatilesIndoor, $6c, mapRoomPointers_06, $e1, $05 ;; 08:4042 ..?..?...??
 
 mapHeader_07:
-    MAP_HEADER tilesetGfxTitle, $c0, metatilesTitle, $4a, mapRoomPointers_07, $09, $04 ;; 08:404d ..?..?...??
+    MAP_HEADER tilesetGfxTitle, $00, metatilesTitle, $48, mapRoomPointers_07, $06, $04 ;; 08:404d ..?..?...??
 
 mapHeader_08:
     MAP_HEADER tilesetGfxCaves, $00, metatilesCaves, $7b, mapRoomPointers_08, $59, $06 ;; 08:4058 ???????????
