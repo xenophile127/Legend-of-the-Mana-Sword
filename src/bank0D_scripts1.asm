@@ -2578,7 +2578,7 @@ script_01ae:
       sSET_MUSIC 10                                    ;; 0d:4fe0 $f8 $0a
       sFADE_TO_NORMAL                                  ;; 0d:4fe2 $bc
       sMSG                                             ;; 0d:4fe3 $04
-        db "<10>Madusa:Came here\n to get my tears?\n Huh! What a joke!<12>"
+        db "<10>Medusa:Came here\n to get my tears?\n Huh! What a joke!<12>"
         db "<11>", $00 ;; 0d:4fe4
       sFADE_TO_BLACK                                   ;; 0d:500b $bd
       sDELAY 30                                        ;; 0d:500c $f0 $1e
