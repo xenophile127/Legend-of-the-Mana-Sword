@@ -5875,7 +5875,7 @@ drawNumberOnStatusBar:
     pop  DE                                            ;; 02:6f81 $d1
     push HL                                            ;; 02:6f82 $e5
     push DE                                            ;; 02:6f83 $d5
-    add  A, $30                                        ;; 02:6f84 $c6 $30
+
     call storeTileAatWindowPositionDE                  ;; 02:6f86 $cd $66 $38
     pop  DE                                            ;; 02:6f89 $d1
     dec  DE                                            ;; 02:6f8a $1b
@@ -5884,15 +5884,19 @@ drawNumberOnStatusBar:
     or   A, L                                          ;; 02:6f8d $b5
     jr   NZ, .jr_02_6f7b                               ;; 02:6f8e $20 $eb
     ret                                                ;; 02:6f90 $c9
+
+; Free space
+    db $00, $00, $00
+
 .jr_02_6f91:
-    ld   A, $30                                        ;; 02:6f91 $3e $30
+    xor a, a
     call storeTileAatWindowPositionDE                  ;; 02:6f93 $cd $66 $38
     ret                                                ;; 02:6f96 $c9
 
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
-    db   $7f, $41, $49, $7f, $7f, $7f, $7f, $7f        ;; 02:6f97 ........
-    db   $46, $49, $7f, $7f, $7f, $7f, $1d, $7f        ;; 02:6f9f ........
+    db   $7f, $f0, $f1, $7f, $7f, $7f, $7f, $7f        ;; 02:6f97 ........
+    db   $f2, $f1, $7f, $7f, $7f, $7f, $f4, $7f        ;; 02:6f9f ........
     db   $7f, $7f, $7f, $7f                            ;; 02:6fa7 ....
 
 attackWithWeaponUseWill:
