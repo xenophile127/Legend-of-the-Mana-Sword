@@ -3613,7 +3613,7 @@ script_020f:
         sNPC_1_STEP_FORWARD                            ;; 0d:6204 $10
       sEND                                             ;; 0d:6205 $00
       sMSG                                             ;; 0d:6206 $04
-        db "<10><GIRL>:It may open.\n<BOY>:I'll get you\n from outside!<1b>", $00 ;; 0d:6207
+        db "<10><GIRL>:It may open.\n<BOY>:I'll get you\n from outside!<12><1b>", $00 ;; 0d:6207
       sSET_FLAG wScriptFlags02.6                       ;; 0d:6228 $da $16
     sENDIF                                             ;; 0d:622a
     sMSG                                               ;; 0d:622a $04
