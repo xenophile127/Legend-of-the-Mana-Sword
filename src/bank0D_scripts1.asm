@@ -3966,7 +3966,7 @@ script_0229:
       sENDIF                                           ;; 0d:6a8b
       sIF_FLAG !wScriptFlags0F.0                       ;; 0d:6a8b $08 $f8 $00 $27
         sMSG                                           ;; 0d:6a8f $04
-          db "<BOY>:Excuse me.\n I'm looking for a\n man name Bogard.", $00 ;; 0d:6a90
+          db "<BOY>:Excuse me.\n I'm looking for a\n man named Bogard.", $00 ;; 0d:6a90
         sSET_FLAG wScriptFlags0F.0                     ;; 0d:6ab4 $da $78
       sENDIF                                           ;; 0d:6ab6
       sMSG                                             ;; 0d:6ab6 $04
