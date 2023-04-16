@@ -3413,7 +3413,7 @@ script_0201:
 
 script_0202:
     sMSG                                               ;; 0d:5e50 $04
-      db "<10> Let me treat\n your wound, <BOY>.<12>"
+      db "<10> I'll treat your\n wounds.<12>"
       db "<11>", $00 ;; 0d:5e51
     sSFX 5                                             ;; 0d:5e67 $f9 $05
     sPLAYER_GIVE_STATUS 16                             ;; 0d:5e69 $c4 $10
