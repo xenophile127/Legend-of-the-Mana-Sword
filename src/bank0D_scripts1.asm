@@ -2905,7 +2905,7 @@ script_01c2:
 script_01c3:
     sSET_MUSIC 0                                       ;; 0d:547e $f8 $00
     sMSG                                               ;; 0d:5480 $04
-      db "<10>Defeated Iflyte!<12>"
+      db "<10>Defeated Ifrit!<12>"
       db "<11>", $00 ;; 0d:5481
     sSET_FLAG wScriptFlags05.7                         ;; 0d:5491 $da $2f
     sRUN_ROOM_SCRIPT                                   ;; 0d:5493 $ec
