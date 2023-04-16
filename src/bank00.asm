@@ -9027,30 +9027,34 @@ drawText:
 .loop_1:
     push AF                                            ;; 00:377a $f5
     ld   A, [HL+]                                      ;; 00:377b $2a
-; Special case for the copyright symbol
-    cp   A, $7f                                        ;; 00:377c $fe $7f
-    jr   Z, .printable                                 ;; 00:377e $28 $05
+; The original range was $7f (copyright symbol) or $a0 and greater.
+; New range is $70 to $7f or $a0 and greater, which means $0f additional glyphs..
+; Except $70 to $7f has to have $20 added to them to map to the correct glyph.
+; For scripts it's instead just $90 and greater.
+; I don't remember why this discrepancy exists but my notes say there was a bug to work around.
+    cp   A, $70                                        ;; 00:377c $fe $7f
+    jr   c, .terminator                                ;; 00:377e $28 $05
     cp   A, $a0                                        ;; 00:3780 $fe $a0
-    jp   C, .terminator                                ;; 00:3782 $da $dc $37
-.printable:
-    push AF                                            ;; 00:3785 $f5
-    ld   A, [wDialogType]                              ;; 00:3786 $fa $4a $d8
-    inc  A                                             ;; 00:3789 $3c
-    jr   NZ, .print                                    ;; 00:378a $20 $07
-    dec  D                                             ;; 00:378c $15
-    ld   A, $7f                                        ;; 00:378d $3e $7f
-    call storeTileAatDialogPositionDE                  ;; 00:378f $cd $44 $38
-    inc  D                                             ;; 00:3792 $14
+    jr nc, .print
+    cp a, $80
+    jr nc, .terminator
+    add a, $20
 .print:
-    pop  AF                                            ;; 00:3793 $f1
     xor  A, $80                                        ;; 00:3794 $ee $80
     call storeTileAatDialogPositionDE                  ;; 00:3796 $cd $44 $38
     ld   A, [wDialogType]                              ;; 00:3799 $fa $4a $d8
     cp   A, $1e ; Naming screen                        ;; 00:379c $fe $1e
-    jr   NZ, .jr_00_37a1                               ;; 00:379e $20 $01
+    jr   NZ, .checkIntro                               ;; 00:379e $20 $01
 ; Naming screen puts a space between each character
     inc  E                                             ;; 00:37a0 $1c
-.jr_00_37a1:
+.checkIntro:
+    inc a
+    jr nz, .checkDialog
+    dec d
+    ld a, $7f
+    call storeTileAatDialogPositionDE
+    inc d
+.checkDialog:
     pop  AF                                            ;; 00:37a1 $f1
 ; Windows other than the script dialog window print continuously until finished.
     jr   NZ, .print_more_text                          ;; 00:37a2 $20 $14
