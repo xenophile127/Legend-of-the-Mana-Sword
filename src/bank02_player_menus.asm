@@ -1298,7 +1298,7 @@ call_02_498c:
 
 ;@data format=pbbp amount=1
 data_02_4991:
-    data_pbbp boyLabel, $1e, $ff, nameEntryInputOptions ;; 02:4991 ......
+    data_pbbp nameLabel, $1e, $ff, nameEntryInputOptions ;; 02:4991 ......
 
 ;@data format=pbbp amount=2
 data_02_4997:
@@ -4002,7 +4002,8 @@ jp_02_5b2c:
     ld   A, [wWindowFlags]                             ;; 02:5b3f $fa $74 $d8
     bit  5, A                                          ;; 02:5b42 $cb $6f
     jr   Z, .jr_02_5b49                                ;; 02:5b44 $28 $03
-    ld   HL, girlLabel                                 ;; 02:5b46 $21 $fd $7d
+; Use the same label for both since their sprite is shown.
+    ld   HL, nameLabel                                 ;; 02:5b46 $21 $fd $7d
 .jr_02_5b49:
     pop  AF                                            ;; 02:5b49 $f1
     cp   A, $1e                                        ;; 02:5b4a $fe $1e
@@ -4141,7 +4142,7 @@ windowData:
     db   $00, $0a, $13, $06, $01, $0f, $02, $00, $02, $00 ;; 02:5cc2 .......... $04
 ; (#1d)
 .namingScreenTop:
-    db   $00, $00, $0e, $03, $01, $04, $01, $00, $00, $00 ;; 02:5ccc .......... $05
+    db   $00, $00, $0e, $03, $01, $05, $01, $00, $00, $00 ;; 02:5ccc .......... $05
 ; (#1e)
 .namingScreenBottom:
     db   $00, $04, $13, $0d, $06, $09, $51, $01, $09, $02 ;; 02:5cd6 .......... $06
@@ -4192,7 +4193,7 @@ windowThirdPointers:
     dw   itemAPDPLabelsDataTable                       ;; 02:5d42 .. $1a
     dw   $0000                                         ;; 02:5d44 .. $1b
     dw   $0000                                         ;; 02:5d46 .. $1c
-    dw   boyLabel                                      ;; 02:5d48 .. $1d
+    dw   nameLabel                                     ;; 02:5d48 .. $1d
     dw   nameEntryInputOptions                         ;; 02:5d4a .. $1e
     dw   titleScreenOptions                            ;; 02:5d4c .. $1f
     dw   statusEffectLabels                            ;; 02:5d4e ?? $20
@@ -4266,7 +4267,7 @@ windowSecondPointers:
     dw   wStatusScreenAPDP                             ;; 02:5dca .. $1a
     dw   $0000                                         ;; 02:5dcc .. $1b
     dw   $0000                                         ;; 02:5dce .. $1c
-    dw   boyLabel                                      ;; 02:5dd0 .. $1d
+    dw   nameLabel                                     ;; 02:5dd0 .. $1d
     dw   nameEntryInputOptions                         ;; 02:5dd2 .. $1e
     dw   titleScreenOptions                            ;; 02:5dd4 .. $1f
     dw   $d7dc                                         ;; 02:5dd6 ?? $20
@@ -4836,31 +4837,31 @@ processWindowInput:
     jr   Z, .copy_name_loop                            ;; 02:695f $28 $03
     ld   DE, wGirlName                                 ;; 02:6961 $11 $a2 $d7
 .copy_name_loop:
-    ld   A, [HL+]                                      ;; 02:6964 $2a
-    ld   [DE], A                                       ;; 02:6965 $12
-    inc  DE                                            ;; 02:6966 $13
-    dec  B                                             ;; 02:6967 $05
-    jr   NZ, .copy_name_loop                           ;; 02:6968 $20 $fa
-    xor  A, A                                          ;; 02:696a $af
-    ld   [HL], A                                       ;; 02:696b $77
-    ld   HL, wSRAMSaveHeader                           ;; 02:696c $21 $a7 $d7
-    ld   B, $04                                        ;; 02:696f $06 $04
-.clear_scratch_loop:
-    ld   [HL+], A                                      ;; 02:6971 $22
-    dec  B                                             ;; 02:6972 $05
-    jr   NZ, .clear_scratch_loop                       ;; 02:6973 $20 $fc
+    ld a, [hl]
+    ld [de], a
+    xor a, a
+    ld [hl+], a
+    inc de
+    dec b
+    jr   nz, .copy_name_loop
+    ld   [hl], a
     pop  AF                                            ;; 02:6975 $f1
     pop  BC                                            ;; 02:6976 $c1
     pop  DE                                            ;; 02:6977 $d1
     pop  HL                                            ;; 02:6978 $e1
     bit  5, A                                          ;; 02:6979 $cb $6f
     jr   NZ, .dismiss_naming_screen                    ;; 02:697b $20 $11
-    set  5, A                                          ;; 02:697d $cb $ef
-    set  6, A                                          ;; 02:697f $cb $f7
+    or a, $60
     ld   [wWindowFlags], A                             ;; 02:6981 $ea $74 $d8
     xor  A, A                                          ;; 02:6984 $af
     ld   [wDrawWindowStep], A                          ;; 02:6985 $ea $54 $d8
     ld   [wNameEntryNameLength], A                     ;; 02:6988 $ea $85 $d8
+; Ugly hack to directly edit the OAM, but it works.
+    ld hl, wOAMBuffer+$22
+    ld [hl], $20
+    ld l, $26
+    ld [hl], $22
+    nop
     jp   .button                                       ;; 02:698b $c3 $c4 $68
 .dismiss_naming_screen:
     xor  A, A                                          ;; 02:698e $af
@@ -8126,12 +8127,11 @@ statusEffectLabels:
     TXT  "Good"                                        ;; 02:7df5 ....
 
 ;@ffa_text size=4 amount=1
-boyLabel:
-    TXT  "Boy<00>"                                     ;; 02:7df9 ....
+nameLabel:
+    TXT  "Name:"                                        ;; 02:7df9 ....
 
-;@ffa_text size=4 amount=1
-girlLabel:
-    TXT  "Girl"                                        ;; 02:7dfd ....
+; Free space
+db $00, $00, $00
 
 ;@ffa_text size=9 amount=9
 nameEntryInputOptions:

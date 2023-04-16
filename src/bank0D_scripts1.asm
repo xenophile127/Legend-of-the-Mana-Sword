@@ -36,11 +36,13 @@ script_0002:
     sEND                                               ;; 0d:4024 $00
 
 script_0003:
-    sSET_MUSIC 1                                       ;; 0d:4025 $f8 $01
-    sENTER_PLAYER_AND_GIRL_NAME                        ;; 0d:4027 $c6
-    sLOAD_ROOM 1, $47, 18, 10                          ;; 0d:4028 $f4 $01 $47 $12 $0a
-    sCALL script_00e6                                  ;; 0d:402d $02 $06 $cc
-    sEND                                               ;; 0d:4030 $00
+    sSET_NPC_TYPES $2a
+    sSET_PLAYER_POSITION 16, 01
+    sENTER_PLAYER_AND_GIRL_NAME
+    sSET_PLAYER_POSITION 20, 01
+    sLOAD_ROOM 1, $47, 19, 10
+    sCALL script_00e6
+    sEND
 
 script_0004:
     sIF_FLAG !wScriptFlags0E.4                         ;; 0d:4031 $08 $f4 $00 $5a
