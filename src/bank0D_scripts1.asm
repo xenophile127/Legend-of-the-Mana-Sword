@@ -3581,7 +3581,7 @@ script_020d:
 
 script_020e:
     sMSG                                               ;; 0d:617c $04
-      db "<10>Julius is taking\nthe charge of this\nairship.<12>"
+      db "<10>Julius is taking\ncharge of this\nairship.<12>"
       db "<11>", $00 ;; 0d:617d
     sEND                                               ;; 0d:619e $00
 
