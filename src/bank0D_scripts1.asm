@@ -3600,7 +3600,7 @@ script_020f:
       sMSG                                             ;; 0d:61b6 $04
         db "Bogard:Hurry!\n It's moving!<12>"
         db "<1b><GIRL>:This door\n is locked!<12>"
-        db "<1b>Bogard:How about\n the windows?<12>"
+        db "<1b>Bogard:How about\n the window?<12>"
         db "<11>", $00 ;; 0d:61b7
       sSET_NPC_1_DIRECTION_DOWN                        ;; 0d:61f8 $15
       sLOOP 4, 2                                       ;; 0d:61f9 $03 $04 $02
