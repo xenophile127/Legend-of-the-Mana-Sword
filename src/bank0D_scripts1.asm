@@ -3276,7 +3276,7 @@ script_01f6:
       db "<10>", $00                                   ;; 0d:5c81
     sIF_FLAG !wScriptFlags04.6                         ;; 0d:5c83 $08 $a6 $00 $37
       sMSG                                             ;; 0d:5c87 $04
-        db "Watts likes the\nmine!  He went\ntheir today, too!<12>"
+        db "Watts likes the\nmine!  He went\nthere today, too!<12>"
         db "<1b>He's looking for\nsome Silver.", $00 ;; 0d:5c88
     sELSE                                              ;; 0d:5cbc $01 $19
       sMSG                                             ;; 0d:5cbe $04
