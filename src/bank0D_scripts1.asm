@@ -1122,6 +1122,7 @@ script_00c9:
 
 script_00ca:
     sIF_FLAG !wScriptFlags.7                           ;; 0d:463a $08 $87 $00 $04
+      sCLEAR_FLAG wScriptFlags.5
       sSET_NPC_TYPES 34                                ;; 0d:463e $fc $22
       sSPAWN_NPC 0                                     ;; 0d:4640 $fd $00
     sENDIF                                             ;; 0d:4642
@@ -1135,6 +1136,7 @@ script_00cc:
 
 script_00cd:
     sIF_FLAG !wScriptFlags.7                           ;; 0d:4645 $08 $87 $00 $04
+      sCLEAR_FLAG wScriptFlags.5
       sSET_NPC_TYPES 34                                ;; 0d:4649 $fc $22
       sSPAWN_NPC 1                                     ;; 0d:464b $fd $01
     sENDIF                                             ;; 0d:464d
@@ -1148,6 +1150,7 @@ script_00cf:
 
 script_00d0:
     sIF_FLAG !wScriptFlags.7                           ;; 0d:4650 $08 $87 $00 $04
+      sCLEAR_FLAG wScriptFlags.5
       sSET_NPC_TYPES 35                                ;; 0d:4654 $fc $23
       sSPAWN_NPC 1                                     ;; 0d:4656 $fd $01
     sENDIF                                             ;; 0d:4658

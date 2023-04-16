@@ -3180,7 +3180,9 @@ script_044c:
     sEND                                               ;; 0e:56fe $00
 
 script_044d:
-    sRNG                                               ;; 0e:56ff $c7
+    sIF_FLAG !wScriptFlags.5
+      sRNG
+    sENDIF
     sIF_FLAG !wScriptFlags0F.6, wScriptFlags0F.7       ;; 0e:5700 $08 $fe $7f $00 $19
       sGIVE_EQUIPMENT INV_SHIELD_AEGIS                 ;; 0e:5705 $d8 $21
       sIF_FLAG !wScriptFlags.5                         ;; 0e:5707 $08 $85 $00 $11
@@ -3203,7 +3205,9 @@ script_044d:
     sEND                                               ;; 0e:5737 $00
 
 script_044e:
-    sRNG                                               ;; 0e:5738 $c7
+    sIF_FLAG !wScriptFlags.5
+      sRNG
+    sENDIF
     sIF_FLAG !wScriptFlags0F.6, wScriptFlags0F.7       ;; 0e:5739 $08 $fe $7f $00 $1a
       sGIVE_EQUIPMENT INV_ARMOR_SAMURAI                ;; 0e:573e $d8 $17
       sIF_FLAG !wScriptFlags.5                         ;; 0e:5740 $08 $85 $00 $12
@@ -3226,7 +3230,9 @@ script_044e:
     sEND                                               ;; 0e:576f $00
 
 script_044f:
-    sRNG                                               ;; 0e:5770 $c7
+    sIF_FLAG !wScriptFlags.5
+      sRNG
+    sENDIF
     sIF_FLAG !wScriptFlags0F.6, wScriptFlags0F.7       ;; 0e:5771 $08 $fe $7f $00 $1a
       sGIVE_EQUIPMENT INV_HELM_SAMURAI                 ;; 0e:5776 $d8 $2b
       sIF_FLAG !wScriptFlags.5                         ;; 0e:5778 $08 $85 $00 $12
