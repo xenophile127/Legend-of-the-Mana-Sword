@@ -3148,8 +3148,9 @@ script_01ec:
         db "Cibba's in here!", $00                     ;; 0d:5870
     sELSE                                              ;; 0d:587b $01 $47
       sMSG                                             ;; 0d:587d $04
-        db "Lorim was attacked\nby many monsters.\nCibba went there.<12>"
-        db "<1b>Lorim is south of\nthe Snowfield over\nthe southern sea.", $00 ;; 0d:587e
+        db "Lorimar was\nattacked by many\nmonsters.<12>"
+        db "<1b>Cibba went there.\nLorimar is south\nof the Snowfields <12>"
+        db "<1b>over the southern\nsea.", $00
     sENDIF                                             ;; 0d:58c4
     sMSG                                               ;; 0d:58c4 $04
       db "<12>"
@@ -4427,7 +4428,7 @@ script_0252:
 
 script_0253:
     sMSG                                               ;; 0d:76f5 $04
-      db "<10>Welcome to Lorim!<12>"
+      db "<10>Welcome to\nLorimar!<12>"
       db "<11>", $00 ;; 0d:76f6
     sEND                                               ;; 0d:7706 $00
 
