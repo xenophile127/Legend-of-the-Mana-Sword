@@ -2407,7 +2407,7 @@ windowVendorShowBuyMessage:
     ld   A, [wMiscFlags]                               ;; 02:5188 $fa $6f $d8
     and  A, $01                                        ;; 02:518b $e6 $01
     ld   HL, venderNotEnoughMoneyText                  ;; 02:518d $21 $76 $7d
-    ld   B, $10                                        ;; 02:5190 $06 $10
+    ld   B, $11                                        ;; 02:5190 $06 $10
     jr   NZ, .vendorCannotAfford                       ;; 02:5192 $20 $36
     ld   A, [wVendorPurchaseID]                        ;; 02:5194 $fa $5d $d8
     ld   HL, itemDataTable                             ;; 02:5197 $21 $5a $5e
@@ -5892,7 +5892,7 @@ drawNumberOnStatusBar:
 ; Graphic tile numbers that are shown on the status bar top row.
 statusBarTopRowDefault:
     db   $7f, $41, $49, $7f, $7f, $7f, $7f, $7f        ;; 02:6f97 ........
-    db   $46, $49, $7f, $7f, $7f, $7f, $40, $7f        ;; 02:6f9f ........
+    db   $46, $49, $7f, $7f, $7f, $7f, $1d, $7f        ;; 02:6f9f ........
     db   $7f, $7f, $7f, $7f                            ;; 02:6fa7 ....
 
 attackWithWeaponUseWill:
@@ -8078,8 +8078,7 @@ venderGreetingText:
 
 ;@ffa_text amount=2
 venderNotEnoughMoneyText:
-    TXT  "Not enough GP!<00>"                          ;; 02:7d76 ???????????????
-    TXT  "?<00>"                                       ;; 02:7d85 ??
+    TXT  "Not enough lucre!"                           ;; 02:7d76 ?????????????????
 
 ;@ffa_text
 venderConfirmSell:
@@ -8093,7 +8092,7 @@ vendorOptions:
 
 ;@ffa_text size=2
 statusScreenGoldLabel:
-    TXT  "GP"                                          ;; 02:7d9a ..
+    TXT  " <LUCRE>"                                    ;; 02:7d9a ..
 
 ;@ffa_text amount=4
 statusScreenStatLabels:
