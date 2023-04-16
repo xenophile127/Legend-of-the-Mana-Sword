@@ -5460,21 +5460,19 @@ script_053f:
     sPLAYER_STEP_FORWARD                               ;; 0e:705b $80
     sDELAY 90                                          ;; 0e:705c $f0 $5a
     sMSG                                               ;; 0e:705e $04
-      db "<10>Mother:Now that\n the Mana Tree is\n lost, we need_<12>"
-      db "<1b> a new gemma of\n the Mana Tree.<12>"
+      db "<10>Mother:<GIRL>, the\n Mana Tree is\n gone now, but<12>"
+      db "<1b> you can become\n a new tree.<12>"
       db "<1b><GIRL>:_ New tree?", $00 ;; 0e:705f
     sDELAY 40                                          ;; 0e:70a3 $f0 $28
     sMSG                                               ;; 0e:70a5 $04
       db "\nMother:Remember\n what I told you?<12>"
       db "<1b> We are the seeds\n of the Mana Tree.<12>"
-      db "<1b> We will be a bud\n called Gemma and\n we become a tree.<12>"
-      db "<1b> And the Gemma\n Knights fight to\n guard it.<12>"
-      db "<1b> I became the\n Gemma last time\n we lost the Tree.<12>"
-      db "<1b><GIRL>:That tree__?\n Was it you__?\nMother:_Yes, <GIRL>.<12>"
-      db "<1b> But_ you are the\n last member of us\n Mana Family.<12>"
-      db "<1b> To preserve the\n Mana Tree, we\n need you to stay<12>"
-      db "<1b> here and become\n the gemma.\n But_ <GIRL>_<12>"
-      db "<1b> Nobody else can\n decide for your\n life but you_", $00 ;; 0e:70a6
+      db "<1b> You, yourself,\n will become the\n Mana Tree.<12>"
+      db "<1b> Last time, I was\n unable to protect\n the Mana Tree.<12>"
+      db "<1b> So I came here\n to become a new\n tree.<12>"
+      db "<1b><GIRL>:That tree__?\n It was you__?\nMother:_Yes, <GIRL>.<12>"
+      db "<1b> You can become a\n new Mana Tree and\n restore peace.<12>"
+      db "<1b> But_ <GIRL>_ It\n is your choice\n to make.", $00
     sDELAY 80                                          ;; 0e:71d9 $f0 $50
     sMSG                                               ;; 0e:71db $04
       db "<11>", $00                                   ;; 0e:71dc
