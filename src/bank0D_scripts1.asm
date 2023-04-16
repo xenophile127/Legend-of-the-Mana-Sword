@@ -4661,7 +4661,7 @@ script_0268:
 script_0269:
     sMSG                                               ;; 0d:79cc $04
       db "<10>The old man by\nthe Waterfalls is\nsuch a weirdo!<12>"
-      db "<1b>He use to be a\ngallant knight,\nbut not anymore!<12>"
+      db "<1b>He used to be a\ngallant knight,\nbut not anymore!<12>"
       db "<11>", $00 ;; 0d:79cd
     sEND                                               ;; 0d:7a11 $00
 
