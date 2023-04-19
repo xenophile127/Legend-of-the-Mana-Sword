@@ -3,6 +3,11 @@ ROM = rom.gb
 SRCS = $(wildcard src/*.asm)
 GFXS = $(shell find gfx/ -type f -name '*.png')
 
+#PLAYER_GRAPHICS = -DPLAYER_GRAPHICS_ORIGINAL
+PLAYER_GRAPHICS = -DPLAYER_GRAPHICS_AMANDA
+
+DEFS = $(PLAYER_GRAPHICS)
+
 all: $(ROM)
 
 check: $(ROM)
@@ -19,11 +24,11 @@ $(ROM): $(patsubst src/%.asm,.obj/%.o,$(SRCS))
 
 .obj/%.o $(DEPDIR)/%.mk: src/%.asm $(patsubst gfx/%.png,.gfx/%.bin,$(GFXS))
 	@mkdir -p $(dir .obj/$* .dep/$*)
-	rgbasm -Wall -Wextra --export-all -isrc -i.gfx -M .dep/$*.mk -MP -MQ .obj/$*.o -MQ .dep/$*.mk -o .obj/$*.o $<
+	rgbasm $(DEFS) -Wall -Wextra --export-all -isrc -i.gfx -M .dep/$*.mk -MP -MQ .obj/$*.o -MQ .dep/$*.mk -o .obj/$*.o $<
 
 .gfx/%.bin: gfx/%.png
 	@mkdir -p $(dir .gfx/$*)
-	rgbgfx -o .gfx/$*.bin $< -c '#ffffff,#c8c8c8,#646464,#000000'
+	rgbgfx -o .gfx/$*.bin $< #-c '#ffffff,#c8c8c8,#646464,#000000'
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(patsubst src/%.asm,.dep/%.mk,$(SRCS))

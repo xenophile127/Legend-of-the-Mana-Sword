@@ -2078,7 +2078,11 @@ gfxProjectilePitchfork:
 
 ;@gfximg name=projectile/mirrorimage width=2 height=2
 gfxProjectileMirrorImage:
+IF DEF(PLAYER_GRAPHICS_AMANDA)
+    INCBIN "projectile/mirrorimage_amanda.bin"         ;; 09:71c0
+ELIF DEF(PLAYER_GRAPHICS_ORIGINAL)
     INCBIN "projectile/mirrorimage.bin"                ;; 09:71c0
+ENDC
 
 ;@gfximg name=projectile/laser width=2 height=4
 gfxProjectileLaser:
