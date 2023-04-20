@@ -279,7 +279,11 @@ script_000c:
         sIF_FLAG !wScriptFlags0E.5, wScriptFlags0E.6, wScriptFlags0E.7 ;; 0d:42bd $08 $f5 $76 $77 $00 $41
           sIF_FLAG wScriptFlags0A.6, !wScriptFlags05.0 ;; 0d:42c3 $08 $56 $a8 $00 $2b
             sMSG                                       ;; 0d:42c8 $04
+IF DEF(GLADIATOR_DUKE)
+              db "<10>Lester:Won't you\n help avenge him?\n Well, I'm going!<12>"
+ELIF DEF(GLADIATOR_AMANDA)
               db "<10>Lester:Won't you\n avenge my sister?\n Well, I'm going!<12>"
+ENDC
               db "<11>", $00 ;; 0d:42c9
             sFOLLOWER_DELETE                           ;; 0d:42f0 $98
             sCLEAR_FLAG wScriptFlags0A.6               ;; 0d:42f1 $db $56
@@ -2600,7 +2604,11 @@ script_01ae:
       sFOLLOWER_SET_POSITION 10, 8                     ;; 0d:5021 $99 $0a $08
       sDELAY 60                                        ;; 0d:5024 $f0 $3c
       sMSG                                             ;; 0d:5026 $04
+IF DEF(GLADIATOR_DUKE)
+        db "<10>Duke:Can't find\n a drop of tear__<12>"
+ELIF DEF(GLADIATOR_AMANDA)
         db "<10>Amanda:Can't find\n a drop of tear__<12>"
+ENDC
         db "<1b><BOY>:Let's go back\n to Jadd first.<12>"
         db "<11>", $00 ;; 0d:5027
       sSET_PLAYER_DIRECTION_RIGHT                      ;; 0d:5058 $86
@@ -2670,7 +2678,11 @@ script_01b1:
     sSET_MUSIC 13                                      ;; 0d:5166 $f8 $0d
     sDELAY 180                                         ;; 0d:5168 $f0 $b4
     sMSG                                               ;; 0d:516a $04
+IF DEF(GLADIATOR_DUKE)
+      db "<10> __ I'll stay here\n and play requiem\n for my brother.<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<10> __ I'll stay here\n and play requiem\n for my sister.<12>"
+ENDC
       db "<1b><BOY>:Okay, Lester.\n I'm going.\n __ Take care.<12>"
       db "<1b>Lester:Take this\n book with you.\n It might help.<12>"
       db "<1b>", $00 ;; 0d:516b
@@ -3540,7 +3552,11 @@ ENDC
     sNPC_1_STEP_FORWARD                                ;; 0d:603b $10
     sNPC_1_STEP_FORWARD                                ;; 0d:603c $10
     sMSG                                               ;; 0d:603d $04
+IF DEF(GLADIATOR_DUKE)
+      db "<10>Duke:I'm glad\n to see you again,\n my friend__<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<10>Amanda:I'm glad\n to see you again,\n my friend__<12>"
+ENDC
       db "<1b> I came back from\n Glaive after you\n left there__<12>"
       db "<1b> Oh, <BOY>__\n", $00 ;; 0d:603e
     sDELAY 50                                          ;; 0d:608a $f0 $32
@@ -3565,7 +3581,11 @@ ENDC
     sDELAY 30                                          ;; 0d:60c2 $f0 $1e
     sMSG                                               ;; 0d:60c4 $04
       db " __ Pendant!!\n __ Where is it?!<12>"
+IF DEF(GLADIATOR_DUKE)
+      db "<1b> __ I thought that\n it was Duke\n talking to me__<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<1b> __ I thought that\n it was Amanda\n talking to me__<12>"
+ENDC
       db "<11>", $00 ;; 0d:60c5
     sSET_MUSIC 4                                       ;; 0d:60fc $f8 $04
     sEND                                               ;; 0d:60fe $00
@@ -3661,7 +3681,11 @@ IF DEF(PLAYER_GENDER_FEMALE)
 ELIF DEF(PLAYER_GENDER_MALE)
       db "<10>Are you okay, boy?\n_You are in Menos.<12>"
 ENDC
+IF DEF(GLADIATOR_DUKE)
+      db "<1b>Duke left the\nvillage earlier\nthis morning.<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<1b>Amanda left the\nvillage earlier\nthis morning.<12>"
+ENDC
       db "<11>", $00 ;; 0d:637f
     sEND                                               ;; 0d:63bc $00
 
@@ -3674,7 +3698,11 @@ script_0212:
 
 script_0213:
     sMSG                                               ;; 0d:63f8 $04
+IF DEF(GLADIATOR_DUKE)
+      db "<10>Duke's little\nbrother, Lester,\nis a musician.<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<10>Amanda's little\nbrother, Lester,\nis a musician.<12>"
+ENDC
       db "<1b>He's playing harp\nin a town called\nJadd.<12>"
       db "<11>", $00 ;; 0d:63f9
     sEND                                               ;; 0d:6438 $00
@@ -3694,7 +3722,11 @@ script_0215:
 
 script_0216:
     sMSG                                               ;; 0d:64a2 $04
+IF DEF(GLADIATOR_DUKE)
+      db "<10>What's wrong with\nDuke lately?\nHe's depressed.<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<10>What's wrong with\nAmanda lately?\nShe's depressed.<12>"
+ENDC
       db "<11>", $00 ;; 0d:64a3
     sEND                                               ;; 0d:64c8 $00
 
@@ -3760,8 +3792,13 @@ script_0217:
 script_0218:
     sMSG                                               ;; 0d:6573 $04
       db "<10>Davias:Better\n behave yourself\n in this town.<12>"
+IF DEF(GLADIATOR_DUKE)
+      db "<1b> __ Duke__?\n Oh, yes!\n That boy__<12>"
+      db "<1b> He went to the\n Cave of Medusa.\n<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<1b> __ Amanda__?\n Oh, yes!\n That girl__<12>"
       db "<1b> She went to the\n Cave of Medusa.\n<12>"
+ENDC
       db "<1b> Nobody ever came\n back from there\n alive though.<12>"
       db "", $00 ;; 0d:6574
     sSET_FLAG wScriptFlags03.2                         ;; 0d:65e7 $da $1a
@@ -3773,7 +3810,11 @@ script_0219:
     sIF_EQUIPED INV_ITEM_POTION_AMANDA                 ;; 0d:65ed $09 $2a $00 $53
       sSET_MUSIC 0                                     ;; 0d:65f1 $f8 $00
       sMSG                                             ;; 0d:65f3 $04
-        db "<10><BOY> used <POT>Amanda,\nthe tears of\nAmanda__", $00 ;; 0d:65f4
+IF DEF(GLADIATOR_DUKE)
+        db "<10><BOY> used <POT>Tears,\nthe tears of\nDuke__", $00 ;; 0d:65f4
+ELIF DEF(GLADIATOR_AMANDA)
+        db "<10><BOY> used <POT>Tears,\nthe tears of\nAmanda__", $00 ;; 0d:65f4
+ENDC
       sDELAY 120                                       ;; 0d:660e $f0 $78
       sTAKE_EQUIPED_ITEM                               ;; 0d:6610 $de
       sMSG                                             ;; 0d:6611 $04
@@ -3899,7 +3940,11 @@ script_0225:
 script_0226:
     sSPAWN_NPC 1                                       ;; 0d:6875 $fd $01
     sMSG                                               ;; 0d:6877 $04
+IF DEF(GLADIATOR_DUKE)
+      db "<10><BOY>:__I'm sorry,\n Duke __\n But I had to __<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<10><BOY>:__I'm sorry,\n Amanda __\n But I had to __<12>"
+ENDC
       db "<11>", $00 ;; 0d:6878
     sSET_FLAG wScriptFlags03.4                         ;; 0d:6899 $da $1c
     sEND                                               ;; 0d:689b $00
@@ -3910,19 +3955,31 @@ script_0227:
       db "<10>", $00                                   ;; 0d:689e
     sSET_MUSIC 0                                       ;; 0d:68a0 $f8 $00
     sMSG                                               ;; 0d:68a2 $04
+IF DEF(GLADIATOR_DUKE)
+      db "Duke:__Ouch!", $00                         ;; 0d:68a3
+ELIF DEF(GLADIATOR_AMANDA)
       db "Amanda:__Ouch!", $00                         ;; 0d:68a3
+ENDC
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0d:68af $87
     sPLAYER_STEP_FORWARD                               ;; 0d:68b0 $80
     sMSG                                               ;; 0d:68b1 $04
       db "\n<BOY>:Are you okay?<12>"
+IF DEF(GLADIATOR_DUKE)
+      db "<1b>Duke:I guess\n Medusa bit me\n while fighting__<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<1b>Amanda:I guess\n Medusa bit me\n while fighting__<12>"
+ENDC
       db "", $00 ;; 0d:68b2
     sSET_MUSIC 2                                       ;; 0d:68df $f8 $02
     sMSG                                               ;; 0d:68e1 $04
       db "<1b> __ One who was\n bitten by Medusa\n turns to Medusa.<12>"
       db "<1b> I'm gonna turn\n into a Medusa in\n a short while__<12>"
       db "<1b> Please do away\n with me and take\n my tears, <BOY>.<12>"
+IF DEF(GLADIATOR_DUKE)
+      db "<1b><BOY>:No, I can't!\nDuke:I'm gonna\n be a monster__<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<1b><BOY>:No, I can't!\nAmanda:I'm gonna\n be a monster__<12>"
+ENDC
       db "<1b> I might lose my\n mind and hurt\n people__<12>"
       db "<1b>", $00 ;; 0d:68e2
     sFOLLOWER_DELETE                                   ;; 0d:6986 $98
@@ -3950,7 +4007,11 @@ script_0228:
       sLOAD_ROOM_INSTANT 15, $55, 20, 0                ;; 0d:6a06 $f3 $0f $55 $14 $00
       sFADE_TO_NORMAL                                  ;; 0d:6a0b $bc
       sMSG                                             ;; 0d:6a0c $04
+IF DEF(GLADIATOR_DUKE)
+        db "<10> <BOY> took a drop\n   of tear from\n   Duke's face.<12>"
+ELIF DEF(GLADIATOR_AMANDA)
         db "<10> <BOY> took a drop\n   of tear from\n  Amanda's face.<12>"
+ENDC
         db "<1b>", $00 ;; 0d:6a0d
       sDELAY 30                                        ;; 0d:6a2f $f0 $1e
       sMSG                                             ;; 0d:6a31 $04
@@ -4639,7 +4700,11 @@ script_0260:
 
 script_0261:
     sMSG                                               ;; 0d:78aa $04
+IF DEF(GLADIATOR_DUKE)
+      db "<10>Duke:I'm sorry\n about Willy.<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<10>Amanda:I'm sorry\n about Willy.<12>"
+ENDC
       db "<1b> We have to get\n out of here!!<12>"
       db "<1b> I wanna go home\n and see my\n little brother__<12>"
       db "<11>", $00 ;; 0d:78ab
@@ -5022,7 +5087,11 @@ script_0281:
           db "<10>", $00                               ;; 0d:7dea
         sIF_FLAG wScriptFlags03.3                      ;; 0d:7dec $08 $1b $00 $19
           sMSG                                         ;; 0d:7df0 $04
+IF DEF(GLADIATOR_DUKE)
+            db "Duke:I'm glad\n you're back!", $00   ;; 0d:7df1
+ELIF DEF(GLADIATOR_AMANDA)
             db "Amanda:I'm glad\n you're back!", $00   ;; 0d:7df1
+ENDC
         sELSE                                          ;; 0d:7e07 $01 $03
           sCALL script_053d                            ;; 0d:7e09 $02 $6d $f9
         sENDIF                                         ;; 0d:7e0c

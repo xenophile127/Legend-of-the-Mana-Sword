@@ -135,7 +135,11 @@ script_029f:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4183 $0b $c9 $00 $33
       sIF_FLAG wScriptFlags0A.5, !wScriptFlags04.7     ;; 0e:4187 $08 $55 $a7 $00 $25
         sMSG                                           ;; 0e:418c $04
+IF DEF(GLADIATOR_DUKE)
+          db "<10>Duke:Won't you\n come along with\n me, <BOY>?<12>"
+ELIF DEF(GLADIATOR_AMANDA)
           db "<10>Amanda:Won't you\n come along with\n me, <BOY>?<12>"
+ENDC
           db "<11>", $00 ;; 0e:418d
         sFOLLOWER_DELETE                               ;; 0e:41ac $98
         sDELAY 30                                      ;; 0e:41ad $f0 $1e
@@ -5334,9 +5338,15 @@ script_053c:
       db "", $00 ;; 0e:6d33
     sSET_MUSIC 27                                      ;; 0e:6d53 $f8 $1b
     sMSG                                               ;; 0e:6d55 $04
+IF DEF(GLADIATOR_DUKE)
+      db "<1b> Duke sacrificed\n his life to save\n you and all__<12>"
+      db "<1b>Lester:To save me?\n __ Oh, Duke__<12>"
+      db "<1b> Will you please\n help me to avenge\n my brother?<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<1b> Amanda sacrificed\n her life to save\n you and all__<12>"
       db "<1b>Lester:To save me?\n __ Oh, Amanda__<12>"
       db "<1b> Will you please\n help me to avenge\n my sister?<12>"
+ENDC
       db "<1b><BOY>:Yes, Lester.\nLester:Thanks.\n Let's go, <BOY>!<12>"
       db "<11>", $00 ;; 0e:6d56
     sSFX 9                                             ;; 0e:6dd2 $f9 $09
@@ -5351,12 +5361,21 @@ script_053c:
 
 script_053d:
     sMSG                                               ;; 0e:6df9 $04
+IF DEF(GLADIATOR_DUKE)
+      db "<BOY>:Duke! \n Did you take the\n Pendant? __ Why?<12>"
+      db "<1b>Duke:I'm sorry.\n I had to bring\n it to Davias__<12>"
+ELIF DEF(GLADIATOR_AMANDA)
       db "<BOY>:Amanda!\n Did you take the\n Pendant? __ Why?<12>"
       db "<1b>Amanda:I'm sorry.\n I had to bring\n it to Davias__<12>"
+ENDC
       db "<1b> That Pendant was\n to exchange for\n my brother. But__<12>"
       db "<1b> Davias cursed him\n and turned him\n into a parrot__!<12>"
       db "<1b> I must get the\n tears of Medusa\n to uncurse him!<12>"
+IF DEF(GLADIATOR_DUKE)
+      db "<1b><BOY>:_ Duke__\n __ I'll help you.\nDuke:Thank you.", $00 ;; 0e:6dfa
+ELIF DEF(GLADIATOR_AMANDA)
       db "<1b><BOY>:_ Amanda__\n __ I'll help you.\nAmanda:Thank you.", $00 ;; 0e:6dfa
+ENDC
     sSET_FLAG wScriptFlags03.3                         ;; 0e:6ec3 $da $1b
     sEND                                               ;; 0e:6ec5 $00
 
