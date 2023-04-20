@@ -4768,7 +4768,7 @@ script_026a:
 
 script_026b:
     sMSG                                               ;; 0d:7a53 $04
-      db "<10>Girl:Hasim's got\n a serious wound!<12>"
+      db "<10> Hasim's got a\n serious wound!<12>"
       db "<11>", $00 ;; 0d:7a54
     sEND                                               ;; 0d:7a6f $00
 
@@ -4780,9 +4780,9 @@ script_026c:
       sSET_MUSIC 23                                    ;; 0d:7a79 $f8 $17
       sCALL script_026d                                ;; 0d:7a7b $02 $3b $17
       sMSG                                             ;; 0d:7a7e $04
-        db "Girl:Oh_ No_\n Don't leave me\n alone, Hasim!<12>"
+        db "<GIRL>:Oh_ No_\n Don't leave me\n alone, Hasim!<12>"
         db "<1b><BOY>:I'm looking\n for that Bogard,\n too.<12>"
-        db "<1b> Why don't you\n come with me?\nGirl:Oh _ Can I?<12>"
+        db "<1b> Why don't you\n come with me?\n<GIRL>:Oh _ Can I?<12>"
         db "<1b><BOY>:I can't leave\n you here alone.\n _ I am <BOY>.<12>"
         db "<1b><GIRL>:Call me <GIRL>.<12>"
         db "<1b>", $00 ;; 0d:7a7f
@@ -4798,12 +4798,12 @@ script_026c:
 
 script_026d:
     sMSG                                               ;; 0d:7b17 $04
-      db "Hasim:Oh_ please_\n take this girl\n to_ Wendel_ and_<12>"
+      db "Hasim:Oh_ please_\n take <GIRL> to_\n Wendel_ and if_<12>"
       db "<1b>", $00 ;; 0d:7b18
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0d:7b3f $17
     sMSG                                               ;; 0d:7b40 $04
-      db " see Bogard___\n He will take care\n of the rest_ _<12>"
-      db "<1b>Girl:_ _ Hasim!?\n _ _ H A S I M!!<12>"
+      db " you find Bogard__\n I'm sure he\n will help you_ _<12>"
+      db "<1b><GIRL>:_ _ Hasim!?\n _ _ H A S I M!!<12>"
       db "<1b>", $00 ;; 0d:7b41
     sDELAY 30                                          ;; 0d:7b7f $f0 $1e
     sMSG                                               ;; 0d:7b81 $04
