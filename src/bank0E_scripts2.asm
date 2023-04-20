@@ -7,6 +7,7 @@ INCLUDE "include/constants.inc"
 
 SECTION "bank0e", ROMX[$4000], BANK[$0e]
 
+IF DEF(PLAYER_GENDER_MALE)
 script_0294:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4000 $0b $c9 $00 $33
       sIF_FLAG wScriptFlags0A.2, !wScriptFlags09.0     ;; 0e:4004 $08 $52 $c8 $00 $25
@@ -34,6 +35,7 @@ script_0295:
       sENDIF                                           ;; 0e:404f
     sENDIF                                             ;; 0e:404f
     sEND                                               ;; 0e:404f $00
+ENDC
 
 script_0296:
     sEND                                               ;; 0e:4050 $00
@@ -5047,8 +5049,13 @@ script_0538:
     sSET_PLAYER_NORMAL_SPRITE                          ;; 0e:6700 $a4
     sDELAY 40                                          ;; 0e:6701 $f0 $28
     sMSG                                               ;; 0e:6703 $04
+IF DEF(PLAYER_GENDER_FEMALE)
+      db "<10>_See, Auntie?\n Somebody's hurt!\nSarah:Oh, yes.<12>"
+      db "<1b>_And a birdie is\n hurt, too!\nSarah:Oh_ dear_ _<12>"
+ELIF DEF(PLAYER_GENDER_MALE)
       db "<10>_See that, Auntie?\n A boy's falling!\nSarah:Oh, yes.<12>"
       db "<1b>_A birdie is\n falling, too!\nSarah:Oh_ dear_ _<12>"
+ENDC
       db "<11>", $00 ;; 0e:6704
     sDELAY 60                                          ;; 0e:6750 $f0 $3c
     sFADE_TO_BLACK                                     ;; 0e:6752 $bd

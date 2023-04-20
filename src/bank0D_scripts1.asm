@@ -2801,7 +2801,11 @@ script_01bb:
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:5319 $84
       sMSG                                             ;; 0d:531a $04
         db "<10>Dark Lord:Looks\n like you've been\n a bit stronger.<12>"
+IF DEF(PLAYER_GENDER_FEMALE)
+        db "<1b> But, not enough\n to beat me, girl!<12>"
+ELIF DEF(PLAYER_GENDER_MALE)
         db "<1b> But, not enough\n to fight me, boy!<12>"
+ENDC
         db "<1b>", $00 ;; 0d:531b
       sSET_PLAYER_DIRECTION_RIGHT                      ;; 0d:5359 $86
       sFOLLOWER_DIRECTION_LEFT                         ;; 0d:535a $97
@@ -2819,7 +2823,11 @@ script_01bb:
       sDELAY 20                                        ;; 0d:539d $f0 $14
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:539f $84
       sMSG                                             ;; 0d:53a0 $04
+IF DEF(PLAYER_GENDER_FEMALE)
+        db "<10>Dark Lord:Good\n girl, <BOY>!\n __ Now, come!<12>"
+ELIF DEF(PLAYER_GENDER_MALE)
         db "<10>Dark Lord:Good\n boy, <BOY>!\n __ Now, come!<12>"
+ENDC
         db "<11>", $00 ;; 0d:53a1
       sSET_MUSIC 19                                    ;; 0d:53c1 $f8 $13
     sENDIF                                             ;; 0d:53c3
@@ -3512,7 +3520,11 @@ script_0207:
 script_0208:
     sMSG                                               ;; 0d:5fdf $04
       db "<10>_ Wow!  Somebody\n_ came down from\n_ the sky!<12>"
+IF DEF(PLAYER_GENDER_FEMALE)
+      db "<1b>_ __ <BOY>?!\n_ Do you know her?\n___ _ <BOY>__!<12>"
+ELIF DEF(PLAYER_GENDER_MALE)
       db "<1b>_ __ <BOY>?!\n_ Do you know him?\n___ _ <BOY>__!<12>"
+ENDC
       db "<11>", $00 ;; 0d:5fe0
     sFADE_TO_BLACK                                     ;; 0d:6024 $bd
     sUNK_C5 7                                          ;; 0d:6025 $c5 $07
@@ -3644,7 +3656,11 @@ script_0210:
 
 script_0211:
     sMSG                                               ;; 0d:637e $04
+IF DEF(PLAYER_GENDER_FEMALE)
+      db "<10>Are you okay?\n_You are in Menos.<12>"
+ELIF DEF(PLAYER_GENDER_MALE)
       db "<10>Are you okay, boy?\n_You are in Menos.<12>"
+ENDC
       db "<1b>Amanda left the\nvillage earlier\nthis morning.<12>"
       db "<11>", $00 ;; 0d:637f
     sEND                                               ;; 0d:63bc $00
@@ -4112,8 +4128,13 @@ script_0232:
       db "Sarah:He didn't\n wanna let you\n know, but_<12>"
       db "<1b> He can't move\n for a while for\n his broken back.<12>"
       db "<1b> He was distressed\n to hear of places\n being attacked.<12>"
+IF DEF(PLAYER_GENDER_FEMALE)
+      db "<1b> But he kept\n saying there is\n a woman_<12>"
+      db "<1b> A woman named\n <BOY> will come to\n save us all_<12>"
+ELIF DEF(PLAYER_GENDER_MALE)
       db "<1b> But he kept\n saying that there\n is a boy_<12>"
       db "<1b> A boy named <BOY>\n will come to\n save us all_<12>"
+ENDC
       db "<1b> I didn't really\n believe him, but\n when I saw you_<12>"
       db "<1b> _ Even a Chocobo\n knew you're the\n last hope_<12>"
       db "<1b> Bogard and the\n bird made me\n believe in you_<12>"
@@ -4645,7 +4666,11 @@ script_0265:
 
 script_0266:
     sMSG                                               ;; 0d:7942 $04
+IF DEF(PLAYER_GENDER_FEMALE)
+      db "<10>Welcome to Topple!<12>"
+ELIF DEF(PLAYER_GENDER_MALE)
       db "<10>Hello, young man!\nWelcome to Topple!<12>"
+ENDC
       db "<11>", $00 ;; 0d:7943
     sEND                                               ;; 0d:795f $00
 
@@ -5186,10 +5211,33 @@ script_0292:
 
 script_0293:
     sEND                                               ;; 0d:7fb2 $00
-    db   $0b, $c9, $00, $33, $08, $52, $c8, $00        ;; 0d:7fb3 ????????
-    db   $25, $04, $10, $62, $e1, $f5, $bd, $dc        ;; 0d:7fbb ????????
-    db   $d7, $e1, $ee, $28, $24, $e8, $1a, $87        ;; 0d:7fc3 ????????
-    db   $64, $20, $2a, $38, $22, $36, $da, $98        ;; 0d:7fcb ????????
-    db   $1a, $22, $2a, $51, $8b, $5f, $e5, $f4        ;; 0d:7fd3 ????????
-    db   $12, $11, $00, $98, $db, $52, $f4, $00        ;; 0d:7fdb ????????
-    db   $e8, $0a, $03, $f8, $14, $ab, $ec             ;; 0d:7fe3 ???????
+
+IF DEF(PLAYER_GENDER_FEMALE)
+script_0294:
+    sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4000 $0b $c9 $00 $33
+      sIF_FLAG wScriptFlags0A.2, !wScriptFlags09.0     ;; 0e:4004 $08 $52 $c8 $00 $25
+        sMSG                                           ;; 0e:4009 $04
+          db "<10>Man:Didn't you\n come here to get\n the Mirror?<12>"
+          db "<11>", $00 ;; 0e:400a
+        sFOLLOWER_DELETE                               ;; 0e:402b $98
+        sCLEAR_FLAG wScriptFlags0A.2                   ;; 0e:402c $db $52
+      sENDIF                                           ;; 0e:402e
+      sLOAD_ROOM 0, $e8, 10, 3                         ;; 0e:402e $f4 $00 $e8 $0a $03
+      sSET_MUSIC 20                                    ;; 0e:4033 $f8 $14
+      sCLEAR_ROOM_HISTORY                              ;; 0e:4035 $ab
+      sRUN_ROOM_SCRIPT                                 ;; 0e:4036 $ec
+    sENDIF                                             ;; 0e:4037
+    sEND                                               ;; 0e:4037 $00
+
+script_0295:
+    sIF_TRIGGERED_ON_BY $c9, $c1                       ;; 0e:4038 $0b $c9 $c1 $00 $12
+      sLOAD_ROOM 0, $dc, 9, 8                          ;; 0e:403d $f4 $00 $dc $09 $08
+      sIF_FLAG wScriptFlags02.0, !wScriptFlags02.1     ;; 0e:4042 $08 $10 $91 $00 $05
+        sCALL script_053b                              ;; 0e:4047 $02 $6b $04
+      sELSE                                            ;; 0e:404a $01 $03 
+        sSET_MUSIC 20                                  ;; 0e:404c $f8 $14 
+        sRUN_ROOM_SCRIPT                               ;; 0e:404e $ec
+      sENDIF                                           ;; 0e:404f
+    sENDIF                                             ;; 0e:404f
+    sEND                                               ;; 0e:404f $00
+ENDC

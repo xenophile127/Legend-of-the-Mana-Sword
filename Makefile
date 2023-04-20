@@ -3,10 +3,15 @@ ROM = rom.gb
 SRCS = $(wildcard src/*.asm)
 GFXS = $(shell find gfx/ -type f -name '*.png')
 
+# Controls the graphics used from the main character
 #PLAYER_GRAPHICS = -DPLAYER_GRAPHICS_ORIGINAL
 PLAYER_GRAPHICS = -DPLAYER_GRAPHICS_AMANDA
 
-DEFS = $(PLAYER_GRAPHICS)
+# Controls what pronouns and gendered words characters use to refer to the main character.
+#PLAYER_GENDER = -DPLAYER_GENDER_MALE
+PLAYER_GENDER = -DPLAYER_GENDER_FEMALE
+
+DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER)
 
 all: $(ROM)
 
