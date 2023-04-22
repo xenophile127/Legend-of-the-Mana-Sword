@@ -615,6 +615,7 @@ script_005d:
 
 script_005e:
     sIF_FLAG !wScriptFlags.7                           ;; 0d:4459 $08 $87 $00 $04
+      sCLEAR_FLAG wScriptFlags.5
       sSET_NPC_TYPES 13                                ;; 0d:445d $fc $0d
       sSPAWN_NPC 2                                     ;; 0d:445f $fd $02
     sENDIF                                             ;; 0d:4461
@@ -3794,10 +3795,10 @@ script_0218:
       db "<10>Davias:Better\n behave yourself\n in this town.<12>"
 IF DEF(GLADIATOR_DUKE)
       db "<1b> __ Duke__?\n Oh, yes!\n That boy__<12>"
-      db "<1b> He went to the\n Cave of Medusa.\n<12>"
+      db "<1b> He went to\n Medusa's Cave.\n<12>"
 ELIF DEF(GLADIATOR_AMANDA)
       db "<1b> __ Amanda__?\n Oh, yes!\n That girl__<12>"
-      db "<1b> She went to the\n Cave of Medusa.\n<12>"
+      db "<1b> She went to\n Medusa's Cave.\n<12>"
 ENDC
       db "<1b> Nobody has ever\n come back from\n there alive.<12>"
       db "", $00 ;; 0d:6574
@@ -3888,15 +3889,19 @@ script_021f:
 
 script_0220:
     sMSG                                               ;; 0d:6786 $04
-      db "<10>Davias's mother\nis a Medusa.\nShe is in a cave.<12>"
-      db "<1b>It's by the oasis\nat the desert, but\nit's hard to find.<12>"
-      db "<1b>I don't know how,\nbut a boy knows\nhow to get in!<12>"
+      db "<10>Davias's mother\nis a Medusa.\nShe lives in a<12>"
+      db "<1b>hidden cave at\nthe oasis to\nthe south.<12>"
+      db "<1b>A boy has been\nsaying he knows\nhow to get in!<12>"
       db "<11>", $00 ;; 0d:6787
     sEND                                               ;; 0d:67eb $00
 
 script_0221:
     sMSG                                               ;; 0d:67ec $04
-      db "<10>Cave of Oasis?\nI'll tell you for\na bag of Fang!<12>"
+      db "<10>Medusa's Cave?", $00
+      sDELAY 30
+    sMSG
+      db "\nI've been there.<12>"
+      db "<1b>I'll tell you how\nto find it for a\nSaurus <FANG>Fang!<12>"
       db "<13><1b>", $00 ;; 0d:67ed
     sIF_FLAG !wScriptFlags0F.7                         ;; 0d:6810 $08 $ff $00 $28
       sIF_EQUIPED INV_ITEM_BAG_FANG                    ;; 0d:6814 $09 $3b $00 $06
@@ -4126,10 +4131,8 @@ script_022d:
 
 script_022e:
     sMSG                                               ;; 0d:6d01 $04
-      db "Here's the clue.\nPalm trees_ and 8.\n", $00 ;; 0d:6d02
-    sDELAY 20                                          ;; 0d:6d1b $f0 $14
-    sMSG                                               ;; 0d:6d1d $04
-      db "Got it?", $00                                ;; 0d:6d1e
+      db "The entrance to\nMedusa's Cave is\nat the oasis.<12>"
+      db "<1b>Trace a figure\neight around the\npalm trees there.", $00
     sEND                                               ;; 0d:6d24 $00
 
 script_022f:
@@ -5277,40 +5280,3 @@ script_0292:
       sRUN_ROOM_SCRIPT                                 ;; 0d:7fb0 $ec
     sENDIF                                             ;; 0d:7fb1
     sEND                                               ;; 0d:7fb1 $00
-
-script_0293:
-    sEND                                               ;; 0d:7fb2 $00
-
-IF DEF(PLAYER_GENDER_FEMALE)
-script_0294:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4000 $0b $c9 $00 $33
-      sIF_FLAG wScriptFlags0A.2, !wScriptFlags09.0     ;; 0e:4004 $08 $52 $c8 $00 $25
-        sMSG                                           ;; 0e:4009 $04
-          db "<10>Man:Didn't you\n come here to get\n the Mirror?<12>"
-          db "<11>", $00 ;; 0e:400a
-        sFOLLOWER_DELETE                               ;; 0e:402b $98
-        sCLEAR_FLAG wScriptFlags0A.2                   ;; 0e:402c $db $52
-      sENDIF                                           ;; 0e:402e
-      sLOAD_ROOM 0, $e8, 10, 3                         ;; 0e:402e $f4 $00 $e8 $0a $03
-      sSET_MUSIC 20                                    ;; 0e:4033 $f8 $14
-      sCLEAR_ROOM_HISTORY                              ;; 0e:4035 $ab
-      sRUN_ROOM_SCRIPT                                 ;; 0e:4036 $ec
-    sENDIF                                             ;; 0e:4037
-    sEND                                               ;; 0e:4037 $00
-
-script_0295:
-    sIF_TRIGGERED_ON_BY $c9, $c1                       ;; 0e:4038 $0b $c9 $c1 $00 $12
-      sLOAD_ROOM 0, $dc, 9, 8                          ;; 0e:403d $f4 $00 $dc $09 $08
-      sIF_FLAG wScriptFlags02.0, !wScriptFlags02.1     ;; 0e:4042 $08 $10 $91 $00 $05
-        sCALL script_053b                              ;; 0e:4047 $02 $6b $04
-      sELSE                                            ;; 0e:404a $01 $03 
-        sSET_MUSIC 20                                  ;; 0e:404c $f8 $14 
-        sRUN_ROOM_SCRIPT                               ;; 0e:404e $ec
-      sENDIF                                           ;; 0e:404f
-    sENDIF                                             ;; 0e:404f
-    sEND                                               ;; 0e:404f $00
-
-script_0296:
-    sEND
-
-ENDC

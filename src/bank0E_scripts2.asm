@@ -7,7 +7,9 @@ INCLUDE "include/constants.inc"
 
 SECTION "bank0e", ROMX[$4000], BANK[$0e]
 
-IF DEF(PLAYER_GENDER_MALE)
+script_0293:
+    sEND
+
 script_0294:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4000 $0b $c9 $00 $33
       sIF_FLAG wScriptFlags0A.2, !wScriptFlags09.0     ;; 0e:4004 $08 $52 $c8 $00 $25
@@ -38,8 +40,6 @@ script_0295:
 
 script_0296:
     sEND                                               ;; 0e:4050 $00
-
-ENDC
 
 script_0297:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4051 $0b $c9 $00 $09
@@ -2630,7 +2630,7 @@ script_040b:
     sEND                                               ;; 0e:529f $00
 
 script_040c:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0e:52a0 $0b $c9 $00 $19
+    sIF_TRIGGERED_ON_BY $c9, $c1, $e1, $f1
       sIF_FLAG wScriptFlags0F.0, wScriptFlags0F.1, wScriptFlags0F.2, !wScriptFlags0F.3 ;; 0e:52a4 $08 $78 $79 $7a $fb $00 $0a
         sCREATE_EFFECT $10, $0e, $02                   ;; 0e:52ab $ba $10 $0e $02
         sSET_ROOM_TILE $4c, 7, 1                       ;; 0e:52af $b0 $4c $07 $01
@@ -2644,7 +2644,7 @@ script_040c:
     sEND                                               ;; 0e:52bd $00
 
 script_040d:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0e:52be $0b $c9 $00 $1e
+    sIF_TRIGGERED_ON_BY $c9, $c1, $e1, $f1
       sIF_FLAG !wScriptFlags0F.0, !wScriptFlags0F.1, !wScriptFlags0F.2, !wScriptFlags0F.3 ;; 0e:52c2 $08 $f8 $f9 $fa $fb $00 $04
         sSET_FLAG wScriptFlags0F.0                     ;; 0e:52c9 $da $78
       sELSE                                            ;; 0e:52cb $01 $13
@@ -2661,7 +2661,7 @@ script_040d:
     sEND                                               ;; 0e:52e0 $00
 
 script_040e:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0e:52e1 $0b $c9 $00 $13
+    sIF_TRIGGERED_ON_BY $c9, $c1, $e1, $f1
       sIF_FLAG wScriptFlags0F.0, !wScriptFlags0F.1, !wScriptFlags0F.2, !wScriptFlags0F.3 ;; 0e:52e5 $08 $78 $f9 $fa $fb $00 $04
         sSET_FLAG wScriptFlags0F.1                     ;; 0e:52ec $da $79
       sELSE                                            ;; 0e:52ee $01 $08
@@ -3076,21 +3076,26 @@ script_0443:
     sEND                                               ;; 0e:560e $00
 
 script_0444:
-    sRNG                                               ;; 0e:560f $c7
+    sIF_FLAG !wScriptFlags.5
+      sRNG
+    sENDIF
     sIF_FLAG !wScriptFlags0F.6                         ;; 0e:5610 $08 $fe $00 $18
       sGIVE_ITEM INV_ITEM_BAG_FANG                     ;; 0e:5614 $d4 $32
       sIF_FLAG !wScriptFlags.5                         ;; 0e:5616 $08 $85 $00 $10
         sSFX 15                                        ;; 0e:561a $f9 $0f
         sCHANGE_INTO_EMPTY_CHEST                       ;; 0e:561c $af
         sMSG                                           ;; 0e:561d $04
-          db "<10>Found <BAG>Fang!<12>"
+          db "<10>Found <FANG>Fang!<12>"
           db "<11>", $00 ;; 0e:561e
       sENDIF                                           ;; 0e:562a
     sELSE                                              ;; 0e:562a $01 $0e
       sSFX 15                                          ;; 0e:562c $f9 $0f
       sCHANGE_INTO_EMPTY_CHEST                         ;; 0e:562e $af
       sMSG                                             ;; 0e:562f $04
-        db "<10>Empty.<12>"
+        db "<10>Found <FANG>Fang_\n", $00
+        sDELAY 30
+      sMSG                                             ;; 0e:562f $04
+        db "_ But it's broken.<12>"
         db "<11>", $00     ;; 0e:5630
     sENDIF                                             ;; 0e:563a
     sEND                                               ;; 0e:563a $00
