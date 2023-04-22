@@ -3799,7 +3799,7 @@ ELIF DEF(GLADIATOR_AMANDA)
       db "<1b> __ Amanda__?\n Oh, yes!\n That girl__<12>"
       db "<1b> She went to the\n Cave of Medusa.\n<12>"
 ENDC
-      db "<1b> Nobody ever came\n back from there\n alive though.<12>"
+      db "<1b> Nobody has ever\n come back from\n there alive.<12>"
       db "", $00 ;; 0d:6574
     sSET_FLAG wScriptFlags03.2                         ;; 0d:65e7 $da $1a
     sMSG                                               ;; 0d:65e9 $04
@@ -5309,4 +5309,8 @@ script_0295:
       sENDIF                                           ;; 0e:404f
     sENDIF                                             ;; 0e:404f
     sEND                                               ;; 0e:404f $00
+
+script_0296:
+    sEND
+
 ENDC

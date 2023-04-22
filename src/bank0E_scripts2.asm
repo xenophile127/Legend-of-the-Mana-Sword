@@ -35,10 +35,11 @@ script_0295:
       sENDIF                                           ;; 0e:404f
     sENDIF                                             ;; 0e:404f
     sEND                                               ;; 0e:404f $00
-ENDC
 
 script_0296:
     sEND                                               ;; 0e:4050 $00
+
+ENDC
 
 script_0297:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4051 $0b $c9 $00 $09
