@@ -5137,7 +5137,7 @@ script_053a:
       db "<1b> You and I are\n members of the\n Mana Family.<12>"
       ;db "<1b> You and I are\n the members of\n the Mana Family.<12>"
       db "<1b> We are the seeds\n of the Mana Tree.\n We must guard it.<12>"
-      db "<1b> Vandole abused\n the power of Mana\n long time ago.<12>"
+      db "<1b> Vandole abused\n the power of Mana\n long ago.<12>"
       db "<1b> So I sealed the\n Waterfalls with\n that Pendant,<12>"
       db "<1b> so that nobody\n can come close to\n the Mana Tree.<12>"
       db "<1b> But again, Glaive\n is trying to use\n it for evil.<12>"
