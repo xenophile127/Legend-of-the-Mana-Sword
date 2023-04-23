@@ -102,10 +102,10 @@ script_029a:
 
 script_029b:
     sMSG                                               ;; 0e:40b7 $04
-      db "<BOY>:Bogard!\n <GIRL> was taken\n by Glaive_<12>"
-      db "<1b>Bogard:Cibba told\n me about that.\n Julius is good at<12>"
-      db "<1b> disguising.\n But, don't worry.\n We can save her.<12>"
-      db "<1b> Glaive's airship\n is refueling at\n a lake up north.<12>"
+      db "<BOY>:Bogard!\n <GIRL> was taken\n by Granz_<12>"
+      db "<1b>Bogard:Cibba told\n me about that.\n Julius is skilled<12>"
+      db "<1b> with disguises.\n But, don't worry.\n We can save <GIRL>.<12>"
+      db "<1b> Granz's airship\n is refueling at\n a lake up north.<12>"
       db "<1b> I'll come with\n you and help!\n Let's go!", $00 ;; 0e:40b8
     sEND                                               ;; 0e:415b $00
 
@@ -2935,7 +2935,7 @@ script_0437:
       sCHANGE_INTO_EMPTY_CHEST                         ;; 0e:54c2 $af
       sMSG                                             ;; 0e:54c3 $04
         db "<10>Received <SWORD>Rusty!<12>"
-        db "<1b><BOY>:Rusty sword?\n Is this the\n Excalibur_?<12>"
+        db "<1b><BOY>:Rusty sword?\n Is this the Mana\n Sword_?<12>"
         db "<11>", $00 ;; 0e:54c4
       sSET_FLAG wScriptFlags07.3                       ;; 0e:54f3 $da $3b
       sLOAD_ROOM 0, $f0, 8, 9                          ;; 0e:54f5 $f4 $00 $f0 $08 $09
@@ -3987,9 +3987,9 @@ script_04d9:
         sPLAYER_STEP_FORWARD                           ;; 0e:5cb5 $80
         sNPC_1_STEP_FORWARD                            ;; 0e:5cb6 $10
         sMSG                                           ;; 0e:5cb7 $04
-          db "<10><BOY>:<GIRL>!\n They took the\n Pendant! <12>"
+          db "<10><BOY>:<GIRL>!\n They took the\n Pendant!<12>"
           db "<1b><GIRL>:We have to\n get it back!\n __ Let's go!<12>"
-          db "<1b> Dark Lord's room\n is on the top\n floor!<12>"
+          db "<1b> Shadow Knight's\n room is on the\n top floor!<12>"
           db "<11>", $00 ;; 0e:5cb8
         sGIVE_FOLLOWER 1                               ;; 0e:5d0a $9c $01
         sSET_FLAG wScriptFlags03.6                     ;; 0e:5d0c $da $1e
@@ -4678,7 +4678,7 @@ script_0531:
       sLOCK_TEXT_SPEED                                 ;; 0e:612f $dc
       sDELAY 90                                        ;; 0e:6130 $f0 $5a
       sMSG                                             ;; 0e:6132 $04
-        db "<10><BOY> was a fighter\nof Empire Glaive.", $00 ;; 0e:6133
+        db "<10><BOY> was a captive\nof the cruel\nKingdom of Granz.<12>", $00
       sDELAY 80                                        ;; 0e:614a $f0 $50
       sMSG                                             ;; 0e:614c $04
         db "<11>", $00                                 ;; 0e:614d
@@ -4690,7 +4690,7 @@ script_0531:
       sUNLOCK_TEXT_SPEED                               ;; 0e:6159 $dd
       sMSG                                             ;; 0e:615a $04
         db "<10><BOY> and friends\nwere forced to\nfight every day<12>"
-        db "<1b>just for the\nentertainment of\nDark Lord.<12>"
+        db "<1b>just for the\nentertainment of\nShadow Knight.<12>"
         db "<1b>", $00 ;; 0e:615b
       sCALL script_0532                                ;; 0e:6198 $02 $61 $9f
       sCALL script_0533                                ;; 0e:619b $02 $61 $fa
@@ -4752,13 +4752,13 @@ script_0534:
     sPLAYER_STEP_FORWARD                               ;; 0e:62bc $80
     sDELAY 30                                          ;; 0e:62bd $f0 $1e
     sMSG                                               ;; 0e:62bf $04
-      db "<10><BOY>:Dark Lord and\n Julius__\n _What's going on?<12>"
+      db "<10><BOY>:Shadow Knight\n and Julius__\n _What's going on?<12>"
       db "<11>", $00 ;; 0e:62c0
     sSET_MUSIC 10                                      ;; 0e:62e4 $f8 $0a
     sDELAY 30                                          ;; 0e:62e6 $f0 $1e
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0e:62e8 $16
     sMSG                                               ;; 0e:62e9 $04
-      db "<10>Dark Lord:You say\n the Mana Tree is\n above the Falls_?<12>"
+      db "<10>Shadow Knight:The\n Mana Tree is\n above the Falls_?<12>"
       db "<11>", $00 ;; 0e:62ea
     sDELAY 10                                          ;; 0e:6313 $f0 $0a
     sSET_NPC_2_DIRECTION_LEFT                          ;; 0e:6315 $27
@@ -4768,18 +4768,19 @@ script_0534:
       db "<1b>", $00 ;; 0e:6319
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0e:633e $16
     sMSG                                               ;; 0e:633f $04
-      db "Dark Lord:How do\n I get there?", $00        ;; 0e:6340
+      db "Shadow Knight:How\n do I get there?", $00
     sDELAY 30                                          ;; 0e:6356 $f0 $1e
     sSET_NPC_1_DIRECTION_UP                            ;; 0e:6358 $14
     sDELAY 20                                          ;; 0e:6359 $f0 $14
     sMSG                                               ;; 0e:635b $04
       db "\n __ Up the falls?<12>"
-      db "<1b>Julius:Miracles\n occur sometimes,\n Sir Dark Lord__", $00 ;; 0e:635c
+      db "<1b>Julius:A miracle\n is possible Lord\n Shadow Knight__", $00
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0e:638f $16
     sMSG                                               ;; 0e:6390 $04
       db "<12>"
-      db "<1b>Dark Lord:_ How?\nJulius:A girl has\n the key to it.<12>"
-      db "<1b>Dark Lord:__Good.\n Work hard on it.\nJulius:Yes, Sir!", $00 ;; 0e:6391
+      db "<1b>Shadow Knight:_\n A miracle? _ How?<12>"
+      db "<1b>Julius:There is\n one with the\n key to it.<12>"
+      db "<1b>Shadow Knight:__\n Good. Find it.\nJulius:Yes, Sir!", $00
     sEND                                               ;; 0e:63dd $00
 
 script_0535:
@@ -4801,7 +4802,7 @@ script_0535:
     sFLASH_SCREEN                                      ;; 0e:63f3 $bf
     sDELAY 60                                          ;; 0e:63f4 $f0 $3c
     sMSG                                               ;; 0e:63f6 $04
-      db "<10>Dark Lord:_ What?\n Who is it?\n<BOY>:__ !!<12>"
+      db "<10>Shadow Knight:_\n What? Who is it?\n<BOY>:__ !!<12>"
       db "<11>", $00 ;; 0e:63f7
     sNPC_1_STEP_FORWARD                                ;; 0e:6417 $10
     sNPC_1_STEP_FORWARD                                ;; 0e:6418 $10
@@ -4841,7 +4842,7 @@ script_0536:
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:6448 $86
     sDELAY 30                                          ;; 0e:6449 $f0 $1e
     sMSG                                               ;; 0e:644b $04
-      db "<10>Dark Lord:I won't\n let you leave\n here alive!<12>"
+      db "<10>Shadow Knight:I\n won't let you\n leave alive!<12>"
       db "<11>", $00 ;; 0e:644c
     sLOOP 5, 2                                         ;; 0e:646d $03 $05 $02
       sNPC_1_STEP_FORWARD                              ;; 0e:6470 $10
@@ -4900,7 +4901,7 @@ script_0537:
     sSET_MUSIC 0                                       ;; 0e:64f5 $f8 $00
     sDELAY 80                                          ;; 0e:64f7 $f0 $50
     sMSG                                               ;; 0e:64f9 $04
-      db "<10>Julius:It's too\n late, <BOY>.\n She's mine__", $00 ;; 0e:64fa
+      db "<10>Julius:It's too\n late, <BOY>.\n <GIRL> is mine__", $00
     sSET_MUSIC 10                                      ;; 0e:6515 $f8 $0a
     sMSG                                               ;; 0e:6517 $04
       db "<12>"
@@ -4922,7 +4923,7 @@ script_0537:
     sSET_NPC_2_DIRECTION_LEFT                          ;; 0e:6537 $27
     sMSG                                               ;; 0e:6538 $04
       db "<1b>Julius:Use this\n Pendant and cast\n the spell, <GIRL>.<12>"
-      db "<1b><BOY>:<GIRL>!  Don't!\n Come over here!\n", $00 ;; 0e:6539
+      db "<1b><BOY>:<GIRL>!  Stop!\n Come over here!\n", $00
     sDELAY 30                                          ;; 0e:6572 $f0 $1e
     sMSG                                               ;; 0e:6574 $04
       db "<GIRL>:__", $00                              ;; 0e:6575
@@ -4940,12 +4941,12 @@ script_0537:
     sDELAY 20                                          ;; 0e:65a5 $f0 $14
     sMSG                                               ;; 0e:65a7 $04
       db "<12>"
-      db "<1b>Julius:I am the\n last one left of\n Empire Vandole.<12>"
+      db "<1b>Julius:With the\n power of Mana,\n this is easy.<12>"
       db "", $00 ;; 0e:65a8
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:65cd $25
     sDELAY 40                                          ;; 0e:65ce $f0 $28
     sMSG                                               ;; 0e:65d0 $04
-      db "<1b> I shall receive\n the power of\n Mana again!<12>"
+      db "<1b> Now we celebrate\n the rebirth of\n Vandole!<12>"
       db "<1b> Now, <GIRL>!\n Reverse the\n Waterfalls!<12>"
       db "", $00 ;; 0e:65d1
     sSET_MUSIC 10                                      ;; 0e:660a $f8 $0a
@@ -5082,14 +5083,15 @@ script_0539:
     sDELAY 180                                         ;; 0e:6763 $f0 $b4
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:6765 $87
     sMSG                                               ;; 0e:6766 $04
-      db "<10>Bogard:<BOY>__\n<BOY>:_ Bogard!\n How've you been?", $00 ;; 0e:6767
+      db "<10>Bogard:<BOY>__\n<BOY>:_ Bogard!\n How are you?", $00
     sPLAYER_STEP_FORWARD                               ;; 0e:6787 $80
     sPLAYER_STEP_FORWARD                               ;; 0e:6788 $80
     sMSG                                               ;; 0e:6789 $04
       db "<12>"
-      db "<1b>Bogard:I was\n thrown from\n the ship__ But<12>"
-      db "<1b> Sarah picked me\n up and saved me.<12>"
+      db "<1b>Bogard:I was\n thrown off the\n airship__<12>"
+      db "<1b> But Sarah found\n me and nursed me\n back to health.<12>"
       db "<1b> I'm glad to see\n you again, <BOY>.<12>"
+      db "<1b> You're the last\n hope of the\n Gemma Knights.<12>"
       db "<11>", $00 ;; 0e:678a
     sDELAY 40                                          ;; 0e:67da $f0 $28
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:67dc $85
@@ -5110,12 +5112,16 @@ script_0539:
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:680c $84
     sDELAY 10                                          ;; 0e:680d $f0 $0a
     sMSG                                               ;; 0e:680f $04
-      db "<10> I'm not the right\n one to be the\n Gemma Knight.<12>"
-      db "<1b>Bogard:Come on!\n You must stand_<12>"
-      db "<1b><BOY>:NO!  What's\n that Gemma?\n __ Why me?<12>"
+IF DEF(GLADIATOR_DUKE)
+      db "<10> I couldn't even\n save Duke! I'm\n no Gemma Knight.<12>"
+ELIF DEF(GLADIATOR_AMANDA)
+      db "<10> I couldn't even\n save Amanda! I'm\n no Gemma Knight.<12>"
+ENDC
+      db "<1b>Bogard:Quit it!\n This is no way\n for a Gemma to-<12>"
+      db "<1b><BOY>:NO!  Gemma!\n Gemma!  Gemma!\n __ Why me?<12>"
       db "<1b> Why does that\n have to be me?\nBogard:<BOY>, you_<12>"
       db "<1b><BOY>:You do it!\n You're the Gemma\n Knight. It's You!<12>"
-      db "<1b>Bogard:_ Shut up!\n _ GET OUT!!_", $00 ;; 0e:6810
+      db "<1b>Bogard:_ Shut up!\n _ GET OUT!!_<12>", $00
     sDELAY 20                                          ;; 0e:68c9 $f0 $14
     sMSG                                               ;; 0e:68cb $04
       db "<11>", $00                                   ;; 0e:68cc
@@ -5140,13 +5146,12 @@ script_053a:
       db "<10> _ <GIRL>, my dear__\n<GIRL>:Mom!\n<BOY>:_ Mom?!<12>"
       db "<1b>Cibba:That lady__\n She's the one who\n encouraged us.<12>"
       db "<1b>Mother:I must tell\n you now, <GIRL>.<12>"
-      db "<1b> You and I are\n members of the\n Mana Family.<12>"
-      ;db "<1b> You and I are\n the members of\n the Mana Family.<12>"
+      db "<1b> You and I are\n the members of\n the Mana Family.<12>"
       db "<1b> We are the seeds\n of the Mana Tree.\n We must guard it.<12>"
-      db "<1b> Vandole abused\n the power of Mana\n long ago.<12>"
+      db "<1b> Long ago Vandole\n abused the power\n of Mana.<12>"
       db "<1b> So I sealed the\n Waterfalls with\n that Pendant,<12>"
       db "<1b> so that nobody\n can come close to\n the Mana Tree.<12>"
-      db "<1b> But again, Glaive\n is trying to use\n it for evil.<12>"
+      db "<1b> But again, Granz\n is trying to use\n it for evil.<12>"
       db "<1b> Guard the Mana\n Tree with the\n Gemma Knights!<12>"
       db "<11>", $00 ;; 0e:68ec
     sDELAY 10                                          ;; 0e:6a2c $f0 $0a
@@ -5184,7 +5189,7 @@ script_053a:
     sSET_NPC_2_DIRECTION_UP                            ;; 0e:6a75 $24
     sNPC_2_STEP_FORWARD                                ;; 0e:6a76 $20
     sMSG                                               ;; 0e:6a77 $04
-      db "<10>Man:Glaive is\n attacking us!\nCibba:What?!<12>"
+      db "<10>Man:Granz is\n attacking!\nCibba:What?!<12>"
       db "<1b>Man:I'll take you\n to a safe place!\n<GIRL>:Thank you.<12>"
       db "<11>", $00 ;; 0e:6a78
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:6abe $25
@@ -5251,10 +5256,10 @@ script_053b:
     sSET_NPC_2_DIRECTION_UP                            ;; 0e:6b45 $24
     sMSG                                               ;; 0e:6b46 $04
       db "<10><BOY>:Julius?!\n Why?  You helped\n me once before__<12>"
-      db "<1b>Julius:I was not\n sure if she was\n the right girl<12>"
-      db "<1b> or not until I\n saw what happened\n inside there.<12>"
-      db "<1b> I was waiting\n for this chance\n to get her!<12>"
-      db "<1b> And now__ Glaives\n have her in our\n hands!<12>"
+      db "<1b>Julius:I was not\n sure <GIRL> was\n the right one<12>"
+      db "<1b> until I saw that\n scene in there.<12>"
+      db "<1b> That's why I hid\n my identity and\n helped save <GIRL>!<12>"
+      db "<1b> And now__ <GIRL>\n will serve the\n Kingdom of Granz!<12>"
       db "<11>", $00 ;; 0e:6b47
     sSET_NPC_1_DIRECTION_DOWN                          ;; 0e:6be5 $15
     sNPC_1_STEP_FORWARD                                ;; 0e:6be6 $10
@@ -5320,8 +5325,8 @@ script_053b:
     sSET_PLAYER_NORMAL_SPRITE                          ;; 0e:6c85 $a4
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:6c86 $86
     sMSG                                               ;; 0e:6c87 $04
-      db "<BOY>:_ _ <GIRL>!\n Where is she?<12>"
-      db "<1b>Cibba:Julius took\n her to the west\n in his airship!<12>"
+      db "<BOY>:_ _ <GIRL>!\n Where is <GIRL>?<12>"
+      db "<1b>Cibba:Julius took\n <GIRL> to the west\n in an airship!<12>"
       db "<1b>", $00 ;; 0e:6c88
     sSET_MUSIC 11                                      ;; 0e:6cbe $f8 $0b
     sDELAY 30                                          ;; 0e:6cc0 $f0 $1e
@@ -5368,7 +5373,7 @@ ENDC
 script_053d:
     sMSG                                               ;; 0e:6df9 $04
 IF DEF(GLADIATOR_DUKE)
-      db "<BOY>:Duke! \n Did you take the\n Pendant? __ Why?<12>"
+      db "<BOY>:Duke!\n Did you take the\n Pendant? __ Why?<12>"
       db "<1b>Duke:I'm sorry.\n I had to bring\n it to Davias__<12>"
 ELIF DEF(GLADIATOR_AMANDA)
       db "<BOY>:Amanda!\n Did you take the\n Pendant? __ Why?<12>"
@@ -5397,12 +5402,12 @@ script_053e:
     sEND                                               ;; 0e:6edb $00
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:6edc $87
     sMSG                                               ;; 0e:6edd $04
-      db "<10>Bowow:Phew_!\n All done!", $00           ;; 0e:6ede
+      db "<10>Bon Voyage:Phew_!\n All done!", $00
     sSET_MUSIC 5                                       ;; 0e:6ef1 $f8 $05
     sMSG                                               ;; 0e:6ef3 $04
       db "<12>"
       db "<1b> I mechanized his\n wounded legs.\n He's fine now!<12>"
-      db "<1b> He can even go\n on water!<12>"
+      db "<1b> He can even run\n on water!<12>"
       db "<1b> I named him\n Chocobot!!\n How's that?<12>"
       db "<11>", $00 ;; 0e:6ef4
     sSET_NPC_1_DIRECTION_DOWN                          ;; 0e:6f49 $15
@@ -5417,7 +5422,7 @@ script_053e:
     sSFX 7                                             ;; 0e:6f56 $f9 $07
     sDELAY 50                                          ;; 0e:6f58 $f0 $32
     sMSG                                               ;; 0e:6f5a $04
-      db "<10><BOY>:Oh_ You_\nBowow:We all rely\n on you, kid!<12>"
+      db "<10><BOY>:Oh_ You_\nBon Voyage:We all\n rely on you, kid!<12>"
       db "<11>", $00 ;; 0e:6f5b
     sSET_NPC_2_DIRECTION_RIGHT                         ;; 0e:6f7e $26
     sLOOP 4, 2                                         ;; 0e:6f7f $03 $04 $02
@@ -5429,7 +5434,7 @@ script_053e:
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:6f87 $84
     sDELAY 40                                          ;; 0e:6f88 $f0 $28
     sMSG                                               ;; 0e:6f8a $04
-      db "<10> Go talk to Bogard\n before you leave\n this town.<12>"
+      db "<10> Talk to Bogard\n before you leave\n town.<12>"
       db "<11>", $00 ;; 0e:6f8b
     sLOAD_ROOM 15, $26, 4, 12                          ;; 0e:6fae $f4 $0f $26 $04 $0c
     sSET_MUSIC 4                                       ;; 0e:6fb3 $f8 $04
@@ -6193,153 +6198,3 @@ script_0549:
       db "<1b> How about\n some items?<12>"
       db "<11>", $00 ;; 0e:7b28
     sEND                                               ;; 0e:7b3b $00
-    db   $7b, $fc, $7b, $14, $7c, $18, $7c, $22        ;; 0e:7b3c ????????
-    db   $7c, $a9, $7b, $44, $7c, $5d, $7c, $a9        ;; 0e:7b44 ????????
-    db   $7b, $78, $7c, $90, $7c, $a9, $7b, $a9        ;; 0e:7b4c ????????
-    db   $7b, $b7, $7c, $d9, $7c, $e4, $7c, $a9        ;; 0e:7b54 ????????
-    db   $7b, $ff, $7c, $a9, $7b, $0d, $7d, $11        ;; 0e:7b5c ????????
-    db   $7d, $31, $7d, $66, $7d, $8d, $7d, $9b        ;; 0e:7b64 ????????
-    db   $7d, $d3, $7d, $f3, $7d, $a9, $7b, $27        ;; 0e:7b6c ????????
-    db   $7e, $3f, $7e, $5f, $7e, $a9, $7b, $7d        ;; 0e:7b74 ????????
-    db   $7e, $91, $7e, $9f, $7e, $a6, $7e, $c3        ;; 0e:7b7c ????????
-    db   $7e, $d3, $7e, $dd, $7e, $a9, $7b, $fc        ;; 0e:7b84 ????????
-    db   $7e, $0a, $7f, $22, $7f, $43, $7f, $4d        ;; 0e:7b8c ????????
-    db   $7f, $a9, $7b, $a9, $7b, $a9, $7b, $a9        ;; 0e:7b94 ????????
-    db   $7b, $a4, $7f, $ae, $7f, $b8, $7f, $a9        ;; 0e:7b9c ????????
-    db   $7b, $cc, $7f, $a9, $7b, $00, $05, $44        ;; 0e:7ba4 ????????
-    db   $00, $f3, $ff, $85, $29, $2f, $80, $f0        ;; 0e:7bac ????????
-    db   $ff, $87, $04, $00, $00, $f0, $00, $80        ;; 0e:7bb4 ????????
-    db   $09, $2b, $80, $f3, $ff, $86, $39, $2b        ;; 0e:7bbc ????????
-    db   $00, $f3, $ff, $86, $00, $07, $da, $42        ;; 0e:7bc4 ????????
-    db   $21, $f3, $7b, $04, $ca, $61, $09, $fc        ;; 0e:7bcc ????????
-    db   $7c, $39, $f5, $35, $00, $f8, $02, $2a        ;; 0e:7bd4 ????????
-    db   $80, $f3, $ff, $85, $01, $2f, $80, $f0        ;; 0e:7bdc ????????
-    db   $ff, $87, $ef, $da, $7b, $00, $f8, $02        ;; 0e:7be4 ????????
-    db   $f1, $42, $01, $a0, $00, $ef, $eb, $7b        ;; 0e:7bec ????????
-    db   $00, $0f, $27, $80, $f7, $ee, $86, $00        ;; 0e:7bf4 ????????
-    db   $f2, $06, $89, $12, $06, $39, $36, $06        ;; 0e:7bfc ????????
-    db   $89, $62, $06, $29, $26, $ef, $fd, $7b        ;; 0e:7c04 ????????
-    db   $00, $60, $27, $00, $ff, $00, $82, $00        ;; 0e:7c0c ????????
-    db   $60, $58, $41, $00, $03, $f1, $6c, $01        ;; 0e:7c14 ????????
-    db   $32, $11, $27, $f2, $32, $00, $02, $ca        ;; 0e:7c1c ????????
-    db   $6a, $08, $fc, $7c, $30, $a7, $35, $00        ;; 0e:7c24 ????????
-    db   $02, $00, $40, $fa, $a0, $87, $10, $00        ;; 0e:7c2c ????????
-    db   $00, $a2, $e0, $87, $00, $f3, $23, $4d        ;; 0e:7c34 ????????
-    db   $00, $d1, $00, $85, $ef, $3a, $7c, $00        ;; 0e:7c3c ????????
-    db   $f3, $13, $91, $2b, $08, $91, $2a, $08        ;; 0e:7c44 ????????
-    db   $91, $2a, $ef, $45, $7c, $00, $f6, $21        ;; 0e:7c4c ????????
-    db   $75, $80, $f8, $ff, $80, $ef, $53, $7c        ;; 0e:7c54 ????????
-    db   $00, $f6, $21, $f1, $5d, $ef, $5e, $7c        ;; 0e:7c5c ????????
-    db   $00, $16, $57, $80, $f7, $f7, $86, $16        ;; 0e:7c64 ????????
-    db   $47, $80, $94, $f7, $86, $16, $37, $80        ;; 0e:7c6c ????????
-    db   $55, $f7, $86, $00, $1a, $f4, $37, $20        ;; 0e:7c74 ????????
-    db   $f7, $10, $00, $f4, $05, $2f, $80, $f8        ;; 0e:7c7c ????????
-    db   $ff, $87, $04, $3f, $80, $f8, $ff, $87        ;; 0e:7c84 ????????
-    db   $ef, $80, $7c, $00, $05, $f8, $08, $22        ;; 0e:7c8c ????????
-    db   $f3, $17, $00, $1a, $37, $80, $fd, $50        ;; 0e:7c94 ????????
-    db   $87, $00, $17, $37, $80, $ff, $20, $86        ;; 0e:7c9c ????????
-    db   $17, $37, $80, $cf, $50, $86, $17, $37        ;; 0e:7ca4 ????????
-    db   $40, $9f, $80, $86, $17, $37, $00, $6f        ;; 0e:7cac ????????
-    db   $b0, $86, $00, $f3, $03, $8f, $12, $05        ;; 0e:7cb4 ????????
-    db   $89, $31, $03, $8f, $24, $05, $89, $31        ;; 0e:7cbc ????????
-    db   $ef, $b8, $7c, $00, $f4, $05, $4d, $80        ;; 0e:7cc4 ????????
-    db   $f1, $ff, $87, $08, $00, $80, $91, $ff        ;; 0e:7ccc ????????
-    db   $86, $ef, $c9, $7c, $00, $f4, $05, $91        ;; 0e:7cd4 ????????
-    db   $13, $08, $f7, $09, $ef, $da, $7c, $00        ;; 0e:7cdc ????????
-    db   $04, $c1, $4b, $01, $01, $34, $04, $a1        ;; 0e:7ce4 ????????
-    db   $34, $00, $f6, $01, $00, $40, $f0, $00        ;; 0e:7cec ????????
-    db   $86, $01, $00, $80, $f0, $00, $87, $ef        ;; 0e:7cf4 ????????
-    db   $ef, $7c, $00, $40, $2f, $32, $40, $f5        ;; 0e:7cfc ????????
-    db   $32, $00, $17, $7c, $80, $f3, $aa, $86        ;; 0e:7d04 ????????
-    db   $00, $20, $f2, $80, $00, $03, $f1, $31        ;; 0e:7d0c ????????
-    db   $08, $05, $22, $04, $a1, $01, $04, $d1        ;; 0e:7d14 ????????
-    db   $11, $04, $f1, $31, $f3, $02, $f1, $31        ;; 0e:7d1c ????????
-    db   $08, $01, $44, $02, $f1, $31, $08, $01        ;; 0e:7d24 ????????
-    db   $44, $ef, $21, $7d, $00, $03, $f1, $30        ;; 0e:7d2c ????????
-    db   $01, $01, $33, $05, $f2, $33, $03, $81        ;; 0e:7d34 ????????
-    db   $32, $03, $f1, $30, $01, $01, $43, $17        ;; 0e:7d3c ????????
-    db   $f2, $33, $00, $04, $08, $00, $f9, $aa        ;; 0e:7d44 ????????
-    db   $85, $13, $23, $80, $f2, $aa, $82, $13        ;; 0e:7d4c ????????
-    db   $23, $40, $c2, $aa, $82, $13, $23, $00        ;; 0e:7d54 ????????
-    db   $82, $aa, $82, $13, $23, $80, $53, $aa        ;; 0e:7d5c ????????
-    db   $82, $00, $04, $f1, $35, $13, $f2, $3b        ;; 0e:7d64 ????????
-    db   $13, $c3, $3b, $13, $84, $3b, $13, $55        ;; 0e:7d6c ????????
-    db   $3b, $00, $f2, $04, $2a, $80, $f1, $aa        ;; 0e:7d74 ????????
-    db   $85, $01, $22, $80, $02, $aa, $82, $0a        ;; 0e:7d7c ????????
-    db   $23, $40, $f2, $aa, $82, $ef, $77, $7d        ;; 0e:7d84 ????????
-    db   $00, $f2, $04, $f1, $3d, $01, $f2, $33        ;; 0e:7d8c ????????
-    db   $0a, $f1, $43, $ef, $8e, $7d, $00, $06        ;; 0e:7d94 ????????
-    db   $19, $25, $03, $09, $25, $06, $49, $25        ;; 0e:7d9c ????????
-    db   $03, $09, $25, $06, $79, $25, $03, $09        ;; 0e:7da4 ????????
-    db   $25, $06, $a9, $25, $03, $09, $25, $06        ;; 0e:7dac ????????
-    db   $79, $25, $03, $09, $25, $06, $49, $25        ;; 0e:7db4 ????????
-    db   $03, $09, $25, $06, $19, $25, $03, $09        ;; 0e:7dbc ????????
-    db   $25, $00, $03, $68, $00, $f0, $ca, $84        ;; 0e:7dc4 ????????
-    db   $20, $46, $00, $0a, $ca, $84, $00, $03        ;; 0e:7dcc ????????
-    db   $f1, $34, $20, $0a, $33, $00, $0a, $15        ;; 0e:7dd4 ????????
-    db   $00, $f0, $ca, $84, $0a, $15, $00, $c0        ;; 0e:7ddc ????????
-    db   $ca, $84, $0a, $15, $00, $90, $ca, $84        ;; 0e:7de4 ????????
-    db   $0a, $15, $00, $60, $ca, $84, $00, $0c        ;; 0e:7dec ????????
-    db   $09, $35, $01, $03, $33, $21, $f3, $34        ;; 0e:7df4 ????????
-    db   $00, $10, $26, $c0, $f4, $20, $83, $10        ;; 0e:7dfc ????????
-    db   $26, $80, $f4, $50, $85, $10, $26, $40        ;; 0e:7e04 ????????
-    db   $f4, $80, $84, $17, $26, $00, $f7, $b0        ;; 0e:7e0c ????????
-    db   $85, $00, $f4, $05, $13, $80, $f4, $20        ;; 0e:7e14 ????????
-    db   $82, $05, $13, $00, $f4, $50, $82, $ef        ;; 0e:7e1c ????????
-    db   $17, $7e, $00, $f4, $05, $f1, $28, $05        ;; 0e:7e24 ????????
-    db   $f1, $38, $ef, $28, $7e, $00, $06, $13        ;; 0e:7e2c ????????
-    db   $00, $f1, $5a, $84, $09, $15, $40, $d1        ;; 0e:7e34 ????????
-    db   $ff, $85, $00, $03, $9a, $4e, $07, $f3        ;; 0e:7e3c ????????
-    db   $24, $00, $20, $47, $40, $b7, $20, $85        ;; 0e:7e44 ????????
-    db   $20, $37, $40, $c5, $2a, $85, $20, $27        ;; 0e:7e4c ????????
-    db   $40, $d5, $30, $85, $20, $36, $40, $f7        ;; 0e:7e54 ????????
-    db   $3a, $85, $00, $90, $00, $00, $0e, $ff        ;; 0e:7e5c ????????
-    db   $14, $25, $f0, $62, $00, $02, $47, $80        ;; 0e:7e64 ????????
-    db   $61, $0e, $87, $03, $44, $80, $f1, $0e        ;; 0e:7e6c ????????
-    db   $87, $00, $03, $1e, $c0, $f7, $99, $87        ;; 0e:7e74 ????????
-    db   $00, $04, $82, $07, $02, $91, $02, $00        ;; 0e:7e7c ????????
-    db   $03, $15, $c0, $e7, $99, $87, $05, $26        ;; 0e:7e84 ????????
-    db   $40, $b0, $0e, $87, $00, $04, $72, $07        ;; 0e:7e8c ????????
-    db   $08, $f1, $32, $00, $1e, $08, $40, $f6        ;; 0e:7e94 ????????
-    db   $89, $87, $00, $02, $81, $1f, $1c, $ff        ;; 0e:7e9c ????????
-    db   $42, $00, $05, $f2, $65, $01, $07, $53        ;; 0e:7ea4 ????????
-    db   $32, $f7, $54, $00, $03, $00, $40, $91        ;; 0e:7eac ????????
-    db   $00, $80, $02, $00, $00, $00, $00, $80        ;; 0e:7eb4 ????????
-    db   $47, $5b, $40, $97, $00, $80, $00, $03        ;; 0e:7ebc ????????
-    db   $f4, $6e, $03, $f4, $7c, $02, $f4, $6e        ;; 0e:7ec4 ????????
-    db   $08, $f4, $7c, $40, $f7, $65, $00, $06        ;; 0e:7ecc ????????
-    db   $fa, $5e, $02, $fc, $6f, $37, $f4, $62        ;; 0e:7ed4 ????????
-    db   $00, $f2, $06, $f8, $5c, $07, $f1, $27        ;; 0e:7edc ????????
-    db   $ef, $de, $7e, $00, $17, $67, $80, $f2        ;; 0e:7ee4 ????????
-    db   $20, $87, $00, $06, $43, $00, $f1, $5a        ;; 0e:7eec ????????
-    db   $84, $04, $25, $00, $f0, $96, $86, $00        ;; 0e:7ef4 ????????
-    db   $06, $99, $4d, $06, $a3, $34, $00, $0a        ;; 0e:7efc ????????
-    db   $34, $40, $d0, $96, $86, $00, $06, $a9        ;; 0e:7f04 ????????
-    db   $52, $02, $f0, $34, $00, $f2, $09, $4a        ;; 0e:7f0c ????????
-    db   $80, $b0, $ff, $83, $05, $4a, $80, $00        ;; 0e:7f14 ????????
-    db   $ff, $83, $ef, $12, $7f, $00, $f2, $05        ;; 0e:7f1c ????????
-    db   $f1, $37, $02, $f1, $6c, $07, $f1, $65        ;; 0e:7f24 ????????
-    db   $ef, $23, $7f, $00, $04, $00, $00, $c2        ;; 0e:7f2c ????????
-    db   $da, $87, $06, $00, $00, $c2, $d0, $87        ;; 0e:7f34 ????????
-    db   $12, $00, $00, $c2, $cc, $87, $00, $04        ;; 0e:7f3c ????????
-    db   $f2, $08, $06, $f2, $08, $12, $f2, $08        ;; 0e:7f44 ????????
-    db   $00, $40, $f4, $4b, $00, $08, $7f, $80        ;; 0e:7f4c ????????
-    db   $f0, $d0, $87, $08, $7f, $80, $d1, $d0        ;; 0e:7f54 ????????
-    db   $87, $08, $7f, $80, $b1, $c0, $87, $08        ;; 0e:7f5c ????????
-    db   $7f, $80, $92, $ba, $87, $00, $0c, $2f        ;; 0e:7f64 ????????
-    db   $80, $d0, $00, $87, $11, $2f, $80, $a0        ;; 0e:7f6c ????????
-    db   $75, $86, $00, $07, $0f, $80, $f1, $ff        ;; 0e:7f74 ????????
-    db   $86, $07, $0f, $80, $d1, $e8, $86, $07        ;; 0e:7f7c ????????
-    db   $07, $80, $b1, $da, $86, $07, $07, $80        ;; 0e:7f84 ????????
-    db   $91, $c6, $86, $00, $1a, $37, $80, $fd        ;; 0e:7f8c ????????
-    db   $50, $87, $00, $06, $71, $00, $a7, $80        ;; 0e:7f94 ????????
-    db   $83, $20, $17, $80, $c6, $ff, $84, $00        ;; 0e:7f9c ????????
-    db   $1f, $8f, $5f, $0c, $c4, $54, $35, $f4        ;; 0e:7fa4 ????????
-    db   $37, $00, $0a, $f7, $31, $20, $f7, $11        ;; 0e:7fac ????????
-    db   $0f, $f2, $08, $00, $02, $fc, $5c, $0c        ;; 0e:7fb4 ????????
-    db   $f4, $57, $00, $06, $00, $80, $a1, $ad        ;; 0e:7fbc ????????
-    db   $87, $0f, $00, $80, $f1, $31, $87, $00        ;; 0e:7fc4 ????????
-    db   $02, $f1, $27, $08, $04, $54, $02, $b1        ;; 0e:7fcc ????????
-    db   $27, $08, $04, $54, $02, $81, $27, $08        ;; 0e:7fd4 ????????
-    db   $04, $54, $02, $51, $27, $00, $50, $77        ;; 0e:7fdc ????????
-    db   $80, $0d, $ff, $85                            ;; 0e:7fe4 ????

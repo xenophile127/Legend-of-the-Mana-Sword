@@ -1282,7 +1282,7 @@ script_00e6:
     sSET_PLAYER_DIRECTION_UP                           ;; 0d:46df $84
     sDELAY 20                                          ;; 0d:46e0 $f0 $14
     sMSG                                               ;; 0d:46e2 $04
-      db "<10>Now fight!", $00                         ;; 0d:46e3
+      db "<10>Now fight! Give\nShadow Knight\n a good show.", $00
     sDELAY 70                                          ;; 0d:46eb $f0 $46
     sMSG                                               ;; 0d:46ed $04
       db "<11>", $00                                   ;; 0d:46ee
@@ -1569,8 +1569,8 @@ script_010f:
       sEND                                             ;; 0d:487d $00
       sMSG                                             ;; 0d:487e $04
         db "<10>Cibba:I am Cibba.\n Bogard told me\n about you.<12>"
-        db "<1b> __ Oh, yes!\n It sure is the\n symbol of Mana.<12>"
-        db "<1b> Step forward.\n You'll see what\n you must see.<12>"
+        db "<1b> __ Oh, yes!\n That is the\n symbol of Mana.<12>"
+        db "<1b> Step forward and\n you'll see what\n you must see.<12>"
         db "<11>", $00 ;; 0d:487f
       sSET_NPC_1_DIRECTION_LEFT                        ;; 0d:48e1 $17
       sLOOP 3, 2                                       ;; 0d:48e2 $03 $03 $02
@@ -1686,7 +1686,7 @@ script_011e:
         sFLASH_SCREEN                                  ;; 0d:4960 $bf
       sEND                                             ;; 0d:4961 $00
       sMSG                                             ;; 0d:4962 $04
-        db "<10>Julius:See the\n true power of\n Mana now!<12>"
+        db "<10>Julius:Now see\n the true power\n of Mana!<12>"
         db "<11>", $00 ;; 0d:4963
       sLOOP 5, 4                                       ;; 0d:4982 $03 $05 $04
         sSFX 20                                        ;; 0d:4985 $f9 $14
@@ -2312,10 +2312,10 @@ script_019d:
         db "___", $00                                  ;; 0d:4c95
       sDELAY 50                                        ;; 0d:4c98 $f0 $32
       sMSG                                             ;; 0d:4c9a $04
-        db "<1b>Julius:You're\n late, <BOY>_<12>"
-        db "<1b> I already got\n the greatest\n power of Mana!<12>"
-        db "<1b> The time has come\n for the Empire\n Neo-Vandole!<12>"
-        db "<1b> Now that I have\n the mighty power_<12>"
+        db "<1b>Julius:You're\n too late, <BOY>_<12>"
+        db "<1b> I've already\n obtained the\n power of Mana!<12>"
+        db "<1b> All will bow to\n me and my new\n Vandole Empire!<12>"
+        db "<1b> Now that I have\n the power of\n Mana_<12>"
         db "<1b> I do not need you\n anymore, <BOY>!<12>"
         db "<11>", $00 ;; 0d:4c9b
       sLOAD_ROOM 1, $67, 9, 10                         ;; 0d:4d1f $f4 $01 $67 $09 $0a
@@ -2659,7 +2659,7 @@ script_01b1:
     sSET_MUSIC 10                                      ;; 0d:50dd $f8 $0a
     sMSG                                               ;; 0d:50df $04
       db "<12>"
-      db "<1b> Garuda is flying\n over Mt. Rocks\n to Glaive__<12>"
+      db "<1b> Garuda is flying\n back to Castle\n Granz with it__<12>"
       db "<1b>\n   Davias fell__<12>"
       db "<11>", $00 ;; 0d:50e0
     sSET_MUSIC 0                                       ;; 0d:5110 $f8 $00
@@ -2813,9 +2813,9 @@ script_01bb:
       sEND                                             ;; 0d:5318 $00
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:5319 $84
       sMSG                                             ;; 0d:531a $04
-        db "<10>Dark Lord:Looks\n like you've been\n a bit stronger.<12>"
+        db "<10>Shadow Knight:\n Looks like you're\n a bit stronger.<12>"
 IF DEF(PLAYER_GENDER_FEMALE)
-        db "<1b> But, not enough\n to beat me, girl!<12>"
+        db "<1b> But, not strong\n enough to beat\n me, girl!<12>"
 ELIF DEF(PLAYER_GENDER_MALE)
         db "<1b> But, not enough\n to fight me, boy!<12>"
 ENDC
@@ -2837,9 +2837,9 @@ ENDC
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:539f $84
       sMSG                                             ;; 0d:53a0 $04
 IF DEF(PLAYER_GENDER_FEMALE)
-        db "<10>Dark Lord:Good\n girl, <BOY>!\n __ Now, come!<12>"
+        db "<10>Shadow Knight:\n Good girl, <BOY>!\n __ Now, fight me!<12>"
 ELIF DEF(PLAYER_GENDER_MALE)
-        db "<10>Dark Lord:Good\n boy, <BOY>!\n __ Now, come!<12>"
+        db "<10>Shadow Knight:\n Good boy, <BOY>!\n __ Now, fight me!<12>"
 ENDC
         db "<11>", $00 ;; 0d:53a1
       sSET_MUSIC 19                                    ;; 0d:53c1 $f8 $13
@@ -2854,7 +2854,7 @@ script_01bd:
     sSFX 16                                            ;; 0d:53c7 $f9 $10
     sSET_ROOM_TILE $6b, 8, 7                           ;; 0d:53c9 $b0 $6b $08 $07
     sMSG                                               ;; 0d:53cd $04
-      db "<10>Defeated Dark Lord<12>"
+      db "<10>Defeated\n   Shadow Knight!<12>"
       db "<1b>Received Pendant__", $00 ;; 0d:53ce
     sDELAY 100                                         ;; 0d:53eb $f0 $64
     sMSG                                               ;; 0d:53ed $04
@@ -3216,7 +3216,7 @@ script_01ef:
           db "<1b>Cibba:Go up the\n wide river by the\n Ammonite Coast.<12>"
           db "<1b> Go beyond the\n Ammonite Coast\n to Floatrocks.<12>"
           db "<1b> Use this key at\n the cave in the\n Floatrocks!<12>"
-          db "<1b> The guardian\n monster has the\n Legendary Sword.<12>"
+          db "<1b> The legendary\n sword is guarded\n by Ifrit.<12>"
           db "<1b> I'll tell you the\n rest when you\n return with it!<12>"
           db "<11>", $00 ;; 0d:593f
       sENDIF                                           ;; 0d:59f4
@@ -3226,20 +3226,20 @@ script_01ef:
 script_01f0:
     sMSG                                               ;; 0d:59f5 $04
       db "<10>Cibba:The only way\n left is to reveal\n the Dime Tower.<12>"
-      db "<1b><BOY>:Dime Tower?\n In the Desert of\n Crystal?  _ How?<12>"
+      db "<1b><BOY>:Dime Tower?\n In the Crystal\n Desert?  _ How?<12>"
       db "<1b>Cibba:That sword\n will help you.<12>"
       db "<1b> Use it in the\n Cave of Ruins.\n You'll see it.<12>"
       db "<1b><BOY>:This rusty\n sword has such\n a great power_?<12>"
-      db "<1b>Cibba:The Sword of\n Legend shows its\n real power only<12>"
+      db "<1b>Cibba:That sword\n will show its\n real power only<12>"
       db "<1b> when it approves\n of your using it.<12>"
-      db "<1b> If you're a real\n Knight of Gemma,\n it will help you.<12>"
+      db "<1b> If you're a real\n Gemma Knight,\n it will help you.<12>"
       db "<1b><BOY>:But_ I don't\n know if it _ _<12>"
       db "<1b>Cibba:Don't worry.\n __", $00 ;; 0d:59f6
     sDELAY 40                                          ;; 0d:5b25 $f0 $28
     sMSG                                               ;; 0d:5b27 $04
       db "Now, go!<12>"
       db "<1b> The Cave of Ruins\n is in the desert\n near Ish.<12>"
-      db "<1b> Ask Dr. Bowow.\n He knows it well.<12>"
+      db "<1b> Ask Dr. Bon\n Voyage. He knows\n it well.<12>"
       db "<11>", $00 ;; 0d:5b28
     sEND                                               ;; 0d:5b6d $00
 
@@ -3378,11 +3378,11 @@ script_01fe:
       db "<10>", $00                                   ;; 0d:5d72
     sIF_EQUIPED INV_SWORD_RUSTY                        ;; 0d:5d74 $09 $4f $00 $21
       sMSG                                             ;; 0d:5d78 $04
-        db "Release that\nsword from your\nequipment, <BOY>.", $00 ;; 0d:5d79
+        db "Sheath that\nsword, <BOY>.", $00
     sELSE                                              ;; 0d:5d97 $01 $67
       sMSG                                             ;; 0d:5d99 $04
-        db "You have been a\ngreat Knight of\nGemma, I see.<12>"
-        db "<1b>I shall give you\nthe Excalibur.\nNow defeat Julius!<12>"
+        db "You have proven\nyourself a true\nGemma Knight.<12>"
+        db "<1b>I shall give you\nthe Mana Sword.\nNow defeat Julius!<12>"
         db "<11>", $00 ;; 0d:5d9a
       sLOOP 8, 4                                       ;; 0d:5ddd $03 $08 $04
         sFLASH_SCREEN                                  ;; 0d:5de0 $bf
@@ -3392,7 +3392,7 @@ script_01fe:
       sTAKE_EQUIPMENT INV_SWORD_RUSTY                  ;; 0d:5de5 $d9 $0d
       sGIVE_EQUIPMENT INV_SWORD_XCALIBR                ;; 0d:5de7 $d8 $0f
       sMSG                                             ;; 0d:5de9 $04
-        db "<10>Received\n     Excalibur!", $00        ;; 0d:5dea
+        db "<10>Received <SWORD>Mana!!!", $00
       sSET_FLAG wScriptFlags07.0                       ;; 0d:5dfe $da $38
     sENDIF                                             ;; 0d:5e00
     sMSG                                               ;; 0d:5e00 $04
@@ -3471,8 +3471,8 @@ script_0206:
 
 script_0207:
     sMSG                                               ;; 0d:5f2c $04
-      db "<10><BOY>:Let's go!\n<GIRL>:Keep this\n Pendant, <BOY>!<12>"
-      db "<1b>Julius:Give me\n the Pendant!<12>"
+      db "<10><BOY>:Let's go!\n<GIRL>:Take the\n Pendant, <BOY>!<12>"
+      db "<1b>Julius:Give me\n that Pendant!<12>"
       db "<11>", $00 ;; 0d:5f2d
     sSET_MUSIC 9                                       ;; 0d:5f61 $f8 $09
     sSPAWN_NPC 2                                       ;; 0d:5f63 $fd $02
@@ -3558,7 +3558,7 @@ IF DEF(GLADIATOR_DUKE)
 ELIF DEF(GLADIATOR_AMANDA)
       db "<10>Amanda:I'm glad\n to see you again,\n my friend__<12>"
 ENDC
-      db "<1b> I came back from\n Glaive after you\n left there__<12>"
+      db "<1b> I escaped from\n Granz after you\n left__<12>"
       db "<1b> Oh, <BOY>__\n", $00 ;; 0d:603e
     sDELAY 50                                          ;; 0d:608a $f0 $32
     sMSG                                               ;; 0d:608c $04
@@ -3593,7 +3593,7 @@ ENDC
 
 script_0209:
     sMSG                                               ;; 0d:60ff $04
-      db "<10>A girl is being\nheld in a room\nin this airship!<12>"
+      db "<10>Someone is being\nheld in a cell\non this airship!<12>"
       db "<11>", $00 ;; 0d:6100
     sEND                                               ;; 0d:6121 $00
 
@@ -3611,14 +3611,14 @@ script_020c:
 
 script_020d:
     sMSG                                               ;; 0d:6135 $04
-      db "<10>Many years ago,\nDark Lord found\na baby in a cave<12>"
-      db "<1b>at the Waterfalls\nnear Glaive.\n__ That's Julius.<12>"
+      db "<10>Years ago, Shadow\nKnight found a\nbaby in the cave<12>"
+      db "<1b>at the Waterfalls\nnear Castle Granz.\n__ That's Julius.<12>"
       db "<11>", $00 ;; 0d:6136
     sEND                                               ;; 0d:617b $00
 
 script_020e:
     sMSG                                               ;; 0d:617c $04
-      db "<10>Julius is taking\ncharge of this\nairship.<12>"
+      db "<10>Julius has taken\ncharge of this\nairship.<12>"
       db "<11>", $00 ;; 0d:617d
     sEND                                               ;; 0d:619e $00
 
@@ -3666,13 +3666,13 @@ script_0210:
       db "Bogard:I knew you\n would do it.<12>"
       db "<1b> Now, listen.\n It'll be perilous\n from now on.<12>"
       db "<1b> Julius has got\n the power of Mana\n already.<12>"
-      db "<1b> Only match is the\n Knight with the\n Legendary Sword.<12>"
-      db "<1b><BOY>:Legend_ __!!\n The Excalbur?!\nBogard:Yes.<12>"
+      db "<1b> Our only hope is\n a Knight with the\n legendary sword.<12>"
+      db "<1b><BOY>:Legend_ __!!\n The Mana Sword?!\nBogard:Yes.<12>"
       db "<1b> And it is how we\n defeated the evil\n power of Vandole.<12>"
       db "<1b><BOY>:_ You_ _\n_ Where is that\n sword now?<12>"
       db "<1b>Bogard:Somewhere\n in this world__<12>"
       db "<1b> Go to Wendel and\n ask Cibba.\n He knows better.<12>"
-      db "<1b> Ask Dr. Bowow\n how to get there.\n He'll help you.", $00 ;; 0d:623f
+      db "<1b> Ask Dr. Bon\n Voyage how to\n get there.", $00
     sEND                                               ;; 0d:637d $00
 
 script_0211:
@@ -4075,13 +4075,13 @@ script_022a:
       db " That is_ the_\n Pendant of Mana.<12>"
       db "<1b><GIRL>:_ My mother\n gave me this.<12>"
       db "<1b><GIRL>:Are you the\n Gemma Knight?<12>"
-      db "<1b>Bogard:_ Yes. It\n was when Vandole\n was trying to<12>"
+      db "<1b>Bogard:_ Yes.\n When Vandole was\n trying to<12>"
       db "<1b> conquer the world\n with the power\n of Mana.<12>"
-      db "<1b> We fought against\n them to retrieve\n the peace. But_<12>"
+      db "<1b> We fought against\n them to restore\n peace. But_<12>"
       db "<1b> We were losing_\n The power of Mana\n was too strong.<12>"
       db "<1b> But there was a\n lady who assured\n our victory.<12>"
       db "<1b> That lady had\n that Pendant on\n her chest.<12>"
-      db "<1b> Seems like this\n girl is the key\n for this time.<12>"
+      db "<1b> It seems like you\n may be the key\n this time, <GIRL>.<12>"
       db "<1b> Take the Mattock\n in the next room!<12>"
       db "<11>", $00 ;; 0d:6acd
     sCALL script_022b                                  ;; 0d:6c0d $02 $2c $14
@@ -4094,12 +4094,12 @@ script_022b:
       db "<10>", $00                                   ;; 0d:6c15
     sIF_FLAG wScriptFlags01.4                          ;; 0d:6c17 $08 $0c $00 $24
       sMSG                                             ;; 0d:6c1b $04
-        db " You can buy the\n mattocks at the\n Item Shops also.<12>"
+        db " You can buy\n mattocks at the\n Item Shops also.<12>"
         db "<1b>", $00 ;; 0d:6c1c
     sENDIF                                             ;; 0d:6c3f
     sMSG                                               ;; 0d:6c3f $04
       db " Go to the cave on\n the east side of\n the mountains.<12>"
-      db "<1b> Use Mattock to\n break the rocks\n in the cave. See<12>"
+      db "<1b> Use a Mattock\n to clear rocks\n in the cave. See<12>"
       db "<1b> Cibba in the town\n called Wendel.\n He knows more.<12>"
       db "<11>", $00 ;; 0d:6c40
     sEND                                               ;; 0d:6ca4 $00
@@ -4116,7 +4116,7 @@ script_022c:
     sENDIF                                             ;; 0d:6cbf
     sIF_FLAG wScriptFlags04.2                          ;; 0d:6cbf $08 $22 $00 $1e
       sMSG                                             ;; 0d:6cc3 $04
-        db "Bogard:To defeat\n the evil!\n Go on, <BOY>.", $00 ;; 0d:6cc4
+        db "Bogard:Defeat\n the evil!\n Go on, <BOY>.", $00
     sENDIF                                             ;; 0d:6ce1
     sMSG                                               ;; 0d:6ce1 $04
       db "<12>"
@@ -4137,23 +4137,23 @@ script_022e:
 
 script_022f:
     sMSG                                               ;; 0d:6d25 $04
-      db "<10>Bowow:", $00                             ;; 0d:6d26
+      db "<10>Bon Voyage:", $00
     sIF_FLAG !wScriptFlags05.7                         ;; 0d:6d2c $08 $af $00 $43
       sMSG                                             ;; 0d:6d30 $04
-        db "Go east on\n the sea from the\n pier at north.<12>"
-        db "<1b> And go north to\n Wendel.__South is\n to the Ammonites.", $00 ;; 0d:6d31
+        db "Go east\n on the sea from\n the north pier.<12>"
+        db "<1b> And go north to\n Wendel.__South is\n to the Ammonites.", $00
     sELSE                                              ;; 0d:6d71 $01 $a5
       sMSG                                             ;; 0d:6d73 $04
-        db "Finally!\n", $00                           ;; 0d:6d74
+        db "Done?!\n", $00
       sIF_INVENTORY INV_MAGIC_NUKE                     ;; 0d:6d7c $0a $08 $00 $3c
         sMSG                                           ;; 0d:6d80 $04
-          db "There is a piece\nof crystal you can<12>"
-          db "<1b>blow with Nuke in\nCrystal Desert.\n__ Find it!", $00 ;; 0d:6d81
+          db " One crystal in\n the desert can be<12>"
+          db "<1b> destroyed with\n Nuke.\n __ Find it!", $00
       sELSE                                            ;; 0d:6dba $01 $5c
         sMSG                                           ;; 0d:6dbc $04
-          db "But you need the\nmagic of Nuke.<12>"
-          db "<1b>The ultimate magic\nbook of Nuke is\nsealed by Lich.<12>"
-          db "<1b>Go north to the\nPalmy Desert and\ndefeat Lich!", $00 ;; 0d:6dbd
+          db " But you need the\n ultimate magic.<12>"
+          db "<1b> It is in Shade's\n book, which is\n sealed by Lich.<12>"
+          db "<1b> Go north to the\n Palmy Desert and\n defeat Lich!", $00
       sENDIF                                           ;; 0d:6e18
     sENDIF                                             ;; 0d:6e18
     sMSG                                               ;; 0d:6e18 $04
@@ -4163,8 +4163,8 @@ script_022f:
 
 script_0230:
     sMSG                                               ;; 0d:6e1d $04
-      db "<10>There is no way\nto go on water.\nBut, you know_<12>"
-      db "<1b>Dr. Bowow may be\nable to make\nsomething.<12>"
+      db "<10>There is no way\nto cross seas.\nBut, you know_<12>"
+      db "<1b>Maybe Dr. Bon\nVoyage can build\nsomething.<12>"
       db "<1b>He lives in a\nhouse over there.<12>"
       db "<11>", $00 ;; 0d:6e1e
     sEND                                               ;; 0d:6e6e $00
@@ -4190,7 +4190,7 @@ script_0231:
 script_0232:
     sMSG                                               ;; 0d:6e9a $04
       db "Sarah:He didn't\n wanna let you\n know, but_<12>"
-      db "<1b> He can't move\n for a while for\n his broken back.<12>"
+      db "<1b> He has a broken\n back and cannot\n move for a while.<12>"
       db "<1b> He was distressed\n to hear of places\n being attacked.<12>"
 IF DEF(PLAYER_GENDER_FEMALE)
       db "<1b> But he kept\n saying there is\n a woman_<12>"
@@ -4203,16 +4203,16 @@ ENDC
       db "<1b> _ Even a Chocobo\n knew you're the\n last hope_<12>"
       db "<1b> Bogard and the\n bird made me\n believe in you_<12>"
       db "<1b> We all believe\n that you'll save\n our world now.<12>"
-      db "<1b> Chocobo is being\n treated at Doctor\n Bowow's house.<12>"
+      db "<1b> Chocobo is being\n treated at Doctor\n Bon Voyage's.<12>"
       db "<11>", $00 ;; 0d:6e9b
     sEND                                               ;; 0d:6feb $00
 
 script_0233:
     sMSG                                               ;; 0d:6fec $04
       db "<10>This is Ish.<12>"
-      db "<1b>The evil Vandole\nused to prosper\naround this area.<12>"
-      db "<1b>But Gemma Knight\nwith some sword\ndefeated the evil.<12>"
-      db "<1b>The ruins of\nVandole lies under\nthe desert.<12>"
+      db "<1b>The evil Vandole\nEmpire used to\nprosper here.<12>"
+      db "<1b>But a Gemma Knight\ndefeated Vandole\nwith a sword.<12>"
+      db "<1b>The ruins of\nVandole lie under\nthe desert sands.<12>"
       db "<11>", $00 ;; 0d:6fed
     sEND                                               ;; 0d:705c $00
 
@@ -4227,15 +4227,15 @@ script_0234:
 
 script_0235:
     sMSG                                               ;; 0d:7086 $04
-      db "<10>Vandole people\ncould build things\non desert sand.<12>"
-      db "<1b>They built the\ngreat Dime Tower.\nBut it sank__<12>"
+      db "<10>Vandole could\nbuild things on\ndesert sand.<12>"
+      db "<1b>But their great\nDime Tower sank\nwhen Vandole fell_<12>"
       db "<11>", $00 ;; 0d:7087
     sEND                                               ;; 0d:70cf $00
 
 script_0236:
     sMSG                                               ;; 0d:70d0 $04
-      db "<10>Julius became the\nking of Glaive.\nBut Julius is<12>"
-      db "<1b>much crueler than\nthat Dark Lord!\n_ What'll we do?<12>"
+      db "<10>Julius is the new\nKing of Granz.\nBut Julius is<12>"
+      db "<1b>even crueler than\nShadow Knight was!\n_ What'll we do?<12>"
       db "<11>", $00 ;; 0d:70d1
     sEND                                               ;; 0d:711b $00
 
@@ -4291,17 +4291,17 @@ script_0241:
 
 script_0242:
     sMSG                                               ;; 0d:7242 $04
-      db "<10>KING OF VANDOLE\nGOT THE MIGHTY\nPOWER OF MANA.<12>"
+      db "<10>VANDOLE'S EMPEROR\nGOT THE MIGHTY\nPOWER OF MANA.<12>"
       db "<1b>THE ONLY ONE WHO\nCAN STAND AGAINST\nIS THE __<12>"
-      db "<1b>GEMMA KNIGHT__\nWITH THE__\nEXCALIBUR__<12>"
+      db "<1b>GEMMA KNIGHT__\nWITH THE__\nMANA SWORD__<12>"
       db "<11>", $00 ;; 0d:7243
     sEND                                               ;; 0d:72ba $00
 
 script_0243:
     sMSG                                               ;; 0d:72bb $04
       db "<10>GEMMA KNIGHT WITH\nTHE RUSTY SWORD\nWILL BE TESTED.<12>"
-      db "<1b>THE TRUE GEMMA\nKNIGHT SHOULD\nBE GIVEN THE<12>"
-      db "<1b>LEGENDARY SWORD,\nEXCALIBUR__!<12>"
+      db "<1b>THE TRUE GEMMA\nKNIGHT WILL\nBE GIVEN THE<12>"
+      db "<1b>LEGENDARY MANA\nSWORD__!<12>"
       db "<11>", $00 ;; 0d:72bc
     sEND                                               ;; 0d:732e $00
 
@@ -4313,8 +4313,8 @@ script_0244:
 
 script_0245:
     sMSG                                               ;; 0d:735c $04
-      db "<10>THE VANDOLE SOON\nSHOULD FALL.\n<12>"
-      db "<1b>WE LEAVE OUR LAST\nHOPE IN THE CAVE\nOF THE WATERFALLS.<12>"
+      db "<10>THE VANDOLE EMPIRE\nSOON MAY FALL.\n<12>"
+      db "<1b>WE LEAVE OUR LAST\nHOPE IN THE CAVE\nAT THE WATERFALLS.<12>"
       db "<1b>GLORY TO VANDOLE\nAND TO OUR CHILD\nOF HOPE__!<12>"
       db "<11>", $00 ;; 0d:735d
     sEND                                               ;; 0d:73d6 $00
@@ -4489,9 +4489,9 @@ script_0250:
       db "<10>", $00                                   ;; 0d:761b
     sIF_FLAG !wScriptFlags05.5                         ;; 0d:761d $08 $ad $00 $8b
       sMSG                                             ;; 0d:7621 $04
-        db "King:Julius has\n summoned monsters\n in this world.<12>"
+        db "King:Julius has\n summoned monsters\n across the world.<12>"
         db "<1b> One called Kary\n in the Snowfield\n has frozen us.<12>"
-        db "<1b> Cibba came, but\n he's stuck in\n the other room.<12>"
+        db "<1b> Cibba came to\n help, but he's\n frozen too.<12>"
         db "<1b> It is dangerous\n to keep them all\n frozen for long__", $00 ;; 0d:7622
     sELSE                                              ;; 0d:76aa $01 $24
       sMSG                                             ;; 0d:76ac $04
@@ -4639,7 +4639,7 @@ script_025e:
 script_025f:
     sSET_NPC_1_DIRECTION_DOWN                          ;; 0d:77dd $15
     sMSG                                               ;; 0d:77de $04
-      db "<10> Howdy!\n 10GP/night!\n Wanna stay?<12>"
+      db "<10> Howdy!\n 10GP a night!\n Wanna stay?<12>"
       db "<13>", $00 ;; 0d:77df
     sIF_FLAG !wScriptFlags0F.7                         ;; 0d:77fc $08 $ff $00 $21
       sTAKE_MONEY 10                                   ;; 0d:7800 $d1 $0a $00
@@ -4744,14 +4744,14 @@ ENDC
 
 script_0267:
     sMSG                                               ;; 0d:7960 $04
-      db "<10>Dark Lord is so\ncruel!!  I can't\nstand it anymore!<12>"
+      db "<10>Shadow Knight is \nso cruel! I can't\nstand it anymore!<12>"
       db "<11>", $00 ;; 0d:7961
     sEND                                               ;; 0d:7987 $00
 
 script_0268:
     sMSG                                               ;; 0d:7988 $04
-      db "<10>Dark Lord is\nlooking for a\ngirl, I heard.<12>"
-      db "<1b>Do you know a girl\nwith the secret of\nthe Tree of Mana?<12>"
+      db "<10>Shadow Knight\nis searching for\nsomeone_<12>"
+      db "<1b>Someone who knows\nthe secret of the\nTree of Mana.<12>"
       db "<11>", $00 ;; 0d:7989
     sEND                                               ;; 0d:79cb $00
 
@@ -4948,7 +4948,7 @@ script_0279:
       sENDIF                                           ;; 0d:7c96
       sIF_FLAG wScriptFlags0A.4                        ;; 0d:7c96 $08 $54 $00 $24
         sMSG                                           ;; 0d:7c9a $04
-          db "<10>Bogard:Hey! Hey!\n Where are you\n going??<12>"
+          db "<10>Bogard:Hey! Where\n do you think you\n are going??<12>"
           db "<11>", $00 ;; 0d:7c9b
       sELSE                                            ;; 0d:7cbc $01 $08
         sLOAD_ROOM 10, $55, 16, 2                      ;; 0d:7cbe $f4 $0a $55 $10 $02
@@ -5123,9 +5123,9 @@ script_0282:
       sNPC_1_STEP_FORWARD                              ;; 0d:7e31 $10
       sNPC_1_STEP_FORWARD                              ;; 0d:7e32 $10
       sMSG                                             ;; 0d:7e33 $04
-        db "<10>I AM MARCIE.\nI SEARCH RELICS.\nDR.BOWOW MADE ME.<12>"
-        db "<1b>HE LEFT ME HERE.\nI WAITED 50 YEARS.\nHE FORGOT ME.<12>"
-        db "<1b>I CAN HELP YOU.\nTAKE ME WITH YOU.<12>"
+        db "<10>I AM MARCIE.\nI SEARCH RELICS.\nDOCTOR BON VOYAGE<12>"
+        db "<1b>MADE ME.\nHE LEFT ME HERE.\nI WAITED 50 YEARS.<12>"
+        db "<1b>HE FORGOT ME.\nI CAN HELP YOU.\nTAKE ME WITH YOU.<12>"
         db "<11>", $00 ;; 0d:7e34
       sGIVE_FOLLOWER 7                                 ;; 0d:7ead $9c $07
       sSET_FLAG wScriptFlags0A.7                       ;; 0d:7eaf $da $57
