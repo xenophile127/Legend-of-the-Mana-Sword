@@ -1282,8 +1282,8 @@ script_00e6:
     sSET_PLAYER_DIRECTION_UP                           ;; 0d:46df $84
     sDELAY 20                                          ;; 0d:46e0 $f0 $14
     sMSG                                               ;; 0d:46e2 $04
-      db "<10>Now fight! Give\nShadow Knight\n a good show.", $00
-    sDELAY 70                                          ;; 0d:46eb $f0 $46
+      db "<10>Now fight! Give\nShadow Knight a\ngood show.<12>", $00
+    sDELAY 20
     sMSG                                               ;; 0d:46ed $04
       db "<11>", $00                                   ;; 0d:46ee
     sSET_MUSIC 26                                      ;; 0d:46f0 $f8 $1a
@@ -2309,7 +2309,7 @@ script_019d:
         db "<10><BOY>:<GIRL>!\n<GIRL>:__", $00         ;; 0d:4c88
       sDELAY 30                                        ;; 0d:4c92 $f0 $1e
       sMSG                                             ;; 0d:4c94 $04
-        db "___", $00                                  ;; 0d:4c95
+        db "___<12>", $00
       sDELAY 50                                        ;; 0d:4c98 $f0 $32
       sMSG                                             ;; 0d:4c9a $04
         db "<1b>Julius:You're\n too late, <BOY>_<12>"
@@ -2552,7 +2552,7 @@ script_01ac:
     sIF_FLAG !wScriptFlags04.7                         ;; 0d:4f7f $08 $a7 $00 $33
       sDELAY 60                                        ;; 0d:4f83 $f0 $3c
       sMSG                                             ;; 0d:4f85 $04
-        db "<10>Medusa:This will\n be your place\n to rest forever!<12>"
+        db "<10>Medusa:This will\n be your final\n resting place!<12>"
         db "<11>", $00 ;; 0d:4f86
       sDELAY 30                                        ;; 0d:4faa $f0 $1e
       sSFX 20                                          ;; 0d:4fac $f9 $14
@@ -3087,9 +3087,8 @@ script_01e1:
 
 script_01e2:
     sMSG                                               ;; 0d:567f $04
-      db "<10>Lizardmen's nest\nis to the south.<12>"
+      db "<10>The Lizardmen's\nnest is to the\nsouth.<12>"
       db "<1b>They have the key\nto open the Cave\nof Marsh.<12>"
-      db "<11><12>"
       db "<11>", $00 ;; 0d:5680
     sEND                                               ;; 0d:56bb $00
 
@@ -3108,8 +3107,8 @@ script_01e3:
 script_01e4:
     sMSG                                               ;; 0d:56e8 $04
       db "<10>Man:Your friend\n is missing?<12>"
-      db "<1b> Many girls have\n disappeared in\n that place.<12>"
-      db "<1b> They must be kept\n in the caskets\n at the basement.<12>"
+      db "<1b> Many girls have\n disappeared at\n Kett's Mansion.<12>"
+      db "<1b> They must be kept\n in the caskets in\n the basement.<12>"
       db "<1b> Looking for the \n Mirror?  Do you\n want me to help?<12>"
       db "<13><11>", $00 ;; 0d:56e9
     sIF_FLAG !wScriptFlags0F.7                         ;; 0d:5767 $08 $ff $00 $04
@@ -3154,7 +3153,7 @@ script_01e9:
 
 script_01ea:
     sMSG                                               ;; 0d:582d $04
-      db "<10>Dwarf Cave is\nto the west!<12>"
+      db "<10>The Dwarf Cave is\nto the west!<12>"
       db "<11>", $00 ;; 0d:582e
     sEND                                               ;; 0d:5842 $00
 
@@ -4075,30 +4074,26 @@ script_022a:
       db " That is_ the_\n Pendant of Mana.<12>"
       db "<1b><GIRL>:_ My mother\n gave me this.<12>"
       db "<1b><GIRL>:Are you the\n Gemma Knight?<12>"
-      db "<1b>Bogard:_ Yes.\n When Vandole was\n trying to<12>"
+      db "<1b>Bogard:_ Yes.\n Back when Vandole\n was trying to<12>"
       db "<1b> conquer the world\n with the power\n of Mana.<12>"
       db "<1b> We fought against\n them to restore\n peace. But_<12>"
       db "<1b> We were losing_\n The power of Mana\n was too strong.<12>"
       db "<1b> But there was a\n lady who assured\n our victory.<12>"
       db "<1b> That lady had\n that Pendant on\n her chest.<12>"
       db "<1b> It seems like you\n may be the key\n this time, <GIRL>.<12>"
-      db "<1b> Take the Mattock\n in the next room!<12>"
-      db "<11>", $00 ;; 0d:6acd
+      db "<1b> Take the Mattock\n in the next room!<12>", $00
     sCALL script_022b                                  ;; 0d:6c0d $02 $2c $14
     sSFX 16                                            ;; 0d:6c10 $f9 $10
     sOPEN_NORTH_DOOR                                   ;; 0d:6c12 $e0
     sEND                                               ;; 0d:6c13 $00
 
 script_022b:
-    sMSG                                               ;; 0d:6c14 $04
-      db "<10>", $00                                   ;; 0d:6c15
     sIF_FLAG wScriptFlags01.4                          ;; 0d:6c17 $08 $0c $00 $24
       sMSG                                             ;; 0d:6c1b $04
-        db " You can buy\n mattocks at the\n Item Shops also.<12>"
-        db "<1b>", $00 ;; 0d:6c1c
+        db "<10>Bogard:You can\n also buy mattocks\n at Item Shops.<12>", $00
     sENDIF                                             ;; 0d:6c3f
     sMSG                                               ;; 0d:6c3f $04
-      db " Go to the cave on\n the east side of\n the mountains.<12>"
+      db "<1b> Go to the cave on\n the east side of\n the mountains.<12>"
       db "<1b> Use a Mattock\n to clear rocks\n in the cave. See<12>"
       db "<1b> Cibba in the town\n called Wendel.\n He knows more.<12>"
       db "<11>", $00 ;; 0d:6c40
@@ -4116,7 +4111,7 @@ script_022c:
     sENDIF                                             ;; 0d:6cbf
     sIF_FLAG wScriptFlags04.2                          ;; 0d:6cbf $08 $22 $00 $1e
       sMSG                                             ;; 0d:6cc3 $04
-        db "Bogard:Defeat\n the evil!\n Go on, <BOY>.", $00
+        db "Bogard:The final\n showdown! Come\n back alive, <BOY>.", $00
     sENDIF                                             ;; 0d:6ce1
     sMSG                                               ;; 0d:6ce1 $04
       db "<12>"
@@ -4369,7 +4364,7 @@ script_0249:
     sDELAY 80                                          ;; 0d:742f $f0 $50
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0d:7431 $86
     sMSG                                               ;; 0d:7432 $04
-      db "<10><BOY>:Oh__ No__\nMarcie:I THROW YOU\n __ AND I JUMP.", $00 ;; 0d:7433
+      db "<10><BOY>:Oh__ No__\nMarcie:I THROW YOU\n __ AND I JUMP.<12>", $00
     sDELAY 50                                          ;; 0d:745d $f0 $32
     sMSG                                               ;; 0d:745f $04
       db "<1b><BOY>:Can you?\n Let's do that!<12>"
@@ -4764,7 +4759,7 @@ script_0269:
 
 script_026a:
     sMSG                                               ;; 0d:7a12 $04
-      db "<10>Tree of Mana is\nwatching us from\nabove the clouds.<12>"
+      db "<10>The Mana Tree is\nwatching us from\nabove the clouds.<12>"
       db "<1b>It's protecting us\nfrom evil things.<12>"
       db "<11>", $00 ;; 0d:7a13
     sEND                                               ;; 0d:7a52 $00

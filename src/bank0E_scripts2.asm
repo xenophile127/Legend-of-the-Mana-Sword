@@ -4714,13 +4714,13 @@ script_0532:
       db "<10><BOY>:__ Willy!\nWilly:<BOY>_", $00      ;; 0e:61d1
     sDELAY 50                                          ;; 0e:61e3 $f0 $32
     sMSG                                               ;; 0e:61e5 $04
-      db "  Mana\n is in danger now_<12>"
+      db "  Mana\n is in danger_<12>"
       db "<1b>", $00 ;; 0e:61e6
     sEND                                               ;; 0e:61f9 $00
 
 script_0533:
     sMSG                                               ;; 0e:61fa $04
-      db " We must let the\n Gemma Knights\n know about it.<12>"
+      db " We must let the\n Gemma Knights\n know.<12>"
       db "<1b><BOY>:_ Gemma_?\nWilly:See Bogard\n at the Falls.<12>"
       db "<1b> He is a Gemma\n Knight. He should\n know what to do.<12>"
       db "<1b><BOY>:Gemma?", $00 ;; 0e:61fb
