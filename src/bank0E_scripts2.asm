@@ -2391,6 +2391,8 @@ script_03ea:
 script_03eb:
     sSET_NPC_TYPES 95                                  ;; 0e:50bd $fc $5f
     sSPAWN_NPC 0                                       ;; 0e:50bf $fd $00
+    sCLEAR_FLAG wScriptFlags0F.0
+    sCLEAR_FLAG wScriptFlags0F.1
     sEND                                               ;; 0e:50c1 $00
 
 script_03ec:
@@ -4037,15 +4039,30 @@ script_04df:
     sENDIF                                             ;; 0e:5d55
     sEND                                               ;; 0e:5d55 $00
 
+; This is the first chest switch puzzle encountered.
+; Unlike the others this also triggers on the player as a teaching aid.
+; This chang establishes a counter for the number of things currently on the switch. 
 script_04e0:
     sIF_TRIGGERED_ON_BY $c9, $91, $a9                  ;; 0e:5d56 $0b $c9 $91 $a9 $00 $06
-      sSFX 24                                          ;; 0e:5d5c $f9 $18
-      sSET_ROOM_TILE $02, 8, 1                         ;; 0e:5d5e $b0 $02 $08 $01
-    sENDIF                                             ;; 0e:5d62
+      sIF_FLAG wScriptFlags0F.0
+        sSET_FLAG wScriptFlags0F.1
+      sELSE
+        sSFX 24
+        sSET_ROOM_TILE $02, 8, 1
+        sSET_FLAG wScriptFlags0F.0
+      sENDIF
+    sENDIF
     sIF_TRIGGERED_OFF_BY $c9, $91, $a9                 ;; 0e:5d62 $0c $c9 $91 $a9 $00 $06
-      sSFX 24                                          ;; 0e:5d68 $f9 $18
-      sSET_ROOM_TILE $00, 8, 1                         ;; 0e:5d6a $b0 $00 $08 $01
-    sENDIF                                             ;; 0e:5d6e
+      sIF_FLAG wScriptFlags0F.0
+        sIF_FLAG wScriptFlags0F.1
+          sCLEAR_FLAG wScriptFlags0F.1
+        sELSE
+          sSFX 24
+          sSET_ROOM_TILE $00, 8, 1
+          sCLEAR_FLAG wScriptFlags0F.0
+        sENDIF
+      sENDIF
+    sENDIF
     sEND                                               ;; 0e:5d6e $00
 
 script_04e1:
