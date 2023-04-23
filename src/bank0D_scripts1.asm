@@ -1198,7 +1198,10 @@ script_00d7:
     sEND                                               ;; 0d:467d $00
 
 script_00d8:
-    sIF_FLAG wScriptFlags01.5                          ;; 0d:467e $08 $0d $00 $0b
+    sIF_FLAG wScriptFlags01.5, !wScriptFlags09.0, !wScriptFlags04.3
+      sIF_INVENTORY INV_ITEM_BRONZE_KEY
+        sSET_FLAG wScriptFlags0F.0
+      sENDIF
       sIF_FLAG !wScriptFlags0F.0                       ;; 0d:4682 $08 $f8 $00 $07
         sSET_NPC_TYPES 89                              ;; 0d:4686 $fc $59
         sSPAWN_NPC 0                                   ;; 0d:4688 $fd $00
@@ -2238,9 +2241,12 @@ script_018f:
     sEND                                               ;; 0d:4c3d $00
 
 script_0190:
-    sIF_FLAG !wScriptFlags09.0, !wScriptFlags0A.2      ;; 0d:4c3e $08 $c8 $d2 $00 $04
-      sSET_NPC_TYPES 77                                ;; 0d:4c43 $fc $4d
-      sSPAWN_NPC 0                                     ;; 0d:4c45 $fd $00
+    sIF_FLAG !wScriptFlags0A.2
+      sIF_FLAG wScriptFlags09.0, wScriptFlags09.1
+      sELSE
+        sSET_NPC_TYPES 77
+        sSPAWN_NPC 0
+      sENDIF
     sENDIF                                             ;; 0d:4c47
     sEND                                               ;; 0d:4c47 $00
 
@@ -2368,6 +2374,7 @@ script_01a2:
     sIF_FLAG !wScriptFlags09.1                         ;; 0d:4d70 $08 $c9 $00 $05
       sSPAWN_NPC 1                                     ;; 0d:4d74 $fd $01
       sSET_CHEST_OPEN_SCRIPT1 script_0450              ;; 0d:4d76 $c9 $04 $50
+      sCLEAR_FLAG wScriptFlags09.0
     sENDIF                                             ;; 0d:4d79
     sIF_FLAG !wScriptFlags09.0                         ;; 0d:4d79 $08 $c8 $00 $05
       sSPAWN_NPC 2                                     ;; 0d:4d7d $fd $02
@@ -4880,20 +4887,21 @@ script_0274:
 script_0275:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7c17 $0b $c9 $00 $29
       sIF_EQUIPED INV_ITEM_BRONZE_KEY                  ;; 0d:7c1b $09 $21 $00 $1a
+        sTAKE_EQUIPED_ITEM
+        sSET_FLAG wScriptFlags09.0
+      sENDIF
+      sIF_FLAG !wScriptFlags09.0, !wScriptFlags04.3
+        sMSG
+          db "<10> Locked.<12>"
+          db "<11>", $00
+      sELSE
         sIF_FLAG wScriptFlags0B.0                      ;; 0d:7c1f $08 $58 $00 $05
           sCALL script_0473                            ;; 0d:7c23 $02 $5a $e2
           sSET_FLAG wScriptFlags0C.2                   ;; 0d:7c26 $da $62
         sENDIF                                         ;; 0d:7c28
         sLOAD_ROOM 9, $31, 16, 2                       ;; 0d:7c28 $f4 $09 $31 $10 $02
-        sIF_FLAG !wScriptFlags09.0                     ;; 0d:7c2d $08 $c8 $00 $04
-          sSET_NPC_TYPES 77                            ;; 0d:7c31 $fc $4d
-          sSPAWN_NPC 0                                 ;; 0d:7c33 $fd $00
-        sENDIF                                         ;; 0d:7c35
+        sCALL script_0190
         sSET_MUSIC 7                                   ;; 0d:7c35 $f8 $07
-      sELSE                                            ;; 0d:7c37 $01 $0b
-        sMSG                                           ;; 0d:7c39 $04
-          db "<10> Locked.<12>"
-          db "<11>", $00 ;; 0d:7c3a
       sENDIF                                           ;; 0d:7c44
     sENDIF                                             ;; 0d:7c44
     sEND                                               ;; 0d:7c44 $00

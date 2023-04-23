@@ -12,7 +12,7 @@ script_0293:
 
 script_0294:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4000 $0b $c9 $00 $33
-      sIF_FLAG wScriptFlags0A.2, !wScriptFlags09.0     ;; 0e:4004 $08 $52 $c8 $00 $25
+      sIF_FLAG wScriptFlags0A.2
         sMSG                                           ;; 0e:4009 $04
           db "<10>Man:Didn't you\n come here to get\n the Mirror?<12>"
           db "<11>", $00 ;; 0e:400a
