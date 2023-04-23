@@ -2602,10 +2602,10 @@ script_0409:
 
 script_040a:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:5232 $0b $c9 $00 $68
-      sIF_EQUIPED INV_SWORD_RUSTY                      ;; 0e:5236 $09 $4f $00 $64
+      sIF_INVENTORY INV_SWORD_RUSTY
         sSET_MUSIC 0                                   ;; 0e:523a $f8 $00
         sMSG                                           ;; 0e:523c $04
-          db "<10>   Rusty sword\n  released it's\n  mystic power__<12>"
+          db "<10>   Rusty sword\n  released its\n  mystic power__<12>"
           db "<11>", $00 ;; 0e:523d
         sDELAY 120                                     ;; 0e:5260 $f0 $78
         sSFX 37                                        ;; 0e:5262 $f9 $25
@@ -2614,14 +2614,14 @@ script_040a:
         sSHAKE_SCREEN                                  ;; 0e:5267 $fb
         sSET_FLAG wScriptFlags04.2                     ;; 0e:5268 $da $22
         sLOAD_ROOM 0, $70, 14, 11                      ;; 0e:526a $f4 $00 $70 $0e $0b
+        sCALL script_049a
         sSFX 37                                        ;; 0e:526f $f9 $25
         sSHAKE_SCREEN                                  ;; 0e:5271 $fb
         sMSG                                           ;; 0e:5272 $04
-          db "<10>Tower of Dime will\n appear somewhere\n in this desert!!<12>"
+          db "<10>Dime Tower will\n appear somewhere\n in this desert!!<12>"
           db "<11>", $00 ;; 0e:5273
         sSET_MUSIC 25                                  ;; 0e:529a $f8 $19
         sCLEAR_ROOM_HISTORY                            ;; 0e:529c $ab
-        sRUN_ROOM_SCRIPT                               ;; 0e:529d $ec
       sENDIF                                           ;; 0e:529e
     sENDIF                                             ;; 0e:529e
     sEND                                               ;; 0e:529e $00
