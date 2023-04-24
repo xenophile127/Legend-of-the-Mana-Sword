@@ -8155,28 +8155,42 @@ titleScreenLicenseText:
     TXT  "LICENSED BY NINTENDO"                        ;; 02:7e62 ....................
     TXT  "<00><COPYRIGHT> 1991 SQUARE SOFT\n"                 ;; 02:7e76 ....................
 
-;@ffa_text amount=24
 intoScrollText:
-    TXT  "Tree of Mana grows<00>"                      ;; 02:7e8a ...................
-    TXT  "with the energy of<00>"                      ;; 02:7e9d ...................
-    TXT  "will from each and<00>"                      ;; 02:7eb0 ...................
-    TXT  "  every thing of<00>"                        ;; 02:7ec3 .................
-    TXT  "    this world.<00>"                         ;; 02:7ed4 ................
-    TXT  "<00>"                                        ;; 02:7ee4 ?
-    TXT  "  It grows high<00>"                         ;; 02:7ee5 ????????????????
-    TXT  " above the clouds<00>"                       ;; 02:7ef5 ??????????????????
-    TXT  "in the air on top<00>"                       ;; 02:7f07 ??????????????????
-    TXT  "of Mount Illusia.<00>"                       ;; 02:7f19 ??????????????????
-    TXT  "<00>"                                        ;; 02:7f2b ?
-    TXT  "Legend tells that<00>"                       ;; 02:7f2c ??????????????????
-    TXT  "it gives eternal<00>"                        ;; 02:7f3e ?????????????????
-    TXT  "power to the one<00>"                        ;; 02:7f4f ?????????????????
-    TXT  " who touched it.<00>"                        ;; 02:7f60 ?????????????????
-    TXT  "<00>"                                        ;; 02:7f71 ?
-    TXT  "  Dark Lord was<00>"                         ;; 02:7f72 ????????????????
-    TXT  "  trying to find<00>"                        ;; 02:7f82 ????????????????.
-    TXT  "  the way to the<00>"                        ;; 02:7f93 ...........??????
-    TXT  " Tree of Mana to<00>"                        ;; 02:7fa4 ?????????????????
+    TXT " At a shrine atop<00>"
+    TXT "Mt. Illusia, above<00>"
+    TXT "the clouds, stands<00>"
+    TXT "  the Mana Tree.<00>"
+    TXT "<00>"
+    TXT "Nurtured by energy<00>"
+    TXT "from everything in<00>"
+    TXT "    the cosmos.<00>"
+    TXT "<00>"
+    TXT "Legend tells that<00>"
+    TXT "touching it grants<00>"
+    TXT "  eternal power_<00>"
+    TXT "<00>"
+    TXT "Shadow Knight, the<00>"
+    TXT "ruler of Granz, is<00>"
+    TXT "planning a bloody<00>"
+    TXT "world conquest and<00>"
+    TXT "seeks that power.<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<01>"
+
+; Unused space follows
+    TXT  "Mana to<00>"
     TXT  "  get the mighty<00>"                        ;; 02:7fb5 ?????????????????
     TXT  " power to conquer<00>"                       ;; 02:7fc6 ??????????????????
     TXT  "    the world.<00>"                          ;; 02:7fd8 ???????????????
