@@ -2324,7 +2324,11 @@ script_03e8:
       sIF_FLAG !wScriptFlags02.2                       ;; 0e:4fb2 $08 $92 $00 $f4
         sSET_MUSIC 0                                   ;; 0e:4fb6 $f8 $00
         sIF_FLAG wScriptFlags0D.7                      ;; 0e:4fb8 $08 $6f $00 $03
-          sCALL script_0470                            ;; 0e:4fbc $02 $5a $3f
+          sSET_PLAYER_NORMAL_SPRITE
+          sSFX 7
+          sDELAY 7
+          sSFX 7
+          sCLEAR_FLAG wScriptFlags0D.7
         sENDIF                                         ;; 0e:4fbf
         sPLAYER_STEP_FORWARD                           ;; 0e:4fbf $80
         sPLAYER_STEP_FORWARD                           ;; 0e:4fc0 $80
@@ -2352,7 +2356,7 @@ script_03e8:
         sSET_ROOM_TILE $6c, 5, 1                       ;; 0e:4ffc $b0 $6c $05 $01
         sSET_ROOM_TILE $66, 6, 1                       ;; 0e:5000 $b0 $66 $06 $01
         sSET_ROOM_TILE $6c, 7, 1                       ;; 0e:5004 $b0 $6c $07 $01
-        sSET_ROOM_TILE $6c, 3, 2                       ;; 0e:5008 $b0 $6c $03 $02
+;        sSET_ROOM_TILE $6c, 3, 2                       ;; 0e:5008 $b0 $6c $03 $02
         sSET_ROOM_TILE $65, 4, 2                       ;; 0e:500c $b0 $65 $04 $02
         sSET_ROOM_TILE $65, 5, 2                       ;; 0e:5010 $b0 $65 $05 $02
         sSET_ROOM_TILE $65, 6, 2                       ;; 0e:5014 $b0 $65 $06 $02
@@ -2365,12 +2369,12 @@ script_03e8:
         sSET_ROOM_TILE $6c, 5, 0                       ;; 0e:5029 $b0 $6c $05 $00
         sSET_ROOM_TILE $66, 6, 0                       ;; 0e:502d $b0 $66 $06 $00
         sSET_ROOM_TILE $6c, 7, 0                       ;; 0e:5031 $b0 $6c $07 $00
-        sSET_ROOM_TILE $6c, 3, 1                       ;; 0e:5035 $b0 $6c $03 $01
+;        sSET_ROOM_TILE $6c, 3, 1                       ;; 0e:5035 $b0 $6c $03 $01
         sSET_ROOM_TILE $65, 4, 1                       ;; 0e:5039 $b0 $65 $04 $01
         sSET_ROOM_TILE $65, 5, 1                       ;; 0e:503d $b0 $65 $05 $01
         sSET_ROOM_TILE $65, 6, 1                       ;; 0e:5041 $b0 $65 $06 $01
-        sSET_ROOM_TILE $6c, 7, 1                       ;; 0e:5045 $b0 $6c $07 $01
-        sSET_ROOM_TILE $6c, 3, 2                       ;; 0e:5049 $b0 $6c $03 $02
+;        sSET_ROOM_TILE $6c, 7, 1                       ;; 0e:5045 $b0 $6c $07 $01
+;        sSET_ROOM_TILE $6c, 3, 2                       ;; 0e:5049 $b0 $6c $03 $02
         sSET_ROOM_TILE $72, 4, 2                       ;; 0e:504d $b0 $72 $04 $02
         sSET_ROOM_TILE $6c, 5, 2                       ;; 0e:5051 $b0 $6c $05 $02
         sSET_ROOM_TILE $72, 6, 2                       ;; 0e:5055 $b0 $72 $06 $02
@@ -2383,11 +2387,11 @@ script_03e8:
         sSET_ROOM_TILE $65, 5, 0                       ;; 0e:506a $b0 $65 $05 $00
         sSET_ROOM_TILE $65, 6, 0                       ;; 0e:506e $b0 $65 $06 $00
         sSET_ROOM_TILE $6c, 7, 0                       ;; 0e:5072 $b0 $6c $07 $00
-        sSET_ROOM_TILE $6c, 3, 1                       ;; 0e:5076 $b0 $6c $03 $01
+;        sSET_ROOM_TILE $6c, 3, 1                       ;; 0e:5076 $b0 $6c $03 $01
         sSET_ROOM_TILE $72, 4, 1                       ;; 0e:507a $b0 $72 $04 $01
         sSET_ROOM_TILE $6c, 5, 1                       ;; 0e:507e $b0 $6c $05 $01
         sSET_ROOM_TILE $72, 6, 1                       ;; 0e:5082 $b0 $72 $06 $01
-        sSET_ROOM_TILE $6c, 7, 1                       ;; 0e:5086 $b0 $6c $07 $01
+;        sSET_ROOM_TILE $6c, 7, 1                       ;; 0e:5086 $b0 $6c $07 $01
         sSET_ROOM_TILE $09, 3, 2                       ;; 0e:508a $b0 $09 $03 $02
         sSET_ROOM_TILE $55, 4, 2                       ;; 0e:508e $b0 $55 $04 $02
         sSET_ROOM_TILE $55, 5, 2                       ;; 0e:5092 $b0 $55 $05 $02
@@ -6011,7 +6015,7 @@ script_0544:
     sSET_ROOM_TILE $72, 4, 0                           ;; 0e:77b5 $b0 $72 $04 $00
     sSET_ROOM_TILE $6c, 5, 0                           ;; 0e:77b9 $b0 $6c $05 $00
     sSET_ROOM_TILE $72, 6, 0                           ;; 0e:77bd $b0 $72 $06 $00
-    sSET_ROOM_TILE $6c, 7, 0                           ;; 0e:77c1 $b0 $6c $07 $00
+;    sSET_ROOM_TILE $6c, 7, 0                           ;; 0e:77c1 $b0 $6c $07 $00
     sSET_ROOM_TILE $09, 3, 1                           ;; 0e:77c5 $b0 $09 $03 $01
     sSET_ROOM_TILE $55, 4, 1                           ;; 0e:77c9 $b0 $55 $04 $01
     sSET_ROOM_TILE $55, 5, 1                           ;; 0e:77cd $b0 $55 $05 $01
@@ -6051,7 +6055,7 @@ script_0544:
     sEND                                               ;; 0e:783e $00
 
 script_0545:
-    sLOOP 4, 197                                       ;; 0e:783f $03 $04 $c5
+    sLOOP 4, 189
       sSET_ROOM_TILE $09, 3, 0                         ;; 0e:7842 $b0 $09 $03 $00
       sSET_ROOM_TILE $55, 4, 0                         ;; 0e:7846 $b0 $55 $04 $00
       sSET_ROOM_TILE $55, 5, 0                         ;; 0e:784a $b0 $55 $05 $00
@@ -6095,8 +6099,8 @@ script_0545:
       sSET_ROOM_TILE $79, 4, 1                         ;; 0e:78da $b0 $79 $04 $01
       sSET_ROOM_TILE $79, 5, 1                         ;; 0e:78de $b0 $79 $05 $01
       sSET_ROOM_TILE $79, 6, 1                         ;; 0e:78e2 $b0 $79 $06 $01
-      sSET_ROOM_TILE $0a, 7, 1                         ;; 0e:78e6 $b0 $0a $07 $01
-      sSET_ROOM_TILE $09, 3, 2                         ;; 0e:78ea $b0 $09 $03 $02
+;      sSET_ROOM_TILE $0a, 7, 1                         ;; 0e:78e6 $b0 $0a $07 $01
+;      sSET_ROOM_TILE $09, 3, 2                         ;; 0e:78ea $b0 $09 $03 $02
       sSET_ROOM_TILE $55, 4, 2                         ;; 0e:78ee $b0 $55 $04 $02
       sSET_ROOM_TILE $55, 5, 2                         ;; 0e:78f2 $b0 $55 $05 $02
       sSET_ROOM_TILE $55, 6, 2                         ;; 0e:78f6 $b0 $55 $06 $02
@@ -6113,8 +6117,8 @@ script_0546:
     sSET_ROOM_TILE $79, 4, 0                           ;; 0e:790c $b0 $79 $04 $00
     sSET_ROOM_TILE $79, 5, 0                           ;; 0e:7910 $b0 $79 $05 $00
     sSET_ROOM_TILE $79, 6, 0                           ;; 0e:7914 $b0 $79 $06 $00
-    sSET_ROOM_TILE $0a, 7, 0                           ;; 0e:7918 $b0 $0a $07 $00
-    sSET_ROOM_TILE $09, 3, 1                           ;; 0e:791c $b0 $09 $03 $01
+;    sSET_ROOM_TILE $0a, 7, 0                           ;; 0e:7918 $b0 $0a $07 $00
+;    sSET_ROOM_TILE $09, 3, 1                           ;; 0e:791c $b0 $09 $03 $01
     sSET_ROOM_TILE $55, 4, 1                           ;; 0e:7920 $b0 $55 $04 $01
     sSET_ROOM_TILE $55, 5, 1                           ;; 0e:7924 $b0 $55 $05 $01
     sSET_ROOM_TILE $55, 6, 1                           ;; 0e:7928 $b0 $55 $06 $01

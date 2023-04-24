@@ -262,7 +262,7 @@ script_000c:
           sFOLLOWER_DELETE                             ;; 0d:427e $98
           sCLEAR_FLAG wScriptFlags0A.7                 ;; 0d:427f $db $57
           sLOAD_ROOM 0, $73, 10, 6                     ;; 0d:4281 $f4 $00 $73 $0a $06
-          sSET_MUSIC 20                                ;; 0d:4286 $f8 $14
+          sSET_MUSIC 25                                ;; 0d:4286 $f8 $14
           sCALL script_03e8                            ;; 0d:4288 $02 $4f $ae
           sCLEAR_ROOM_HISTORY                          ;; 0d:428b $ab
         sELSE                                          ;; 0d:428c $01 $1c
