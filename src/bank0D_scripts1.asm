@@ -164,12 +164,13 @@ script_0007:
       sDELAY 5                                         ;; 0d:4156 $f0 $05
     sEND                                               ;; 0d:4158 $00
     sSET_PLAYER_LAYDOWN_SPRITE                         ;; 0d:4159 $a6
-    sSET_PLAYER_DIRECTION_RIGHT                        ;; 0d:415a $86
+    sSET_PLAYER_DIRECTION_LEFT
     sDELAY 44                                          ;; 0d:415b $f0 $2c
     sSET_MUSIC 23                                      ;; 0d:415d $f8 $17
     sMSG                                               ;; 0d:415f $04
       db "<10>\n    <BOY> fell_<12>"
       db "<11>", $00 ;; 0d:4160
+    sFADE_TO_WHITE
     sRESET_GAME                                        ;; 0d:416c $c8
     sEND                                               ;; 0d:416d $00
 
@@ -5273,13 +5274,3 @@ script_0291:
       sRUN_ROOM_SCRIPT                                 ;; 0d:7f9d $ec
     sENDIF                                             ;; 0d:7f9e
     sEND                                               ;; 0d:7f9e $00
-
-script_0292:
-    sIF_TRIGGERED_ON_BY $c9, $c1                       ;; 0d:7f9f $0b $c9 $c1 $00 $0d
-      sSFX 12                                          ;; 0d:7fa4 $f9 $0c
-      sSET_PLAYER_POSITION 20, 0                       ;; 0d:7fa6 $8a $14 $00
-      sDELAY 60                                        ;; 0d:7fa9 $f0 $3c
-      sLOAD_ROOM 6, $26, 9, 7                          ;; 0d:7fab $f4 $06 $26 $09 $07
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7fb0 $ec
-    sENDIF                                             ;; 0d:7fb1
-    sEND                                               ;; 0d:7fb1 $00
