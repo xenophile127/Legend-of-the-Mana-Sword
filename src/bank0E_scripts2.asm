@@ -7,6 +7,24 @@ INCLUDE "include/constants.inc"
 
 SECTION "bank0e", ROMX[$4000], BANK[$0e]
 
+script_0290:
+    sIF_TRIGGERED_ON_BY $c9
+      sLOAD_ROOM 0, $f0, 8, 8
+      sSET_MUSIC 25
+      sCLEAR_ROOM_HISTORY
+      sRUN_ROOM_SCRIPT
+    sENDIF
+    sEND
+
+script_0291:
+    sIF_TRIGGERED_ON_BY $c9, $c1
+      sLOAD_ROOM 0, $87, 8, 2
+      sDELAY 20
+      sSET_MUSIC 20
+      sRUN_ROOM_SCRIPT
+    sENDIF
+    sEND
+
 script_0292:
     sIF_TRIGGERED_ON_BY $c9, $c1
       sSFX 12

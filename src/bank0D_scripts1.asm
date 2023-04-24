@@ -2228,10 +2228,13 @@ script_018b:
 script_018c:
     sEND                                               ;; 0d:4c32 $00
 
+; Casket room entry script
 script_018d:
     sIF_FLAG !wScriptFlags01.6                         ;; 0d:4c33 $08 $8e $00 $04
       sSET_NPC_TYPES 50                                ;; 0d:4c37 $fc $32
       sSPAWN_NPC 0                                     ;; 0d:4c39 $fd $00
+    sELSE
+      sSET_ROOM_TILE $44, 5, 5
     sENDIF                                             ;; 0d:4c3b
     sEND                                               ;; 0d:4c3b $00
 
@@ -3103,13 +3106,20 @@ script_01e2:
 script_01e3:
     sDEL_NPC_1                                         ;; 0d:56bc $18
     sSPAWN_NPC 1                                       ;; 0d:56bd $fd $01
-    sMSG                                               ;; 0d:56bf $04
-      db "<10><BOY>:<GIRL>!\n<GIRL>:Oh, <BOY>!<12>"
+    sIF_FLAG wScriptFlags.4
+      sSET_NPC_1_DIRECTION_UP
+    sENDIF
+    sNPC_1_STEP_FORWARD
+    sNPC_1_STEP_FORWARD
+    sSET_NPC_1_DIRECTION_DOWN
+    sGIVE_FOLLOWER 1
+    sSET_FLAG wScriptFlags0A.1
+    sSET_FLAG wScriptFlags01.6
+    sMSG
+      db "<10><BOY>:<GIRL>!\n<GIRL>:Oh, <BOY>!\n I was so scared_<12>"
       db "<1b><BOY>:Let's get\n out of here!<12>"
-      db "<11>", $00 ;; 0d:56c0
-    sGIVE_FOLLOWER 1                                   ;; 0d:56e1 $9c $01
-    sSET_FLAG wScriptFlags0A.1                         ;; 0d:56e3 $da $51
-    sSET_FLAG wScriptFlags01.6                         ;; 0d:56e5 $da $0e
+      db "<11>", $00
+    sRUN_ROOM_SCRIPT
     sEND                                               ;; 0d:56e7 $00
 
 script_01e4:
@@ -5256,21 +5266,3 @@ script_028e:
 
 script_028f:
     sEND                                               ;; 0d:7f80 $00
-
-script_0290:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7f81 $0b $c9 $00 $09
-      sLOAD_ROOM 0, $f0, 8, 8                          ;; 0d:7f85 $f4 $00 $f0 $08 $08
-      sSET_MUSIC 25                                    ;; 0d:7f8a $f8 $19
-      sCLEAR_ROOM_HISTORY                              ;; 0d:7f8c $ab
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7f8d $ec
-    sENDIF                                             ;; 0d:7f8e
-    sEND                                               ;; 0d:7f8e $00
-
-script_0291:
-    sIF_TRIGGERED_ON_BY $c9, $c1                       ;; 0d:7f8f $0b $c9 $c1 $00 $0a
-      sLOAD_ROOM 0, $87, 8, 2                          ;; 0d:7f94 $f4 $00 $87 $08 $02
-      sDELAY 20                                        ;; 0d:7f99 $f0 $14
-      sSET_MUSIC 20                                    ;; 0d:7f9b $f8 $14
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7f9d $ec
-    sENDIF                                             ;; 0d:7f9e
-    sEND                                               ;; 0d:7f9e $00
