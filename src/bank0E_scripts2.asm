@@ -3260,7 +3260,7 @@ script_044e:
         sSFX 15                                        ;; 0e:5744 $f9 $0f
         sCHANGE_INTO_EMPTY_CHEST                       ;; 0e:5746 $af
         sMSG                                           ;; 0e:5747 $04
-          db "<10>Found <ARMOR>Samurai!<12>"
+          db "<10>Found <ARMOR>Genji!<12>"
           db "<11>", $00 ;; 0e:5748
       sENDIF                                           ;; 0e:5756
     sELSE                                              ;; 0e:5756 $01 $17
@@ -3285,7 +3285,7 @@ script_044f:
         sSFX 15                                        ;; 0e:577c $f9 $0f
         sCHANGE_INTO_EMPTY_CHEST                       ;; 0e:577e $af
         sMSG                                           ;; 0e:577f $04
-          db "<10>Found <HELM>Samurai!<12>"
+          db "<10>Found <HELM>Genji!<12>"
           db "<11>", $00 ;; 0e:5780
       sENDIF                                           ;; 0e:578e
     sELSE                                              ;; 0e:578e $01 $18
