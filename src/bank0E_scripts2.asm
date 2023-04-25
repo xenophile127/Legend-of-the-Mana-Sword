@@ -3499,7 +3499,7 @@ script_0450:
     sGIVE_MAGIC INV_MAGIC_FIRE                         ;; 0e:57a9 $d6 $04
     sCHANGE_INTO_EMPTY_CHEST                           ;; 0e:57ab $af
     sMSG                                               ;; 0e:57ac $04
-      db "<10>Found the Magic\nBook of Fire.\nLearned Fire!<12>"
+      db "<10>Found the Book\nof Salamander!\nLearned Fire.<12>"
       db "<11>", $00 ;; 0e:57ad
     sSET_FLAG wScriptFlags09.1                         ;; 0e:57cc $da $49
     sEND                                               ;; 0e:57ce $00
@@ -3750,7 +3750,7 @@ script_0466:
     sSFX 15                                            ;; 0e:5a02 $f9 $0f
     sCHANGE_INTO_EMPTY_CHEST                           ;; 0e:5a04 $af
     sMSG                                               ;; 0e:5a05 $04
-      db "<10>Found the Magic\nBook of Ice.\nLearned Ice!<12>"
+      db "<10>Found the Book\nof Undine!\nLearned Ice.<12>"
       db "<11>", $00 ;; 0e:5a06
     sSET_FLAG wScriptFlags09.2                         ;; 0e:5a24 $da $4a
     sEND                                               ;; 0e:5a26 $00
@@ -5573,11 +5573,11 @@ script_053b:
       db "<1b>", $00 ;; 0e:6cc3
     sSFX 15                                            ;; 0e:6ce6 $f9 $0f
     sMSG                                               ;; 0e:6ce8 $04
-      db "Received the Magic\nBook of Heal.\nLearned Heal!", $00 ;; 0e:6ce9
+      db "Received the Book\nof Luna!\nLearned Heal.", $00
     sGIVE_MAGIC INV_MAGIC_HEAL                         ;; 0e:6d0a $d6 $01
     sMSG                                               ;; 0e:6d0c $04
       db "<12>"
-      db "<1b> This magic will\n help you recover.\n<BOY>:Thanks.<12>"
+      db "<1b> Luna's magic will\n help you recover.\n<BOY>:Thanks.<12>"
       db "<11>", $00 ;; 0e:6d0d
     sEND                                               ;; 0e:6d31 $00
 
@@ -6391,13 +6391,13 @@ script_0548:
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:79dc $87
     sMSG                                               ;; 0e:79dd $04
       db "<BOY>:What?<12>"
-      db "<1b><GIRL>:I think you\n should be able to\n use Cure Magic.<12>"
+      db "<1b><GIRL>:I think you\n should be able to\n use Wisp's magic.<12>"
       db "<1b><BOY>:Yeah.\n It should help.\n<GIRL>:_ Read this!<12>"
       db "<1b>", $00 ;; 0e:79de
     sGIVE_MAGIC INV_MAGIC_CURE                         ;; 0e:7a29 $d6 $00
     sSFX 15                                            ;; 0e:7a2b $f9 $0f
     sMSG                                               ;; 0e:7a2d $04
-      db "Received the Magic\nBook of Cure.\nLearned Cure!<12>"
+      db "Received the Book\nof Wisp!\nLearned Cure.<12>"
       db "<1b><GIRL>:Good night_", $00 ;; 0e:7a2e
     sDELAY 60                                          ;; 0e:7a59 $f0 $3c
     sFOLLOWER_DIRECTION_LEFT                           ;; 0e:7a5b $97

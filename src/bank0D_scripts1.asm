@@ -2534,7 +2534,7 @@ script_01a8:
         db "<1b>", $00 ;; 0d:4ebc
       sSFX 15                                          ;; 0d:4ecc $f9 $0f
       sMSG                                             ;; 0d:4ece $04
-        db "<1b>Received the Magic\nBook of Sleep.\nLearned Slep.", $00 ;; 0d:4ecf
+        db "<1b>Received the Book\nof Dryad!\nLearned Sleep.", $00
       sGIVE_MAGIC INV_MAGIC_SLEP                       ;; 0d:4ef2 $d6 $03
       sMSG                                             ;; 0d:4ef4 $04
         db "<12>"
@@ -2729,7 +2729,7 @@ script_01b1:
       db "<1b>", $00 ;; 0d:516b
     sSFX 15                                            ;; 0d:51d1 $f9 $0f
     sMSG                                               ;; 0d:51d3 $04
-      db "Received the Magic\nBook of Mute.\nLearned Mute.<12>"
+      db "Received the Book\nof Gnome!\nLearned Mute.<12>"
       db "<11>", $00 ;; 0d:51d4
     sGIVE_MAGIC INV_MAGIC_MUTE                         ;; 0d:51f5 $d6 $02
     sDELAY 60                                          ;; 0d:51f7 $f0 $3c
@@ -2832,7 +2832,7 @@ script_01ba:
     sGIVE_MAGIC INV_MAGIC_LIT                          ;; 0d:52d0 $d6 $06
     sSFX 15                                            ;; 0d:52d2 $f9 $0f
     sMSG                                               ;; 0d:52d4 $04
-      db "<1b>Received the Magic\nBook of Lightning.\nLearned Lit.<12>"
+      db "<1b>Received the Book\nof Jinn!\nLearned Lit.<12>"
       db "<11>", $00 ;; 0d:52d5
     sSET_FLAG wScriptFlags05.3                         ;; 0d:52fc $da $2b
     sOPEN_NORTH_DOOR                                   ;; 0d:52fe $e0
@@ -3074,7 +3074,7 @@ script_01cc:
     sSFX 15                                            ;; 0d:5531 $f9 $0f
     sGIVE_MAGIC INV_MAGIC_NUKE                         ;; 0d:5533 $d6 $07
     sMSG                                               ;; 0d:5535 $04
-      db "Received the Magic\nBook of Nuke.\nLearned Nuke!<12>"
+      db "Received the Book\nof Shade!\nLearned Nuke!<12>"
       db "<11>", $00 ;; 0d:5536
     sSET_FLAG wScriptFlags06.0                         ;; 0d:555a $da $30
     sDELAY 30                                          ;; 0d:555c $f0 $1e
@@ -3787,7 +3787,7 @@ script_0214:
 
 script_0215:
     sMSG                                               ;; 0d:647c $04
-      db "<10>The Book of Ice is\nhidden somewhere\nin the desert!<12>"
+      db "<10>Undine's Book is\nhidden somewhere\nin the desert!<12>"
       db "<11>", $00 ;; 0d:647d
     sEND                                               ;; 0d:64a1 $00
 
