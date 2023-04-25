@@ -3267,16 +3267,24 @@ script_01ef:
     sIF_INVENTORY INV_SWORD_RUSTY                      ;; 0d:592a $0a $4f $00 $05
       sCALL script_01f0                                ;; 0d:592e $02 $19 $f5
     sELSE                                              ;; 0d:5931 $01 $c1
-      sGIVE_ITEM INV_ITEM_BONE_KEY                     ;; 0d:5933 $d4 $17
-      sIF_FLAG !wScriptFlags.5                         ;; 0d:5935 $08 $85 $00 $bb
-        sMSG                                           ;; 0d:5939 $04
-          db "<10>", $00                               ;; 0d:593a
-        sSFX 15                                        ;; 0d:593c $f9 $0f
-        sMSG                                           ;; 0d:593e $04
-          db "Received <KEY>Bone.<12>"
-          db "<1b>Cibba:Go up the\n wide river by the\n Ammonite Coast.<12>"
+      sIF_INVENTORY INV_ITEM_BONE_KEY
+        sMSG
+          db "<10>", $00
+      sELSE
+        sGIVE_ITEM INV_ITEM_BONE_KEY
+        sIF_FLAG !wScriptFlags.5
+          sMSG
+            db "<10>", $00
+          sSFX 15
+          sMSG
+            db "Received <KEY>Bone.<12><1b>", $00
+        sENDIF
+      sENDIF
+      sIF_INVENTORY INV_ITEM_BONE_KEY
+        sMSG
+          db "Cibba:Go up the\n wide river by the\n Ammonite Coast.<12>"
           db "<1b> Go beyond the\n Ammonite Coast\n to Floatrocks.<12>"
-          db "<1b> Use this key at\n the cave in the\n Floatrocks!<12>"
+          db "<1b> Use the key at\n the cave in the\n Floatrocks!<12>"
           db "<1b> The legendary\n sword is guarded\n by Ifrit.<12>"
           db "<1b> I'll tell you the\n rest when you\n return with it!<12>"
           db "<11>", $00 ;; 0d:593f
