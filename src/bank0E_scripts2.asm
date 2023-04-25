@@ -2495,6 +2495,9 @@ script_03e4:
 script_03e5:
     sSET_NPC_TYPES 99                                  ;; 0e:4fa7 $fc $63
     sSPAWN_NPC 0                                       ;; 0e:4fa9 $fd $00
+    sIF_FLAG wScriptFlags0D.7
+      sCALL script_0470
+    sENDIF
     sEND                                               ;; 0e:4fab $00
 
 script_03e6:
