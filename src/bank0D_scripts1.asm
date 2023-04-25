@@ -48,6 +48,14 @@ ELIF DEF(PLAYER_GENDER_NEUTRAL)
     sCLEAR_FLAG wScriptFlags06.3
     sCLEAR_FLAG wScriptFlags01.7
 ENDC
+
+; All script references to your gladiator friend are controlled by this flag.
+IF DEF(GLADIATOR_DUKE)
+    sCLEAR_FLAG wScriptFlags0A.0
+ELIF DEF(GLADIATOR_AMANDA)
+    sSET wScriptFlags0A.0
+ENDC
+
     sSET_NPC_TYPES $2a
     sSET_PLAYER_POSITION 16, 01
     sENTER_PLAYER_AND_GIRL_NAME
@@ -292,11 +300,16 @@ script_000c:
         sIF_FLAG !wScriptFlags0E.5, wScriptFlags0E.6, wScriptFlags0E.7 ;; 0d:42bd $08 $f5 $76 $77 $00 $41
           sIF_FLAG wScriptFlags0A.6, !wScriptFlags05.0 ;; 0d:42c3 $08 $56 $a8 $00 $2b
             sMSG                                       ;; 0d:42c8 $04
-IF DEF(GLADIATOR_DUKE)
-              db "<10>Lester:Won't you\n help avenge him?\n Well, I'm going!<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-              db "<10>Lester:Won't you\n avenge my sister?\n Well, I'm going!<12>"
-ENDC
+              db "<10>Lester:Won't you\n ", $00
+            sIF_FLAG wScriptFlags0A.0
+              sMSG
+                db "avenge my sister", $00
+            sELSE
+              sMSG
+                db "help avenge him", $00
+            sENDIF
+            sMSG
+              db "?\n Well, I'm going!<12>"
               db "<11>", $00 ;; 0d:42c9
             sFOLLOWER_DELETE                           ;; 0d:42f0 $98
             sCLEAR_FLAG wScriptFlags0A.6               ;; 0d:42f1 $db $56
@@ -2628,11 +2641,10 @@ script_01ae:
       sFOLLOWER_SET_POSITION 10, 8                     ;; 0d:5021 $99 $0a $08
       sDELAY 60                                        ;; 0d:5024 $f0 $3c
       sMSG                                             ;; 0d:5026 $04
-IF DEF(GLADIATOR_DUKE)
-        db "<10>Duke:Can't find\n a drop of tear__<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-        db "<10>Amanda:Can't find\n a drop of tear__<12>"
-ENDC
+        db "<10>", $00
+      sCALL script_0433
+      sMSG
+        db ":Can't find\n a drop of tear__<12>"
         db "<1b><BOY>:Let's go back\n to Jadd first.<12>"
         db "<11>", $00 ;; 0d:5027
       sSET_PLAYER_DIRECTION_RIGHT                      ;; 0d:5058 $86
@@ -2702,11 +2714,16 @@ script_01b1:
     sSET_MUSIC 13                                      ;; 0d:5166 $f8 $0d
     sDELAY 180                                         ;; 0d:5168 $f0 $b4
     sMSG                                               ;; 0d:516a $04
-IF DEF(GLADIATOR_DUKE)
-      db "<10> __ I'll stay here\n and play requiem\n for my brother.<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<10> __ I'll stay here\n and play requiem\n for my sister.<12>"
-ENDC
+      db "<10> __ I'll stay here\n and play requiem\n for my ", $00
+    sIF_FLAG wScriptFlags0A.0
+      sMSG
+        db "sist", $00
+    sELSE
+      sMSG
+        db "broth", $00
+    sENDIF
+    sMSG
+      db "er.<12>"
       db "<1b><BOY>:Okay, Lester.\n I'm going.\n __ Take care.<12>"
       db "<1b>Lester:Take this\n book with you.\n It might help.<12>"
       db "<1b>", $00 ;; 0d:516b
@@ -3606,11 +3623,10 @@ script_0208:
     sNPC_1_STEP_FORWARD                                ;; 0d:603b $10
     sNPC_1_STEP_FORWARD                                ;; 0d:603c $10
     sMSG                                               ;; 0d:603d $04
-IF DEF(GLADIATOR_DUKE)
-      db "<10>Duke:I'm glad\n to see you again,\n my friend__<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<10>Amanda:I'm glad\n to see you again,\n my friend__<12>"
-ENDC
+      db "<10>", $00
+    sCALL script_0433
+    sMSG
+      db ":I'm glad\n to see you again,\n my friend__<12>"
       db "<1b> I escaped from\n Granz after you\n left__<12>"
       db "<1b> Oh, <BOY>__\n", $00 ;; 0d:603e
     sDELAY 50                                          ;; 0d:608a $f0 $32
@@ -3635,11 +3651,10 @@ ENDC
     sDELAY 30                                          ;; 0d:60c2 $f0 $1e
     sMSG                                               ;; 0d:60c4 $04
       db " __ Pendant!!\n __ Where is it?!<12>"
-IF DEF(GLADIATOR_DUKE)
-      db "<1b> __ I thought that\n it was Duke\n talking to me__<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<1b> __ I thought that\n it was Amanda\n talking to me__<12>"
-ENDC
+      db "<1b> __ I thought that\n it was ", $00
+    sCALL script_0433
+    sMSG
+      db "\n talking to me__<12>"
       db "<11>", $00 ;; 0d:60c5
     sSET_MUSIC 4                                       ;; 0d:60fc $f8 $04
     sEND                                               ;; 0d:60fe $00
@@ -3731,11 +3746,10 @@ script_0210:
 script_0211:
     sMSG                                               ;; 0d:637e $04
       db "<10>Are you okay?\n_You are in Menos.<12>"
-IF DEF(GLADIATOR_DUKE)
-      db "<1b>Duke left the\nvillage earlier\nthis morning.<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<1b>Amanda left the\nvillage earlier\nthis morning.<12>"
-ENDC
+      db "<1b>", $00
+    sCALL script_0433
+    sMSG
+      db " left the\nvillage early\nthis morning.<12>"
       db "<11>", $00 ;; 0d:637f
     sEND                                               ;; 0d:63bc $00
 
@@ -3748,11 +3762,10 @@ script_0212:
 
 script_0213:
     sMSG                                               ;; 0d:63f8 $04
-IF DEF(GLADIATOR_DUKE)
-      db "<10>Duke's little\nbrother, Lester,\nis a musician.<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<10>Amanda's little\nbrother, Lester,\nis a musician.<12>"
-ENDC
+      db "<10>", $00
+    sCALL script_0433
+    sMSG
+      db "'s little\nbrother, Lester,\nis a musician.<12>"
       db "<1b>He's playing harp\nin a town called\nJadd.<12>"
       db "<11>", $00 ;; 0d:63f9
     sEND                                               ;; 0d:6438 $00
@@ -3772,11 +3785,19 @@ script_0215:
 
 script_0216:
     sMSG                                               ;; 0d:64a2 $04
-IF DEF(GLADIATOR_DUKE)
-      db "<10>What's wrong with\nDuke lately?\nHe's depressed.<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<10>What's wrong with\nAmanda lately?\nShe's depressed.<12>"
-ENDC
+      db "<10>What's wrong with\n", $00
+    sCALL script_0433
+    sMSG
+      db " lately?\n", $00
+    sIF_FLAG wScriptFlags0A.0
+      sMSG
+        db "Sh", $00
+    sELSE
+      sMSG
+        db "H", $00
+    sENDIF
+    sMSG
+      db "e's depressed.<12>"
       db "<11>", $00 ;; 0d:64a3
     sEND                                               ;; 0d:64c8 $00
 
@@ -3842,13 +3863,19 @@ script_0217:
 script_0218:
     sMSG                                               ;; 0d:6573 $04
       db "<10>Davias:Better\n behave yourself\n in this town.<12>"
-IF DEF(GLADIATOR_DUKE)
-      db "<1b> __ Duke__?\n Oh, yes!\n That boy__<12>"
-      db "<1b> He went to\n Medusa's Cave.\n<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<1b> __ Amanda__?\n Oh, yes!\n That girl__<12>"
-      db "<1b> She went to\n Medusa's Cave.\n<12>"
-ENDC
+      db "<1b> __ ", $00
+    sCALL script_0433
+    sMSG
+      db "__?\n Oh, yes!\n That ", $00
+    sIF_FLAG wScriptFlags0A.0
+      sMSG
+        db "girl__<12><1b> Sh", $00
+    sELSE
+      sMSG
+        db "boy__<12><1b> H", $00
+    sENDIF
+    sMSG
+      db "e went to\n Medusa's Cave.\n<12>"
       db "<1b> Nobody has ever\n come back from\n there alive.<12>"
       db "", $00 ;; 0d:6574
     sSET_FLAG wScriptFlags03.2                         ;; 0d:65e7 $da $1a
@@ -3860,11 +3887,10 @@ script_0219:
     sIF_EQUIPED INV_ITEM_POTION_AMANDA                 ;; 0d:65ed $09 $2a $00 $53
       sSET_MUSIC 0                                     ;; 0d:65f1 $f8 $00
       sMSG                                             ;; 0d:65f3 $04
-IF DEF(GLADIATOR_DUKE)
-        db "<10><BOY> used <POT>Tears,\nthe tears of\nDuke__", $00 ;; 0d:65f4
-ELIF DEF(GLADIATOR_AMANDA)
-        db "<10><BOY> used <POT>Tears,\nthe tears of\nAmanda__", $00 ;; 0d:65f4
-ENDC
+        db "<10><BOY> used <POT>Tears,\nthe tears of\n", $00
+      sCALL script_0433
+      sMSG
+        db "__", $00
       sDELAY 120                                       ;; 0d:660e $f0 $78
       sTAKE_EQUIPED_ITEM                               ;; 0d:6610 $de
       sMSG                                             ;; 0d:6611 $04
@@ -3994,11 +4020,10 @@ script_0225:
 script_0226:
     sSPAWN_NPC 1                                       ;; 0d:6875 $fd $01
     sMSG                                               ;; 0d:6877 $04
-IF DEF(GLADIATOR_DUKE)
-      db "<10><BOY>:__I'm sorry,\n Duke __\n But I had to __<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<10><BOY>:__I'm sorry,\n Amanda __\n But I had to __<12>"
-ENDC
+      db "<10><BOY>:__I'm sorry,\n ", $00
+    sCALL script_0433
+    sMSG
+      db " __\n But I had to __<12>"
       db "<11>", $00 ;; 0d:6878
     sSET_FLAG wScriptFlags03.4                         ;; 0d:6899 $da $1c
     sEND                                               ;; 0d:689b $00
@@ -4008,32 +4033,27 @@ script_0227:
     sMSG                                               ;; 0d:689d $04
       db "<10>", $00                                   ;; 0d:689e
     sSET_MUSIC 0                                       ;; 0d:68a0 $f8 $00
+    sCALL script_0433
     sMSG                                               ;; 0d:68a2 $04
-IF DEF(GLADIATOR_DUKE)
-      db "Duke:__Ouch!", $00                         ;; 0d:68a3
-ELIF DEF(GLADIATOR_AMANDA)
-      db "Amanda:__Ouch!", $00                         ;; 0d:68a3
-ENDC
+      db ":__Ouch!", $00                         ;; 0d:68a3
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0d:68af $87
     sPLAYER_STEP_FORWARD                               ;; 0d:68b0 $80
     sMSG                                               ;; 0d:68b1 $04
       db "\n<BOY>:Are you okay?<12>"
-IF DEF(GLADIATOR_DUKE)
-      db "<1b>Duke:I guess\n Medusa bit me\n while fighting__<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<1b>Amanda:I guess\n Medusa bit me\n while fighting__<12>"
-ENDC
+      db "<1b>", $00
+    sCALL script_0433
+    sMSG
+      db ":I guess\n Medusa bit me\n while fighting__<12>"
       db "", $00 ;; 0d:68b2
     sSET_MUSIC 2                                       ;; 0d:68df $f8 $02
     sMSG                                               ;; 0d:68e1 $04
       db "<1b> __ One who was\n bitten by Medusa\n turns to Medusa.<12>"
       db "<1b> I'm gonna turn\n into a Medusa in\n a short while__<12>"
       db "<1b> Please do away\n with me and take\n my tears, <BOY>.<12>"
-IF DEF(GLADIATOR_DUKE)
-      db "<1b><BOY>:No, I can't!\nDuke:I'm gonna\n be a monster__<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<1b><BOY>:No, I can't!\nAmanda:I'm gonna\n be a monster__<12>"
-ENDC
+      db "<1b><BOY>:No, I can't!\n", $00
+    sCALL script_0433
+    sMSG
+      db ":I'm gonna\n be a monster__<12>"
       db "<1b> I might lose my\n mind and hurt\n people__<12>"
       db "<1b>", $00 ;; 0d:68e2
     sFOLLOWER_DELETE                                   ;; 0d:6986 $98
@@ -4061,11 +4081,16 @@ script_0228:
       sLOAD_ROOM_INSTANT 15, $55, 20, 0                ;; 0d:6a06 $f3 $0f $55 $14 $00
       sFADE_TO_NORMAL                                  ;; 0d:6a0b $bc
       sMSG                                             ;; 0d:6a0c $04
-IF DEF(GLADIATOR_DUKE)
-        db "<10> <BOY> took a drop\n   of tear from\n   Duke's face.<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-        db "<10> <BOY> took a drop\n   of tear from\n  Amanda's face.<12>"
-ENDC
+        db "<10> <BOY> took a drop\n   of tear from\n  ", $00
+      sIF_FLAG wScriptFlags0A.0
+        sMSG
+          db "Amanda", $00
+      sELSE
+        sMSG
+          db " Duke", $00
+      sENDIF
+      sMSG
+        db "'s face.<12>"
         db "<1b>", $00 ;; 0d:6a0d
       sDELAY 30                                        ;; 0d:6a2f $f0 $1e
       sMSG                                             ;; 0d:6a31 $04
@@ -4759,11 +4784,10 @@ script_0260:
 
 script_0261:
     sMSG                                               ;; 0d:78aa $04
-IF DEF(GLADIATOR_DUKE)
-      db "<10>Duke:I'm sorry\n about Willy.<12>"
-ELIF DEF(GLADIATOR_AMANDA)
-      db "<10>Amanda:I'm sorry\n about Willy.<12>"
-ENDC
+      db "<10>", $00
+    sCALL script_0433
+    sMSG
+      db ":I'm sorry\n about Willy.<12>"
       db "<1b> We have to get\n out of here!!<12>"
       db "<1b> I wanna go home\n and see my\n little brother__<12>"
       db "<11>", $00 ;; 0d:78ab
@@ -5117,108 +5141,3 @@ script_0280:
       sRUN_ROOM_SCRIPT                                 ;; 0d:7dbb $ec
     sENDIF                                             ;; 0d:7dbc
     sEND                                               ;; 0d:7dbc $00
-
-script_0281:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7dbd $0b $c9 $00 $53
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7dc1 $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7dc5 $02 $5a $e2
-        sSET_FLAG wScriptFlags0B.4                     ;; 0d:7dc8 $da $5c
-      sENDIF                                           ;; 0d:7dca
-      sLOAD_ROOM 8, $54, 16, 2                         ;; 0d:7dca $f4 $08 $54 $10 $02
-      sSET_MUSIC 8                                     ;; 0d:7dcf $f8 $08
-      sIF_FLAG !wScriptFlags04.7                       ;; 0d:7dd1 $08 $a7 $00 $3f
-        sSET_NPC_TYPES 81                              ;; 0d:7dd5 $fc $51
-        sSPAWN_NPC 0                                   ;; 0d:7dd7 $fd $00
-        sSET_NPC_1_DIRECTION_RIGHT                     ;; 0d:7dd9 $16
-        sSET_PLAYER_DIRECTION_DOWN                     ;; 0d:7dda $85
-        sSET_PLAYER_POSITION 16, 3                     ;; 0d:7ddb $8a $10 $03
-        sLOOP 4, 2                                     ;; 0d:7dde $03 $04 $02
-          sPLAYER_STEP_FORWARD                         ;; 0d:7de1 $80
-        sEND                                           ;; 0d:7de2 $00
-        sSET_PLAYER_DIRECTION_LEFT                     ;; 0d:7de3 $87
-        sLOOP 5, 2                                     ;; 0d:7de4 $03 $05 $02
-          sPLAYER_STEP_FORWARD                         ;; 0d:7de7 $80
-        sEND                                           ;; 0d:7de8 $00
-        sMSG                                           ;; 0d:7de9 $04
-          db "<10>", $00                               ;; 0d:7dea
-        sIF_FLAG wScriptFlags03.3                      ;; 0d:7dec $08 $1b $00 $19
-          sMSG                                         ;; 0d:7df0 $04
-IF DEF(GLADIATOR_DUKE)
-            db "Duke:I'm glad\n you're back!", $00   ;; 0d:7df1
-ELIF DEF(GLADIATOR_AMANDA)
-            db "Amanda:I'm glad\n you're back!", $00   ;; 0d:7df1
-ENDC
-        sELSE                                          ;; 0d:7e07 $01 $03
-          sCALL script_053d                            ;; 0d:7e09 $02 $6d $f9
-        sENDIF                                         ;; 0d:7e0c
-        sMSG                                           ;; 0d:7e0c $04
-          db "<12>"
-          db "<11>", $00           ;; 0d:7e0d
-        sGIVE_FOLLOWER 5                               ;; 0d:7e10 $9c $05
-        sSET_FLAG wScriptFlags0A.5                     ;; 0d:7e12 $da $55
-      sENDIF                                           ;; 0d:7e14
-    sENDIF                                             ;; 0d:7e14
-    sEND                                               ;; 0d:7e14 $00
-
-script_0282:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7e15 $0b $c9 $00 $98
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7e19 $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7e1d $02 $5a $e2
-        sSET_FLAG wScriptFlags0B.5                     ;; 0d:7e20 $da $5d
-      sENDIF                                           ;; 0d:7e22
-      sUNK_C5 1                                        ;; 0d:7e22 $c5 $01
-      sLOAD_ROOM 6, $17, 9, 12                         ;; 0d:7e24 $f4 $06 $17 $09 $0c
-      sSET_MUSIC 12                                    ;; 0d:7e29 $f8 $0c
-      sSET_NPC_TYPES 82                                ;; 0d:7e2b $fc $52
-      sSET_PLAYER_DIRECTION_UP                         ;; 0d:7e2d $84
-      sSPAWN_NPC 2                                     ;; 0d:7e2e $fd $02
-      sNPC_1_STEP_FORWARD                              ;; 0d:7e30 $10
-      sNPC_1_STEP_FORWARD                              ;; 0d:7e31 $10
-      sNPC_1_STEP_FORWARD                              ;; 0d:7e32 $10
-      sMSG                                             ;; 0d:7e33 $04
-        db "<10>I AM MARCIE.\nI SEARCH RELICS.\nDOCTOR BON VOYAGE<12>"
-        db "<1b>MADE ME.\nHE LEFT ME HERE.\nI WAITED 50 YEARS.<12>"
-        db "<1b>HE FORGOT ME.\nI CAN HELP YOU.\nTAKE ME WITH YOU.<12>"
-        db "<11>", $00 ;; 0d:7e34
-      sGIVE_FOLLOWER 7                                 ;; 0d:7ead $9c $07
-      sSET_FLAG wScriptFlags0A.7                       ;; 0d:7eaf $da $57
-    sENDIF                                             ;; 0d:7eb1
-    sEND                                               ;; 0d:7eb1 $00
-
-script_0283:
-    sEND                                               ;; 0d:7eb2 $00
-
-script_0284:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7eb3 $0b $c9 $00 $11
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7eb7 $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7ebb $02 $5a $e2
-        sSET_FLAG wScriptFlags0D.4                     ;; 0d:7ebe $da $6c
-      sENDIF                                           ;; 0d:7ec0
-      sLOAD_ROOM 9, $03, 2, 12                         ;; 0d:7ec0 $f4 $09 $03 $02 $0c
-      sSET_MUSIC 8                                     ;; 0d:7ec5 $f8 $08
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7ec7 $ec
-    sENDIF                                             ;; 0d:7ec8
-    sEND                                               ;; 0d:7ec8 $00
-
-script_0285:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7ec9 $0b $c9 $00 $11
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7ecd $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7ed1 $02 $5a $e2
-        sSET_FLAG wScriptFlags0D.3                     ;; 0d:7ed4 $da $6b
-      sENDIF                                           ;; 0d:7ed6
-      sLOAD_ROOM 13, $77, 16, 12                       ;; 0d:7ed6 $f4 $0d $77 $10 $0c
-      sSET_MUSIC 8                                     ;; 0d:7edb $f8 $08
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7edd $ec
-    sENDIF                                             ;; 0d:7ede
-    sEND                                               ;; 0d:7ede $00
-
-script_0286:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7edf $0b $c9 $00 $10
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7ee3 $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7ee7 $02 $5a $e2
-        sSET_FLAG wScriptFlags0D.5                     ;; 0d:7eea $da $6d
-      sENDIF                                           ;; 0d:7eec
-      sLOAD_ROOM 8, $03, 8, 8                          ;; 0d:7eec $f4 $08 $03 $08 $08
-      sSET_MUSIC 7                                     ;; 0d:7ef1 $f8 $07
-    sENDIF                                             ;; 0d:7ef3
-    sEND                                               ;; 0d:7ef3 $00
