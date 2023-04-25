@@ -7,6 +7,89 @@ INCLUDE "include/constants.inc"
 
 SECTION "bank0e", ROMX[$4000], BANK[$0e]
 
+script_0287:
+    sIF_TRIGGERED_ON_BY $c9
+      sLOAD_ROOM 15, $10, 16, 2
+      sSET_MUSIC 7
+    sENDIF
+    sEND
+
+script_0288:
+    sIF_TRIGGERED_ON_BY $c9
+      sIF_FLAG wScriptFlags0B.0
+        sCALL script_0473
+        sSET_FLAG wScriptFlags0C.6
+      sENDIF
+      sLOAD_ROOM 15, $37, 9, 12
+      sIF_FLAG wScriptFlags04.1
+        sSET_MUSIC 4
+      sELSE
+        sSET_MUSIC 27
+      sENDIF
+      sRUN_ROOM_SCRIPT
+    sENDIF
+    sEND
+
+script_0289:
+    sIF_TRIGGERED_ON_BY $c9
+      sLOAD_ROOM 13, $17, 16, 12
+      sSET_MUSIC 12
+      sRUN_ROOM_SCRIPT
+    sENDIF
+    sEND
+
+script_028a:
+    sIF_TRIGGERED_ON_BY $c9
+      sIF_FLAG wScriptFlags0B.0
+        sCALL script_0473
+        sSET_FLAG wScriptFlags0D.0
+      sENDIF
+      sUNK_C5 4
+      sLOAD_ROOM 3, $47, 9, 12
+      sIF_FLAG wScriptFlags05.5
+        sSET_MUSIC 11
+      sELSE
+        sSET_MUSIC 10
+      sENDIF
+      sRUN_ROOM_SCRIPT
+    sENDIF
+    sEND
+
+script_028b:
+    sIF_TRIGGERED_ON_BY $c9
+      sIF_FLAG wScriptFlags0B.0
+        sCALL script_0473
+        sSET_FLAG wScriptFlags0C.7
+      sENDIF
+      sLOAD_ROOM 14, $77, 14, 2
+      sSET_MUSIC 8
+      sSET_FLAG wScriptFlags08.7
+      sRUN_ROOM_SCRIPT
+    sENDIF
+    sEND
+
+script_028c:
+    sIF_TRIGGERED_ON_BY $c9
+      sLOAD_ROOM 1, $17, 16, 5
+      sSET_MUSIC 7
+      sCALL script_01c7
+    sENDIF
+    sEND
+
+script_028d:
+    sIF_TRIGGERED_ON_BY $c9
+      sLOAD_ROOM 11, $76, 16, 2
+      sSET_MUSIC 7
+      sRUN_ROOM_SCRIPT
+    sENDIF
+    sEND
+
+script_028e:
+    sEND
+
+script_028f:
+    sEND
+
 script_0290:
     sIF_TRIGGERED_ON_BY $c9
       sLOAD_ROOM 0, $f0, 8, 8
@@ -5109,13 +5192,8 @@ script_0538:
     sSET_PLAYER_NORMAL_SPRITE                          ;; 0e:6700 $a4
     sDELAY 40                                          ;; 0e:6701 $f0 $28
     sMSG                                               ;; 0e:6703 $04
-IF DEF(PLAYER_GENDER_FEMALE)
       db "<10>_See, Auntie?\n Somebody's hurt!\nSarah:Oh, yes.<12>"
       db "<1b>_And a birdie is\n hurt, too!\nSarah:Oh_ dear_ _<12>"
-ELIF DEF(PLAYER_GENDER_MALE)
-      db "<10>_See that, Auntie?\n A boy's falling!\nSarah:Oh, yes.<12>"
-      db "<1b>_A birdie is\n falling, too!\nSarah:Oh_ dear_ _<12>"
-ENDC
       db "<11>", $00 ;; 0e:6704
     sDELAY 60                                          ;; 0e:6750 $f0 $3c
     sFADE_TO_BLACK                                     ;; 0e:6752 $bd

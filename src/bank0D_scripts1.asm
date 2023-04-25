@@ -35,7 +35,19 @@ script_0001:
 script_0002:
     sEND                                               ;; 0d:4024 $00
 
+; New Game script
 script_0003:
+; All references to the player's gender are controlled by these flags.
+IF DEF(PLAYER_GENDER_FEMALE)
+    sSET_FLAG wScriptFlags01.7
+    sCLEAR_FLAG wScriptFlags06.3
+ELIF DEF(PLAYER_GENDER_MALE)
+    sSET_FLAG wScriptFlags06.3
+    sCLEAR_FLAG wScriptFlags01.7
+ELIF DEF(PLAYER_GENDER_NEUTRAL)
+    sCLEAR_FLAG wScriptFlags06.3
+    sCLEAR_FLAG wScriptFlags01.7
+ENDC
     sSET_NPC_TYPES $2a
     sSET_PLAYER_POSITION 16, 01
     sENTER_PLAYER_AND_GIRL_NAME
@@ -2825,12 +2837,17 @@ script_01bb:
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:5319 $84
       sMSG                                             ;; 0d:531a $04
         db "<10>Shadow Knight:\n Looks like you're\n a bit stronger.<12>"
-IF DEF(PLAYER_GENDER_FEMALE)
-        db "<1b> But, not strong\n enough to beat\n me, girl!<12>"
-ELIF DEF(PLAYER_GENDER_MALE)
-        db "<1b> But, not enough\n to fight me, boy!<12>"
-ENDC
-        db "<1b>", $00 ;; 0d:531b
+        db "<1b> But, not strong\n enough to beat\n me", $00
+      sIF_FLAG wScriptFlags01.7
+        sMSG
+          db ", girl", $00
+      sENDIF
+      sIF_FLAG wScriptFlags06.3
+        sMSG
+          db ", boy", $00
+      sENDIF
+      sMSG
+        db "!<12><1b>", $00
       sSET_PLAYER_DIRECTION_RIGHT                      ;; 0d:5359 $86
       sFOLLOWER_DIRECTION_LEFT                         ;; 0d:535a $97
       sMSG                                             ;; 0d:535b $04
@@ -2847,11 +2864,21 @@ ENDC
       sDELAY 20                                        ;; 0d:539d $f0 $14
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:539f $84
       sMSG                                             ;; 0d:53a0 $04
-IF DEF(PLAYER_GENDER_FEMALE)
-        db "<10>Shadow Knight:\n Good girl, <BOY>!\n __ Now, fight me!<12>"
-ELIF DEF(PLAYER_GENDER_MALE)
-        db "<10>Shadow Knight:\n Good boy, <BOY>!\n __ Now, fight me!<12>"
-ENDC
+        db "<10>Shadow Knight:\n Good ", $00
+      sIF_FLAG !wScriptFlags01.7, !wScriptFlags06.3
+        sMSG
+          db "idea", $00
+      sENDIF
+      sIF_FLAG wScriptFlags01.7
+        sMSG
+          db "girl", $00
+      sENDIF
+      sIF_FLAG wScriptFlags06.3
+        sMSG
+          db "boy", $00
+      sENDIF
+      sMSG
+        db ", <BOY>!\n __ Now, fight me!<12>"
         db "<11>", $00 ;; 0d:53a1
       sSET_MUSIC 19                                    ;; 0d:53c1 $f8 $13
     sENDIF                                             ;; 0d:53c3
@@ -3550,12 +3577,21 @@ script_0207:
 script_0208:
     sMSG                                               ;; 0d:5fdf $04
       db "<10>_ Wow!  Somebody\n_ came down from\n_ the sky!<12>"
-IF DEF(PLAYER_GENDER_FEMALE)
-      db "<1b>_ __ <BOY>?!\n_ Do you know her?\n___ _ <BOY>__!<12>"
-ELIF DEF(PLAYER_GENDER_MALE)
-      db "<1b>_ __ <BOY>?!\n_ Do you know him?\n___ _ <BOY>__!<12>"
-ENDC
-      db "<11>", $00 ;; 0d:5fe0
+      db "<1b>_ __ <BOY>?!\n_ ", $00
+    sIF_FLAG wScriptFlags01.7
+      sMSG
+      db "Do you know her", $00
+    sENDIF
+    sIF_FLAG wScriptFlags06.3
+      sMSG
+      db "Do you know him", $00
+    sENDIF
+    sIF_FLAG !wScriptFlags01.7, !wScriptFlags06.3
+      sMSG
+      db "Friend of yours", $00
+    sENDIF
+    sMSG
+      db "?\n___ _ <BOY>__!<12><11>", $00
     sFADE_TO_BLACK                                     ;; 0d:6024 $bd
     sUNK_C5 7                                          ;; 0d:6025 $c5 $07
     sLOAD_ROOM_INSTANT 4, $00, 14, 3                   ;; 0d:6027 $f3 $04 $00 $0e $03
@@ -3694,11 +3730,7 @@ script_0210:
 
 script_0211:
     sMSG                                               ;; 0d:637e $04
-IF DEF(PLAYER_GENDER_FEMALE)
       db "<10>Are you okay?\n_You are in Menos.<12>"
-ELIF DEF(PLAYER_GENDER_MALE)
-      db "<10>Are you okay, boy?\n_You are in Menos.<12>"
-ENDC
 IF DEF(GLADIATOR_DUKE)
       db "<1b>Duke left the\nvillage earlier\nthis morning.<12>"
 ELIF DEF(GLADIATOR_AMANDA)
@@ -4205,13 +4237,24 @@ script_0232:
       db "Sarah:He didn't\n wanna let you\n know, but_<12>"
       db "<1b> He has a broken\n back and cannot\n move for a while.<12>"
       db "<1b> He was distressed\n to hear of places\n being attacked.<12>"
-IF DEF(PLAYER_GENDER_FEMALE)
-      db "<1b> But he kept\n saying there is\n a woman_<12>"
-      db "<1b> A woman named\n <BOY> will come to\n save us all_<12>"
-ELIF DEF(PLAYER_GENDER_MALE)
-      db "<1b> But he kept\n saying that there\n is a boy_<12>"
-      db "<1b> A boy named <BOY>\n will come to\n save us all_<12>"
-ENDC
+      db "<1b> But he kept\n saying there is\n a ", $00
+    sIF_FLAG wScriptFlags01.7
+      sMSG
+      db "woman_<12>"
+      db "<1b> A woman", $00
+    sENDIF
+    sIF_FLAG wScriptFlags06.3
+      sMSG
+      db "boy_<12>"
+      db "<1b> A boy", $00
+    sENDIF
+    sIF_FLAG !wScriptFlags01.7, !wScriptFlags06.3
+      sMSG
+      db "hero_<12>"
+      db "<1b> A hero", $00
+    sENDIF
+    sMSG
+      db " named\n <BOY> will come to\n save us all_<12>"
       db "<1b> I didn't really\n believe him, but\n when I saw you_<12>"
       db "<1b> _ Even a Chocobo\n knew you're the\n last hope_<12>"
       db "<1b> Bogard and the\n bird made me\n believe in you_<12>"
@@ -4747,11 +4790,7 @@ script_0265:
 
 script_0266:
     sMSG                                               ;; 0d:7942 $04
-IF DEF(PLAYER_GENDER_FEMALE)
       db "<10>Welcome to Topple!<12>"
-ELIF DEF(PLAYER_GENDER_MALE)
-      db "<10>Hello, young man!\nWelcome to Topple!<12>"
-ENDC
       db "<11>", $00 ;; 0d:7943
     sEND                                               ;; 0d:795f $00
 
@@ -5183,86 +5222,3 @@ script_0286:
       sSET_MUSIC 7                                     ;; 0d:7ef1 $f8 $07
     sENDIF                                             ;; 0d:7ef3
     sEND                                               ;; 0d:7ef3 $00
-
-script_0287:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7ef4 $0b $c9 $00 $07
-      sLOAD_ROOM 15, $10, 16, 2                        ;; 0d:7ef8 $f4 $0f $10 $10 $02
-      sSET_MUSIC 7                                     ;; 0d:7efd $f8 $07
-    sENDIF                                             ;; 0d:7eff
-    sEND                                               ;; 0d:7eff $00
-
-script_0288:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7f00 $0b $c9 $00 $19
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7f04 $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7f08 $02 $5a $e2
-        sSET_FLAG wScriptFlags0C.6                     ;; 0d:7f0b $da $66
-      sENDIF                                           ;; 0d:7f0d
-      sLOAD_ROOM 15, $37, 9, 12                        ;; 0d:7f0d $f4 $0f $37 $09 $0c
-      sIF_FLAG wScriptFlags04.1                        ;; 0d:7f12 $08 $21 $00 $04
-        sSET_MUSIC 4                                   ;; 0d:7f16 $f8 $04
-      sELSE                                            ;; 0d:7f18 $01 $02
-        sSET_MUSIC 27                                  ;; 0d:7f1a $f8 $1b
-      sENDIF                                           ;; 0d:7f1c
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7f1c $ec
-    sENDIF                                             ;; 0d:7f1d
-    sEND                                               ;; 0d:7f1d $00
-
-script_0289:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7f1e $0b $c9 $00 $08
-      sLOAD_ROOM 13, $17, 16, 12                       ;; 0d:7f22 $f4 $0d $17 $10 $0c
-      sSET_MUSIC 12                                    ;; 0d:7f27 $f8 $0c
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7f29 $ec
-    sENDIF                                             ;; 0d:7f2a
-    sEND                                               ;; 0d:7f2a $00
-
-script_028a:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7f2b $0b $c9 $00 $1b
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7f2f $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7f33 $02 $5a $e2
-        sSET_FLAG wScriptFlags0D.0                     ;; 0d:7f36 $da $68
-      sENDIF                                           ;; 0d:7f38
-      sUNK_C5 4                                        ;; 0d:7f38 $c5 $04
-      sLOAD_ROOM 3, $47, 9, 12                         ;; 0d:7f3a $f4 $03 $47 $09 $0c
-      sIF_FLAG wScriptFlags05.5                        ;; 0d:7f3f $08 $2d $00 $04
-        sSET_MUSIC 11                                  ;; 0d:7f43 $f8 $0b
-      sELSE                                            ;; 0d:7f45 $01 $02
-        sSET_MUSIC 10                                  ;; 0d:7f47 $f8 $0a
-      sENDIF                                           ;; 0d:7f49
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7f49 $ec
-    sENDIF                                             ;; 0d:7f4a
-    sEND                                               ;; 0d:7f4a $00
-
-script_028b:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7f4b $0b $c9 $00 $13
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7f4f $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7f53 $02 $5a $e2
-        sSET_FLAG wScriptFlags0C.7                     ;; 0d:7f56 $da $67
-      sENDIF                                           ;; 0d:7f58
-      sLOAD_ROOM 14, $77, 14, 2                        ;; 0d:7f58 $f4 $0e $77 $0e $02
-      sSET_MUSIC 8                                     ;; 0d:7f5d $f8 $08
-      sSET_FLAG wScriptFlags08.7                       ;; 0d:7f5f $da $47
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7f61 $ec
-    sENDIF                                             ;; 0d:7f62
-    sEND                                               ;; 0d:7f62 $00
-
-script_028c:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7f63 $0b $c9 $00 $0a
-      sLOAD_ROOM 1, $17, 16, 5                         ;; 0d:7f67 $f4 $01 $17 $10 $05
-      sSET_MUSIC 7                                     ;; 0d:7f6c $f8 $07
-      sCALL script_01c7                                ;; 0d:7f6e $02 $14 $cf
-    sENDIF                                             ;; 0d:7f71
-    sEND                                               ;; 0d:7f71 $00
-
-script_028d:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7f72 $0b $c9 $00 $08
-      sLOAD_ROOM 11, $76, 16, 2                        ;; 0d:7f76 $f4 $0b $76 $10 $02
-      sSET_MUSIC 7                                     ;; 0d:7f7b $f8 $07
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7f7d $ec
-    sENDIF                                             ;; 0d:7f7e
-    sEND                                               ;; 0d:7f7e $00
-
-script_028e:
-    sEND                                               ;; 0d:7f7f $00
-
-script_028f:
-    sEND                                               ;; 0d:7f80 $00
