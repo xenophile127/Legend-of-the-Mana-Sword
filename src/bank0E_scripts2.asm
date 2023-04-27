@@ -4919,7 +4919,9 @@ script_0530:
 script_0531:
     sIF_FLAG !wScriptFlags01.0                         ;; 0e:6129 $08 $88 $00 $71
       sSET_MUSIC 0                                     ;; 0e:612d $f8 $00
-      sLOCK_TEXT_SPEED                                 ;; 0e:612f $dc
+; Originally this one message was unaffected by holding a button to speed up text.
+; Probably to test the feature, which is turned on during the ending (and then never turned off).
+;      sLOCK_TEXT_SPEED
       sDELAY 90                                        ;; 0e:6130 $f0 $5a
       sMSG                                             ;; 0e:6132 $04
         db "<10><BOY> was a captive\nof the cruel\nKingdom of Granz.<12>", $00
@@ -4931,7 +4933,7 @@ script_0531:
       sLOAD_ROOM_INSTANT 15, $55, 20, 0                ;; 0e:6151 $f3 $0f $55 $14 $00
       sFADE_TO_NORMAL                                  ;; 0e:6156 $bc
       sDELAY 50                                        ;; 0e:6157 $f0 $32
-      sUNLOCK_TEXT_SPEED                               ;; 0e:6159 $dd
+;      sUNLOCK_TEXT_SPEED
       sMSG                                             ;; 0e:615a $04
         db "<10><BOY> and friends\nwere forced to\nfight every day<12>"
         db "<1b>just for the\nentertainment of\nShadow Knight.<12>"
