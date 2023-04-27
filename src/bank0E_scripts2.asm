@@ -2797,6 +2797,7 @@ script_0405:
     sFULL_MANA                                         ;; 0e:520d $c1
     sDELAY 60                                          ;; 0e:520e $f0 $3c
     sFADE_TO_NORMAL                                    ;; 0e:5210 $bc
+    sSET_MUSIC 0
     sEND                                               ;; 0e:5211 $00
 
 script_0406:
