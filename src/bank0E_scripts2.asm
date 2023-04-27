@@ -5538,8 +5538,8 @@ script_053b:
     sEND                                               ;; 0e:6c1a $00
     sCLEAR_FAST_MOVEMENT                               ;; 0e:6c1b $89
     sSET_PLAYER_LAYDOWN_SPRITE                         ;; 0e:6c1c $a6
+    sSET_PLAYER_DIRECTION_LEFT
     sSET_MUSIC 0                                       ;; 0e:6c1d $f8 $00
-    sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:6c1f $86
     sSFX 20                                            ;; 0e:6c20 $f9 $14
     sDELAY 60                                          ;; 0e:6c22 $f0 $3c
     sNPC_1_STEP_FORWARD                                ;; 0e:6c24 $10
