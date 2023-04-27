@@ -4819,7 +4819,7 @@ script_0264:
 
 script_0265:
     sMSG                                               ;; 0d:7911 $04
-      db "<10>The entrance for\nthe monsters leads\nto outside.<12>"
+      db "<10>The entrance the\nmonsters use leads\noutside.<12>"
       db "<1b>Take your chance!<12>"
       db "<11>", $00 ;; 0d:7912
     sEND                                               ;; 0d:7941 $00
