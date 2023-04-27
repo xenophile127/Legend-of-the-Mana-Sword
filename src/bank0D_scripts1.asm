@@ -3095,37 +3095,35 @@ script_01cf:
 
 script_01e0:
     sMSG                                               ;; 0d:556f $04
-      db "<10>Welcome to Kett's.\nRooms ahead are\noccupied.<12>"
-      db "<1b>Please feel free\nto use the\nwestern room.<12>"
-      db "<1b>You can't get past\nthis door.\nIt's for Mr. Lee.", $00 ;; 0d:5570
-    sIF_FLAG wScriptFlags01.5                          ;; 0d:55ce $08 $0d $00 $63
-      sMSG                                             ;; 0d:55d2 $04
-        db "<12>"
-        db "<1b>", $00               ;; 0d:55d3
-      sIF_EQUIPED INV_ITEM_MIRROR                      ;; 0d:55d6 $09 $27 $00 $3c
-        sSET_MUSIC 0                                   ;; 0d:55da $f8 $00
-        sMSG                                           ;; 0d:55dc $04
-          db "T_that Mirror_!", $00                    ;; 0d:55dd
-        sDELAY 30                                      ;; 0d:55e8 $f0 $1e
-        sMSG                                           ;; 0d:55ea $04
-          db "\nUGGG_ GRRH_", $00                      ;; 0d:55eb
-        sDELAY 30                                      ;; 0d:55f7 $f0 $1e
-        sMSG                                           ;; 0d:55f9 $04
-          db "\nUG_ Hg_ GRRR_ _<12>"
-          db "<11>", $00 ;; 0d:55fa
-        sSFX 20                                        ;; 0d:560b $f9 $14
-        sFLASH_SCREEN                                  ;; 0d:560d $bf
-        sFLASH_SCREEN                                  ;; 0d:560e $bf
-        sDEL_NPC_1                                     ;; 0d:560f $18
-        sSPAWN_NPC 2                                   ;; 0d:5610 $fd $02
-        sSET_MUSIC 26                                  ;; 0d:5612 $f8 $1a
-      sELSE                                            ;; 0d:5614 $01 $1d
-        sMSG                                           ;; 0d:5616 $04
-          db "Your friend?\nNo__\nI do not know her.<12>"
-          db "<11>", $00 ;; 0d:5617
-      sENDIF                                           ;; 0d:5633
-    sELSE                                              ;; 0d:5633 $01 $04
-      sMSG                                             ;; 0d:5635 $04
+      db "<10>", $00
+    sIF_EQUIPED INV_ITEM_MIRROR
+      sSET_MUSIC 0
+      sMSG
+        db "T_that Mirror_!", $00
+      sDELAY 30
+      sMSG
+        db "\nUGGG_ GRRH_", $00
+      sDELAY 30
+      sMSG
+        db "\nUG_ Hg_ GRRR_ _<12>"
+        db "<11>", $00
+      sSFX 20
+      sFLASH_SCREEN
+      sFLASH_SCREEN
+      sDEL_NPC_1
+      sSPAWN_NPC 2
+      sSET_MUSIC 26
+    sELSE
+      sMSG
+        db "Welcome to Kett's.\nRooms ahead are\noccupied.<12>"
+        db "<1b>Please feel free\nto use the\nwestern room.<12>"
+        db "<1b>You can't get past\nthis door.\nIt's for Mr. Lee.", $00
+      sIF_FLAG wScriptFlags01.5
+        sMSG
+          db "<12><1b>Your friend?\nNo__\nI do not know her.<12>"
+          db "<11>", $00
+      sENDIF
+      sMSG
         db "<12>"
         db "<11>", $00               ;; 0d:5636
     sENDIF                                             ;; 0d:5639
