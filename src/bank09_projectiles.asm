@@ -945,8 +945,8 @@ gfxNpcBogard:
     INCBIN "npc/bogard.bin"                            ;; 09:5200
 
 ;@gfximg name=npc/last_guy width=2 height=8
-gfxNpcLastGuy:
-    INCBIN "npc/last_guy.bin"                          ;; 09:5300
+gfxNpcDuke:
+    INCBIN "npc/follower/duke.bin"                     ;; 09:5300
 
 ;@gfximg name=npc/follower/watts width=2 height=8
 gfxNpcWatts:
