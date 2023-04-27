@@ -2562,9 +2562,7 @@ script_01a9:
       sSPAWN_BOSS 3                                    ;; 0d:4f4e $fe $03
     sELSE                                              ;; 0d:4f50 $01 $11
       sIF_FLAG !wScriptFlags02.4                       ;; 0d:4f52 $08 $94 $00 $09
-        sSET_NPC_TYPES 89                              ;; 0d:4f56 $fc $59
-        sSPAWN_NPC 0                                   ;; 0d:4f58 $fd $00
-        sSET_CHEST_OPEN_SCRIPT1 script_0435            ;; 0d:4f5a $c9 $04 $35
+        sCALL script_0435
       sELSE                                            ;; 0d:4f5d $01 $04
         sSET_ROOM_TILE $59, 2, 1                       ;; 0d:4f5f $b0 $59 $02 $01
       sENDIF                                           ;; 0d:4f63
@@ -3329,11 +3327,11 @@ script_01f3:
       db "<10>", $00                                   ;; 0d:5b92
     sIF_FLAG wScriptFlags02.1, !wScriptFlags02.6       ;; 0d:5b94 $08 $11 $96 $00 $16
       sMSG                                             ;; 0d:5b99 $04
-        db "The airship went\nto the west!<12>"
+        db "An airship went\nto the west!<12>"
         db "<1b>", $00 ;; 0d:5b9a
     sENDIF                                             ;; 0d:5baf
     sMSG                                               ;; 0d:5baf $04
-      db "The Gaia Pass\nleads to the\nwestern land.<12>"
+      db "The only way west\nis to pass through\nGaia.<12>"
       db "<11>", $00 ;; 0d:5bb0
     sEND                                               ;; 0d:5bcc $00
 
@@ -3342,16 +3340,16 @@ script_01f4:
       db "<10>", $00                                   ;; 0d:5bce
     sIF_FLAG !wScriptFlags04.6                         ;; 0d:5bd0 $08 $a6 $00 $5d
       sMSG                                             ;; 0d:5bd4 $04
-        db "I used to play\nat the Old Mine\nwith Watts!", $00 ;; 0d:5bd5
+        db "I used to play\nat the old mine\nwith Watts!", $00
       sIF_FLAG wScriptFlags02.1                        ;; 0d:5bf2 $08 $11 $00 $39
         sMSG                                           ;; 0d:5bf6 $04
           db "<12>"
-          db "<1b>Wanna use the\ntrolley?  You\nhave to oil it!<12>"
+          db "<1b>Wanna use the\nmine cart? You'll\nhave to oil it!<12>"
           db "<1b>You can get it\nat the store\nto the south!", $00 ;; 0d:5bf7
       sENDIF                                           ;; 0d:5c2f
     sELSE                                              ;; 0d:5c2f $01 $15
       sMSG                                             ;; 0d:5c31 $04
-        db "Watts is selling\nSilver stuff!", $00      ;; 0d:5c32
+        db "Watts is selling\nweapons and armor\nmade from mithril!", $00
     sENDIF                                             ;; 0d:5c46
     sMSG                                               ;; 0d:5c46 $04
       db "<12>"
@@ -3361,7 +3359,7 @@ script_01f4:
 script_01f5:
     sMSG                                               ;; 0d:5c4b $04
       db "<10>Gaia has its own\nwill and feelings.<12>"
-      db "<1b>It likes Silver.\nStrange, isn't it?<12>"
+      db "<1b>They say it likes\nthe flavor of\nmithril.<12>"
       db "<11>", $00 ;; 0d:5c4c
     sEND                                               ;; 0d:5c7f $00
 
@@ -3370,11 +3368,11 @@ script_01f6:
       db "<10>", $00                                   ;; 0d:5c81
     sIF_FLAG !wScriptFlags04.6                         ;; 0d:5c83 $08 $a6 $00 $37
       sMSG                                             ;; 0d:5c87 $04
-        db "Watts likes the\nmine!  He went\nthere today, too!<12>"
-        db "<1b>He's looking for\nsome Silver.", $00 ;; 0d:5c88
+        db "Watts likes to\nexplore! He went\nto the mine today.<12>"
+        db "<1b>He's searching for\nsome mithril.", $00
     sELSE                                              ;; 0d:5cbc $01 $19
       sMSG                                             ;; 0d:5cbe $04
-        db "Hi!\nWatts made the\nSilver stuff!", $00   ;; 0d:5cbf
+        db "Watts made stuff\nfrom some mithril\nhe found!", $00
     sENDIF                                             ;; 0d:5cd7
     sMSG                                               ;; 0d:5cd7 $04
       db "<12>"
@@ -3386,8 +3384,8 @@ script_01f7:
 
 script_01f8:
     sMSG                                               ;; 0d:5cdd $04
-      db "<10>Watts:I made some\n things out of\n that Silver!<12>"
-      db "<1b> Take these and\n you can pass\n through Gaia!<12>"
+      db "<10>Watts:I made these\n weapons and armor\n with the mithril!<12>"
+      db "<1b> Buy these and\n you can pass\n through Gaia!<12>"
       db "<11>", $00 ;; 0d:5cde
     sOPEN_SHOP 6                                       ;; 0d:5d1d $f6 $06
     sEND                                               ;; 0d:5d1f $00

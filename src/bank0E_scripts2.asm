@@ -2739,7 +2739,7 @@ script_0401:
         sFADE_TO_NORMAL                                ;; 0e:515e $bc
         sDELAY 60                                      ;; 0e:515f $f0 $3c
         sMSG                                           ;; 0e:5161 $04
-          db "<10>Watts:Wow!?\n Are you okay?\n<BOY>:_ Ouch!_ Oh_<12>"
+          db "<10>Watts:Wow!?\n Are you okay?\n<BOY>:_ Ouch!_<12>"
           db "<11>", $00 ;; 0e:5162
         sNPC_1_STEP_FORWARD                            ;; 0e:5189 $10
         sNPC_1_STEP_FORWARD                            ;; 0e:518a $10
@@ -2752,8 +2752,8 @@ script_0401:
         sSET_PLAYER_DIRECTION_RIGHT                    ;; 0e:5194 $86
         sDELAY 60                                      ;; 0e:5195 $f0 $3c
         sMSG                                           ;; 0e:5197 $04
-          db "<10><BOY>:Thanks.\n Do you know this\n cave well?<12>"
-          db "<1b>Watts:Looking for\n Silver? Let's go\n together, then!<12>"
+          db "<10><BOY>:Thanks.\n Do you know this\n mine well?<12>"
+          db "<1b>Watts:Looking for\n mithril? Come\n with me, then!<12>"
           db "<11>", $00 ;; 0e:5198
         sSET_NPC_TYPES 78                              ;; 0e:51db $fc $4e
         sDEL_NPC_1                                     ;; 0e:51dd $18
@@ -3121,10 +3121,9 @@ script_0434:
     sEND                                               ;; 0e:5427 $00
 
 script_0435:
-    sSFX 15                                            ;; 0e:5428 $f9 $0f
-    sCHANGE_INTO_EMPTY_CHEST                           ;; 0e:542a $af
+    sDELAY 60
     sMSG                                               ;; 0e:542b $04
-      db "<10>Found Silver!<12>"
+      db "<10>Watts:There's\n plenty of mithril\n down here!<12>"
       db "<11>", $00  ;; 0e:542c
     sSET_FLAG wScriptFlags02.4                         ;; 0e:5438 $da $14
     sDELAY 60                                          ;; 0e:543a $f0 $3c
@@ -3134,8 +3133,8 @@ script_0435:
     sFOLLOWER_SET_POSITION 7, 5                        ;; 0e:5443 $99 $07 $05
     sDELAY 80                                          ;; 0e:5446 $f0 $50
     sMSG                                               ;; 0e:5448 $04
-      db "<10>Watts:I'll take it\n back and forge\n armor and swords!<12>"
-      db "<1b> Gaia will let you\n in if you wear\n Silver stuff!<12>"
+      db "<10>Watts:I'll take it\n back and forge\n swords and armor!<12>"
+      db "<1b> Gaia will let you\n in if you wear\n mithril stuff!<12>"
       db "<1b> Come see me at\n the Dwarf Cave!<12>"
       db "<11>", $00 ;; 0e:5449
     sFOLLOWER_DIRECTION_RIGHT                          ;; 0e:54a5 $96
