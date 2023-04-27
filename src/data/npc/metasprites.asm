@@ -492,7 +492,7 @@ metaspritesRabiteFlowerFlameRed:
 
 ;@data format=bbb amount=
 ; A variant of the data_03_7cfe metasprites table using OBP0 to turn certain npcs red.
-; 
+metaspritesShieldlessPC:
     db   $20, $5a, $58
     db   $00, $58, $5a
     db   $00, $54, $56

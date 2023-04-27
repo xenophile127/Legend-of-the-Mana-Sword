@@ -225,4 +225,10 @@ ENDC
     NPC_DATA $81, $5e, $5c, $02, gfxNpcPrisonBars, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:70e2 NPC_PRISION_BARS
     NPC_DATA $81, $5f, $40, $04, gfxNpcMusic, tileorderNpc, data_03_7d46, $00, $01, $00, $00, $00, $00, $00, $00, $00, $00, script_003d, $0000 ;; 03:70fa NPC_MUSIC_NOTES
     NPC_DATA $81, $5e, $40, $08, gfxNpcMagicMerchant, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_025d, $0000 ;; 03:7112 NPC_MAGIC_SALESMAN
-    NPC_DATA $91, $3f, $60, $08, gfxNpcDuke, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $06, $03, $07, $08, script_003d, $0000 ;; 03:712a NPC_LAST_GUY
+
+; A NPC styled like the PC but without the shield for certain cutscenes.
+IF DEF(PLAYER_GRAPHICS_AMANDA)
+    NPC_DATA $91, $05, $50, $08, gfxNpcAmanda, tileorderNpc, metaspritesShieldlessPC, $00, $01, $01, $00, $00, $00, $06, $03, $07, $08, script_003d, $0000 ;; 03:712a NPC_LAST_GUY
+ELIF DEF(PLAYER_GRAPHICS_ORIGINAL)
+    NPC_DATA $91, $05, $50, $08, gfxNpcDuke, tileorderNpc, metaspritesShieldlessPC, $00, $01, $01, $00, $00, $00, $06, $03, $07, $08, script_003d, $0000 ;; 03:712a NPC_LAST_GUY
+ENDC

@@ -5312,19 +5312,23 @@ script_0538:
     sEND                                               ;; 0e:6753 $00
 
 script_0539:
-    sLOAD_ROOM_INSTANT 3, $01, 16, 3                   ;; 0e:6754 $f3 $03 $01 $10 $03
+    sLOAD_ROOM_INSTANT 3, $01, 20, 3
     sSET_NPC_TYPES 76                                  ;; 0e:6759 $fc $4c
     sSPAWN_NPC 0                                       ;; 0e:675b $fd $00
+; Replace the player with an NPC that looks the same without the shield
+    sSPAWN_NPC 2
+    sSET_NPC_2_POSITION 16, 3
+    sSET_NPC_2_DIRECTION_RIGHT
     sDELAY 20                                          ;; 0e:675d $f0 $14
     sSET_MUSIC 27                                      ;; 0e:675f $f8 $1b
-    sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:6761 $86
     sFADE_TO_NORMAL                                    ;; 0e:6762 $bc
     sDELAY 180                                         ;; 0e:6763 $f0 $b4
-    sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:6765 $87
+    sSET_NPC_2_DIRECTION_LEFT
     sMSG                                               ;; 0e:6766 $04
       db "<10>Bogard:<BOY>__\n<BOY>:_ Bogard!\n How are you?", $00
-    sPLAYER_STEP_FORWARD                               ;; 0e:6787 $80
-    sPLAYER_STEP_FORWARD                               ;; 0e:6788 $80
+    sNPC_2_STEP_FORWARD
+    sNPC_2_STEP_FORWARD
+    sSET_NPC_2_DIRECTION_LEFT
     sMSG                                               ;; 0e:6789 $04
       db "<12>"
       db "<1b>Bogard:I was\n thrown off the\n airship__<12>"
@@ -5333,21 +5337,22 @@ script_0539:
       db "<1b> You're the last\n hope of the\n Gemma Knights.<12>"
       db "<11>", $00 ;; 0e:678a
     sDELAY 40                                          ;; 0e:67da $f0 $28
-    sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:67dc $85
-    sPLAYER_STEP_FORWARD                               ;; 0e:67dd $80
-    sPLAYER_STEP_FORWARD                               ;; 0e:67de $80
-    sPLAYER_STEP_FORWARD                               ;; 0e:67df $80
-    sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:67e0 $87
-    sPLAYER_STEP_FORWARD                               ;; 0e:67e1 $80
-    sPLAYER_STEP_FORWARD                               ;; 0e:67e2 $80
-    sPLAYER_STEP_FORWARD                               ;; 0e:67e3 $80
-    sPLAYER_STEP_FORWARD                               ;; 0e:67e4 $80
-    sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:67e5 $85
+    sSET_NPC_2_DIRECTION_DOWN
+    sNPC_2_STEP_FORWARD
+    sNPC_2_STEP_FORWARD
+    sNPC_2_STEP_FORWARD
+    sSET_NPC_2_DIRECTION_LEFT
+    sNPC_2_STEP_FORWARD
+    sNPC_2_STEP_FORWARD
+    sNPC_2_STEP_FORWARD
+    sNPC_2_STEP_FORWARD
+    sSET_NPC_2_DIRECTION_DOWN
     sDELAY 20                                          ;; 0e:67e6 $f0 $14
     sMSG                                               ;; 0e:67e8 $04
       db "<10><BOY>:I can't do\n this anymore_\n I can't do it!<12>"
       db "<11>", $00 ;; 0e:67e9
     sDELAY 40                                          ;; 0e:680a $f0 $28
+    sSET_NPC_2_DIRECTION_UP
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:680c $84
     sDELAY 10                                          ;; 0e:680d $f0 $0a
     sMSG                                               ;; 0e:680f $04
@@ -5361,6 +5366,8 @@ script_0539:
       db "<1b><BOY>:You do it!\n You're the Gemma\n Knight. It's You!<12>"
       db "<1b>Bogard:_ Shut up!\n _ GET OUT!!_<12>", $00
     sDELAY 20                                          ;; 0e:68c9 $f0 $14
+    sSET_PLAYER_POSITION 10, 6
+    sDEL_NPC_2
     sMSG                                               ;; 0e:68cb $04
       db "<11>", $00                                   ;; 0e:68cc
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:68ce $87
@@ -6380,6 +6387,14 @@ script_0548:
     sFOLLOWER_DIRECTION_LEFT                           ;; 0e:79c3 $97
     sSET_MUSIC 0                                       ;; 0e:79c4 $f8 $00
     sFOLLOWER_SET_POSITION 4, 3                        ;; 0e:79c6 $99 $04 $03
+
+; Replace the player with an NPC that looks the same without the shield
+    sSET_NPC_TYPES 37
+    sSPAWN_NPC 1
+    sSET_NPC_1_DIRECTION_RIGHT
+    sSET_NPC_1_POSITION 8, 3
+    sSET_PLAYER_POSITION 20, 0
+
     sFADE_TO_NORMAL                                    ;; 0e:79c9 $bc
     sDELAY 60                                          ;; 0e:79ca $f0 $3c
     sFOLLOWER_DIRECTION_RIGHT                          ;; 0e:79cc $96
@@ -6388,7 +6403,7 @@ script_0548:
     sDELAY 60                                          ;; 0e:79d4 $f0 $3c
     sMSG                                               ;; 0e:79d6 $04
       db "<BOY>_?\n", $00                              ;; 0e:79d7
-    sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:79dc $87
+    sSET_NPC_1_DIRECTION_LEFT
     sMSG                                               ;; 0e:79dd $04
       db "<BOY>:What?<12>"
       db "<1b><GIRL>:I think you\n should be able to\n use Wisp's magic.<12>"
@@ -6410,18 +6425,25 @@ script_0548:
     sFADE_TO_NORMAL                                    ;; 0e:7a72 $bc
     sDELAY 80                                          ;; 0e:7a73 $f0 $50
     sMSG                                               ;; 0e:7a75 $04
-      db "<10> Ah!  New victim!", $00                  ;; 0e:7a76
+      db "<10>\n Ah! Fresh blood!", $00
     sDELAY 90                                          ;; 0e:7a88 $f0 $5a
     sMSG                                               ;; 0e:7a8a $04
       db "<11>", $00                                   ;; 0e:7a8b
     sDELAY 40                                          ;; 0e:7a8d $f0 $28
     sFADE_TO_BLACK                                     ;; 0e:7a8f $bd
-    sLOAD_ROOM_INSTANT 3, $30, 8, 3                    ;; 0e:7a90 $f3 $03 $30 $08 $03
+    sLOAD_ROOM_INSTANT 3, $30, 20, 0
+    sSPAWN_NPC 1
+    sSET_NPC_1_DIRECTION_LEFT
+    sSET_NPC_1_POSITION 8, 3
     sFADE_TO_NORMAL                                    ;; 0e:7a95 $bc
     sDELAY 20                                          ;; 0e:7a96 $f0 $14
-    sPLAYER_STEP_FORWARD                               ;; 0e:7a98 $80
-    sPLAYER_STEP_FORWARD                               ;; 0e:7a99 $80
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:7a9a $85
+    sNPC_1_STEP_FORWARD
+    sNPC_1_STEP_FORWARD
+    sSET_NPC_1_DIRECTION_DOWN
+    sDELAY 20
+    sSET_PLAYER_POSITION 6, 3
+    sDEL_NPC_1
     sMSG                                               ;; 0e:7a9b $04
       db "<10><BOY>:_ _ Good m_\n       ?!\n<GIRL> is missing!<12>"
       db "<11>", $00 ;; 0e:7a9c

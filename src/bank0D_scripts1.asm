@@ -3619,9 +3619,13 @@ script_0208:
       db "?\n___ _ <BOY>__!<12><11>", $00
     sFADE_TO_BLACK                                     ;; 0d:6024 $bd
     sUNK_C5 7                                          ;; 0d:6025 $c5 $07
-    sLOAD_ROOM_INSTANT 4, $00, 14, 3                   ;; 0d:6027 $f3 $04 $00 $0e $03
+; Replace the player with an NPC that looks the same without the shield
+    sLOAD_ROOM_INSTANT 4, $00, 20, 3
     sSET_NPC_TYPES 37                                  ;; 0d:602c $fc $25
     sSPAWN_NPC 2                                       ;; 0d:602e $fd $02
+    sSPAWN_NPC 1
+    sSET_NPC_2_POSITION 14, 3
+    sSET_NPC_2_DIRECTION_RIGHT
     sSET_NPC_1_POSITION 10, 4                          ;; 0d:6030 $19 $0a $04
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0d:6033 $16
     sDELAY 90                                          ;; 0d:6034 $f0 $5a
@@ -3651,9 +3655,13 @@ script_0208:
     sDELAY 60                                          ;; 0d:60ac $f0 $3c
     sFADE_TO_NORMAL                                    ;; 0d:60ae $bc
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0d:60af $85
-    sPLAYER_STEP_FORWARD                               ;; 0d:60b0 $80
-    sPLAYER_STEP_FORWARD                               ;; 0d:60b1 $80
-    sDELAY 50                                          ;; 0d:60b2 $f0 $32
+    sSET_NPC_2_DIRECTION_DOWN
+    sNPC_2_STEP_FORWARD
+    sNPC_2_STEP_FORWARD
+    sDELAY 16
+    sSET_PLAYER_POSITION 14, 5
+    sDEL_NPC_2
+    sDELAY 34
     sMSG                                               ;; 0d:60b4 $04
       db "<10><BOY>:_Where am I?\n", $00               ;; 0d:60b5
     sDELAY 30                                          ;; 0d:60c2 $f0 $1e

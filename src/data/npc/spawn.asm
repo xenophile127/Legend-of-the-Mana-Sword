@@ -28,7 +28,7 @@ NPCSpawnPointers:
     dw   data_03_75e2, data_03_75ea, data_03_75ba      ;; 03:71ba ??????
     dw   data_03_75e2, data_03_75e2, data_03_750e      ;; 03:71c0 ??????
     dw   data_03_74f0, data_03_75f2, data_03_75fa      ;; 03:71c6 ??????
-    dw   data_03_7602, data_03_760c, data_03_760c      ;; 03:71cc ??????
+    dw   shadowKnight, data_03_75fa, data_03_75fa      ;; 03:71cc ??????
     dw   data_03_7616, data_03_761e, data_03_7626      ;; 03:71d2 ??????
     dw   data_03_762e, data_03_7636, data_03_763e      ;; 03:71d8 ??????
     dw   data_03_7646, data_03_764e, data_03_763e      ;; 03:71de ??????
@@ -42,7 +42,7 @@ NPCSpawnPointers:
     dw   data_03_76c6, data_03_76ce, data_03_769e      ;; 03:720e ??????
     dw   data_03_76e0, data_03_76e0, data_03_76d6      ;; 03:7214 ??????
     dw   data_03_7738, data_03_7738, data_03_76e8      ;; 03:721a ......
-    dw   data_03_7892, data_03_7892, data_03_7756      ;; 03:7220 ......
+    dw   data_03_7892, shieldlessPC, data_03_7756      ;; 03:7220 ......
     dw   data_03_779a, data_03_771a, data_03_771a      ;; 03:7226 ??????
     dw   data_03_7742, data_03_76f2, data_03_76f2      ;; 03:722c ......
     dw   data_03_777c, data_03_76f2, data_03_7b02      ;; 03:7232 ??????
@@ -81,7 +81,7 @@ NPCSpawnPointers:
     dw   data_03_79c8, data_03_79d0, data_03_7530      ;; 03:72f8 ??????
     dw   data_03_7530, data_03_7ae4, data_03_786c      ;; 03:72fe ??????
     dw   data_03_79d8, data_03_79e0, data_03_7530      ;; 03:7304 ??????
-    dw   data_03_77c2, data_03_7876, data_03_7530      ;; 03:730a ??????
+    dw   data_03_77c2, data_03_7876, shieldlessPC      ;; 03:730a ??????
     dw   data_03_772e, data_03_7aee, data_03_7aee      ;; 03:7310 ??????
     dw   data_03_781c, data_03_7b02, data_03_7812      ;; 03:7316 ??????
     dw   data_03_77cc, data_03_77cc, data_03_77cc      ;; 03:731c ??????
@@ -381,11 +381,11 @@ data_03_75fa:
     db   2, 2, NPC_GLAIVE_KNIGHT, NPC_GLAIVE_KNIGHT, NPC_GLAIVE_KNIGHT, NPC_GLAIVE_KNIGHT ;; 03:75fa ??????
     db   $80, $80                                      ;; 03:7600 ??
 
-data_03_7602:
+shadowKnight:
     db   1, 1, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD ;; 03:7602 ??????
     db   $0a, $07, $80, $80                            ;; 03:7608 ????
 
-data_03_760c:
+shieldlessPC:
     db   1, 1, NPC_LAST_GUY, NPC_LAST_GUY, NPC_LAST_GUY, NPC_LAST_GUY ;; 03:760c ??????
     db   $0a, $07, $80, $80                            ;; 03:7612 ????
 
