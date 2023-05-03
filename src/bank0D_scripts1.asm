@@ -3193,9 +3193,9 @@ script_01e8:
 
 script_01e9:
     sMSG                                               ;; 0d:57d4 $04
-      db "<10>The Waterfalls\nmake all of our\nrivers flow.<12>"
-      db "<1b>The water springs\nfrom the root of\nthe Tree of Mana.<12>"
-      db "<1b>Mana is supporting\nour nature.<12>"
+      db "<10>The Waterfalls\nmake all of the\nrivers flow.<12>"
+      db "<1b>The water springs\nfrom the root of\nthe Mana Tree.<12>"
+      db "<1b>Mana is supporting\nnature.<12>"
       db "<11>", $00 ;; 0d:57d5
     sEND                                               ;; 0d:582c $00
 
@@ -3230,7 +3230,7 @@ script_01ec:
 
 script_01ed:
     sMSG                                               ;; 0d:58c9 $04
-      db "<10>I hear that the\nTree of Mana is \n very beautiful__<12>"
+      db "<10>I hear that the\nMana Tree is very\nbeautiful__<12>"
       db "<11>", $00 ;; 0d:58ca
     sEND                                               ;; 0d:58ea $00
 
@@ -4836,7 +4836,7 @@ script_0267:
 script_0268:
     sMSG                                               ;; 0d:7988 $04
       db "<10>Shadow Knight\nis searching for\nsomeone_<12>"
-      db "<1b>Someone who knows\nthe secret of the\nTree of Mana.<12>"
+      db "<1b>Someone who knows\nthe secret of the\nMana Tree.<12>"
       db "<11>", $00 ;; 0d:7989
     sEND                                               ;; 0d:79cb $00
 

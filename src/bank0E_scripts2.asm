@@ -5799,7 +5799,7 @@ script_0540:
       db "I will, Mom.", $00                           ;; 0e:71f4
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:71fc $84
     sMSG                                               ;; 0e:71fd $04
-      db "\n I will be the new\n Tree of Mana.", $00   ;; 0e:71fe
+      db "\n I will be the new\n Mana Tree.", $00   ;; 0e:71fe
     sDELAY 120                                         ;; 0e:7214 $f0 $78
     sMSG                                               ;; 0e:7216 $04
       db "<1b> But if I am the\n last one left,\n when I fall_", $00 ;; 0e:7217
