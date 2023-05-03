@@ -2846,13 +2846,14 @@ script_01bb:
       sFOLLOWER_DIRECTION_UP                           ;; 0d:530d $94
       sSET_PLAYER_POSITION 16, 12                      ;; 0d:530e $8a $10 $0c
       sFOLLOWER_SET_POSITION 16, 12                    ;; 0d:5311 $99 $10 $0c
-      sLOOP 6, 2                                       ;; 0d:5314 $03 $06 $02
+      sLOOP 7, 2
         sPLAYER_STEP_FORWARD                           ;; 0d:5317 $80
       sEND                                             ;; 0d:5318 $00
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:5319 $84
       sMSG                                             ;; 0d:531a $04
-        db "<10>Shadow Knight:\n Looks like you're\n a bit stronger.<12>"
-        db "<1b> But, not strong\n enough to beat\n me", $00
+        db "<10>Shadow Knight:It\n has been a while,\n <BOY>.<12>"
+        db "<1b> Your skills have\n improved, but are\n you strong enough<12>"
+        db "<1b> to beat me", $00
       sIF_FLAG wScriptFlags01.7
         sMSG
           db ", girl", $00
@@ -2862,12 +2863,12 @@ script_01bb:
           db ", boy", $00
       sENDIF
       sMSG
-        db "!<12><1b>", $00
+        db "?\n<BOY>:Shut up! I'll\n avenge Willy!<12><1b>", $00
       sSET_PLAYER_DIRECTION_RIGHT                      ;; 0d:5359 $86
       sFOLLOWER_DIRECTION_LEFT                         ;; 0d:535a $97
       sMSG                                             ;; 0d:535b $04
-        db "<BOY>:Stay outside.\n It will be too\n dangerous here.<12>"
-        db "<1b><GIRL>:__ Okay__\n Be careful.<12>"
+        db "<BOY>:Stay outside.\n This fight will\n be too dangerous.<12>"
+        db "<1b><GIRL>:Okay__<12>"
         db "<11>", $00 ;; 0d:535c
       sFOLLOWER_DIRECTION_DOWN                         ;; 0d:5391 $95
       sFOLLOWER_STEP_FORWARD                           ;; 0d:5392 $90
@@ -2879,22 +2880,7 @@ script_01bb:
       sDELAY 20                                        ;; 0d:539d $f0 $14
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:539f $84
       sMSG                                             ;; 0d:53a0 $04
-        db "<10>Shadow Knight:\n Good ", $00
-      sIF_FLAG !wScriptFlags01.7, !wScriptFlags06.3
-        sMSG
-          db "idea", $00
-      sENDIF
-      sIF_FLAG wScriptFlags01.7
-        sMSG
-          db "girl", $00
-      sENDIF
-      sIF_FLAG wScriptFlags06.3
-        sMSG
-          db "boy", $00
-      sENDIF
-      sMSG
-        db ", <BOY>!\n __ Now, fight me!<12>"
-        db "<11>", $00 ;; 0d:53a1
+        db "<10>Shadow Knight:How\n noble of you.\n Now, fight me!<12><11>", $00
       sSET_MUSIC 19                                    ;; 0d:53c1 $f8 $13
     sENDIF                                             ;; 0d:53c3
     sEND                                               ;; 0d:53c3 $00
@@ -3244,7 +3230,7 @@ script_01ec:
 
 script_01ed:
     sMSG                                               ;; 0d:58c9 $04
-      db "<10>I hear that the\nTree of Mana is\nvery beautiful__<12>"
+      db "<10>I hear that the\nTree of Mana is \n very beautiful__<12>"
       db "<11>", $00 ;; 0d:58ca
     sEND                                               ;; 0d:58ea $00
 

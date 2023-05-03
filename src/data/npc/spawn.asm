@@ -383,7 +383,7 @@ data_03_75fa:
 
 shadowKnight:
     db   1, 1, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD ;; 03:7602 ??????
-    db   $0a, $07, $80, $80                            ;; 03:7608 ????
+    db   $09, $08, $80, $80                            ;; 03:7608 ????
 
 shieldlessPC:
     db   1, 1, NPC_LAST_GUY, NPC_LAST_GUY, NPC_LAST_GUY, NPC_LAST_GUY ;; 03:760c ??????
