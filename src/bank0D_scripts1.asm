@@ -3072,7 +3072,11 @@ script_01cc:
     sSFX 15                                            ;; 0d:5531 $f9 $0f
     sGIVE_MAGIC INV_MAGIC_NUKE                         ;; 0d:5533 $d6 $07
     sMSG                                               ;; 0d:5535 $04
+IF DEF(MANA)
       db "Received the Book\nof Shade!\nLearned Nuke!<12>"
+ELIF DEF(FINAL_FANTASY)
+      db "Received the Book\nof Shade!\nLearned Flare!<12>"
+ENDC
       db "<11>", $00 ;; 0d:5536
     sSET_FLAG wScriptFlags06.0                         ;; 0d:555a $da $30
     sDELAY 30                                          ;; 0d:555c $f0 $1e
@@ -4229,8 +4233,15 @@ script_022f:
         db "Done?!\n", $00
       sIF_INVENTORY INV_MAGIC_NUKE                     ;; 0d:6d7c $0a $08 $00 $3c
         sMSG                                           ;; 0d:6d80 $04
-          db " One crystal in\n the desert can be<12>"
-          db "<1b> destroyed with\n Nuke.\n __ Find it!", $00
+IF DEF(MANA)
+          db " A crystal in the\n desert can be<12>"
+          db "<1b> destroyed with\n Nuke.<12>"
+          db "<1b> It rings when\n struck.\n __ Find it!", $00
+ELIF DEF(FINAL_FANTASY)
+          db " A crystal in the\n desert can be<12>"
+          db "<1b> destroyed with\n Flare.<12>"
+          db "<1b> It rings when\n struck.\n __ Find it!", $00
+ENDC
       sELSE                                            ;; 0d:6dba $01 $5c
         sMSG                                           ;; 0d:6dbc $04
           db " But you need the\n ultimate magic.<12>"
