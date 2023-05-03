@@ -4729,13 +4729,13 @@ script_025e:
 script_025f:
     sSET_NPC_1_DIRECTION_DOWN                          ;; 0d:77dd $15
     sMSG                                               ;; 0d:77de $04
-      db "<10> Howdy!\n 10GP a night!\n Wanna stay?<12>"
+      db "<10> Howdy!\n 10 lucre a night!\n Wanna stay?<12>"
       db "<13>", $00 ;; 0d:77df
     sIF_FLAG !wScriptFlags0F.7                         ;; 0d:77fc $08 $ff $00 $21
       sTAKE_MONEY 10                                   ;; 0d:7800 $d1 $0a $00
       sIF_FLAG wScriptFlags.6                          ;; 0d:7803 $08 $06 $00 $17
         sMSG                                           ;; 0d:7807 $04
-          db "<1b> Sorry.\n Not enough GP!<12>"
+          db "<1b> Sorry.\n Not enough lucre!<12>"
           db "<11>", $00 ;; 0d:7808
       sELSE                                            ;; 0d:781c $01 $03
         sCALL script_0405                              ;; 0d:781e $02 $51 $fb

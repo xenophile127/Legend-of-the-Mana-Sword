@@ -6456,7 +6456,7 @@ script_0548:
 
 script_0549:
     sMSG                                               ;; 0e:7ac2 $04
-      db "<10> One and only\n <AXE>Battle for only\n 150GP!  Want it?<12>"
+      db "<10> The one and only\n <AXE>Battle for 150\n lucre! Want it?<12>"
       db "<13>", $00 ;; 0e:7ac3
     sIF_FLAG !wScriptFlags0F.7                         ;; 0e:7aeb $08 $ff $00 $38
       sMSG                                             ;; 0e:7aef $04
