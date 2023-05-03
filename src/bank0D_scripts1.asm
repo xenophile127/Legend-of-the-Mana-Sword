@@ -2452,7 +2452,7 @@ script_01a4:
     sEND                                               ;; 0d:4dda $00
 
 script_01a5:
-    sIF_FLAG wScriptFlags0E.2, wScriptFlags0E.3, !wScriptFlags0E.4, wScriptFlags0E.5, !wScriptFlags0E.6, wScriptFlags0E.7 ;; 0d:4ddb $08 $72 $73 $f4 $75 $f6 $77 $00 $23
+    sIF_FLAG wScriptFlags0E.2, wScriptFlags0E.3, !wScriptFlags0E.4, wScriptFlags0E.5, !wScriptFlags0E.6, wScriptFlags0E.7, !wScriptFlags06.4
       sSET_MUSIC 0                                     ;; 0d:4de4 $f8 $00
       sSFX 34                                          ;; 0d:4de6 $f9 $22
       sMSG                                             ;; 0d:4de8 $04
@@ -2461,7 +2461,7 @@ script_01a5:
       sSET_FLAG wScriptFlags06.4                       ;; 0d:4e01 $da $34
       sSET_ROOM_TILE $59, 8, 1                         ;; 0d:4e03 $b0 $59 $08 $01
     sENDIF                                             ;; 0d:4e07
-    sIF_FLAG wScriptFlags0E.2, wScriptFlags0E.3, !wScriptFlags0E.4, wScriptFlags0E.5, wScriptFlags0E.6, !wScriptFlags0E.7 ;; 0d:4e07 $08 $72 $73 $f4 $75 $76 $f7 $00 $21
+    sIF_FLAG wScriptFlags0E.2, wScriptFlags0E.3, !wScriptFlags0E.4, wScriptFlags0E.5, wScriptFlags0E.6, !wScriptFlags0E.7, !wScriptFlags02.7
       sSET_MUSIC 0                                     ;; 0d:4e10 $f8 $00
       sSFX 34                                          ;; 0d:4e12 $f9 $22
       sMSG                                             ;; 0d:4e14 $04
@@ -2470,7 +2470,7 @@ script_01a5:
       sSET_FLAG wScriptFlags02.7                       ;; 0d:4e2b $da $17
       sSET_ROOM_TILE $59, 8, 1                         ;; 0d:4e2d $b0 $59 $08 $01
     sENDIF                                             ;; 0d:4e31
-    sIF_FLAG wScriptFlags0E.2, wScriptFlags0E.3, !wScriptFlags0E.4, wScriptFlags0E.5, wScriptFlags0E.6, wScriptFlags0E.7 ;; 0d:4e31 $08 $72 $73 $f4 $75 $76 $77 $00 $1b
+    sIF_FLAG wScriptFlags0E.2, wScriptFlags0E.3, !wScriptFlags0E.4, wScriptFlags0E.5, wScriptFlags0E.6, wScriptFlags0E.7, !wScriptFlags06.2
       sSET_MUSIC 0                                     ;; 0d:4e3a $f8 $00
       sSFX 34                                          ;; 0d:4e3c $f9 $22
       sMSG                                             ;; 0d:4e3e $04
