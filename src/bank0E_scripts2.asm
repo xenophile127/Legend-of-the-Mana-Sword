@@ -5025,7 +5025,7 @@ script_0534:
     sMSG                                               ;; 0e:6390 $04
       db "<12>"
       db "<1b>Shadow Knight:_\n A miracle? _ How?<12>"
-      db "<1b>Julius:There is\n one with the\n key to it.<12>"
+      db "<1b>Julius:I have seen\n there is a girl\n who has the key.<12>"
       db "<1b>Shadow Knight:__\n Good. Find it.\nJulius:Yes, Sir!", $00
     sEND                                               ;; 0e:63dd $00
 
