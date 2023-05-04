@@ -848,10 +848,9 @@ script_008a:
     sEND                                               ;; 0d:4515 $00
 
 script_008b:
-    sIF_FLAG !wScriptFlags.7                           ;; 0d:4516 $08 $87 $00 $04
-      sSET_NPC_TYPES 10                                ;; 0d:451a $fc $0a
-      sSPAWN_NPC 0                                     ;; 0d:451c $fd $00
-    sENDIF                                             ;; 0d:451e
+    ; For the first ice puzzle load the snowman even it was previously destroyed.
+    sSET_NPC_TYPES 10
+    sSPAWN_NPC 0
     sEND                                               ;; 0d:451e $00
 
 script_008c:

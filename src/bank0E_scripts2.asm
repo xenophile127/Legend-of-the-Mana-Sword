@@ -4600,11 +4600,12 @@ script_0503:
     sEND                                               ;; 0e:5f4c $00
 
 script_0504:
-    sIF_TRIGGERED_ON_BY $c9, $a9                       ;; 0e:5f4d $0b $c9 $a9 $00 $03
+    ; Modified to detect c1 (the player during knockback)
+    sIF_TRIGGERED_ON_BY $c9, $a9, $c1
       sSFX 16                                          ;; 0e:5f52 $f9 $10
       sOPEN_NORTH_DOOR                                 ;; 0e:5f54 $e0
     sENDIF                                             ;; 0e:5f55
-    sIF_TRIGGERED_OFF_BY $c9, $a9                      ;; 0e:5f55 $0c $c9 $a9 $00 $03
+    sIF_TRIGGERED_OFF_BY $c9, $a9, $c1
       sSFX 16                                          ;; 0e:5f5a $f9 $10
       sCLOSE_NORTH_DOOR                                ;; 0e:5f5c $e1
     sENDIF                                             ;; 0e:5f5d
