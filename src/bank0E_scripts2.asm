@@ -5426,9 +5426,10 @@ script_053a:
     sFOLLOWER_DIRECTION_DOWN                           ;; 0e:6a6a $95
     sPLAYER_STEP_FORWARD                               ;; 0e:6a6b $80
     sPLAYER_STEP_FORWARD                               ;; 0e:6a6c $80
-    sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:6a6d $86
+    sSET_NPC_1_DIRECTION_DOWN
     sFOLLOWER_STEP_FORWARD                             ;; 0e:6a6e $90
     sPLAYER_STEP_FORWARD                               ;; 0e:6a6f $80
+    sSET_PLAYER_DIRECTION_RIGHT
     sFOLLOWER_STEP_FORWARD                             ;; 0e:6a70 $90
     sPLAYER_STEP_FORWARD                               ;; 0e:6a71 $80
     sSPAWN_NPC 0                                       ;; 0e:6a72 $fd $00
