@@ -2038,9 +2038,17 @@ script_0156:
     sEND                                               ;; 0d:4b91 $00
 
 script_0157:
-    sIF_FLAG wScriptFlags03.7, !wScriptFlags04.0       ;; 0d:4b92 $08 $1f $a0 $00 $04
+    sIF_FLAG !wScriptFlags03.7
       sSET_NPC_TYPES 76                                ;; 0d:4b97 $fc $4c
       sSPAWN_NPC 1                                     ;; 0d:4b99 $fd $01
+      sIF_FLAG wScriptFlags04.0
+        sSET_NPC_1_DIRECTION_RIGHT
+        sNPC_1_STEP_BACKWARDS
+        sNPC_1_STEP_BACKWARDS
+        sSET_NPC_1_DIRECTION_DOWN
+        sNPC_1_STEP_BACKWARDS
+        sNPC_1_STEP_BACKWARDS
+      sENDIF
     sENDIF                                             ;; 0d:4b9b
     sEND                                               ;; 0d:4b9b $00
 
@@ -2054,6 +2062,7 @@ script_015a:
     sSET_NPC_TYPES 72                                  ;; 0d:4b9e $fc $48
     sSPAWN_NPC 0                                       ;; 0d:4ba0 $fd $00
     sSPAWN_NPC 1                                       ;; 0d:4ba2 $fd $01
+    sSET_FLAG wScriptFlags03.7
     sEND                                               ;; 0d:4ba4 $00
 
 script_015b:
@@ -4628,10 +4637,10 @@ script_0256:
     sEND                                               ;; 0d:7720 $00
 
 script_0257:
-    sIF_FLAG wScriptFlags03.7                          ;; 0d:7721 $08 $1f $00 $03
+    sIF_FLAG wScriptFlags03.6
       sCALL script_022c                                ;; 0d:7725 $02 $2c $a5
     sENDIF                                             ;; 0d:7728
-    sIF_FLAG wScriptFlags04.6, !wScriptFlags03.7       ;; 0d:7728 $08 $26 $9f $00 $03
+    sIF_FLAG wScriptFlags04.6, !wScriptFlags03.6
       sCALL script_022d                                ;; 0d:772d $02 $2c $e6
     sENDIF                                             ;; 0d:7730
     sIF_FLAG wScriptFlags01.4, !wScriptFlags04.6       ;; 0d:7730 $08 $0c $a6 $00 $03

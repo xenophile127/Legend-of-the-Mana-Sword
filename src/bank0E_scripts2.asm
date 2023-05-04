@@ -568,6 +568,9 @@ script_02b9:
 
 script_02ba:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4303 $0b $c9 $00 $08
+      sIF_FLAG wScriptFlags04.0
+        sSET_FLAG wScriptFlags03.7
+      sENDIF
       sUNK_C5 15                                       ;; 0e:4307 $c5 $0f
       sLOAD_ROOM 2, $00, 9, 12                         ;; 0e:4309 $f4 $02 $00 $09 $0c
       sRUN_ROOM_SCRIPT                                 ;; 0e:430e $ec
@@ -576,6 +579,9 @@ script_02ba:
 
 script_02bb:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4310 $0b $c9 $00 $08
+      sIF_FLAG wScriptFlags04.0
+        sSET_FLAG wScriptFlags03.7
+      sENDIF
       sUNK_C5 6                                        ;; 0e:4314 $c5 $06
       sLOAD_ROOM 2, $01, 9, 12                         ;; 0e:4316 $f4 $02 $01 $09 $0c
       sRUN_ROOM_SCRIPT                                 ;; 0e:431b $ec
@@ -4861,16 +4867,10 @@ script_0525:
     sENDIF                                             ;; 0e:60f0
     sIF_FLAG wScriptFlags0E.5, wScriptFlags0E.6, !wScriptFlags0E.7 ;; 0e:60f0 $08 $75 $76 $f7 $00 $17
       sSET_NPC_TYPES 76                                ;; 0e:60f6 $fc $4c
-      sIF_FLAG !wScriptFlags03.7                       ;; 0e:60f8 $08 $9f $00 $02
+      sSPAWN_NPC 0
+      sIF_FLAG wScriptFlags03.7
         sSPAWN_NPC 1                                   ;; 0e:60fc $fd $01
       sENDIF                                           ;; 0e:60fe
-      sIF_FLAG wScriptFlags03.7, !wScriptFlags04.0     ;; 0e:60fe $08 $1f $a0 $00 $02
-        sSPAWN_NPC 0                                   ;; 0e:6103 $fd $00
-      sENDIF                                           ;; 0e:6105
-      sIF_FLAG wScriptFlags04.0                        ;; 0e:6105 $08 $20 $00 $04
-        sSPAWN_NPC 0                                   ;; 0e:6109 $fd $00
-        sSPAWN_NPC 1                                   ;; 0e:610b $fd $01
-      sENDIF                                           ;; 0e:610d
     sENDIF                                             ;; 0e:610d
     sEND                                               ;; 0e:610d $00
 
@@ -5380,7 +5380,6 @@ script_0539:
       sPLAYER_STEP_FORWARD                             ;; 0e:68d4 $80
     sEND                                               ;; 0e:68d5 $00
     sLOAD_ROOM 15, $46, 4, 10                          ;; 0e:68d6 $f4 $0f $46 $04 $0a
-    sSET_FLAG wScriptFlags03.7                         ;; 0e:68db $da $1f
     sCLEAR_FLAG wScriptFlags0B.3                       ;; 0e:68dd $db $5b
     sCLEAR_FLAG wScriptFlags0B.4                       ;; 0e:68df $db $5c
     sCLEAR_FLAG wScriptFlags0B.7                       ;; 0e:68e1 $db $5f
