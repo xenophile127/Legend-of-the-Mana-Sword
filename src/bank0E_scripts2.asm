@@ -203,7 +203,7 @@ script_0290:
 
 script_0291:
     sIF_TRIGGERED_ON_BY $c9, $c1
-      sLOAD_ROOM 0, $87, 8, 2
+      sLOAD_ROOM 0, $87, 8, 3
       sDELAY 20
       sSET_MUSIC 20
       sRUN_ROOM_SCRIPT
@@ -331,7 +331,7 @@ script_029c:
 
 script_029d:
     sIF_TRIGGERED_ON_BY $c9, $c1                       ;; 0e:4167 $0b $c9 $c1 $00 $08
-      sLOAD_ROOM 0, $49, 8, 2                          ;; 0e:416c $f4 $00 $49 $08 $02
+      sLOAD_ROOM 0, $49, 8, 3
       sSET_MUSIC 20                                    ;; 0e:4171 $f8 $14
       sRUN_ROOM_SCRIPT                                 ;; 0e:4173 $ec
     sENDIF                                             ;; 0e:4174
