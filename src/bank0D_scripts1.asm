@@ -1596,9 +1596,9 @@ script_010f:
         sNPC_1_STEP_FORWARD                            ;; 0d:487c $10
       sEND                                             ;; 0d:487d $00
       sMSG                                             ;; 0d:487e $04
-        db "<10>Cibba:I am Cibba.\n Bogard told me\n about you.<12>"
-        db "<1b> __ Oh, yes!\n That is the\n symbol of Mana.<12>"
-        db "<1b> Step forward and\n you'll see what\n you must see.<12>"
+        db "<10>Cibba:I am Cibba,\n a Gemma Knight.\n Bogard sent word.<12>"
+        db "<1b> _ Oh yes, that is\n the Mana Symbol\n on your Pendant.<12>"
+        db "<1b> Step forward.\n It will show you\n your quest.<12>"
         db "<11>", $00 ;; 0d:487f
       sSET_NPC_1_DIRECTION_LEFT                        ;; 0d:48e1 $17
       sLOOP 3, 2                                       ;; 0d:48e2 $03 $03 $02

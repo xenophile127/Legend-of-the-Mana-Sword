@@ -5390,15 +5390,17 @@ script_0539:
 script_053a:
     sDELAY 144                                         ;; 0e:68e9 $f0 $90
     sMSG                                               ;; 0e:68eb $04
-      db "<10> _ <GIRL>, my dear__\n<GIRL>:Mom!\n<BOY>:_ Mom?!<12>"
-      db "<1b>Cibba:That lady__\n She's the one who\n encouraged us.<12>"
-      db "<1b>Mother:I must tell\n you now, <GIRL>.<12>"
-      db "<1b> You and I are\n the members of\n the Mana Family.<12>"
-      db "<1b> We are the seeds\n of the Mana Tree.\n We must guard it.<12>"
-      db "<1b> Long ago Vandole\n abused the power\n of Mana.<12>"
-      db "<1b> So I sealed the\n Waterfalls with\n that Pendant,<12>"
-      db "<1b> so that nobody\n can come close to\n the Mana Tree.<12>"
-      db "<1b> But again, Granz\n is trying to use\n it for evil.<12>"
+      db "<10> _ <GIRL>, you've\n grown so tall__\n<GIRL>:Mother!\n<12>"
+      db "<1b><BOY>:Mother?!\nCibba:Ah! The\n woman who gave<12>"
+      db "<1b> us strength in\n our fight against\n Vandole.<12>"
+      db "<1b>Mother:Listen to\n me carefully,\n <GIRL>.<12>"
+      db "<1b> You and I are\n members of the\n Mana Family.<12>"
+      db "<1b><BOY>:The Mana\n Family?<12>"
+      db "<1b>Mother:We are Mana\n Seeds born from\n the Mana Tree_ <12>"
+      db "<1b> Long ago Vandole\n used the power of\n Mana agains us.<12>"
+      db "<1b> So I sealed away\n the Mana Tree\n with the Pendant.<12>"
+      db "<1b> But now, Granz is\n pursuing the same\n evil purpose.<12>"
+      db "<1b> Granz cannot be\n allowed to reach\n the Mana Tree.<12>"
       db "<1b> Guard the Mana\n Tree with the\n Gemma Knights!<12>"
       db "<11>", $00 ;; 0e:68ec
     sDELAY 10                                          ;; 0e:6a2c $f0 $0a
