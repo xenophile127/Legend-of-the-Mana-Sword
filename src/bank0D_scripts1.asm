@@ -3667,11 +3667,11 @@ script_0208:
       db "<10><BOY>:_Where am I?\n", $00               ;; 0d:60b5
     sDELAY 30                                          ;; 0d:60c2 $f0 $1e
     sMSG                                               ;; 0d:60c4 $04
-      db " __ Pendant!!\n __ Where is it?!<12>"
-      db "<1b> __ I thought that\n it was ", $00
+      db " __ The Pendant!\n __ It's gone?!<12>"
+      db "<1b> __ I think that I\n remember ", $00
     sCALL script_0433
     sMSG
-      db "\n talking to me__<12>"
+      db "\n talking to me?<12>"
       db "<11>", $00 ;; 0d:60c5
     sSET_MUSIC 4                                       ;; 0d:60fc $f8 $04
     sEND                                               ;; 0d:60fe $00
