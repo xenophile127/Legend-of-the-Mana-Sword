@@ -3141,7 +3141,7 @@ script_01e1:
 script_01e2:
     sMSG                                               ;; 0d:567f $04
       db "<10>The Lizardmen's\nnest is to the\nsouth.<12>"
-      db "<1b>They have the key\nto open the Cave\nof Marsh.<12>"
+      db "<1b>They have the key\nto open the Marsh\nCave.<12>"
       db "<11>", $00 ;; 0d:5680
     sEND                                               ;; 0d:56bb $00
 
