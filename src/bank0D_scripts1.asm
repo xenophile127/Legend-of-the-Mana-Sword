@@ -2906,7 +2906,7 @@ script_01bd:
     sSET_ROOM_TILE $6b, 8, 7                           ;; 0d:53c9 $b0 $6b $08 $07
     sMSG                                               ;; 0d:53cd $04
       db "<10>Defeated\n   Shadow Knight!<12>"
-      db "<1b>Received Pendant__", $00 ;; 0d:53ce
+      db "<1b>Received <7b>Pendant_", $00
     sDELAY 100                                         ;; 0d:53eb $f0 $64
     sMSG                                               ;; 0d:53ed $04
       db "<1b><BOY>:_", $00                            ;; 0d:53ee
@@ -3538,7 +3538,10 @@ script_0206:
 
 script_0207:
     sMSG                                               ;; 0d:5f2c $04
-      db "<10><BOY>:Let's go!\n<GIRL>:Take the\n Pendant, <BOY>!<12>"
+      db "<10><BOY>:Let's go!\n<GIRL>:Take the\n Pendant, <BOY>!<12><1b>", $00
+    sSFX 15
+    sMSG
+      db "Received <7b>Pendant!<12>"
       db "<1b>Julius:Give me\n that Pendant!<12>"
       db "<11>", $00 ;; 0d:5f2d
     sSET_MUSIC 9                                       ;; 0d:5f61 $f8 $09
