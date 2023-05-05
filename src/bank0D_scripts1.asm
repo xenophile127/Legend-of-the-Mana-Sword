@@ -4808,9 +4808,9 @@ script_0261:
       db "<10>", $00
     sCALL script_0433
     sMSG
-      db ":I'm sorry\n about Willy.<12>"
-      db "<1b> We have to get\n out of here!!<12>"
-      db "<1b> I wanna go home\n and see my\n little brother__<12>"
+      db ":I'm sorry\n about Willy, but\n if we don't get<12>"
+      db "<1b> out of here soon\n then we'll all\n be joining him.<12>"
+      db "<1b> I left my brother\n all alone. I want\n to see him again.<12>"
       db "<11>", $00 ;; 0d:78ab
     sEND                                               ;; 0d:78f6 $00
 
