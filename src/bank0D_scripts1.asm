@@ -3344,8 +3344,8 @@ script_01f4:
       sIF_FLAG wScriptFlags02.1                        ;; 0d:5bf2 $08 $11 $00 $39
         sMSG                                           ;; 0d:5bf6 $04
           db "<12>"
-          db "<1b>Wanna use the\nmine cart? You'll\nhave to oil it!<12>"
-          db "<1b>You can get it\nat the store\nto the south!", $00 ;; 0d:5bf7
+          db "<1b>Wanna use the\nmine cart? You'll\nneed to oil it.<12>"
+          db "<1b>You can buy Oil\nat the store to\nthe south.", $00 ;; 0d:5bf7
       sENDIF                                           ;; 0d:5c2f
     sELSE                                              ;; 0d:5c2f $01 $15
       sMSG                                             ;; 0d:5c31 $04
