@@ -4949,7 +4949,7 @@ script_0532:
       db "Many fighters have\nfallen from their\nwounds.<12>"
       db "<11>", $00 ;; 0e:61a0
     sFADE_TO_BLACK                                     ;; 0e:61be $bd
-    sLOAD_ROOM_INSTANT 4, $41, 10, 10                  ;; 0e:61bf $f3 $04 $41 $0a $0a
+    sLOAD_ROOM_INSTANT 4, $41, 10, 8
     sSET_MUSIC 23                                      ;; 0e:61c4 $f8 $17
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:61c6 $87
     sSET_NPC_TYPES 36                                  ;; 0e:61c7 $fc $24
@@ -5456,7 +5456,8 @@ script_053a:
     sMSG                                               ;; 0e:6acd $04
       db "<10>Cibba:Where did\n he take her?!\n<BOY>:I'll check.<12>"
       db "<11>", $00 ;; 0e:6ace
-    sLOAD_ROOM 1, $15, 9, 6                            ;; 0e:6af2 $f4 $01 $15 $09 $06
+    sSET_PLAYER_DIRECTION_DOWN
+    sLOAD_ROOM 1, $15, 9, 4
     sSFX 20                                            ;; 0e:6af7 $f9 $14
     sFLASH_SCREEN                                      ;; 0e:6af9 $bf
     sFLASH_SCREEN                                      ;; 0e:6afa $bf

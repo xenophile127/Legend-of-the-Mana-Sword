@@ -495,7 +495,7 @@ data_03_76e0:
 
 data_03_76e8:
     db   1, 1, NPC_WILLY, NPC_WILLY, NPC_WILLY, NPC_WILLY ;; 03:76e8 ..?..?
-    db   $08, $0a, $80, $80                            ;; 03:76ee ..??
+    db   $08, $08, $80, $80                            ;; 03:76ee ..??
 
 data_03_76f2:
     db   1, 1, NPC_JULIUS, NPC_JULIUS, NPC_JULIUS, NPC_JULIUS ;; 03:76f2 ..?..?
