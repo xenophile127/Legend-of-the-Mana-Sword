@@ -5385,9 +5385,9 @@ script_0539:
     sMSG
       db "! I'm\n no Gemma Knight.<12>"
       db "<1b>Bogard:Quit it!\n This is no way\n for a Gemma to-<12>"
-      db "<1b><BOY>:NO!  Gemma!\n Gemma!  Gemma!\n __ Why me?<12>"
+      db "<1b><BOY>:Enough! Gemma\n this! Gemma that!\n __ Why me?<12>"
       db "<1b> Why does that\n have to be me?\nBogard:<BOY>, you_<12>"
-      db "<1b><BOY>:You do it!\n You're the Gemma\n Knight. It's You!<12>"
+      db "<1b><BOY>:You do it!\n You're the Gemma\n Knight. It's you!<12>"
       db "<1b>Bogard:_ Shut up!\n _ GET OUT!!_<12>", $00
     sDELAY 20                                          ;; 0e:68c9 $f0 $14
     sSET_PLAYER_POSITION 10, 6
