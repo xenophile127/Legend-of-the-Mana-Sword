@@ -3244,7 +3244,7 @@ script_01ec:
       db "<10>", $00                                   ;; 0d:5869
     sIF_FLAG !wScriptFlags03.7                         ;; 0d:586b $08 $9f $00 $0e
       sMSG                                             ;; 0d:586f $04
-        db "Cibba's in here!", $00                     ;; 0d:5870
+        db "Cibba's in the\nshrine up ahead.", $00
     sELSE                                              ;; 0d:587b $01 $47
       sMSG                                             ;; 0d:587d $04
         db "Lorimar was\nattacked by many\nmonsters.<12>"
