@@ -5418,7 +5418,7 @@ script_053a:
       db "<1b> You and I are\n members of the\n Mana Family.<12>"
       db "<1b><BOY>:The Mana\n Family?<12>"
       db "<1b>Mother:We are Mana\n Seeds born from\n the Mana Tree_ <12>"
-      db "<1b> Long ago Vandole\n used the power of\n Mana agains us.<12>"
+      db "<1b> Long ago Vandole\n used the power of\n Mana against us.<12>"
       db "<1b> So I sealed away\n the Mana Tree\n with the Pendant.<12>"
       db "<1b> But now, Granz is\n pursuing the same\n evil purpose.<12>"
       db "<1b> Granz cannot be\n allowed to reach\n the Mana Tree.<12>"
