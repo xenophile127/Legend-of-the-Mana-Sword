@@ -1342,6 +1342,22 @@ script_00e8:
       sSET_ROOM_TILE $6a, 5, 1                         ;; 0d:4730 $b0 $6a $05 $01
       sSET_MUSIC 14                                    ;; 0d:4734 $f8 $0e
     sELSE                                              ;; 0d:4736 $01 $05
+
+      ; Ensure Hero is visible after Jackal defeat.
+      sIF_FLAG wScriptFlags.1
+        sSET_PLAYER_DIRECTION_RIGHT
+      sELSE
+        sIF_FLAG wScriptFlags.2
+          sSET_PLAYER_DIRECTION_LEFT
+        sELSE
+          sIF_FLAG wScriptFlags.3
+            sSET_PLAYER_DIRECTION_UP
+          sELSE
+            sSET_PLAYER_DIRECTION_DOWN
+          sENDIF
+        sENDIF
+      sENDIF
+
       sDELAY 60                                        ;; 0d:4738 $f0 $3c
       sCALL script_0531                                ;; 0d:473a $02 $61 $29
     sENDIF                                             ;; 0d:473d
