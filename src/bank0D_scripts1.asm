@@ -3703,7 +3703,7 @@ script_020a:
 
 script_020b:
     sMSG                                               ;; 0d:6123 $04
-      db "<10>Get back to work!<12>"
+      db "<10>Repairs are almost\ndone. You'd better\nget back to work!<12>"
       db "<11>", $00 ;; 0d:6124
     sEND                                               ;; 0d:6133 $00
 
@@ -3712,14 +3712,15 @@ script_020c:
 
 script_020d:
     sMSG                                               ;; 0d:6135 $04
-      db "<10>Years ago, Shadow\nKnight found a\nbaby in the cave<12>"
-      db "<1b>at the Waterfalls\nnear Castle Granz.\n__ That's Julius.<12>"
+      db "<10>Years ago, Shadow\nKnight found an\nabandoned baby in<12>"
+      db "<1b>a cave behind the\nWaterfalls near\nCastle Granz.<12>"
+      db "<1b>__ That's Julius.<12>"
       db "<11>", $00 ;; 0d:6136
     sEND                                               ;; 0d:617b $00
 
 script_020e:
     sMSG                                               ;; 0d:617c $04
-      db "<10>Julius has taken\ncharge of this\nairship.<12>"
+      db "<10>Sorcerer Julius is\nin command of this\nairship.<12>"
       db "<11>", $00 ;; 0d:617d
     sEND                                               ;; 0d:619e $00
 
