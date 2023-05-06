@@ -3998,9 +3998,8 @@ script_021f:
 
 script_0220:
     sMSG                                               ;; 0d:6786 $04
-      db "<10>Davias's mother\nis a Medusa.\nShe lives in a<12>"
-      db "<1b>hidden cave at\nthe oasis to\nthe south.<12>"
-      db "<1b>A boy has been\nsaying he knows\nhow to get in!<12>"
+      db "<10>Davias's mother\nis a Medusa.<12>"
+      db "<1b>He locked her in\na cave because\nshe is so ugly.<12>"
       db "<11>", $00 ;; 0d:6787
     sEND                                               ;; 0d:67eb $00
 
@@ -5165,20 +5164,3 @@ script_027f:
       sRUN_ROOM_SCRIPT                                 ;; 0d:7d9b $ec
     sENDIF                                             ;; 0d:7d9c
     sEND                                               ;; 0d:7d9c $00
-
-script_0280:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7d9d $0b $c9 $00 $1b
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7da1 $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7da5 $02 $5a $e2
-        sSET_FLAG wScriptFlags0B.3                     ;; 0d:7da8 $da $5b
-      sENDIF                                           ;; 0d:7daa
-      sLOAD_ROOM 14, $15, 7, 12                        ;; 0d:7daa $f4 $0e $15 $07 $0c
-      sIF_FLAG !wScriptFlags05.0                       ;; 0d:7daf $08 $a8 $00 $02
-        sSET_MUSIC 0                                   ;; 0d:7db3 $f8 $00
-      sENDIF                                           ;; 0d:7db5
-      sIF_FLAG wScriptFlags05.0                        ;; 0d:7db5 $08 $28 $00 $02
-        sSET_MUSIC 13                                  ;; 0d:7db9 $f8 $0d
-      sENDIF                                           ;; 0d:7dbb
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7dbb $ec
-    sENDIF                                             ;; 0d:7dbc
-    sEND                                               ;; 0d:7dbc $00
