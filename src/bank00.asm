@@ -123,7 +123,10 @@ Header:
     db   CART_COMPATIBLE_DMG                           ;; 00:0143
     db   $00, $00                                      ;; 00:0144 ??
     db   CART_INDICATOR_GB                             ;; 00:0146
-    db   CART_ROM_MBC2_BAT, CART_ROM_256KB, CART_SRAM_NONE ;; 00:0147
+; Use MBC5 instead of MBC2.
+    db   CART_ROM_MBC5_RAM_BAT                         ;; 00:0147 $1b
+    db   CART_ROM_256KB                                ;; 00:0148 $03
+    db   CART_SRAM_8KB                                 ;; 00:0149 $02
     db   CART_DEST_NON_JAPANESE, $01, $00              ;; 00:014a $01 $c3 $00
     ds   3                                             ;; 00:014d
 
