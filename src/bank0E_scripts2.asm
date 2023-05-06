@@ -4999,7 +4999,7 @@ script_0534:
     sPLAYER_STEP_FORWARD                               ;; 0e:62bc $80
     sDELAY 30                                          ;; 0e:62bd $f0 $1e
     sMSG                                               ;; 0e:62bf $04
-      db "<10><BOY>:Shadow Knight\n and Julius__\n _What's going on?<12>"
+      db "<10><BOY>:Shadow Knight\n _ With Julius_\n _What's going on?<12>"
       db "<11>", $00 ;; 0e:62c0
     sSET_MUSIC 10                                      ;; 0e:62e4 $f8 $0a
     sDELAY 30                                          ;; 0e:62e6 $f0 $1e
@@ -5020,14 +5020,18 @@ script_0534:
     sSET_NPC_1_DIRECTION_UP                            ;; 0e:6358 $14
     sDELAY 20                                          ;; 0e:6359 $f0 $14
     sMSG                                               ;; 0e:635b $04
-      db "\n __ Up the falls?<12>"
-      db "<1b>Julius:A miracle\n is possible Lord\n Shadow Knight__", $00
+      db "\n Am I to climb?<12>"
+      db "<1b>Julius:A miracle\n should do it.\n", $00
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0e:638f $16
     sMSG                                               ;; 0e:6390 $04
-      db "<12>"
-      db "<1b>Shadow Knight:_\n A miracle? _ How?<12>"
-      db "<1b>Julius:I have seen\n there is a girl\n who has the key.<12>"
-      db "<1b>Shadow Knight:__\n Good. Find it.\nJulius:Yes, Sir!", $00
+      db "Shadow Knight:How?<12>"
+      db "<1b>Julius:_ ", $00
+    sDELAY 10
+    sMSG
+      db "A girl\n holds the key_\n I have seen it_", $00
+    sDELAY 10
+    sMSG
+      db "_<12><1b>Shadow Knight:Find\n me this key.\nJulius:Yes, Sir!", $00
     sEND                                               ;; 0e:63dd $00
 
 script_0535:
