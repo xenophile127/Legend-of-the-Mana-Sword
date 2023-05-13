@@ -4835,13 +4835,21 @@ loadRoomTile:
     call pushBankNrAndSwitch                           ;; 00:1c2d $cd $fb $29
     pop  DE                                            ;; 00:1c30 $d1
     pop  HL                                            ;; 00:1c31 $e1
+; Animated graphics originally only worked in one of the two banks used so to fix
+; if address >= $8000 then sub $4000
+    bit 7, h
+    jr z, .copyToSRAM
+    res 7, h
+    set 6, h
+.copyToSRAM:
     ld   B, $10                                        ;; 00:1c32 $06 $10
     call copyHLtoDE                                    ;; 00:1c34 $cd $49 $2b
     call popBankNrAndSwitch                            ;; 00:1c37 $cd $0a $2a
 .done:
     pop  HL                                            ;; 00:1c3a $e1
     ret                                                ;; 00:1c3b $c9
-    db   $1a, $e6, $0f, $be, $c0, $13, $23, $05        ;; 00:1c3c ????????
+
+; Unused code. Some already harvested for free space.
     db   $c8, $1a, $be, $c0, $13, $23, $05, $c8        ;; 00:1c44 ????????
     db   $18, $ee, $e5, $06, $40, $21, $70, $cf        ;; 00:1c4c ????????
     db   $11, $04, $00, $7e, $e6, $f0, $28, $08        ;; 00:1c54 ????????
