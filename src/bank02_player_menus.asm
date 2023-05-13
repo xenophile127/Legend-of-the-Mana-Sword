@@ -86,7 +86,7 @@ animateTiles:
     dw   animateTilesOcean                             ;; 02:408c pP $04
     dw   animateTilesOcean                             ;; 02:408e pP $05
     dw   animateTileRiver                              ;; 02:4090 pP $06
-    dw   animateTilesIncrementUnusedCounter            ;; 02:4092 pP $07
+    dw   animateTilesNop                               ;; 02:4092 pP $07
     dw   animateTilesIncrementCounter                  ;; 02:4094 pP $08
     dw   animateTilesIncrementCounter                  ;; 02:4096 ?? $09
     dw   animateTilesWaterfall                         ;; 02:4098 pP $0a
@@ -94,19 +94,14 @@ animateTiles:
     dw   animateTilesOcean                             ;; 02:409c pP $0c
     dw   animateTilesOcean                             ;; 02:409e pP $0d
     dw   animateTileRiver                              ;; 02:40a0 pP $0e
-    dw   animateTilesIncrementUnusedCounter            ;; 02:40a2 pP $0f
-
-animateTilesIncrementUnusedCounter:
-    ld   HL, wTileAnimationCounter_Unused              ;; 02:40a4 $21 $98 $d3
-    inc  [HL]                                          ;; 02:40a7 $34
-    ret                                                ;; 02:40a8 $c9
+    dw   animateTilesNop                               ;; 02:40a2 pP $0f
 
 animateTilesTwoframe_TileCopy:
     ld   B, $04                                        ;; 02:40a9 $06 $04
 .loop:
     push DE                                            ;; 02:40ab $d5
     ld   A, [DE]                                       ;; 02:40ac $1a
-    cp   A, $00                                        ;; 02:40ad $fe $00
+    or a
     jr   Z, .jr_02_40bf                                ;; 02:40af $28 $0e
     push BC                                            ;; 02:40b1 $c5
     push HL                                            ;; 02:40b2 $e5
@@ -115,7 +110,15 @@ animateTilesTwoframe_TileCopy:
     ld   A, [HL]                                       ;; 02:40b7 $7e
     pop  BC                                            ;; 02:40b8 $c1
     push BC                                            ;; 02:40b9 $c5
-    call requestBackgroundTileCopy                     ;; 02:40ba $cd $fe $41
+    ld l, a
+    ld  a, BANK(tilesets)
+    bit 7, b
+    jr z, .requestTileCopy
+    dec a
+    res 7, b
+    set 6, b
+.requestTileCopy:
+    call requestBackgroundTileCopy.withBank
     pop  HL                                            ;; 02:40bd $e1
     pop  BC                                            ;; 02:40be $c1
 .jr_02_40bf:
@@ -125,6 +128,8 @@ animateTilesTwoframe_TileCopy:
     inc  DE                                            ;; 02:40c4 $13
     dec  B                                             ;; 02:40c5 $05
     jr   NZ, .loop                                     ;; 02:40c6 $20 $e3
+
+animateTilesNop:
     ret                                                ;; 02:40c8 $c9
 
 ; Used for the lava and the sparkly damage tiles
@@ -143,12 +148,12 @@ animateTilesTwoframe:
     ld   L, A                                          ;; 02:40df $6f
     ld   A, C                                          ;; 02:40e0 $79
     and  A, $40                                        ;; 02:40e1 $e6 $40
-    jr   Z, .jr_02_40e9                                ;; 02:40e3 $28 $04
-    ld   BC, $40                                       ;; 02:40e5 $01 $40 $00
-    add  HL, BC                                        ;; 02:40e8 $09
-.jr_02_40e9:
-    call animateTilesTwoframe_TileCopy                 ;; 02:40e9 $cd $a9 $40
-    ret                                                ;; 02:40ec $c9
+    jr Z, .jr_02_4101
+    jr .adjust
+
+; Empty
+    db $00, $09
+
 .secondFrame:
     ld   DE, wBackgroundGraphicsTileState._04          ;; 02:40ed $11 $74 $d1
     ld   A, [wMapGraphicsPointer.High]                 ;; 02:40f0 $fa $91 $d3
@@ -158,11 +163,11 @@ animateTilesTwoframe:
     ld   A, C                                          ;; 02:40f8 $79
     and  A, $40                                        ;; 02:40f9 $e6 $40
     jr   NZ, .jr_02_4101                               ;; 02:40fb $20 $04
+.adjust:
     ld   BC, $40                                       ;; 02:40fd $01 $40 $00
     add  HL, BC                                        ;; 02:4100 $09
 .jr_02_4101:
-    call animateTilesTwoframe_TileCopy                 ;; 02:4101 $cd $a9 $40
-    ret                                                ;; 02:4104 $c9
+    jr animateTilesTwoframe_TileCopy
 
 animateTilesWaterfall:
     ld   A, [wBackgroundGraphicsTileState._08]         ;; 02:4105 $fa $78 $d1
@@ -286,8 +291,7 @@ animateTileRiver:
     jr   NZ, .loop                                     ;; 02:41dd $20 $fa
     ld   A, [wBackgroundGraphicsTileMapping._10]       ;; 02:41df $fa $80 $d0
     ld   BC, wAnimatedTileRiver                        ;; 02:41e2 $01 $70 $d3
-    call requestBackgroundTileCopy                     ;; 02:41e5 $cd $fe $41
-    ret                                                ;; 02:41e8 $c9
+    jp requestBackgroundTileCopy
 
 animateTilesRight:
     ld   D, H                                          ;; 02:41e9 $54
@@ -312,6 +316,9 @@ animateTilesRight:
 ; BC: source graphics address
 requestBackgroundTileCopy:
     ld   L, A                                          ;; 02:41fe $6f
+    ld   a, BANK(tilesets)
+.withBank:
+    push af
     ld   H, $00                                        ;; 02:41ff $26 $00
     add  HL, HL                                        ;; 02:4201 $29
     add  HL, HL                                        ;; 02:4202 $29
@@ -323,9 +330,8 @@ requestBackgroundTileCopy:
     ld   E, L                                          ;; 02:420a $5d
     ld   H, B                                          ;; 02:420b $60
     ld   L, C                                          ;; 02:420c $69
-    ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 02:420d $3e $0c
-    call addTileGraphicCopyRequest                     ;; 02:420f $cd $f5 $2d
-    ret                                                ;; 02:4212 $c9
+    pop af
+    jp addTileGraphicCopyRequest
 
 animateTilesIncrementCounter:
     ld   HL, wTileAnimationCounter                     ;; 02:4213 $21 $99 $d3
