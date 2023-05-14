@@ -7,9 +7,10 @@ INCLUDE "include/constants.inc"
 
 SECTION "bank0b", ROMX[$4000], BANK[$0b]
 
-;@gfximg name=title_end width=16 height=12
-tilesetGfxTitle:
-    INCBIN "title_end.bin"                             ;; 0b:4000
+; Moved to bank 1b
+;tilesetGfxTitle:
+;    INCBIN "title_end.bin"                             ;; 0b:4000
+    ds $0c00, $ff
 
 ;@gfximg name=trashbin width=2 height=8
 trashbinGfx:

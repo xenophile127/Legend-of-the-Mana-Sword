@@ -9,7 +9,10 @@ SECTION "bank08", ROMX[$4000], BANK[$08]
 
 INCLUDE "data/map/headers.asm"
 
-INCLUDE "data/metatiles.asm"
+; Metatile tables have been moved to expansion space to make room for more
+;INCLUDE "data/metatiles.asm"
+metatilesOldLocation:
+    ds   $0d26, $ff
 
 INCLUDE "data/xptable.asm"
 

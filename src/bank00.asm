@@ -4824,9 +4824,7 @@ loadRoomTile:
     add  HL, DE                                        ;; 00:1c23 $19
     push BC                                            ;; 00:1c24 $c5
     push HL                                            ;; 00:1c25 $e5
-; Background tile graphics start at the beginning of bank c, then continue into bank b
-; but this code does not properly adjust the address for bank b, which doesn't matter
-; because animated tiles are not used by the titlescreen, ending, or map screens
+; Background tile graphics start at the beginning of bank 1c, then continue into bank 1b
     ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 00:1c26 $3e $0c
     bit  7, B                                          ;; 00:1c28 $cb $78
     jr   Z, .jr_00_1c2d                                ;; 00:1c2a $28 $01
