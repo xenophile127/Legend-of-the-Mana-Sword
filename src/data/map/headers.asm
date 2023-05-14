@@ -4,7 +4,7 @@
 ;@map_headers amount=16
 ; This bank seems to start with some kind of map information with 11 bytes per record
 ; Format:
-;  dw Graphics data (in bank 0B or 0C)
+;  dw Graphics data (moved from bank 0b and 0c to 1b and 1c)
 ;  db $00 ; ignored
 ;  dw Pointer to Metatile info
 ;  db $00 ; ignored
@@ -12,7 +12,7 @@
 ;  dw MapPointer
 ;  db ?, ?
 mapHeader_00:
-    MAP_HEADER tilesetGfxOutdoor, $00, metatilesOutdoor, $80, mapRoomPointers_00, $d7, $3c ;; 08:4000 ..?..?...??
+    MAP_HEADER tilesetGfxWorldmap, $00, metatilesWorldmap, $80, mapRoomPointers_00, $d7, $3c ;; 08:4000 ..?..?...??
 
 mapHeader_01:
     MAP_HEADER tilesetGfxOutdoor, $00, metatilesOutdoor, $80, mapRoomPointers_01, $0e, $11 ;; 08:400b ..?..?...??

@@ -10,3 +10,6 @@ SECTION "bank1b", ROMX[$4000], BANK[$1b]
 
 tilesetGfxTitle:
     INCBIN "tileset/title_end.bin"
+
+tilesetGfxWorldmap:
+    INCBIN "tileset/worldmap.bin"
