@@ -39,7 +39,7 @@ entryPointTableBank02:
     call_to_bank_target removeItemFromInventory        ;; 02:4036 ??
     call_to_bank_target removeEquipmentFromInventory   ;; 02:4038 ??
     call_to_bank_target removeMagicFromInventory       ;; 02:403a ??
-    call_to_bank_target getEquippedArmorElementalResistances_Dup ;; 02:403c pP
+    call_to_bank_target getEquippedHelmElementalResistances ;; 02:403c pP
     call_to_bank_target getEquippedShieldBlockElements ;; 02:403e pP
     call_to_bank_target getEquippedWeaponBonusTypes    ;; 02:4040 pP
     call_to_bank_target getSpellOrBookPower            ;; 02:4042 ??
@@ -86,7 +86,7 @@ animateTiles:
     dw   animateTilesOcean                             ;; 02:408c pP $04
     dw   animateTilesOcean                             ;; 02:408e pP $05
     dw   animateTileRiver                              ;; 02:4090 pP $06
-    dw   animateTilesIncrementUnusedCounter            ;; 02:4092 pP $07
+    dw   animateTilesNop                               ;; 02:4092 pP $07
     dw   animateTilesIncrementCounter                  ;; 02:4094 pP $08
     dw   animateTilesIncrementCounter                  ;; 02:4096 ?? $09
     dw   animateTilesWaterfall                         ;; 02:4098 pP $0a
@@ -94,19 +94,14 @@ animateTiles:
     dw   animateTilesOcean                             ;; 02:409c pP $0c
     dw   animateTilesOcean                             ;; 02:409e pP $0d
     dw   animateTileRiver                              ;; 02:40a0 pP $0e
-    dw   animateTilesIncrementUnusedCounter            ;; 02:40a2 pP $0f
-
-animateTilesIncrementUnusedCounter:
-    ld   HL, wTileAnimationCounter_Unused              ;; 02:40a4 $21 $98 $d3
-    inc  [HL]                                          ;; 02:40a7 $34
-    ret                                                ;; 02:40a8 $c9
+    dw   animateTilesNop                               ;; 02:40a2 pP $0f
 
 animateTilesTwoframe_TileCopy:
     ld   B, $04                                        ;; 02:40a9 $06 $04
 .loop:
     push DE                                            ;; 02:40ab $d5
     ld   A, [DE]                                       ;; 02:40ac $1a
-    cp   A, $00                                        ;; 02:40ad $fe $00
+    or a
     jr   Z, .jr_02_40bf                                ;; 02:40af $28 $0e
     push BC                                            ;; 02:40b1 $c5
     push HL                                            ;; 02:40b2 $e5
@@ -115,7 +110,15 @@ animateTilesTwoframe_TileCopy:
     ld   A, [HL]                                       ;; 02:40b7 $7e
     pop  BC                                            ;; 02:40b8 $c1
     push BC                                            ;; 02:40b9 $c5
-    call requestBackgroundTileCopy                     ;; 02:40ba $cd $fe $41
+    ld l, a
+    ld  a, BANK(tilesets)
+    bit 7, b
+    jr z, .requestTileCopy
+    dec a
+    res 7, b
+    set 6, b
+.requestTileCopy:
+    call requestBackgroundTileCopy.withBank
     pop  HL                                            ;; 02:40bd $e1
     pop  BC                                            ;; 02:40be $c1
 .jr_02_40bf:
@@ -125,6 +128,8 @@ animateTilesTwoframe_TileCopy:
     inc  DE                                            ;; 02:40c4 $13
     dec  B                                             ;; 02:40c5 $05
     jr   NZ, .loop                                     ;; 02:40c6 $20 $e3
+
+animateTilesNop:
     ret                                                ;; 02:40c8 $c9
 
 ; Used for the lava and the sparkly damage tiles
@@ -143,12 +148,12 @@ animateTilesTwoframe:
     ld   L, A                                          ;; 02:40df $6f
     ld   A, C                                          ;; 02:40e0 $79
     and  A, $40                                        ;; 02:40e1 $e6 $40
-    jr   Z, .jr_02_40e9                                ;; 02:40e3 $28 $04
-    ld   BC, $40                                       ;; 02:40e5 $01 $40 $00
-    add  HL, BC                                        ;; 02:40e8 $09
-.jr_02_40e9:
-    call animateTilesTwoframe_TileCopy                 ;; 02:40e9 $cd $a9 $40
-    ret                                                ;; 02:40ec $c9
+    jr Z, .jr_02_4101
+    jr .adjust
+
+; Empty
+    db $00, $09
+
 .secondFrame:
     ld   DE, wBackgroundGraphicsTileState._04          ;; 02:40ed $11 $74 $d1
     ld   A, [wMapGraphicsPointer.High]                 ;; 02:40f0 $fa $91 $d3
@@ -158,11 +163,11 @@ animateTilesTwoframe:
     ld   A, C                                          ;; 02:40f8 $79
     and  A, $40                                        ;; 02:40f9 $e6 $40
     jr   NZ, .jr_02_4101                               ;; 02:40fb $20 $04
+.adjust:
     ld   BC, $40                                       ;; 02:40fd $01 $40 $00
     add  HL, BC                                        ;; 02:4100 $09
 .jr_02_4101:
-    call animateTilesTwoframe_TileCopy                 ;; 02:4101 $cd $a9 $40
-    ret                                                ;; 02:4104 $c9
+    jr animateTilesTwoframe_TileCopy
 
 animateTilesWaterfall:
     ld   A, [wBackgroundGraphicsTileState._08]         ;; 02:4105 $fa $78 $d1
@@ -286,8 +291,7 @@ animateTileRiver:
     jr   NZ, .loop                                     ;; 02:41dd $20 $fa
     ld   A, [wBackgroundGraphicsTileMapping._10]       ;; 02:41df $fa $80 $d0
     ld   BC, wAnimatedTileRiver                        ;; 02:41e2 $01 $70 $d3
-    call requestBackgroundTileCopy                     ;; 02:41e5 $cd $fe $41
-    ret                                                ;; 02:41e8 $c9
+    jp requestBackgroundTileCopy
 
 animateTilesRight:
     ld   D, H                                          ;; 02:41e9 $54
@@ -312,6 +316,9 @@ animateTilesRight:
 ; BC: source graphics address
 requestBackgroundTileCopy:
     ld   L, A                                          ;; 02:41fe $6f
+    ld   a, BANK(tilesets)
+.withBank:
+    push af
     ld   H, $00                                        ;; 02:41ff $26 $00
     add  HL, HL                                        ;; 02:4201 $29
     add  HL, HL                                        ;; 02:4202 $29
@@ -323,9 +330,8 @@ requestBackgroundTileCopy:
     ld   E, L                                          ;; 02:420a $5d
     ld   H, B                                          ;; 02:420b $60
     ld   L, C                                          ;; 02:420c $69
-    ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 02:420d $3e $0c
-    call addTileGraphicCopyRequest                     ;; 02:420f $cd $f5 $2d
-    ret                                                ;; 02:4212 $c9
+    pop af
+    jp addTileGraphicCopyRequest
 
 animateTilesIncrementCounter:
     ld   HL, wTileAnimationCounter                     ;; 02:4213 $21 $99 $d3
@@ -1298,7 +1304,7 @@ call_02_498c:
 
 ;@data format=pbbp amount=1
 data_02_4991:
-    data_pbbp boyLabel, $1e, $ff, nameEntryInputOptions ;; 02:4991 ......
+    data_pbbp nameLabel, $1e, $ff, nameEntryInputOptions ;; 02:4991 ......
 
 ;@data format=pbbp amount=2
 data_02_4997:
@@ -2409,7 +2415,7 @@ windowVendorShowBuyMessage:
     ld   A, [wMiscFlags]                               ;; 02:5188 $fa $6f $d8
     and  A, $01                                        ;; 02:518b $e6 $01
     ld   HL, venderNotEnoughMoneyText                  ;; 02:518d $21 $76 $7d
-    ld   B, $10                                        ;; 02:5190 $06 $10
+    ld   B, $11                                        ;; 02:5190 $06 $10
     jr   NZ, .vendorCannotAfford                       ;; 02:5192 $20 $36
     ld   A, [wVendorPurchaseID]                        ;; 02:5194 $fa $5d $d8
     ld   HL, itemDataTable                             ;; 02:5197 $21 $5a $5e
@@ -2673,14 +2679,25 @@ jp_02_531c:
     ld   A, L                                          ;; 02:535e $7d
     ld   [wHPLow], A                                   ;; 02:535f $ea $b2 $d7
     ld   A, [wStatWisdom]                              ;; 02:5362 $fa $c3 $d7
-    ld   H, $00                                        ;; 02:5365 $26 $00
-    ld   L, A                                          ;; 02:5367 $6f
-    ld   A, $5e                                        ;; 02:5368 $3e $5e
-    call MultiplyHL_by_A                               ;; 02:536a $cd $7b $2b
-    ld   A, $64                                        ;; 02:536d $3e $64
-    call divMod                                        ;; 02:536f $cd $8b $2b
-    ld   A, L                                          ;; 02:5372 $7d
-    add  A, $05                                        ;; 02:5373 $c6 $05
+; The original math for MP was (((Wisdom * 94) / 100) + 5).
+; This gave a max of 98 MP at 99 Wisdom, with cases where a point of Wisdom resulted in no additional MP.
+; New equation is (Wisdom + 4),  capped at 99.
+; The plus four keeps the same starting MP (6).
+    add  A, $04
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
+    nop
     cp   A, $63                                        ;; 02:5375 $fe $63
     jr   C, .jr_02_537b                                ;; 02:5377 $38 $02
     ld   A, $63                                        ;; 02:5379 $3e $63
@@ -3635,7 +3652,7 @@ call_02_5895:
     call Z, call_02_5a18                               ;; 02:5918 $cc $18 $5a
     pop  BC                                            ;; 02:591b $c1
     pop  DE                                            ;; 02:591c $d1
-    call call_00_380b                                  ;; 02:591d $cd $0b $38
+    call menuNextItemPosition                          ;; 02:591d $cd $0b $38
     scf                                                ;; 02:5920 $37
     ret  NZ                                            ;; 02:5921 $c0
 
@@ -3644,13 +3661,13 @@ jp_02_5922:
     call saveRegisterState2                            ;; 02:5923 $cd $80 $6d
     call NC, call_02_6c0b                              ;; 02:5926 $d4 $0b $6c
     ld   HL, titleScreenLicenseText                    ;; 02:5929 $21 $62 $7e
-    ld   DE, $71b                                      ;; 02:592c $11 $1b $07
+    ld   DE, $071a                                     ;; 02:592c $11 $1b $07
     ld   BC, $1f01                                     ;; 02:592f $01 $01 $1f
     ld   A, [wDialogType]                              ;; 02:5932 $fa $4a $d8
     cp   A, $1f                                        ;; 02:5935 $fe $1f
     push AF                                            ;; 02:5937 $f5
     call Z, drawText                                   ;; 02:5938 $cc $77 $37
-    ld   DE, $61c                                      ;; 02:593b $11 $1c $06
+    ld   DE, $061b                                     ;; 02:593b $11 $1c $06
     ld   BC, $1f01                                     ;; 02:593e $01 $01 $1f
     pop  AF                                            ;; 02:5941 $f1
     call Z, drawText                                   ;; 02:5942 $cc $77 $37
@@ -3686,7 +3703,7 @@ jp_02_5959:
     push DE                                            ;; 02:5979 $d5
     call call_02_5aaf                                  ;; 02:597a $cd $af $5a
     pop  DE                                            ;; 02:597d $d1
-    call call_00_380b                                  ;; 02:597e $cd $0b $38
+    call menuNextItemPosition                          ;; 02:597e $cd $0b $38
     ld   A, $3e                                        ;; 02:5981 $3e $3e
     call storeTileAatDialogPositionDE                  ;; 02:5983 $cd $44 $38
     inc  E                                             ;; 02:5986 $1c
@@ -3911,7 +3928,7 @@ windowStatusScreenPrintStatValue:
     add  A, $06                                        ;; 02:5ad6 $c6 $06
     ld   E, A                                          ;; 02:5ad8 $5f
     call call_02_5b05                                  ;; 02:5ad9 $cd $05 $5b
-    call call_00_380b                                  ;; 02:5adc $cd $0b $38
+    call menuNextItemPosition                          ;; 02:5adc $cd $0b $38
     ret                                                ;; 02:5adf $c9
 
 call_02_5ae0:
@@ -3986,7 +4003,8 @@ jp_02_5b2c:
     ld   A, [wWindowFlags]                             ;; 02:5b3f $fa $74 $d8
     bit  5, A                                          ;; 02:5b42 $cb $6f
     jr   Z, .jr_02_5b49                                ;; 02:5b44 $28 $03
-    ld   HL, girlLabel                                 ;; 02:5b46 $21 $fd $7d
+; Use the same label for both since their sprite is shown.
+    ld   HL, nameLabel                                 ;; 02:5b46 $21 $fd $7d
 .jr_02_5b49:
     pop  AF                                            ;; 02:5b49 $f1
     cp   A, $1e                                        ;; 02:5b4a $fe $1e
@@ -4067,7 +4085,7 @@ windowData:
 ; Items menu:
     db   $00, $00, $13, $11, $08, $08, $10, $03, $02, $09 ;; 02:5bb4 .......... $01
 ; Magic menu:
-    db   $05, $01, $0d, $09, $04, $04, $08, $01, $02, $06 ;; 02:5bbe .......... $02
+    db   $05, $01, $0d, $09, $04, $05, $08, $01, $02, $06 ;; 02:5bbe .......... $02
 .equipmentScreenTop:
     db   $00, $00, $13, $07, $03, $08, $0e, $01, $00, $00 ;; 02:5bc8 .......... $03
 .equipmentScreenBottom:
@@ -4125,12 +4143,12 @@ windowData:
     db   $00, $0a, $13, $06, $01, $0f, $02, $00, $02, $00 ;; 02:5cc2 .......... $04
 ; (#1d)
 .namingScreenTop:
-    db   $00, $00, $0e, $03, $01, $04, $01, $00, $00, $00 ;; 02:5ccc .......... $05
+    db   $00, $00, $0e, $03, $01, $05, $01, $00, $00, $00 ;; 02:5ccc .......... $05
 ; (#1e)
 .namingScreenBottom:
     db   $00, $04, $13, $0d, $06, $09, $51, $01, $09, $02 ;; 02:5cd6 .......... $06
 ; (#1f) Title screen menu (New Game, Continue):
-    db   $05, $09, $09, $05, $02, $08, $02, $00, $01, $00 ;; 02:5ce0 .......... $07
+    db   $06, $09, $09, $05, $02, $08, $02, $00, $01, $00 ;; 02:5ce0 .......... $07
 ; (#20) Status effect inflicted message (Pois, Ston, Moog, Dark):
     db   $0b, $01, $07, $03, $01, $04, $01, $00, $00, $00 ;; 02:5cea ?????????? $08
 ; (#21) Levelup HP/MP recovered message:
@@ -4176,7 +4194,7 @@ windowThirdPointers:
     dw   itemAPDPLabelsDataTable                       ;; 02:5d42 .. $1a
     dw   $0000                                         ;; 02:5d44 .. $1b
     dw   $0000                                         ;; 02:5d46 .. $1c
-    dw   boyLabel                                      ;; 02:5d48 .. $1d
+    dw   nameLabel                                     ;; 02:5d48 .. $1d
     dw   nameEntryInputOptions                         ;; 02:5d4a .. $1e
     dw   titleScreenOptions                            ;; 02:5d4c .. $1f
     dw   statusEffectLabels                            ;; 02:5d4e ?? $20
@@ -4250,7 +4268,7 @@ windowSecondPointers:
     dw   wStatusScreenAPDP                             ;; 02:5dca .. $1a
     dw   $0000                                         ;; 02:5dcc .. $1b
     dw   $0000                                         ;; 02:5dce .. $1c
-    dw   boyLabel                                      ;; 02:5dd0 .. $1d
+    dw   nameLabel                                     ;; 02:5dd0 .. $1d
     dw   nameEntryInputOptions                         ;; 02:5dd2 .. $1e
     dw   titleScreenOptions                            ;; 02:5dd4 .. $1f
     dw   $d7dc                                         ;; 02:5dd6 ?? $20
@@ -4466,21 +4484,25 @@ drawWindowStart:
     cp   A, $21                                        ;; 02:6720 $fe $21
     jr   Z, .moveWindowIfOverlapsPlayer                ;; 02:6722 $28 $04
     cp   A, $06                                        ;; 02:6724 $fe $06
-    jr   NZ, .jr_02_6739                               ;; 02:6726 $20 $11
+    jr   NZ, .set_dimensions                           ;; 02:6726 $20 $11
 .moveWindowIfOverlapsPlayer:
-    push DE                                            ;; 02:6728 $d5
-    push HL                                            ;; 02:6729 $e5
-    call getPlayerY                                    ;; 02:672a $cd $99 $02
-    rrca                                               ;; 02:672d $0f
-    rrca                                               ;; 02:672e $0f
-    rrca                                               ;; 02:672f $0f
-    and  A, $1f                                        ;; 02:6730 $e6 $1f
-    pop  HL                                            ;; 02:6732 $e1
-    pop  DE                                            ;; 02:6733 $d1
-    cp   A, D                                          ;; 02:6734 $ba
-    jr   C, .jr_02_6739                                ;; 02:6735 $38 $02
+    ; This handles moving the dialog window (or the initial level up window).
+    ; There is exactly a 16 pixel gap between the two window locations.
+    ; So if the player is in the middle there is a decision to be made on where to position the window.
+    ; Originally the window was biased towards the top of the screen,
+    ; but biasing it to the bottom means covering the status bar and less of the play field.
+    ; An exception is made if the player is facing south, which likely implies talking to a character there.
+    ld a, [wObjectRuntimeData.player]
+    bit 3, a                                           ; the bit for facing south
+    ld a, [wObjectRuntimeData.player + 4]              ; y coordinate of the bottom of the player sprite
+    jr z, .check_position
+    ; If the player's facing is south then changing the position check by just one pixel is enough
+    inc a
+.check_position:
+    cp a, $51                                          ;  height of the window plus the player plus one (64+16+1=81)
+    jr   C, .set_dimensions                            ;; 02:6735 $38 $02
     ld   D, $00                                        ;; 02:6737 $16 $00
-.jr_02_6739:
+.set_dimensions:
     inc  HL                                            ;; 02:6739 $23
     ld   C, [HL]                                       ;; 02:673a $4e
     inc  HL                                            ;; 02:673b $23
@@ -4635,7 +4657,7 @@ call_02_6840:
     dec  [HL]                                          ;; 02:6847 $35
     pop  HL                                            ;; 02:6848 $e1
     ret  NZ                                            ;; 02:6849 $c0
-    ld   A, $06                                        ;; 02:684a $3e $06
+    ld   A, $07                                        ;; 02:684a $3e $06
     ld   [wMenuSelectionMoveRepeatDelay], A            ;; 02:684c $ea $57 $d8
     ld   A, $00                                        ;; 02:684f $3e $00
     ld   [wD856], A                                    ;; 02:6851 $ea $56 $d8
@@ -4816,31 +4838,31 @@ processWindowInput:
     jr   Z, .copy_name_loop                            ;; 02:695f $28 $03
     ld   DE, wGirlName                                 ;; 02:6961 $11 $a2 $d7
 .copy_name_loop:
-    ld   A, [HL+]                                      ;; 02:6964 $2a
-    ld   [DE], A                                       ;; 02:6965 $12
-    inc  DE                                            ;; 02:6966 $13
-    dec  B                                             ;; 02:6967 $05
-    jr   NZ, .copy_name_loop                           ;; 02:6968 $20 $fa
-    xor  A, A                                          ;; 02:696a $af
-    ld   [HL], A                                       ;; 02:696b $77
-    ld   HL, wSRAMSaveHeader                           ;; 02:696c $21 $a7 $d7
-    ld   B, $04                                        ;; 02:696f $06 $04
-.clear_scratch_loop:
-    ld   [HL+], A                                      ;; 02:6971 $22
-    dec  B                                             ;; 02:6972 $05
-    jr   NZ, .clear_scratch_loop                       ;; 02:6973 $20 $fc
+    ld a, [hl]
+    ld [de], a
+    xor a, a
+    ld [hl+], a
+    inc de
+    dec b
+    jr   nz, .copy_name_loop
+    ld   [hl], a
     pop  AF                                            ;; 02:6975 $f1
     pop  BC                                            ;; 02:6976 $c1
     pop  DE                                            ;; 02:6977 $d1
     pop  HL                                            ;; 02:6978 $e1
     bit  5, A                                          ;; 02:6979 $cb $6f
     jr   NZ, .dismiss_naming_screen                    ;; 02:697b $20 $11
-    set  5, A                                          ;; 02:697d $cb $ef
-    set  6, A                                          ;; 02:697f $cb $f7
+    or a, $60
     ld   [wWindowFlags], A                             ;; 02:6981 $ea $74 $d8
     xor  A, A                                          ;; 02:6984 $af
     ld   [wDrawWindowStep], A                          ;; 02:6985 $ea $54 $d8
     ld   [wNameEntryNameLength], A                     ;; 02:6988 $ea $85 $d8
+; Ugly hack to directly edit the OAM, but it works.
+    ld hl, wOAMBuffer+$22
+    ld [hl], $20
+    ld l, $26
+    ld [hl], $22
+    nop
     jp   .button                                       ;; 02:698b $c3 $c4 $68
 .dismiss_naming_screen:
     xor  A, A                                          ;; 02:698e $af
@@ -5592,10 +5614,10 @@ getEquippedArmorElementalResistances:
     ld   A, [wEquippedArmor]                           ;; 02:6dd3 $fa $ec $d6
     jr   getEquipmentAOffset0c                         ;; 02:6dd6 $18 $13
 
-; Probably intended to fetch for helmets
-getEquippedArmorElementalResistances_Dup:
+; Probably intended to fetch for helmets. Now changed to actually check helmets.
+getEquippedHelmElementalResistances:
     push HL                                            ;; 02:6dd8 $e5
-    ld   A, [wEquippedArmor]                           ;; 02:6dd9 $fa $ec $d6
+    ld   A, [wEquippedHelm]
     jr   getEquipmentAOffset0c                         ;; 02:6ddc $18 $0d
 
 getEquippedShieldBlockElements:
@@ -5742,7 +5764,8 @@ initStartingStatsAndTimers:
     ld   [wScriptStackPointer], A                      ;; 02:6ec2 $ea $bc $d8
     ld   A, $01                                        ;; 02:6ec5 $3e $01
     ld   [wWillCharge], A                              ;; 02:6ec7 $ea $58 $d8
-    ld   HL, $32                                       ;; 02:6eca $21 $32 $00
+; Start the player with zero money.
+    ld   HL, $0000
     ld   A, H                                          ;; 02:6ecd $7c
     ld   [wMoneyHigh], A                               ;; 02:6ece $ea $bf $d7
     ld   A, L                                          ;; 02:6ed1 $7d
@@ -5769,7 +5792,7 @@ initTimers:
     ld   [wWindowFingerBlinkTimerNumber], A            ;; 02:6ef8 $ea $44 $d8
     ld   A, $01                                        ;; 02:6efb $3e $01
     ld   [wD860], A                                    ;; 02:6efd $ea $60 $d8
-    ld   A, $06                                        ;; 02:6f00 $3e $06
+    ld   A, $07                                        ;; 02:6f00 $3e $06
     ld   [wMenuSelectionMoveRepeatDelay], A            ;; 02:6f02 $ea $57 $d8
     xor  A, A                                          ;; 02:6f05 $af
     ld   [wWindowFlags], A                             ;; 02:6f06 $ea $74 $d8
@@ -5854,7 +5877,7 @@ drawNumberOnStatusBar:
     pop  DE                                            ;; 02:6f81 $d1
     push HL                                            ;; 02:6f82 $e5
     push DE                                            ;; 02:6f83 $d5
-    add  A, $30                                        ;; 02:6f84 $c6 $30
+
     call storeTileAatWindowPositionDE                  ;; 02:6f86 $cd $66 $38
     pop  DE                                            ;; 02:6f89 $d1
     dec  DE                                            ;; 02:6f8a $1b
@@ -5863,8 +5886,12 @@ drawNumberOnStatusBar:
     or   A, L                                          ;; 02:6f8d $b5
     jr   NZ, .jr_02_6f7b                               ;; 02:6f8e $20 $eb
     ret                                                ;; 02:6f90 $c9
+
+; Free space
+    db $00, $00, $00
+
 .jr_02_6f91:
-    ld   A, $30                                        ;; 02:6f91 $3e $30
+    xor a, a
     call storeTileAatWindowPositionDE                  ;; 02:6f93 $cd $66 $38
     ret                                                ;; 02:6f96 $c9
 
@@ -6055,14 +6082,15 @@ doSpellOrItemEffect:
 useNectarOrStamina:
     push AF                                            ;; 02:70c8 $f5
     swap A                                             ;; 02:70c9 $cb $37
-    and  A, $0f                                        ;; 02:70cb $e6 $0f
-    call call_02_70d7                                  ;; 02:70cd $cd $d7 $70
+    call applyBuff                                     ;; 02:70cd $cd $d7 $70
     pop  AF                                            ;; 02:70d0 $f1
-    and  A, $0f                                        ;; 02:70d1 $e6 $0f
-    call call_02_70d7                                  ;; 02:70d3 $cd $d7 $70
-    ret                                                ;; 02:70d6 $c9
+    call applyBuff                                     ;; 02:70d3 $cd $d7 $70
+; This fixes the Nectar and Stamina items to take effect on use instead of requiring opening a window.
+; There is a second bug that Nectar and Stamina do not wear off until a window is opened which is unfixed.
+    jp calulateAPDP
 
-call_02_70d7:
+applyBuff:
+    and $0f
     ld   B, A                                          ;; 02:70d7 $47
     ld   A, [DE]                                       ;; 02:70d8 $1a
     add  A, B                                          ;; 02:70d9 $80
@@ -6422,53 +6450,63 @@ loadSRAMInitGame:
     call copyHLtoDEtimesB                              ;; 02:7336 $cd $51 $74
     xor  A, A                                          ;; 02:7339 $af
     ld   [DE], A                                       ;; 02:733a $12
+; Init the attack gauge.
     ld   A, $01                                        ;; 02:733b $3e $01
     ld   [wWillCharge], A                              ;; 02:733d $ea $58 $d8
+; Init known magic spells from the magic inventory.
     ld   HL, wMagicInventory                           ;; 02:7340 $21 $d5 $d6
     ld   DE, wKnownMagicSpells                         ;; 02:7343 $11 $ab $d6
     ld   B, $08                                        ;; 02:7346 $06 $08
-.loop_1:
+.loop_magic:
     xor  A, A                                          ;; 02:7348 $af
     ld   [DE], A                                       ;; 02:7349 $12
     ld   A, [HL+]                                      ;; 02:734a $2a
     and  A, A                                          ;; 02:734b $a7
-    jr   Z, .init_power                                ;; 02:734c $28 $03
+    jr   Z, .next_magic                                ;; 02:734c $28 $03
     ld   A, $01                                        ;; 02:734e $3e $01
     ld   [DE], A                                       ;; 02:7350 $12
-.init_power:
+.next_magic:
     inc  DE                                            ;; 02:7351 $13
     dec  B                                             ;; 02:7352 $05
-    jr   NZ, .loop_1                                   ;; 02:7353 $20 $f3
+    jr   NZ, .loop_magic                               ;; 02:7353 $20 $f3
+; Init equipment powers from equipment inventory.
+; This originally had a bug with empty slots before the last item that caused the Iron Helmet exploit used by speedrunners.
+; It could also easily cause a major nerf for unsuspecting players.
     ld   HL, wEquipmentInventory                       ;; 02:7355 $21 $dd $d6
     ld   DE, wEquipmentInventoryPowers                 ;; 02:7358 $11 $b3 $d6
     ld   B, $0c                                        ;; 02:735b $06 $0c
-.loop_2:
+.loop_equipment:
     push BC                                            ;; 02:735d $c5
     ld   A, [HL]                                       ;; 02:735e $7e
     call getItemFlags1And2                             ;; 02:735f $cd $9c $56
-    ld   A, B                                          ;; 02:7362 $78
     inc  C                                             ;; 02:7363 $0c
-    jr   Z, .jr_02_737b                                ;; 02:7364 $28 $15
-    ld   A, [HL+]                                      ;; 02:7366 $2a
-    and  A, $7f                                        ;; 02:7367 $e6 $7f
+    jr   Z, .equipment_next                            ;; 02:7364 $28 $15
+    ld a, [hl]
     push HL                                            ;; 02:7369 $e5
     ld   HL, equipmentDataTable + $0c                  ;; 02:736a $21 $f6 $61
     call indexIntoTable                                ;; 02:736d $cd $82 $76
-    ld   A, B                                          ;; 02:7370 $78
-    cp   A, $11                                        ;; 02:7371 $fe $11
-    jr   NZ, .jr_02_7379                               ;; 02:7373 $20 $04
-    ld   A, [HL]                                       ;; 02:7375 $7e
-    pop  HL                                            ;; 02:7376 $e1
-    jr   .jr_02_737b                                   ;; 02:7377 $18 $02
-.jr_02_7379:
     ld   A, [HL]                                       ;; 02:7379 $7e
     pop  HL                                            ;; 02:737a $e1
-.jr_02_737b:
     ld   [DE], A                                       ;; 02:737b $12
+.equipment_next:
+    inc hl
     inc  DE                                            ;; 02:737c $13
     pop  BC                                            ;; 02:737d $c1
     dec  B                                             ;; 02:737e $05
-    jr   NZ, .loop_2                                   ;; 02:737f $20 $dc
+    jr   NZ, .loop_equipment                           ;; 02:737f $20 $dc
+; Free space from the above fix:
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+nop
+
     ld   HL, wStatusScreenAPDP                         ;; 02:7381 $21 $dd $d7
     ld   A, $81                                        ;; 02:7384 $3e $81
     ld   [HL+], A                                      ;; 02:7386 $22
@@ -6967,7 +7005,7 @@ statusWindowPrintHPMPCurOrMax:
     pop  AF                                            ;; 02:7674 $f1
     cp   A, $02                                        ;; 02:7675 $fe $02
     call NZ, drawNumberAtDialogPositionDE              ;; 02:7677 $c4 $18 $5b
-    call call_00_380b                                  ;; 02:767a $cd $0b $38
+    call menuNextItemPosition                          ;; 02:767a $cd $0b $38
     dec  D                                             ;; 02:767d $15
     pop  BC                                            ;; 02:767e $c1
     pop  HL                                            ;; 02:767f $e1
@@ -7314,7 +7352,11 @@ startDarkStatusEffect:
 
 startPoisStatusEffect:
     push AF                                            ;; 02:78a1 $f5
-    ld   A, $01                                        ;; 02:78a2 $3e $01
+    ; Pois ticks every sixty frames.
+    ; Normally this starts the first frame after being afflicted so it can instakill.
+    ; By setting initial timer to just less than the period total damage is unchanged
+    ; but the player gets almost a full second to react.
+    ld a, 59
     ld   [wPoisStatusEffectTimeBeforeNextTick], A      ;; 02:78a4 $ea $77 $d8
     ld   A, [wPoisStatusEffectTimerNumber]             ;; 02:78a7 $fa $79 $d8
     call timerStart                                    ;; 02:78aa $cd $d4 $2f
@@ -7339,8 +7381,9 @@ moogleTempZeroDP:
 
 updateStatusEffects:
     ld   A, [wMainGameState]                           ;; 02:78c6 $fa $a0 $c0
-    cp   A, $00                                        ;; 02:78c9 $fe $00
-    ret  NZ                                            ;; 02:78cb $c0
+; Fix Pois/Fuji not ticking while attacking.
+    cp a, $0c
+    ret nc
     ld   A, [wHPHigh]                                  ;; 02:78cc $fa $b3 $d7
     ld   B, A                                          ;; 02:78cf $47
     ld   A, [wHPLow]                                   ;; 02:78d0 $fa $b2 $d7
@@ -7471,20 +7514,25 @@ endStonStatusEffect:
     call removeStonEffectFlag                          ;; 02:79ab $cd $1a $02
     ld   A, [wStonStatusEffectTimerNumber]             ;; 02:79ae $fa $7b $d8
     ld   B, $fb                                        ;; 02:79b1 $06 $fb
+.clear:
     call clearStatusEffects                            ;; 02:79b3 $cd $dd $79
     call endStatusEffectMusicIfGood                    ;; 02:79b6 $cd $d2 $79
     ret                                                ;; 02:79b9 $c9
 
 endMoogStatusEffect:
-    call removeMoogEffectFlag                          ;; 02:79ba $cd $26 $02
+; Fix the notorious Heal-zero-DP bug.
+; What was happening was attempting to clear the Moog condition would load the last saved DP.
+; If you hadn't been turned into a moogle previously then this value was zero.
+    ld hl, wPlayerSpecialFlags
+    bit 3, [hl]
+    ret z
+    res 3, [hl]
     ld   A, [wMoogleSavedDp]                           ;; 02:79bd $fa $82 $d8
     ld   [wDupTotalDP], A                              ;; 02:79c0 $ea $c3 $d6
     ld   [wTotalDP], A                                 ;; 02:79c3 $ea $e0 $d7
     ld   A, [wMoogStatusEffectTimerNumber]             ;; 02:79c6 $fa $7c $d8
     ld   B, $f7                                        ;; 02:79c9 $06 $f7
-    call clearStatusEffects                            ;; 02:79cb $cd $dd $79
-    call endStatusEffectMusicIfGood                    ;; 02:79ce $cd $d2 $79
-    ret                                                ;; 02:79d1 $c9
+    jr endStonStatusEffect.clear
 
 endStatusEffectMusicIfGood:
     push BC                                            ;; 02:79d2 $c5
@@ -8008,9 +8056,9 @@ selectMenuOptions:
 
 ;@ffa_text amount=6
 levelUpStatOptions:
-    TXT  "Power<00>"                                   ;; 02:7d18 ......
-    TXT  "Wisdom<00>"                                  ;; 02:7d1e .......
-    TXT  "StaminaWill<00>"                             ;; 02:7d25 ............
+    TXT  "Warrior"
+    TXT  "Wizard<00>"
+    TXT  "Monk<00>Sage<00><00>"
 
 yesNoOptions:
     TXT  "Yes<00>"                                     ;; 02:7d31 ....
@@ -8031,8 +8079,7 @@ venderGreetingText:
 
 ;@ffa_text amount=2
 venderNotEnoughMoneyText:
-    TXT  "Not enough GP!<00>"                          ;; 02:7d76 ???????????????
-    TXT  "?<00>"                                       ;; 02:7d85 ??
+    TXT  "Not enough lucre!"                           ;; 02:7d76 ?????????????????
 
 ;@ffa_text
 venderConfirmSell:
@@ -8046,7 +8093,7 @@ vendorOptions:
 
 ;@ffa_text size=2
 statusScreenGoldLabel:
-    TXT  "GP"                                          ;; 02:7d9a ..
+    TXT  " <LUCRE>"                                    ;; 02:7d9a ..
 
 ;@ffa_text amount=4
 statusScreenStatLabels:
@@ -8065,7 +8112,7 @@ statusScreenMPLabel:
 
 ;@ffa_text
 levelUpText2:
-    TXT  " Level up! Selectyour growth type.<00>"      ;; 02:7dc2 ..................................?
+    TXT  " Level up! Selectyour job type.<00><00><00><00>"
 
 ;@ffa_text size=4 amount=5
 statusEffectLabels:
@@ -8076,12 +8123,11 @@ statusEffectLabels:
     TXT  "Good"                                        ;; 02:7df5 ....
 
 ;@ffa_text size=4 amount=1
-boyLabel:
-    TXT  "Boy<00>"                                     ;; 02:7df9 ....
+nameLabel:
+    TXT  "Name:"                                        ;; 02:7df9 ....
 
-;@ffa_text size=4 amount=1
-girlLabel:
-    TXT  "Girl"                                        ;; 02:7dfd ....
+; Free space
+db $00, $00, $00
 
 ;@ffa_text size=9 amount=9
 nameEntryInputOptions:
@@ -8103,30 +8149,44 @@ titleScreenOptions:
 ;@ffa_text size=20 amount=2
 titleScreenLicenseText:
     TXT  "LICENSED BY NINTENDO"                        ;; 02:7e62 ....................
-    TXT  "<00><7f> 1991 SQUARE SOFT\n"                 ;; 02:7e76 ....................
+    TXT  "<00><COPYRIGHT> 1991 SQUARE SOFT\n"                 ;; 02:7e76 ....................
 
-;@ffa_text amount=24
 intoScrollText:
-    TXT  "Tree of Mana grows<00>"                      ;; 02:7e8a ...................
-    TXT  "with the energy of<00>"                      ;; 02:7e9d ...................
-    TXT  "will from each and<00>"                      ;; 02:7eb0 ...................
-    TXT  "  every thing of<00>"                        ;; 02:7ec3 .................
-    TXT  "    this world.<00>"                         ;; 02:7ed4 ................
-    TXT  "<00>"                                        ;; 02:7ee4 ?
-    TXT  "  It grows high<00>"                         ;; 02:7ee5 ????????????????
-    TXT  " above the clouds<00>"                       ;; 02:7ef5 ??????????????????
-    TXT  "in the air on top<00>"                       ;; 02:7f07 ??????????????????
-    TXT  "of Mount Illusia.<00>"                       ;; 02:7f19 ??????????????????
-    TXT  "<00>"                                        ;; 02:7f2b ?
-    TXT  "Legend tells that<00>"                       ;; 02:7f2c ??????????????????
-    TXT  "it gives eternal<00>"                        ;; 02:7f3e ?????????????????
-    TXT  "power to the one<00>"                        ;; 02:7f4f ?????????????????
-    TXT  " who touched it.<00>"                        ;; 02:7f60 ?????????????????
-    TXT  "<00>"                                        ;; 02:7f71 ?
-    TXT  "  Dark Lord was<00>"                         ;; 02:7f72 ????????????????
-    TXT  "  trying to find<00>"                        ;; 02:7f82 ????????????????.
-    TXT  "  the way to the<00>"                        ;; 02:7f93 ...........??????
-    TXT  " Tree of Mana to<00>"                        ;; 02:7fa4 ?????????????????
+    TXT " At a shrine atop<00>"
+    TXT "Mt. Illusia, above<00>"
+    TXT "the clouds, stands<00>"
+    TXT "  the Mana Tree.<00>"
+    TXT "<00>"
+    TXT "Nurtured by energy<00>"
+    TXT "from everything in<00>"
+    TXT "    the cosmos.<00>"
+    TXT "<00>"
+    TXT "Legend tells that<00>"
+    TXT "touching it grants<00>"
+    TXT "  eternal power_<00>"
+    TXT "<00>"
+    TXT "Shadow Knight, the<00>"
+    TXT "ruler of Granz, is<00>"
+    TXT "planning a bloody<00>"
+    TXT "world conquest and<00>"
+    TXT "seeks that power.<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<00>"
+    TXT "<01>"
+
+; Unused space follows
+    TXT  "Mana to<00>"
     TXT  "  get the mighty<00>"                        ;; 02:7fb5 ?????????????????
     TXT  " power to conquer<00>"                       ;; 02:7fc6 ??????????????????
     TXT  "    the world.<00>"                          ;; 02:7fd8 ???????????????

@@ -9,7 +9,10 @@ SECTION "bank08", ROMX[$4000], BANK[$08]
 
 INCLUDE "data/map/headers.asm"
 
-INCLUDE "data/metatiles.asm"
+; Metatile tables have been moved to expansion space to make room for more
+;INCLUDE "data/metatiles.asm"
+metatilesOldLocation:
+    ds   $0d26, $ff
 
 INCLUDE "data/xptable.asm"
 
@@ -47,7 +50,11 @@ gfxBlankTiles08:
 
 ;@gfximg name=player width=2 height=38
 gfxPlayer:
+IF DEF(PLAYER_GRAPHICS_AMANDA)
+    INCBIN "player_amanda.bin"                         ;; 08:5a40
+ELIF DEF(PLAYER_GRAPHICS_ORIGINAL)
     INCBIN "player.bin"                                ;; 08:5a40
+ENDC
 
 ;@gfximg name=chest width=2 height=3
 gfxChest:
@@ -63,7 +70,12 @@ gfxChocobo:
 
 ;@gfximg name=minecart width=2 height=6
 gfxMinecart:
+IF DEF(PLAYER_GRAPHICS_AMANDA)
+    INCBIN "minecart_amanda.bin"                       ;; 08:6300
+ELIF DEF(PLAYER_GRAPHICS_ORIGINAL)
     INCBIN "minecart.bin"                              ;; 08:6300
+ENDC
+
 ;@gfximg name=cloud width=2 height=2
     INCBIN "cloud.bin"                                 ;; 08:63c0
 

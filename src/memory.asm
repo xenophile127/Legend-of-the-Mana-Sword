@@ -330,9 +330,12 @@ wSoundsMusicRestorePitchChannel1:
 ; 08-09: Shadow OAM memory location
 ; 0a: Sliding on ice or in the minecart. If sliding the top nibble is set to 9 and bottom is set to a direction same as offset 00
 ; 0b-15: Unknown
+; The fourth entry is the player.
 ; The seventh entry is either the first Npc or your follower, if present.
 wObjectRuntimeData:
-    ds 112                                             ;; c200
+    ds 64                                              ;; c200
+.player:
+    ds 48                                              ;; c240
 .npc1:
     ds 208                                             ;; c270
 
@@ -475,6 +478,9 @@ wPlayerSpecialFlags:
 ; 00: wObjectRuntimeData entry index
 ; 01: Delay until next move (initialized from 02)
 ; 02: Movement speed
+; 03: Melee state? Set to 01 on using a melee projectile, 04 while it's active, and ff otherwise. Likely to keep the NPC from moving?
+; 04: Current behavior index
+; 08: Damage timer
 ; 0a: Status (bit7: Slep, bit6: Mute)
 ; 0c-0d: HP
 ; 10-11: npcStatsTable entry pointer
@@ -507,8 +513,10 @@ wNPCDroppingChest:
 ; 00: Object ID of the normal object
 ; 01: Delay until next move (initialized from 02)
 ; 02: Movement speed
+; 03: Current pattern step
 ; 04: Y coordinate
 ; 05: X coordinate
+; 06-07: NPC runtime data table entry pointer for the spawning NPC
 ; 08-09: Projectile data table entry pointer
 wProjectileRuntimeData:
     ds 32                                              ;; c5c0

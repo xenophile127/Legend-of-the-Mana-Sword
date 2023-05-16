@@ -39,10 +39,10 @@ MACRO ITEM_DATA
 ENDM
 MACRO MAP_HEADER
 
-assert BANK(\1) == $0B || BANK(\1) == $0C
-dw (\1) - ($4000 * (BANK(\1) - $0B))
+assert BANK(\1) == $1B || BANK(\1) == $1C
+dw (\1) - ($4000 * (BANK(\1) - $1B))
 db \2
-assert BANK(\3) == BANK(@)
+assert BANK(\3) == BANK(metatiles)
 dw \3
 db \4
 db BANK(\5)

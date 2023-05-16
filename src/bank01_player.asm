@@ -51,7 +51,7 @@ entryPointTableBank01:
     call_to_bank_target attackTile                     ;; 01:404e pP
 
 lcdcLetterboxEffect:
-    db   $0e, $fc, $03, $e4, $7e, $fc, $01, $e4        ;; 01:4050 ????????
+    db   $0e, $fc, $03, $e4, $7e, $fc, $01, $e0        ;; 01:4050 ????????
     db   $ff                                           ;; 01:4058 ?
 
 prepareLetterboxEffect:
@@ -144,20 +144,23 @@ setDefaultLCDEffectAndBGP:
     ret                                                ;; 01:40fb $c9
 
 lcdcShutterEffectClose:
-    db   $00, $fc, $03, $e4, $7c, $fc, $00, $e4        ;; 01:40fc ........
-    db   $7e, $fc, $01, $e4, $ff                       ;; 01:4104 .....
+    db   $00, $fc, $03, $e4, $7c, $fc, $00, $fc        ;; 01:40fc ........
+    db   $7e, $fc, $01, $e0, $ff                       ;; 01:4104 .....
 
 lcdcShutterEffectOpen:
-    db   $3c, $fc, $03, $e4, $40, $fc, $00, $e4        ;; 01:4109 ........
-    db   $7e, $fc, $01, $e4, $ff                       ;; 01:4111 .....
+    db   $3c, $fc, $03, $e4, $40, $fc, $00, $fc        ;; 01:4109 ........
+    db   $7e, $fc, $01, $e0, $ff                       ;; 01:4111 .....
 
+; This effect originally applied the dark effect to the status bar, now fixed.
 lcdcShutterEffectDarkClose:
-    db   $00, $fc, $03, $3f, $7c, $fc, $00, $3f        ;; 01:4116 ????????
-    db   $7e, $fc, $01, $3f, $ff                       ;; 01:411e ?????
+    db   $00, $fc, $03, $3f, $7c, $fc, $00, $ff        ;; 01:4116 ????????
+    db   $7e, $fc, $01, $e0, $ff                       ;; 01:411e ?????
 
+; This effect was originally not used, with the above close effect accidentally used instead.
+; It also, like the above effect, originally applied the dark effect to the status bar.
 lcdcShutterEffectDarkOpen:
-    db   $3c, $fc, $03, $3f, $40, $fc, $00, $3f        ;; 01:4123 ????????
-    db   $7e, $fc, $01, $3f, $ff                       ;; 01:412b ?????
+    db   $3c, $fc, $03, $3f, $40, $fc, $00, $ff        ;; 01:4123 ????????
+    db   $7e, $fc, $01, $e0, $ff                       ;; 01:412b ?????
 
 loadMapWithShutterEffectSequence:
     ld   D, H                                          ;; 01:4130 $54
@@ -326,7 +329,7 @@ loadMinimapToBackground:
     call copyHLtoDE                                    ;; 01:4234 $cd $49 $2b
     ld   A, [wDoorStates]                              ;; 01:4237 $fa $f4 $c3
     ld   [wDoorStatesMinimapBackup], A                 ;; 01:423a $ea $a4 $d4
-    call getMapEncodingType                            ;; 01:423d $cd $b0 $21
+    ld a, [wMapEncodingType]
     cp   A, $00                                        ;; 01:4240 $fe $00
     jr   Z, .drawFixedMinimap                          ;; 01:4242 $28 $05
     call drawDynamicMinimapBackground                  ;; 01:4244 $cd $79 $42
@@ -560,7 +563,7 @@ loadMapWithShutterFinalSetup:
     ld   A, [wPlayerSpecialFlags]                      ;; 01:43cf $fa $d4 $c4
     bit  1, A                                          ;; 01:43d2 $cb $4f
     jr   Z, .jr_01_43d9                                ;; 01:43d4 $28 $03
-    ld   HL, lcdcShutterEffectDarkClose                ;; 01:43d6 $21 $16 $41
+    ld   HL, lcdcShutterEffectDarkOpen                 ;; 01:43d6 $21 $16 $41
 .jr_01_43d9:
     ld   B, $0d                                        ;; 01:43d9 $06 $0d
     call loadLCDCEffectBuffer                          ;; 01:43db $cd $f3 $02
@@ -625,7 +628,7 @@ openMinimapFinalSetup:
     ld   A, [wPlayerSpecialFlags]                      ;; 01:4430 $fa $d4 $c4
     bit  1, A                                          ;; 01:4433 $cb $4f
     jr   Z, .jr_01_443a                                ;; 01:4435 $28 $03
-    ld   HL, lcdcShutterEffectDarkClose                ;; 01:4437 $21 $16 $41
+    ld   HL, lcdcShutterEffectDarkOpen                 ;; 01:4437 $21 $16 $41
 .jr_01_443a:
     ld   B, $0d                                        ;; 01:443a $06 $0d
     call loadLCDCEffectBuffer                          ;; 01:443c $cd $f3 $02
@@ -646,7 +649,7 @@ shutterEffectOpenInit:
     ld   A, [wPlayerSpecialFlags]                      ;; 01:445a $fa $d4 $c4
     bit  1, A                                          ;; 01:445d $cb $4f
     jr   Z, .jr_01_4464                                ;; 01:445f $28 $03
-    ld   HL, lcdcShutterEffectDarkClose                ;; 01:4461 $21 $16 $41
+    ld   HL, lcdcShutterEffectDarkOpen                 ;; 01:4461 $21 $16 $41
 .jr_01_4464:
     ld   B, $0d                                        ;; 01:4464 $06 $0d
     call loadLCDCEffectBuffer                          ;; 01:4466 $cd $f3 $02
@@ -681,7 +684,7 @@ LoadMapEnd:
     call setPlayerCollisionFlags                       ;; 01:4496 $cd $bd $02
     ld   A, $00                                        ;; 01:4499 $3e $00
 .jr_01_449b:
-    call setScriptMainGameStateBackup                  ;; 01:449b $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   A, $00                                        ;; 01:449e $3e $00
     ld   [wScriptOpCounter], A                         ;; 01:44a0 $ea $99 $d4
     pop  HL                                            ;; 01:44a3 $e1
@@ -1037,11 +1040,13 @@ scrollRoomScroll:
     ld   A, $00                                        ;; 01:46f4 $3e $00
     call setSpriteScrollSpeed                          ;; 01:46f6 $cd $4d $04
     call ensureReservedObjectsExist_trampoline         ;; 01:46f9 $cd $f1 $2e
-    ld   A, [wMainGameStateFlags.nextFrame]            ;; 01:46fc $fa $a2 $c0
-    res  0, A                                          ;; 01:46ff $cb $87
-    res  1, A                                          ;; 01:4701 $cb $8f
-    res  3, A                                          ;; 01:4703 $cb $9f
-    res  2, A                                          ;; 01:4705 $cb $97
+
+    ; Call remove any enemies that may be lingering. This can happen with jumpers.
+    ld bc, $0d07 ; Start at object 7 and run for 13 total.
+    call removeNpcObjects.loop
+
+    ld a, [wMainGameStateFlags.nextFrame]
+    and $f0
     swap A                                             ;; 01:4707 $cb $37
     ld   [wMainGameStateFlags.nextFrame], A            ;; 01:4709 $ea $a2 $c0
     ld   [wMainGameStateFlags], A                      ;; 01:470c $ea $a1 $c0
@@ -1372,23 +1377,50 @@ gameStateNormal:
     jp   NZ, openWindowsSelectButton                   ;; 01:4a26 $c2 $db $51
     ld   A, [wPlayerSpecialFlags]                      ;; 01:4a29 $fa $d4 $c4
     bit  3, A                                          ;; 01:4a2c $cb $5f
-    jr   NZ, .dpad                                     ;; 01:4a2e $20 $08
+; (In)famously, the Moogle item does nothing because you can't use items while Mooged.
+; This allows you to use Moogle ($11), Unicorn ($12), and Heal ($02) while Mooged.
+; These three are already set to break Moog, but the Heal spell especially is a pretty major change.
+    jr z, .not_moogle
+    ld a, [wEquippedItem]
+    cp $02
+    jr z, .b_button_only
+    cp $11
+    jr z, .b_button_only
+    cp $12
+    jr z, .b_button_only
+    jr .dpad
+.not_moogle:
     bit  4, E                                          ;; 01:4a30 $cb $63
     jr   NZ, .a_or_b_button                            ;; 01:4a32 $20 $1b
+.b_button_only:
     bit  5, E                                          ;; 01:4a34 $cb $6b
     jr   NZ, .a_or_b_button                            ;; 01:4a36 $20 $17
 .dpad:
+; Extract some common code from the four direction handlers.
+; This is to make room for the Moogle item fix.
+; More code could be moved here to free up more space.
+    ld a, $0f
+    and d
+    ; If no direction is set then run this with A=0 and return:
+    jp z, playerSpritesLoadPlayerSpriteTiles
+    push de
+    push bc
+    ld c, $04
+    call checkPlayfieldBoundaryCollision_trampoline
+    ld a, b
+    pop bc
+    pop de
+    jp nz, .walk
     bit  0, D                                          ;; 01:4a38 $cb $42
     jr   NZ, .right                                    ;; 01:4a3a $20 $30
     bit  1, D                                          ;; 01:4a3c $cb $4a
     jr   NZ, .left                                     ;; 01:4a3e $20 $5a
     bit  2, D                                          ;; 01:4a40 $cb $52
     jp   NZ, .up                                       ;; 01:4a42 $c2 $c4 $4a
-    bit  3, D                                          ;; 01:4a45 $cb $5a
-    jp   NZ, .down                                     ;; 01:4a47 $c2 $ee $4a
-    xor  A, A                                          ;; 01:4a4a $af
-    call playerSpritesLoadPlayerSpriteTiles            ;; 01:4a4b $cd $be $48
-    ret                                                ;; 01:4a4e $c9
+    jp .down
+; Free space
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00
 .a_or_b_button:
     push DE                                            ;; 01:4a4f $d5
     ld   A, C                                          ;; 01:4a50 $79
@@ -1406,20 +1438,14 @@ gameStateNormal:
     ld   [wMainGameState], A                           ;; 01:4a68 $ea $a0 $c0
     ret                                                ;; 01:4a6b $c9
 .right:
-    push BC                                            ;; 01:4a6c $c5
-    ld   C, $04                                        ;; 01:4a6d $0e $04
-    call checkPlayfieldBoundaryCollision_trampoline    ;; 01:4a6f $cd $6f $03
-    ld   A, B                                          ;; 01:4a72 $78
-    pop  BC                                            ;; 01:4a73 $c1
-    jp   NZ, .jp_01_4b18                               ;; 01:4a74 $c2 $18 $4b
     bit  0, A                                          ;; 01:4a77 $cb $47
-    jp   Z, .jp_01_4b18                                ;; 01:4a79 $ca $18 $4b
+    jp   Z, .walk                                      ;; 01:4a79 $ca $18 $4b
     ld   A, [wPlayerDamagedTimer]                      ;; 01:4a7c $fa $d2 $c4
     cp   A, $34                                        ;; 01:4a7f $fe $34
-    jp   NC, .jp_01_4b1d                               ;; 01:4a81 $d2 $1d $4b
+    jp   NC, .face                                     ;; 01:4a81 $d2 $1d $4b
     ld   A, [wMainGameStateFlags]                      ;; 01:4a84 $fa $a1 $c0
     bit  1, A                                          ;; 01:4a87 $cb $4f
-    jp   NZ, .jp_01_4b1d                               ;; 01:4a89 $c2 $1d $4b
+    jp   NZ, .face                                     ;; 01:4a89 $c2 $1d $4b
     ld   A, $01                                        ;; 01:4a8c $3e $01
     call setPlayerDirection                            ;; 01:4a8e $cd $b1 $02
     ld   A, $09                                        ;; 01:4a91 $3e $09
@@ -1427,20 +1453,14 @@ gameStateNormal:
     call roomExitScreenScrollPrep                      ;; 01:4a96 $cd $24 $4b
     ret                                                ;; 01:4a99 $c9
 .left:
-    push BC                                            ;; 01:4a9a $c5
-    ld   C, $04                                        ;; 01:4a9b $0e $04
-    call checkPlayfieldBoundaryCollision_trampoline    ;; 01:4a9d $cd $6f $03
-    ld   A, B                                          ;; 01:4aa0 $78
-    pop  BC                                            ;; 01:4aa1 $c1
-    jr   NZ, .jp_01_4b18                               ;; 01:4aa2 $20 $74
     bit  1, A                                          ;; 01:4aa4 $cb $4f
-    jr   Z, .jp_01_4b18                                ;; 01:4aa6 $28 $70
+    jr   Z, .walk                                      ;; 01:4aa6 $28 $70
     ld   A, [wPlayerDamagedTimer]                      ;; 01:4aa8 $fa $d2 $c4
     cp   A, $34                                        ;; 01:4aab $fe $34
-    jr   NC, .jp_01_4b1d                               ;; 01:4aad $30 $6e
+    jr   NC, .face                                     ;; 01:4aad $30 $6e
     ld   A, [wMainGameStateFlags]                      ;; 01:4aaf $fa $a1 $c0
     bit  1, A                                          ;; 01:4ab2 $cb $4f
-    jr   NZ, .jp_01_4b1d                               ;; 01:4ab4 $20 $67
+    jr   NZ, .face                                     ;; 01:4ab4 $20 $67
     ld   A, $02                                        ;; 01:4ab6 $3e $02
     call setPlayerDirection                            ;; 01:4ab8 $cd $b1 $02
     ld   A, $08                                        ;; 01:4abb $3e $08
@@ -1448,20 +1468,14 @@ gameStateNormal:
     call roomExitScreenScrollPrep                      ;; 01:4ac0 $cd $24 $4b
     ret                                                ;; 01:4ac3 $c9
 .up:
-    push BC                                            ;; 01:4ac4 $c5
-    ld   C, $04                                        ;; 01:4ac5 $0e $04
-    call checkPlayfieldBoundaryCollision_trampoline    ;; 01:4ac7 $cd $6f $03
-    ld   A, B                                          ;; 01:4aca $78
-    pop  BC                                            ;; 01:4acb $c1
-    jr   NZ, .jp_01_4b18                               ;; 01:4acc $20 $4a
     bit  2, A                                          ;; 01:4ace $cb $57
-    jr   Z, .jp_01_4b18                                ;; 01:4ad0 $28 $46
+    jr   Z, .walk                                      ;; 01:4ad0 $28 $46
     ld   A, [wPlayerDamagedTimer]                      ;; 01:4ad2 $fa $d2 $c4
     cp   A, $34                                        ;; 01:4ad5 $fe $34
-    jr   NC, .jp_01_4b1d                               ;; 01:4ad7 $30 $44
+    jr   NC, .face                                     ;; 01:4ad7 $30 $44
     ld   A, [wMainGameStateFlags]                      ;; 01:4ad9 $fa $a1 $c0
     bit  1, A                                          ;; 01:4adc $cb $4f
-    jr   NZ, .jp_01_4b1d                               ;; 01:4ade $20 $3d
+    jr   NZ, .face                                     ;; 01:4ade $20 $3d
     ld   A, $04                                        ;; 01:4ae0 $3e $04
     call setPlayerDirection                            ;; 01:4ae2 $cd $b1 $02
     ld   A, $0b                                        ;; 01:4ae5 $3e $0b
@@ -1469,31 +1483,25 @@ gameStateNormal:
     call roomExitScreenScrollPrep                      ;; 01:4aea $cd $24 $4b
     ret                                                ;; 01:4aed $c9
 .down:
-    push BC                                            ;; 01:4aee $c5
-    ld   C, $04                                        ;; 01:4aef $0e $04
-    call checkPlayfieldBoundaryCollision_trampoline    ;; 01:4af1 $cd $6f $03
-    ld   A, B                                          ;; 01:4af4 $78
-    pop  BC                                            ;; 01:4af5 $c1
-    jr   NZ, .jp_01_4b18                               ;; 01:4af6 $20 $20
     bit  3, A                                          ;; 01:4af8 $cb $5f
-    jr   Z, .jp_01_4b18                                ;; 01:4afa $28 $1c
+    jr   Z, .walk                                      ;; 01:4afa $28 $1c
     ld   A, [wPlayerDamagedTimer]                      ;; 01:4afc $fa $d2 $c4
     cp   A, $34                                        ;; 01:4aff $fe $34
-    jr   NC, .jp_01_4b1d                               ;; 01:4b01 $30 $1a
+    jr   NC, .face                                     ;; 01:4b01 $30 $1a
     ld   A, [wMainGameStateFlags]                      ;; 01:4b03 $fa $a1 $c0
     bit  1, A                                          ;; 01:4b06 $cb $4f
-    jr   NZ, .jp_01_4b1d                               ;; 01:4b08 $20 $13
+    jr   NZ, .face                                     ;; 01:4b08 $20 $13
     ld   A, $08                                        ;; 01:4b0a $3e $08
     call setPlayerDirection                            ;; 01:4b0c $cd $b1 $02
     ld   A, $0a                                        ;; 01:4b0f $3e $0a
     ld   [wMainGameState], A                           ;; 01:4b11 $ea $a0 $c0
     call roomExitScreenScrollPrep                      ;; 01:4b14 $cd $24 $4b
     ret                                                ;; 01:4b17 $c9
-.jp_01_4b18:
+.walk:
     ld   A, C                                          ;; 01:4b18 $79
     call playerSpritesLoadPlayerSpriteTiles            ;; 01:4b19 $cd $be $48
     ret                                                ;; 01:4b1c $c9
-.jp_01_4b1d:
+.face:
     ld   A, C                                          ;; 01:4b1d $79
     and  A, $0f                                        ;; 01:4b1e $e6 $0f
     call playerSpritesLoadPlayerSpriteTiles            ;; 01:4b20 $cd $be $48
@@ -1510,10 +1518,15 @@ roomExitScreenScrollPrep:
     call runRoomScriptOnRoomExit                       ;; 01:4b34 $cd $83 $24
     ret                                                ;; 01:4b37 $c9
 
+; Being damaged causes two effects. First comes knockback with loss of control.
+; Then for almost a second the player sprite blinks and is invulnerable.
+; A = wPlayerDamagedTimer
+; Return: B = base sprite offset in the table
+; Return: D = direction bits at least some of the time. Unusued except one caller starts to use them but then throws them away.
 playerDamagedEffect:
     cp   A, $34                                        ;; 01:4b38 $fe $34
-    jr   C, .jr_01_4b4f                                ;; 01:4b3a $38 $13
-    jr   Z, .stopMotion                                ;; 01:4b3c $28 $34
+    jr   C, .blinking                                  ;; 01:4b3a $38 $13
+    jr   Z, .stop_knockback                            ;; 01:4b3c $28 $34
     push DE                                            ;; 01:4b3e $d5
     push BC                                            ;; 01:4b3f $c5
     ld   C, $04                                        ;; 01:4b40 $0e $04
@@ -1525,11 +1538,12 @@ playerDamagedEffect:
     or   A, $b0                                        ;; 01:4b4a $f6 $b0
     ld   C, A                                          ;; 01:4b4c $4f
     ld   B, $20                                        ;; 01:4b4d $06 $20
-.jr_01_4b4f:
-    bit  3, A                                          ;; 01:4b4f $cb $5f
-    jr   Z, .jr_01_4b55                                ;; 01:4b51 $28 $02
+.blinking:
+; Double the blinking rate compared to the original. Looks better on faster refresh rate screens and still looks fine on DMG.
+    bit  2, A
+    jr   Z, .handle_timer                              ;; 01:4b51 $28 $02
     ld   B, $30                                        ;; 01:4b53 $06 $30
-.jr_01_4b55:
+.handle_timer:
     ld   HL, wPlayerDamagedTimer                       ;; 01:4b55 $21 $d2 $c4
     dec  [HL]                                          ;; 01:4b58 $35
     ret  NZ                                            ;; 01:4b59 $c0
@@ -1546,7 +1560,7 @@ playerDamagedEffect:
     pop  BC                                            ;; 01:4b6f $c1
     pop  DE                                            ;; 01:4b70 $d1
     ret                                                ;; 01:4b71 $c9
-.stopMotion:
+.stop_knockback:
     push DE                                            ;; 01:4b72 $d5
     push BC                                            ;; 01:4b73 $c5
     ld   A, $01                                        ;; 01:4b74 $3e $01
@@ -2403,7 +2417,7 @@ setPlayerNormalSprite:
     and  A, $0f                                        ;; 01:50fc $e6 $0f
     ld   [wPlayerSpecialFlags], A                      ;; 01:50fe $ea $d4 $c4
     ld   A, $00                                        ;; 01:5101 $3e $00
-    call setScriptMainGameStateBackup                  ;; 01:5103 $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:5106 $0e $04
     call snapObjectToNearestTile8                      ;; 01:5108 $cd $ba $29
     ld   C, $04                                        ;; 01:510b $0e $04
@@ -2431,7 +2445,7 @@ setPlayerNormalSprite:
 
 setPlayerOnChocobo:
     ld   A, $0c                                        ;; 01:5136 $3e $0c
-    call setScriptMainGameStateBackup                  ;; 01:5138 $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:513b $0e $04
     call snapObjectToNearestTile8                      ;; 01:513d $cd $ba $29
     ld   C, $04                                        ;; 01:5140 $0e $04
@@ -2447,7 +2461,7 @@ setPlayerOnChocobo:
 
 setPlayerOnChocobot:
     ld   A, $0d                                        ;; 01:5156 $3e $0d
-    call setScriptMainGameStateBackup                  ;; 01:5158 $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:515b $0e $04
     call snapObjectToNearestTile8                      ;; 01:515d $cd $ba $29
     ld   C, $04                                        ;; 01:5160 $0e $04
@@ -2463,7 +2477,7 @@ setPlayerOnChocobot:
 
 setPlayerOnChocoboat:
     ld   A, $0e                                        ;; 01:5176 $3e $0e
-    call setScriptMainGameStateBackup                  ;; 01:5178 $cd $8f $3e
+    ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:517b $0e $04
     call snapObjectToNearestTile8                      ;; 01:517d $cd $ba $29
     ld   C, $04                                        ;; 01:5180 $0e $04
@@ -2615,54 +2629,55 @@ attackTileChain:
     ret                                                ;; 01:526c $c9
 
 attackTileMattok:
-    ld   A, B                                          ;; 01:526d $78
-    cp   A, $06                                        ;; 01:526e $fe $06
-    ret  NZ                                            ;; 01:5270 $c0
-    ld   A, $00                                        ;; 01:5271 $3e $00
-    srl  D                                             ;; 01:5273 $cb $3a
-    srl  E                                             ;; 01:5275 $cb $3b
-    call setRoomTile                                   ;; 01:5277 $cd $00 $24
-    ret                                                ;; 01:527a $c9
+    ld a, $06
+    jr attackTileGrassCommon
 
 attackTileMattokWithStairs:
-    ld   A, B                                          ;; 01:527b $78
-    cp   A, $06                                        ;; 01:527c $fe $06
-    ret  NZ                                            ;; 01:527e $c0
-    ld   A, $02                                        ;; 01:527f $3e $02
-    srl  D                                             ;; 01:5281 $cb $3a
-    srl  E                                             ;; 01:5283 $cb $3b
-    call setRoomTile                                   ;; 01:5285 $cd $00 $24
-    ret                                                ;; 01:5288 $c9
+    ld a, $06
+    cp a, b
+    ld h, $02
+    jr attackTileCheckTile
 
 attackTileAxeWithStump:
-    ld   A, B                                          ;; 01:5289 $78
-    cp   A, $02                                        ;; 01:528a $fe $02
-    ret  NZ                                            ;; 01:528c $c0
-    ld   A, $01                                        ;; 01:528d $3e $01
-    srl  D                                             ;; 01:528f $cb $3a
-    srl  E                                             ;; 01:5291 $cb $3b
-    call setRoomTile                                   ;; 01:5293 $cd $00 $24
-    ret                                                ;; 01:5296 $c9
+    ld a, $02
+    cp a, b
+    ld h, $01
+    jr attackTileCheckTile
 
 attackTileAxe:
-    ld   A, B                                          ;; 01:5297 $78
-    cp   A, $02                                        ;; 01:5298 $fe $02
-    ret  NZ                                            ;; 01:529a $c0
-    ld   A, $00                                        ;; 01:529b $3e $00
-    srl  D                                             ;; 01:529d $cb $3a
-    srl  E                                             ;; 01:529f $cb $3b
-    call setRoomTile                                   ;; 01:52a1 $cd $00 $24
-    ret                                                ;; 01:52a4 $c9
+    ld a, $02
+    jr attackTileGrassCommon
 
 attackTileSickle:
-    ld   A, B                                          ;; 01:52a5 $78
-    cp   A, $04                                        ;; 01:52a6 $fe $04
-    ret  NZ                                            ;; 01:52a8 $c0
-    ld   A, $00                                        ;; 01:52a9 $3e $00
-    srl  D                                             ;; 01:52ab $cb $3a
-    srl  E                                             ;; 01:52ad $cb $3b
-    call setRoomTile                                   ;; 01:52af $cd $00 $24
-    ret                                                ;; 01:52b2 $c9
+    ld a, $04
+
+attackTileGrassCommon:
+    cp a, b
+    ld h, $00
+
+; In multiple places attacking with a certain weapon near the edge of the screen could cause a unintended warp.
+; Thank you to radimerry (Radiant Nighte) for this fix.
+attackTileCheckTile:
+    ret nz
+; Check y range
+    ld a, $0f
+    cp a, d
+    ret c
+
+; Check x range
+    ld a, $13
+    cp e
+    ret c
+
+    srl d
+    srl e
+    ld a, h
+    jp setRoomTile
+
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00
 
 runPlayerAttackObjectFunctions:
     ld   C, $00                                        ;; 01:52b3 $0e $00

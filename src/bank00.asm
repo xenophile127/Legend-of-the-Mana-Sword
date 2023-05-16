@@ -118,12 +118,16 @@ entry:
 
 Header:
     ds   $30                                           ;; 00:0104
-    db   "SEIKEN DENSETSU"                             ;; 00:0134
+; This title matches the GBC hash to select the red and blue sprite palettes and a white, green, blue, black background palette.
+    db   "FFA-->LOTMS", $00, $00, $00, $00             ;; 00:0134
     db   CART_COMPATIBLE_DMG                           ;; 00:0143
     db   $00, $00                                      ;; 00:0144 ??
     db   CART_INDICATOR_GB                             ;; 00:0146
-    db   CART_ROM_MBC5_RAM_BAT, CART_ROM_512KB, CART_SRAM_8KB ;; 00:0147
-    db   CART_DEST_NON_JAPANESE, $c3, $00              ;; 00:014a $01 $c3 $00
+; Use MBC5 instead of MBC2.
+    db   CART_ROM_MBC5_RAM_BAT                         ;; 00:0147 $1b
+    db   CART_ROM_512KB                                ;; 00:0148 $04
+    db   CART_SRAM_8KB                                 ;; 00:0149 $02
+    db   CART_DEST_NON_JAPANESE, $01, $00              ;; 00:014a $01 $c3 $00
     ds   3                                             ;; 00:014d
 
 SECTION "bank00_0150", ROM0[$0150]
@@ -408,34 +412,28 @@ initLCDCEffect:
 
 ; HL = buffer address
 ; B = buffer length
+; This routine originally copied the buffer backwards in a pretty inefficient manner.
+; That was probably to ensure that it was always terminated just in case.
+; Testing has not shown any issues with copying it forwards.
+; Thank you to radimerry (Radiant Nighte) for this optimization.
 loadLCDCEffectBuffer:
-    ld   E, B                                          ;; 00:02f3 $58
-    ld   D, $00                                        ;; 00:02f4 $16 $00
-    add  HL, DE                                        ;; 00:02f6 $19
-    ld   B, H                                          ;; 00:02f7 $44
-    ld   C, L                                          ;; 00:02f8 $4d
-    ld   HL, wLCDCEffectBuffer                         ;; 00:02f9 $21 $a0 $d3
-    add  HL, DE                                        ;; 00:02fc $19
-    ld   A, E                                          ;; 00:02fd $7b
-    ld   D, H                                          ;; 00:02fe $54
-    ld   E, L                                          ;; 00:02ff $5d
-    ld   H, B                                          ;; 00:0300 $60
-    ld   L, C                                          ;; 00:0301 $69
-    ld   B, A                                          ;; 00:0302 $47
-    cp   A, $00                                        ;; 00:0303 $fe $00
-    jr   Z, .write_terminator                          ;; 00:0305 $28 $08
-    dec  HL                                            ;; 00:0307 $2b
+    ld a, b
+    srl a
+    srl a
+    dec a
+    ld [wLCDCEffectIndex], a
+    ld de, wLCDCEffectBuffer
 .loop:
-    ld   A, [HL-]                                      ;; 00:0308 $3a
-    dec  DE                                            ;; 00:0309 $1b
-    ld   [DE], A                                       ;; 00:030a $12
-    dec  B                                             ;; 00:030b $05
-    jr   NZ, .loop                                     ;; 00:030c $20 $fa
-    dec  DE                                            ;; 00:030e $1b
-.write_terminator:
-    ld   A, $ff                                        ;; 00:030f $3e $ff
-    ld   [DE], A                                       ;; 00:0311 $12
-    ret                                                ;; 00:0312 $c9
+    ld a, [hl+]
+    ld [de], a
+    inc de
+    dec b
+    jr nz, .loop
+    ret
+
+; Free space freed by changing loadLCDCEffectBuffer
+    db   $00, $00, $00, $00, $00, $00, $00, $00
+    db   $00, $00, $00, $00, $00
 
 ; Load the default LCDC effect buffer, which handles the status bar not having sprites
 ; on top and the forces the color palette of the status bar.
@@ -3051,7 +3049,7 @@ scriptOpCodeCloseMap:
 closeMinimap_trampoline:
     jp_to_bank 01, closeMinimap                        ;; 00:1205 $f5 $3e $12 $c3 $d7 $1e
 
-call_00_120b:
+scriptPlayerSetPosition:
     ld   A, [HL+]                                      ;; 00:120b $2a
     add  A, A                                          ;; 00:120c $87
     add  A, A                                          ;; 00:120d $87
@@ -3085,7 +3083,8 @@ call_00_120b:
     pop  HL                                            ;; 00:123c $e1
     ret                                                ;; 00:123d $c9
 
-call_00_123e:
+; C = npc number (object number - 7)
+scriptNpcSetPosition:
     push HL                                            ;; 00:123e $e5
     push BC                                            ;; 00:123f $c5
     call checkForMovingObjects                         ;; 00:1240 $cd $9b $28
@@ -3170,7 +3169,7 @@ scriptOpCodeNpc1SetPosition:
     call checkForFollower                              ;; 00:12ae $cd $c2 $28
     add  A, $00                                        ;; 00:12b1 $c6 $00
     ld   C, A                                          ;; 00:12b3 $4f
-    call call_00_123e                                  ;; 00:12b4 $cd $3e $12
+    call scriptNpcSetPosition                          ;; 00:12b4 $cd $3e $12
     ret                                                ;; 00:12b7 $c9
 
 scriptOpCodeNpc1WalkSpeed4:
@@ -3248,7 +3247,7 @@ scriptOpCodeNpc2SetPosition:
     call checkForFollower                              ;; 00:1322 $cd $c2 $28
     add  A, $01                                        ;; 00:1325 $c6 $01
     ld   C, A                                          ;; 00:1327 $4f
-    call call_00_123e                                  ;; 00:1328 $cd $3e $12
+    call scriptNpcSetPosition                          ;; 00:1328 $cd $3e $12
     ret                                                ;; 00:132b $c9
 
 scriptOpCodeNpc2WalkSpeed4:
@@ -3326,7 +3325,7 @@ scriptOpCodeNpc3SetPosition:
     call checkForFollower                              ;; 00:1396 $cd $c2 $28
     add  A, $02                                        ;; 00:1399 $c6 $02
     ld   C, A                                          ;; 00:139b $4f
-    call call_00_123e                                  ;; 00:139c $cd $3e $12
+    call scriptNpcSetPosition                          ;; 00:139c $cd $3e $12
     ret                                                ;; 00:139f $c9
 
 scriptOpCodeNpc3WalkSpeed4:
@@ -3404,7 +3403,7 @@ scriptOpCodeNpc4SetPosition:
     call checkForFollower                              ;; 00:140a $cd $c2 $28
     add  A, $03                                        ;; 00:140d $c6 $03
     ld   C, A                                          ;; 00:140f $4f
-    call call_00_123e                                  ;; 00:1410 $cd $3e $12
+    call scriptNpcSetPosition                          ;; 00:1410 $cd $3e $12
     ret                                                ;; 00:1413 $c9
 
 scriptOpCodeNpc4WalkSpeed4:
@@ -3482,7 +3481,7 @@ scriptOpCodeNpc5SetPosition:
     call checkForFollower                              ;; 00:147e $cd $c2 $28
     add  A, $04                                        ;; 00:1481 $c6 $04
     ld   C, A                                          ;; 00:1483 $4f
-    call call_00_123e                                  ;; 00:1484 $cd $3e $12
+    call scriptNpcSetPosition                          ;; 00:1484 $cd $3e $12
     ret                                                ;; 00:1487 $c9
 
 scriptOpCodeNpc5WalkSpeed4:
@@ -3560,7 +3559,7 @@ scriptOpCodeNpc6SetPosition:
     call checkForFollower                              ;; 00:14f2 $cd $c2 $28
     add  A, $05                                        ;; 00:14f5 $c6 $05
     ld   C, A                                          ;; 00:14f7 $4f
-    call call_00_123e                                  ;; 00:14f8 $cd $3e $12
+    call scriptNpcSetPosition                          ;; 00:14f8 $cd $3e $12
     ret                                                ;; 00:14fb $c9
 
 scriptOpCodeNpc6WalkSpeed4:
@@ -3638,7 +3637,7 @@ scriptOpCodeNpc7SetPosition:
     call checkForFollower                              ;; 00:1566 $cd $c2 $28
     add  A, $06                                        ;; 00:1569 $c6 $06
     ld   C, A                                          ;; 00:156b $4f
-    call call_00_123e                                  ;; 00:156c $cd $3e $12
+    call scriptNpcSetPosition                          ;; 00:156c $cd $3e $12
     ret                                                ;; 00:156f $c9
 
 scriptOpCodeNpc7WalkSpeed4:
@@ -3736,7 +3735,7 @@ scriptOpCodePlayerDirectionDown:
 scriptOpCodePlayerSetPosition:
     call scriptPlayerFinishAction                      ;; 00:15fb $cd $88 $15
     ret  NZ                                            ;; 00:15fe $c0
-    call call_00_120b                                  ;; 00:15ff $cd $0b $12
+    call scriptPlayerSetPosition                       ;; 00:15ff $cd $0b $12
     call getNextScriptInstruction                      ;; 00:1602 $cd $27 $37
     ret                                                ;; 00:1605 $c9
 
@@ -3803,7 +3802,7 @@ scriptOpCodeFollowerSetPosition:
     call checkForFollower                              ;; 00:1663 $cd $c2 $28
     jr   NZ, .no_follower                              ;; 00:1666 $20 $06
     ld   C, $00                                        ;; 00:1668 $0e $00
-    call call_00_123e                                  ;; 00:166a $cd $3e $12
+    call scriptNpcSetPosition                          ;; 00:166a $cd $3e $12
     ret                                                ;; 00:166d $c9
 .no_follower:
     inc  HL                                            ;; 00:166e $23
@@ -4825,9 +4824,7 @@ loadRoomTile:
     add  HL, DE                                        ;; 00:1c23 $19
     push BC                                            ;; 00:1c24 $c5
     push HL                                            ;; 00:1c25 $e5
-; Background tile graphics start at the beginning of bank c, then continue into bank b
-; but this code does not properly adjust the address for bank b, which doesn't matter
-; because animated tiles are not used by the titlescreen, ending, or map screens
+; Background tile graphics start at the beginning of bank 1c, then continue into bank 1b
     ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 00:1c26 $3e $0c
     bit  7, B                                          ;; 00:1c28 $cb $78
     jr   Z, .jr_00_1c2d                                ;; 00:1c2a $28 $01
@@ -4836,13 +4833,21 @@ loadRoomTile:
     call pushBankNrAndSwitch                           ;; 00:1c2d $cd $fb $29
     pop  DE                                            ;; 00:1c30 $d1
     pop  HL                                            ;; 00:1c31 $e1
+; Animated graphics originally only worked in one of the two banks used so to fix
+; if address >= $8000 then sub $4000
+    bit 7, h
+    jr z, .copyToSRAM
+    res 7, h
+    set 6, h
+.copyToSRAM:
     ld   B, $10                                        ;; 00:1c32 $06 $10
     call copyHLtoDE                                    ;; 00:1c34 $cd $49 $2b
     call popBankNrAndSwitch                            ;; 00:1c37 $cd $0a $2a
 .done:
     pop  HL                                            ;; 00:1c3a $e1
     ret                                                ;; 00:1c3b $c9
-    db   $1a, $e6, $0f, $be, $c0, $13, $23, $05        ;; 00:1c3c ????????
+
+; Unused code. Some already harvested for free space.
     db   $c8, $1a, $be, $c0, $13, $23, $05, $c8        ;; 00:1c44 ????????
     db   $18, $ee, $e5, $06, $40, $21, $70, $cf        ;; 00:1c4c ????????
     db   $11, $04, $00, $7e, $e6, $f0, $28, $08        ;; 00:1c54 ????????
@@ -5514,16 +5519,14 @@ mainLoopPostInput:
     call runRoomScriptIfAllEnemiesDefeated_trampoline  ;; 00:2198 $cd $1a $29
     call startScriptIfRequested                        ;; 00:219b $cd $8f $31
     call playerHousekeeping                            ;; 00:219e $cd $1b $1d
-    call checkForLevelUp                               ;; 00:21a1 $cd $4b $3d
+; Stop leveling at 99.
+    ld a, [wLevel]
+    cp a, $63
+    call nz, checkForLevelUp
     call updateStatusEffects_trampoline                ;; 00:21a4 $cd $3b $31
     ld   A, $ff                                        ;; 00:21a7 $3e $ff
     call timerCheckExpiredOrTickAllTimers              ;; 00:21a9 $cd $0a $30
-    call processBackgroundRenderRequests               ;; 00:21ac $cd $da $1d
-    ret                                                ;; 00:21af $c9
-
-getMapEncodingType:
-    ld   A, [wMapEncodingType]                         ;; 00:21b0 $fa $f8 $c3
-    ret                                                ;; 00:21b3 $c9
+    jp processBackgroundRenderRequests
 
 clearRoomStatusHistory:
     ld   HL, wRoomClearedStatus                        ;; 00:21b4 $21 $00 $c4
@@ -6727,7 +6730,7 @@ moveObjectsDuringScript_trampoline:
 enemyCollisionHandling_trampoline:
     jp_to_bank 03, enemyCollisionHandling              ;; 00:28b6 $f5 $3e $07 $c3 $35 $1f
 
-getValueFromDEAddOffset03:
+npcSetMeleeState:
     ld   HL, $03                                       ;; 00:28bc $21 $03 $00
     add  HL, DE                                        ;; 00:28bf $19
     ld   [HL], A                                       ;; 00:28c0 $77
@@ -7328,9 +7331,9 @@ pushObject:
     ret                                                ;; 00:2c92 $c9
 
 snowmanMetaspriteTable:
-    db   $00, $74, $76, $00, $74, $76, $00, $74        ;; 00:2c93 ????????
-    db   $76, $00, $74, $76, $00, $74, $76, $00        ;; 00:2c9b ????????
-    db   $74, $76, $00, $74, $76, $00, $74, $76        ;; 00:2ca3 ????????
+    db   $10, $74, $76, $10, $74, $76, $10, $74        ;; 00:2c93 ????????
+    db   $76, $10, $74, $76, $10, $74, $76, $10        ;; 00:2c9b ????????
+    db   $74, $76, $10, $74, $76, $10, $74, $76        ;; 00:2ca3 ????????
 
 chestMetaspriteTable:
     db   $00, $78, $7a, $00, $78, $7a, $00, $78        ;; 00:2cab ........
@@ -7988,8 +7991,8 @@ removeEquipmentFromInventory_trampoline:
 removeMagicFromInventory_trampoline:
     jp_to_bank 02, removeMagicFromInventory            ;; 00:30e1 $f5 $3e $1d $c3 $06 $1f
 
-getEquippedArmorElementalResistances_Dup_trampoline:
-    jp_to_bank 02, getEquippedArmorElementalResistances_Dup ;; 00:30e7 $f5 $3e $1e $c3 $06 $1f
+getEquippedHelmElementalResistances_trampoline:
+    jp_to_bank 02, getEquippedHelmElementalResistances ;; 00:30e7 $f5 $3e $1e $c3 $06 $1f
 
 getEquippedShieldBlockElements_trampoline:
     jp_to_bank 02, getEquippedShieldBlockElements      ;; 00:30ed $f5 $3e $1f $c3 $06 $1f
@@ -8099,7 +8102,8 @@ runScriptByIndex:
     ld   [wWindowFlags], A                             ;; 00:31c4 $ea $74 $d8
 
 runScriptFromScriptByIndex:
-    ld   A, $05                                        ;; 00:31c7 $3e $05
+    ; Text speed 2 still allows pressing a button to further speed up text display.
+    ld   A, $02
     ld   [wTextSpeedTimer], A                          ;; 00:31c9 $ea $64 $d8
     ld   A, H                                          ;; 00:31cc $7c
     and  A, A                                          ;; 00:31cd $a7
@@ -8120,7 +8124,7 @@ runScriptFromScriptByIndex:
     jr   .jr_00_31f1                                   ;; 00:31e8 $18 $07
 .normal_script:
     call getScriptPointerFromScriptPointerTable        ;; 00:31ea $cd $82 $32
-    ld   DE, $4000 ;@=value                            ;; 00:31ed $11 $00 $40
+    ld   DE, $4000 ;@=value hex=True                   ;; 00:31ed $11 $00 $40
     add  HL, DE                                        ;; 00:31f0 $19
 .jr_00_31f1:
     ld   A, H                                          ;; 00:31f1 $7c
@@ -8655,7 +8659,7 @@ textCtrlCodeWaitInput:
     call runVirtualScriptOpCodeFF                      ;; 00:350b $cd $69 $3c
     ret                                                ;; 00:350e $c9
 
-call_00_350f:
+opCodeFFWaitInput:
     call updateJoypadInput_trampoline                  ;; 00:350f $cd $d1 $1e
     pop  HL                                            ;; 00:3512 $e1
     ld   A, C                                          ;; 00:3513 $79
@@ -8732,7 +8736,7 @@ printName:
     pop  BC                                            ;; 00:3593 $c1
     call saveRegisterState2_bank0                      ;; 00:3594 $cd $73 $3c
 
-call_00_3597:
+opCodeFFPrintName:
     call textDelay                                     ;; 00:3597 $cd $c2 $36
     jr   NZ, .jr_00_35ae                               ;; 00:359a $20 $12
     call loadRegisterState2_bank0                      ;; 00:359c $cd $87 $3c
@@ -8748,7 +8752,7 @@ call_00_3597:
 
 textCtrlCodeNewline:
     call loadRegisterState2_bank0                      ;; 00:35b0 $cd $87 $3c
-    call call_00_380b                                  ;; 00:35b3 $cd $0b $38
+    call menuNextItemPosition                          ;; 00:35b3 $cd $0b $38
     call saveRegisterState2_bank0                      ;; 00:35b6 $cd $73 $3c
     call setDialogTextInsertionPoint                   ;; 00:35b9 $cd $36 $37
     pop  HL                                            ;; 00:35bc $e1
@@ -8941,7 +8945,8 @@ textDelay:
     dec  A                                             ;; 00:36c5 $3d
     ld   [wTextSpeedTimer], A                          ;; 00:36c6 $ea $64 $d8
     ret  NZ                                            ;; 00:36c9 $c0
-    ld   A, $05                                        ;; 00:36ca $3e $05
+    ; Text speed 2 still allows pressing a button to further speed up text display.
+    ld   A, $02
     ld   [wTextSpeedTimer], A                          ;; 00:36cc $ea $64 $d8
     ret                                                ;; 00:36cf $c9
 
@@ -9013,6 +9018,7 @@ getNextScriptInstruction:
     pop  AF                                            ;; 00:3734 $f1
     ret                                                ;; 00:3735 $c9
 
+; Return: Z set for dialog, clear for other windows.
 setDialogTextInsertionPoint:
     ld   A, [wDialogType]                              ;; 00:3736 $fa $4a $d8
     cp   A, $06                                        ;; 00:3739 $fe $06
@@ -9027,6 +9033,7 @@ setDialogTextInsertionPoint:
     ld   [wWindowTextSpaceLeftOnLine], A               ;; 00:3749 $ea $ba $d8
     ret                                                ;; 00:374c $c9
 
+; Return: Z set and DE BC set to distance from edges if the current window is dialog.
 getDialogTextInsertionPoint:
     ld   A, [wDialogType]                              ;; 00:374d $fa $4a $d8
     cp   A, $06                                        ;; 00:3750 $fe $06
@@ -9053,31 +9060,36 @@ drawText:
 .loop_1:
     push AF                                            ;; 00:377a $f5
     ld   A, [HL+]                                      ;; 00:377b $2a
-    cp   A, $7f                                        ;; 00:377c $fe $7f
-    jr   Z, .jr_00_3785                                ;; 00:377e $28 $05
+; The original range was $7f (copyright symbol) or $a0 and greater.
+; New range is $70 to $7f or $a0 and greater, which means $0f additional glyphs..
+; Except $70 to $7f has to have $20 added to them to map to the correct glyph.
+; For scripts it's instead just $90 and greater.
+; I don't remember why this discrepancy exists but my notes say there was a bug to work around.
+    cp   A, $70                                        ;; 00:377c $fe $7f
+    jr   c, .terminator                                ;; 00:377e $28 $05
     cp   A, $a0                                        ;; 00:3780 $fe $a0
-    jp   C, .jp_00_37dc                                ;; 00:3782 $da $dc $37
-.jr_00_3785:
-    push AF                                            ;; 00:3785 $f5
-    ld   A, [wDialogType]                              ;; 00:3786 $fa $4a $d8
-    inc  A                                             ;; 00:3789 $3c
-    jr   NZ, .jr_00_3793                               ;; 00:378a $20 $07
-    dec  D                                             ;; 00:378c $15
-    ld   A, $7f                                        ;; 00:378d $3e $7f
-    call storeTileAatDialogPositionDE                  ;; 00:378f $cd $44 $38
-    inc  D                                             ;; 00:3792 $14
-.jr_00_3793:
-    pop  AF                                            ;; 00:3793 $f1
+    jr nc, .print
+    cp a, $80
+    jr nc, .terminator
+    add a, $20
+.print:
     xor  A, $80                                        ;; 00:3794 $ee $80
     call storeTileAatDialogPositionDE                  ;; 00:3796 $cd $44 $38
     ld   A, [wDialogType]                              ;; 00:3799 $fa $4a $d8
     cp   A, $1e ; Naming screen                        ;; 00:379c $fe $1e
-    jr   NZ, .jr_00_37a1                               ;; 00:379e $20 $01
+    jr   NZ, .checkIntro                               ;; 00:379e $20 $01
 ; Naming screen puts a space between each character
-; And also prints as if the player was holding a button down
     inc  E                                             ;; 00:37a0 $1c
-.jr_00_37a1:
+.checkIntro:
+    inc a
+    jr nz, .checkDialog
+    dec d
+    ld a, $7f
+    call storeTileAatDialogPositionDE
+    inc d
+.checkDialog:
     pop  AF                                            ;; 00:37a1 $f1
+; Windows other than the script dialog window print continuously until finished.
     jr   NZ, .print_more_text                          ;; 00:37a2 $20 $14
     ld   A, [wWindowFlags]                             ;; 00:37a4 $fa $74 $d8
     bit  1, A                                          ;; 00:37a7 $cb $4f
@@ -9102,7 +9114,7 @@ drawText:
     ld   [wWindowTextInsertionPointFinalX], A          ;; 00:37c1 $ea $c5 $d8
     ld   A, [wDialogType]                              ;; 00:37c4 $fa $4a $d8
     cp   A, $06                                        ;; 00:37c7 $fe $06
-    call NZ, call_00_380b                              ;; 00:37c9 $c4 $0b $38
+    call NZ, menuNextItemPosition                      ;; 00:37c9 $c4 $0b $38
     xor  A, A                                          ;; 00:37cc $af
     ld   [wDualCharacterPosition], A                   ;; 00:37cd $ea $83 $d8
     call setDialogTextInsertionPoint                   ;; 00:37d0 $cd $36 $37
@@ -9114,7 +9126,7 @@ drawText:
     call setDialogTextInsertionPoint                   ;; 00:37d7 $cd $36 $37
     pop  AF                                            ;; 00:37da $f1
     ret                                                ;; 00:37db $c9
-.jp_00_37dc:
+.terminator:
     ld   A, D                                          ;; 00:37dc $7a
     ld   [wWindowTextInsertionPointFinalY], A          ;; 00:37dd $ea $c6 $d8
     ld   A, E                                          ;; 00:37e0 $7b
@@ -9135,7 +9147,7 @@ drawText:
     dec  B                                             ;; 00:37fd $05
     jr   NZ, .loop_2                                   ;; 00:37fe $20 $f0
 .jr_00_3800:
-    call call_00_380b                                  ;; 00:3800 $cd $0b $38
+    call menuNextItemPosition                          ;; 00:3800 $cd $0b $38
     inc  HL                                            ;; 00:3803 $23
 .jr_00_3804:
     dec  HL                                            ;; 00:3804 $2b
@@ -9144,12 +9156,13 @@ drawText:
     pop  AF                                            ;; 00:3809 $f1
     ret                                                ;; 00:380a $c9
 
-call_00_380b:
+; Handles special cases for the SELECT menu (three columns), the dialog and intro scroll (less indented).
+menuNextItemPosition:
     ld   A, [wWindowTextLength]                        ;; 00:380b $fa $9b $d8
     ld   B, A                                          ;; 00:380e $47
     ld   A, [wMenuFlags]                               ;; 00:380f $fa $49 $d8
     rrca                                               ;; 00:3812 $0f
-    jr   NC, .jr_00_382c                               ;; 00:3813 $30 $17
+    jr   NC, .new_line                                 ;; 00:3813 $30 $17
     ld   A, [wDialogType]                              ;; 00:3815 $fa $4a $d8
     cp   A, $11                                        ;; 00:3818 $fe $11
     jr   Z, .jr_00_3827                                ;; 00:381a $28 $0b
@@ -9158,20 +9171,20 @@ call_00_380b:
     inc  A                                             ;; 00:3820 $3c
     srl  A                                             ;; 00:3821 $cb $3f
     cp   A, E                                          ;; 00:3823 $bb
-    jr   C, .jr_00_382c                                ;; 00:3824 $38 $06
+    jr   C, .new_line                                  ;; 00:3824 $38 $06
     ld   E, A                                          ;; 00:3826 $5f
 .jr_00_3827:
     inc  E                                             ;; 00:3827 $1c
     call saveRegisterState2_bank0                      ;; 00:3828 $cd $73 $3c
     ret                                                ;; 00:382b $c9
-.jr_00_382c:
+.new_line:
     ld   E, $02                                        ;; 00:382c $1e $02
     ld   A, [wDialogType]                              ;; 00:382e $fa $4a $d8
     cp   A, $ff                                        ;; 00:3831 $fe $ff
-    jr   Z, .jr_00_3839                                ;; 00:3833 $28 $04
+    jr   Z, .small_indent                              ;; 00:3833 $28 $04
     cp   A, $06                                        ;; 00:3835 $fe $06
     jr   NZ, .jr_00_383b                               ;; 00:3837 $20 $02
-.jr_00_3839:
+.small_indent:
     ld   E, $01                                        ;; 00:3839 $1e $01
 .jr_00_383b:
     inc  D                                             ;; 00:383b $14
@@ -9648,7 +9661,7 @@ vendorCantCarry:
     call runVirtualScriptOpCodeFF                      ;; 00:3b09 $cd $69 $3c
     ret                                                ;; 00:3b0c $c9
 
-call_00_3b0d:
+opCodeFFWaitCantCarry:
     call updateJoypadInput_trampoline                  ;; 00:3b0d $cd $d1 $1e
     pop  HL                                            ;; 00:3b10 $e1
     ld   A, D                                          ;; 00:3b11 $7a
@@ -9761,13 +9774,13 @@ scriptOpCodeResetGame:
 ;@jumptable amount=11
 scriptOpCodeFFJumpTable:
     dw   yesNoWindowFinish                             ;; 00:3ba1 pP $00
-    dw   call_00_3597                                  ;; 00:3ba3 pP $01
+    dw   opCodeFFPrintName                             ;; 00:3ba3 pP $01
     dw   windowClearRectangle                          ;; 00:3ba5 pP $02
     dw   checkScriptDelayTimer                         ;; 00:3ba7 pP $03
-    dw   call_00_350f                                  ;; 00:3ba9 pP $04
+    dw   opCodeFFWaitInput                             ;; 00:3ba9 pP $04
     dw   scriptResumeAfterWindow                       ;; 00:3bab pP $05
     dw   vendorCantCarry                               ;; 00:3bad ?? $06
-    dw   call_00_3b0d                                  ;; 00:3baf ?? $07
+    dw   opCodeFFWaitCantCarry                         ;; 00:3baf ?? $07
     dw   opCodeFFCloseWindow                           ;; 00:3bb1 ?? $08
     dw   copyMainGameStateBackupFromScriptToWindow     ;; 00:3bb3 pP $09
     dw   opCodeFFPrintMenuText                         ;; 00:3bb5 ?? $0a
@@ -10135,10 +10148,10 @@ getEquippedShieldBlockElements_SaveBC:
     pop  BC                                            ;; 00:3dd1 $c1
     ret                                                ;; 00:3dd2 $c9
 
-; Only works for armor, not helms. The only helm meant to have resistance is the Mithril helm.
+; Originally checked armor twice and nothing checked helmets.
 getEquippedElementalResistances:
     push BC                                            ;; 00:3dd3 $c5
-    call getEquippedArmorElementalResistances_Dup_trampoline ;; 00:3dd4 $cd $e7 $30
+    call getEquippedHelmElementalResistances_trampoline
     ld   B, A                                          ;; 00:3dd7 $47
     call getEquippedArmorElementalResistances_trampoline ;; 00:3dd8 $cd $89 $31
     or   A, B                                          ;; 00:3ddb $b0
@@ -10238,6 +10251,8 @@ startLevelUp:
     call NZ, clearItemBuff                             ;; 00:3e70 $c4 $44 $1d
     ld   A, [wMusic]                                   ;; 00:3e73 $fa $9b $d4
     ld   [wCurrentMusicLevelUpBackup], A               ;; 00:3e76 $ea $42 $d8
+; Levelup removes the status effect music, so why not remove Pois as well?
+    call clearPoisStatusEffect_trampoline
     ld   A, $1c                                        ;; 00:3e79 $3e $1c
     ldh  [hCurrentMusic], A                            ;; 00:3e7b $e0 $90
     ld   A, $21                                        ;; 00:3e7d $3e $21
@@ -10249,9 +10264,7 @@ startLevelUp:
     res  6, [HL]                                       ;; 00:3e8c $cb $b6
     ret                                                ;; 00:3e8e $c9
 
-setScriptMainGameStateBackup:
-    ld   [wScriptMainGameStateBackup], A               ;; 00:3e8f $ea $6e $d8
-    ret                                                ;; 00:3e92 $c9
+    db   $00
     db   $fa, $58, $d8, $c9                            ;; 00:3e93 ????
 
 setWillBarMax:
