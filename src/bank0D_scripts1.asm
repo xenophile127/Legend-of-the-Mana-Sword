@@ -4610,10 +4610,12 @@ script_0250:
       db "<10>", $00                                   ;; 0d:761b
     sIF_FLAG !wScriptFlags05.5                         ;; 0d:761d $08 $ad $00 $8b
       sMSG                                             ;; 0d:7621 $04
-        db "King:Julius has\n summoned monsters\n across the world.<12>"
-        db "<1b> One called Kary\n in the Snowfield\n has frozen us.<12>"
-        db "<1b> Cibba came to\n help, but he's\n frozen too.<12>"
-        db "<1b> It is dangerous\n to keep them all\n frozen for long__", $00 ;; 0d:7622
+        db "King of Lorimar:\n Julius summoned \n monsters. One of<12>"
+        db "<1b> them called Kary\n now dwells in\n the Snowfields_<12>"
+        db "<1b> Kary has sent icy\n mountain winds to\n freeze us all.<12>"
+        db "<1b> Cibba came to\n help us, but he's\n trapped by ice.<12>"
+        db "<1b> If you don't stop\n Kary soon I fear\n the worst_", $00
+
     sELSE                                              ;; 0d:76aa $01 $24
       sMSG                                             ;; 0d:76ac $04
         db "Thank you so much.\nCibba is waiting\nin the other room.", $00 ;; 0d:76ad
