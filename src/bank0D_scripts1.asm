@@ -4575,7 +4575,7 @@ script_0249:
       db " KID__<12>"
       db "<11>", $00             ;; 0d:75f6
     sFADE_TO_BLACK                                     ;; 0d:75fe $bd
-    sLOAD_ROOM_INSTANT 1, $56, 14, 6                   ;; 0d:75ff $f3 $01 $56 $0e $06
+    sLOAD_ROOM_INSTANT 1, $56, 12, 8                   ;; 0d:75ff $f3 $01 $56 $0e $06
     sCLEAR_ROOM_HISTORY                                ;; 0d:7604 $ab
     sDELAY 60                                          ;; 0d:7605 $f0 $3c
     sFADE_TO_NORMAL                                    ;; 0d:7607 $bc
