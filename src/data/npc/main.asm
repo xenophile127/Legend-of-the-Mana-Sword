@@ -17,7 +17,7 @@
 npcDataTable:
     NPC_DATA $a9, $00, $74, $02, gfxSnowman, tileorderNpc, snowmanMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_003d, $0000 ;; 03:5f5a NPC_SNOWMAN_STILL
     NPC_DATA $d9, $01, $20, $08, gfxNpcGirl, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0202, $0000 ;; 03:5f72 NPC_FUJI_FOLLOWING
-    NPC_DATA $d9, $02, $20, $08, gfxNpcMysteryMan, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $00, $00, $06, $06, $06, $06, script_0203, $0000 ;; 03:5f8a NPC_MYSTERYMAN_FOLLOWING
+    NPC_DATA $d9, $02, $20, $08, gfxNpcMysteryMan, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $06, $06, $06, $06, script_0203, $0000 ;; 03:5f8a NPC_MYSTERYMAN_FOLLOWING
     NPC_DATA $d9, $03, $20, $08, gfxNpcWatts, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0204, $0000 ;; 03:5fa2 NPC_WATTS_FOLLOWING
     NPC_DATA $d9, $04, $20, $08, gfxNpcBogard, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0205, $0000 ;; 03:5fba NPC_BOGARD_FOLLOWING
 
@@ -119,7 +119,7 @@ ENDC
     NPC_DATA $95, $5c, $60, $06, gfxEnemySeaDragon, tileorderNpc, data_03_7bba, $00, $01, $01, $02, $02, $02, $01, $16, $17, $17, script_003d, $0000 ;; 03:6842 NPC_SEA_DRAGON
     NPC_DATA $93, $5d, $60, $08, gfxEnemyGalFish, tileorderNpc, data_03_7cda, $00, $01, $00, $00, $00, $00, $05, $05, $07, $08, script_003d, $0000 ;; 03:685a NPC_GALL_FISH
     NPC_DATA $81, $5e, $60, $02, gfxNpcWilly, tileorderNpc, metaspritesWilly, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0256, $0000 ;; 03:6872 NPC_WILLY
-    NPC_DATA $81, $5e, $40, $08, gfxNpcMysteryMan, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $02, $00, $04, $04, $04, $04, script_0259, $0000 ;; 03:688a NPC_MYSTERYMAN_1
+    NPC_DATA $81, $5e, $40, $08, gfxNpcMysteryMan, tileorderNpc, metaspritesTable40Red, $00, $01, $01, $00, $02, $00, $04, $04, $04, $04, script_0259, $0000 ;; 03:688a NPC_MYSTERYMAN_1
 
 IF DEF(GLADIATOR_DUKE)
     NPC_DATA $81, $5f, $60, $08, gfxNpcDuke, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0261, $0000 ;; 03:68a2 NPC_AMANDA_1
@@ -208,7 +208,7 @@ ENDC
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0260, $0000 ;; 03:6fda NPC_INV_SALESMAN_1
     NPC_DATA $81, $5f, $40, $08, gfxNpcGirl, tileorderNpc, metaspritesTable40Red, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:6ff2 NPC_FUJI_2
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_025e, $0000 ;; 03:700a NPC_INV_SALESMAN_2
-    NPC_DATA $81, $02, $20, $08, gfxNpcMysteryMan, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0259, $0000 ;; 03:7022 NPC_MYSTERYMAN_2
+    NPC_DATA $81, $02, $20, $08, gfxNpcMysteryMan, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0259, $0000 ;; 03:7022 NPC_MYSTERYMAN_2
     NPC_DATA $81, $04, $20, $08, gfxNpcBogard, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $02, $02, $02, $02, script_0257, $0000 ;; 03:703a NPC_BOGARD_3
 
 IF DEF(GLADIATOR_DUKE)
