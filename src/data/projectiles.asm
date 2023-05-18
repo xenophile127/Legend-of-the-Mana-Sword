@@ -34,7 +34,7 @@ projectileDataTable:
     data_bbbbbbbbpppp $72, $08, $08, $40, $89, $00, $38, $04, gfxProjectileNinjaStar, data_09_46f9, data_09_4831, pattern_simple ;; 09:4519 ???????????????? $0a
     data_bbbbbbbbpppp $72, $08, $08, $40, $3e, $04, $30, $04, gfxProjectileOrb, data_09_46f9, data_09_4819, pattern_simple ;; 09:4529 ???????????????? $0b
     data_bbbbbbbbpppp $72, $08, $08, $10, $50, $00, $38, $04, gfxProjectileFire, data_09_46f9, data_09_4789, pattern_simple ;; 09:4539 ???????????????? $0c
-    data_bbbbbbbbpppp $62, $08, $08, $20, $5f, $00, $30, $04, gfxProjectileIce, data_09_46f9, data_09_4771, pattern_simple ;; 09:4549 ???????????????? $0d
+    data_bbbbbbbbpppp $62, $08, $08, $20, $5f, $00, $30, $04, gfxProjectileIce, data_09_46f9, projectileIceMetatileTable, pattern_simple ;; 09:4549 ???????????????? $0d
     data_bbbbbbbbpppp $62, $08, $08, $40, $30, $00, $38, $04, gfxProjectileLightning, data_09_46f9, data_09_4789, pattern_simple ;; 09:4559 ???????????????? $0e
     data_bbbbbbbbpppp $62, $08, $08, $04, $21, $01, $30, $04, gfxProjectileWind, data_09_46f9, data_09_4771, pattern_simple ;; 09:4569 ???????????????? $0f
     data_bbbbbbbbpppp $60, $08, $08, $01, $0f, $00, $30, $04, gfxProjectileArrow, data_09_46f9, data_09_4771, pattern_melee ;; 09:4579 ??????......???? $10
@@ -95,8 +95,13 @@ data_09_4761:
 
 data_09_4771:
     db   $20, $32, $30, $00, $30, $32, $00, $34        ;; 09:4771 ........
-    db   $36, $40, $34, $36, $20, $32, $30, $00        ;; 09:4779 ....????
-    db   $30, $32, $00, $34, $36, $40, $34, $36        ;; 09:4781 ????????
+    db   $36, $40, $34, $36
+
+projectileIceMetatileTable:
+    db   $30, $32, $30
+    db   $10, $30, $32
+    db   $10, $34, $36
+    db   $50, $34, $36
 
 data_09_4789:
     db   $20, $3a, $38, $00, $38, $3a, $00, $3c        ;; 09:4789 ????????
