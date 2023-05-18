@@ -70,7 +70,7 @@ ENDC
     NPC_DATA $91, $2b, $50, $08, gfxEnemyWerewolf, tileorderNpc, data_03_7cfe, $00, $01, $01, $00, $00, $00, $11, $05, $03, $03, script_003d, script_043a ;; 03:63aa NPC_WEREWOLF_2
     NPC_DATA $93, $2c, $60, $04, gfxEnemyGhost, tileorderNpc, data_03_7bba, $00, $01, $01, $00, $00, $00, $0b, $12, $12, $12, script_003d, script_0439 ;; 03:63c2 NPC_GHOST
     NPC_DATA $91, $2d, $40, $04, gfxEnemyBasilisk, tileorderNpc, data_03_7b72, $00, $01, $01, $01, $00, $00, $0b, $0b, $0b, $0b, script_003d, script_0455 ;; 03:63da NPC_BASILISK
-    NPC_DATA $91, $2e, $50, $06, gfxEnemyDeathScorpion, tileorderNpc, data_03_7b96, $00, $01, $01, $01, $02, $00, $01, $02, $01, $01, script_003d, $0000 ;; 03:63f2 NPC_SCORPION
+    NPC_DATA $91, $2e, $50, $06, gfxEnemyDeathScorpion, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $01, $01, $02, $00, $01, $02, $01, $01, script_003d, $0000 ;; 03:63f2 NPC_SCORPION
     NPC_DATA $91, $2f, $60, $08, gfxEnemySaurus, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $02, $02, $02, $02, script_003d, script_0444 ;; 03:640a NPC_SAURUS
     NPC_DATA $91, $31, $40, $04, gfxEnemyMummy, tileorderNpc, data_03_7b72, $00, $01, $01, $00, $00, $00, $02, $02, $05, $05, script_003d, script_0457 ;; 03:6422 NPC_MUMMY
     NPC_DATA $91, $30, $50, $0a, gfxEnemyPakkunLizard, tileorderNpc, data_03_7dfa, $00, $01, $01, $02, $02, $00, $05, $02, $02, $02, script_003d, $0000 ;; 03:643a NPC_PAKKUN_LIZARD
