@@ -7606,6 +7606,8 @@ addTileGraphicCopyRequest:
     ld   HL, wTileCopyRequestMutex                     ;; 00:2e2d $21 $e1 $c8
     dec  [HL]                                          ;; 00:2e30 $35
     ret                                                ;; 00:2e31 $c9
+
+; Unused code. Some already harvested for free space.
     db   $09, $e5, $62, $6b, $09, $54, $5d, $e1        ;; 00:2e32 ????????
     db   $2b, $1b, $3a, $12, $1b, $0b, $78, $b1        ;; 00:2e3a ????????
     db   $20, $f8, $c9, $e5, $f5, $21, $e1, $c8        ;; 00:2e42 ????????
@@ -7614,10 +7616,13 @@ addTileGraphicCopyRequest:
     db   $d5, $f5, $fa, $e0, $c8, $b7, $28, $13        ;; 00:2e5a ????????
     db   $6f, $26, $00, $54, $5d, $29, $19, $29        ;; 00:2e62 ????????
     db   $44, $4d, $21, $e0, $c5, $11, $e6, $c5        ;; 00:2e6a ????????
-    db   $cd, $32, $2e, $21, $e0, $c5, $f1, $22        ;; 00:2e72 ????????
-    db   $22, $d1, $73, $23, $72, $23, $d1, $73        ;; 00:2e7a ????????
-    db   $23, $72, $21, $e0, $c8, $34, $21, $e1        ;; 00:2e82 ????????
-    db   $c8, $35, $c9                                 ;; 00:2e8a ???
+    db   $cd, $32, $2e
+
+; Give Ice its own metasprite table using OBP1 so it is blue under boot rom auto colorization.
+playerAttackIceMetaspriteTable:
+    db   $30, $0a, $08, $10, $08, $0a, $50, $08        ;; 00:2e75
+    db   $0a, $10, $08, $0a, $30, $0a, $08, $50
+    db   $08, $0a, $10, $08, $0a, $70, $0a, $08
 
 playerMetaspriteTable_bank0_Dup:
     db   $20, $02, $00, $00, $00, $02, $00, $00        ;; 00:2e8d ????????

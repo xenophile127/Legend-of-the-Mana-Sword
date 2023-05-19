@@ -4008,9 +4008,13 @@ playerSpritesLoadAttackSpriteTiles:
     inc  HL                                            ;; 01:59f3 $23
     inc  HL                                            ;; 01:59f4 $23
     ld   A, [HL]                                       ;; 01:59f5 $7e
-    swap A                                             ;; 01:59f6 $cb $37
-    add  A, A                                          ;; 01:59f8 $87
-    add  A, A                                          ;; 01:59f9 $87
+
+; This is the slot number that should be udated for the attack.
+; Mask off all but the important bits so that the upper bits can be used.
+    and a, $03
+    rrca
+    rrca
+
     ld   B, A                                          ;; 01:59fa $47
     pop  AF                                            ;; 01:59fb $f1
     push BC                                            ;; 01:59fc $c5
@@ -4275,16 +4279,18 @@ playerUseWeaponOrItem:
     ld   A, [HL+]                                      ;; 01:5b7c $2a
     ld   H, [HL]                                       ;; 01:5b7d $66
     ld   L, A                                          ;; 01:5b7e $6f
-    ld   A, H                                          ;; 01:5b7f $7c
-    or   A, L                                          ;; 01:5b80 $b5
+    or a, h
     ret  Z                                             ;; 01:5b81 $c8
     push HL                                            ;; 01:5b82 $e5
     inc  HL                                            ;; 01:5b83 $23
     inc  HL                                            ;; 01:5b84 $23
     ld   A, [HL+]                                      ;; 01:5b85 $2a
     push HL                                            ;; 01:5b86 $e5
+; Mask the low bits so the high bits can be used for other purposes.
+    and a, $03
     ld   C, A                                          ;; 01:5b87 $4f
-    ld   B, $00                                        ;; 01:5b88 $06 $00
+; d still contains 0
+    ld b, d
     ld   HL, wPlayerAnimation                          ;; 01:5b8a $21 $94 $d3
     add  HL, BC                                        ;; 01:5b8d $09
     ld   [HL], $ff                                     ;; 01:5b8e $36 $ff
@@ -4292,7 +4298,7 @@ playerUseWeaponOrItem:
 ; This is the object id
     ld   A, [HL+]                                      ;; 01:5b91 $2a
     ld   C, A                                          ;; 01:5b92 $4f
-    ld   B, $00                                        ;; 01:5b93 $06 $00
+; b still contains 0
     ld   A, [HL+]                                      ;; 01:5b95 $2a
     cp   A, $ff                                        ;; 01:5b96 $fe $ff
     jr   Z, .jr_01_5b9d                                ;; 01:5b98 $28 $03
@@ -4312,7 +4318,8 @@ playerUseWeaponOrItem:
     ld   [HL], $01                                     ;; 01:5bac $36 $01
     ld   HL, wAttackFrameSteps                         ;; 01:5bae $21 $f8 $ce
     add  HL, BC                                        ;; 01:5bb1 $09
-    ld   [HL], $00                                     ;; 01:5bb2 $36 $00
+; b still contains 0
+    ld [hl], b
     pop  HL                                            ;; 01:5bb4 $e1
     pop  BC                                            ;; 01:5bb5 $c1
     push BC                                            ;; 01:5bb6 $c5
@@ -4326,15 +4333,22 @@ playerUseWeaponOrItem:
     ld   A, [HL]                                       ;; 01:5bc0 $7e
     ld   HL, playerAttackFirstMetaspriteTable          ;; 01:5bc1 $21 $99 $2e
     cp   A, $02                                        ;; 01:5bc4 $fe $02
-    jr   Z, .jr_01_5bcb                                ;; 01:5bc6 $28 $03
-    ld   HL, playerAttackSecondMetaspriteTable         ;; 01:5bc8 $21 $b1 $2e
-.jr_01_5bcb:
+    jr   Z, .set_metasprite
+    ld l, LOW(playerAttackSecondMetaspriteTable)
+    cp a, $03
+    jr z, .set_metasprite
+
+; Ice (and related items) uses a separate metasprite table using OBP1.
+; This causes it to be blue under boot rom auto colorization.
+    ld l, LOW(playerAttackIceMetaspriteTable)
+
+.set_metasprite:
     pop  BC                                            ;; 01:5bcb $c1
     call setObjectMetaspritePointer                    ;; 01:5bcc $cd $ba $0c
     pop  HL                                            ;; 01:5bcf $e1
     ld   A, [wPlayerCurrentAttackTypeAndFacing]        ;; 01:5bd0 $fa $5c $cf
     ld   C, A                                          ;; 01:5bd3 $4f
-    ld   B, $00                                        ;; 01:5bd4 $06 $00
+; b still contains 0
     add  HL, BC                                        ;; 01:5bd6 $09
     ld   A, [HL+]                                      ;; 01:5bd7 $2a
     ld   H, [HL]                                       ;; 01:5bd8 $66
@@ -4717,7 +4731,7 @@ attackFrames:
     dw   data_01_6519                                  ;; 01:5e51 ?? $1a
     dw   data_01_6471                                  ;; 01:5e53 ?? $1b
     dw   attackFireAutoTargetFrame                     ;; 01:5e55 ?? $1c
-    dw   data_01_617d                                  ;; 01:5e57 ?? $1d
+    dw   attackIceFrame1                               ;; 01:5e57 ?? $1d
     dw   data_01_65eb                                  ;; 01:5e59 ?? $1e
     dw   data_01_6597                                  ;; 01:5e5b ?? $1f
     dw   data_01_688b                                  ;; 01:5e5d ?? $20
@@ -4733,7 +4747,7 @@ attackFrames:
     dw   data_01_6543                                  ;; 01:5e71 ?? $2a
     dw   data_01_649b                                  ;; 01:5e73 ?? $2b
     dw   data_01_61a7                                  ;; 01:5e75 ?? $2c
-    dw   data_01_61fb                                  ;; 01:5e77 ?? $2d
+    dw   attackIceFrame2                               ;; 01:5e77 ?? $2d
     dw   data_01_6615                                  ;; 01:5e79 ?? $2e
     dw   data_01_65c1                                  ;; 01:5e7b ?? $2f
     dw   data_01_68b5                                  ;; 01:5e7d ?? $30
@@ -4749,7 +4763,7 @@ attackFrames:
     dw   data_01_656d                                  ;; 01:5e91 ?? $3a
     dw   data_01_64c5                                  ;; 01:5e93 ?? $3b
     dw   data_01_61d1                                  ;; 01:5e95 ?? $3c
-    dw   data_01_6225                                  ;; 01:5e97 ?? $3d
+    dw   attackIceFrame3                               ;; 01:5e97 ?? $3d
     dw   data_01_663f                                  ;; 01:5e99 ?? $3e
     dw   $0000                                         ;; 01:5e9b ?? $3f
     dw   $0000                                         ;; 01:5e9d ?? $40
@@ -4765,7 +4779,7 @@ attackFrames:
     dw   $0000                                         ;; 01:5eb1 ?? $4a
     dw   $0000                                         ;; 01:5eb3 ?? $4b
     dw   $0000                                         ;; 01:5eb5 ?? $4c
-    dw   data_01_624f                                  ;; 01:5eb7 ?? $4d
+    dw   attackIceFrame4                               ;; 01:5eb7 ?? $4d
     dw   $0000                                         ;; 01:5eb9 ?? $4e
     dw   $0000                                         ;; 01:5ebb ?? $4f
     dw   $0000                                         ;; 01:5ebd ?? $50
@@ -4781,7 +4795,7 @@ attackFrames:
     dw   $0000                                         ;; 01:5ed1 ?? $5a
     dw   $0000                                         ;; 01:5ed3 ?? $5b
     dw   $0000                                         ;; 01:5ed5 ?? $5c
-    dw   data_01_6279                                  ;; 01:5ed7 ?? $5d
+    dw   attackIceFrame5                               ;; 01:5ed7 ?? $5d
     dw   $0000                                         ;; 01:5ed9 ?? $5e
     dw   $0000                                         ;; 01:5edb ?? $5f
 
@@ -4957,8 +4971,9 @@ attackFireAutoTargetFrame:
     dw   data_01_6b2d, data_01_6b34, data_01_6b3b, data_01_6b42 ;; 01:616d ????????
     dw   data_01_6b2d, data_01_6b34, data_01_6b3b, data_01_6b42 ;; 01:6175 ????????
 
-data_01_617d:
-    db   $03, $5a, $02, $05, $0c, $00                  ;; 01:617d ??????
+; Changed to use OBP1 so it is blue under boot rom auto colorization.
+attackIceFrame1:
+    db   $03, $5a, $06, $05, $0c, $00                  ;; 01:617d ??????
     dw   gfxAttackIce, data_01_68df                    ;; 01:6183 ????
     dw   data_01_6b7f, data_01_6b86, data_01_6b8d, data_01_6b94 ;; 01:6187 ????????
     dw   data_01_6b7f, data_01_6b86, data_01_6b8d, data_01_6b94 ;; 01:618f ????????
@@ -4981,32 +4996,36 @@ data_01_61d1:
     dw   data_01_6b6c, data_01_6b6c, data_01_6b6c, data_01_6b6c ;; 01:61eb ????????
     dw   data_01_6b6c, data_01_6b6c, data_01_6b6c, data_01_6b6c ;; 01:61f3 ????????
 
-data_01_61fb:
-    db   $04, $40, $02, $03, $00, $00                  ;; 01:61fb ??????
+; Changed to use OBP1 so it is blue under boot rom auto colorization.
+attackIceFrame2:
+    db   $04, $40, $06, $03, $00, $00                  ;; 01:61fb ??????
     dw   gfxAttackIce, data_01_6933                    ;; 01:6201 ????
     dw   data_01_731f, data_01_731f, data_01_731f, data_01_731f ;; 01:6205 ????????
     dw   data_01_731f, data_01_731f, data_01_731f, data_01_731f ;; 01:620d ????????
     dw   data_01_731f, data_01_731f, data_01_731f, data_01_731f ;; 01:6215 ????????
     dw   data_01_731f, data_01_731f, data_01_731f, data_01_731f ;; 01:621d ????????
 
-data_01_6225:
-    db   $04, $40, $02, $02, $00, $00                  ;; 01:6225 ??????
+; Changed to use OBP1 so it is blue under boot rom auto colorization.
+attackIceFrame3:
+    db   $04, $40, $06, $02, $00, $00                  ;; 01:6225 ??????
     dw   gfxAttackIce, data_01_6933                    ;; 01:622b ????
     dw   data_01_73a0, data_01_73a0, data_01_73a0, data_01_73a0 ;; 01:622f ????????
     dw   data_01_73a0, data_01_73a0, data_01_73a0, data_01_73a0 ;; 01:6237 ????????
     dw   data_01_73a0, data_01_73a0, data_01_73a0, data_01_73a0 ;; 01:623f ????????
     dw   data_01_73a0, data_01_73a0, data_01_73a0, data_01_73a0 ;; 01:6247 ????????
 
-data_01_624f:
-    db   $04, $40, $02, $01, $00, $00                  ;; 01:624f ??????
+; Changed to use OBP1 so it is blue under boot rom auto colorization.
+attackIceFrame4:
+    db   $04, $40, $06, $01, $00, $00                  ;; 01:624f ??????
     dw   gfxAttackIce, data_01_6933                    ;; 01:6255 ????
     dw   data_01_734a, data_01_734a, data_01_734a, data_01_734a ;; 01:6259 ????????
     dw   data_01_734a, data_01_734a, data_01_734a, data_01_734a ;; 01:6261 ????????
     dw   data_01_734a, data_01_734a, data_01_734a, data_01_734a ;; 01:6269 ????????
     dw   data_01_734a, data_01_734a, data_01_734a, data_01_734a ;; 01:6271 ????????
 
-data_01_6279:
-    db   $04, $40, $02, $00, $00, $00                  ;; 01:6279 ??????
+; Changed to use OBP1 so it is blue under boot rom auto colorization.
+attackIceFrame5:
+    db   $04, $40, $06, $00, $00, $00                  ;; 01:6279 ??????
     dw   gfxAttackIce, data_01_6933                    ;; 01:627f ????
     dw   data_01_7375, data_01_7375, data_01_7375, data_01_7375 ;; 01:6283 ????????
     dw   data_01_7375, data_01_7375, data_01_7375, data_01_7375 ;; 01:628b ????????
