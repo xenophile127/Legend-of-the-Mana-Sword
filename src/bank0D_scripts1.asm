@@ -53,7 +53,7 @@ ENDC
 IF DEF(GLADIATOR_DUKE)
     sCLEAR_FLAG wScriptFlags0A.0
 ELIF DEF(GLADIATOR_AMANDA)
-    sSET wScriptFlags0A.0
+    sSET_FLAG wScriptFlags0A.0
 ENDC
 
     sSET_NPC_TYPES $2a
