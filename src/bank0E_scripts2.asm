@@ -5460,7 +5460,7 @@ script_053a:
     sSET_NPC_2_DIRECTION_UP                            ;; 0e:6a75 $24
     sNPC_2_STEP_FORWARD                                ;; 0e:6a76 $20
     sMSG                                               ;; 0e:6a77 $04
-      db "<10>Man:Granz is\n attacking!\nCibba:What?!<12>"
+      db "<10>Man:Granz is\n attacking by air!\nCibba:What?!<12>"
       db "<1b>Man:I'll take you\n to a safe place!\n<GIRL>:Thank you.<12>"
       db "<11>", $00 ;; 0e:6a78
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:6abe $25
