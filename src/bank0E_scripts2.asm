@@ -5527,11 +5527,29 @@ script_053b:
     sSPAWN_NPC 1                                       ;; 0e:6b43 $fd $01
     sSET_NPC_2_DIRECTION_UP                            ;; 0e:6b45 $24
     sMSG                                               ;; 0e:6b46 $04
-      db "<10><BOY>:Julius?!\n Why?  You helped\n me once before__<12>"
-      db "<1b>Julius:I was not\n sure <GIRL> was\n the right one<12>"
-      db "<1b> until I saw that\n scene in there.<12>"
-      db "<1b> That's why I hid\n my identity and\n helped save <GIRL>!<12>"
-      db "<1b> And now__ <GIRL>\n will serve the\n Kingdom of Granz!<12>"
+      db "<10><BOY>:Julius! Why?!\n", $00
+    sIF_FLAG wScriptFlags01.0
+      sMSG
+        db " You offered to\n help me before.<12>", $00
+    sELSE
+      sMSG
+        db " You helped me\n once before.<12>", $00
+    sENDIF
+    sMSG
+      db "<1b>Julius:Even my\n powers are not\n perfect.<12>"
+      db "<1b> Until I saw the\n ritual I was not\n completely sure<12>"
+      db "<1b> whether she was\n a member of the\n Mana Family.<12>"
+      db "<1b> That's why I hid\n my identity_ and\n", $00
+    sIF_FLAG wScriptFlags01.0
+      sMSG
+        db " waited.<12>", $00
+    sELSE
+      sMSG
+        db " helped save her.<12>", $00
+      sSET_FLAG wScriptFlags01.0
+    sENDIF
+    sMSG
+      db "<1b> But now she will\n serve the Kingdom\n of Granz!<12>"
       db "<11>", $00 ;; 0e:6b47
     sSET_NPC_1_DIRECTION_DOWN                          ;; 0e:6be5 $15
     sNPC_1_STEP_FORWARD                                ;; 0e:6be6 $10
