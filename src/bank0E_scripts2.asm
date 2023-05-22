@@ -6444,15 +6444,18 @@ script_0548:
     sDELAY 60                                          ;; 0e:79ca $f0 $3c
     sFOLLOWER_DIRECTION_RIGHT                          ;; 0e:79cc $96
     sMSG                                               ;; 0e:79cd $04
-      db "<10><GIRL>:_ ", $00                          ;; 0e:79ce
+      db "<10><GIRL>:Hey_ ", $00
     sDELAY 60                                          ;; 0e:79d4 $f0 $3c
     sMSG                                               ;; 0e:79d6 $04
       db "<BOY>_?\n", $00                              ;; 0e:79d7
     sSET_NPC_1_DIRECTION_LEFT
     sMSG                                               ;; 0e:79dd $04
       db "<BOY>:What?<12>"
-      db "<1b><GIRL>:I think you\n should be able to\n use Wisp's magic.<12>"
-      db "<1b><BOY>:Yeah.\n It should help.\n<GIRL>:_ Read this!<12>"
+      db "<1b><GIRL>:I think you\n will need my\n Cure magic.<12>"
+      db "<1b><GIRL>:Want it?\n<BOY>:I do!", $00
+    sDELAY 20
+    sMSG
+      db " _ How?\n<GIRL>:Read this.<12>"
       db "<1b>", $00 ;; 0e:79de
     sGIVE_MAGIC INV_MAGIC_CURE                         ;; 0e:7a29 $d6 $00
     sSFX 15                                            ;; 0e:7a2b $f9 $0f
@@ -6462,7 +6465,7 @@ script_0548:
     sDELAY 60                                          ;; 0e:7a59 $f0 $3c
     sFOLLOWER_DIRECTION_LEFT                           ;; 0e:7a5b $97
     sMSG                                               ;; 0e:7a5c $04
-      db "\n<BOY>:_ Good night_<12>"
+      db "\n<BOY>:That's all?\n G_ Good night_<12>"
       db "<11>", $00 ;; 0e:7a5d
     sFADE_TO_BLACK                                     ;; 0e:7a6b $bd
     sFOLLOWER_DELETE                                   ;; 0e:7a6c $98
