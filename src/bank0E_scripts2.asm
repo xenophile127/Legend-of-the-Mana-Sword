@@ -5430,7 +5430,7 @@ script_053a:
     sDELAY 40                                          ;; 0e:6a30 $f0 $28
     sFADE_TO_NORMAL                                    ;; 0e:6a32 $bc
     sMSG                                               ;; 0e:6a33 $04
-      db "<10><1f> Mother's figure\n   disappeared__", $00 ;; 0e:6a34
+      db "<10><1f> Her image fades_", $00 ;; 0e:6a34
     sDELAY 60                                          ;; 0e:6a4c $f0 $3c
     sMSG                                               ;; 0e:6a4e $04
       db "<11>", $00                                   ;; 0e:6a4f
@@ -5777,7 +5777,7 @@ script_053f:
     sFADE_TO_NORMAL                                    ;; 0e:6fe8 $bc
     sDELAY 80                                          ;; 0e:6fe9 $f0 $50
     sMSG                                               ;; 0e:6feb $04
-      db "<10>  The Mana Tree\n   disappeared.", $00   ;; 0e:6fec
+      db "<10><1f>The Tree vanishes_", $00   ;; 0e:6fec
     sDELAY 60                                          ;; 0e:7003 $f0 $3c
     sMSG                                               ;; 0e:7005 $04
       db "<1b><BOY>:Oh__ _\n<GIRL>:_ What am I\n supposed to do_?", $00 ;; 0e:7006
