@@ -573,10 +573,9 @@ spawnNPC:
     ld   L, [HL]                                       ;; 03:4321 $6e
     ld   H, $00                                        ;; 03:4322 $26 $00
     ld   C, L                                          ;; 03:4324 $4d
-    srl  A                                             ;; 03:4325 $cb $3f
-    srl  A                                             ;; 03:4327 $cb $3f
-    srl  A                                             ;; 03:4329 $cb $3f
-    srl  A                                             ;; 03:432b $cb $3f
+; Optimization to free a little space for a Sleep/Mute bugfix.
+    swap a
+    and a, $0f
     cpl                                                ;; 03:432d $2f
     inc  A                                             ;; 03:432e $3c
     jr   Z, .jr_03_4336                                ;; 03:432f $28 $05
@@ -592,8 +591,13 @@ spawnNPC:
     rl   C                                             ;; 03:433e $cb $11
     rl   B                                             ;; 03:4340 $cb $10
     pop  DE                                            ;; 03:4342 $d1
-    ld   HL, $0c                                       ;; 03:4343 $21 $0c $00
+; Bugfix: Properly clear the Sleep and Mute status bits.
+; This was exploitable to affect normally imune NPCs, like Shadow Knight.
+    ld hl, $000a
     add  HL, DE                                        ;; 03:4346 $19
+    ld [hl], $00
+    inc hl
+    inc hl
     ld   [HL], C                                       ;; 03:4347 $71
     inc  HL                                            ;; 03:4348 $23
     ld   [HL], B                                       ;; 03:4349 $70
