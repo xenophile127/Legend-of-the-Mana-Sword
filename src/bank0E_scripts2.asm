@@ -214,7 +214,11 @@ script_0290:
       sLOAD_ROOM 0, $f0, 8, 8
       sSET_MUSIC 25
       sCLEAR_ROOM_HISTORY
-      sRUN_ROOM_SCRIPT
+; Because Chocobo can spawn in an inaccessible location when you leave the cave, move it to you.
+      sIF_FLAG wScriptFlags0D.2
+        sCALL script_0475
+        sSET_NPC_1_POSITION 8, 10
+      sENDIF
     sENDIF
     sEND
 
@@ -276,7 +280,11 @@ script_0297:
       sLOAD_ROOM 0, $9e, 16, 4                         ;; 0e:4055 $f4 $00 $9e $10 $04
       sSET_MUSIC 20                                    ;; 0e:405a $f8 $14
       sCLEAR_ROOM_HISTORY                              ;; 0e:405c $ab
-      sRUN_ROOM_SCRIPT                                 ;; 0e:405d $ec
+; Because Chocobo can spawn in an inaccessible location when you leave the cave, move it to you.
+      sIF_FLAG wScriptFlags0C.5
+        sCALL script_0475
+        sSET_NPC_1_POSITION 16, 6
+      sENDIF
     sENDIF                                             ;; 0e:405e
     sEND                                               ;; 0e:405e $00
 
