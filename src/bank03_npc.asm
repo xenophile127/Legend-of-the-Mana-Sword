@@ -4034,18 +4034,26 @@ call_03_55df:
     ld   C, A                                          ;; 03:55e3 $4f
     push BC                                            ;; 03:55e4 $c5
     call getObjectDirection                            ;; 03:55e5 $cd $99 $0c
-    and  A, $0f                                        ;; 03:55e8 $e6 $0f
-    pop  BC                                            ;; 03:55ea $c1
+    pop  BC
+    push AF
+    and  A, $0f
     call processPhysicsForObject                       ;; 03:55eb $cd $95 $06
+    pop  BC
     pop  DE                                            ;; 03:55ee $d1
     pop  AF                                            ;; 03:55ef $f1
     bit  0, A                                          ;; 03:55f0 $cb $47
-    ret  Z                                             ;; 03:55f2 $c8
+    jr   Z, .check_if_moving
     push AF                                            ;; 03:55f3 $f5
     ld   A, $01                                        ;; 03:55f4 $3e $01
     call npcSetMeleeState                              ;; 03:55f6 $cd $bc $28
     pop  AF                                            ;; 03:55f9 $f1
     ret                                                ;; 03:55fa $c9
+.check_if_moving:
+    bit  4, B
+    ret  Z
+    inc  AF
+    inc  AF
+    ret
 
 call_03_55fb:
     or   A, $90                                        ;; 03:55fb $f6 $90
@@ -4142,3 +4150,7 @@ tileorderNpc:
     db   $10, $12, $11, $13, $14, $16, $15, $17        ;; 03:7b6a ........
 
 INCLUDE "data/npc/metasprites.asm"
+
+; starts at 03:7fce
+;completeDelayAction:
+
