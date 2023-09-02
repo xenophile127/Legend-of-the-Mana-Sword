@@ -4145,27 +4145,27 @@ INCLUDE "data/npc/metasprites.asm"
 
 ; starts at 03:7fce
 delayWithMovingHold:
-    dec  A                                             ;; 03:55df $3d
-    push AF                                            ;; 03:55e0 $f5
-    push DE                                            ;; 03:55e1 $d5
-    ld   A, [DE]                                       ;; 03:55e2 $1a
-    ld   C, A                                          ;; 03:55e3 $4f
-    push BC                                            ;; 03:55e4 $c5
-    call getObjectDirection                            ;; 03:55e5 $cd $99 $0c
+    dec  A
+    push AF
+    push DE
+    ld   A, [DE]
+    ld   C, A
+    push BC
+    call getObjectDirection
     pop  BC
     push AF
     and  A, $0f
-    call processPhysicsForObject                       ;; 03:55eb $cd $95 $06
+    call processPhysicsForObject
     pop  BC
-    pop  DE                                            ;; 03:55ee $d1
-    pop  AF                                            ;; 03:55ef $f1
-    bit  0, A                                          ;; 03:55f0 $cb $47
+    pop  DE
+    pop  AF
+    bit  0, A
     jr   Z, .check_if_moving
-    push AF                                            ;; 03:55f3 $f5
-    ld   A, $01                                        ;; 03:55f4 $3e $01
-    call npcSetMeleeState                              ;; 03:55f6 $cd $bc $28
-    pop  AF                                            ;; 03:55f9 $f1
-    ret                                                ;; 03:55fa $c9
+    push AF
+    ld   A, $01
+    call npcSetMeleeState
+    pop  AF
+    ret
 .check_if_moving:
     bit  4, B
     ret  Z
