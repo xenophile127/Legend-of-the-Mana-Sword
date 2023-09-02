@@ -4143,7 +4143,11 @@ tileorderNpc:
 
 INCLUDE "data/npc/metasprites.asm"
 
-; starts at 03:7fce
+; Same intent as call_03_55df (process delay action), but prevent
+; delay timer hitting 0 while the object is moving. This is done by
+; incrementing the delay timer by 2 when on an even delay timer value.
+; It is not appropriate to increment the timer on every tick since the
+; game uses the even/odd nature of the timer to govern animations.
 delayWithMovingHold:
     dec  A
     push AF
