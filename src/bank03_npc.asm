@@ -2842,9 +2842,9 @@ call_03_5019:
 call_03_5025:
     ld   A, C                                          ;; 03:5025 $79
     cp   A, $00                                        ;; 03:5026 $fe $00
-    ld   C, $3c                                        ;; 03:5028 $0e $5a
+    ld   C, $3c
     call Z, call_03_55cb                               ;; 03:502a $cc $cb $55
-    call delayWithMovingHold                           ;; 03:502d $cd $df $55
+    call delayWithMovingHold
     ret                                                ;; 03:5030 $c9
 
 call_03_5031:
@@ -4093,7 +4093,7 @@ call_03_55fb:
     call processPhysicsForObject                       ;; 03:563a $cd $95 $06
     ret                                                ;; 03:563d $c9
 
-;@data fofmat=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb amount=30
+;@data format=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb amount=30
 ; Table usage unknown, record size gained from code.
 data_03_563e:
     db   $11, $11, $11, $11, $11, $11, $11, $11, $11, $08, $06, $06, $06, $07, $07, $07, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11 ;; 03:563e ................??.?..????.????. $00
