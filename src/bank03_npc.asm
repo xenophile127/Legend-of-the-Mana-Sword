@@ -2842,9 +2842,9 @@ call_03_5019:
 call_03_5025:
     ld   A, C                                          ;; 03:5025 $79
     cp   A, $00                                        ;; 03:5026 $fe $00
-    ld   C, $5a                                        ;; 03:5028 $0e $5a
+    ld   C, $3c                                        ;; 03:5028 $0e $5a
     call Z, call_03_55cb                               ;; 03:502a $cc $cb $55
-    call call_03_55df                                  ;; 03:502d $cd $df $55
+    call delayWithMovingHold                           ;; 03:502d $cd $df $55
     ret                                                ;; 03:5030 $c9
 
 call_03_5031:
@@ -4034,26 +4034,18 @@ call_03_55df:
     ld   C, A                                          ;; 03:55e3 $4f
     push BC                                            ;; 03:55e4 $c5
     call getObjectDirection                            ;; 03:55e5 $cd $99 $0c
-    pop  BC
-    push AF
-    and  A, $0f
+    and  A, $0f                                        ;; 03:55e8 $e6 $0f
+    pop  BC                                            ;; 03:55ea $c1
     call processPhysicsForObject                       ;; 03:55eb $cd $95 $06
-    pop  BC
     pop  DE                                            ;; 03:55ee $d1
     pop  AF                                            ;; 03:55ef $f1
     bit  0, A                                          ;; 03:55f0 $cb $47
-    jr   Z, .check_if_moving
+    ret  Z                                             ;; 03:55f2 $c8
     push AF                                            ;; 03:55f3 $f5
     ld   A, $01                                        ;; 03:55f4 $3e $01
     call npcSetMeleeState                              ;; 03:55f6 $cd $bc $28
     pop  AF                                            ;; 03:55f9 $f1
     ret                                                ;; 03:55fa $c9
-.check_if_moving:
-    bit  4, B
-    ret  Z
-    inc  AF
-    inc  AF
-    ret
 
 call_03_55fb:
     or   A, $90                                        ;; 03:55fb $f6 $90
@@ -4101,7 +4093,7 @@ call_03_55fb:
     call processPhysicsForObject                       ;; 03:563a $cd $95 $06
     ret                                                ;; 03:563d $c9
 
-;@data format=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb amount=30
+;@data fofmat=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb amount=30
 ; Table usage unknown, record size gained from code.
 data_03_563e:
     db   $11, $11, $11, $11, $11, $11, $11, $11, $11, $08, $06, $06, $06, $07, $07, $07, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11 ;; 03:563e ................??.?..????.????. $00
@@ -4129,7 +4121,7 @@ data_03_563e:
     db   $b4, $b5, $06, $07, $06, $07, $06, $4c, $4d, $24, $24, $28, $28, $28, $0f, $0f, $b0, $b0, $b2, $b3, $b4, $b5, $b4, $b5, $b8, $b9, $ba, $bb, $b4, $b5, $b4, $b5 ;; 03:58fe .....?...?.??...????????.????.?? $16
     db   $b4, $b5, $06, $07, $06, $07, $06, $02, $02, $02, $02, $28, $28, $28, $0f, $0f, $b0, $b0, $b2, $b3, $b4, $b5, $b4, $b5, $b8, $b9, $ba, $bb, $b4, $b5, $b4, $b5 ;; 03:591e ???????????????????????????????? $17
     db   $09, $09, $09, $09, $09, $09, $09, $09, $0e, $0f, $06, $07, $74, $75, $6e, $6f, $6c, $6d, $6e, $6f, $70, $69, $72, $73, $64, $65, $66, $67, $68, $69, $6a, $6b ;; 03:593e ???????????????????????????????? $18
-    db   $02, $02, $02, $02, $02, $02, $02, $06, $07, $04, $04, $64, $65, $0e, $0e, $0e, $04, $04, $04, $04, $05, $06, $07, $08, $0e, $0e, $0e, $0e, $0e, $0e, $0e, $0e ;; 03:595e ???????????????????????????????? $19
+    db   $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12 ;; 03:595e ???????????????????????????????? $19
     db   $04, $04, $06, $07, $06, $07, $04, $04, $64, $65, $0e, $0e, $0e, $0e, $0e, $0e, $04, $04, $04, $04, $05, $06, $07, $08, $0e, $0e, $0e, $0e, $0e, $0e, $0e, $0e ;; 03:597e ???????????????????????????????? $1a
     db   $11, $11, $11, $11, $11, $11, $11, $11, $11, $02, $02, $02, $02, $02, $02, $02, $74, $75, $6e, $6f, $78, $79, $7a, $7b, $11, $11, $11, $11, $11, $11, $11, $11 ;; 03:599e ???????????????????????????????? $1b
     db   $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10 ;; 03:59be ???????????????????????????????? $1c
@@ -4152,5 +4144,31 @@ tileorderNpc:
 INCLUDE "data/npc/metasprites.asm"
 
 ; starts at 03:7fce
-;completeDelayAction:
-
+delayWithMovingHold:
+    dec  A                                             ;; 03:55df $3d
+    push AF                                            ;; 03:55e0 $f5
+    push DE                                            ;; 03:55e1 $d5
+    ld   A, [DE]                                       ;; 03:55e2 $1a
+    ld   C, A                                          ;; 03:55e3 $4f
+    push BC                                            ;; 03:55e4 $c5
+    call getObjectDirection                            ;; 03:55e5 $cd $99 $0c
+    pop  BC
+    push AF
+    and  A, $0f
+    call processPhysicsForObject                       ;; 03:55eb $cd $95 $06
+    pop  BC
+    pop  DE                                            ;; 03:55ee $d1
+    pop  AF                                            ;; 03:55ef $f1
+    bit  0, A                                          ;; 03:55f0 $cb $47
+    jr   Z, .check_if_moving
+    push AF                                            ;; 03:55f3 $f5
+    ld   A, $01                                        ;; 03:55f4 $3e $01
+    call npcSetMeleeState                              ;; 03:55f6 $cd $bc $28
+    pop  AF                                            ;; 03:55f9 $f1
+    ret                                                ;; 03:55fa $c9
+.check_if_moving:
+    bit  4, B
+    ret  Z
+    inc  A
+    inc  A
+    ret
