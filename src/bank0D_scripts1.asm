@@ -3675,6 +3675,8 @@ script_0208:
     sDELAY 60                                          ;; 0d:60a7 $f0 $3c
     sDEL_NPC_1                                         ;; 0d:60a9 $18
     sSET_MUSIC 0                                       ;; 0d:60aa $f8 $00
+    sFULL_HP
+    sFULL_MANA
     sDELAY 60                                          ;; 0d:60ac $f0 $3c
     sFADE_TO_NORMAL                                    ;; 0d:60ae $bc
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0d:60af $85

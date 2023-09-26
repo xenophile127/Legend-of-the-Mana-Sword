@@ -25,7 +25,8 @@ INCLUDE "data/map/06_rooms.asm"
 
 INCLUDE "data/map/07_rooms.asm"
 
-    db   $89, $8a, $58, $87, $88, $86, $ff, $ff        ;; 07:7fba ????????
+    db   $87, $88, $86, $ff, $ff
+;    db   $89, $8a, $58, $87, $88, $86, $ff, $ff        ;; 07:7fba ????????
     db   $3b, $0c, $0d, $1c, $fe, $fd, $5f, $a5        ;; 07:7fc2 ????????
     db   $a9, $aa, $59, $60, $fc, $1f, $1f, $3c        ;; 07:7fca ????????
     db   $3d, $1c, $0c, $0d, $05, $06, $07, $d4        ;; 07:7fd2 ????????

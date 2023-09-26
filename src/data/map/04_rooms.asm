@@ -87,6 +87,7 @@ map04_room_tile_template:
 
 map04_room00_00_script:
     SCRIPT_IDX script_003d                             ;; 07:5a7c $3d $00
+    SCRIPT_AT_POS 2, 7, script_0403
     db   $ff                                           ;; 07:5a7e $ff
 
 map04_room00_00_tiles:
@@ -101,7 +102,7 @@ map04_room00_00_tiles:
     db   $38, $24                                      ;; 07:5a91 ??
     db   $38, $25                                      ;; 07:5a93 ??
     db   $38, $26                                      ;; 07:5a95 ??
-    db   $1f, $27                                      ;; 07:5a97 ??
+    db   $3f, $27                                      ;; 07:5a97 ??
     db   $38, $33                                      ;; 07:5a99 ??
     db   $36, $34                                      ;; 07:5a9b ??
     db   $36, $35                                      ;; 07:5a9d ??
