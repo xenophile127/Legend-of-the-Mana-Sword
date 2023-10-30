@@ -2846,9 +2846,9 @@ call_03_5019:
 call_03_5025:
     ld   A, C                                          ;; 03:5025 $79
     cp   A, $00                                        ;; 03:5026 $fe $00
-    ld   C, $5a                                        ;; 03:5028 $0e $5a
+    ld   C, $3c
     call Z, call_03_55cb                               ;; 03:502a $cc $cb $55
-    call call_03_55df                                  ;; 03:502d $cd $df $55
+    call delayWithMovingHold
     ret                                                ;; 03:5030 $c9
 
 call_03_5031:
@@ -4125,7 +4125,7 @@ data_03_563e:
     db   $b4, $b5, $06, $07, $06, $07, $06, $4c, $4d, $24, $24, $28, $28, $28, $0f, $0f, $b0, $b0, $b2, $b3, $b4, $b5, $b4, $b5, $b8, $b9, $ba, $bb, $b4, $b5, $b4, $b5 ;; 03:58fe .....?...?.??...????????.????.?? $16
     db   $b4, $b5, $06, $07, $06, $07, $06, $02, $02, $02, $02, $28, $28, $28, $0f, $0f, $b0, $b0, $b2, $b3, $b4, $b5, $b4, $b5, $b8, $b9, $ba, $bb, $b4, $b5, $b4, $b5 ;; 03:591e ???????????????????????????????? $17
     db   $09, $09, $09, $09, $09, $09, $09, $09, $0e, $0f, $06, $07, $74, $75, $6e, $6f, $6c, $6d, $6e, $6f, $70, $69, $72, $73, $64, $65, $66, $67, $68, $69, $6a, $6b ;; 03:593e ???????????????????????????????? $18
-    db   $02, $02, $02, $02, $02, $02, $02, $06, $07, $04, $04, $64, $65, $0e, $0e, $0e, $04, $04, $04, $04, $05, $06, $07, $08, $0e, $0e, $0e, $0e, $0e, $0e, $0e, $0e ;; 03:595e ???????????????????????????????? $19
+    db   $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12 ;; 03:595e ???????????????????????????????? $19
     db   $04, $04, $06, $07, $06, $07, $04, $04, $64, $65, $0e, $0e, $0e, $0e, $0e, $0e, $04, $04, $04, $04, $05, $06, $07, $08, $0e, $0e, $0e, $0e, $0e, $0e, $0e, $0e ;; 03:597e ???????????????????????????????? $1a
     db   $11, $11, $11, $11, $11, $11, $11, $11, $11, $02, $02, $02, $02, $02, $02, $02, $74, $75, $6e, $6f, $78, $79, $7a, $7b, $11, $11, $11, $11, $11, $11, $11, $11 ;; 03:599e ???????????????????????????????? $1b
     db   $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10 ;; 03:59be ???????????????????????????????? $1c
@@ -4146,3 +4146,37 @@ tileorderNpc:
     db   $10, $12, $11, $13, $14, $16, $15, $17        ;; 03:7b6a ........
 
 INCLUDE "data/npc/metasprites.asm"
+
+; Same intent as call_03_55df (process delay action), but prevent
+; delay timer hitting 0 while the object is moving. This is done by
+; incrementing the delay timer by 2 when on an even delay timer value.
+; It is not appropriate to increment the timer on every tick since the
+; game uses the even/odd nature of the timer to govern animations.
+delayWithMovingHold:
+    dec  A
+    push AF
+    push DE
+    ld   A, [DE]
+    ld   C, A
+    push BC
+    call getObjectDirection
+    pop  BC
+    push AF
+    and  A, $0f
+    call processPhysicsForObject
+    pop  BC
+    pop  DE
+    pop  AF
+    bit  0, A
+    jr   Z, .check_if_moving
+    push AF
+    ld   A, $01
+    call npcSetMeleeState
+    pop  AF
+    ret
+.check_if_moving:
+    bit  4, B
+    ret  Z
+    inc  A
+    inc  A
+    ret
