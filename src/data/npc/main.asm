@@ -15,7 +15,7 @@
 ; Offset $14: script index value (2 bytes)
 ; Offset $16: chest script index value, or zero if never drops a chest (2 bytes)
 npcDataTable:
-    NPC_DATA $a9, $00, $74, $02, gfxSnowman, tileorderNpc, snowmanMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_003d, $0000 ;; 03:5f5a NPC_SNOWMAN_STILL
+    NPC_DATA $a9, $00, $74, $02, gfxSnowman, tileorderNpc, snowmanMetaspriteTable, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_003d, $0000 ;; 03:5f5a NPC_SNOWMAN_STILL
     NPC_DATA $d9, $01, $20, $08, gfxNpcGirl, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0202, $0000 ;; 03:5f72 NPC_FUJI_FOLLOWING
     NPC_DATA $d9, $02, $20, $08, gfxNpcMysteryMan, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $06, $06, $06, $06, script_0203, $0000 ;; 03:5f8a NPC_MYSTERYMAN_FOLLOWING
     NPC_DATA $d9, $03, $20, $08, gfxNpcWatts, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0204, $0000 ;; 03:5fa2 NPC_WATTS_FOLLOWING
@@ -36,7 +36,7 @@ ENDC
     NPC_DATA $87, $0c, $78, $02, gfxChest, tileorderNpc, chestMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000b, $0000 ;; 03:607a NPC_CHEST_1
     NPC_DATA $87, $0d, $78, $02, gfxChest, tileorderNpc, chestMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000f, $0000 ;; 03:6092 NPC_CHEST_2
     NPC_DATA $87, $0e, $78, $02, gfxChest, tileorderNpc, chestMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0013, $0000 ;; 03:60aa NPC_CHEST_3
-    NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmptyMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_003d, $0000 ;; 03:60c2 NPC_CHEST_4
+    NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmptyMetaspriteTable, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_003d, $0000 ;; 03:60c2 NPC_CHEST_4
     NPC_DATA $91, $10, $40, $04, gfxEnemyChibidevil, tileorderNpc, data_03_7b72, $00, $01, $00, $00, $00, $00, $0d, $0e, $0d, $0d, script_003d, script_0438 ;; 03:60da NPC_CHIBIDEVIL
     NPC_DATA $91, $11, $50, $06, gfxEnemyRabite, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $02, $00, $00, $00, $0f, $10, $10, $10, script_003d, $0000 ;; 03:60f2 NPC_RABBITE
     NPC_DATA $91, $12, $40, $08, gfxEnemyGoblin, tileorderNpc, data_03_7cb6, $00, $01, $00, $00, $00, $00, $02, $02, $03, $03, script_003d, script_0438 ;; 03:610a NPC_GOBLIN
