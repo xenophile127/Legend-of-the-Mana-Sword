@@ -479,17 +479,6 @@ metaspritesRabiteFlowerFlameRed:
     db   $00, $58, $5a                                 ;; 03:7fb0 ??? $0a
     db   $00, $58, $5a                                 ;; 03:7fb3 ??? $0b
 
-;@data format=bbb amount=8
-; Unused
-    db   $10, $64, $66                                 ;; 03:7fb6 ??? $04
-    db   $10, $64, $66                                 ;; 03:7fb9 ??? $05
-    db   $10, $64, $66                                 ;; 03:7fbc ??? $06
-    db   $10, $64, $66                                 ;; 03:7fbf ??? $07
-    db   $10, $60, $62                                 ;; 03:7fc2 ??? $08
-    db   $10, $60, $62                                 ;; 03:7fc5 ??? $09
-    db   $10, $60, $62                                 ;; 03:7fc8 ??? $0a
-    db   $10, $60, $62                                 ;; 03:7fcb ??? $0b
-
 ;@data format=bbb amount=
 ; A variant of the data_03_7cfe metasprites table using OBP0 to turn certain npcs red.
 metaspritesShieldlessPC:
