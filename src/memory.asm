@@ -309,10 +309,15 @@ wMusicBrokenDoubleTimeMode:
 ; It may be that there were audible glitches with instant restore, or it may just not have been worth the effort or CPU overhead.
 wSoundsMusicRestorePitchChannel1:
     ds 1                                               ;; c1c9
-; One byte long
-; END OF AUDIO ENGINE WRAM  (c1cb is not included)
 .high:
-    ds 54                                              ;; c1ca
+    ds 1                                               ;; c1ca
+
+; The linear congruential generator uses four bytes of state while the original used two, so move it here.
+randstate:
+    ds 4                                               ;; c1cb
+
+unused:
+    ds 49                                              ;; c1cf
 
 ; 16 bytes per object, or potentially 16x16 sprite?
 ; 00: Lower nibble, orientation. bit7=not aligned to 8x8 grid, other bits unknown ($ff indicates unused)

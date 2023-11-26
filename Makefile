@@ -19,7 +19,11 @@ GLADIATOR = -DGLADIATOR_DUKE
 FF_OR_MANA = -DMANA
 #FF_OR_MANA = -DFINAL_FANTASY
 
-DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA)
+# Controls whether to use the original random number generator or a linear congruential generator.
+#RNG = -DRNG_ORIGINAL
+RNG = -DRNG_LCG
+
+DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(RNG)
 
 all: $(ROM)
 
