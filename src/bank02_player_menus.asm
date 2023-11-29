@@ -4385,19 +4385,22 @@ castEquippedSpellIfSufficientMana:
 windowCloseAndRestoreHidden:
     ld   HL, .windowCloseJumptable                     ;; 02:667a $21 $84 $66
     ld   A, [wWindowCloseStep]                         ;; 02:667d $fa $59 $d8
-    call callJumptable_02                              ;; 02:6680 $cd $75 $48
-    ret                                                ;; 02:6683 $c9
+    jp callJumptable_02
 ;@jumptable amount=2
 .windowCloseJumptable:
     dw   windowCloseInit                               ;; 02:6684 pP $00
     dw   windowCloseMain                               ;; 02:6686 pP $01
 
 windowCloseInit:
-    ld   A, [wMenuStateCurrentFunction]                ;; 02:6688 $fa $53 $d8
-    or   A, $80                                        ;; 02:668b $f6 $80
-    ld   [wMenuStateCurrentFunction], A                ;; 02:668d $ea $53 $d8
+    ld hl, wMenuStateCurrentFunction
+    set 7, [hl]
     call getWindowDimensions                           ;; 02:6690 $cd $67 $7a
     ld   A, [wDialogType]                              ;; 02:6693 $fa $4a $d8
+; Clearing rectangle for the titlescreen "window" (used for the New Game and Continue options) includes a tiny piece of the logo, so move it a tile to the right.
+    cp a, $1f
+    jr nz, .not_titlescreen
+    inc e
+.not_titlescreen
     cp   A, $04                                        ;; 02:6696 $fe $04
     jr   NZ, .jr_02_66a0                               ;; 02:6698 $20 $06
     ld   DE, $00                                       ;; 02:669a $11 $00 $00
@@ -4405,10 +4408,9 @@ windowCloseInit:
 .jr_02_66a0:
     inc  B                                             ;; 02:66a0 $04
     inc  C                                             ;; 02:66a1 $0c
-    call saveRegisterState2                            ;; 02:66a2 $cd $80 $6d
     ld   A, $01                                        ;; 02:66a5 $3e $01
     ld   [wWindowCloseStep], A                         ;; 02:66a7 $ea $59 $d8
-    ret                                                ;; 02:66aa $c9
+    jp saveRegisterState2
 
 windowCloseMain:
     call loadRegisterState2                            ;; 02:66ab $cd $a7 $6d
