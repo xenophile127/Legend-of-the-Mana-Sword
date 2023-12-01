@@ -630,14 +630,12 @@ scrollMoveObject:
     push BC                                            ;; 02:43ab $c5
     call getObjectCollisionFlags                       ;; 02:43ac $cd $6d $0c
     and  A, $f0                                        ;; 02:43af $e6 $f0
-    cp   A, $c0                                        ;; 02:43b1 $fe $c0
-    jr   Z, .move                                      ;; 02:43b3 $28 $11
-    cp   A, $e0                                        ;; 02:43b5 $fe $e0
-    jr   Z, .move                                      ;; 02:43b7 $28 $0d
-    cp   A, $f0                                        ;; 02:43b9 $fe $f0
-    jr   Z, .move                                      ;; 02:43bb $28 $09
-    cp   A, $d0                                        ;; 02:43bd $fe $d0
-    jr   Z, .follower                                  ;; 02:43bf $28 $08
+; More efficient branching to save space.
+    cp a, $d0
+    jr z, .follower
+    and a, $c0
+    cp a, $c0
+    jr z, .move
     pop  BC                                            ;; 02:43c1 $c1
     push BC                                            ;; 02:43c2 $c5
     call destroyObject                                 ;; 02:43c3 $cd $e3 $0a
@@ -658,9 +656,7 @@ scrollMoveObject:
     push AF                                            ;; 02:43d5 $f5
     push BC                                            ;; 02:43d6 $c5
     call updateObjectPosition                          ;; 02:43d7 $cd $11 $06
-    pop  BC                                            ;; 02:43da $c1
-    pop  AF                                            ;; 02:43db $f1
-    ret                                                ;; 02:43dc $c9
+    jr .move
 
 ; Manages objects during the screen scroll transition.
 ; Enemies and NPCs are meant to be left behind but jumpers can survive the scroll, which is a bug.
@@ -673,6 +669,14 @@ scrollMoveSprites:
     call scrollMoveObject                              ;; 02:43e5 $cd $5e $43
     push AF                                            ;; 02:43e8 $f5
     ld   C, $07                                        ;; 02:43e9 $0e $07
+
+; Fix a subtle bug:
+;  When the player is in chocobo form and the screen is scrolling, the chocobo follower would be shown under the player.
+    ld a, [wOAMBuffer+$38] ; Y position of your follower. If you are riding your chocobo this will be 0.
+    or a
+    jr nz, .loop
+    inc c
+
 .loop:
     pop  AF                                            ;; 02:43eb $f1
     call scrollMoveObject                              ;; 02:43ec $cd $5e $43
