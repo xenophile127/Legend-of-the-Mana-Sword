@@ -122,7 +122,7 @@ Header:
     db   "FFA-->LOTMS", $00, $00, $00, $00             ;; 00:0134
     db   CART_COMPATIBLE_DMG                           ;; 00:0143
     db   "01"                                          ;; 00:0144
-    db   CART_INDICATOR_GB                             ;; 00:0146
+    db   CART_INDICATOR_SGB                            ;; 00:0146
 ; Use MBC5 instead of MBC2.
     db   CART_ROM_MBC5_RAM_BAT                         ;; 00:0147 $1b
     db   CART_ROM_512KB                                ;; 00:0148 $04
@@ -2339,12 +2339,14 @@ scriptOpCodeClearRoomHistory:
     call getNextScriptInstruction                      ;; 00:0d88 $cd $27 $37
     ret                                                ;; 00:0d8b $c9
 
+; On SGB the letterbox routine used during the ending will now black out the border
 scriptOpCodeSetLetterboxGraphicEffect:
-    push HL                                            ;; 00:0d8c $e5
-    call prepareLetterboxEffect_trampoline             ;; 00:0d8d $cd $95 $0d
-    pop  HL                                            ;; 00:0d90 $e1
-    call getNextScriptInstruction                      ;; 00:0d91 $cd $27 $37
-    ret                                                ;; 00:0d94 $c9
+    call enhancedLetterbox_trampoline
+    ret nz
+    call getNextScriptInstruction
+    ret
+
+    nop
 
 prepareLetterboxEffect_trampoline:
     jp_to_bank 01, prepareLetterboxEffect              ;; 00:0d95 $f5 $3e $16 $c3 $d7 $1e
@@ -7987,8 +7989,10 @@ loadRegisterState2_trampoline:
 
 windowInitContents_trampoline:
     jp_to_bank 02, windowInitContents                  ;; 00:3087 $f5 $3e $0e $c3 $06 $1f
-    db   $f5, $3e, $0f, $c3, $06, $1f, $f5, $3e        ;; 00:308d ????????
-    db   $10, $c3, $06, $1f                            ;; 00:3095 ????
+    db   $f5, $3e, $0f, $c3, $06, $1f
+
+enhancedLetterbox_trampoline:
+    jp_to_bank 11, enhancedLetterbox
 
 saveRegisterState2_trampoline:
     jp_to_bank 02, saveRegisterState2                  ;; 00:3099 $f5 $3e $11 $c3 $06 $1f

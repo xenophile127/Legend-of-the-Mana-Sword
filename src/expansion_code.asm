@@ -1,4 +1,4 @@
-;; Disassembled with BadBoy Disassembler: https://github.com/daid/BadBoy
+;; A new bank for additional code.
 
 INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
@@ -12,6 +12,7 @@ entryPointTableBankExpansion:
     call_to_bank_target drawHPOnStatusBar
     call_to_bank_target drawManaOnStatusBar
     call_to_bank_target drawMoneyOnStatusBar_new
+    call_to_bank_target enhancedLetterbox
 
 drawHPOnStatusBar:
     ld   C, $13 ; Mode/Max-digits to write
@@ -266,3 +267,6 @@ drawMoneyOnStatusBar_new:
     dec  C
     jr   NZ, .store_number_loop
     ret
+
+; This provides a replacement letterbox routine which blacks the border on SGB
+INCLUDE "code/sgb.asm"
