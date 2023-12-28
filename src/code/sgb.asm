@@ -22,7 +22,7 @@ checkSGB:
     ld hl, .SGB_MLTREQ2
     call SGBSendData
     ld b, $04
-    ld c, rP1
+    ld c, LOW(rP1)
 .loop:
     ld a, $20
     ld [c], a ; Set P1.4 low to simulate normal reading.
