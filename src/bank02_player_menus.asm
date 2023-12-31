@@ -7820,26 +7820,12 @@ titleScreenInit:
     ld   A, $08                                        ;; 02:7b49 $3e $08
     call checkSaveGameIntegrity                        ;; 02:7b4b $cd $7c $74
     ld   A, E                                          ;; 02:7b4e $7b
-
-IF DEF(RNG_ORIGINAL)
     ld   [wRndState0], A                               ;; 02:7b4f $ea $b0 $c0
-ELIF DEF(RNG_LCG)
-    ; The linear congruential generator uses four bytes of state while the original RNG used only two.
-    ; Given only two bytes to initialize the state, I believe it's correct to put them in the LSBs.
-    ld   [randstate], a
-ENDC
-
     ld   HL, sSave2Header                              ;; 02:7b52 $21 $00 $a1
     ld   A, $10                                        ;; 02:7b55 $3e $10
     call checkSaveGameIntegrity                        ;; 02:7b57 $cd $7c $74
     ld   A, E                                          ;; 02:7b5a $7b
-
-IF DEF(RNG_ORIGINAL)
     ld   [wRndState1], A                               ;; 02:7b5b $ea $b1 $c0
-ELIF DEF(RNG_LCG)
-    ld   [randstate+1], a
-ENDC
-
     ld   HL, wOpenChestScript1                         ;; 02:7b5e $21 $13 $d6
     ld   DE, startTitleScreenMusicScript               ;; 02:7b61 $11 $9c $7b
 .loop:

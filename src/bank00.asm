@@ -7087,13 +7087,7 @@ ELIF DEF(RNG_LCG)
 ; A linear congruential generator RNG.
 ; The original RNG has issues with some values coming up more often than others.
 
-getRandomByte:
-    push bc
-    push de
 INCLUDE "code/rand.asm"
-    pop de
-    pop bc
-    ret
 
 ; Free space. The linear congruential generator takes up a lot less space than the original table based method.
 db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
@@ -7111,7 +7105,7 @@ db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $0
 db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
 db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
 db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 ENDC
 

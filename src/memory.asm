@@ -61,7 +61,10 @@ wVBlankDone:
 wInterruptFiredFlags:
     ds 1                                               ;; c0ae
 
-wJoypadInput:
+; Moved to make room for an additional byte of RNG state for the LCG.
+;wJoypadInput:
+
+wRndState:
     ds 1                                               ;; c0af
 
 wRndState0:
@@ -309,15 +312,10 @@ wMusicBrokenDoubleTimeMode:
 ; It may be that there were audible glitches with instant restore, or it may just not have been worth the effort or CPU overhead.
 wSoundsMusicRestorePitchChannel1:
     ds 1                                               ;; c1c9
+; One byte long
+; END OF AUDIO ENGINE WRAM  (c1cb is not included)
 .high:
-    ds 1                                               ;; c1ca
-
-; The linear congruential generator uses four bytes of state while the original used two, so move it here.
-randstate:
-    ds 4                                               ;; c1cb
-
-unused:
-    ds 49                                              ;; c1cf
+    ds 54                                              ;; c1ca
 
 ; 16 bytes per object, or potentially 16x16 sprite?
 ; 00: Lower nibble, orientation. bit7=not aligned to 8x8 grid, other bits unknown ($ff indicates unused)
@@ -1587,9 +1585,15 @@ wD8D9:
 wD8DA:
     ds 1                                               ;; d8da
 
-; Three bytes long
 wDualCharacterScratch:
-    ds 1829                                            ;; d8db
+    ds 3                                               ;; d8db
+
+wJoypadInput:
+    ds 1                                               ;; d8de
+
+; Free WRAM space.
+wFree:
+    ds 1825                                            ;; d8df
 
 SECTION "hram", HRAM[$ff80]
 
