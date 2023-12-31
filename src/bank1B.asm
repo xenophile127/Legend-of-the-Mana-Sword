@@ -13,3 +13,6 @@ tilesetGfxTitle:
 
 tilesetGfxWorldmap:
     INCBIN "tileset/worldmap.bin"
+
+tilesetGfxManaland:
+    INCBIN "tileset/manaland.bin"

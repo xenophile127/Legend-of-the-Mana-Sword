@@ -57,4 +57,5 @@ mapHeader_0e:
     MAP_HEADER tilesetGfxTown, $00, metatilesTown, $80, mapRoomPointers_0e, $69, $0e ;; 08:409a ..?..?...??
 
 mapHeader_0f:
-    MAP_HEADER tilesetGfxTown, $00, metatilesTown, $80, mapRoomPointers_0f, $ee, $0f ;; 08:40a5 ..?..?...??
+    MAP_HEADER tilesetGfxManaland, $00, metatilesManaland, $80, mapRoomPointers_0f, $ee, $0f ;; 08:40a5 ..?..?...??
+;    MAP_HEADER tilesetGfxTown, $00, metatilesTown, $80, mapRoomPointers_0f, $ee, $0f ;; 08:40a5 ..?..?...??
