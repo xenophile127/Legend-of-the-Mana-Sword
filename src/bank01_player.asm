@@ -95,19 +95,26 @@ prepareLetterboxEffect:
     jr   NZ, .loop_2                                   ;; 01:409d $20 $f4
     ret                                                ;; 01:409f $c9
 
+; Only called by a script command that is unused.
 prepareDefaultEffect:
-    ld   A, $e4                                        ;; 01:40a0 $3e $e4
-    ld   [wVideoBGP], A                                ;; 01:40a2 $ea $aa $c0
-    ld   A, [wVideoLCDC]                               ;; 01:40a5 $fa $a5 $c0
-    or   A, $03                                        ;; 01:40a8 $f6 $03
-    ld   [wVideoLCDC], A                               ;; 01:40aa $ea $a5 $c0
-    call setDefaultLCDCEffect                          ;; 01:40ad $cd $13 $03
-    ret                                                ;; 01:40b0 $c9
+    ld hl, wVideoLCDC
+    ld a, [hl]
+    or a, $03
+    ld [hl], a
+
+; Only used at the end of the intro scroll. Could be inlined.
+setDefaultLCDEffectAndBGP:
+    ld a, $e4
+    ld [wVideoBGP], a
+    call setDefaultLCDCEffect
+    ret
+
+nop
 
 lcdcIntroScrollEffect:
-    db   $00, $fc, $03, $40, $10, $fc, $03, $90        ;; 01:40b1 ........
-    db   $20, $fc, $03, $e4, $60, $fc, $03, $90        ;; 01:40b9 ........
-    db   $70, $fc, $03, $40, $80, $fc, $03, $00        ;; 01:40c1 ........
+    db   $06, $fc, $03, $40, $16, $fc, $03, $90        ;; 01:40b1 ........
+    db   $26, $fc, $03, $e4, $66, $fc, $03, $90        ;; 01:40b9 ........
+    db   $76, $fc, $03, $40, $86, $fc, $03, $00        ;; 01:40c1 ........
     db   $ff                                           ;; 01:40c9 .
 
 prepareIntroScrollEffect:
@@ -120,7 +127,8 @@ prepareIntroScrollEffect:
 
 introScrollEffectUpdateLCDEffect:
     ld   A, [wVideoSCY]                                ;; 01:40d8 $fa $a7 $c0
-    add  A, $09                                        ;; 01:40db $c6 $09
+; Adjust to exact tile boundaries to get rid of one miscolored line of pixels.
+    add a, $0a
     cpl                                                ;; 01:40dd $2f
     and  A, $0f                                        ;; 01:40de $e6 $0f
     ld   C, A                                          ;; 01:40e0 $4f
@@ -131,17 +139,20 @@ introScrollEffectUpdateLCDEffect:
     ld   A, [HL]                                       ;; 01:40e9 $7e
     and  A, $f0                                        ;; 01:40ea $e6 $f0
     or   A, C                                          ;; 01:40ec $b1
+; If you try to run an LCDC on LCY=$8f it will actually run on line 0.
+; That creates a brief flash of a visible line at the top that should be all white. 
+    cp $8f
+    jr nz, .safe
+    dec a
+.safe:
     ld   [HL], A                                       ;; 01:40ed $77
     add  HL, DE                                        ;; 01:40ee $19
     dec  B                                             ;; 01:40ef $05
     jr   NZ, .loop                                     ;; 01:40f0 $20 $f7
     ret                                                ;; 01:40f2 $c9
 
-setDefaultLCDEffectAndBGP:
-    call setDefaultLCDCEffect                          ;; 01:40f3 $cd $13 $03
-    ld   A, $e4                                        ;; 01:40f6 $3e $e4
-    ld   [wVideoBGP], A                                ;; 01:40f8 $ea $aa $c0
-    ret                                                ;; 01:40fb $c9
+; Free space
+db $00, $00, $00, $00
 
 lcdcShutterEffectClose:
     db   $00, $fc, $03, $e4, $7c, $fc, $00, $fc        ;; 01:40fc ........
