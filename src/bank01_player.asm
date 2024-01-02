@@ -64,36 +64,35 @@ prepareLetterboxEffect:
     ld   HL, lcdcLetterboxEffect                       ;; 01:4068 $21 $50 $40
     ld   B, $09                                        ;; 01:406b $06 $09
     call loadLCDCEffectBuffer                          ;; 01:406d $cd $f3 $02
-    ld   HL, $4260                                     ;; 01:4070 $21 $60 $42
-    ld   DE, $8f00                                     ;; 01:4073 $11 $00 $8f
-    ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 01:4076 $3e $0c
-    call addTileGraphicCopyRequest                     ;; 01:4078 $cd $f5 $2d
-    ld   C, $f0                                        ;; 01:407b $0e $f0
-    ld   DE, $00                                       ;; 01:407d $11 $00 $00
-    ld   B, $14                                        ;; 01:4080 $06 $14
-.loop_1:
-    push BC                                            ;; 01:4082 $c5
-    push DE                                            ;; 01:4083 $d5
-    ld   A, C                                          ;; 01:4084 $79
-    call storeTileAatWindowPositionDE                  ;; 01:4085 $cd $66 $38
-    pop  DE                                            ;; 01:4088 $d1
-    pop  BC                                            ;; 01:4089 $c1
-    inc  E                                             ;; 01:408a $1c
-    dec  B                                             ;; 01:408b $05
-    jr   NZ, .loop_1                                   ;; 01:408c $20 $f4
-    ld   DE, $100                                      ;; 01:408e $11 $00 $01
-    ld   B, $14                                        ;; 01:4091 $06 $14
-.loop_2:
-    push BC                                            ;; 01:4093 $c5
-    push DE                                            ;; 01:4094 $d5
-    ld   A, C                                          ;; 01:4095 $79
-    call storeTileAatWindowPositionDE                  ;; 01:4096 $cd $66 $38
-    pop  DE                                            ;; 01:4099 $d1
-    pop  BC                                            ;; 01:409a $c1
-    inc  E                                             ;; 01:409b $1c
-    dec  B                                             ;; 01:409c $05
-    jr   NZ, .loop_2                                   ;; 01:409d $20 $f4
-    ret                                                ;; 01:409f $c9
+; Fix letterbox. Previously it would display a bunch of the letter H at the bottom of the screen
+; for a frame because it queued a tile transfer for VBlank but wrote the tilemap mid frame.
+; The fix is to use the same mechanism to store the tile and modify the tilemap.
+    ld hl, _VRAM8800+$70*$10
+    ld de, $ffff
+    ld b, $08
+.loop_tile:
+    call storeDEinVRAM
+    inc l
+    dec b
+    jr nz, .loop_tile
+; Now modify the tilemap for the bottom two lines of the HUD.
+    ld hl, _SCRN1
+    ld de, $f0f0
+.loop_outer:
+    ld b, $0a
+.loop_inner:
+    call storeDEinVRAM
+    inc l
+    dec b
+    jr nz, .loop_inner
+    ld a, LOW(_SCRN1+$20)
+    cp l
+    ld l, a
+    jr nc, .loop_outer
+    ret
+
+; Free space
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 ; Only called by a script command that is unused.
 prepareDefaultEffect:
