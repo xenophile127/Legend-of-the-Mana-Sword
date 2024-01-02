@@ -56,9 +56,7 @@ enhancedLetterboxCheckSGB:
     call prepareLetterboxEffect_trampoline
 ; Check whether SGB code should be run
     call checkSGB
-    jr c, .is_sgb
-    jp getNextScriptInstruction
-.is_sgb
+    ret nc
     ld hl, wScriptOpCounter
     inc [hl]
     ret
