@@ -538,12 +538,16 @@ map0f_room01_04_script:
     SCRIPT_IDX script_0249                             ;; 06:5a76 $49 $02
     db   $ff                                           ;; 06:5a78 $ff
 
+; This room has been changed because it is used in a cutscene as a match for map01_room05_06,
+; but the two maps have different tilesets so these two rooms could not match very well.
+; Now this map has its own unique tileset instead of sharing with map0e,
+; and tiles have been added to allow the two rooms to match properly.
 map0f_room01_04_tiles:
-    RLE  $50, $50, $2f, $50, $50, $2f, $1c, $53, $63, $64 ;; 06:5a79 ??????????
-    RLE  $50, $50, $2f, $50, $50, $2f, $1c, $64, $64, $64 ;; 06:5a83 ??????????
-    RLE  $50, $50, $2f, $1c, $1c, $1c, $1c, $32, $64, $32 ;; 06:5a8d ???????
-    RLE  $00, $00, $00, $00, $00, $00, $1c, $51, $41, $51 ;; 06:5a94 ???????
-    RLE  $00, $00, $00, $00, $00, $00, $00, $43, $43, $43 ;; 06:5a9b ???????
+    RLE  $50, $14, $50, $15, $50, $15, $1c, $53, $63, $64 ;; 06:5a79 ??????????
+    RLE  $50, $14, $50, $15, $51, $1f, $1c, $64, $64, $64 ;; 06:5a83 ??????????
+    RLE  $50, $14, $50, $15, $1c, $1c, $1c, $32, $64, $32 ;; 06:5a8d ???????
+    RLE  $51, $14, $50, $15, $1c, $00, $00, $51, $41, $51 ;; 06:5a94 ???????
+    RLE  $00, $19, $51, $1f, $00, $00, $00, $43, $43, $43 ;; 06:5a9b ???????
     RLE  $00, $00, $00, $00, $00, $00, $00, $30, $7a, $30 ;; 06:5aa2 ???????
     RLE  $00, $00, $00, $00, $00, $00, $05, $51, $51, $51 ;; 06:5aa9 ???????
     RLE  $11, $11, $11, $11, $11, $11, $12, $64, $3f, $2f ;; 06:5ab0 ???????

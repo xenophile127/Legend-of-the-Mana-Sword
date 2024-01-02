@@ -863,6 +863,8 @@ map01_room05_06_script:
     SCRIPT_IDX script_003d                             ;; 06:4e94 $3d $00
     db   $ff                                           ;; 06:4e96 $ff
 
+; This room has been changed because it is used in a cutscene as a match for map0f_room01_04,
+; but the cliff position did not match between the two so it has been moved and a cloud added.
 map01_room05_06_tiles:
     RLE  $55, $09, $55, $0a, $55, $0a, $37, $77, $77, $77 ;; 06:4e97 ..........
     RLE  $55, $09, $55, $0a, $54, $1a, $37, $77, $38, $3a ;; 06:4ea1 ..........
