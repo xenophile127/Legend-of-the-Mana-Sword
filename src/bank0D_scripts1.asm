@@ -2422,8 +2422,10 @@ script_01a1:
 
 script_01a2:
     sSET_MUSIC 0                                       ;; 0d:4d5a $f8 $00
-    sMSG
-      db "<10>Defeated Hydra!<12><11>", $00
+    sIF_FLAG !wScriptFlags04.3                         ;; 0d:4d49 $08 $a3 $00 $08
+      sMSG
+        db "<10>Defeated Hydra!<12><11>", $00
+    sENDIF
     ; Reuse the Jackal flag to track whether you had the Mysterous Man with you.
     sIF_FLAG wScriptFlags0A.2
       sCLEAR_FLAG wScriptFlags01.0
