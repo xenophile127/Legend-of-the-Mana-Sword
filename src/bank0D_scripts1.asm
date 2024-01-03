@@ -2610,6 +2610,7 @@ script_01aa:
     sEND                                               ;; 0d:4f66 $00
 
 script_01ab:
+    sSET_MUSIC 0
     sDELAY 20                                          ;; 0d:4f67 $f0 $14
     sMSG                                               ;; 0d:4f69 $04
       db "<10>Defeated Megapede!<12>"
