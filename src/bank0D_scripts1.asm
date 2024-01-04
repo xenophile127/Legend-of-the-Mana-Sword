@@ -2729,8 +2729,9 @@ script_01b1:
     sSET_MUSIC 10                                      ;; 0d:50dd $f8 $0a
     sMSG                                               ;; 0d:50df $04
       db "<12>"
-      db "<1b> Garuda is flying\n back to Castle\n Granz with it__<12>"
-      db "<1b>\n   Davias fell__<12>"
+      db "<1b> My servant Garuda\n is flying over\n Mt. Rocks to give<12>"
+      db "<1b> the Pendant to\n Shadow Knight_<12>"
+      db "<1b>\n  Davias falls__<12>"
       db "<11>", $00 ;; 0d:50e0
     sSET_MUSIC 0                                       ;; 0d:5110 $f8 $00
     sDELAY 60                                          ;; 0d:5112 $f0 $3c
@@ -2742,8 +2743,8 @@ script_01b1:
     sSET_NPC_TYPES 62                                  ;; 0d:511f $fc $3e
     sSPAWN_NPC 1                                       ;; 0d:5121 $fd $01
     sMSG                                               ;; 0d:5123 $04
-      db "<10>Lester:__Going?\n<BOY>:Yeah__  But\n the poison gas__<12>"
-      db "<1b>Lester:My harp\n tunes will clear\n the gas, <BOY>!<12>"
+      db "<10>Lester:__Going?\n<BOY>:Yeah, but Mt.\n Rocks is blocked_<12>"
+      db "<1b>Lester:My harp\n tunes will clear\n the gas.<12>"
       db "<11>", $00 ;; 0d:5124
     sSPAWN_NPC 2                                       ;; 0d:5164 $fd $02
     sSET_MUSIC 13                                      ;; 0d:5166 $f8 $0d
@@ -3974,8 +3975,8 @@ script_021b:
         db "Northern valley is\nfilled with fatal\npoison gas.", $00 ;; 0d:667e
     sELSE                                              ;; 0d:669b $01 $30
       sMSG                                             ;; 0d:669d $04
-        db "The poison gas is\ncleared!<12>"
-        db "<1b>Head north over\nthe valley to the\nMt. Rocks!", $00 ;; 0d:669e
+        db "The poison gas\nhas cleared!<12>"
+        db "<1b>North through\nthe valley is\nMt. Rocks.", $00
     sENDIF                                             ;; 0d:66cd
     sMSG                                               ;; 0d:66cd $04
       db "<12>"
