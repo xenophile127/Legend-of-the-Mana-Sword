@@ -5890,7 +5890,7 @@ script_0540:
       db "<1b> Please tell my\n Gemma Knights\n that I said_", $00 ;; 0e:7326
     sDELAY 120                                         ;; 0e:7345 $f0 $78
     sMSG                                               ;; 0e:7347 $04
-      db "<1b> good-bye and\n thanks to them.", $00    ;; 0e:7348
+      db "<1b> good-bye and\n thank you.", $00
     sDELAY 120                                         ;; 0e:735e $f0 $78
     sMSG                                               ;; 0e:7360 $04
       db "<11>", $00                                   ;; 0e:7361
