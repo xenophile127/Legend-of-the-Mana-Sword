@@ -7152,7 +7152,8 @@ fillMemory:
     ld   [HL+], A                                      ;; 00:2b60 $22
     jr   .loop                                         ;; 00:2b61 $18 $fb
 
-getPointerFromHL:
+; Call entry A in a jumptable pointed to by HL.
+callJumptable:
     add  A, A                                          ;; 00:2b63 $87
     jr   NC, .jr_00_2b67                               ;; 00:2b64 $30 $01
     inc  H                                             ;; 00:2b66 $24
@@ -7165,11 +7166,12 @@ getPointerFromHL:
     ld   A, [HL+]                                      ;; 00:2b6c $2a
     ld   H, [HL]                                       ;; 00:2b6d $66
     ld   L, A                                          ;; 00:2b6e $6f
-    ret                                                ;; 00:2b6f $c9
-
-callJumptable:
-    call getPointerFromHL                              ;; 00:2b70 $cd $63 $2b
     jp   HL                                            ;; 00:2b73 $e9
+
+; Free space
+db $00, $00, $00, $00
+
+; Unused function to multiply hl by 10. Trashes de.
     db   $29, $54, $5d, $29, $29, $19, $c9             ;; 00:2b74 ???????
 
 MultiplyHL_by_A:
@@ -9333,14 +9335,10 @@ scriptOpCodeFF:
     push HL                                            ;; 00:38de $e5
     ld   A, [wVirtualScriptOpCodeFFArgument]           ;; 00:38df $fa $6b $d8
     ld   HL, scriptOpCodeFFJumpTable                   ;; 00:38e2 $21 $a1 $3b
-    ld   B, $00                                        ;; 00:38e5 $06 $00
-    ld   C, A                                          ;; 00:38e7 $4f
-    add  HL, BC                                        ;; 00:38e8 $09
-    add  HL, BC                                        ;; 00:38e9 $09
-    ld   A, [HL+]                                      ;; 00:38ea $2a
-    ld   H, [HL]                                       ;; 00:38eb $66
-    ld   L, A                                          ;; 00:38ec $6f
-    jp   HL                                            ;; 00:38ed $e9
+    jp callJumptable
+
+; Free space
+db $00, $00, $00, $00, $00, $00
 
 ;@jumptable amount=16
 textCtrlCodes:

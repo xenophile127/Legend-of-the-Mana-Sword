@@ -1123,28 +1123,13 @@ gameStateMenu:
     ld   HL, gameStateMenuJumptable                    ;; 02:4860 $21 $c8 $47
     ld   A, [wMenuStateCurrentFunction]                ;; 02:4863 $fa $53 $d8
     and  A, $7f                                        ;; 02:4866 $e6 $7f
-    ld   B, $00                                        ;; 02:4868 $06 $00
-    ld   C, A                                          ;; 02:486a $4f
-    add  HL, BC                                        ;; 02:486b $09
-    add  HL, BC                                        ;; 02:486c $09
-    ld   A, [HL+]                                      ;; 02:486d $2a
-    ld   H, [HL]                                       ;; 02:486e $66
-    ld   L, A                                          ;; 02:486f $6f
-    call callHL                                        ;; 02:4870 $cd $74 $48
+    call callJumptable
     ret                                                ;; 02:4873 $c9
 
-callHL:
-    jp   HL                                            ;; 02:4874 $e9
-
-callJumptable_02:
-    ld   B, $00                                        ;; 02:4875 $06 $00
-    ld   C, A                                          ;; 02:4877 $4f
-    add  HL, BC                                        ;; 02:4878 $09
-    add  HL, BC                                        ;; 02:4879 $09
-    ld   A, [HL+]                                      ;; 02:487a $2a
-    ld   H, [HL]                                       ;; 02:487b $66
-    ld   L, A                                          ;; 02:487c $6f
-    jp   HL                                            ;; 02:487d $e9
+; Free space
+db $00, $00, $00, $00, $00, $00, $00, $00
+db $00, $00, $00, $00, $00, $00, $00, $00
+db $00, $00
 
 windowInitMenu:
     ld   A, $01                                        ;; 02:487e $3e $01
@@ -4389,7 +4374,7 @@ castEquippedSpellIfSufficientMana:
 windowCloseAndRestoreHidden:
     ld   HL, .windowCloseJumptable                     ;; 02:667a $21 $84 $66
     ld   A, [wWindowCloseStep]                         ;; 02:667d $fa $59 $d8
-    jp callJumptable_02
+    jp callJumptable
 ;@jumptable amount=2
 .windowCloseJumptable:
     dw   windowCloseInit                               ;; 02:6684 pP $00
@@ -4472,7 +4457,7 @@ drawWindowJumptable:
 drawWindow:
     ld   HL, drawWindowJumptable                       ;; 02:6700 $21 $f8 $66
     ld   A, [wDrawWindowStep]                          ;; 02:6703 $fa $54 $d8
-    call callJumptable_02                              ;; 02:6706 $cd $75 $48
+    call callJumptable
     ret                                                ;; 02:6709 $c9
 
 drawWindowStart:
@@ -4626,7 +4611,7 @@ call_02_67f9:
     ld   A, [wD856]                                    ;; 02:6801 $fa $56 $d8
     call saveRegisterState2                            ;; 02:6804 $cd $80 $6d
     ld   HL, data_02_67f5                              ;; 02:6807 $21 $f5 $67
-    call callJumptable_02                              ;; 02:680a $cd $75 $48
+    call callJumptable
     ret                                                ;; 02:680d $c9
 
 call_02_680e:
@@ -7898,15 +7883,8 @@ menuSelectionTitleScreen:
 
 gameStateTitleScreen:
     ld   A, [wTitleScreenState]                        ;; 02:7bdd $fa $86 $d8
-    add  A, A                                          ;; 02:7be0 $87
     ld   HL, .titleScreenStatesJumptable               ;; 02:7be1 $21 $ec $7b
-    ld   B, $00                                        ;; 02:7be4 $06 $00
-    ld   C, A                                          ;; 02:7be6 $4f
-    add  HL, BC                                        ;; 02:7be7 $09
-    ld   A, [HL+]                                      ;; 02:7be8 $2a
-    ld   H, [HL]                                       ;; 02:7be9 $66
-    ld   L, A                                          ;; 02:7bea $6f
-    jp   HL                                            ;; 02:7beb $e9
+    jp   callJumptable
 ;@jumptable
 .titleScreenStatesJumptable:
     dw   titleScreenIntroScrollStart                   ;; 02:7bec pP $00
@@ -7914,6 +7892,9 @@ gameStateTitleScreen:
     dw   titleScreenIntroScrollLoop                    ;; 02:7bf0 pP $02
     dw   titleScreenIntroScrollInterupted              ;; 02:7bf2 pP $03
     dw   titleScreenShowMenu                           ;; 02:7bf4 pP $04
+
+; Free space
+db $00, $00, $00, $00, $00, $00
 
 ; Called when New Game is selected
 titleScreenIntroScrollStart:
