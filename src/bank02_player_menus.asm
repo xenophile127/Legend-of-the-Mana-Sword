@@ -7604,49 +7604,46 @@ hideFullscreenWindow:
     call showSpritesBehindWindow_trampoline            ;; 02:7a36 $cd $35 $04
     ret                                                ;; 02:7a39 $c9
 
+; Enable the sprite hiding effect for the status bar.
+; e is used to modify LCDC.
 enableStatusBarEffect:
-    push DE                                            ;; 02:7a3a $d5
-    ld   D, $8e                                        ;; 02:7a3b $16 $8e
-    ld   E, $7e                                        ;; 02:7a3d $1e $7e
+    ld e, $01
     call lcdcEffectChangeLYC                           ;; 02:7a3f $cd $4e $7a
-    pop  DE                                            ;; 02:7a42 $d1
     ret                                                ;; 02:7a43 $c9
 
+; Disable the sprite hiding effect for the status bar.
 ; If there's a window open (like the SELECT window) it would be inconvenient to have its sprites hidden.
+; e is used to modify LCDC.
 disableStatusBarEffect:
-    push DE                                            ;; 02:7a44 $d5
-    ld   D, $7e                                        ;; 02:7a45 $16 $7e
-    ld   E, $8e                                        ;; 02:7a47 $1e $8e
+    ld e, $03
     call lcdcEffectChangeLYC                           ;; 02:7a49 $cd $4e $7a
-    pop  DE                                            ;; 02:7a4c $d1
     ret                                                ;; 02:7a4d $c9
 
 ; Used to hide/show the status bar
-; D = search (old) value
 ; E = new value
 lcdcEffectChangeLYC:
     push HL                                            ;; 02:7a4e $e5
-    push BC                                            ;; 02:7a4f $c5
     ld   HL, wLCDCEffectBuffer                         ;; 02:7a50 $21 $a0 $d3
-    ld   B, $10                                        ;; 02:7a53 $06 $10
+    ld d, $10
+    ld a, $7e
 .loop:
-    ld   A, [HL+]                                      ;; 02:7a55 $2a
-    cp   A, D                                          ;; 02:7a56 $ba
+    cp [hl]
+    inc hl
+    inc hl
     jr   Z, .change                                    ;; 02:7a57 $28 $09
-    inc  HL                                            ;; 02:7a59 $23
-    inc  HL                                            ;; 02:7a5a $23
     inc  HL                                            ;; 02:7a5b $23
-    dec  B                                             ;; 02:7a5c $05
+    dec d
     jr   NZ, .loop                                     ;; 02:7a5d $20 $f6
-    pop  BC                                            ;; 02:7a5f $c1
     pop  HL                                            ;; 02:7a60 $e1
     ret                                                ;; 02:7a61 $c9
 .change:
-    dec  HL                                            ;; 02:7a62 $2b
     ld   [HL], E                                       ;; 02:7a63 $73
-    pop  BC                                            ;; 02:7a64 $c1
     pop  HL                                            ;; 02:7a65 $e1
     ret                                                ;; 02:7a66 $c9
+
+; Free space
+db $00, $00, $00, $00, $00, $00, $00, $00
+db $00, $00, $00
 
 ; Return: e=x, d=y, c=width, b=height
 ; Return: HL = beginning of window backup buffer
