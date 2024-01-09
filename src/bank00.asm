@@ -4920,7 +4920,7 @@ clearItemBuff:
     ld   [wNectarStaminaTimerNumber], A                ;; 00:1d5a $ea $7e $d8
     ret                                                ;; 00:1d5d $c9
 
-; Store B in the VRAM address HL and return the overridden value in A
+; Store A in the VRAM address HL and return the overridden value in A
 ; This waits till VRAM writting is available.
 storeBatHLinVRAM:
     ld   B, A                                          ;; 00:1d5e $47
@@ -9083,6 +9083,7 @@ getDialogTextInsertionPoint:
     ld   A, [wWindowTextSpaceLeftOnLine]               ;; 00:375f $fa $ba $d8
     ld   C, A                                          ;; 00:3762 $4f
     ret                                                ;; 00:3763 $c9
+
     db   $d5, $3e, $7f, $15, $cd, $44, $38, $14        ;; 00:3764 ????????
     db   $3e, $7f, $cd, $44, $38, $1c, $05, $20        ;; 00:376c ????????
     db   $f0, $d1, $c9                                 ;; 00:3774 ???
@@ -9273,58 +9274,71 @@ windowTilePositionToScreenTilePosition:
     ld   E, A                                          ;; 00:388f $5f
     ret                                                ;; 00:3890 $c9
 
-; Note that this returns the old tile in A
+; a = tile id
+; de = Y and X tile positions on screen
+; Return: a = old tile id
 storeTileAatScreenPositionDE:
-    push BC                                            ;; 00:3891 $c5
-    push DE                                            ;; 00:3892 $d5
-    push HL                                            ;; 00:3893 $e5
-    ld   B, A                                          ;; 00:3894 $47
-    call tilePositionToWindowVRAMaddress               ;; 00:3895 $cd $bb $38
-    ld   A, B                                          ;; 00:3898 $78
-    jr   C, .not_on_window                             ;; 00:3899 $38 $05
-    call storeBatBackgroundDrawPosition                ;; 00:389b $cd $7c $04
-    jr   .jr_00_38a3                                   ;; 00:389e $18 $03
-.not_on_window:
-    call storeBatHLinVRAM                              ;; 00:38a0 $cd $5e $1d
-.jr_00_38a3:
-    pop  HL                                            ;; 00:38a3 $e1
-    pop  DE                                            ;; 00:38a4 $d1
-    pop  BC                                            ;; 00:38a5 $c1
-    ret                                                ;; 00:38a6 $c9
+    push hl
+    push bc
+    ld b, a
+    call tilePositionToVRAMAddress
+    ld a, b
+    call storeBatHLinVRAM
+    pop bc
+    pop hl
+    ret
+
+; Free space
+db $00, $00, $00, $00, $00
+
     db   $c5, $d5, $e5, $cd, $bb, $38, $38, $05        ;; 00:38a7 ????????
     db   $cd, $85, $04, $18, $03, $cd, $8a, $1d        ;; 00:38af ????????
     db   $e1, $d1, $c1, $c9                            ;; 00:38b7 ????
 
-; Convert DE (Y,X) tile position into VRAM memory location if it is on the window.
-; Carry flag is cleared if the address is on the window, else the carry flag is set.
-tilePositionToWindowVRAMaddress:
-    ld   A, [wVideoWY]                                 ;; 00:38bb $fa $a9 $c0
-    srl  A                                             ;; 00:38be $cb $3f
-    srl  A                                             ;; 00:38c0 $cb $3f
-    srl  A                                             ;; 00:38c2 $cb $3f
-    ld   C, A                                          ;; 00:38c4 $4f
-    jr   Z, .jr_00_38ca                                ;; 00:38c5 $28 $03
-    dec  A                                             ;; 00:38c7 $3d
-    cp   A, D                                          ;; 00:38c8 $ba
-    ret  NC                                            ;; 00:38c9 $d0
-.jr_00_38ca:
-    ld   A, D                                          ;; 00:38ca $7a
-    sub  A, C                                          ;; 00:38cb $91
-    ld   L, A                                          ;; 00:38cc $6f
-    ld   H, $00                                        ;; 00:38cd $26 $00
-    add  HL, HL                                        ;; 00:38cf $29
-    add  HL, HL                                        ;; 00:38d0 $29
-    add  HL, HL                                        ;; 00:38d1 $29
-    add  HL, HL                                        ;; 00:38d2 $29
-    add  HL, HL                                        ;; 00:38d3 $29
-    ld   A, E                                          ;; 00:38d4 $7b
-    add  A, L                                          ;; 00:38d5 $85
-    ld   E, A                                          ;; 00:38d6 $5f
-    ld   D, H                                          ;; 00:38d7 $54
-    ld   HL, _SCRN1 ;@=ptr _SCRN1                      ;; 00:38d8 $21 $00 $9c
-    add  HL, DE                                        ;; 00:38db $19
-    scf                                                ;; 00:38dc $37
-    ret                                                ;; 00:38dd $c9
+; Convert de (Y,X) tile position into VRAM memory location
+; de = Y and X tile positions on screen
+; Return: hl = VRAM address, de unmodified
+tilePositionToVRAMAddress:
+    ld a, d
+; Muliply y by eight. It's easier to multiply the tile y coordinate than to divide rWY.
+    add a
+    add a
+    add a
+; Compare to rWY.
+    ld hl, wVideoWY
+    cp [hl]
+    jr nc, .window
+; Adjust for y scroll.
+    ld hl, wVideoSCY
+    ld h, [hl]
+    add h
+    ld l, a
+; Tile coordinates need to be multiplied by 8 to get pixels for comparison and $20 to get a line address. $20/8=4.
+    ld h, high(_SCRN0 / 4)
+; Adjust for x scroll.
+    ld a, [wVideoSCX]
+; Divide by 8. Lowest three bits should always be zero.
+    rrca
+    rrca
+    rrca
+    jr .ready
+.window:
+    sub [hl]
+    ld h, high(_SCRN1 / 4)
+    ld l, a
+    xor a
+.ready:
+; Multiply by four.
+    add hl, hl
+    add hl, hl
+; Add x.
+    add e
+    add l
+    ld l, a
+; It seems like this would never carry ordinarily, but the copyright line on the title screen does weird things.
+    ret nc
+    inc h
+    ret
 
 ; A jumptable implemented as a script opcode.
 ; Never used directly from scripts, but it gets used from code.
