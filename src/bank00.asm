@@ -8398,16 +8398,14 @@ scriptOpCodeMsg:
 .handleCtrlCodes:
     push HL                                            ;; 00:335e $e5
     sub  A, $10                                        ;; 00:335f $d6 $10
-    ld   B, $00                                        ;; 00:3361 $06 $00
-    ld   C, A                                          ;; 00:3363 $4f
-    ld   HL, textCtrlCodes                             ;; 00:3364 $21 $ee $38
-    add  HL, BC                                        ;; 00:3367 $09
-    add  HL, BC                                        ;; 00:3368 $09
-    ld   A, [HL+]                                      ;; 00:3369 $2a
-    ld   H, [HL]                                       ;; 00:336a $66
-    ld   L, A                                          ;; 00:336b $6f
-    call getDialogTextInsertionPoint                   ;; 00:336c $cd $4d $37
-    jp   HL                                            ;; 00:336f $e9
+    ld h, a
+    call getDialogTextInsertionPoint
+    ld a, h
+    ld hl, textCtrlCodes
+    jp callJumptable
+
+; Free space
+db $00, $00, $00, $00
 
 scriptOpCodeIfFlags:
     call getNextScriptInstruction                      ;; 00:3370 $cd $27 $37
