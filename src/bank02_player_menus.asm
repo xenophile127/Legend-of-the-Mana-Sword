@@ -4454,10 +4454,20 @@ drawWindowJumptable:
     dw   windowDrawMiddle                              ;; 02:66fc pP $02
     dw   windowDrawBottom                              ;; 02:66fe pP $03
 
+; Draw window now does its own rate limiting instead of drawing only one line of tiles per frame.
+; This results in a drastic speedup.
 drawWindow:
-    ld   HL, drawWindowJumptable                       ;; 02:6700 $21 $f8 $66
     ld   A, [wDrawWindowStep]                          ;; 02:6703 $fa $54 $d8
+.loop:
+    ld hl, drawWindowJumptable
     call callJumptable
+; If scanline is 112 or above, return. This is a little conservative, but not much.
+    ldh a, [rLY]
+    cp $70
+    ret nc
+    ld a, [wDrawWindowStep]
+    or a
+    jr nz, .loop
     ret                                                ;; 02:6709 $c9
 
 drawWindowStart:
@@ -4520,9 +4530,8 @@ drawWindowStart:
     push DE                                            ;; 02:6760 $d5
     call hideSpritesBehindWindow_trampoline            ;; 02:6761 $cd $2f $04
     pop  DE                                            ;; 02:6764 $d1
-    ld   A, [wMenuStateCurrentFunction]                ;; 02:6765 $fa $53 $d8
-    or   A, $80                                        ;; 02:6768 $f6 $80
-    ld   [wMenuStateCurrentFunction], A                ;; 02:676a $ea $53 $d8
+    ld hl, wMenuStateCurrentFunction
+    set 7, [hl]
     ld   A, $77                                        ;; 02:676d $3e $77
     ld   [wDialogBorderTile], A                        ;; 02:676f $ea $63 $d8
     ld   A, [wDialogType]                              ;; 02:6772 $fa $4a $d8
@@ -4530,8 +4539,8 @@ drawWindowStart:
     jr   Z, windowDrawFinished                         ;; 02:6777 $28 $3e
     cp   A, $1f                                        ;; 02:6779 $fe $1f
     jr   Z, windowDrawFinished                         ;; 02:677b $28 $3a
-    ld   A, $01                                        ;; 02:677d $3e $01
-    ld   [wDrawWindowStep], A                          ;; 02:677f $ea $54 $d8
+    ld hl, wDrawWindowStep
+    inc [hl]
     ret                                                ;; 02:6782 $c9
 
 drawWindowTopOrBottom:
@@ -4552,7 +4561,22 @@ windowDrawMiddle:
     call loadRegisterState2                            ;; 02:6798 $cd $a7 $6d
     push DE                                            ;; 02:679b $d5
     push BC                                            ;; 02:679c $c5
-    call drawDialogCenterLine                          ;; 02:679d $cd $55 $68
+; Inlined from drawDialogCenterLine (now removed)
+    ld   a, $7a
+    call storeTileAatScreenPositionDE
+    ld   [hl+], a
+    dec  c
+    inc  e
+.loop:
+    ld   a, $7f
+    call storeTileAatScreenPositionDE
+    ld   [hl+], a
+    inc  e
+    dec  c
+    jr   nz, .loop
+    ld   a, $7b
+    call storeTileAatScreenPositionDE
+    ld   [hl+], a
     pop  BC                                            ;; 02:67a0 $c1
     pop  DE                                            ;; 02:67a1 $d1
     inc  D                                             ;; 02:67a2 $14
@@ -4561,9 +4585,8 @@ windowDrawMiddle:
     ret  NZ                                            ;; 02:67a7 $c0
     ld   A, $7c                                        ;; 02:67a8 $3e $7c
     ld   [wDialogBorderTile], A                        ;; 02:67aa $ea $63 $d8
-    ld   A, E                                          ;; 02:67ad $7b
-    ld   A, $03                                        ;; 02:67ae $3e $03
-    ld   [wDrawWindowStep], A                          ;; 02:67b0 $ea $54 $d8
+    ld hl, wDrawWindowStep
+    inc [hl]
     ret                                                ;; 02:67b3 $c9
 
 windowDrawBottom:
@@ -4573,20 +4596,16 @@ windowDrawFinished:
     ld   A, D                                          ;; 02:67b7 $7a
     cp   A, $0f                                        ;; 02:67b8 $fe $0f
     call NC, disableStatusBarEffect                    ;; 02:67ba $d4 $44 $7a
-    ld   A, $03                                        ;; 02:67bd $3e $03
-    ld   [wDrawWindowStep], A                          ;; 02:67bf $ea $54 $d8
     ld   DE, $800                                      ;; 02:67c2 $11 $00 $08
     ld   BC, $913                                      ;; 02:67c5 $01 $13 $09
     call saveRegisterState2                            ;; 02:67c8 $cd $80 $6d
     ld   A, [wDialogType]                              ;; 02:67cb $fa $4a $d8
     cp   A, $03                                        ;; 02:67ce $fe $03
     jr   Z, .draw_equipment_screen_bottom              ;; 02:67d0 $28 $18
-    ld   A, [wMenuStateCurrentFunction]                ;; 02:67d2 $fa $53 $d8
-    and  A, $7f                                        ;; 02:67d5 $e6 $7f
-    ld   [wMenuStateCurrentFunction], A                ;; 02:67d7 $ea $53 $d8
-    xor  A, A                                          ;; 02:67da $af
-    ld   [wDrawWindowStep], A                          ;; 02:67db $ea $54 $d8
-    ld   A, [wDialogType]                              ;; 02:67de $fa $4a $d8
+    ld hl, wMenuStateCurrentFunction
+    res 7, [hl]
+    ld hl, wDrawWindowStep
+    ld [hl], $00
     cp   A, $04                                        ;; 02:67e1 $fe $04
     ret  NZ                                            ;; 02:67e3 $c0
     ld   A, $03                                        ;; 02:67e4 $3e $03
@@ -4654,25 +4673,8 @@ call_02_6840:
     ld   [wD856], A                                    ;; 02:6851 $ea $56 $d8
     ret                                                ;; 02:6854 $c9
 
-; DE=position on the screen
-; C=width of line
-drawDialogCenterLine:
-    ld   A, $7a                                        ;; 02:6855 $3e $7a
-    call storeTileAatScreenPositionDE                  ;; 02:6857 $cd $91 $38
-    ld   [HL+], A                                      ;; 02:685a $22
-    dec  C                                             ;; 02:685b $0d
-    inc  E                                             ;; 02:685c $1c
-.loop:
-    ld   A, $7f                                        ;; 02:685d $3e $7f
-    call storeTileAatScreenPositionDE                  ;; 02:685f $cd $91 $38
-    ld   [HL+], A                                      ;; 02:6862 $22
-    inc  E                                             ;; 02:6863 $1c
-    dec  C                                             ;; 02:6864 $0d
-    jr   NZ, .loop                                     ;; 02:6865 $20 $f6
-    ld   A, $7b                                        ;; 02:6867 $3e $7b
-    call storeTileAatScreenPositionDE                  ;; 02:6869 $cd $91 $38
-    ld   [HL+], A                                      ;; 02:686c $22
-    ret                                                ;; 02:686d $c9
+; Free space
+db $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 ; C=width of line
 ; DE=position on the screen
@@ -4689,10 +4691,8 @@ drawDialogTopOrBottomLine:
     dec  C                                             ;; 02:687c $0d
 .loop:
     ld   A, [wDialogBorderTile]                        ;; 02:687d $fa $63 $d8
-    push AF                                            ;; 02:6880 $f5
     call storeTileAatScreenPositionDE                  ;; 02:6881 $cd $91 $38
     ld   [HL+], A                                      ;; 02:6884 $22
-    pop  AF                                            ;; 02:6885 $f1
     inc  E                                             ;; 02:6886 $1c
     dec  C                                             ;; 02:6887 $0d
     jr   NZ, .loop                                     ;; 02:6888 $20 $f3
@@ -4701,6 +4701,9 @@ drawDialogTopOrBottomLine:
     call storeTileAatScreenPositionDE                  ;; 02:688e $cd $91 $38
     ld   [HL+], A                                      ;; 02:6891 $22
     ret                                                ;; 02:6892 $c9
+
+; Free space
+db $00, $00
 
 processWindowInput:
     ld   A, [wDialogType]                              ;; 02:6893 $fa $4a $d8
