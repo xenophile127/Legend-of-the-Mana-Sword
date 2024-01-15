@@ -2446,7 +2446,7 @@ windowVendorShowBuyMessage:
     TXT  ".<00>"                                       ;; 02:51d3 ..
 
 windowWaitForAnyButton:
-    call updateJoypadInput_trampoline                  ;; 02:51d5 $cd $d1 $1e
+    call updateJoypadInput
     ld   A, E                                          ;; 02:51d8 $7b
     and  A, D                                          ;; 02:51d9 $a2
     ret  Z                                             ;; 02:51da $c8
@@ -2876,7 +2876,7 @@ call_02_547e:
     ret                                                ;; 02:548f $c9
 
 call_02_5490:
-    call updateJoypadInput_trampoline                  ;; 02:5490 $cd $d1 $1e
+    call updateJoypadInput
     ld   A, D                                          ;; 02:5493 $7a
     and  A, A                                          ;; 02:5494 $a7
     ret  Z                                             ;; 02:5495 $c8
@@ -3189,7 +3189,7 @@ clearSaveLoadScreen:
     call drawDefaultStatusBar                          ;; 02:564c $cd $16 $6f
     call drawHPOnStatusBar_trampoline                  ;; 02:564f $cd $29 $6f
     call drawManaOnStatusBar_trampoline                ;; 02:5652 $cd $3f $6f
-    call drawMoneyOnStatusBar_trampoline               ;; 02:5655 $cd $55 $6f
+    call drawMoneyOnStatusBar
     call hideAndSaveMenuMetasprites                    ;; 02:5658 $cd $51 $6b
     ld   DE, $9c40                                     ;; 02:565b $11 $40 $9c
     ld   B, $20                                        ;; 02:565e $06 $20
@@ -3295,7 +3295,7 @@ call_02_56c9:
     cp   A, D                                          ;; 02:56df $ba
 .jr_02_56e0:
     call NZ, call_02_6b20                              ;; 02:56e0 $c4 $20 $6b
-    call updateJoypadInput_trampoline                  ;; 02:56e3 $cd $d1 $1e
+    call updateJoypadInput
     bit  4, C                                          ;; 02:56e6 $cb $61
     ret  NZ                                            ;; 02:56e8 $c0
     call showMenuFingerPointing_1                      ;; 02:56e9 $cd $be $6b
@@ -4453,7 +4453,7 @@ windowCloseMain:
     ld   HL, $1214                                     ;; 02:66ee $21 $14 $12
     ld   DE, $00                                       ;; 02:66f1 $11 $00 $00
 .jr_02_66f4:
-    call showSpritesBehindWindow_trampoline            ;; 02:66f4 $cd $35 $04
+    call showSpritesBehindWindow
     ret                                                ;; 02:66f7 $c9
 
 ; Free space
@@ -4540,7 +4540,7 @@ drawWindowStart:
     ld   DE, $00                                       ;; 02:675d $11 $00 $00
 .jr_02_6760:
     push DE                                            ;; 02:6760 $d5
-    call hideSpritesBehindWindow_trampoline            ;; 02:6761 $cd $2f $04
+    call hideSpritesBehindWindow
     pop  DE                                            ;; 02:6764 $d1
     ld hl, wMenuStateCurrentFunction
     set 7, [hl]
@@ -4654,7 +4654,7 @@ call_02_680e:
     ld   [wMenuFlags], A                               ;; 02:681a $ea $49 $d8
     push HL                                            ;; 02:681d $e5
     push DE                                            ;; 02:681e $d5
-    call updateJoypadInput_trampoline                  ;; 02:681f $cd $d1 $1e
+    call updateJoypadInput
     pop  DE                                            ;; 02:6822 $d1
     pop  HL                                            ;; 02:6823 $e1
     push BC                                            ;; 02:6824 $c5
@@ -7601,7 +7601,7 @@ hideFullscreenWindow:
     ld   [wVideoWY], A                                 ;; 02:7a2d $ea $a9 $c0
     ld   DE, $00                                       ;; 02:7a30 $11 $00 $00
     ld   HL, $1214                                     ;; 02:7a33 $21 $14 $12
-    call showSpritesBehindWindow_trampoline            ;; 02:7a36 $cd $35 $04
+    call showSpritesBehindWindow
     ret                                                ;; 02:7a39 $c9
 
 ; Enable the sprite hiding effect for the status bar.
@@ -7990,7 +7990,7 @@ titleScreenIntroScrollPrintLine:
     ret                                                ;; 02:7c8e $c9
 
 titleScreenIntroScrollLoop:
-    call updateJoypadInput_trampoline                  ;; 02:7c8f $cd $d1 $1e
+    call updateJoypadInput
     bit  4, C                                          ;; 02:7c92 $cb $61
     jr   NZ, .a_button                                 ;; 02:7c94 $20 $25
     ld   HL, wIntroScrollCounter1                      ;; 02:7c96 $21 $89 $d8
