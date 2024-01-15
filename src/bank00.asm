@@ -7467,35 +7467,22 @@ pushableCollisionHandling:
 
 vblankGraphicsVRAMCopy:
     ld   A, [wTileCopyRequestCount]                    ;; 00:2d57 $fa $e0 $c8
-    cp   A, $00                                        ;; 00:2d5a $fe $00
+    or a
     ret  Z                                             ;; 00:2d5c $c8
+    ld b, a
     ld   HL, wTileCopyRequestMutex                     ;; 00:2d5d $21 $e1 $c8
-    ld   A, $00                                        ;; 00:2d60 $3e $00
-    cp   A, [HL]                                       ;; 00:2d62 $be
+    ld a, [hl]
+    or a
     ret  NZ                                            ;; 00:2d63 $c0
     inc  [HL]                                          ;; 00:2d64 $34
-    ld   A, $01                                        ;; 00:2d65 $3e $01
-    cp   A, [HL]                                       ;; 00:2d67 $be
-    jr   Z, .jr_00_2d6c                                ;; 00:2d68 $28 $02
-    dec  [HL]                                          ;; 00:2d6a $35
-    ret                                                ;; 00:2d6b $c9
-.jr_00_2d6c:
-    ld   A, [wTileCopyRequestCount]                    ;; 00:2d6c $fa $e0 $c8
-    ld   B, A                                          ;; 00:2d6f $47
-    ld   HL, SP+0                                      ;; 00:2d70 $f8 $00
-    ld   A, H                                          ;; 00:2d72 $7c
-    ld   [wStackPointerBackupHigh], A                  ;; 00:2d73 $ea $e3 $c8
-    ld   A, L                                          ;; 00:2d76 $7d
-    ld   [wStackPointerBackupLow], A                   ;; 00:2d77 $ea $e2 $c8
-    ldh  A, [rLY]                                      ;; 00:2d7a $f0 $44
-    add  A, $06                                        ;; 00:2d7c $c6 $06
-    ld   C, A                                          ;; 00:2d7e $4f
-    ld   HL, wTileCopyRequestData                      ;; 00:2d7f $21 $e0 $c5
-    ld   SP, HL                                        ;; 00:2d82 $f9
-.loop:
-    ldh  A, [rLY]                                      ;; 00:2d83 $f0 $44
-    cp   A, C                                          ;; 00:2d85 $b9
-    jr   NC, .jr_00_2dc0                               ;; 00:2d86 $30 $38
+; Use the stack pointer for speed. This is simplified by being in an interrupt.
+    ld [wStackPointerBackupLow], sp
+    ld sp, wTileCopyRequestData
+; Stop transferring tiles if the scanline is $98 (152).
+; VBlank lasts from $90 (144) through the end of scanline $99 (153).
+; This ends with an entire unused scanline because this loop takes just over a scanline (468 dots of 456) to run.
+    ld c, $98
+.loop_transfer_tile:
     pop  AF                                            ;; 00:2d88 $f1
     pop  DE                                            ;; 00:2d89 $d1
     pop  HL                                            ;; 00:2d8a $e1
@@ -7548,8 +7535,11 @@ vblankGraphicsVRAMCopy:
     ld   A, [HL+]                                      ;; 00:2dbb $2a
     ld   [DE], A                                       ;; 00:2dbc $12
     dec  B                                             ;; 00:2dbd $05
-    jr   NZ, .loop                                     ;; 00:2dbe $20 $c3
-.jr_00_2dc0:
+    jr z, .break
+    ldh  A, [rLY]                                      ;; 00:2d83 $f0 $44
+    cp   A, C                                          ;; 00:2d85 $b9
+    jr   c, .loop_transfer_tile
+.break:
     ld   A, B                                          ;; 00:2dc0 $78
     ld   [wTileCopyRequestCount], A                    ;; 00:2dc1 $ea $e0 $c8
 ; If there's no unprocessed requests, then there's nothing to move.
@@ -7592,7 +7582,10 @@ vblankGraphicsVRAMCopy:
     ret                                                ;; 00:2df4 $c9
 
 ; Free space
-db $00, $00, $00, $00, $00
+db $00, $00, $00, $00, $00, $00, $00, $00
+db $00, $00, $00, $00, $00, $00, $00, $00
+db $00, $00, $00, $00, $00, $00, $00, $00
+db $00, $00, $00, $00
 
 ; Request the VBlank handler to copy 1 graphics tile (16 bytes) from ROM into VRAM.
 ; A: source bank
