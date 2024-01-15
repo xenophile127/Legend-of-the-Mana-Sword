@@ -1131,11 +1131,14 @@ db $00, $00, $00, $00, $00, $00, $00, $00
 db $00, $00, $00, $00, $00, $00, $00, $00
 db $00, $00
 
+; The repeat delay was originally initialized to 1 so there was no initial delay,
+; but changes to speed up windows made it too easy to make a mistake.
+; For instance, the Yes/No choice window was easy to accidentally select Yes.
 windowInitMenu:
-    ld   A, $01                                        ;; 02:487e $3e $01
+    ld   a, $07
     ld   [wMenuSelectionMoveRepeatDelay], A            ;; 02:4880 $ea $57 $d8
-    ld   A, $01                                        ;; 02:4883 $3e $01
-    ld   [wMenuStateCurrentFunction], A                ;; 02:4885 $ea $53 $d8
+    ld hl, wMenuStateCurrentFunction
+    inc [hl]
     ret                                                ;; 02:4888 $c9
 
 windowInitMain:
@@ -1146,7 +1149,6 @@ windowInitMain:
     and  A, $7f                                        ;; 02:4893 $e6 $7f
     add  A, $41                                        ;; 02:4895 $c6 $41
     ld   [HL], A                                       ;; 02:4897 $77
-    ld   A, [wDialogType]                              ;; 02:4898 $fa $4a $d8
     call drawWindow                                    ;; 02:489b $cd $00 $67
     ld   B, $13                                        ;; 02:489e $06 $13
     call setMenuStateCurrentFunction                   ;; 02:48a0 $cd $98 $6c
@@ -4371,14 +4373,21 @@ castEquippedSpellIfSufficientMana:
     ret                                                ;; 02:6679 $c9
 
 ; Takes care of restoring the background, the status bar, and  hidden sprites.
+; Return: z set if finished.
 windowCloseAndRestoreHidden:
-    ld   HL, .windowCloseJumptable                     ;; 02:667a $21 $84 $66
+.loop:
     ld   A, [wWindowCloseStep]                         ;; 02:667d $fa $59 $d8
-    jp callJumptable
-;@jumptable amount=2
-.windowCloseJumptable:
-    dw   windowCloseInit                               ;; 02:6684 pP $00
-    dw   windowCloseMain                               ;; 02:6686 pP $01
+    or a
+; This used the jumptable pattern but it's faster and the smaller to convert to two calls.
+    call z, windowCloseInit
+    call windowCloseMain
+    ret z
+    ldh a, [rLY]
+    cp $70
+    jr c, .loop
+; If rLY was exactly $70 then z is set. Unset it with a decrement.
+    dec a
+    ret
 
 windowCloseInit:
     ld hl, wMenuStateCurrentFunction
@@ -4397,9 +4406,10 @@ windowCloseInit:
 .jr_02_66a0:
     inc  B                                             ;; 02:66a0 $04
     inc  C                                             ;; 02:66a1 $0c
-    ld   A, $01                                        ;; 02:66a5 $3e $01
-    ld   [wWindowCloseStep], A                         ;; 02:66a7 $ea $59 $d8
-    jp saveRegisterState2
+    call saveRegisterState2
+    ld hl, wWindowCloseStep
+    inc [hl]
+    ret
 
 windowCloseMain:
     call loadRegisterState2                            ;; 02:66ab $cd $a7 $6d
@@ -4420,9 +4430,8 @@ windowCloseMain:
     ld   A, D                                          ;; 02:66c0 $7a
     cp   A, $0f                                        ;; 02:66c1 $fe $0f
     call NC, enableStatusBarEffect                     ;; 02:66c3 $d4 $3a $7a
-    ld   A, [wMenuStateCurrentFunction]                ;; 02:66c6 $fa $53 $d8
-    and  A, $7f                                        ;; 02:66c9 $e6 $7f
-    ld   [wMenuStateCurrentFunction], A                ;; 02:66cb $ea $53 $d8
+    ld hl, wMenuStateCurrentFunction
+    res 7, [hl]
     xor  A, A                                          ;; 02:66ce $af
     ld   [wMenuFlags], A                               ;; 02:66cf $ea $49 $d8
     ld   [wWindowCloseStep], A                         ;; 02:66d2 $ea $59 $d8
@@ -4446,6 +4455,9 @@ windowCloseMain:
 .jr_02_66f4:
     call showSpritesBehindWindow_trampoline            ;; 02:66f4 $cd $35 $04
     ret                                                ;; 02:66f7 $c9
+
+; Free space
+db $00
 
 ;@jumptable amount=4
 drawWindowJumptable:
