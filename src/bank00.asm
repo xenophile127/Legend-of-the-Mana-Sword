@@ -7552,38 +7552,47 @@ vblankGraphicsVRAMCopy:
 .jr_00_2dc0:
     ld   A, B                                          ;; 00:2dc0 $78
     ld   [wTileCopyRequestCount], A                    ;; 00:2dc1 $ea $e0 $c8
-    ld   HL, SP+0                                      ;; 00:2dc4 $f8 $00
-    ld   D, H                                          ;; 00:2dc6 $54
-    ld   E, L                                          ;; 00:2dc7 $5d
+; If there's no unprocessed requests, then there's nothing to move.
+    or a
+    jr   Z, .finish
+; Move any unprocessed request records to the beginning of the memory area.
+; Since the stack pointer is already pointing at the location to begin copying, use it.
+; There is enough room allocated for 128 requests, so theoretically multiplying b*3 could be bad.
+; So unroll the loop instead.
+; Plus, even unrolled this code is actually smaller than the original code that called CopyHL_to_DE_size_BC.
+    ld hl, wTileCopyRequestData
+.loop_move:
+    pop de
+    ld a, e
+    ld [hl+], a
+    ld a, d
+    ld [hl+], a
+    pop de
+    ld a, e
+    ld [hl+], a
+    ld a, d
+    ld [hl+], a
+    pop de
+    ld a, e
+    ld [hl+], a
+    ld a, d
+    ld [hl+], a
+    dec b
+    jr nz, .loop_move
+.finish:
     ld   A, [wStackPointerBackupHigh]                  ;; 00:2dc8 $fa $e3 $c8
     ld   H, A                                          ;; 00:2dcb $67
     ld   A, [wStackPointerBackupLow]                   ;; 00:2dcc $fa $e2 $c8
     ld   L, A                                          ;; 00:2dcf $6f
     ld   SP, HL                                        ;; 00:2dd0 $f9
-    ld   A, B                                          ;; 00:2dd1 $78
-    push AF                                            ;; 00:2dd2 $f5
     call getCurrentBankNr                              ;; 00:2dd3 $cd $17 $2a
     ld   [$2100], A                                    ;; 00:2dd6 $ea $00 $21
-    pop  AF                                            ;; 00:2dd9 $f1
-    cp   A, $00                                        ;; 00:2dda $fe $00
-    jr   Z, .jr_00_2df0                                ;; 00:2ddc $28 $12
-    push DE                                            ;; 00:2dde $d5
-    ld   L, B                                          ;; 00:2ddf $68
-    ld   H, $00                                        ;; 00:2de0 $26 $00
-    ld   D, H                                          ;; 00:2de2 $54
-    ld   E, L                                          ;; 00:2de3 $5d
-    add  HL, HL                                        ;; 00:2de4 $29
-    add  HL, DE                                        ;; 00:2de5 $19
-    add  HL, HL                                        ;; 00:2de6 $29
-    ld   B, H                                          ;; 00:2de7 $44
-    ld   C, L                                          ;; 00:2de8 $4d
-    ld   DE, wTileCopyRequestData                      ;; 00:2de9 $11 $e0 $c5
-    pop  HL                                            ;; 00:2dec $e1
-    call CopyHL_to_DE_size_BC                          ;; 00:2ded $cd $40 $2b
-.jr_00_2df0:
     ld   HL, wTileCopyRequestMutex                     ;; 00:2df0 $21 $e1 $c8
     dec  [HL]                                          ;; 00:2df3 $35
     ret                                                ;; 00:2df4 $c9
+
+; Free space
+db $00, $00, $00, $00, $00
 
 ; Request the VBlank handler to copy 1 graphics tile (16 bytes) from ROM into VRAM.
 ; A: source bank
