@@ -9308,18 +9308,19 @@ storeTileAatScreenPositionDE:
     ret
 
 ; Free space
-db $00, $00, $00, $00, $00
+db $00, $00, $00, $00
 
     db   $c5, $d5, $e5, $cd, $bb, $38, $38, $05        ;; 00:38a7 ????????
     db   $cd, $85, $04, $18, $03, $cd, $8a, $1d        ;; 00:38af ????????
     db   $e1, $d1, $c1, $c9                            ;; 00:38b7 ????
 
-; Convert de (Y,X) tile position into VRAM memory location
+; Convert de (Y,X) screen tile position into VRAM memory location.
+; Takes into account window position and the position of screen scrolling.
 ; de = Y and X tile positions on screen
 ; Return: hl = VRAM address, de unmodified
 tilePositionToVRAMAddress:
     ld a, d
-; Muliply y by eight. It's easier to multiply the tile y coordinate than to divide rWY.
+; Muliply y by eight for comparison to pixel position of the window.
     add a
     add a
     add a
@@ -9327,19 +9328,20 @@ tilePositionToVRAMAddress:
     ld hl, wVideoWY
     cp [hl]
     jr nc, .window
-; Adjust for y scroll.
-    ld hl, wVideoSCY
-    ld h, [hl]
-    add h
+; Adjust for any y offset.
+    ld a, [wBackgroundDrawPositionY]
+    add d
+; Mask top three bits because the title screen is weird.
+    and $1f
+; Multiply again.
+    add a
+    add a
+    add a
     ld l, a
 ; Tile coordinates need to be multiplied by 8 to get pixels for comparison and $20 to get a line address. $20/8=4.
     ld h, high(_SCRN0 / 4)
-; Adjust for x scroll.
-    ld a, [wVideoSCX]
-; Divide by 8. Lowest three bits should always be zero.
-    rrca
-    rrca
-    rrca
+; Adjust for any x offset.
+    ld a, [wBackgroundDrawPositionX]
     jr .ready
 .window:
     sub [hl]
@@ -9352,11 +9354,10 @@ tilePositionToVRAMAddress:
     add hl, hl
 ; Add x.
     add e
+; Mask top three bits just in case since this is what the original code did.
+    and $1f
     add l
     ld l, a
-; It seems like this would never carry ordinarily, but the copyright line on the title screen does weird things.
-    ret nc
-    inc h
     ret
 
 ; A jumptable implemented as a script opcode.
