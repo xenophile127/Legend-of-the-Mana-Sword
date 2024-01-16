@@ -3186,52 +3186,46 @@ windowReturnToScript:
     ret                                                ;; 02:564b $c9
 
 clearSaveLoadScreen:
+    call hideAndSaveMenuMetasprites                    ;; 02:5658 $cd $51 $6b
+    ld hl, $9c40
+    ld b, $10
+    call clearVRAMArea                                 ;; 02:5660 $cd $6a $56
     call drawDefaultStatusBar                          ;; 02:564c $cd $16 $6f
     call drawHPOnStatusBar_trampoline                  ;; 02:564f $cd $29 $6f
     call drawManaOnStatusBar_trampoline                ;; 02:5652 $cd $3f $6f
     call drawMoneyOnStatusBar
-    call hideAndSaveMenuMetasprites                    ;; 02:5658 $cd $51 $6b
-    ld   DE, $9c40                                     ;; 02:565b $11 $40 $9c
-    ld   B, $20                                        ;; 02:565e $06 $20
-    call clearVRAMArea                                 ;; 02:5660 $cd $6a $56
     call drawEmptyWillBar                              ;; 02:5663 $cd $fa $65
     call drawWillBarCharge                             ;; 02:5666 $cd $23 $66
     ret                                                ;; 02:5669 $c9
 
-; This clears a section of VRAM by using the VBlank tile copy function.
-; It has two issues:
-; 1) It schedules so many copies at once that the VBlank function
-;    takes extra time. This shows after loading a game when the shutter effect bounces
-;    around at the top of the screen for several frames.
-; 2) A problem if you try to convert this routine to CGB HDMA is that the fake tile
-;    it uses is not aligned properly.
-; B = (clear length) / 16
-; DE = clear location
+; This clears a section of VRAM. This code takes a rather brute-force approach.
+; Originally it cleared the entire memory area even though the part past the 20th tile on a line was never used.
+; It also used a the VBlank tile transfer function to transfer tile ids, which is why it was worth rewriting.
+; Its fake tile was not aligned to a 16 byte boundary, which prevented optimizing VBlank tile transfer.
+; b = number of lines of tiles to clear.
+; hl = VRAM address to begin at.
 clearVRAMArea:
     ld   A, $7f                                        ;; 02:566a $3e $7f
-    ld   HL, wVRAMClearFakeTile                        ;; 02:566c $21 $c7 $d8
-    push HL                                            ;; 02:566f $e5
-    ld   C, $10                                        ;; 02:5670 $0e $10
-.loop_1:
-    ld   [HL+], A                                      ;; 02:5672 $22
-    dec  C                                             ;; 02:5673 $0d
-    jr   NZ, .loop_1                                   ;; 02:5674 $20 $fc
-    pop  HL                                            ;; 02:5676 $e1
-.loop_2:
-    push HL                                            ;; 02:5677 $e5
-    push BC                                            ;; 02:5678 $c5
-    push DE                                            ;; 02:5679 $d5
-    call addTileGraphicCopyRequest                     ;; 02:567a $cd $f5 $2d
-    pop  HL                                            ;; 02:567d $e1
-    ld   BC, $10                                       ;; 02:567e $01 $10 $00
-    add  HL, BC                                        ;; 02:5681 $09
-    push HL                                            ;; 02:5682 $e5
-    pop  DE                                            ;; 02:5683 $d1
-    pop  BC                                            ;; 02:5684 $c1
-    pop  HL                                            ;; 02:5685 $e1
-    dec  B                                             ;; 02:5686 $05
-    jr   NZ, .loop_2                                   ;; 02:5687 $20 $ee
-    ret                                                ;; 02:5689 $c9
+; de is used to skip from the end of one line to the beginning of the next.
+    ld de, $0020 - $0014
+.loop_outer:
+    ld c, $14
+.loop_inner:
+; Rather than checking PPU mode this loop just keeps trying to write until successful.
+    ld [hl], a
+    cp [hl]
+    jr nz, .loop_inner
+    inc hl
+    dec c
+    jr nz, .loop_inner
+    add hl, de
+    dec b
+    jr nz, .loop_outer
+    ret
+
+; Free space
+db $00, $00, $00, $00, $00, $00, $00, $00
+db $00, $00, $00, $00
 
 getEquipmentFlags1And2:
     or   A, A                                          ;; 02:568a $b7
@@ -8012,8 +8006,8 @@ titleScreenIntroScrollLoop:
     ld   [wTitleScreenState], A                        ;; 02:7cb7 $ea $86 $d8
     ret                                                ;; 02:7cba $c9
 .a_button:
-    ld   B, $24                                        ;; 02:7cbb $06 $24
-    ld   DE, _SCRN0 ;@=ptr _SCRN0                      ;; 02:7cbd $11 $00 $98
+    ld b, $12
+    ld hl, _SCRN0
     call clearVRAMArea                                 ;; 02:7cc0 $cd $6a $56
     ld   A, $03                                        ;; 02:7cc3 $3e $03
     ld   [wTitleScreenState], A                        ;; 02:7cc5 $ea $86 $d8

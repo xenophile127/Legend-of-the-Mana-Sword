@@ -1568,6 +1568,7 @@ wWindowTextInsertionPointFinalX:
 wWindowTextInsertionPointFinalY:
     ds 1                                               ;; d8c6
 
+; Free space. Now unused.
 wVRAMClearFakeTile:
     ds 16                                              ;; d8c7
 
