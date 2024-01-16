@@ -45,7 +45,24 @@ VBlankInterruptHandler:
     push HL                                            ;; 00:0067 $e5
     ld   A, [wOAM_MemoryHighAddress]                   ;; 00:0068 $fa $a4 $c0
     call hOAM_DMA_Routine                              ;; 00:006b $cd $80 $ff
-    call updateVideoRegisters                          ;; 00:006e $cd $aa $00
+; Update video registers
+    ld hl, wVideoLCDC
+    ld a, [hl+]    ; wVideoLCDC
+    ldh [rLCDC], a
+    ld a, [hl+]    ; wVideoSCX
+    ldh [rSCX], a
+    ld a, [hl+]    ; wVideoSCY
+    ldh [rSCY], a
+    ld a, [hl+]    ; wVideoWX
+    ldh [rWX], a
+    ld a, [hl+]    ; wVideoWY
+    ldh [rWY], a
+    ld a, [hl+]    ; wVideoBGP
+    ldh [rBGP], a
+    ld a, [hl+]    ; wVideoOBP0
+    ldh [rOBP0], a
+    ld a, [hl+]    ; wVideoOBP1
+    ldh [rOBP1], a
     call vblankGraphicsVRAMCopy                        ;; 00:0071 $cd $57 $2d
     call getRandomByte                                 ;; 00:0074 $cd $1e $2b
     ld   HL, wInterruptFiredFlags                      ;; 00:0077 $21 $ae $c0
@@ -90,25 +107,6 @@ LCDCInterruptHandler:
     pop  BC                                            ;; 00:00a7 $c1
     pop  AF                                            ;; 00:00a8 $f1
     ret                                                ;; 00:00a9 $c9
-
-updateVideoRegisters:
-    ld   A, [wVideoLCDC]                               ;; 00:00aa $fa $a5 $c0
-    ldh  [rLCDC], A                                    ;; 00:00ad $e0 $40
-    ld   A, [wVideoBGP]                                ;; 00:00af $fa $aa $c0
-    ldh  [rBGP], A                                     ;; 00:00b2 $e0 $47
-    ld   A, [wVideoOBP0]                               ;; 00:00b4 $fa $ab $c0
-    ldh  [rOBP0], A                                    ;; 00:00b7 $e0 $48
-    ld   A, [wVideoOBP1]                               ;; 00:00b9 $fa $ac $c0
-    ldh  [rOBP1], A                                    ;; 00:00bc $e0 $49
-    ld   A, [wVideoSCX]                                ;; 00:00be $fa $a6 $c0
-    ldh  [rSCX], A                                     ;; 00:00c1 $e0 $43
-    ld   A, [wVideoSCY]                                ;; 00:00c3 $fa $a7 $c0
-    ldh  [rSCY], A                                     ;; 00:00c6 $e0 $42
-    ld   A, [wVideoWX]                                 ;; 00:00c8 $fa $a8 $c0
-    ldh  [rWX], A                                      ;; 00:00cb $e0 $4b
-    ld   A, [wVideoWY]                                 ;; 00:00cd $fa $a9 $c0
-    ldh  [rWY], A                                      ;; 00:00d0 $e0 $4a
-    ret                                                ;; 00:00d2 $c9
 
 SECTION "entry", ROM0[$0100]
 
