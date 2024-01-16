@@ -7489,49 +7489,49 @@ vblankGraphicsVRAMCopy:
     ld   [$2100], A                                    ;; 00:2d8b $ea $00 $21
     ld   A, [HL+]                                      ;; 00:2d8e $2a
     ld   [DE], A                                       ;; 00:2d8f $12
-    inc  DE                                            ;; 00:2d90 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2d91 $2a
     ld   [DE], A                                       ;; 00:2d92 $12
-    inc  DE                                            ;; 00:2d93 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2d94 $2a
     ld   [DE], A                                       ;; 00:2d95 $12
-    inc  DE                                            ;; 00:2d96 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2d97 $2a
     ld   [DE], A                                       ;; 00:2d98 $12
-    inc  DE                                            ;; 00:2d99 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2d9a $2a
     ld   [DE], A                                       ;; 00:2d9b $12
-    inc  DE                                            ;; 00:2d9c $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2d9d $2a
     ld   [DE], A                                       ;; 00:2d9e $12
-    inc  DE                                            ;; 00:2d9f $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2da0 $2a
     ld   [DE], A                                       ;; 00:2da1 $12
-    inc  DE                                            ;; 00:2da2 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2da3 $2a
     ld   [DE], A                                       ;; 00:2da4 $12
-    inc  DE                                            ;; 00:2da5 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2da6 $2a
     ld   [DE], A                                       ;; 00:2da7 $12
-    inc  DE                                            ;; 00:2da8 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2da9 $2a
     ld   [DE], A                                       ;; 00:2daa $12
-    inc  DE                                            ;; 00:2dab $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2dac $2a
     ld   [DE], A                                       ;; 00:2dad $12
-    inc  DE                                            ;; 00:2dae $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2daf $2a
     ld   [DE], A                                       ;; 00:2db0 $12
-    inc  DE                                            ;; 00:2db1 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2db2 $2a
     ld   [DE], A                                       ;; 00:2db3 $12
-    inc  DE                                            ;; 00:2db4 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2db5 $2a
     ld   [DE], A                                       ;; 00:2db6 $12
-    inc  DE                                            ;; 00:2db7 $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2db8 $2a
     ld   [DE], A                                       ;; 00:2db9 $12
-    inc  DE                                            ;; 00:2dba $13
+    inc e
     ld   A, [HL+]                                      ;; 00:2dbb $2a
     ld   [DE], A                                       ;; 00:2dbc $12
     dec  B                                             ;; 00:2dbd $05
