@@ -1183,8 +1183,12 @@ openLoadSaveBottomWindow:
     call setMenuStateCurrentFunction                   ;; 02:48d4 $cd $98 $6c
     ret                                                ;; 02:48d7 $c9
 
+; Used to move the Start Menu status effect window's backup entry before the other windows are drawn.
+; This window has been slightly enlarged to show longer status effect names.
+; b = number of bytes to copy, four (for x,y,w,h) plus w*h (8*4).
+; DE = where to move it to.
 start_menu_status_effect_window:
-    ld   B, $20                                        ;; 02:48d8 $06 $20
+    ld b, (4 + (8 * 4))
     ld   DE, wWindowBackgroundSaveBuffer._101          ;; 02:48da $11 $ac $d5
     jr   jr_02_48e4                                    ;; 02:48dd $18 $05
 
@@ -1543,8 +1547,16 @@ call_02_4b4b:
     ld   B, $21                                        ;; 02:4b66 $06 $21
     call setMenuStateCurrentFunction                   ;; 02:4b68 $cd $98 $6c
     ret                                                ;; 02:4b6b $c9
+
 .data_02_4b6c:
-    db   $58, $d5, $54, $ac, $d5, $20                  ;; 02:4b6c ......
+; Used when closing multiple windows to shuffle backed up tile ids to where they need to be.
+; Format is a pointer to the data and a length. Data is four bytes (x,y,w,h) plus w*h bytes long.
+    dw $d558
+    db $54
+; For the Start menu status effect window
+; This window has been slightly enlarged to show longer status effect names.
+    dw wWindowBackgroundSaveBuffer._101
+    db 4 + (8 * 4)
 
 call_02_4b72:
     call windowCloseAndRestoreHidden                   ;; 02:4b72 $cd $7a $66
@@ -3882,10 +3894,12 @@ drawLoadSaveWindowContents_common:
 jp_02_5aac:
     call loadRegisterState2                            ;; 02:5aac $cd $a7 $6d
 
+; Deals with printing text on a status effect window.
+; This window has been slightly enlarged to show longer status effect names.
 call_02_5aaf:
     push BC                                            ;; 02:5aaf $c5
-    ld   B, $04                                        ;; 02:5ab0 $06 $04
-    ld   C, $00                                        ;; 02:5ab2 $0e $00
+    ld bc, $0400
+    ld h, c
     ld   A, [wStatusEffect]                            ;; 02:5ab4 $fa $c0 $d7
 .loop:
     rrca                                               ;; 02:5ab7 $0f
@@ -3894,10 +3908,12 @@ call_02_5aaf:
     dec  B                                             ;; 02:5abb $05
     jr   NZ, .loop                                     ;; 02:5abc $20 $f9
 .break:
-    ld   H, $00                                        ;; 02:5abe $26 $00
-    ld   L, C                                          ;; 02:5ac0 $69
-    add  HL, HL                                        ;; 02:5ac1 $29
-    add  HL, HL                                        ;; 02:5ac2 $29
+; Status effect names are now up to six letters.
+    ld a, c
+    add a
+    add c
+    add a
+    ld l, a
     ld   BC, statusEffectLabels                        ;; 02:5ac3 $01 $e5 $7d
     add  HL, BC                                        ;; 02:5ac6 $09
     pop  BC                                            ;; 02:5ac7 $c1
@@ -4084,7 +4100,8 @@ windowData:
 ; Unused:
     db   $09, $00, $0a, $05, $02, $08, $02, $00, $00, $00 ;; 02:5bfa ?????????? $08
 ; Start menu status effect window (Good, Pois, Ston, Moog, Dark):
-    db   $0c, $08, $06, $03, $01, $04, $01, $00, $00, $00 ;; 02:5c04 .......... $09
+; This window has been slightly enlarged to show longer status effect names.
+    db   $0c, $08, $06+1, $03, $01, $04+2, $01, $00, $00, $00 ;; 02:5c04 .......... $09
 ; Start menu equiped window:
     db   $00, $0c, $13, $03, $01, $08, $02, $01, $00, $00 ;; 02:5c0e .......... $0a
 ; Vendor Buy, Sell, Exit
@@ -4108,7 +4125,8 @@ windowData:
 ; Status screen HP/MP:
     db   $00, $04, $09, $0d, $05, $03, $05, $00, $00, $00 ;; 02:5c72 .......... $14
 ; Status screen top window (name, level, status effect, experience):
-    db   $00, $00, $13, $05, $02, $04, $02, $01, $00, $00 ;; 02:5c7c .......... $15
+; This window's text length has been slightly enlarged to show longer status effect names.
+    db   $00, $00, $13, $05, $02, $04+2, $02, $01, $00, $00 ;; 02:5c7c .......... $15
 ; Unused:
     db   $0e, $00, $05, $03, $01, $04, $01, $00, $00, $00 ;; 02:5c86 ?????????? $16
 ; Levelup message ("Level up! Select your growth type."):
@@ -7238,6 +7256,7 @@ windowOpenStatusEffectInflicted:
     ret                                                ;; 02:77f0 $c9
 
 ; Only checks one status each time it's called, so Pois takes a full three frames more than Moog.
+; Status effect names have been lengthened from four letters to six.
 windowStatusEffectInflictedDrawStatus:
     ld   HL, wStatusEffectLabelIndex                   ;; 02:77f1 $21 $8a $d8
     dec  [HL]                                          ;; 02:77f4 $35
@@ -7251,15 +7270,15 @@ windowStatusEffectInflictedDrawStatus:
 .loop:
     dec  B                                             ;; 02:7802 $05
     jr   Z, .break                                     ;; 02:7803 $28 $06
-    ld   A, $04                                        ;; 02:7805 $3e $04
+    ld a, $06
     add  A, E                                          ;; 02:7807 $83
     ld   E, A                                          ;; 02:7808 $5f
     jr   .loop                                         ;; 02:7809 $18 $f7
 .break:
     ld   HL, statusEffectLabels                        ;; 02:780b $21 $e5 $7d
     add  HL, DE                                        ;; 02:780e $19
-    ld   DE, $202                                      ;; 02:780f $11 $02 $02
-    ld   BC, $401                                      ;; 02:7812 $01 $01 $04
+    ld de, $0201
+    ld bc, $0601
     call drawText                                      ;; 02:7815 $cd $77 $37
     ld   A, $26                                        ;; 02:7818 $3e $26
     ld   [wMenuStateCurrentFunction], A                ;; 02:781a $ea $53 $d8
@@ -8107,20 +8126,18 @@ statusScreenMPLabel:
 levelUpText2:
     TXT  " Level up! Selectyour job type.<00><00><00><00>"
 
-;@ffa_text size=4 amount=5
+; Expanded from four letters to six.
+;@ffa_text size=6 amount=5
 statusEffectLabels:
-    TXT  "Pois"                                        ;; 02:7de5 ????
-    TXT  "Dark"                                        ;; 02:7de9 ????
-    TXT  "Ston"                                        ;; 02:7ded ????
-    TXT  "Moog"                                        ;; 02:7df1 ????
-    TXT  "Good"                                        ;; 02:7df5 ....
+    TXT  "Poison"
+    TXT  "Blind<00>"
+    TXT  "Stone<00>"
+    TXT  "Moogle"
+    TXT  " Good<00>"
 
 ;@ffa_text size=4 amount=1
 nameLabel:
     TXT  "Name:"                                        ;; 02:7df9 ....
-
-; Free space
-db $00, $00, $00
 
 ;@ffa_text size=9 amount=9
 nameEntryInputOptions:
@@ -8178,13 +8195,5 @@ intoScrollText:
     TXT "<00>"
     TXT "<01>"
 
-; Unused space follows
-    TXT  "Mana to<00>"
-    TXT  "  get the mighty<00>"                        ;; 02:7fb5 ?????????????????
-    TXT  " power to conquer<00>"                       ;; 02:7fc6 ??????????????????
-    TXT  "    the world.<00>"                          ;; 02:7fd8 ???????????????
-    TXT  "<00>"                                        ;; 02:7fe7 ?
-    db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 02:7fe8 ????????
-    db   $00, $00, $00, $00, $01, $ff, $ff, $ff        ;; 02:7ff0 ????????
-    db   $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff        ;; 02:7ff8 ????????
-
+; Free space
+ds 76
