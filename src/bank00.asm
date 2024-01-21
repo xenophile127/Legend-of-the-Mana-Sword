@@ -4859,34 +4859,147 @@ loadRoomTile:
     pop  HL                                            ;; 00:1c3a $e1
     ret                                                ;; 00:1c3b $c9
 
-; Unused code. Some already harvested for free space.
-    db   $c8, $1a, $be, $c0, $13, $23, $05, $c8        ;; 00:1c44 ????????
-    db   $18, $ee, $e5, $06, $40, $21, $70, $cf        ;; 00:1c4c ????????
-    db   $11, $04, $00, $7e, $e6, $f0, $28, $08        ;; 00:1c54 ????????
-    db   $19, $05, $20, $f7, $e1, $3e, $ff, $c9        ;; 00:1c5c ????????
-    db   $54, $5d, $e1, $c5, $e5, $06, $04, $d5        ;; 00:1c64 ????????
-    db   $cd, $49, $2b, $e1, $7e, $f6, $10, $77        ;; 00:1c6c ????????
-    db   $11, $90, $30, $19, $29, $29, $11, $00        ;; 00:1c74 ????????
-    db   $80, $19, $54, $5d, $e1, $e5, $d5, $2a        ;; 00:1c7c ????????
-    db   $66, $6f, $29, $29, $29, $29, $11, $00        ;; 00:1c84 ????????
-    db   $40, $19, $d1, $d5, $3e, $0c, $cb, $7c        ;; 00:1c8c ????????
-    db   $28, $05, $3d, $cb, $bc, $cb, $f4, $cd        ;; 00:1c94 ????????
-    db   $f5, $2d, $d1, $21, $10, $00, $19, $54        ;; 00:1c9c ????????
-    db   $5d, $e1, $d5, $23, $23, $2a, $66, $6f        ;; 00:1ca4 ????????
-    db   $29, $29, $29, $29, $11, $00, $40, $19        ;; 00:1cac ????????
-    db   $d1, $3e, $0c, $cb, $7c, $28, $05, $3d        ;; 00:1cb4 ????????
-    db   $cb, $bc, $cb, $f4, $cd, $f5, $2d, $c1        ;; 00:1cbc ????????
-    db   $3e, $40, $90, $87, $c9, $0e, $40, $11        ;; 00:1cc4 ????????
-    db   $70, $cf, $e5, $d5, $06, $04, $cd, $3c        ;; 00:1ccc ????????
-    db   $1c, $d1, $e1, $28, $0b, $13, $13, $13        ;; 00:1cd4 ????????
-    db   $13, $0d, $20, $ee, $cd, $4e, $1c, $c9        ;; 00:1cdc ????????
-    db   $1a, $c6, $10, $12, $3e, $40, $91, $87        ;; 00:1ce4 ????????
-    db   $c9, $43, $11, $70, $cf, $18, $db, $87        ;; 00:1cec ????????
-    db   $6f, $26, $00, $11, $70, $cf, $19, $86        ;; 00:1cf4 ????????
-    db   $d6, $10, $30, $02, $e6, $0f, $77, $c9        ;; 00:1cfc ????????
-    db   $6f, $26, $00, $29, $29, $29, $48, $06        ;; 00:1d04 ????????
-    db   $00, $09, $29, $01, $00, $80, $09, $c9        ;; 00:1d0c ????????
-    db   $cd, $04, $1d, $cd, $b4, $1d, $c9             ;; 00:1d14 ???????
+; Get a uniform random number on [0,C)
+; Output:
+;  A = pseudo-uniform random value from [0,C)
+;  DE = uniform random value on [0, 65536) correlated with A
+;  B = 0
+;  C unchanged
+;  HL lower bits of DE*C
+getRandomInRange:
+    call getRandomByte
+    ld E, A
+    call getRandomByte
+    ld D, A
+    ; Intentionally let fall into MultiplyDE_by_C_24bit
+
+; Input DE and C
+; Output:
+;  A = bits 23-16 of DE*C
+;  HL = bits 15-0 of DE*C
+;  B = 0
+;  C, DE unchanged
+MultiplyDE_by_C_24bit:
+    ld B, $08
+    xor A, A
+    ld H, A
+    ld L, A
+.loop:
+    add HL, HL
+    adc A, A
+    rlc C
+    jr NC, .continue
+    add HL, DE
+    adc A, $00
+.continue:
+    dec B
+    jr NZ, .loop
+    ret
+
+; This function updates a specific metatile in the attribute cache
+; before calling drawMetaTile_immediate
+; A = metatile index
+; DE = YX metatile position
+updateMetatileAttributeCacheAndDrawImmediate:
+    ld B, A
+    ld A, BANK(metatilesOutdoor)
+    call pushBankNrAndSwitch
+    ld A, B ; need A restored for getTileInfoPointer
+    push AF
+
+    ; Load metatile attributes from the new tile
+    push DE
+    call getTileInfoPointer
+    ld DE, $04
+    add HL, DE
+    ld A, [HL+]
+    ld B, [HL]
+    ld C, A
+    pop DE
+
+    ; Write the attributes into the correct location in the cache
+    call getMetatileAttributeCacheIndex
+    ld A, C
+    ld [HL+], A
+    ld [HL], B
+
+    call popBankNrAndSwitch
+    pop AF
+    ld HL, wRoomTiles
+    jp drawMetaTile_immediate
+
+; This function caches the metatile attributes for the
+; entire room before loading the tiles used in drawing.
+; It relies on wRoomTiles being properly populated before this
+; function is called. Otherwise there are no inputs or outputs.
+cacheMetatileAttributesAndLoadRoomTiles:
+    ld A, BANK(metatilesOutdoor)
+    call pushBankNrAndSwitch
+
+    ; Disable interrupts for stack pointer reuse
+    ; This may be unnecessary now, but is put here
+    ; as a precaution in case this function is interrupted
+    ; after other code changes.
+    di
+    ld [wStackPointerBackupLow], SP
+
+    ; Start at the end of the arrays and work backwards
+    ; due to how push is implemented
+    ld SP, wMetatileAttributeCache+160
+    ld BC, wRoomTiles+80
+    ld HL, wTileDataTablePointer
+    ld A, [HL+]
+    ld D, [HL]
+    ld E, A
+.loop:
+    ; Load metatile index
+    dec BC
+    ld A, [BC]
+
+    ; Locate the metatile attributes
+    ; getTileInfoPointer is too slow to be used in this function
+    ; Instead, pointer is solved by HL=2*(2*(A+1)+A)+DE=DE+6*A+4
+    ld L, A
+    ld H, $00
+    inc HL
+    add HL, HL
+    add A, L
+    ld L, A
+    jr NC, .finish_index
+    inc H
+.finish_index:
+    add HL, HL
+    add HL, DE
+
+    ; Read the metatile attributes
+    ld A, [HL+]
+    ld H, [HL]
+    ld L, A
+
+    push HL ; write attributes to wMetatileAttributeCache
+
+    ; Break the loop when we reach the correct low byte of wRoomTiles
+    ; This works since the number of iterations is less than 256
+    ld A, C
+    cp A, LOW(wRoomTiles)
+    jr NZ, .loop
+
+    ; Restore the stack pointer and enable interrupts 
+    ld HL, wStackPointerBackupLow
+    ld A, [HL+]
+    ld H, [HL]
+    ld L, A
+    ld SP, HL
+    ei
+
+    call popBankNrAndSwitch
+    ld HL, wRoomTiles
+    jp loadRoomTiles
+
+scanRoomForNpcPlacementOptions_trampoline:
+    jp_to_bank 11, scanRoomForNpcPlacementOptions
+
+ds 86 ; Free space
 
 ; checks for death, increases charge bar, and handles expiring Nectar/Stamina buffs
 playerHousekeeping:
@@ -7099,147 +7212,23 @@ ELIF DEF(RNG_LCG)
 
 INCLUDE "code/rand.asm"
 
-; Get a uniform random number on [0,C)
-; Output:
-;  A = pseudo-uniform random value from [0,C)
-;  DE = uniform random value on [0, 65536) correlated with A
-;  B = 0
-;  C unchanged
-;  HL lower bits of DE*C
-getRandomInRange:
-    call getRandomByte
-    ld E, A
-    call getRandomByte
-    ld D, A
-    ; Intentionally let fall into MultiplyDE_by_C_24bit
-
-; Input DE and C
-; Output:
-;  A = bits 23-16 of DE*C
-;  HL = bits 15-0 of DE*C
-;  B = 0
-;  C, DE unchanged
-MultiplyDE_by_C_24bit:
-    ld B, $08
-    xor A, A
-    ld H, A
-    ld L, A
-.loop:
-    add HL, HL
-    adc A, A
-    rlc C
-    jr NC, .continue
-    add HL, DE
-    adc A, $00
-.continue:
-    dec B
-    jr NZ, .loop
-    ret
-
-; This function updates a specific metatile in the attribute cache
-; before calling drawMetaTile_immediate
-; A = metatile index
-; DE = YX metatile position
-updateMetatileAttributeCacheAndDrawImmediate:
-    ld B, A
-    ld A, BANK(metatilesOutdoor)
-    call pushBankNrAndSwitch
-    ld A, B ; need A restored for getTileInfoPointer
-    push AF
-
-    ; Load metatile attributes from the new tile
-    push DE
-    call getTileInfoPointer
-    ld DE, $04
-    add HL, DE
-    ld A, [HL+]
-    ld B, [HL]
-    ld C, A
-    pop DE
-
-    ; Write the attributes into the correct location in the cache
-    call getMetatileAttributeCacheIndex
-    ld A, C
-    ld [HL+], A
-    ld [HL], B
-
-    call popBankNrAndSwitch
-    pop AF
-    ld HL, wRoomTiles
-    jp drawMetaTile_immediate
-
-; This function caches the metatile attributes for the
-; entire room before loading the tiles used in drawing.
-; It relies on wRoomTiles being properly populated before this
-; function is called. Otherwise there are no inputs or outputs.
-cacheMetatileAttributesAndLoadRoomTiles:
-    ld A, BANK(metatilesOutdoor)
-    call pushBankNrAndSwitch
-
-    ; Disable interrupts for stack pointer reuse
-    ; This may be unnecessary now, but is put here
-    ; as a precaution in case this function is interrupted
-    ; after other code changes.
-    di
-    ld [wStackPointerBackupLow], SP
-
-    ; Start at the end of the arrays and work backwards
-    ; due to how push is implemented
-    ld SP, wMetatileAttributeCache+160
-    ld BC, wRoomTiles+80
-    ld HL, wTileDataTablePointer
-    ld A, [HL+]
-    ld D, [HL]
-    ld E, A
-.loop:
-    ; Load metatile index
-    dec BC
-    ld A, [BC]
-
-    ; Locate the metatile attributes
-    ; getTileInfoPointer is too slow to be used in this function
-    ; Instead, pointer is solved by HL=2*(2*(A+1)+A)+DE=DE+6*A+4
-    ld L, A
-    ld H, $00
-    inc HL
-    add HL, HL
-    add A, L
-    ld L, A
-    jr NC, .finish_index
-    inc H
-.finish_index:
-    add HL, HL
-    add HL, DE
-
-    ; Read the metatile attributes
-    ld A, [HL+]
-    ld H, [HL]
-    ld L, A
-
-    push HL ; write attributes to wMetatileAttributeCache
-
-    ; Break the loop when we reach the correct low byte of wRoomTiles
-    ; This works since the number of iterations is less than 256
-    ld A, C
-    cp A, LOW(wRoomTiles)
-    jr NZ, .loop
-
-    ; Restore the stack pointer and enable interrupts 
-    ld HL, wStackPointerBackupLow
-    ld A, [HL+]
-    ld H, [HL]
-    ld L, A
-    ld SP, HL
-    ei
-
-    call popBankNrAndSwitch
-    ld HL, wRoomTiles
-    jp loadRoomTiles
-
-scanRoomForNpcPlacementOptions_trampoline:
-    jp_to_bank 11, scanRoomForNpcPlacementOptions
-
-ds 80 ; Free space
+; Free space. The linear congruential generator takes up a lot less space than the original table based method.
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 ENDC
 

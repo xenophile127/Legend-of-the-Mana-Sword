@@ -19,11 +19,15 @@ GLADIATOR = -DGLADIATOR_DUKE
 FF_OR_MANA = -DMANA
 #FF_OR_MANA = -DFINAL_FANTASY
 
+# Controls whether to use the original spawn placement routine or the new bounded one
+#SPAWN = -DSPAWN_ORIGINAL
+SPAWN = -DSPAWN_NEW
+
 # Controls whether to use the original random number generator or a linear congruential generator.
 #RNG = -DRNG_ORIGINAL
 RNG = -DRNG_LCG
 
-DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(RNG)
+DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(RNG) $(SPAWN)
 
 all: $(ROM)
 

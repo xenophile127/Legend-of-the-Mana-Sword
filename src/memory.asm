@@ -1595,18 +1595,18 @@ wDualCharacterScratch:
 ; 2-byte pairs of all 80 metatiles, pulled from the metatile data
 ; and cached for faster access
 wMetatileAttributeCache:
-    ds 160
+    ds 160                                             ;; d8de
 
 ; Used as scratch space for the spawnNpcsFromTable routine in bank03
 ; First byte holds number of options (up to 165)
 ; Subsequent 2-byte pairs provide a spawn location option (x followed by y).
 ; This space can be reused for scratch space in its entirety outside of the spawnNpcsFromTable function.
 wSpawnPlacementScratch:
-    ds 331
+    ds 331                                             ;; d97e
 
 ; Free WRAM space.
 wFree:
-    ds 1335                                            ;; d8df
+    ds 1335                                            ;; dac9
 
 SECTION "hram", HRAM[$ff80]
 

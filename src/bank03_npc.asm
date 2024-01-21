@@ -821,7 +821,7 @@ setNpcSpawnTable:
     pop  HL                                            ;; 03:4486 $e1
     ret                                                ;; 03:4487 $c9
 
-IF DEF(RNG_ORIGINAL)
+IF DEF(SPAWN_ORIGINAL)
 ; C = npc type
 ; DE = yx tile coordinate
 ; Checks that the given coordinate is valid for the given npc type to move on, and that it is a minimum distance from the player.
@@ -997,7 +997,7 @@ spawnNpcsFromTable:
     pop  HL                                            ;; 03:455b $e1
     ret                                                ;; 03:455c $c9
 
-ELIF DEF(RNG_LCG)
+ELIF DEF(SPAWN_NEW)
 
 selectRandomNpcPlacement:
     ; Load the number of potential placements
