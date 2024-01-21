@@ -821,6 +821,7 @@ setNpcSpawnTable:
     pop  HL                                            ;; 03:4486 $e1
     ret                                                ;; 03:4487 $c9
 
+IF DEF(RNG_ORIGINAL)
 ; C = npc type
 ; DE = yx tile coordinate
 ; Checks that the given coordinate is valid for the given npc type to move on, and that it is a minimum distance from the player.
@@ -995,6 +996,153 @@ spawnNpcsFromTable:
     jr   NZ, .random_location                          ;; 03:4559 $20 $f0
     pop  HL                                            ;; 03:455b $e1
     ret                                                ;; 03:455c $c9
+
+ELIF DEF(RNG_LCG)
+
+selectRandomNpcPlacement:
+    ; Load the number of potential placements
+    ld A, [wSpawnPlacementScratch]
+    ld C, A
+
+    ; Choose which placement to pick
+    call getRandomInRange
+
+    ; We want to subtract from the end of the array,
+    ; so apply the complement trick in 16-bit.
+    ; We don't increment since that's accounted for by the
+    ; pointer location loaded into HL.
+    cpl
+    ld C, A
+    dec B ; B is guaranteed to be 0 coming out of getRandomInRange
+
+    ; Load a pointer to just past the end of the array
+    ld HL, wSpawnPlacementScratch+331
+    add HL, BC
+    add HL, BC
+
+    ; Load the placement location
+    ld A, [HL+]
+    ld D, [HL]
+    ld E, A
+    ret
+
+; Load collision flags then jump to placement search algorithm
+prepareNpcPlacementOptions:
+    ; Get object collision flags based on NPC type, put it in A
+    ld A, C
+    ld L, A
+    ld H, $00
+    ld E, L
+    ld D, H
+    add HL, DE
+    add HL, DE
+    add HL, HL
+    add HL, HL
+    add HL, HL
+    ld DE, npcDataTable ; located in bank03
+    add HL, DE
+    ld A, [HL]
+    jp scanRoomForNpcPlacementOptions_trampoline
+
+ds 63 ; Free space
+
+spawnNpcsFromTable:
+    push HL                                            ;; 03:44ed $e5
+    push AF                                            ;; 03:44ee $f5
+    add  A, A                                          ;; 03:44ef $87
+    ld   C, A                                          ;; 03:44f0 $4f
+    ld   B, $00                                        ;; 03:44f1 $06 $00
+    ld   A, [wNPCSpawnTableIndex]                      ;; 03:44f3 $fa $ae $c5
+    ld   L, A                                          ;; 03:44f6 $6f
+    ld   H, $00                                        ;; 03:44f7 $26 $00
+    ld   E, L                                          ;; 03:44f9 $5d
+    ld   D, H                                          ;; 03:44fa $54
+    add  HL, HL                                        ;; 03:44fb $29
+    add  HL, DE                                        ;; 03:44fc $19
+    add  HL, HL                                        ;; 03:44fd $29
+    ld   DE, NPCSpawnPointers                          ;; 03:44fe $11 $42 $71
+    add  HL, DE                                        ;; 03:4501 $19
+    add  HL, BC                                        ;; 03:4502 $09
+    ld   A, [HL+]                                      ;; 03:4503 $2a
+    ld   H, [HL]                                       ;; 03:4504 $66
+    ld   L, A                                          ;; 03:4505 $6f
+    ; HL points to a spawn table
+    ld   A, [HL+]                                      ;; 03:4506 $2a
+    ld   B, A                                          ;; 03:4507 $47
+    ld   A, [HL+]                                      ;; 03:4508 $2a
+    sub  A, B                                          ;; 03:4509 $90
+    jr   Z, .spawn_fixed_amount                        ;; 03:450a $28 $14
+    push HL                                            ;; 03:450c $e5
+    ld   C, A                                          ;; 03:450d $4f
+    ; BC holds min and max-min spawn quantity
+    call getRandomByte                                 ;; 03:450f $cd $1e $2b
+    inc  C                                             ;; 03:4513 $0c
+    ld   L, C                                          ;; 03:4514 $69
+    ld   H, $00                                        ;; 03:4515 $26 $00
+    push BC                                            ;; 03:4517 $c5
+    call MultiplyHL_by_A                               ;; 03:4518 $cd $7b $2b
+    ld   A, H                                          ;; 03:451b $7c
+    pop  BC                                            ;; 03:451c $c1
+    add  A, B                                          ;; 03:451d $80
+    ; Load number of spawns in B
+    ld   B, A                                          ;; 03:451e $47
+    pop  HL                                            ;; 03:451f $e1
+.spawn_fixed_amount:
+    ld   DE, $04                                       ;; 03:4520 $11 $04 $00
+    add  HL, DE                                        ;; 03:4523 $19
+    pop  AF                                            ;; 03:4524 $f1
+    ; Load spawnNPC column in E, quantity in A
+    ld   E, A                                          ;; 03:4525 $5f
+    ld   A, B                                          ;; 03:4526 $78
+    or   A, A                                          ;; 03:4527 $b7
+    ; If none to spawn, return
+    jr   Z, .return                                    ;; 03:4528 $28 $1f
+    push HL                                            ;; 03:452a $e5
+    ld   D, $00                                        ;; 03:452b $16 $00
+    ld   HL, wNPCSpawnTypes                            ;; 03:452d $21 $a8 $c5
+    add  HL, DE                                        ;; 03:4530 $19
+	; Load the NPC type into C
+    ld   C, [HL]                                       ;; 03:4531 $4e
+    pop  HL                                            ;; 03:4532 $e1
+.loop:
+    ; Load NPC position into DE
+    ; If either entry is $80, pick a random location
+    ld   E, [HL]                                       ;; 03:4533 $5e
+    inc  HL                                            ;; 03:4534 $23
+    ld   D, [HL]                                       ;; 03:4535 $56
+    inc  HL                                            ;; 03:4536 $23
+    ld   A, $80                                        ;; 03:4537 $3e $80
+    cp   A, D                                          ;; 03:4539 $ba
+    jr   Z, .random_location                           ;; 03:453a $28 $0f
+    cp   A, E                                          ;; 03:453c $bb
+    jr   Z, .random_location                           ;; 03:453d $28 $0c
+    push BC                                            ;; 03:453f $c5
+    push HL                                            ;; 03:4540 $e5
+    call spawnNPC                                      ;; 03:4541 $cd $bd $42
+    pop  HL                                            ;; 03:4544 $e1
+    pop  BC                                            ;; 03:4545 $c1
+    dec  B                                             ;; 03:4546 $05
+    jr   NZ, .loop                                     ;; 03:4547 $20 $ea
+.return:
+    pop  HL                                            ;; 03:4549 $e1
+    ret                                                ;; 03:454a $c9
+.random_location:
+    push BC
+    call prepareNpcPlacementOptions
+    pop BC
+.random_loop:
+    push BC
+    call selectRandomNpcPlacement
+    pop BC
+    push BC                                            ;; 03:4553 $c5
+    call spawnNPC                                      ;; 03:4554 $cd $bd $42
+    pop  BC                                            ;; 03:4557 $c1
+    dec  B                                             ;; 03:4558 $05
+    jr   NZ, .random_loop                              ;; 03:4559 $20 $f0
+    pop  HL                                            ;; 03:455b $e1
+    ret                                                ;; 03:455c $c9
+
+ENDC
 
 setHLToZero_3:
     ld   HL, $00                                       ;; 03:455d $21 $00 $00

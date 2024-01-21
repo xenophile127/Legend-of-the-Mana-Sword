@@ -7148,7 +7148,7 @@ getGraphicsAndMusicState:
     pop  HL                                            ;; 02:7742 $e1
     ld   [HL+], A                                      ;; 02:7743 $22
     push HL                                            ;; 02:7744 $e5
-    call getPlayerNearestTilePostion                   ;; 02:7745 $cd $69 $01
+    call getPlayerNearestTilePosition                  ;; 02:7745 $cd $69 $01
     pop  HL                                            ;; 02:7748 $e1
     ld   [HL], E                                       ;; 02:7749 $73
     inc  HL                                            ;; 02:774a $23

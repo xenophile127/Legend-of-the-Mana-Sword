@@ -1181,7 +1181,7 @@ playerSpritesLoadPlayerSpriteTiles:
     bit  3, A                                          ;; 01:48e5 $cb $5f
     jr   NZ, .jr_01_48fd                               ;; 01:48e7 $20 $14
     push BC                                            ;; 01:48e9 $c5
-    call getPlayerNearestTilePostion                   ;; 01:48ea $cd $69 $01
+    call getPlayerNearestTilePosition                  ;; 01:48ea $cd $69 $01
     inc  D                                             ;; 01:48ed $14
     inc  E                                             ;; 01:48ee $1c
     call getRoomMetaTileAttributes                     ;; 01:48ef $cd $af $16

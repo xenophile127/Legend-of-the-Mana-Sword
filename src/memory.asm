@@ -26,7 +26,10 @@ wMainGameState:
 wMainGameStateFlags:
     ds 1                                               ;; c0a1
 .nextFrame:
-    ds 2                                               ;; c0a2
+    ds 1                                               ;; c0a2
+
+wJoypadInput:
+    ds 1                                               ;; c0a3
 
 wOAM_MemoryHighAddress:
     ds 1                                               ;; c0a4
@@ -1589,12 +1592,21 @@ wD8DA:
 wDualCharacterScratch:
     ds 3                                               ;; d8db
 
-wJoypadInput:
-    ds 1                                               ;; d8de
+; 2-byte pairs of all 80 metatiles, pulled from the metatile data
+; and cached for faster access
+wMetatileAttributeCache:
+    ds 160
+
+; Used as scratch space for the spawnNpcsFromTable routine in bank03
+; First byte holds number of options (up to 165)
+; Subsequent 2-byte pairs provide a spawn location option (x followed by y).
+; This space can be reused for scratch space in its entirety outside of the spawnNpcsFromTable function.
+wSpawnPlacementScratch:
+    ds 331
 
 ; Free WRAM space.
 wFree:
-    ds 1825                                            ;; d8df
+    ds 1335                                            ;; d8df
 
 SECTION "hram", HRAM[$ff80]
 
@@ -1647,7 +1659,16 @@ hSoundEffectLoopCounterChannel1:
 ; END OF AUDIO ENGINE HRAM (ff9e is not included)
 ; One byte long
 hSoundEffectLoopCounterChannel4:
-    ds 93                                              ;; ff9d
+    ds 1                                               ;; ff9d
+
+; Scratch space, up to programmer to ensure use collisions
+; Current uses: scanRoomForNpcPlacementOptions
+hScratch:
+    ds 2
+
+; Unused and ready for future features
+hUnused:
+    ds 90
 
 ; These next three are used as values for signed math. BadBoy understands this, yet still adds them here.
 hUnusedFFFA:

@@ -149,7 +149,7 @@ scriptOpCodeClearFastMovement:
     call getNextScriptInstruction                      ;; 00:0165 $cd $27 $37
     ret                                                ;; 00:0168 $c9
 
-getPlayerNearestTilePostion:
+getPlayerNearestTilePosition:
     ld   C, $04                                        ;; 00:0169 $0e $04
     call getObjectNearestTilePosition                  ;; 00:016b $cd $ef $05
     ret                                                ;; 00:016e $c9
@@ -947,8 +947,10 @@ getObjectNearestTilePosition:
     add  HL, HL                                        ;; 00:05f3 $29
     add  HL, HL                                        ;; 00:05f4 $29
     add  HL, HL                                        ;; 00:05f5 $29
-    ld   BC, wObjectRuntimeData                        ;; 00:05f6 $01 $00 $c2
-    add  HL, BC                                        ;; 00:05f9 $09
+    ; Swapped out use of BC since it was unnecessary
+    ; Callers can now avoid push/pop of BC if desired
+    ld   DE, wObjectRuntimeData
+    add  HL, DE
     ld   DE, $04                                       ;; 00:05fa $11 $04 $00
     add  HL, DE                                        ;; 00:05fd $19
     ld   A, [HL+]                                      ;; 00:05fe $2a
@@ -3846,59 +3848,69 @@ scriptOpWaitWhileMovement:
     db   $4f, $2a, $b9, $c8, $fe, $ff, $20, $f9        ;; 00:16a3 ????????
     db   $79, $fe, $ff, $c9                            ;; 00:16ab ????
 
+ds 7 ; Free space
+
 ; D = object y tile coordinate
 ; E = object x tile coordinate
 ; Return: HL = tile attributes
 getRoomMetaTileAttributes:
-    push DE                                            ;; 00:16af $d5
-    ld   A, BANK(metatilesOutdoor) ;@=bank metatilesOutdoor ;; 00:16b0 $3e $08
-    call pushBankNrAndSwitch                           ;; 00:16b2 $cd $fb $29
-    pop  DE                                            ;; 00:16b5 $d1
+    ; Account for requests outside the current screen
+    ; This can happen for projectiles in particular
     ld   A, E                                          ;; 00:16b6 $7b
     cp   A, $14                                        ;; 00:16b7 $fe $14
-    jr   C, .jr_00_16c5                                ;; 00:16b9 $38 $0a
+    jr   C, .x_pos_on_screen                           ;; 00:16b9 $38 $0a
     bit  7, E                                          ;; 00:16bb $cb $7b
-    jr   NZ, .jr_00_16c3                               ;; 00:16bd $20 $04
-    ld   E, $13                                        ;; 00:16bf $1e $13
-    jr   .jr_00_16c5                                   ;; 00:16c1 $18 $02
-.jr_00_16c3:
-    ld   E, $00                                        ;; 00:16c3 $1e $00
-.jr_00_16c5:
+    jr   NZ, .tile_left_of_screen                      ;; 00:16bd $20 $04
+    ld   E, $13 ; use the right-most tile position     ;; 00:16bf $1e $13
+    jr   .x_pos_on_screen                              ;; 00:16c1 $18 $02
+.tile_left_of_screen:
+    ld   E, $00 ; use the left-most tile position      ;; 00:16c3 $1e $00
+.x_pos_on_screen:
     ld   A, D                                          ;; 00:16c5 $7a
     cp   A, $10                                        ;; 00:16c6 $fe $10
-    jr   C, .jr_00_16d4                                ;; 00:16c8 $38 $0a
+    jr   C, .y_pos_on_screen                           ;; 00:16c8 $38 $0a
     bit  7, D                                          ;; 00:16ca $cb $7a
-    jr   NZ, .jr_00_16d2                               ;; 00:16cc $20 $04
-    ld   D, $0f                                        ;; 00:16ce $16 $0f
-    jr   .jr_00_16d4                                   ;; 00:16d0 $18 $02
-.jr_00_16d2:
-    ld   D, $00                                        ;; 00:16d2 $16 $00
-.jr_00_16d4:
+    jr   NZ, .tile_above_screen                        ;; 00:16cc $20 $04
+    ld   D, $0f ; use the bottom-most tile position    ;; 00:16ce $16 $0f
+    jr   .y_pos_on_screen                              ;; 00:16d0 $18 $02
+.tile_above_screen:
+    ld   D, $00 ; use the top-most tile position       ;; 00:16d2 $16 $00
+.y_pos_on_screen:
+
+    ; Metatiles are on 16px boundaries vs the 8px position grid
     srl  D                                             ;; 00:16d4 $cb $3a
     srl  E                                             ;; 00:16d6 $cb $3b
-    call getRoomMetaTile                               ;; 00:16d8 $cd $26 $24
-    ld   L, A                                          ;; 00:16db $6f
-    ld   H, $00                                        ;; 00:16dc $26 $00
-    ld   D, H                                          ;; 00:16de $54
-    ld   E, L                                          ;; 00:16df $5d
-    add  HL, HL                                        ;; 00:16e0 $29
-    add  HL, DE                                        ;; 00:16e1 $19
-    add  HL, HL                                        ;; 00:16e2 $29
-    ld   A, [wTileDataTablePointer.High]               ;; 00:16e3 $fa $93 $d3
-    ld   D, A                                          ;; 00:16e6 $57
-    ld   A, [wTileDataTablePointer]                    ;; 00:16e7 $fa $92 $d3
-    ld   E, A                                          ;; 00:16ea $5f
-    add  HL, DE                                        ;; 00:16eb $19
-    ld   DE, $04                                       ;; 00:16ec $11 $04 $00
-    add  HL, DE                                        ;; 00:16ef $19
-    ld   A, [HL+]                                      ;; 00:16f0 $2a
-    ld   H, [HL]                                       ;; 00:16f1 $66
-    ld   L, A                                          ;; 00:16f2 $6f
-    push HL                                            ;; 00:16f3 $e5
-    call popBankNrAndSwitch                            ;; 00:16f4 $cd $0a $2a
-    pop  HL                                            ;; 00:16f7 $e1
-    ret                                                ;; 00:16f8 $c9
-    db   $cd, $0a, $2a, $21, $00, $00, $c9             ;; 00:16f9 ???????
+
+    ; Read the attributes from the cache into HL
+    call getMetatileAttributeCacheIndex
+    ld A, [HL+]
+    ld H, [HL]
+    ld L, A
+    ret
+
+; Input: DE (yx) metatile (16px grid) position
+; Output: HL pointer to first byte in metatile attributes
+;         BC, DE unchanged, A=L, F varies
+getMetatileAttributeCacheIndex:
+    ; Index into the wMetaTileAttributeCache with 2*(10*D+E)
+    ld HL, wMetatileAttributeCache
+    ld A, D
+    add A, A
+    add A, A
+    add A, A
+    add A, D
+    add A, D
+    add A, E
+    add A, A
+
+    ; At this point the max value in A is 2*(10*7+9)=158
+    add A, L
+    ld L, A
+    ret NC
+    inc H
+    ret
+
+ds 17 ; Free space
 
 ; B = object direction bits. If bit 7 is set then the player will not take spike damage.
 ; C = object collision flags
@@ -4268,13 +4280,13 @@ checkTileCollision:
     push HL                                            ;; 00:1910 $e5
     and  A, $07                                        ;; 00:1911 $e6 $07
     cp   A, $00                                        ;; 00:1913 $fe $00
-    jr   Z, .jr_00_192f                                ;; 00:1915 $28 $18
+    jr   Z, .collisionless                             ;; 00:1915 $28 $18
     cp   A, $03                                        ;; 00:1917 $fe $03
     jr   Z, .air                                       ;; 00:1919 $28 $1b
     cp   A, $04                                        ;; 00:191b $fe $04
     jr   Z, .jr_00_1941                                ;; 00:191d $28 $22
     cp   A, $02                                        ;; 00:191f $fe $02
-    jr   Z, .jr_00_194c                                ;; 00:1921 $28 $29
+    jr   Z, .projectile                                ;; 00:1921 $28 $29
     cp   A, $05                                        ;; 00:1923 $fe $05
     jr   Z, .water                                     ;; 00:1925 $28 $30
     cp   A, $01                                        ;; 00:1927 $fe $01
@@ -4283,7 +4295,7 @@ checkTileCollision:
     pop  DE                                            ;; 00:192c $d1
     xor  A, A                                          ;; 00:192d $af
     ret                                                ;; 00:192e $c9
-.jr_00_192f:
+.collisionless:
     pop  HL                                            ;; 00:192f $e1
     pop  DE                                            ;; 00:1930 $d1
     xor  A, A                                          ;; 00:1931 $af
@@ -4304,7 +4316,7 @@ checkTileCollision:
     pop  DE                                            ;; 00:1948 $d1
     ld   B, $00                                        ;; 00:1949 $06 $00
     ret                                                ;; 00:194b $c9
-.jr_00_194c:
+.projectile:
     pop  HL                                            ;; 00:194c $e1
     ld   DE, $100                                      ;; 00:194d $11 $00 $01
     call HLandDE                                       ;; 00:1950 $cd $b2 $29
@@ -5691,14 +5703,14 @@ drawDoorMetaTiles:
     ld   A, C                                          ;; 00:22ab $79
     push HL                                            ;; 00:22ac $e5
     push BC                                            ;; 00:22ad $c5
-    call drawMetaTile_immediate                        ;; 00:22ae $cd $6c $05
+    call updateMetatileAttributeCacheAndDrawImmediate
     pop  BC                                            ;; 00:22b1 $c1
     pop  HL                                            ;; 00:22b2 $e1
     ld   E, [HL]                                       ;; 00:22b3 $5e
     inc  HL                                            ;; 00:22b4 $23
     ld   D, [HL]                                       ;; 00:22b5 $56
     ld   A, B                                          ;; 00:22b6 $78
-    call drawMetaTile_immediate                        ;; 00:22b7 $cd $6c $05
+    call updateMetatileAttributeCacheAndDrawImmediate
     ret                                                ;; 00:22ba $c9
 
 call_00_22bb:
@@ -5962,7 +5974,7 @@ setRoomTile:
 .jr_00_241d:
     pop  DE                                            ;; 00:241d $d1
     pop  AF                                            ;; 00:241e $f1
-    call drawMetaTile_immediate                        ;; 00:241f $cd $6c $05
+    call updateMetatileAttributeCacheAndDrawImmediate
     call popBankNrAndSwitch                            ;; 00:2422 $cd $0a $2a
     ret                                                ;; 00:2425 $c9
 
@@ -6420,7 +6432,7 @@ call_00_2617:
     ld   A, C                                          ;; 00:26b8 $79
     call loadRoomMetaTilesTemplated                    ;; 00:26b9 $cd $5d $25
 .jr_00_26bc:
-    call loadRoomTiles                                 ;; 00:26bc $cd $74 $1b
+    call cacheMetatileAttributesAndLoadRoomTiles
     call popBankNrAndSwitch                            ;; 00:26bf $cd $0a $2a
     pop  DE                                            ;; 00:26c2 $d1
     pop  HL                                            ;; 00:26c3 $e1
@@ -6509,7 +6521,7 @@ loadMap:
     ld   A, E                                          ;; 00:2751 $7b
     ld   [wRoomScriptTableLow], A                      ;; 00:2752 $ea $fe $c3
     call loadRoomMetaTilesRLE                          ;; 00:2755 $cd $2b $24
-    call loadRoomTiles                                 ;; 00:2758 $cd $74 $1b
+    call cacheMetatileAttributesAndLoadRoomTiles
     call popBankNrAndSwitch                            ;; 00:275b $cd $0a $2a
     ret                                                ;; 00:275e $c9
 .templatedRoom:
@@ -6528,7 +6540,7 @@ loadMap:
     pop  HL                                            ;; 00:2775 $e1
     ld   A, $00                                        ;; 00:2776 $3e $00
     call loadRoomMetaTilesTemplated                    ;; 00:2778 $cd $5d $25
-    call loadRoomTiles                                 ;; 00:277b $cd $74 $1b
+    call cacheMetatileAttributesAndLoadRoomTiles
     call popBankNrAndSwitch                            ;; 00:277e $cd $0a $2a
     ret                                                ;; 00:2781 $c9
 
@@ -7087,23 +7099,147 @@ ELIF DEF(RNG_LCG)
 
 INCLUDE "code/rand.asm"
 
-; Free space. The linear congruential generator takes up a lot less space than the original table based method.
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+; Get a uniform random number on [0,C)
+; Output:
+;  A = pseudo-uniform random value from [0,C)
+;  DE = uniform random value on [0, 65536) correlated with A
+;  B = 0
+;  C unchanged
+;  HL lower bits of DE*C
+getRandomInRange:
+    call getRandomByte
+    ld E, A
+    call getRandomByte
+    ld D, A
+    ; Intentionally let fall into MultiplyDE_by_C_24bit
+
+; Input DE and C
+; Output:
+;  A = bits 23-16 of DE*C
+;  HL = bits 15-0 of DE*C
+;  B = 0
+;  C, DE unchanged
+MultiplyDE_by_C_24bit:
+    ld B, $08
+    xor A, A
+    ld H, A
+    ld L, A
+.loop:
+    add HL, HL
+    adc A, A
+    rlc C
+    jr NC, .continue
+    add HL, DE
+    adc A, $00
+.continue:
+    dec B
+    jr NZ, .loop
+    ret
+
+; This function updates a specific metatile in the attribute cache
+; before calling drawMetaTile_immediate
+; A = metatile index
+; DE = YX metatile position
+updateMetatileAttributeCacheAndDrawImmediate:
+    ld B, A
+    ld A, BANK(metatilesOutdoor)
+    call pushBankNrAndSwitch
+    ld A, B ; need A restored for getTileInfoPointer
+    push AF
+
+    ; Load metatile attributes from the new tile
+    push DE
+    call getTileInfoPointer
+    ld DE, $04
+    add HL, DE
+    ld A, [HL+]
+    ld B, [HL]
+    ld C, A
+    pop DE
+
+    ; Write the attributes into the correct location in the cache
+    call getMetatileAttributeCacheIndex
+    ld A, C
+    ld [HL+], A
+    ld [HL], B
+
+    call popBankNrAndSwitch
+    pop AF
+    ld HL, wRoomTiles
+    jp drawMetaTile_immediate
+
+; This function caches the metatile attributes for the
+; entire room before loading the tiles used in drawing.
+; It relies on wRoomTiles being properly populated before this
+; function is called. Otherwise there are no inputs or outputs.
+cacheMetatileAttributesAndLoadRoomTiles:
+    ld A, BANK(metatilesOutdoor)
+    call pushBankNrAndSwitch
+
+    ; Disable interrupts for stack pointer reuse
+    ; This may be unnecessary now, but is put here
+    ; as a precaution in case this function is interrupted
+    ; after other code changes.
+    di
+    ld [wStackPointerBackupLow], SP
+
+    ; Start at the end of the arrays and work backwards
+    ; due to how push is implemented
+    ld SP, wMetatileAttributeCache+160
+    ld BC, wRoomTiles+80
+    ld HL, wTileDataTablePointer
+    ld A, [HL+]
+    ld D, [HL]
+    ld E, A
+.loop:
+    ; Load metatile index
+    dec BC
+    ld A, [BC]
+
+    ; Locate the metatile attributes
+    ; getTileInfoPointer is too slow to be used in this function
+    ; Instead, pointer is solved by HL=2*(2*(A+1)+A)+DE=DE+6*A+4
+    ld L, A
+    ld H, $00
+    inc HL
+    add HL, HL
+    add A, L
+    ld L, A
+    jr NC, .finish_index
+    inc H
+.finish_index:
+    add HL, HL
+    add HL, DE
+
+    ; Read the metatile attributes
+    ld A, [HL+]
+    ld H, [HL]
+    ld L, A
+
+    push HL ; write attributes to wMetatileAttributeCache
+
+    ; Break the loop when we reach the correct low byte of wRoomTiles
+    ; This works since the number of iterations is less than 256
+    ld A, C
+    cp A, LOW(wRoomTiles)
+    jr NZ, .loop
+
+    ; Restore the stack pointer and enable interrupts 
+    ld HL, wStackPointerBackupLow
+    ld A, [HL+]
+    ld H, [HL]
+    ld L, A
+    ld SP, HL
+    ei
+
+    call popBankNrAndSwitch
+    ld HL, wRoomTiles
+    jp loadRoomTiles
+
+scanRoomForNpcPlacementOptions_trampoline:
+    jp_to_bank 11, scanRoomForNpcPlacementOptions
+
+ds 80 ; Free space
 
 ENDC
 
@@ -7172,6 +7308,12 @@ db $00, $00, $00, $00
 ; Unused function to multiply hl by 10. Trashes de.
     db   $29, $54, $5d, $29, $29, $19, $c9             ;; 00:2b74 ???????
 
+; Input HL and A
+; Output:
+;  HL = bits 15-0 of HL*A
+;  A, C unchanged
+;  DE = Input HL
+;  B = 0
 MultiplyHL_by_A:
     ld   E, L                                          ;; 00:2b7b $5d
     ld   D, H                                          ;; 00:2b7c $54
