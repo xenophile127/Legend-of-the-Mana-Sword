@@ -3205,7 +3205,7 @@ clearSaveLoadScreen:
     call drawDefaultStatusBar                          ;; 02:564c $cd $16 $6f
     call drawHPOnStatusBar_trampoline                  ;; 02:564f $cd $29 $6f
     call drawManaOnStatusBar_trampoline                ;; 02:5652 $cd $3f $6f
-    call drawMoneyOnStatusBar
+    call drawMoneyOnStatusBar_trampoline
     call drawEmptyWillBar                              ;; 02:5663 $cd $fa $65
     call drawWillBarCharge                             ;; 02:5666 $cd $23 $66
     ret                                                ;; 02:5669 $c9
