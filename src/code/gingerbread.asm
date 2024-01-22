@@ -1,4 +1,5 @@
 ; This is from https://github.com/ahrnbom/gingerbread
+; With modifications for speed.
 
 ; This is free and unencumbered software released into the public domain.
 
@@ -37,24 +38,27 @@ SGBSendData:
     di
     ; Register use:
     ; B - Byte currently sending
-    ; C - Total number of bytes to send
+    ; C - Used for fast access to the SGB communication port
+    ; E - Total number of bytes to send
     ; D - Number of bits sent of current byte
+
+    ld c, LOW(SGB_OUT_ADDRESS)
 
     ld a, [hl]
     ld b, a
 
     ; Each packet should send 16 bytes
-    ld c, 16
+    ld e, 16
 
     xor a
     ld d, a
 
     ; Prepare SGB for listening
     ld a, SGB_SEND_RESET
-    ld [SGB_OUT_ADDRESS], a
+    ldh [c], a
 
     ld a, SGB_SEND_NULL
-    ld [SGB_OUT_ADDRESS], a
+    ldh [c], a
 
 SGBSendBit:
     inc d
@@ -69,17 +73,17 @@ SGBSendBit:
 
     ; Send a ONE bit here
     ld a, SGB_SEND_ONE
-    ld [SGB_OUT_ADDRESS], a
+    ldh [c], a
     jr SGBSendBitEnd
 
 SGBSendZeroBit:
     ld a, SGB_SEND_ZERO
-    ld [SGB_OUT_ADDRESS], a
+    ldh [c], a
 
 SGBSendBitEnd:
     ; Both P14 and P15 should be HIGH in between sent bits
     ld a, SGB_SEND_NULL
-    ld [SGB_OUT_ADDRESS], a
+    ldh [c], a
 
     ld a, b
     sra a
@@ -89,9 +93,7 @@ SGBSendBitEnd:
     jr SGBSendBit
 
 SGBEndOfByte:
-    dec c
-    ld a, c
-    cp 0
+    dec e
     jr z, SGBFinalEnd
 
     ; If there are still bytes to send, we get here
@@ -105,15 +107,11 @@ SGBEndOfByte:
     jr SGBSendBit
 
 SGBFinalEnd:
-    call SGBFinish
-    ret
-
-SGBFinish:
     ld a, SGB_SEND_ZERO
-    ld [SGB_OUT_ADDRESS], a
+    ldh [c], a
 
     ld a, SGB_SEND_NULL
-    ld [SGB_OUT_ADDRESS], a
+    ldh [c], a
 
     ei
     ret
