@@ -44,14 +44,8 @@ SGBSendData:
 
     ld c, LOW(SGB_OUT_ADDRESS)
 
-    ld a, [hl]
-    ld b, a
-
     ; Each packet should send 16 bytes
     ld e, 16
-
-    xor a
-    ld d, a
 
     ; Prepare SGB for listening
     ld a, SGB_SEND_RESET
@@ -60,12 +54,14 @@ SGBSendData:
     ld a, SGB_SEND_NULL
     ldh [c], a
 
-SGBSendBit:
-    inc d
-    ld a, d
-    cp 9
-    jr z, SGBEndOfByte
+SGBSendByte:
+    xor a
+    ld d, a
 
+    ld a, [hl+]
+    ld b, a
+
+SGBSendBit:
     ld a, b
     and %00000001
     cp 0
@@ -90,23 +86,15 @@ SGBSendBitEnd:
     and %01111111
     ld b, a
 
-    jr SGBSendBit
+    inc d
+    ld a, d
+    cp 8
+    jr nz, SGBSendBit
 
-SGBEndOfByte:
     dec e
-    jr z, SGBFinalEnd
+    jr nz, SGBSendByte
 
-    ; If there are still bytes to send, we get here
-    inc hl
-    ld a, [hl]
-    ld b, a
-
-    xor a
-    ld d, a
-
-    jr SGBSendBit
-
-SGBFinalEnd:
+; Send final stop bit
     ld a, SGB_SEND_ZERO
     ldh [c], a
 
