@@ -62,9 +62,7 @@ SGBSendByte:
     ld b, a
 
 SGBSendBit:
-    ld a, b
-    and %00000001
-    cp 0
+    bit 0, b
     jr z, SGBSendZeroBit
 
     ; Send a ONE bit here
@@ -81,10 +79,7 @@ SGBSendBitEnd:
     ld a, SGB_SEND_NULL
     ldh [c], a
 
-    ld a, b
-    sra a
-    and %01111111
-    ld b, a
+    sra b
 
     inc d
     ld a, d
