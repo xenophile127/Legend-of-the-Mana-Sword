@@ -55,8 +55,7 @@ SGBSendData:
     ldh [c], a
 
 SGBSendByte:
-    xor a
-    ld d, a
+    ld d, 8
 
     ld a, [hl+]
     ld b, a
@@ -81,9 +80,7 @@ SGBSendBitEnd:
 
     sra b
 
-    inc d
-    ld a, d
-    cp 8
+    dec d
     jr nz, SGBSendBit
 
     dec e
