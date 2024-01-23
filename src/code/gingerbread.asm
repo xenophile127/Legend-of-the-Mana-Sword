@@ -33,52 +33,64 @@ SGB_SEND_ONE    EQU %00010000
 SGB_SEND_RESET  EQU %00000000
 SGB_SEND_NULL   EQU %00110000
 
-; Input: HL - address to first byte to send
+; hl = address of the packet
+; This uses hl instead of c for writes which is a cycle faster and allows using a for the working byte.
+; That means it is a little faster than the common version in licenced software.
+; Commonly available documentation says data and reset pulses are kept low for 5 microseconds,
+; and then to leave P14 and P15 high for at least 15 microseconds afterwards.
+; The common packet transfer routine keeps data and reset pulses low for 4 cycles,
+; and P14 and P15 high for at least 15 cycles.
+; This code preserves the 4 cycle timing for data and reset pulses (with nops),
+; but holds P14 and P15 high for as little as 12 cycles. That is, three times the duration for data and reset pulses.
 SGBSendData:
-    di
     ; Register use:
-    ; B - Byte currently sending
-    ; C - Used for fast access to the SGB communication port
-    ; E - Total number of bytes to send
-    ; D - Number of bits sent of current byte
+    ; a - byte currently being sent
+    ; bc - address of the byte being sent
+    ; hl - SGB communications port address
+    ; e - Total number of bytes to send
+    ; d - Number of bits sent of current byte
 
-    ld c, LOW(SGB_OUT_ADDRESS)
+    ; There are only sixteen bytes to be loaded from memory and 260 to write so use hl for writes.
+    ld b, h
+    ld c, l
+    ld hl, SGB_OUT_ADDRESS
 
-    ; Each packet should send 16 bytes
-    ld e, 16
+    ; Disable interrupts
+    di
 
     ; Prepare SGB for listening
-    ld a, SGB_SEND_RESET
-    ldh [c], a
+    ld [hl], SGB_SEND_RESET
+    nop
 
-    ld a, SGB_SEND_NULL
-    ldh [c], a
+    ld [hl], SGB_SEND_NULL
+
+    ; Each packet should send 16 bytes. This is located here in place of a nop.
+    ld e, 16
 
 SGBSendByte:
     ld d, 8
 
-    ld a, [hl+]
-    ld b, a
+    ld a, [bc]
+    inc bc
 
 SGBSendBit:
-    bit 0, b
-    jr z, SGBSendZeroBit
+    ; Rotate the next bit into the carry flag
+    rra
+    jr nc, SGBSendZeroBit
 
     ; Send a ONE bit here
-    ld a, SGB_SEND_ONE
-    ldh [c], a
+    ld [hl], SGB_SEND_ONE
     jr SGBSendBitEnd
 
 SGBSendZeroBit:
-    ld a, SGB_SEND_ZERO
-    ldh [c], a
+    ld [hl], SGB_SEND_ZERO
+    nop
 
 SGBSendBitEnd:
     ; Both P14 and P15 should be HIGH in between sent bits
-    ld a, SGB_SEND_NULL
-    ldh [c], a
-
-    sra b
+    ld [hl], SGB_SEND_NULL
+    nop
+    nop
 
     dec d
     jr nz, SGBSendBit
@@ -87,11 +99,10 @@ SGBSendBitEnd:
     jr nz, SGBSendByte
 
 ; Send final stop bit
-    ld a, SGB_SEND_ZERO
-    ldh [c], a
+    ld [hl], SGB_SEND_ZERO
+    nop
 
-    ld a, SGB_SEND_NULL
-    ldh [c], a
+    ld [hl], SGB_SEND_NULL
 
     ei
     ret
