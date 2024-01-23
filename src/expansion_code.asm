@@ -13,6 +13,7 @@ entryPointTableBankExpansion:
     call_to_bank_target drawManaOnStatusBar
     call_to_bank_target drawMoneyOnStatusBar_new
     call_to_bank_target enhancedLetterbox
+    call_to_bank_target enhancedFade
 
 drawHPOnStatusBar:
     ld   C, $13 ; Mode/Max-digits to write
@@ -268,5 +269,50 @@ drawMoneyOnStatusBar_new:
     jr   NZ, .store_number_loop
     ret
 
-; This provides a replacement letterbox routine which blacks the border on SGB
+; Provides SGB enhanced fade effects using SNES palettes.
+enhancedFade:
+; Check whether to use the SGB fade effect. If not, return zero and the DMG effect will be used instead.
+    ld a, [wSGBEndingCounter]
+    or a
+    ret z
+; To save space in bank 0 use one trampoline and check the script opcode to determine intended behavior.
+    ld a, [wScriptCommand]
+    cp $bc ; scriptOpCodeFadeToNormal
+    jr z, .normal
+    cp $bd ; scriptOpCodeFadeToBlack
+    jr z, .black
+; Fade-to-white is not used during the ending so don't handle it.
+    ;cp $be ; scriptOpCodeFadeToWhite
+    xor a
+    ret
+.normal:
+; This counter is started by the letterbox effect during the ending.
+; Since that happens when the screen has been faded by the DMG fade, the first fade back should be DMG.
+; The difference is hidden by it being on the completely black room.
+    ld a, [wScriptOpCounter]
+    ld b, a
+    ld a, [wScriptOpCounter2]
+    or b
+    ld a, [wSGBEndingCounter]
+    jr nz, .check
+    inc a
+    ld [wSGBEndingCounter], a
+.check:
+    cp $02
+    ret z
+    call sgbFadeToNormal
+    xor a
+    inc a
+    ret
+.black:
+    call sgbFadeToBlack
+    xor a
+    inc a
+    ret
+
+; Routines for calculating color fades.
+INCLUDE "code/color_fade.asm"
+
+; This provides a replacement letterbox routine which blacks the border on SGB,
+; and fade routines that use the SGB hardware.
 INCLUDE "code/sgb.asm"

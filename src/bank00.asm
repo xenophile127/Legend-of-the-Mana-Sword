@@ -2752,6 +2752,8 @@ scriptOpCodeCloseSouthDoor:
 
 scriptOpCodeFlashScreen:
     ld   A, [wScriptOpCounter]                         ;; 00:0fe0 $fa $99 $d4
+    inc a
+    ld [wScriptOpCounter], a
     cp   A, $05                                        ;; 00:0fe3 $fe $05
     jr   C, .dark                                      ;; 00:0fe5 $38 $20
     ld   A, $e4                                        ;; 00:0fe7 $3e $e4
@@ -2760,11 +2762,9 @@ scriptOpCodeFlashScreen:
     ld   [wVideoOBP0], A                               ;; 00:0fee $ea $ab $c0
     ld   [wVideoOBP1], A                               ;; 00:0ff1 $ea $ac $c0
     ld   A, [wScriptOpCounter]                         ;; 00:0ff4 $fa $99 $d4
-    inc  A                                             ;; 00:0ff7 $3c
-    ld   [wScriptOpCounter], A                         ;; 00:0ff8 $ea $99 $d4
     cp   A, $0a                                        ;; 00:0ffb $fe $0a
     ret  C                                             ;; 00:0ffd $d8
-    ld   A, $00                                        ;; 00:0ffe $3e $00
+    xor a
     ld   [wScriptOpCounter], A                         ;; 00:1000 $ea $99 $d4
     call getNextScriptInstruction                      ;; 00:1003 $cd $27 $37
     ret                                                ;; 00:1006 $c9
@@ -2773,10 +2773,15 @@ scriptOpCodeFlashScreen:
     ld   [wVideoBGP], A                                ;; 00:1009 $ea $aa $c0
     ld   [wVideoOBP0], A                               ;; 00:100c $ea $ab $c0
     ld   [wVideoOBP1], A                               ;; 00:100f $ea $ac $c0
-    ld   A, [wScriptOpCounter]                         ;; 00:1012 $fa $99 $d4
-    inc  A                                             ;; 00:1015 $3c
-    ld   [wScriptOpCounter], A                         ;; 00:1016 $ea $99 $d4
     ret                                                ;; 00:1019 $c9
+
+ds 2 ; Free space
+
+; One trampoline shared by the three fade commands.
+; They are differentiated by their opcode in the call.
+; This saves space in bank 0 at a slight expense in speed.
+enhancedFade_trampoline:
+    jp_to_bank 11, enhancedFade
 
 fadeToBlackBGP:
     db   $e4, $e5, $e5, $e5, $e5, $f5, $f5, $f5        ;; 00:101a ........
@@ -2788,35 +2793,41 @@ fadeToBlackOBP:
     db   $e7, $e7, $e7, $eb, $eb, $eb, $eb, $fb        ;; 00:1038 ........
     db   $fb, $fb, $fb, $fb, $fb, $ff                  ;; 00:1040 ......
 
+; Fades the screen to black.
+; When a SGB palette is loaded this uses a SGB enhanced fade using SNES palettes.
 scriptOpCodeFadeToBlack:
+    call enhancedFade_trampoline
+    jr nz, .finish
     push HL                                            ;; 00:1046 $e5
-    ld   A, [wScriptOpCounter]                         ;; 00:1047 $fa $99 $d4
+    ld hl, wScriptOpCounter
+    ld a, [hl+]
     add  A, A                                          ;; 00:104a $87
     ld   E, A                                          ;; 00:104b $5f
-    ld   A, [wScriptOpCounter2]                        ;; 00:104c $fa $9a $d4
+    ld a, [hl] ; wScriptOpCounter2
     and  A, $01                                        ;; 00:104f $e6 $01
     add  A, E                                          ;; 00:1051 $83
     ld   E, A                                          ;; 00:1052 $5f
     ld   D, $00                                        ;; 00:1053 $16 $00
     ld   HL, fadeToBlackBGP                            ;; 00:1055 $21 $1a $10
     add  HL, DE                                        ;; 00:1058 $19
-    ld   C, [HL]                                       ;; 00:1059 $4e
     ld   A, [wLCDCEffectBuffer]                        ;; 00:105a $fa $a0 $d3
     cp   A, $7e                                        ;; 00:105d $fe $7e
-    jr   Z, .jr_00_1067                                ;; 00:105f $28 $06
-    ld   A, C                                          ;; 00:1061 $79
+    ld a, [hl]
+    jr z, .fullscreen
+; This is important for the letterbox effect during the ending. Possibly other places.
     ld   [wLCDCEffectBuffer._03], A                    ;; 00:1062 $ea $a3 $d3
-    jr   .jr_00_106b                                   ;; 00:1065 $18 $04
-.jr_00_1067:
-    ld   A, C                                          ;; 00:1067 $79
+    jr .sprites
+.fullscreen:
     ld   [wVideoBGP], A                                ;; 00:1068 $ea $aa $c0
-.jr_00_106b:
+.sprites:
     ld   HL, fadeToBlackOBP                            ;; 00:106b $21 $30 $10
     add  HL, DE                                        ;; 00:106e $19
     ld   A, [HL]                                       ;; 00:106f $7e
-    ld   [wVideoOBP0], A                               ;; 00:1070 $ea $ab $c0
-    ld   [wVideoOBP1], A                               ;; 00:1073 $ea $ac $c0
+    ld hl, wVideoOBP0
+    ld [hl+], a
+    ld [hl], a
     pop  HL                                            ;; 00:1076 $e1
+.finish:
     call fadeEffectAdjustCounters                      ;; 00:1077 $cd $42 $11
     ret                                                ;; 00:107a $c9
 
@@ -2830,44 +2841,55 @@ fadeToWhiteOBP:
     db   $50, $50, $50, $40, $50, $40, $40, $40        ;; 00:1099 ????????
     db   $40, $40, $40, $00, $40, $00                  ;; 00:10a1 ??????
 
+; Fades the screen to white.
 scriptOpCodeFadeToWhite:
+    call enhancedFade_trampoline
+    jr nz, .finished
     push HL                                            ;; 00:10a7 $e5
-    ld   A, [wScriptOpCounter]                         ;; 00:10a8 $fa $99 $d4
+    ld hl, wScriptOpCounter
+    ld a, [hl+]
     add  A, A                                          ;; 00:10ab $87
     ld   E, A                                          ;; 00:10ac $5f
-    ld   A, [wScriptOpCounter2]                        ;; 00:10ad $fa $9a $d4
+    ld a, [hl] ; wScriptOpCounter2
     and  A, $01                                        ;; 00:10b0 $e6 $01
     add  A, E                                          ;; 00:10b2 $83
     ld   E, A                                          ;; 00:10b3 $5f
     ld   D, $00                                        ;; 00:10b4 $16 $00
     ld   HL, fadeToWhiteBGP                            ;; 00:10b6 $21 $7b $10
     add  HL, DE                                        ;; 00:10b9 $19
-    ld   C, [HL]                                       ;; 00:10ba $4e
     ld   A, [wLCDCEffectBuffer]                        ;; 00:10bb $fa $a0 $d3
     cp   A, $7e                                        ;; 00:10be $fe $7e
-    jr   Z, .jr_00_10c8                                ;; 00:10c0 $28 $06
-    ld   A, C                                          ;; 00:10c2 $79
+    ld a, [hl]
+    jr z, .fullscreen
+; This is important for the letterbox effect during the ending. Possibly other places.
+; For fade-to-white it is dead code.
     ld   [wLCDCEffectBuffer._03], A                    ;; 00:10c3 $ea $a3 $d3
-    jr   .jr_00_10cc                                   ;; 00:10c6 $18 $04
-.jr_00_10c8:
-    ld   A, C                                          ;; 00:10c8 $79
+    jr .sprites
+.fullscreen:
     ld   [wVideoBGP], A                                ;; 00:10c9 $ea $aa $c0
-.jr_00_10cc:
+.sprites:
     ld   HL, fadeToWhiteOBP                            ;; 00:10cc $21 $91 $10
     add  HL, DE                                        ;; 00:10cf $19
     ld   A, [HL]                                       ;; 00:10d0 $7e
-    ld   [wVideoOBP0], A                               ;; 00:10d1 $ea $ab $c0
-    ld   [wVideoOBP1], A                               ;; 00:10d4 $ea $ac $c0
+    ld hl, wVideoOBP0
+    ld [hl+], a
+    ld [hl], a
     pop  HL                                            ;; 00:10d7 $e1
+.finished:
     call fadeEffectAdjustCounters                      ;; 00:10d8 $cd $42 $11
     ret                                                ;; 00:10db $c9
 
+; Fades in from either black or white.
+; When a SGB palette is loaded this uses a SGB enhanced fade using SNES palettes.
 scriptOpCodeFadeToNormal:
+    call enhancedFade_trampoline
+    jr nz, .finished
     push HL                                            ;; 00:10dc $e5
-    ld   A, [wScriptOpCounter]                         ;; 00:10dd $fa $99 $d4
+    ld hl, wScriptOpCounter
+    ld a, [hl+]
     add  A, A                                          ;; 00:10e0 $87
     ld   E, A                                          ;; 00:10e1 $5f
-    ld   A, [wScriptOpCounter2]                        ;; 00:10e2 $fa $9a $d4
+    ld a, [hl] ; wScriptOpCounter2
     and  A, $01                                        ;; 00:10e5 $e6 $01
     add  A, E                                          ;; 00:10e7 $83
     ld   E, A                                          ;; 00:10e8 $5f
@@ -2880,48 +2902,52 @@ scriptOpCodeFadeToNormal:
     jr   Z, .fade_from_white                           ;; 00:10f4 $28 $26
     ld   HL, fadeToBlackBGP                            ;; 00:10f6 $21 $1a $10
     add  HL, DE                                        ;; 00:10f9 $19
-    ld   C, [HL]                                       ;; 00:10fa $4e
     ld   A, [wLCDCEffectBuffer]                        ;; 00:10fb $fa $a0 $d3
     cp   A, $7e                                        ;; 00:10fe $fe $7e
-    jr   Z, .jr_00_1108                                ;; 00:1100 $28 $06
-    ld   A, C                                          ;; 00:1102 $79
+    ld a, [hl]
+    jr z, .fullscreen_black
+; This is important for the letterbox effect during the ending. Possibly other places.
     ld   [wLCDCEffectBuffer._03], A                    ;; 00:1103 $ea $a3 $d3
-    jr   .jr_00_110c                                   ;; 00:1106 $18 $04
-.jr_00_1108:
-    ld   A, C                                          ;; 00:1108 $79
+    jr .sprites_black
+.fullscreen_black:
     ld   [wVideoBGP], A                                ;; 00:1109 $ea $aa $c0
-.jr_00_110c:
+.sprites_black:
     ld   HL, fadeToBlackOBP                            ;; 00:110c $21 $30 $10
     add  HL, DE                                        ;; 00:110f $19
     ld   A, [HL]                                       ;; 00:1110 $7e
-    ld   [wVideoOBP0], A                               ;; 00:1111 $ea $ab $c0
-    ld   [wVideoOBP1], A                               ;; 00:1114 $ea $ac $c0
+    ld hl, wVideoOBP0
+    ld [hl+], a
+    ld [hl], a
     pop  HL                                            ;; 00:1117 $e1
     call fadeEffectAdjustCounters                      ;; 00:1118 $cd $42 $11
     ret                                                ;; 00:111b $c9
 .fade_from_white:
     ld   HL, fadeToWhiteBGP                            ;; 00:111c $21 $7b $10
     add  HL, DE                                        ;; 00:111f $19
-    ld   C, [HL]                                       ;; 00:1120 $4e
     ld   A, [wLCDCEffectBuffer]                        ;; 00:1121 $fa $a0 $d3
     cp   A, $7e                                        ;; 00:1124 $fe $7e
-    jr   Z, .jr_00_112e                                ;; 00:1126 $28 $06
-    ld   A, C                                          ;; 00:1128 $79
+    ld a, [hl]
+    jr z, .fullscreen_white
+; This is important for the letterbox effect during the ending. Possibly other places.
+; For fade-from-white it is dead code.
     ld   [wLCDCEffectBuffer._03], A                    ;; 00:1129 $ea $a3 $d3
-    jr   .jr_00_1132                                   ;; 00:112c $18 $04
-.jr_00_112e:
-    ld   A, C                                          ;; 00:112e $79
+    jr .sprites_white
+.fullscreen_white:
     ld   [wVideoBGP], A                                ;; 00:112f $ea $aa $c0
-.jr_00_1132:
+.sprites_white:
     ld   HL, fadeToWhiteOBP                            ;; 00:1132 $21 $91 $10
     add  HL, DE                                        ;; 00:1135 $19
     ld   A, [HL]                                       ;; 00:1136 $7e
-    ld   [wVideoOBP0], A                               ;; 00:1137 $ea $ab $c0
-    ld   [wVideoOBP1], A                               ;; 00:113a $ea $ac $c0
+    ld hl, wVideoOBP0
+    ld [hl+], a
+    ld [hl], a
     pop  HL                                            ;; 00:113d $e1
+.finished:
     call fadeEffectAdjustCounters                      ;; 00:113e $cd $42 $11
     ret                                                ;; 00:1141 $c9
 
+; wScriptOpCounter2 counts from zero to five.
+; wScriptOpCounter counts from zero to 10, incrementing every time the first counter rolls back to zero.
 fadeEffectAdjustCounters:
     ld   A, [wScriptOpCounter2]                        ;; 00:1142 $fa $9a $d4
     inc  A                                             ;; 00:1145 $3c
@@ -7175,6 +7201,7 @@ db $00, $00, $00, $00
 MultiplyHL_by_A:
     ld   E, L                                          ;; 00:2b7b $5d
     ld   D, H                                          ;; 00:2b7c $54
+MultiplyDE_by_A:
     ld   HL, $00                                       ;; 00:2b7d $21 $00 $00
     ld   B, $08                                        ;; 00:2b80 $06 $08
 .loop:
