@@ -3307,7 +3307,7 @@ script_0441:
       sSFX 15                                          ;; 0e:55cc $f9 $0f
       sCHANGE_INTO_EMPTY_CHEST                         ;; 0e:55ce $af
       sMSG                                             ;; 0e:55cf $04
-        db "<10>Found <KEY>Bronze!<12>"
+        db "<10>Found <KEY>Silver!<12>"
         db "<11>", $00 ;; 0e:55d0
     sENDIF                                             ;; 0e:55dd
     sEND                                               ;; 0e:55dd $00
