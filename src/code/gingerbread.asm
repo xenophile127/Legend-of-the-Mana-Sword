@@ -33,7 +33,7 @@ SGB_SEND_ONE    EQU %00010000
 SGB_SEND_RESET  EQU %00000000
 SGB_SEND_NULL   EQU %00110000
 
-; hl = address of the packet
+; bc = address of the packet
 ; This uses hl instead of c for writes which is a cycle faster and allows using a for the working byte.
 ; That means it is a little faster than the common version in licenced software.
 ; Commonly available documentation says data and reset pulses are kept low for 5 microseconds,
@@ -50,9 +50,6 @@ SGBSendData:
     ; e - Total number of bytes to send
     ; d - Number of bits sent of current byte
 
-    ; There are only sixteen bytes to be loaded from memory and 260 to write so use hl for writes.
-    ld b, h
-    ld c, l
     ld hl, SGB_OUT_ADDRESS
 
     ; Disable interrupts

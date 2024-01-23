@@ -19,7 +19,7 @@ SGB_PAL_SEPIA:
 checkSGB:
 ; Returns whether the game is running on an SGB in carry.
 ; Leaves it set to two controllers because it is only used during the ending.
-    ld hl, .SGB_MLTREQ2
+    ld bc, .SGB_MLTREQ2
     call SGBSendData
     ld b, $04
     ld c, LOW(rP1)
@@ -66,7 +66,7 @@ enhancedLetterboxCheckSGB:
 enhancedLetterboxFreezeScreen:
     ld hl, wScriptOpCounter
     inc [hl]
-    ld hl, .SGB_FREEZE_BLACK
+    ld bc, .SGB_FREEZE_BLACK
     jp SGBSendData
 .SGB_FREEZE_BLACK:
     db $b9, $02, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -89,7 +89,7 @@ enhancedLetterboxTransferTiles:
     ld hl, wScriptOpCounter
     inc [hl]
 ; Start the transfer.
-    ld hl, .SGB_VRAMTRANS_TILEDATA1
+    ld bc, .SGB_VRAMTRANS_TILEDATA1
     jp SGBSendData
 .SGB_VRAMTRANS_TILEDATA1:
     db $99, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -175,7 +175,7 @@ enhancedLetterboxSetBlackBorder:
     ld a, $e4
     ld [wVideoBGP], a
 ; Start the transfer.
-    ld hl, .SGB_VRAMTRANS_TILEMAP
+    ld bc, .SGB_VRAMTRANS_TILEMAP
     jp SGBSendData
 .SGB_VRAMTRANS_TILEMAP:
     db $a1, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -192,14 +192,14 @@ enhancedLetterboxSetSGBPalette:
     ld a, $ff
     ld [wVideoBGP], a
 ; Then set the palette.
-    ld hl, SGB_PAL_SEPIA
+    ld bc, SGB_PAL_SEPIA
     jp SGBSendData
 
 ; Unfreeze the screen and continues script execution.
 enhancedLetterboxFinish:
     xor a
     ld [wScriptOpCounter], a
-    ld hl, .SGB_UNFREEZE
+    ld bc, .SGB_UNFREEZE
     jp SGBSendData
 .SGB_UNFREEZE:
     db $b9, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -219,11 +219,9 @@ enhancedLetterboxDelayFrame:
 ; Five packets total. Two trigger VRAM transfers.
 enhancedLetterbox:
     push hl
-    push de
     ld a, [wScriptOpCounter]
     ld hl, .enhancedLetterboxJumptable
     call callJumptable
-    pop de
     pop hl
     ld a, [wScriptOpCounter]
     or a
