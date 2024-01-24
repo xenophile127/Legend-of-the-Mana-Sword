@@ -3307,7 +3307,7 @@ script_0441:
       sSFX 15                                          ;; 0e:55cc $f9 $0f
       sCHANGE_INTO_EMPTY_CHEST                         ;; 0e:55ce $af
       sMSG                                             ;; 0e:55cf $04
-        db "<10>Found <KEY>Bronze!<12>"
+        db "<10>Found <KEY>Silver!<12>"
         db "<11>", $00 ;; 0e:55d0
     sENDIF                                             ;; 0e:55dd
     sEND                                               ;; 0e:55dd $00
@@ -5870,7 +5870,7 @@ script_0540:
       db "<1b> __ Don't worry.\n I will be here\n as long as_", $00 ;; 0e:7285
     sDELAY 120                                         ;; 0e:72a5 $f0 $78
     sMSG                                               ;; 0e:72a7 $04
-      db "<1b> _ you guard me\n from the evil__", $00  ;; 0e:72a8
+      db "<1b> _ you guard me\n from evil__<00>"
     sDELAY 120                                         ;; 0e:72be $f0 $78
     sMSG                                               ;; 0e:72c0 $04
       db "<1b>", $00                                   ;; 0e:72c1
@@ -5878,7 +5878,7 @@ script_0540:
     sSET_NPC_1_DIRECTION_UP                            ;; 0e:72c4 $14
     sDELAY 40                                          ;; 0e:72c5 $f0 $28
     sMSG                                               ;; 0e:72c7 $04
-      db "Mother:<BOY>__\n Please guard my\n daughter.", $00 ;; 0e:72c8
+      db "Mother:<BOY>__\n Please protect\n my daughter.<00>"
     sDELAY 120                                         ;; 0e:72e4 $f0 $78
     sMSG                                               ;; 0e:72e6 $04
       db "<1b> You are the only\n Gemma Knight for\n the Tree now__", $00 ;; 0e:72e7

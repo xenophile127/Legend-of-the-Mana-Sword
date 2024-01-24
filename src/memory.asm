@@ -1571,8 +1571,8 @@ wWindowTextInsertionPointFinalX:
 wWindowTextInsertionPointFinalY:
     ds 1                                               ;; d8c6
 
-; Free space. Now unused.
-wVRAMClearFakeTile:
+; Used to stage SGB palette packets for fade effects.
+wSGBPacket:
     ds 16                                              ;; d8c7
 
 ; Used by the code that opens to the same place in the menu after selling once to the vendor.
@@ -1604,9 +1604,12 @@ wMetatileAttributeCache:
 wSpawnPlacementScratch:
     ds 331                                             ;; d97e
 
+wSGBEndingCounter:
+    ds 1                                               ;; dac9
+
 ; Free WRAM space.
 wFree:
-    ds 1335                                            ;; dac9
+    ds 1334                                            ;; daca
 
 SECTION "hram", HRAM[$ff80]
 

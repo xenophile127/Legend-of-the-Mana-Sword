@@ -1,4 +1,5 @@
 ; This is from https://github.com/ahrnbom/gingerbread
+; With modifications for speed.
 
 ; This is free and unencumbered software released into the public domain.
 
@@ -32,88 +33,73 @@ SGB_SEND_ONE    EQU %00010000
 SGB_SEND_RESET  EQU %00000000
 SGB_SEND_NULL   EQU %00110000
 
-; Input: HL - address to first byte to send
+; bc = address of the packet
+; This uses hl instead of c for writes which is a cycle faster and allows using a for the working byte.
+; That means it is a little faster than the common version in licenced software.
+; Commonly available documentation says data and reset pulses are kept low for 5 microseconds,
+; and then to leave P14 and P15 high for at least 15 microseconds afterwards.
+; The common packet transfer routine keeps data and reset pulses low for 4 cycles,
+; and P14 and P15 high for at least 15 cycles.
+; This code preserves the 4 cycle timing for data and reset pulses (with nops),
+; but holds P14 and P15 high for as little as 12 cycles. That is, three times the duration for data and reset pulses.
 SGBSendData:
-    di
     ; Register use:
-    ; B - Byte currently sending
-    ; C - Total number of bytes to send
-    ; D - Number of bits sent of current byte
+    ; a - byte currently being sent
+    ; bc - address of the byte being sent
+    ; hl - SGB communications port address
+    ; e - Total number of bytes to send
+    ; d - Number of bits sent of current byte
 
-    ld a, [hl]
-    ld b, a
+    ld hl, SGB_OUT_ADDRESS
 
-    ; Each packet should send 16 bytes
-    ld c, 16
-
-    xor a
-    ld d, a
+    ; Disable interrupts
+    di
 
     ; Prepare SGB for listening
-    ld a, SGB_SEND_RESET
-    ld [SGB_OUT_ADDRESS], a
+    ld [hl], SGB_SEND_RESET
+    nop
 
-    ld a, SGB_SEND_NULL
-    ld [SGB_OUT_ADDRESS], a
+    ld [hl], SGB_SEND_NULL
+
+    ; Each packet should send 16 bytes. This is located here in place of a nop.
+    ld e, 16
+
+SGBSendByte:
+    ld d, 8
+
+    ld a, [bc]
+    inc bc
 
 SGBSendBit:
-    inc d
-    ld a, d
-    cp 9
-    jr z, SGBEndOfByte
-
-    ld a, b
-    and %00000001
-    cp 0
-    jr z, SGBSendZeroBit
+    ; Rotate the next bit into the carry flag
+    rra
+    jr nc, SGBSendZeroBit
 
     ; Send a ONE bit here
-    ld a, SGB_SEND_ONE
-    ld [SGB_OUT_ADDRESS], a
+    ld [hl], SGB_SEND_ONE
     jr SGBSendBitEnd
 
 SGBSendZeroBit:
-    ld a, SGB_SEND_ZERO
-    ld [SGB_OUT_ADDRESS], a
+    ld [hl], SGB_SEND_ZERO
+    nop
 
 SGBSendBitEnd:
     ; Both P14 and P15 should be HIGH in between sent bits
-    ld a, SGB_SEND_NULL
-    ld [SGB_OUT_ADDRESS], a
+    ld [hl], SGB_SEND_NULL
+    nop
+    nop
 
-    ld a, b
-    sra a
-    and %01111111
-    ld b, a
+    dec d
+    jr nz, SGBSendBit
 
-    jr SGBSendBit
+    dec e
+    jr nz, SGBSendByte
 
-SGBEndOfByte:
-    dec c
-    ld a, c
-    cp 0
-    jr z, SGBFinalEnd
+; Send final stop bit
+    ld [hl], SGB_SEND_ZERO
+    nop
 
-    ; If there are still bytes to send, we get here
-    inc hl
-    ld a, [hl]
-    ld b, a
-
-    xor a
-    ld d, a
-
-    jr SGBSendBit
-
-SGBFinalEnd:
-    call SGBFinish
-    ret
-
-SGBFinish:
-    ld a, SGB_SEND_ZERO
-    ld [SGB_OUT_ADDRESS], a
-
-    ld a, SGB_SEND_NULL
-    ld [SGB_OUT_ADDRESS], a
+    ld [hl], SGB_SEND_NULL
 
     ei
     ret

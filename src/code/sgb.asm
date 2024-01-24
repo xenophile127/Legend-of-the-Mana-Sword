@@ -8,18 +8,29 @@
 ; but with other palettes it can be a drastic change. Hopefully in a good way.
 ; The biggest motivation for a custom palette is a real black instead of the dark blue/purple in the default.
 
-; Provides SGBSendData taken from https://github.com/ahrnbom/gingerbread/ which is public domain.
+; Provides SGBSendData based off of https://github.com/ahrnbom/gingerbread/ which is public domain.
+; This has been rewritten to be as fast as the (vague) guidelines allow:
+; 4 cycles between writing a data or reset value and three times that after pulsing P14 and P15.
 INCLUDE "code/gingerbread.asm"
 
-; This is the palette loaded during the ending.
-SGB_PAL_SEPIA:
-;           #fff7de   #f7d673   #ad7331   #000000
-    db $01, $df, $6f, $5e, $3b, $d5, $19, $00, $00, $00, $00, $00, $00, $00, $00, $00
+; Also note: The recommended four frames between packets is completely ignored--up to three packets are sent in a frame.
+; If the user is using the bomb tool, too bad.
+
+; These are the palettes loaded during the ending.
+; Palettes 1, 2, and 3 are only used on the final "End" screen.
+SGB_PAL01:
+;           #fff7de   #f7d673   #ad7331   #000000    #fff7de   #18a500   #085a00
+    db $01, $df, $6f, $5e, $3b, $d5, $19, $00, $00, $5e, $3b, $83, $02, $61, $01, $ff
+
+SGB_PAL23:
+;           /----------- most green -------------\  /------- plus yellow ------\
+    db $09, $df, $6f, $68, $17, $83, $02, $61, $01, $68, $17, $7f, $03, $61, $01, $ff
+;            #fff7de   #42de29   #18a500   #085a00    #42de29   #ffde00   #085a00
 
 checkSGB:
 ; Returns whether the game is running on an SGB in carry.
 ; Leaves it set to two controllers because it is only used during the ending.
-    ld hl, .SGB_MLTREQ2
+    ld bc, .SGB_MLTREQ2
     call SGBSendData
     ld b, $04
     ld c, LOW(rP1)
@@ -57,6 +68,9 @@ enhancedLetterboxCheckSGB:
 ; Check whether SGB code should be run
     call checkSGB
     ret nc
+; Used by the fade effect and to set up palette attributes at the propper moment.
+    ld hl, wSGBEndingCounter
+    inc [hl]
     ld hl, wScriptOpCounter
     inc [hl]
     ret
@@ -66,7 +80,7 @@ enhancedLetterboxCheckSGB:
 enhancedLetterboxFreezeScreen:
     ld hl, wScriptOpCounter
     inc [hl]
-    ld hl, .SGB_FREEZE_BLACK
+    ld bc, .SGB_FREEZE_BLACK
     jp SGBSendData
 .SGB_FREEZE_BLACK:
     db $b9, $02, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -89,7 +103,7 @@ enhancedLetterboxTransferTiles:
     ld hl, wScriptOpCounter
     inc [hl]
 ; Start the transfer.
-    ld hl, .SGB_VRAMTRANS_TILEDATA1
+    ld bc, .SGB_VRAMTRANS_TILEDATA1
     jp SGBSendData
 .SGB_VRAMTRANS_TILEDATA1:
     db $99, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -175,7 +189,7 @@ enhancedLetterboxSetBlackBorder:
     ld a, $e4
     ld [wVideoBGP], a
 ; Start the transfer.
-    ld hl, .SGB_VRAMTRANS_TILEMAP
+    ld bc, .SGB_VRAMTRANS_TILEMAP
     jp SGBSendData
 .SGB_VRAMTRANS_TILEMAP:
     db $a1, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -192,14 +206,14 @@ enhancedLetterboxSetSGBPalette:
     ld a, $ff
     ld [wVideoBGP], a
 ; Then set the palette.
-    ld hl, SGB_PAL_SEPIA
+    ld bc, SGB_PAL01
     jp SGBSendData
 
 ; Unfreeze the screen and continues script execution.
 enhancedLetterboxFinish:
     xor a
     ld [wScriptOpCounter], a
-    ld hl, .SGB_UNFREEZE
+    ld bc, .SGB_UNFREEZE
     jp SGBSendData
 .SGB_UNFREEZE:
     db $b9, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -219,11 +233,9 @@ enhancedLetterboxDelayFrame:
 ; Five packets total. Two trigger VRAM transfers.
 enhancedLetterbox:
     push hl
-    push de
     ld a, [wScriptOpCounter]
     ld hl, .enhancedLetterboxJumptable
     call callJumptable
-    pop de
     pop hl
     ld a, [wScriptOpCounter]
     or a
@@ -241,3 +253,124 @@ enhancedLetterbox:
     dw enhancedLetterboxSetSGBPalette
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxFinish
+
+; Sets up color regions for the very final End screen.
+sgbSetEndScreenColors:
+    push hl
+; The second and third palettes are untouched by fading to black, so they need to be blacked out first.
+    ld bc, .SGB_PAL23_BLACK
+    call SGBSendData
+    ld bc, .SGB_ATTR_BLK_1
+    call SGBSendData
+    ld bc, .SGB_ATTR_BLK_2
+    call SGBSendData
+    pop hl
+    ret
+.SGB_PAL23_BLACK:
+    db $09, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+.SGB_ATTR_BLK_1: ;/------ first region -----\   /----- second region -----\
+    db $21, $02, $01, $01, $0c, $0c, $0e, $0c, $01, $02, $0c, $0a, $0d, $0b, $00, $00
+.SGB_ATTR_BLK_2:
+    db $21, $01, $01, $03, $0e, $0a, $0f, $0b, $00, $00, $00, $00, $00, $00, $00, $00
+;                 \------ thrid region -----/   \----- fourth region -----/
+
+; Given a SGB palette packet, creates a modified packet with colors faded between the original and black.
+; c = fade amount from 0 (completely black) to 11 (unmodified colors)
+; hl = address of packet
+; Return: c = unmodified, wSGBPacket = new packet
+fadeToOrFromBlack:
+    ld de, wSGBPacket
+; Copy the packet header byte.
+    ld a, [hl+]
+    ld [de], a
+    inc de
+; There are seven colors in each of the two packets.
+    ld b, $07
+.loop:
+    push bc
+    push de
+    call fadeBlackColor
+    pop de
+;    ld a, c
+    ld [de], a
+    inc de
+    ld a, b
+    ld [de], a
+    inc de
+    pop bc
+    dec b
+    jr nz, .loop
+    ret
+
+; Fade to black using SNES palettes.
+; Also manages loading the attribute maps to colorize the final "End" screen.
+sgbFadeToBlack:
+; This counter is used to time when the final fade-to-black is happening to load attributes.
+    ld a, [wSGBEndingCounter]
+    cp $07
+    jr nz, .fade
+    ld a, [wScriptOpCounter2]
+    dec a
+    jr z, .fade
+    ld a, [wScriptOpCounter]
+    cp $0a
+    jr z, .setEndScreenColors
+.fade:
+    ld a, [wScriptOpCounter2]
+    or a
+    ret nz
+; The primary script counter is used as the main fade control.
+    ld a, [wScriptOpCounter]
+    ld c, a
+; The first fade step is full brightness so it can be skipped.
+    inc c
+    push hl
+    ld hl, SGB_PAL01
+    call fadeToOrFromBlack
+; Send the new packet to the Super Game Boy.
+    ld bc, wSGBPacket
+    call SGBSendData
+    pop hl
+    ret
+
+.setEndScreenColors:
+; If this code is reached then the screen should have just gone black before the final fade-in for the End screen.
+    call sgbSetEndScreenColors
+    ret
+
+; Fade back from black. This should handle white as well, but that is never used during the ending.
+; Two palette commands are managed here, one used only by the final "End" screen.
+sgbFadeToNormal:
+; The primary script counter is used as the main fade control.
+    ld a, [wScriptOpCounter]
+; Run the fade-to-black effect backwards. Complement and increment, then add the number of items in the array (minus one).
+    cpl
+    add $0a + 1 ; Fold the increment into the addition.
+    ld c, a
+    ld a, [wScriptOpCounter2]
+    or a
+    jr nz, .second_step
+    push hl
+; There is not enough time in one frame to calculate two palette packets and send both to the SGB.
+; Calculate the first packet.
+    ld hl, SGB_PAL01
+    call fadeToOrFromBlack
+; Send the new packet to the Super Game Boy.
+    ld bc, wSGBPacket
+    call SGBSendData
+    pop hl
+    ret
+
+.second_step:
+    dec a
+    ret nz
+    push hl
+; There is not enough time in one frame to calculate two palette packets and send both to the SGB.
+; Calculate the second packet.
+    ld hl, SGB_PAL23
+    call fadeToOrFromBlack
+; Send the new packet to the Super Game Boy.
+    ld bc, wSGBPacket
+    call SGBSendData
+    pop hl
+    ret 
