@@ -8956,56 +8956,39 @@ clearWindow:
     jr   Z, jr_00_36a8                                 ;; 00:3672 $28 $34
     ret                                                ;; 00:3674 $c9
 
-; Free space
-db $00, $00, $00, $00, $00, $00, $00, $00
-
-; Used to clear dialog windows.
-; Originally it used to clear one line per frame, taking six frames total.
-; This rewrite doubles the clear rate from one tile per scanline to two.
-; That means it only takes 6*18/2=54 (out of 144) scanlines to clear the entire dialog window.
-; So all rate limitting is removed allowing it to run to completion in one frame.
 windowClearRectangle:
-; Load the rectangle
-    ld hl, wWindowClearX
-    ld a, [hl+]
-    ld e, a
-    ld a, [hl+]
-    ld d, a
-    ld a, [hl+]
-    ld c, a
-    ld b, [hl]
-; Offset by the dialog position
-    ld hl, wDialogX
-    ld a, [hl+]
-    add e
-    ld e, a
-    ld a, [hl]
-    add d
-    ld d, a
-; For each line...
-.loop_outer:
-    push bc
-    push de
-; Get the starting VRAM address...
-    call tilePositionToVRAMAddress
-    ld de, $7f7f
-    ld b, c
-; Clear tiles two per scanline...
-.loop_inner:
-    call storeDEinVRAM
-    inc hl
-; Trusting that the rectangle is of even dimensions.
-; If that is ever proved to not be true, then making it even after the first itieration should work.
-;    res 0, b
-    dec b
-    dec b
-    jr nz, .loop_inner
-    pop de
-    inc d
-    pop bc
-    dec b
-    jr nz, .loop_outer
-    pop hl
+    ld   A, [wWindowClearY]                            ;; 00:3675 $fa $b3 $d8
+    ld   D, A                                          ;; 00:3678 $57
+    ld   A, [wWindowClearX]                            ;; 00:3679 $fa $b2 $d8
+    ld   E, A                                          ;; 00:367c $5f
+    ld   A, [wWindowClearH]                            ;; 00:367d $fa $b5 $d8
+    ld   B, A                                          ;; 00:3680 $47
+    ld   A, [wWindowClearW]                            ;; 00:3681 $fa $b4 $d8
+    ld   C, A                                          ;; 00:3684 $4f
+    push BC                                            ;; 00:3685 $c5
+    push DE                                            ;; 00:3686 $d5
+.loop:
+    ld   A, $7f                                        ;; 00:3687 $3e $7f
+    call storeTileAatDialogPositionDE                  ;; 00:3689 $cd $44 $38
+    inc  E                                             ;; 00:368c $1c
+    dec  C                                             ;; 00:368d $0d
+    jr   NZ, .loop                                     ;; 00:368e $20 $f7
+    pop  DE                                            ;; 00:3690 $d1
+    pop  BC                                            ;; 00:3691 $c1
+    inc  D                                             ;; 00:3692 $14
+    dec  B                                             ;; 00:3693 $05
+    push AF                                            ;; 00:3694 $f5
+    ld   A, D                                          ;; 00:3695 $7a
+    ld   [wWindowClearY], A                            ;; 00:3696 $ea $b3 $d8
+    ld   A, E                                          ;; 00:3699 $7b
+    ld   [wWindowClearX], A                            ;; 00:369a $ea $b2 $d8
+    ld   A, B                                          ;; 00:369d $78
+    ld   [wWindowClearH], A                            ;; 00:369e $ea $b5 $d8
+    ld   A, C                                          ;; 00:36a1 $79
+    ld   [wWindowClearW], A                            ;; 00:36a2 $ea $b4 $d8
+    pop  AF                                            ;; 00:36a5 $f1
+    pop  HL                                            ;; 00:36a6 $e1
+    ret  NZ                                            ;; 00:36a7 $c0
 
 jr_00_36a8:
     ld   A, $1f                                        ;; 00:36a8 $3e $1f
