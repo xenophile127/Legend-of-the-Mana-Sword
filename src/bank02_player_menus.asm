@@ -1087,8 +1087,8 @@ gameStateMenuJumptable:
     dw   call_02_492b                                  ;; 02:4820 pP $2c
     dw   openStatusScreen                              ;; 02:4822 pP $2d
     dw   call_02_504f                                  ;; 02:4824 pP $2e
-    dw   openLoadSaveScreen                            ;; 02:4826 pP $2f
-    dw   call_02_4f97                                  ;; 02:4828 pP $30
+    dw   levelUpDrawPreviewAPDP                        ;; 02:4826 pP $2f
+    dw   levelUpDrawPreviewStatsAndYesNoWindow         ;; 02:4828 pP $30
     dw   call_02_4cba                                  ;; 02:482a ?? $31
     dw   call_02_5292                                  ;; 02:482c pP $32
     dw   openLoadSaveBottomWindow                      ;; 02:482e pP $33
@@ -2095,11 +2095,14 @@ jp_02_4f19:
     ld   A, $2f                                        ;; 02:4f5a $3e $2f
     jp   jp_02_5877                                    ;; 02:4f5c $c3 $77 $58
 
-openLoadSaveScreen:
+levelUpDrawPreviewAPDP:
+; Draw the window, although this returns early.
     ld   A, $1a                                        ;; 02:4f5f $3e $1a
     ld   [wDialogType], A                              ;; 02:4f61 $ea $4a $d8
     call drawWindow                                    ;; 02:4f64 $cd $00 $67
+    ld a, $1a
     call windowInitContents                            ;; 02:4f67 $cd $93 $76
+; Calculate the preview AP.
     ld   HL, wTotalAP                                  ;; 02:4f6a $21 $df $d7
     ld   A, [wStatPowerLevelUpTmp]                     ;; 02:4f6d $fa $90 $d7
     ld   B, A                                          ;; 02:4f70 $47
@@ -2107,6 +2110,7 @@ openLoadSaveScreen:
     add  A, B                                          ;; 02:4f74 $80
     ld   [HL+], A                                      ;; 02:4f75 $22
     ld   [wDupTotalAP], A                              ;; 02:4f76 $ea $c1 $d6
+; Calculate the preview DP.
     ld   A, [wStatStaminaLevelUpTmp]                   ;; 02:4f79 $fa $8f $d7
     ld   B, A                                          ;; 02:4f7c $47
     ld   A, [wEquippedArmorDefense]                    ;; 02:4f7d $fa $c2 $d6
@@ -2117,20 +2121,15 @@ openLoadSaveScreen:
     ld   [HL], A                                       ;; 02:4f86 $77
     ld   [wDupTotalDP], A                              ;; 02:4f87 $ea $c3 $d6
     ld   A, [wStatusEffect]                            ;; 02:4f8a $fa $c0 $d7
+; Set DP to zero if moogled. This call has the side effect of initializing the moogle DP backup.
     bit  3, A                                          ;; 02:4f8d $cb $5f
     call NZ, moogleTempZeroDP                          ;; 02:4f8f $c4 $b8 $78
+; Move on to the next step.
     ld   A, $30                                        ;; 02:4f92 $3e $30
-    jp   jp_02_5877                                    ;; 02:4f94 $c3 $77 $58
+    ld [wMenuStateFunctionNew], a
+    jp call_02_5880
 
-call_02_4f97:
-    ld   A, [wOAMBuffer._01]                           ;; 02:4f97 $fa $01 $c0
-    ld   H, A                                          ;; 02:4f9a $67
-    ld   A, [wOAMBuffer]                               ;; 02:4f9b $fa $00 $c0
-    ld   L, A                                          ;; 02:4f9e $6f
-    ld   A, H                                          ;; 02:4f9f $7c
-    ld   [wD8C4], A                                    ;; 02:4fa0 $ea $c4 $d8
-    ld   A, L                                          ;; 02:4fa3 $7d
-    ld   [wD8C3], A                                    ;; 02:4fa4 $ea $c3 $d8
+levelUpDrawPreviewStatsAndYesNoWindow:
     xor  A, A                                          ;; 02:4fa7 $af
     ld   [wSelectedMenuIndex], A                       ;; 02:4fa8 $ea $4b $d8
     ld   HL, wWindowSecondaryFlags                     ;; 02:4fab $21 $72 $d8
@@ -2146,6 +2145,8 @@ call_02_4f97:
     ld   A, $18                                        ;; 02:4fc0 $3e $18
     ld   [wDialogType], A                              ;; 02:4fc2 $ea $4a $d8
     jp   windowInitMain                                ;; 02:4fc5 $c3 $89 $48
+
+ds 2 ; Free space
 
 call_02_4fc8:
     call getSelectedMenuIndexes                        ;; 02:4fc8 $cd $b0 $57
@@ -4485,10 +4486,18 @@ drawWindow:
 .loop:
     ld hl, drawWindowJumptable
     call callJumptable
+; The level up preview screen draws the stats window and the Yes/No window in parallel.
+; They could be detangled but it's easier to just let them be slow.
+    ld a, [wDialogType]
+    cp $18
+    ret z
+    cp $19
+    ret z
 ; If scanline is 112 or above, return. This is a little conservative, but not much.
     ldh a, [rLY]
     cp $70
     ret nc
+; Return if finished.
     ld a, [wDrawWindowStep]
     or a
     jr nz, .loop
