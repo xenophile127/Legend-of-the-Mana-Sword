@@ -1120,16 +1120,23 @@ windowMenuStartSpecial:
     ret                                                ;; 02:485f $c9
 
 gameStateMenu:
+.loop:
     ld   HL, gameStateMenuJumptable                    ;; 02:4860 $21 $c8 $47
     ld   A, [wMenuStateCurrentFunction]                ;; 02:4863 $fa $53 $d8
     and  A, $7f                                        ;; 02:4866 $e6 $7f
     call callJumptable
+; Check if there's time to run another step.
+    ldh a, [rLY]
+    cp $60
+    ret nc
+    ld a, [wMenuStateCurrentFunction]
+    and a, $7f
+; $17 and $18 are used to draw menu text.
+    cp $17
+    jr z, .loop
+    cp $18
+    jr z, .loop
     ret                                                ;; 02:4873 $c9
-
-; Free space
-db $00, $00, $00, $00, $00, $00, $00, $00
-db $00, $00, $00, $00, $00, $00, $00, $00
-db $00, $00
 
 ; The repeat delay was originally initialized to 1 so there was no initial delay,
 ; but changes to speed up windows made it too easy to make a mistake.
@@ -4396,9 +4403,9 @@ windowCloseAndRestoreHidden:
     call windowCloseMain
     ret z
     ldh a, [rLY]
-    cp $70
+    cp $60
     jr c, .loop
-; If rLY was exactly $70 then z is set. Unset it with a decrement.
+; If rLY was exactly $60 then z is set. Unset it with a decrement.
     dec a
     ret
 
@@ -4493,9 +4500,9 @@ drawWindow:
     ret z
     cp $19
     ret z
-; If scanline is 112 or above, return. This is a little conservative, but not much.
+; If scanline is 96 or above, return.
     ldh a, [rLY]
-    cp $70
+    cp $60
     ret nc
 ; Return if finished.
     ld a, [wDrawWindowStep]
