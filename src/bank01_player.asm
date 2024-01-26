@@ -362,7 +362,7 @@ loadFixedMinimap:
     ld   D, A                                          ;; 01:425e $57
     ld   A, $07                                        ;; 01:425f $3e $07
     call loadMap                                       ;; 01:4261 $cd $dc $26
-    call drawRoom_trampoline                           ;; 01:4264 $cd $a4 $04
+    call drawRoom
     ld   A, [wRoomXYTmp]                               ;; 01:4267 $fa $9e $d4
     ld   C, A                                          ;; 01:426a $4f
     ld   A, [wMapNumberTmp]                            ;; 01:426b $fa $9d $d4
@@ -395,7 +395,7 @@ drawDynamicMinimapBackground:
     ld   D, $00                                        ;; 01:429c $16 $00
     ld   A, $07                                        ;; 01:429e $3e $07
     call loadMap                                       ;; 01:42a0 $cd $dc $26
-    call drawRoom_trampoline                           ;; 01:42a3 $cd $a4 $04
+    call drawRoom
     ld   A, [wRoomXYTmp]                               ;; 01:42a6 $fa $9e $d4
     add  A, $44                                        ;; 01:42a9 $c6 $44
     call minimapFlashingMarkerInit                     ;; 01:42ab $cd $d1 $42
@@ -501,7 +501,7 @@ minimapCloseRestoreRoom:
     call loadRoomTiles                                 ;; 01:4360 $cd $74 $1b
     ld   A, [wDoorStatesMinimapBackup]                 ;; 01:4363 $fa $a4 $d4
     ld   [wDoorStates], A                              ;; 01:4366 $ea $f4 $c3
-    call drawRoom_trampoline                           ;; 01:4369 $cd $a4 $04
+    call drawRoom
     ld   HL, wScriptOpCounter                          ;; 01:436c $21 $99 $d4
     inc  [HL]                                          ;; 01:436f $34
     ld   DE, $00                                       ;; 01:4370 $11 $00 $00
@@ -528,7 +528,7 @@ drawRoomFromMap:
     ld   E, A                                          ;; 01:4393 $5f
     ld   A, C                                          ;; 01:4394 $79
     call loadMap                                       ;; 01:4395 $cd $dc $26
-    call drawRoom_trampoline                           ;; 01:4398 $cd $a4 $04
+    call drawRoom
     ld   HL, wScriptOpCounter                          ;; 01:439b $21 $99 $d4
     inc  [HL]                                          ;; 01:439e $34
     pop  HL                                            ;; 01:439f $e1
@@ -579,7 +579,7 @@ loadMapWithShutterFinalSetup:
     inc  [HL]                                          ;; 01:43e1 $34
     ld   A, $23                                        ;; 01:43e2 $3e $23
     call playSFX                                       ;; 01:43e4 $cd $7d $29
-    call playerAttackDestroy_trampoline                ;; 01:43e7 $cd $f7 $2e
+    call playerAttackDestroy
     pop  HL                                            ;; 01:43ea $e1
     inc  HL                                            ;; 01:43eb $23
     inc  HL                                            ;; 01:43ec $23
@@ -616,7 +616,7 @@ loadMapInstantFinalSetup:
     ld   D, A                                          ;; 01:4413 $57
     call updateNpcPosition_trampoline                  ;; 01:4414 $cd $aa $28
 .jr_01_4417:
-    call playerAttackDestroy_trampoline                ;; 01:4417 $cd $f7 $2e
+    call playerAttackDestroy
     ld   HL, wScriptOpCounter                          ;; 01:441a $21 $99 $d4
     inc  [HL]                                          ;; 01:441d $34
     pop  HL                                            ;; 01:441e $e1
@@ -647,7 +647,7 @@ openMinimapFinalSetup:
     ld   DE, $00                                       ;; 01:4448 $11 $00 $00
     ld   HL, $1014                                     ;; 01:444b $21 $14 $10
     call hideSpritesBehindWindow_trampoline            ;; 01:444e $cd $2f $04
-    call playerAttackDestroy_trampoline                ;; 01:4451 $cd $f7 $2e
+    call playerAttackDestroy
     pop  HL                                            ;; 01:4454 $e1
     ret                                                ;; 01:4455 $c9
 
@@ -665,7 +665,7 @@ shutterEffectOpenInit:
     inc  [HL]                                          ;; 01:446c $34
     ld   A, $23                                        ;; 01:446d $3e $23
     call playSFX                                       ;; 01:446f $cd $7d $29
-    call playerAttackDestroy_trampoline                ;; 01:4472 $cd $f7 $2e
+    call playerAttackDestroy
     pop  HL                                            ;; 01:4475 $e1
     ret                                                ;; 01:4476 $c9
 
@@ -722,12 +722,12 @@ showPlayerAtTile:
     ld   B, $00                                        ;; 01:44c1 $06 $00
     and  A, $0f                                        ;; 01:44c3 $e6 $0f
     push AF                                            ;; 01:44c5 $f5
-    call playerSpritesLoadPlayerSpriteTiles_trampoline ;; 01:44c6 $cd $32 $02
+    call playerSpritesLoadPlayerSpriteTiles
     pop  AF                                            ;; 01:44c9 $f1
     pop  DE                                            ;; 01:44ca $d1
     ld   B, $00                                        ;; 01:44cb $06 $00
     or   A, $10                                        ;; 01:44cd $f6 $10
-    call updatePlayerPostion_trampoline                ;; 01:44cf $cd $3e $02
+    call updatePlayerPostion
     pop  AF                                            ;; 01:44d2 $f1
     ld   [wMainGameStateFlags], A                      ;; 01:44d3 $ea $a1 $c0
     pop  HL                                            ;; 01:44d6 $e1
@@ -1047,7 +1047,7 @@ scrollRoomScroll:
     ret  C                                             ;; 01:46f3 $d8
     ld   A, $00                                        ;; 01:46f4 $3e $00
     call setSpriteScrollSpeed                          ;; 01:46f6 $cd $4d $04
-    call ensureReservedObjectsExist_trampoline         ;; 01:46f9 $cd $f1 $2e
+    call ensureReservedObjectsExist
 
     ; Call remove any enemies that may be lingering. This can happen with jumpers.
     ld bc, $0d07 ; Start at object 7 and run for 13 total.
@@ -1375,7 +1375,7 @@ gameStateNormal:
 .jr_01_4a16:
     push DE                                            ;; 01:4a16 $d5
     push BC                                            ;; 01:4a17 $c5
-    call runPlayerAttackObjectFunctions_trampoline     ;; 01:4a18 $cd $d3 $2e
+    call runPlayerAttackObjectFunctions
     pop  BC                                            ;; 01:4a1b $c1
     pop  DE                                            ;; 01:4a1c $d1
     jr   NZ, .dpad                                     ;; 01:4a1d $20 $19
@@ -1437,7 +1437,7 @@ gameStateNormal:
     pop  DE                                            ;; 01:4a56 $d1
     ld   A, $02                                        ;; 01:4a57 $3e $02
     ld   [wMainGameState], A                           ;; 01:4a59 $ea $a0 $c0
-    call useEquippedWeaponOrItem_trampoline            ;; 01:4a5c $cd $e5 $2e
+    call useEquippedWeaponOrItem
     ret  NZ                                            ;; 01:4a5f $c0
     ld   A, [wMainGameState]                           ;; 01:4a60 $fa $a0 $c0
     cp   A, $02                                        ;; 01:4a63 $fe $02
@@ -1522,7 +1522,7 @@ roomExitScreenScrollPrep:
     call bossClearStatsObjects_trampoline              ;; 01:4b2b $cd $e8 $04
     call initEnemiesCounterAndMoveFolower_trampoline   ;; 01:4b2e $cd $26 $29
 .jr_01_4b31:
-    call playerAttackDestroy_trampoline                ;; 01:4b31 $cd $f7 $2e
+    call playerAttackDestroy
     call runRoomScriptOnRoomExit                       ;; 01:4b34 $cd $83 $24
     ret                                                ;; 01:4b37 $c9
 
@@ -1705,7 +1705,7 @@ gameStateFireAutoTarget:
     ld   A, [wMainGameState]                           ;; 01:4c43 $fa $a0 $c0
     cp   A, $06                                        ;; 01:4c46 $fe $06
     ret  NZ                                            ;; 01:4c48 $c0
-    call runPlayerAttackObjectFunctions_trampoline     ;; 01:4c49 $cd $d3 $2e
+    call runPlayerAttackObjectFunctions
     ret  NZ                                            ;; 01:4c4c $c0
     ld   A, $00                                        ;; 01:4c4d $3e $00
     ld   [wMainGameState], A                           ;; 01:4c4f $ea $a0 $c0
@@ -1720,7 +1720,7 @@ gameStateSpecialAttackFlyingSwordReturn:
     ld   A, [wMainGameState]                           ;; 01:4c60 $fa $a0 $c0
     cp   A, $04                                        ;; 01:4c63 $fe $04
     ret  NZ                                            ;; 01:4c65 $c0
-    call runPlayerAttackObjectFunctions_trampoline     ;; 01:4c66 $cd $d3 $2e
+    call runPlayerAttackObjectFunctions
     jr   Z, .jr_01_4cb1                                ;; 01:4c69 $28 $46
     call call_01_4d35                                  ;; 01:4c6b $cd $35 $4d
     call getPlayerY                                    ;; 01:4c6e $cd $99 $02
@@ -1803,14 +1803,14 @@ gameStateSpecialAttackFlyingSwordReturn:
     or   A, L                                          ;; 01:4ce0 $b5
     and  A, $07                                        ;; 01:4ce1 $e6 $07
     jr   NZ, .jr_01_4cf3                               ;; 01:4ce3 $20 $0e
-    call playerAttackDestroy_trampoline                ;; 01:4ce5 $cd $f7 $2e
+    call playerAttackDestroy
     ld   A, $00                                        ;; 01:4ce8 $3e $00
     ld   [wMainGameState], A                           ;; 01:4cea $ea $a0 $c0
     ld   A, $c9                                        ;; 01:4ced $3e $c9
     call setPlayerCollisionFlags                       ;; 01:4cef $cd $bd $02
     ret                                                ;; 01:4cf2 $c9
 .jr_01_4cf3:
-    call playerAttackDestroy_trampoline                ;; 01:4cf3 $cd $f7 $2e
+    call playerAttackDestroy
     ld   A, $00                                        ;; 01:4cf6 $3e $00
     ld   [wMainGameState], A                           ;; 01:4cf8 $ea $a0 $c0
     ld   A, $c9                                        ;; 01:4cfb $3e $c9
@@ -1909,7 +1909,7 @@ gameStateSpecialAttackFlyingSword:
     ld   A, [wMainGameState]                           ;; 01:4d92 $fa $a0 $c0
     cp   A, $03                                        ;; 01:4d95 $fe $03
     ret  NZ                                            ;; 01:4d97 $c0
-    call runPlayerAttackObjectFunctions_trampoline     ;; 01:4d98 $cd $d3 $2e
+    call runPlayerAttackObjectFunctions
     jr   Z, .jr_01_4da1                                ;; 01:4d9b $28 $04
     call call_01_4d35                                  ;; 01:4d9d $cd $35 $4d
     ret                                                ;; 01:4da0 $c9
@@ -1927,7 +1927,7 @@ gameStateSpecialAttackFlyingSword:
     ld   A, [wFlyingSwordSpecialOriginalLocationX]     ;; 01:4db4 $fa $d0 $c4
     ld   L, A                                          ;; 01:4db7 $6f
     push HL                                            ;; 01:4db8 $e5
-    call useSpecialAttack_trampoline                   ;; 01:4db9 $cd $eb $2e
+    call useSpecialAttack
     pop  HL                                            ;; 01:4dbc $e1
     ld   A, H                                          ;; 01:4dbd $7c
     ld   [wFlyingSwordSpecialOriginalLocationY], A     ;; 01:4dbe $ea $d1 $c4
@@ -2046,7 +2046,7 @@ gameStateSpecialAttack:
     ld   B, A                                          ;; 01:4e84 $47
     pop  AF                                            ;; 01:4e85 $f1
     call playerSpritesLoadPlayerSpriteTiles            ;; 01:4e86 $cd $be $48
-    call runPlayerAttackObjectFunctions_trampoline     ;; 01:4e89 $cd $d3 $2e
+    call runPlayerAttackObjectFunctions
     ret                                                ;; 01:4e8c $c9
 .jp_01_4e8d:
     call getPlayerDirection                            ;; 01:4e8d $cd $ab $02
@@ -2058,7 +2058,7 @@ gameStateSpecialAttack:
     call playerSpritesLoadPlayerSpriteTiles            ;; 01:4e98 $cd $be $48
     ld   A, $00                                        ;; 01:4e9b $3e $00
     ld   [wMainGameState], A                           ;; 01:4e9d $ea $a0 $c0
-    call playerAttackDestroy_trampoline                ;; 01:4ea0 $cd $f7 $2e
+    call playerAttackDestroy
     ld   A, $22                                        ;; 01:4ea3 $3e $22
     call playSFX                                       ;; 01:4ea5 $cd $7d $29
     ret                                                ;; 01:4ea8 $c9
@@ -2083,7 +2083,7 @@ gameStateAttack:
     call playerSpritesLoadPlayerSpriteTiles            ;; 01:4ec6 $cd $be $48
 .jr_01_4ec9:
     pop  DE                                            ;; 01:4ec9 $d1
-    call runPlayerAttackObjectFunctions_trampoline     ;; 01:4eca $cd $d3 $2e
+    call runPlayerAttackObjectFunctions
     ret  NZ                                            ;; 01:4ecd $c0
     call getPlayerDirection                            ;; 01:4ece $cd $ab $02
     and  A, $0f                                        ;; 01:4ed1 $e6 $0f
@@ -3111,7 +3111,7 @@ attackObjectFunctionNormal:
     jp   Z, jp_01_5619                                 ;; 01:5517 $ca $19 $56
     jr   jp_01_5530                                    ;; 01:551a $18 $14
 .attackSwordSpecialFlying:
-    call doSwordFlyingAttack_trampoline                ;; 01:551c $cd $4a $02
+    call doSwordFlyingAttack
     jr   jp_01_5530                                    ;; 01:551f $18 $0f
 .jr_01_5521:
     call setGameStateSpecialAttack                     ;; 01:5521 $cd $76 $02
