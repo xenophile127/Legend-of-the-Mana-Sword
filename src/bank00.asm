@@ -11,14 +11,12 @@ SECTION "bank00", ROM0[$0000]
 SECTION "isrVBlank", ROM0[$0040]
 
 isrVBlank:
-    call VBlankInterruptHandler                        ;; 00:0040 $cd $64 $00
-    reti                                               ;; 00:0043 $d9
+    jr VBlankInterruptHandler
 
 SECTION "isrLCDC", ROM0[$0048]
 
 isrLCDC:
-    call LCDCInterruptHandler                          ;; 00:0048 $cd $97 $00
-    reti                                               ;; 00:004b $d9
+    jr LCDCInterruptHandler
 
 SECTION "isrTimer", ROM0[$0050]
 
@@ -65,17 +63,13 @@ VBlankInterruptHandler:
     ldh [rOBP1], a
     call vblankGraphicsVRAMCopy                        ;; 00:0071 $cd $57 $2d
     call getRandomByte                                 ;; 00:0074 $cd $1e $2b
-    ld   HL, wInterruptFiredFlags                      ;; 00:0077 $21 $ae $c0
-    ldh  A, [rIF]                                      ;; 00:007a $f0 $0f
-    or   A, [HL]                                       ;; 00:007c $b6
-    ld   [HL], A                                       ;; 00:007d $77
     ld   HL, wVBlankDone                               ;; 00:007e $21 $ad $c0
     inc  [HL]                                          ;; 00:0081 $34
     pop  HL                                            ;; 00:0082 $e1
     pop  DE                                            ;; 00:0083 $d1
     pop  BC                                            ;; 00:0084 $c1
     pop  AF                                            ;; 00:0085 $f1
-    ret                                                ;; 00:0086 $c9
+    reti
 
 DummyInterruptHandler:
     push AF                                            ;; 00:0087 $f5
@@ -98,15 +92,11 @@ LCDCInterruptHandler:
     push DE                                            ;; 00:0099 $d5
     push HL                                            ;; 00:009a $e5
     call LCDCInterrupt                                 ;; 00:009b $cd $2d $03
-    ld   HL, wInterruptFiredFlags                      ;; 00:009e $21 $ae $c0
-    ldh  A, [rIF]                                      ;; 00:00a1 $f0 $0f
-    or   A, [HL]                                       ;; 00:00a3 $b6
-    ld   [HL], A                                       ;; 00:00a4 $77
     pop  HL                                            ;; 00:00a5 $e1
     pop  DE                                            ;; 00:00a6 $d1
     pop  BC                                            ;; 00:00a7 $c1
     pop  AF                                            ;; 00:00a8 $f1
-    ret                                                ;; 00:00a9 $c9
+    reti
 
 SECTION "entry", ROM0[$0100]
 
