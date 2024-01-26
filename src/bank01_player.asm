@@ -349,8 +349,6 @@ loadMinimapToBackground:
 .drawDone:
     ld   HL, wScriptOpCounter                          ;; 01:424c $21 $99 $d4
     inc  [HL]                                          ;; 01:424f $34
-
-data_01_4250:
     pop  HL                                            ;; 01:4250 $e1
     ret                                                ;; 01:4251 $c9
 
@@ -455,19 +453,19 @@ minimapFlashingMarkerInit:
     ld   B, $00                                        ;; 01:42f1 $06 $00
     ld   A, $00                                        ;; 01:42f3 $3e $00
     call updateObjectPosition                          ;; 01:42f5 $cd $11 $06
-    ld   HL, $4260                                     ;; 01:42f8 $21 $60 $42
+    ld hl, tilesetGfxOutdoor+$0260
     ld   DE, $8080                                     ;; 01:42fb $11 $80 $80
     ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 01:42fe $3e $0c
     call addTileGraphicCopyRequest                     ;; 01:4300 $cd $f5 $2d
-    ld   HL, data_01_4250                              ;; 01:4303 $21 $50 $42
+    ld hl, tilesetGfxOutdoor+$0250
     ld   DE, $8090                                     ;; 01:4306 $11 $90 $80
     ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 01:4309 $3e $0c
     call addTileGraphicCopyRequest                     ;; 01:430b $cd $f5 $2d
-    ld   HL, data_01_4250                              ;; 01:430e $21 $50 $42
+    ld hl, tilesetGfxOutdoor+$0250
     ld   DE, $80a0                                     ;; 01:4311 $11 $a0 $80
     ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 01:4314 $3e $0c
     call addTileGraphicCopyRequest                     ;; 01:4316 $cd $f5 $2d
-    ld   HL, data_01_4250                              ;; 01:4319 $21 $50 $42
+    ld hl, tilesetGfxOutdoor+$0250
     ld   DE, $80b0                                     ;; 01:431c $11 $b0 $80
     ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 01:431f $3e $0c
     call addTileGraphicCopyRequest                     ;; 01:4321 $cd $f5 $2d
