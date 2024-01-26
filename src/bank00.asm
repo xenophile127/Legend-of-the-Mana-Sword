@@ -5013,9 +5013,7 @@ callFunctionInBank11:
     ld   A, [wScratchBankCallA]                        ;; 00:1db5 $fa $b3 $c0
     ret                                                ;; 00:1db8 $c9
 
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00
+ds 17 ; Free space
 
 getNextBackgroundRequestSlot:
     ld   A, [wBackgroundRenderRequestCount]            ;; 00:1dca $fa $e8 $ce
@@ -5030,12 +5028,14 @@ getNextBackgroundRequestSlot:
     add  HL, DE                                        ;; 00:1dd8 $19
     ret                                                ;; 00:1dd9 $c9
 
+; This queue is actually only used by the metatile drawing code.
 processBackgroundRenderRequests:
     ld   A, [wBackgroundRenderRequestCount]            ;; 00:1dda $fa $e8 $ce
     cp   A, $00                                        ;; 00:1ddd $fe $00
     ret  Z                                             ;; 00:1ddf $c8
+; Don't run if the engine is lagging behind the framerate.
     ld   A, [wVBlankDone]                              ;; 00:1de0 $fa $ad $c0
-    cp   A, $01                                        ;; 00:1de3 $fe $01
+    or a
     ret  NZ                                            ;; 00:1de5 $c0
     ldh  A, [rLY]                                      ;; 00:1de6 $f0 $44
     cp   A, $8c                                        ;; 00:1de8 $fe $8c
@@ -5135,6 +5135,8 @@ processBackgroundRenderRequests:
     pop  HL                                            ;; 00:1e6a $e1
     call CopyHL_to_DE_size_BC                          ;; 00:1e6b $cd $40 $2b
     ret                                                ;; 00:1e6e $c9
+
+ds 1 ; Free space
 
 ; Request to copy B bytes from bank A address HL to DE
 requestCopyToVRAM:
@@ -5348,18 +5350,21 @@ Init:
     call titleScreenInit_trampoline                    ;; 00:1fd2 $cd $53 $31
 
 MainLoop:
-    halt                                               ;; 00:1fd5 $76 $00
-    ld   A, [wVBlankDone]                              ;; 00:1fd7 $fa $ad $c0
-    cp   A, $01                                        ;; 00:1fda $fe $01
-    jr   C, MainLoop                                   ;; 00:1fdc $38 $f7
-.skipVBlankWait:
+    ld hl, wVBlankDone
+    xor a
+.halt_until_vblank
+    or [hl]
+    jr nz, .run_engine
+    halt
+    jr .halt_until_vblank
+.run_engine:
+    dec [hl]
     call mainLoopPreInput                              ;; 00:1fde $cd $7b $21
     call runMainInputHandler_trampoline                ;; 00:1fe1 $cd $2c $02
     call mainLoopPostInput                             ;; 00:1fe4 $cd $90 $21
-    ld   HL, wVBlankDone                               ;; 00:1fe7 $21 $ad $c0
-    dec  [HL]                                          ;; 00:1fea $35
-    jr   NZ, .skipVBlankWait                           ;; 00:1feb $20 $f1
-    jp   MainLoop                                      ;; 00:1fed $c3 $d5 $1f
+    jr MainLoop
+
+ds 4 ; Free space
 
 InitPreIntEnable:
     ld   A, $00                                        ;; 00:1ff0 $3e $00
