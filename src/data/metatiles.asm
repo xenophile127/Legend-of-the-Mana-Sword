@@ -33,8 +33,9 @@ metatilesOutdoor:
     db   $10, $73, $10, $75, $c0, $07                  ;; $18
     db   $d3, $d4, $d5, $d6, $10, $04                  ;; $19
     db   $d7, $d8, $d9, $da, $10, $04                  ;; $1a
-    db   $fc, $fd, $fe, $ff, $00, $04                  ;; $1b
-    db   $42, $43, $df, $e0, $00, $04                  ;; $1c
+; Curved tower base tiles with stone pattern floor.
+    db   $d3, $d4, $df, $d6, $10, $04                  ;; $1b
+    db   $d7, $d8, $d9, $e0, $10, $04                  ;; $1c
     db   $f4, $f5, $f6, $f7, $10, $04                  ;; $1d
     db   $f8, $f9, $fa, $fb, $10, $04                  ;; $1e
     db   $e5, $e5, $e6, $e6, $00, $04                  ;; $1f
