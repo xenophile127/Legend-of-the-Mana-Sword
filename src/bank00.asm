@@ -338,7 +338,11 @@ getPlayerY:
     ld   C, $04                                        ;; 00:0299 $0e $04
     call GetObjectY                                    ;; 00:029b $cd $3e $0c
     ret                                                ;; 00:029e $c9
-    db   $0e, $04, $cd, $4f, $0c, $c9                  ;; 00:029f ??????
+
+setPlayerSliding:
+    ld C, $04
+    call setObjectSliding
+    ret
 
 setPlayerSpeed:
     ld   C, $04                                        ;; 00:02a5 $0e $04
@@ -2239,9 +2243,18 @@ setObjectSliding:
     ld   [HL-], A                                      ;; 00:0cf4 $32
     ld   A, C                                          ;; 00:0cf5 $79
     ret                                                ;; 00:0cf6 $c9
-    db   $69, $26, $00, $29, $29, $29, $29, $01        ;; 00:0cf7 ????????
-    db   $00, $c2, $09, $11, $0b, $00, $19, $3a        ;; 00:0cff ????????
-    db   $c9                                           ;; 00:0d07 ?
+
+; Move the follower to the position of the player
+moveFollowerToPlayer:
+    call checkForFollower
+    ret nz
+    call getPlayerY
+    push AF
+    call getPlayerX
+    ld E, A
+    pop AF
+    ld D, A
+    jp updateNpcPosition_trampoline
 
 setObjectOffset0b:
     ld   L, C                                          ;; 00:0d08 $69

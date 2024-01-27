@@ -2631,9 +2631,9 @@ attackTileChain:
     ld   [wMainGameStateFlags], A                      ;; 01:525e $ea $a1 $c0
     pop  AF                                            ;; 01:5261 $f1
     call setPlayerSpeed                                ;; 01:5262 $cd $a5 $02
-    ld   A, $00                                        ;; 01:5265 $3e $00
-    ld   C, $04                                        ;; 01:5267 $0e $04
-    call setObjectSliding                              ;; 01:5269 $cd $e4 $0c
+    xor A, A
+    call setPlayerSliding
+    call moveFollowerToPlayer
     ret                                                ;; 01:526c $c9
 
 attackTileMattok:
