@@ -2652,6 +2652,10 @@ script_03ed:
     sEND                                               ;; 0e:50c3 $00
 
 script_03ee:
+; Add a sound if the player has looped back to the starting room in the Mt. Rocks cave.
+    sIF_FLAG !wScriptFlags.3, !wScriptFlags.4
+      sSFX 3
+    sENDIF
     sEND                                               ;; 0e:50c4 $00
 
 script_03ef:
