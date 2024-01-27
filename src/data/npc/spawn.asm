@@ -47,7 +47,7 @@ NPCSpawnPointers:
     dw   data_03_7742, data_03_76f2, data_03_76f2      ;; 03:722c ......
     dw   data_03_777c, data_03_76f2, data_03_7b02      ;; 03:7232 ??????
     dw   data_03_774c, data_03_774c, data_03_76e8      ;; 03:7238 ......
-    dw   data_03_7a8e, data_03_7458, data_03_76e8      ;; 03:723e ......
+    dw   fuji_by_hasim, data_03_7458, data_03_76e8      ;; 03:723e ......
     dw   data_03_78a2, data_03_789a, data_03_78ba      ;; 03:7244 ......
     dw   data_03_78aa, data_03_78b2, data_03_77b8      ;; 03:724a ......
     dw   data_03_7908, data_03_7910, data_03_7910      ;; 03:7250 ??????
@@ -903,8 +903,11 @@ data_03_7a84:
 
 data_03_7a8e:
     db   1, 1, NPC_FUJI_1, NPC_FUJI_1, NPC_FUJI_1, NPC_FUJI_1 ;; 03:7a8e ..?.??
-    db   $0a, $0a, $80, $80, $01, $01, $af, $af        ;; 03:7a94 ..??????
-    db   $af, $af, $09, $0c, $80, $80                  ;; 03:7a9c ??????
+    db   $0a, $0a, $80, $80
+
+fuji_by_hasim:
+    db   1, 1, NPC_FUJI_1, NPC_FUJI_1, NPC_FUJI_1, NPC_FUJI_1 ;; 03:7a98
+    db   $0a, $08, $80, $80
 
 data_03_7aa2:
     db   1, 1, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2 ;; 03:7aa2 ??????

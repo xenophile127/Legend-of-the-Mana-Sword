@@ -1442,10 +1442,6 @@ script_00f5:
     sIF_FLAG !wScriptFlags01.2                         ;; 0d:47a0 $08 $8a $00 $19
       sSET_MUSIC 0                                     ;; 0d:47a4 $f8 $00
       sSPAWN_NPC 1                                     ;; 0d:47a6 $fd $01
-      sSET_NPC_1_DIRECTION_UP
-      sNPC_1_STEP_FORWARD
-      sNPC_1_STEP_FORWARD
-      sSET_NPC_1_DIRECTION_DOWN
       sMSG                                             ;; 0d:47a8 $04
         db "<10> HELP!\n H E L P!!<12>"
         db "<11>", $00 ;; 0d:47a9
