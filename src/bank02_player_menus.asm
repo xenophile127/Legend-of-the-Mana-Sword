@@ -1033,10 +1033,10 @@ menuFingerCurledTiles:
 
 ;@data format=pp amount=4
 menuTrashCanTileLoads:
-    dw   $80c0, $4c00                                  ;; 02:47b8 pP.. $00
-    dw   $80d0, data_02_4c20                           ;; 02:47bc pP.. $01
-    dw   $80e0, $4c10                                  ;; 02:47c0 pP.. $02
-    dw   $80f0, $4c30                                  ;; 02:47c4 pP.. $03
+    dw   _VRAM8000+$c0, trashbinGfx
+    dw   _VRAM8000+$d0, trashbinGfx+$20
+    dw   _VRAM8000+$e0, trashbinGfx+$10
+    dw   _VRAM8000+$f0, trashbinGfx+$30
 
 ;@jumptable amount=59
 gameStateMenuJumptable:
