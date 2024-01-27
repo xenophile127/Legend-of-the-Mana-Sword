@@ -6031,6 +6031,17 @@ script_0541:
     sDELAY 70                                          ;; 0e:7530 $f0 $46
     sFADE_TO_BLACK                                     ;; 0e:7532 $bd
     sLOAD_ROOM_INSTANT 10, $26, 20, 0                  ;; 0e:7533 $f3 $0a $26 $14 $00
+; The letterbox effect covers the back wall which makes this room look weird, so load a new one.
+    sSET_ROOM_TILE $16, 0, 1
+    sSET_ROOM_TILE $04, 1, 1
+    sSET_ROOM_TILE $04, 2, 1
+    sSET_ROOM_TILE $04, 3, 1
+    sSET_ROOM_TILE $04, 4, 1
+    sSET_ROOM_TILE $04, 5, 1
+    sSET_ROOM_TILE $04, 6, 1
+    sSET_ROOM_TILE $04, 7, 1
+    sSET_ROOM_TILE $04, 8, 1
+    sSET_ROOM_TILE $05, 9, 1
     sPLAYER_IN_MINECART                                ;; 0e:7538 $a3
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:7539 $86
     sSET_NPC_TYPES 102                                 ;; 0e:753a $fc $66
