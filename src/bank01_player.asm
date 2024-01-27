@@ -363,7 +363,7 @@ loadFixedMinimap:
     ld   [wMapWidthTmp], A                             ;; 01:425b $ea $9f $d4
     ld   D, A                                          ;; 01:425e $57
     ld   A, $07                                        ;; 01:425f $3e $07
-    call loadMap                                       ;; 01:4261 $cd $dc $26
+    call loadMapGraphics
     call drawRoom_trampoline                           ;; 01:4264 $cd $a4 $04
     ld   A, [wRoomXYTmp]                               ;; 01:4267 $fa $9e $d4
     ld   C, A                                          ;; 01:426a $4f
@@ -396,7 +396,7 @@ drawDynamicMinimapBackground:
     ld   E, A                                          ;; 01:429b $5f
     ld   D, $00                                        ;; 01:429c $16 $00
     ld   A, $07                                        ;; 01:429e $3e $07
-    call loadMap                                       ;; 01:42a0 $cd $dc $26
+    call loadMapGraphics
     call drawRoom_trampoline                           ;; 01:42a3 $cd $a4 $04
     ld   A, [wRoomXYTmp]                               ;; 01:42a6 $fa $9e $d4
     add  A, $44                                        ;; 01:42a9 $c6 $44
@@ -494,7 +494,7 @@ minimapCloseRestoreRoom:
     and  A, $0f                                        ;; 01:4349 $e6 $0f
     ld   E, A                                          ;; 01:434b $5f
     ld   A, [wMapNumberTmp]                            ;; 01:434c $fa $9d $d4
-    call loadMap                                       ;; 01:434f $cd $dc $26
+    call loadMapGraphics
     ld   HL, wRoomTilesBackup                          ;; 01:4352 $21 $a0 $c3
     ld   DE, wRoomTiles                                ;; 01:4355 $11 $50 $c3
     ld   B, $50                                        ;; 01:4358 $06 $50

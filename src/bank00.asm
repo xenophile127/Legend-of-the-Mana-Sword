@@ -6594,7 +6594,7 @@ call_00_2617:
 
 ; A=Map number
 ; DE=room XY
-loadMap:
+loadMapPreamble:
     ld   [wMapNumber], A                               ;; 00:26dc $ea $f5 $c3
     push DE                                            ;; 00:26df $d5
     push AF                                            ;; 00:26e0 $f5
@@ -6631,10 +6631,10 @@ loadMap:
     ld   A, [wMapTableBankNr]                          ;; 00:2714 $fa $f0 $c3
     call pushBankNrAndSwitch                           ;; 00:2717 $cd $fb $29
     pop  DE                                            ;; 00:271a $d1
-    ld   A, [wMapTablePointer.high]                    ;; 00:271b $fa $f3 $c3
-    ld   H, A                                          ;; 00:271e $67
-    ld   A, [wMapTablePointer]                         ;; 00:271f $fa $f2 $c3
-    ld   L, A                                          ;; 00:2722 $6f
+    ld HL, wMapTablePointer
+    ld A, [HL+]
+    ld H, [HL]
+    ld L, A
     ld   A, [HL+]                                      ;; 00:2723 $2a
     ld   [wMapEncodingType], A                         ;; 00:2724 $ea $f8 $c3
     ld   A, [HL+]                                      ;; 00:2727 $2a
@@ -6652,17 +6652,14 @@ loadMap:
     ld   A, E                                          ;; 00:273f $7b
     ld   [wRoomX], A                                   ;; 00:2740 $ea $f6 $c3
     ld   A, [wMapEncodingType]                         ;; 00:2743 $fa $f8 $c3
-    cp   A, $00                                        ;; 00:2746 $fe $00
+    and A, A
     jr   NZ, .templatedRoom                            ;; 00:2748 $20 $15
     call getRoomPointerRLERoom                         ;; 00:274a $cd $f6 $25
     ld   A, D                                          ;; 00:274d $7a
     ld   [wRoomScriptTableHigh], A                     ;; 00:274e $ea $ff $c3
     ld   A, E                                          ;; 00:2751 $7b
     ld   [wRoomScriptTableLow], A                      ;; 00:2752 $ea $fe $c3
-    call loadRoomMetaTilesRLE                          ;; 00:2755 $cd $2b $24
-    call cacheMetatileAttributesAndLoadRoomTiles
-    call popBankNrAndSwitch                            ;; 00:275b $cd $0a $2a
-    ret                                                ;; 00:275e $c9
+    jp loadRoomMetaTilesRLE
 .templatedRoom:
     push HL                                            ;; 00:275f $e5
     call getRoomPointerTemplatedRoom                   ;; 00:2760 $cd $d1 $25
@@ -6677,11 +6674,25 @@ loadMap:
     ld   D, H                                          ;; 00:2773 $54
     ld   E, L                                          ;; 00:2774 $5d
     pop  HL                                            ;; 00:2775 $e1
-    ld   A, $00                                        ;; 00:2776 $3e $00
-    call loadRoomMetaTilesTemplated                    ;; 00:2778 $cd $5d $25
+    xor A, A
+    jp loadRoomMetaTilesTemplated
+
+; Used for loading graphics and metatile attribute cache for interactive maps
+; A=Map number
+; DE=room XY
+loadMap:
+    call loadMapPreamble
     call cacheMetatileAttributesAndLoadRoomTiles
-    call popBankNrAndSwitch                            ;; 00:277e $cd $0a $2a
-    ret                                                ;; 00:2781 $c9
+    jp popBankNrAndSwitch
+
+; Used for loading map graphics without building the metatile attribute cache
+; So far this includes the minimap open and close routines and title screen
+; A=Map number
+; DE=room XY
+loadMapGraphics:
+    call loadMapPreamble
+    call loadRoomTiles
+    jp popBankNrAndSwitch
 
 ; DE=pointer to the NPC runtime data
 getNpcProjectileType:
