@@ -2089,8 +2089,8 @@ GetObjectX:
     add  HL, HL                                        ;; 00:0c33 $29
     ld   BC, wObjectRuntimeData                        ;; 00:0c34 $01 $00 $c2
     add  HL, BC                                        ;; 00:0c37 $09
-    ld   DE, $05                                       ;; 00:0c38 $11 $05 $00
-    add  HL, DE                                        ;; 00:0c3b $19
+    ld BC, $05
+    add HL, BC
     ld   A, [HL]                                       ;; 00:0c3c $7e
     ret                                                ;; 00:0c3d $c9
 
@@ -2103,8 +2103,8 @@ GetObjectY:
     add  HL, HL                                        ;; 00:0c44 $29
     ld   BC, wObjectRuntimeData                        ;; 00:0c45 $01 $00 $c2
     add  HL, BC                                        ;; 00:0c48 $09
-    ld   DE, $04                                       ;; 00:0c49 $11 $04 $00
-    add  HL, DE                                        ;; 00:0c4c $19
+    ld BC, $04
+    add HL, BC
     ld   A, [HL]                                       ;; 00:0c4d $7e
     ret                                                ;; 00:0c4e $c9
     db   $69, $26, $00, $29, $29, $29, $29, $01        ;; 00:0c4f ????????
@@ -2249,11 +2249,10 @@ moveFollowerToPlayer:
     call checkForFollower
     ret nz
     call getPlayerY
-    push AF
+    ld D, A
     call getPlayerX
     ld E, A
-    pop AF
-    ld D, A
+    ld C, $00
     jp updateNpcPosition_trampoline
 
 setObjectOffset0b:
