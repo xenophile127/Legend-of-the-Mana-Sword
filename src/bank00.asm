@@ -2301,7 +2301,7 @@ playerJumpInit:
 
 scriptOpCodeCheckIfCanOpenMap:
     push HL                                            ;; 00:0d5f $e5
-    call getMapNumber                                  ;; 00:0d60 $cd $0a $22
+    ld a, [wMapNumber]
     cp   A, $01                                        ;; 00:0d63 $fe $01
     jr   Z, .no_minimap                                ;; 00:0d65 $28 $12
     cp   A, $0e                                        ;; 00:0d67 $fe $0e
@@ -5616,9 +5616,7 @@ checkRoomVisited:
     dec  B                                             ;; 00:2208 $05
     ret                                                ;; 00:2209 $c9
 
-getMapNumber:
-    ld   A, [wMapNumber]                               ;; 00:220a $fa $f5 $c3
-    ret                                                ;; 00:220d $c9
+ds 4 ; Free space
 
 LoadRoomXY_to_A:
     ld   A, [wRoomX]                                   ;; 00:220e $fa $f6 $c3

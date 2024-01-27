@@ -475,7 +475,7 @@ minimapFlashingMarkerInit:
     db   $0a, $00, $08, $0a                            ;; 01:432d ?...
 
 minimapCopyMapNumberAndXY:
-    call getMapNumber                                  ;; 01:4331 $cd $0a $22
+    ld a, [wMapNumber]
     ld   [wMapNumberTmp], A                            ;; 01:4334 $ea $9d $d4
     call LoadRoomXY_to_A                               ;; 01:4337 $cd $0e $22
     ld   [wRoomXYTmp], A                               ;; 01:433a $ea $9e $d4

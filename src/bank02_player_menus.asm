@@ -7156,7 +7156,7 @@ windowInitContents:
 getGraphicsAndMusicState:
     ld   HL, wDialogX                                  ;; 02:7735 $21 $a7 $d4
     push HL                                            ;; 02:7738 $e5
-    call getMapNumber                                  ;; 02:7739 $cd $0a $22
+    ld a, [wMapNumber]
     pop  HL                                            ;; 02:773c $e1
     ld   [HL+], A                                      ;; 02:773d $22
     push HL                                            ;; 02:773e $e5
