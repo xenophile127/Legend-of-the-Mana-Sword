@@ -2424,6 +2424,8 @@ script_03d0:
 
 script_03d1:
     sIF_FLAG wScriptFlags.2                            ;; 0e:4f25 $08 $02 $00 $03
+      ; Add a sound if the player is looped back to the starting room in the Mt. Rocks cave.
+      sSFX 3
       sSET_NEXT_ROOM $00, $03                          ;; 0e:4f29 $ef $00 $03
     sENDIF                                             ;; 0e:4f2c
     sEND                                               ;; 0e:4f2c $00
@@ -2652,17 +2654,17 @@ script_03ed:
     sEND                                               ;; 0e:50c3 $00
 
 script_03ee:
-; Add a sound if the player has looped back to the starting room in the Mt. Rocks cave.
-    sIF_FLAG !wScriptFlags.3, !wScriptFlags.4
-      sSFX 3
-    sENDIF
     sEND                                               ;; 0e:50c4 $00
 
 script_03ef:
     sIF_FLAG wScriptFlags.1                            ;; 0e:50c5 $08 $01 $00 $03
+      ; Add a sound if the player is looped back to the starting room in the Mt. Rocks cave.
+      sSFX 3
       sSET_NEXT_ROOM $00, $03                          ;; 0e:50c9 $ef $00 $03
     sENDIF                                             ;; 0e:50cc
     sIF_FLAG wScriptFlags.2                            ;; 0e:50cc $08 $02 $00 $03
+      ; Add a sound if the player is looped back to the starting room in the Mt. Rocks cave.
+      sSFX 3
       sSET_NEXT_ROOM $00, $03                          ;; 0e:50d0 $ef $00 $03
     sENDIF                                             ;; 0e:50d3
     sEND                                               ;; 0e:50d3 $00
