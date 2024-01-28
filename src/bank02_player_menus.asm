@@ -1087,8 +1087,8 @@ gameStateMenuJumptable:
     dw   call_02_492b                                  ;; 02:4820 pP $2c
     dw   openStatusScreen                              ;; 02:4822 pP $2d
     dw   call_02_504f                                  ;; 02:4824 pP $2e
-    dw   openLoadSaveScreen                            ;; 02:4826 pP $2f
-    dw   call_02_4f97                                  ;; 02:4828 pP $30
+    dw   levelUpDrawPreviewAPDP                        ;; 02:4826 pP $2f
+    dw   levelUpDrawPreviewStatsAndYesNoWindow         ;; 02:4828 pP $30
     dw   call_02_4cba                                  ;; 02:482a ?? $31
     dw   call_02_5292                                  ;; 02:482c pP $32
     dw   openLoadSaveBottomWindow                      ;; 02:482e pP $33
@@ -1120,16 +1120,23 @@ windowMenuStartSpecial:
     ret                                                ;; 02:485f $c9
 
 gameStateMenu:
+.loop:
     ld   HL, gameStateMenuJumptable                    ;; 02:4860 $21 $c8 $47
     ld   A, [wMenuStateCurrentFunction]                ;; 02:4863 $fa $53 $d8
     and  A, $7f                                        ;; 02:4866 $e6 $7f
     call callJumptable
+; Check if there's time to run another step.
+    ldh a, [rLY]
+    cp $60
+    ret nc
+    ld a, [wMenuStateCurrentFunction]
+    and a, $7f
+; $17 and $18 are used to draw menu text.
+    cp $17
+    jr z, .loop
+    cp $18
+    jr z, .loop
     ret                                                ;; 02:4873 $c9
-
-; Free space
-db $00, $00, $00, $00, $00, $00, $00, $00
-db $00, $00, $00, $00, $00, $00, $00, $00
-db $00, $00
 
 ; The repeat delay was originally initialized to 1 so there was no initial delay,
 ; but changes to speed up windows made it too easy to make a mistake.
@@ -2095,11 +2102,14 @@ jp_02_4f19:
     ld   A, $2f                                        ;; 02:4f5a $3e $2f
     jp   jp_02_5877                                    ;; 02:4f5c $c3 $77 $58
 
-openLoadSaveScreen:
+levelUpDrawPreviewAPDP:
+; Draw the window, although this returns early.
     ld   A, $1a                                        ;; 02:4f5f $3e $1a
     ld   [wDialogType], A                              ;; 02:4f61 $ea $4a $d8
     call drawWindow                                    ;; 02:4f64 $cd $00 $67
+    ld a, $1a
     call windowInitContents                            ;; 02:4f67 $cd $93 $76
+; Calculate the preview AP.
     ld   HL, wTotalAP                                  ;; 02:4f6a $21 $df $d7
     ld   A, [wStatPowerLevelUpTmp]                     ;; 02:4f6d $fa $90 $d7
     ld   B, A                                          ;; 02:4f70 $47
@@ -2107,6 +2117,7 @@ openLoadSaveScreen:
     add  A, B                                          ;; 02:4f74 $80
     ld   [HL+], A                                      ;; 02:4f75 $22
     ld   [wDupTotalAP], A                              ;; 02:4f76 $ea $c1 $d6
+; Calculate the preview DP.
     ld   A, [wStatStaminaLevelUpTmp]                   ;; 02:4f79 $fa $8f $d7
     ld   B, A                                          ;; 02:4f7c $47
     ld   A, [wEquippedArmorDefense]                    ;; 02:4f7d $fa $c2 $d6
@@ -2117,20 +2128,15 @@ openLoadSaveScreen:
     ld   [HL], A                                       ;; 02:4f86 $77
     ld   [wDupTotalDP], A                              ;; 02:4f87 $ea $c3 $d6
     ld   A, [wStatusEffect]                            ;; 02:4f8a $fa $c0 $d7
+; Set DP to zero if moogled. This call has the side effect of initializing the moogle DP backup.
     bit  3, A                                          ;; 02:4f8d $cb $5f
     call NZ, moogleTempZeroDP                          ;; 02:4f8f $c4 $b8 $78
+; Move on to the next step.
     ld   A, $30                                        ;; 02:4f92 $3e $30
-    jp   jp_02_5877                                    ;; 02:4f94 $c3 $77 $58
+    ld [wMenuStateFunctionNew], a
+    jp call_02_5880
 
-call_02_4f97:
-    ld   A, [wOAMBuffer._01]                           ;; 02:4f97 $fa $01 $c0
-    ld   H, A                                          ;; 02:4f9a $67
-    ld   A, [wOAMBuffer]                               ;; 02:4f9b $fa $00 $c0
-    ld   L, A                                          ;; 02:4f9e $6f
-    ld   A, H                                          ;; 02:4f9f $7c
-    ld   [wD8C4], A                                    ;; 02:4fa0 $ea $c4 $d8
-    ld   A, L                                          ;; 02:4fa3 $7d
-    ld   [wD8C3], A                                    ;; 02:4fa4 $ea $c3 $d8
+levelUpDrawPreviewStatsAndYesNoWindow:
     xor  A, A                                          ;; 02:4fa7 $af
     ld   [wSelectedMenuIndex], A                       ;; 02:4fa8 $ea $4b $d8
     ld   HL, wWindowSecondaryFlags                     ;; 02:4fab $21 $72 $d8
@@ -2146,6 +2152,8 @@ call_02_4f97:
     ld   A, $18                                        ;; 02:4fc0 $3e $18
     ld   [wDialogType], A                              ;; 02:4fc2 $ea $4a $d8
     jp   windowInitMain                                ;; 02:4fc5 $c3 $89 $48
+
+ds 2 ; Free space
 
 call_02_4fc8:
     call getSelectedMenuIndexes                        ;; 02:4fc8 $cd $b0 $57
@@ -4395,9 +4403,9 @@ windowCloseAndRestoreHidden:
     call windowCloseMain
     ret z
     ldh a, [rLY]
-    cp $70
+    cp $60
     jr c, .loop
-; If rLY was exactly $70 then z is set. Unset it with a decrement.
+; If rLY was exactly $60 then z is set. Unset it with a decrement.
     dec a
     ret
 
@@ -4485,10 +4493,18 @@ drawWindow:
 .loop:
     ld hl, drawWindowJumptable
     call callJumptable
-; If scanline is 112 or above, return. This is a little conservative, but not much.
+; The level up preview screen draws the stats window and the Yes/No window in parallel.
+; They could be detangled but it's easier to just let them be slow.
+    ld a, [wDialogType]
+    cp $18
+    ret z
+    cp $19
+    ret z
+; If scanline is 96 or above, return.
     ldh a, [rLY]
-    cp $70
+    cp $60
     ret nc
+; Return if finished.
     ld a, [wDrawWindowStep]
     or a
     jr nz, .loop
@@ -7617,46 +7633,49 @@ hideFullscreenWindow:
     call showSpritesBehindWindow
     ret                                                ;; 02:7a39 $c9
 
-; Enable the sprite hiding effect for the status bar.
-; e is used to modify LCDC.
 enableStatusBarEffect:
-    ld e, $01
+    push DE                                            ;; 02:7a3a $d5
+    ld   D, $8e                                        ;; 02:7a3b $16 $8e
+    ld   E, $7e                                        ;; 02:7a3d $1e $7e
     call lcdcEffectChangeLYC                           ;; 02:7a3f $cd $4e $7a
+    pop  DE                                            ;; 02:7a42 $d1
     ret                                                ;; 02:7a43 $c9
 
-; Disable the sprite hiding effect for the status bar.
 ; If there's a window open (like the SELECT window) it would be inconvenient to have its sprites hidden.
-; e is used to modify LCDC.
 disableStatusBarEffect:
-    ld e, $03
+    push DE                                            ;; 02:7a44 $d5
+    ld   D, $7e                                        ;; 02:7a45 $16 $7e
+    ld   E, $8e                                        ;; 02:7a47 $1e $8e
     call lcdcEffectChangeLYC                           ;; 02:7a49 $cd $4e $7a
+    pop  DE                                            ;; 02:7a4c $d1
     ret                                                ;; 02:7a4d $c9
 
 ; Used to hide/show the status bar
+; D = search (old) value
 ; E = new value
 lcdcEffectChangeLYC:
     push HL                                            ;; 02:7a4e $e5
+    push BC                                            ;; 02:7a4f $c5
     ld   HL, wLCDCEffectBuffer                         ;; 02:7a50 $21 $a0 $d3
-    ld d, $10
-    ld a, $7e
+    ld   B, $10                                        ;; 02:7a53 $06 $10
 .loop:
-    cp [hl]
-    inc hl
-    inc hl
+    ld   A, [HL+]                                      ;; 02:7a55 $2a
+    cp   A, D                                          ;; 02:7a56 $ba
     jr   Z, .change                                    ;; 02:7a57 $28 $09
+    inc  HL                                            ;; 02:7a59 $23
+    inc  HL                                            ;; 02:7a5a $23
     inc  HL                                            ;; 02:7a5b $23
-    dec d
+    dec  B                                             ;; 02:7a5c $05
     jr   NZ, .loop                                     ;; 02:7a5d $20 $f6
+    pop  BC                                            ;; 02:7a5f $c1
     pop  HL                                            ;; 02:7a60 $e1
     ret                                                ;; 02:7a61 $c9
 .change:
+    dec  HL                                            ;; 02:7a62 $2b
     ld   [HL], E                                       ;; 02:7a63 $73
+    pop  BC                                            ;; 02:7a64 $c1
     pop  HL                                            ;; 02:7a65 $e1
     ret                                                ;; 02:7a66 $c9
-
-; Free space
-db $00, $00, $00, $00, $00, $00, $00, $00
-db $00, $00, $00
 
 ; Return: e=x, d=y, c=width, b=height
 ; Return: HL = beginning of window backup buffer

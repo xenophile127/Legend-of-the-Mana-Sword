@@ -1557,9 +1557,11 @@ wNextXPLevelHigh:
 wNextXPLevelHighExt:
     ds 1                                               ;; d8c2
 
+; Unused. Free space.
 wD8C3:
     ds 1                                               ;; d8c3
 
+; Unused. Free space.
 wD8C4:
     ds 1                                               ;; d8c4
 

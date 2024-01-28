@@ -124,27 +124,27 @@ ENDC
 IF DEF(GLADIATOR_DUKE)
     NPC_DATA $81, $5f, $60, $08, gfxNpcDuke, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0261, $0000 ;; 03:68a2 NPC_AMANDA_1
     NPC_DATA $91, $60, $40, $02, gfxNpcDukeIll, tileorderNpc, data_03_7b72, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0226, $0000 ;; 03:68ba NPC_AMANDA_ILL
-    NPC_DATA $81, $5e, $5c, $02, gfxNpcDukeDead, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0228, $0000 ;; 03:68d2 NPC_AMANDA_DEAD
+    NPC_DATA $81, $5e, $5c, $02, gfxNpcDukeDead, tileorderNpc, metaspritesTable5cUnmoving, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0228, $0000 ;; 03:68d2 NPC_AMANDA_DEAD
 ELSE
     NPC_DATA $81, $5f, $60, $08, gfxNpcAmanda, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0261, $0000 ;; 03:68a2 NPC_AMANDA_1
     NPC_DATA $91, $60, $40, $02, gfxNpcAmandaIll, tileorderNpc, data_03_7b72, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0226, $0000 ;; 03:68ba NPC_AMANDA_ILL
-    NPC_DATA $81, $5e, $5c, $02, gfxNpcAmandaDead, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0228, $0000 ;; 03:68d2 NPC_AMANDA_DEAD
+    NPC_DATA $81, $5e, $5c, $02, gfxNpcAmandaDead, tileorderNpc, metaspritesTable5cUnmoving, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0228, $0000 ;; 03:68d2 NPC_AMANDA_DEAD
 ENDC
 
     NPC_DATA $81, $01, $20, $08, gfxNpcGirl, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:68ea NPC_FUJI_1
-    NPC_DATA $81, $5e, $40, $02, gfxNpcGirlWindow, tileorderNpc, data_03_7ef6, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0207, $0000 ;; 03:6902 NPC_FUJI_WINDOW
-    NPC_DATA $81, $5e, $5c, $02, gfxNpcMother, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01fe, $0000 ;; 03:691a NPC_MOTHER
+    NPC_DATA $81, $5e, $40, $02, gfxNpcGirlWindow, tileorderNpc, metaspritesTable40UnmovingRed, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0207, $0000 ;; 03:6902 NPC_FUJI_WINDOW
+    NPC_DATA $81, $5e, $5c, $02, gfxNpcMother, tileorderNpc, metaspritesTable5cUnmoving, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01fe, $0000 ;; 03:691a NPC_MOTHER
     NPC_DATA $81, $5f, $60, $08, gfxNpcBogard, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0257, $0000 ;; 03:6932 NPC_BOGARD_1
-    NPC_DATA $81, $5e, $40, $08, gfxNpcBogard, tileorderNpc, data_03_7ef6, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0257, $0000 ;; 03:694a NPC_BOGARD_2
+    NPC_DATA $81, $5e, $40, $08, gfxNpcBogard, tileorderNpc, metaspritesTable40Unmoving, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0257, $0000 ;; 03:694a NPC_BOGARD_2
     NPC_DATA $81, $5f, $40, $08, data_09_6900, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_01e0, $0000 ;; 03:6962 NPC_KETTS_WEREWOLF
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01e3, $0000 ;; 03:697a NPC_INV_FUJI_COFFIN
     NPC_DATA $81, $5f, $60, $08, gfxNpcCibba, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_025a, $0000 ;; 03:6992 NPC_CIBBA
     NPC_DATA $81, $5e, $40, $08, data_09_5f00, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01e6, $0000 ;; 03:69aa NPC_GUY_WENDEL
     NPC_DATA $81, $5e, $40, $08, gfxNpcWatts, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_01f8, $0000 ;; 03:69c2 NPC_WATTS
-    NPC_DATA $81, $5e, $5c, $02, gfxNpcMinecart, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01f9, $0000 ;; 03:69da NPC_MINECART
+    NPC_DATA $81, $5e, $5c, $02, gfxNpcMinecart, tileorderNpc, metaspritesTable5cUnmovingRed, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01f9, $0000 ;; 03:69da NPC_MINECART
     NPC_DATA $81, $5e, $40, $04, gfxNpcEgg, tileorderNpc, data_03_7d46, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0217, $0000 ;; 03:69f2 NPC_CHOCOBO_EGG
     NPC_DATA $81, $5f, $40, $08, gfxNpcDavias, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0218, $0000 ;; 03:6a0a NPC_DAVIAS
-    NPC_DATA $81, $5e, $5c, $02, gfxNpcLesterInstrument, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0222, $0000 ;; 03:6a22 NPC_LESTER_1
+    NPC_DATA $81, $5e, $5c, $02, gfxNpcLesterInstrument, tileorderNpc, metaspritesTable5cUnmoving, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0222, $0000 ;; 03:6a22 NPC_LESTER_1
     NPC_DATA $81, $5f, $50, $04, gfxNpcParrot, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0219, $0000 ;; 03:6a3a NPC_LESTER_PARROT
     NPC_DATA $81, $5e, $40, $08, gfxNpcBowow, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_022f, $0000 ;; 03:6a52 NPC_BOWOW
     NPC_DATA $81, $5f, $60, $08, data_09_6000, tileorderNpc, data_03_7cda, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0231, $0000 ;; 03:6a6a NPC_SARAH
@@ -201,7 +201,7 @@ ENDC
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0243, $0000 ;; 03:6f32 NPC_INV_STONE_6
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0244, $0000 ;; 03:6f4a NPC_INV_STONE_7
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, data_03_7f3e, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0245, $0000 ;; 03:6f62 NPC_INV_STONE_8
-    NPC_DATA $81, $5e, $50, $08, data_09_5f00, tileorderNpc, data_03_7ed2, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, script_0251, $0000 ;; 03:6f7a NPC_GUY_LORIM_FROZEN
+    NPC_DATA $81, $5e, $50, $08, data_09_5f00, tileorderNpc, metaspritesTable5cUnmoving, $01, $01, $01, $01, $01, $01, $00, $00, $00, $00, script_0251, $0000 ;; 03:6f7a NPC_GUY_LORIM_FROZEN
     NPC_DATA $81, $5e, $40, $08, data_09_5f00, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0252, $0000 ;; 03:6f92 NPC_GUY_LORIM_1
     NPC_DATA $81, $5e, $40, $08, data_09_5f00, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0253, $0000 ;; 03:6faa NPC_GUY_LORIM_2
     NPC_DATA $81, $5f, $40, $08, data_09_6300, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_025d, $0000 ;; 03:6fc2 NPC_SALESMAN
@@ -222,7 +222,7 @@ ENDC
     NPC_DATA $81, $08, $20, $08, gfxNpcChocobot, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0472, $0000 ;; 03:709a NPC_CHOCOBOT
     NPC_DATA $81, $09, $50, $08, gfxNpcChocobo, tileorderNpc, data_03_7cfe, $00, $01, $00, $01, $00, $00, $00, $00, $00, $00, script_0472, $0000 ;; 03:70b2 NPC_CHOCOBO_1
     NPC_DATA $81, $09, $20, $08, gfxNpcChocobo, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $02, $02, $02, $02, script_0472, $0000 ;; 03:70ca NPC_CHOCOBO_2
-    NPC_DATA $81, $5e, $5c, $02, gfxNpcPrisonBars, tileorderNpc, data_03_7ed2, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:70e2 NPC_PRISION_BARS
+    NPC_DATA $81, $5e, $5c, $02, gfxNpcPrisonBars, tileorderNpc, metaspritesTable5cUnmoving, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0258, $0000 ;; 03:70e2 NPC_PRISION_BARS
     NPC_DATA $81, $5f, $40, $04, gfxNpcMusic, tileorderNpc, data_03_7d46, $00, $01, $00, $00, $00, $00, $00, $00, $00, $00, script_003d, $0000 ;; 03:70fa NPC_MUSIC_NOTES
     NPC_DATA $81, $5e, $40, $08, gfxNpcMagicMerchant, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_025d, $0000 ;; 03:7112 NPC_MAGIC_SALESMAN
 
