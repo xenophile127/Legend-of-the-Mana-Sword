@@ -1344,6 +1344,7 @@ script_00e8:
     sELSE                                              ;; 0d:4736 $01 $05
 
       ; Ensure Hero is visible after Jackal defeat.
+      sCLEAR_PLAYER_ATTACK
       sIF_FLAG wScriptFlags.1
         sSET_PLAYER_DIRECTION_RIGHT
       sELSE
