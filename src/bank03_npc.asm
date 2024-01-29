@@ -2239,10 +2239,14 @@ initEnemiesCounterAndMoveFolower:
 ; When in a chocobo form for (two) frames after scrolling the chocobo follower would be teleported to your location.
     ld a, [wOAMBuffer+$38] ; Y position of your follower. If you are riding your chocobo this will be 0.
     or a
+    ; If you do not currently have a follower this code might cause an early
+    ; short circuit exit, but that would be ok since moveFollowerToPlayer
+    ; also exits early if there is no follower.
     ret z
-    jp moveFollowerToPlayer
+    call moveFollowerToPlayer
+    ret
 
-ds 18 ; Free space
+ds 17 ; Free space
 
 ;@jumptable amount=224
 npcBehaviorJumptable:
