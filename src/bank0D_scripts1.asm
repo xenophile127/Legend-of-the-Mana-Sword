@@ -1853,7 +1853,9 @@ script_0129:
 
 script_012a:
     sSET_NPC_TYPES 4                                   ;; 0d:4aa1 $fc $04
-    sSPAWN_NPC 2                                       ;; 0d:4aa3 $fd $02
+    sIF_FLAG !wScriptFlags.1
+      sSPAWN_NPC 2
+    sENDIF
     sSPAWN_NPC 0                                       ;; 0d:4aa5 $fd $00
     sEND                                               ;; 0d:4aa7 $00
 
@@ -1911,7 +1913,10 @@ script_0138:
 
 script_0139:
     sSET_NPC_TYPES 5                                   ;; 0d:4aca $fc $05
-    sSPAWN_NPC 2                                       ;; 0d:4acc $fd $02
+    sSPAWN_NPC 2
+    sIF_FLAG !wScriptFlags.3
+      sSPAWN_NPC 2
+    sENDIF
     sSPAWN_NPC 0                                       ;; 0d:4ace $fd $00
     sEND                                               ;; 0d:4ad0 $00
 
@@ -2255,7 +2260,9 @@ script_0186:
 
 script_0187:
     sSET_NPC_TYPES 6                                   ;; 0d:4c1f $fc $06
-    sSPAWN_NPC 2                                       ;; 0d:4c21 $fd $02
+    sIF_FLAG !wScriptFlags.2
+      sSPAWN_NPC 2
+    sENDIF
     sSPAWN_NPC 1                                       ;; 0d:4c23 $fd $01
     sEND                                               ;; 0d:4c25 $00
 
@@ -2344,7 +2351,9 @@ script_0198:
 
 script_0199:
     sSET_NPC_TYPES 7                                   ;; 0d:4c6d $fc $07
-    sSPAWN_NPC 2                                       ;; 0d:4c6f $fd $02
+    sIF_FLAG !wScriptFlags.4
+      sSPAWN_NPC 2
+    sENDIF
     sSPAWN_NPC 0                                       ;; 0d:4c71 $fd $00
     sEND                                               ;; 0d:4c73 $00
 

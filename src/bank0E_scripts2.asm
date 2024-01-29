@@ -777,7 +777,10 @@ script_02d0:
 script_02d1:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4427 $0b $c9 $00 $06
       sLOAD_ROOM 5, $42, 16, 2                         ;; 0e:442b $f4 $05 $42 $10 $02
-      sRUN_ROOM_SCRIPT                                 ;; 0e:4430 $ec
+; Inlined from 03df to remove wall enemy conditional.
+      sSET_NPC_TYPES 7
+      sSPAWN_NPC 2
+      sSPAWN_NPC 0
     sENDIF                                             ;; 0e:4431
     sEND                                               ;; 0e:4431 $00
 
@@ -1195,6 +1198,10 @@ script_0315:
 script_0316:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:46e3 $0b $c9 $00 $06
       sLOAD_ROOM 2, $66, 16, 12                        ;; 0e:46e7 $f4 $02 $66 $10 $0c
+; Inlined from 012a to remove wall enemy conditional.
+      sSET_NPC_TYPES 4                                   ;; 0d:4aa1 $fc $04
+      sSPAWN_NPC 2
+      sSPAWN_NPC 0
       sRUN_ROOM_SCRIPT                                 ;; 0e:46ec $ec
     sENDIF                                             ;; 0e:46ed
     sEND                                               ;; 0e:46ed $00
@@ -1757,7 +1764,10 @@ script_036e:
 script_036f:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4aa1 $0b $c9 $00 $06
       sLOAD_ROOM 11, $11, 16, 2                        ;; 0e:4aa5 $f4 $0b $11 $10 $02
-      sRUN_ROOM_SCRIPT                                 ;; 0e:4aaa $ec
+; Inlined from 03df to remove wall enemy conditional.
+      sSET_NPC_TYPES 7
+      sSPAWN_NPC 2
+      sSPAWN_NPC 0
     sENDIF                                             ;; 0e:4aab
     sEND                                               ;; 0e:4aab $00
 
@@ -2491,7 +2501,9 @@ script_03db:
 
 script_03dc:
     sSET_NPC_TYPES 21                                  ;; 0e:4f8c $fc $15
-    sSPAWN_NPC 2                                       ;; 0e:4f8e $fd $02
+    sIF_FLAG !wScriptFlags.1
+      sSPAWN_NPC 2
+    sENDIF
     sSPAWN_NPC 0                                       ;; 0e:4f90 $fd $00
     sEND                                               ;; 0e:4f92 $00
 
@@ -2503,7 +2515,9 @@ script_03de:
 
 script_03df:
     sSET_NPC_TYPES 7                                   ;; 0e:4f95 $fc $07
-    sSPAWN_NPC 2                                       ;; 0e:4f97 $fd $02
+    sIF_FLAG !wScriptFlags.4
+      sSPAWN_NPC 2
+    sENDIF
     sSPAWN_NPC 0                                       ;; 0e:4f99 $fd $00
     sEND                                               ;; 0e:4f9b $00
 
@@ -2515,7 +2529,9 @@ script_03e1:
 
 script_03e2:
     sSET_NPC_TYPES 32                                  ;; 0e:4f9e $fc $20
-    sSPAWN_NPC 0                                       ;; 0e:4fa0 $fd $00
+    sIF_FLAG !wScriptFlags.2
+      sSPAWN_NPC 0
+    sENDIF
     sSPAWN_NPC 2                                       ;; 0e:4fa2 $fd $02
     sEND                                               ;; 0e:4fa4 $00
 
