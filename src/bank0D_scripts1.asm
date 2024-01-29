@@ -4789,10 +4789,26 @@ script_025f:
           db "<1b> Sorry.\n Not enough lucre!<12>"
           db "<11>", $00 ;; 0d:7808
       sELSE                                            ;; 0d:781c $01 $03
-        sCALL script_0405                              ;; 0d:781e $02 $51 $fb
+        sSET_MUSIC 0
+        sMSG
+          db "<1b> Good night!<12>"
+          db "<11><00>"
+        sFADE_TO_BLACK
+        sDELAY 10
+        sSET_MUSIC 17
+        sFULL_HP
+        sFULL_MANA
+        sSET_PLAYER_DIRECTION_DOWN
+        sDELAY 110
+        sCALL script_0405
+        sFADE_TO_NORMAL
+        sCLEAR_ROOM_HISTORY
+        sRUN_ROOM_SCRIPT
       sENDIF                                           ;; 0d:7821
+    sELSE
+      sMSG
+        db "<11><00>"
     sENDIF                                             ;; 0d:7821
-    sCALL script_0004                                  ;; 0d:7821 $02 $00 $31
     sEND                                               ;; 0d:7824 $00
 
 script_0260:
@@ -5161,26 +5177,3 @@ script_027d:
       sSET_ROOM_TILE $02, 1, 1                         ;; 0d:7d6c $b0 $02 $01 $01
     sENDIF                                             ;; 0d:7d70
     sEND                                               ;; 0d:7d70 $00
-
-script_027e:
-    sIF_TRIGGERED_ON_BY $c9, $a9                       ;; 0d:7d71 $0b $c9 $a9 $00 $06
-      sSFX 24                                          ;; 0d:7d76 $f9 $18
-      sSET_ROOM_TILE $02, 8, 1                         ;; 0d:7d78 $b0 $02 $08 $01
-    sENDIF                                             ;; 0d:7d7c
-    sIF_TRIGGERED_OFF_BY $c9                           ;; 0d:7d7c $0c $c9 $00 $06
-      sSFX 24                                          ;; 0d:7d80 $f9 $18
-      sSET_ROOM_TILE $00, 8, 1                         ;; 0d:7d82 $b0 $00 $08 $01
-    sENDIF                                             ;; 0d:7d86
-    sEND                                               ;; 0d:7d86 $00
-
-script_027f:
-    sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7d87 $0b $c9 $00 $11
-      sIF_FLAG wScriptFlags0B.0                        ;; 0d:7d8b $08 $58 $00 $05
-        sCALL script_0473                              ;; 0d:7d8f $02 $5a $e2
-        sSET_FLAG wScriptFlags0B.7                     ;; 0d:7d92 $da $5f
-      sENDIF                                           ;; 0d:7d94
-      sLOAD_ROOM 14, $53, 13, 12                       ;; 0d:7d94 $f4 $0e $53 $0d $0c
-      sSET_MUSIC 4                                     ;; 0d:7d99 $f8 $04
-      sRUN_ROOM_SCRIPT                                 ;; 0d:7d9b $ec
-    sENDIF                                             ;; 0d:7d9c
-    sEND                                               ;; 0d:7d9c $00

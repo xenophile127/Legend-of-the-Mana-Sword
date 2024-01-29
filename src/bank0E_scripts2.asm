@@ -7,6 +7,29 @@ INCLUDE "include/constants.inc"
 
 SECTION "bank0e", ROMX[$4000], BANK[$0e]
 
+script_027e:
+    sIF_TRIGGERED_ON_BY $c9, $a9
+      sSFX 24
+      sSET_ROOM_TILE $02, 8, 1
+    sENDIF
+    sIF_TRIGGERED_OFF_BY $c9
+      sSFX 24
+      sSET_ROOM_TILE $00, 8, 1
+    sENDIF
+    sEND
+
+script_027f:
+    sIF_TRIGGERED_ON_BY $c9
+      sIF_FLAG wScriptFlags0B.0
+        sCALL script_0473
+        sSET_FLAG wScriptFlags0B.7
+      sENDIF
+      sLOAD_ROOM 14, $53, 13, 12
+      sSET_MUSIC 4
+      sRUN_ROOM_SCRIPT
+    sENDIF
+    sEND
+
 script_0280:
     sIF_TRIGGERED_ON_BY $c9
       sIF_FLAG wScriptFlags0B.0
@@ -2840,18 +2863,52 @@ script_0404:
     sEND                                               ;; 0e:51fa $00
 
 script_0405:
-    sSET_MUSIC 0                                       ;; 0e:51fb $f8 $00
-    sMSG                                               ;; 0e:51fd $04
-      db "<1b> Good night!<12>"
-      db "<11>", $00   ;; 0e:51fe
-    sFADE_TO_BLACK                                     ;; 0e:5209 $bd
-    sSET_MUSIC 17                                      ;; 0e:520a $f8 $11
-    sFULL_HP                                           ;; 0e:520c $c0
-    sFULL_MANA                                         ;; 0e:520d $c1
-    sDELAY 60                                          ;; 0e:520e $f0 $3c
-    sFADE_TO_NORMAL                                    ;; 0e:5210 $bc
-    sSET_MUSIC 0
-    sEND                                               ;; 0e:5211 $00
+; Used by the inn script.
+    sIF_FLAG !wScriptFlags0E.5, !wScriptFlags0E.6, wScriptFlags0E.7
+      ; Welcome to Jadd.
+      sLOAD_ROOM_INSTANT 14, $14, 10, 6
+      sIF_FLAG !wScriptFlags05.0
+        sSET_MUSIC 0
+      sELSE
+        sSET_MUSIC 13
+      sENDIF
+    sENDIF
+    sIF_FLAG !wScriptFlags0E.5, wScriptFlags0E.6, !wScriptFlags0E.7
+      sLOAD_ROOM_INSTANT 0, $4d, 10, 4
+      sSET_MUSIC 20
+    sENDIF
+    sIF_FLAG !wScriptFlags0E.5, wScriptFlags0E.6, wScriptFlags0E.7
+      ; Welcome to Ish.
+      sLOAD_ROOM_INSTANT 15, $36, 2, 11
+      sIF_FLAG !wScriptFlags04.1
+        sSET_MUSIC 27
+      sELSE
+        sSET_MUSIC 4
+      sENDIF
+    sENDIF
+    sIF_FLAG wScriptFlags0E.5, !wScriptFlags0E.6, !wScriptFlags0E.7
+      ; Welcome to Topple.
+      sLOAD_ROOM_INSTANT 14, $01, 14, 5
+      sSET_MUSIC 4
+    sENDIF
+    sIF_FLAG wScriptFlags0E.5, !wScriptFlags0E.6, wScriptFlags0E.7
+      ; Welcome to Wendle.
+      sLOAD_ROOM_INSTANT 14, $17, 16, 8
+      sIF_FLAG wScriptFlags02.0, !wScriptFlags02.1
+        sSET_MUSIC 9
+      sELSE
+        sSET_MUSIC 11
+      sENDIF
+    sENDIF
+    sIF_FLAG wScriptFlags0E.5, wScriptFlags0E.6, !wScriptFlags0E.7
+      sLOAD_ROOM_INSTANT 0, $aa, 14, 8
+      sSET_MUSIC 20
+    sENDIF
+    sIF_FLAG wScriptFlags0E.5, wScriptFlags0E.6, wScriptFlags0E.7
+      sLOAD_ROOM_INSTANT 0, $7c, 8, 4
+      sSET_MUSIC 20
+    sENDIF
+    sEND
 
 script_0406:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:5212 $0b $c9 $00 $0a
