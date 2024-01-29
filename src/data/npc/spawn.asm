@@ -46,7 +46,7 @@ NPCSpawnPointers:
     dw   data_03_779a, data_03_771a, data_03_771a      ;; 03:7226 ??????
     dw   data_03_7742, data_03_76f2, data_03_76f2      ;; 03:722c ......
     dw   data_03_777c, data_03_76f2, data_03_7b02      ;; 03:7232 ??????
-    dw   data_03_774c, data_03_774c, data_03_76e8      ;; 03:7238 ......
+    dw   shadow_knight_fast, shadow_knight_fast, data_03_76e8      ;; 03:7238 ......
     dw   fuji_by_hasim, data_03_7458, data_03_76e8      ;; 03:723e ......
     dw   data_03_78a2, data_03_789a, data_03_78ba      ;; 03:7244 ......
     dw   data_03_78aa, data_03_78b2, data_03_77b8      ;; 03:724a ......
@@ -533,8 +533,8 @@ data_03_7742:
     db   1, 1, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD ;; 03:7742 ...???
     db   $0a, $0c, $80, $80                            ;; 03:7748 ..??
 
-data_03_774c:
-    db   1, 1, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD ;; 03:774c ..?.?.
+shadow_knight_fast:
+    db   1, 1, NPC_CHOCOBOT_FOLLOWING, NPC_CHOCOBOT_FOLLOWING, NPC_CHOCOBOT_FOLLOWING, NPC_CHOCOBOT_FOLLOWING ;; 03:774c ..?.?.
     db   $12, $07, $80, $80                            ;; 03:7752 ..??
 
 data_03_7756:
