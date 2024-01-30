@@ -4828,12 +4828,12 @@ script_050f:
 
 script_0510:
     sIF_FLAG !wScriptFlags02.3                         ;; 0e:5fdc $08 $93 $00 $0e
+      sSPAWN_BOSS 18
       sDELAY 20                                        ;; 0e:5fe0 $f0 $14
       sSFX 20                                          ;; 0e:5fe2 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:5fe4 $bf
       sSFX 20                                          ;; 0e:5fe5 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:5fe7 $bf
-      sSPAWN_BOSS 18                                   ;; 0e:5fe8 $fe $12
       sSET_MUSIC 15                                    ;; 0e:5fea $f8 $0f
     sELSE                                              ;; 0e:5fec $01 $06
       sSFX 24                                          ;; 0e:5fee $f9 $18
@@ -4858,12 +4858,12 @@ script_0512:
 
 script_0513:
     sIF_FLAG !wScriptFlags02.5                         ;; 0e:601c $08 $95 $00 $0e
+      sSPAWN_BOSS 19
       sDELAY 20                                        ;; 0e:6020 $f0 $14
       sSFX 20                                          ;; 0e:6022 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:6024 $bf
       sSFX 20                                          ;; 0e:6025 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:6027 $bf
-      sSPAWN_BOSS 19                                   ;; 0e:6028 $fe $13
       sSET_MUSIC 15                                    ;; 0e:602a $f8 $0f
     sELSE                                              ;; 0e:602c $01 $03
       sSFX 16                                          ;; 0e:602e $f9 $10

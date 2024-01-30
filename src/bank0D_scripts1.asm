@@ -1733,11 +1733,11 @@ script_011e:
       sMSG                                             ;; 0d:4962 $04
         db "<10>Julius:Now see\n the true power\n of Mana!<12>"
         db "<11>", $00 ;; 0d:4963
+      sSPAWN_BOSS 14
       sLOOP 5, 4                                       ;; 0d:4982 $03 $05 $04
         sSFX 20                                        ;; 0d:4985 $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4987 $bf
       sEND                                             ;; 0d:4988 $00
-      sSPAWN_BOSS 14                                   ;; 0d:4989 $fe $0e
       sSET_MUSIC 19                                    ;; 0d:498b $f8 $13
     sENDIF                                             ;; 0d:498d
     sEND                                               ;; 0d:498d $00
@@ -2393,11 +2393,11 @@ script_019d:
       sSET_ROOM_TILE $11, 4, 7                         ;; 0d:4d29 $b0 $11 $04 $07
       sSFX 16                                          ;; 0d:4d2d $f9 $10
       sDELAY 10                                        ;; 0d:4d2f $f0 $0a
+      sSPAWN_BOSS 17
       sLOOP 10, 4                                      ;; 0d:4d31 $03 $0a $04
         sSFX 20                                        ;; 0d:4d34 $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4d36 $bf
       sEND                                             ;; 0d:4d37 $00
-      sSPAWN_BOSS 17                                   ;; 0d:4d38 $fe $11
       sSET_MUSIC 16                                    ;; 0d:4d3a $f8 $10
     sENDIF                                             ;; 0d:4d3c
     sEND                                               ;; 0d:4d3c $00
@@ -2414,9 +2414,10 @@ script_019f:
 
 script_01a0:
     sIF_FLAG !wScriptFlags04.3                         ;; 0d:4d49 $08 $a3 $00 $08
+      sSPAWN_BOSS 1
+      sDELAY 10
       sSFX 20                                          ;; 0d:4d4d $f9 $14
       sSET_MUSIC 15                                    ;; 0d:4d4f $f8 $0f
-      sSPAWN_BOSS 1                                    ;; 0d:4d51 $fe $01
     sELSE                                              ;; 0d:4d53 $01 $01
       sRUN_ROOM_ALL_KILLED_SCRIPT                      ;; 0d:4d55 $ee
     sENDIF                                             ;; 0d:4d56
@@ -2458,8 +2459,8 @@ script_01a3:
       sIF_FLAG !wScriptFlags06.4                       ;; 0d:4d8c $08 $b4 $00 $0b
         sSFX 20                                        ;; 0d:4d90 $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4d92 $bf
+        sSPAWN_BOSS 15
         sDELAY 30                                      ;; 0d:4d93 $f0 $1e
-        sSPAWN_BOSS 15                                 ;; 0d:4d95 $fe $0f
         sSET_MUSIC 15                                  ;; 0d:4d97 $f8 $0f
       sELSE                                            ;; 0d:4d99 $01 $04
         sSET_ROOM_TILE $59, 8, 1                       ;; 0d:4d9b $b0 $59 $08 $01
@@ -2469,8 +2470,8 @@ script_01a3:
       sIF_FLAG !wScriptFlags02.7                       ;; 0d:4da8 $08 $97 $00 $0b
         sSFX 20                                        ;; 0d:4dac $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4dae $bf
+        sSPAWN_BOSS 20
         sDELAY 30                                      ;; 0d:4daf $f0 $1e
-        sSPAWN_BOSS 20                                 ;; 0d:4db1 $fe $14
         sSET_MUSIC 15                                  ;; 0d:4db3 $f8 $0f
       sELSE                                            ;; 0d:4db5 $01 $04
         sSET_ROOM_TILE $59, 8, 1                       ;; 0d:4db7 $b0 $59 $08 $01
@@ -2480,8 +2481,8 @@ script_01a3:
       sIF_FLAG !wScriptFlags06.2                       ;; 0d:4dc4 $08 $b2 $00 $0b
         sSFX 20                                        ;; 0d:4dc8 $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4dca $bf
+        sSPAWN_BOSS 13
         sDELAY 30                                      ;; 0d:4dcb $f0 $1e
-        sSPAWN_BOSS 13                                 ;; 0d:4dcd $fe $0d
         sSET_MUSIC 15                                  ;; 0d:4dcf $f8 $0f
       sELSE                                            ;; 0d:4dd1 $01 $04
         sSET_ROOM_TILE $59, 8, 1                       ;; 0d:4dd3 $b0 $59 $08 $01
@@ -2546,9 +2547,9 @@ script_01a6:
         sFLASH_SCREEN                                  ;; 0d:4e94 $bf
         sFLASH_SCREEN                                  ;; 0d:4e95 $bf
         sFLASH_SCREEN                                  ;; 0d:4e96 $bf
+        sSPAWN_BOSS 0
         sDELAY 10                                      ;; 0d:4e97 $f0 $0a
         sSET_MUSIC 15                                  ;; 0d:4e99 $f8 $0f
-        sSPAWN_BOSS 0                                  ;; 0d:4e9b $fe $00
       sENDIF                                           ;; 0d:4e9d
     sENDIF                                             ;; 0d:4e9d
     sEND                                               ;; 0d:4e9d $00
@@ -2599,9 +2600,9 @@ script_01a9:
     sIF_FLAG !wScriptFlags04.6                         ;; 0d:4f43 $08 $a6 $00 $0b
       sSFX 20                                          ;; 0d:4f47 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:4f49 $bf
+      sSPAWN_BOSS 3
       sDELAY 30                                        ;; 0d:4f4a $f0 $1e
       sSET_MUSIC 15                                    ;; 0d:4f4c $f8 $0f
-      sSPAWN_BOSS 3                                    ;; 0d:4f4e $fe $03
     sELSE                                              ;; 0d:4f50 $01 $11
       sIF_FLAG !wScriptFlags02.4                       ;; 0d:4f52 $08 $94 $00 $09
         sCALL script_0435
@@ -2635,9 +2636,9 @@ script_01ac:
       sSFX 20                                          ;; 0d:4fac $f9 $14
       sFLASH_SCREEN                                    ;; 0d:4fae $bf
       sFLASH_SCREEN                                    ;; 0d:4faf $bf
+      sSPAWN_BOSS 2
       sDELAY 30                                        ;; 0d:4fb0 $f0 $1e
       sSET_MUSIC 15                                    ;; 0d:4fb2 $f8 $0f
-      sSPAWN_BOSS 2                                    ;; 0d:4fb4 $fe $02
     sENDIF                                             ;; 0d:4fb6
     sIF_FLAG wScriptFlags04.7                          ;; 0d:4fb6 $08 $27 $00 $12
       sSET_NPC_TYPES 66                                ;; 0d:4fba $fc $42
@@ -2716,8 +2717,8 @@ script_01af:
       sFLASH_SCREEN                                    ;; 0d:5098 $bf
       sSFX 20                                          ;; 0d:5099 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:509b $bf
+      sSPAWN_BOSS 4
       sDELAY 30                                        ;; 0d:509c $f0 $1e
-      sSPAWN_BOSS 4                                    ;; 0d:509e $fe $04
       sSET_MUSIC 19                                    ;; 0d:50a0 $f8 $13
     sENDIF                                             ;; 0d:50a2
     sSET_FLAG wScriptFlags0F.1                         ;; 0d:50a2 $da $79
@@ -2784,13 +2785,13 @@ script_01b1:
 
 script_01b2:
     sIF_FLAG !wScriptFlags05.1                         ;; 0d:51ff $08 $a9 $00 $0e
+      sSPAWN_BOSS 6
       sDELAY 30                                        ;; 0d:5203 $f0 $1e
       sSFX 20                                          ;; 0d:5205 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:5207 $bf
       sSFX 20                                          ;; 0d:5208 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:520a $bf
       sSET_MUSIC 15                                    ;; 0d:520b $f8 $0f
-      sSPAWN_BOSS 6                                    ;; 0d:520d $fe $06
     sELSE                                              ;; 0d:520f $01 $0b
       sIF_FLAG !wScriptFlags09.6                       ;; 0d:5211 $08 $ce $00 $07
         sSET_NPC_TYPES 89                              ;; 0d:5215 $fc $59
@@ -2816,12 +2817,12 @@ script_01b4:
 
 script_01b5:
     sIF_FLAG !wScriptFlags06.1                         ;; 0d:523b $08 $b1 $00 $0e
+      sSPAWN_BOSS 12
       sDELAY 30                                        ;; 0d:523f $f0 $1e
       sSFX 20                                          ;; 0d:5241 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:5243 $bf
       sSFX 20                                          ;; 0d:5244 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:5246 $bf
-      sSPAWN_BOSS 12                                   ;; 0d:5247 $fe $0c
       sSET_MUSIC 15                                    ;; 0d:5249 $f8 $0f
     sELSE                                              ;; 0d:524b $01 $03
       sCALL script_0248                                ;; 0d:524d $02 $33 $e7
@@ -2851,12 +2852,12 @@ script_01b7:
 
 script_01b8:
     sIF_FLAG !wScriptFlags05.3                         ;; 0d:52a6 $08 $ab $00 $0e
+      sSPAWN_BOSS 5
       sDELAY 30                                        ;; 0d:52aa $f0 $1e
       sSFX 20                                          ;; 0d:52ac $f9 $14
       sFLASH_SCREEN                                    ;; 0d:52ae $bf
       sSFX 20                                          ;; 0d:52af $f9 $14
       sFLASH_SCREEN                                    ;; 0d:52b1 $bf
-      sSPAWN_BOSS 5                                    ;; 0d:52b2 $fe $05
       sSET_MUSIC 15                                    ;; 0d:52b4 $f8 $0f
     sELSE                                              ;; 0d:52b6 $01 $01
       sOPEN_NORTH_DOOR                                 ;; 0d:52b8 $e0
@@ -2960,12 +2961,12 @@ script_01bd:
 
 script_01be:
     sIF_FLAG !wScriptFlags05.5                         ;; 0d:5427 $08 $ad $00 $0e
+      sSPAWN_BOSS 8
       sDELAY 20                                        ;; 0d:542b $f0 $14
       sSFX 20                                          ;; 0d:542d $f9 $14
       sFLASH_SCREEN                                    ;; 0d:542f $bf
       sSFX 20                                          ;; 0d:5430 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:5432 $bf
-      sSPAWN_BOSS 8                                    ;; 0d:5433 $fe $08
       sSET_MUSIC 15                                    ;; 0d:5435 $f8 $0f
     sELSE                                              ;; 0d:5437 $01 $0b
       sIF_FLAG !wScriptFlags07.2                       ;; 0d:5439 $08 $ba $00 $07
@@ -2991,12 +2992,12 @@ script_01c0:
 
 script_01c1:
     sIF_FLAG !wScriptFlags05.7                         ;; 0d:545d $08 $af $00 $0e
+      sSPAWN_BOSS 10
       sDELAY 20                                        ;; 0d:5461 $f0 $14
       sSFX 20                                          ;; 0d:5463 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:5465 $bf
       sSFX 20                                          ;; 0d:5466 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:5468 $bf
-      sSPAWN_BOSS 10                                   ;; 0d:5469 $fe $0a
       sSET_MUSIC 15                                    ;; 0d:546b $f8 $0f
     sELSE                                              ;; 0d:546d $01 $0b
       sIF_FLAG !wScriptFlags07.3                       ;; 0d:546f $08 $bb $00 $07
@@ -3024,12 +3025,12 @@ script_01c4:
     sIF_FLAG !wScriptFlags05.2                         ;; 0d:5495 $08 $aa $00 $12
       sSFX 16                                          ;; 0d:5499 $f9 $10
       sSET_ROOM_TILE $30, 1, 6                         ;; 0d:549b $b0 $30 $01 $06
+      sSPAWN_BOSS 7
       sDELAY 20                                        ;; 0d:549f $f0 $14
       sSFX 20                                          ;; 0d:54a1 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:54a3 $bf
       sSFX 20                                          ;; 0d:54a4 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:54a6 $bf
-      sSPAWN_BOSS 7                                    ;; 0d:54a7 $fe $07
       sSET_MUSIC 15                                    ;; 0d:54a9 $f8 $0f
     sENDIF                                             ;; 0d:54ab
     sEND                                               ;; 0d:54ab $00
@@ -3052,12 +3053,12 @@ script_01c6:
 
 script_01c7:
     sIF_FLAG !wScriptFlags05.6                         ;; 0d:54cf $08 $ae $00 $0e
+      sSPAWN_BOSS 9
       sDELAY 20                                        ;; 0d:54d3 $f0 $14
       sSFX 20                                          ;; 0d:54d5 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:54d7 $bf
       sSFX 20                                          ;; 0d:54d8 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:54da $bf
-      sSPAWN_BOSS 9                                    ;; 0d:54db $fe $09
       sSET_MUSIC 15                                    ;; 0d:54dd $f8 $0f
     sELSE                                              ;; 0d:54df $01 $04
       sSET_ROOM_TILE $4c, 8, 2                         ;; 0d:54e1 $b0 $4c $08 $02
@@ -3082,12 +3083,12 @@ script_01c9:
 
 script_01ca:
     sIF_FLAG !wScriptFlags06.0                         ;; 0d:550b $08 $b0 $00 $0c
+      sSPAWN_BOSS 11
       sDELAY 20                                        ;; 0d:550f $f0 $14
       sSFX 20                                          ;; 0d:5511 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:5513 $bf
       sSFX 20                                          ;; 0d:5514 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:5516 $bf
-      sSPAWN_BOSS 11                                   ;; 0d:5517 $fe $0b
       sSET_MUSIC 15                                    ;; 0d:5519 $f8 $0f
     sENDIF                                             ;; 0d:551b
     sEND                                               ;; 0d:551b $00
