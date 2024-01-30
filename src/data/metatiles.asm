@@ -766,7 +766,8 @@ metatilesManaland:
     db   $ae, $ae, $ae, $ae, $30, $05                  ;; $29
     db   $b5, $b5, $b7, $b7, $00, $04                  ;; $2a
     db   $a8, $a9, $aa, $ab, $30, $0d                  ;; $2b
-    db   $a7, $b8, $93, $a7, $00, $04                  ;; $2c
+; Swamp with script bit set
+    db   $b9, $ba, $ba, $bb, $30, $85                  ;; $2c
     db   $b9, $ba, $ba, $bb, $30, $05                  ;; $2d
     db   $af, $b0, $af, $b0, $00, $04                  ;; $2e
     db   $94, $b6, $94, $b6, $00, $05                  ;; $2f
