@@ -3265,7 +3265,14 @@ script_0435:
     sEND                                               ;; 0e:54b8 $00
 
 script_0436:
-    sEND                                               ;; 0e:54b9 $00
+    sSFX 15
+    sCHANGE_INTO_EMPTY_CHEST
+    sMSG
+      db "<10>Found <FANG>Fang_\n<00>"
+    sDELAY 30
+    sMSG
+      db "_ But it's broken.<12><11><00>"
+    sEND
 
 script_0437:
     sGIVE_EQUIPMENT INV_SWORD_RUSTY                    ;; 0e:54ba $d8 $0d
@@ -3367,7 +3374,14 @@ script_043e:
     sEND                                               ;; 0e:55ad $00
 
 script_043f:
-    sEND                                               ;; 0e:55ae $00
+    sGIVE_ITEM INV_ITEM_BAG_FANG
+    sIF_FLAG !wScriptFlags.5
+      sSFX 15
+      sCHANGE_INTO_EMPTY_CHEST
+      sMSG
+        db "<10>Found <FANG>Fang!<12><11><00>"
+    sENDIF
+    sEND
 
 script_0440:
     sGIVE_ITEM INV_ITEM_POTION_ETHER                   ;; 0e:55af $d4 $02
@@ -3415,29 +3429,36 @@ script_0443:
     sEND                                               ;; 0e:560e $00
 
 script_0444:
+    ; Stop re-roll on bag full by using the bag-full bit to control the roll.
     sIF_FLAG !wScriptFlags.5
       sRNG
     sENDIF
-    sIF_FLAG !wScriptFlags0F.6                         ;; 0e:5610 $08 $fe $00 $18
-      sGIVE_ITEM INV_ITEM_BAG_FANG                     ;; 0e:5614 $d4 $32
-      sIF_FLAG !wScriptFlags.5                         ;; 0e:5616 $08 $85 $00 $10
-        sSFX 15                                        ;; 0e:561a $f9 $0f
-        sCHANGE_INTO_EMPTY_CHEST                       ;; 0e:561c $af
-        sMSG                                           ;; 0e:561d $04
-          db "<10>Found <FANG>Fang!<12>"
-          db "<11>", $00 ;; 0e:561e
-      sENDIF                                           ;; 0e:562a
-    sELSE                                              ;; 0e:562a $01 $0e
-      sSFX 15                                          ;; 0e:562c $f9 $0f
-      sCHANGE_INTO_EMPTY_CHEST                         ;; 0e:562e $af
-      sMSG                                             ;; 0e:562f $04
-        db "<10>Found <FANG>Fang_\n", $00
-        sDELAY 30
-      sMSG                                             ;; 0e:562f $04
-        db "_ But it's broken.<12>"
-        db "<11>", $00     ;; 0e:5630
-    sENDIF                                             ;; 0e:563a
-    sEND                                               ;; 0e:563a $00
+    ; Logic has been modified after the first broken Fang to increase the drop rate to 75%,
+    ; unless you have one in your inventory or have already killed Medusa.
+    ; If the first random check passes then give the Fang.
+    sIF_FLAG !wScriptFlags0F.6
+      sCALL script_043f
+    sELSE
+      ; Else if Medusa isn't dead, the second random bit passes,
+      ; and a reused bit from Jackal isn't set, then give the Fang.
+      sIF_FLAG !wScriptFlags04.7, wScriptFlags0F.7, !wScriptFlags01.0
+        sIF_INVENTORY INV_ITEM_BAG_FANG
+          ; If you are already carrying a Fang then the chest is a broken Fang.
+          sCALL script_0436
+        sELSE
+          ; Else, give the Fang.
+          sCALL script_043f
+        sENDIF
+      sELSE
+        ; Else it's the broken Fang.
+        sCALL script_0436
+        ; And if it is the broken fang and Medusa isn't dead yet, change the Jackal bit to influence future odds.
+        sIF_FLAG !wScriptFlags04.7
+          sCLEAR_FLAG wScriptFlags01.0
+        sENDIF
+      sENDIF
+    sENDIF
+    sEND
 
 script_0445:
     sRNG                                               ;; 0e:563b $c7

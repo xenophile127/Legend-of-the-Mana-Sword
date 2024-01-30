@@ -2694,6 +2694,8 @@ script_01ae:
       sCALL script_0227                                ;; 0d:505b $02 $28 $9c
       sCLEAR_FLAG wScriptFlags0A.5                     ;; 0d:505e $db $55
       sSET_FLAG wScriptFlags04.7                       ;; 0d:5060 $da $27
+      ; The Jackal bit is reused to influence Fang drops until Medusa is dead.
+      sSET_FLAG wScriptFlags01.0
     sENDIF                                             ;; 0d:5062
     sEND                                               ;; 0d:5062 $00
 
