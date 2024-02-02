@@ -684,13 +684,13 @@ giveFollower:
     ld   C, A                                          ;; 03:43ca $4f
     call getObjectNearestTilePosition                  ;; 03:43cb $cd $ef $05
     push DE                                            ;; 03:43ce $d5
-    ld   A, [wNpcRuntimeData]                          ;; 03:43cf $fa $e0 $c4
-    ld   C, A                                          ;; 03:43d2 $4f
     call destroyNPC                                    ;; 03:43d3 $cd $5f $43
     pop  DE                                            ;; 03:43d6 $d1
     pop  BC                                            ;; 03:43d7 $c1
     call spawnNPC                                      ;; 03:43d8 $cd $bd $42
     ret                                                ;; 03:43db $c9
+
+ds 4 ; Free space
 
 npcLoadTiles:
     ld   L, A                                          ;; 03:43dc $6f
@@ -1680,9 +1680,7 @@ processNpcDeath:
     pop  AF                                            ;; 03:48a2 $f1
     pop  BC                                            ;; 03:48a3 $c1
     push AF                                            ;; 03:48a4 $f5
-    push BC                                            ;; 03:48a5 $c5
     call getObjectNearestTilePosition                  ;; 03:48a6 $cd $ef $05
-    pop  BC                                            ;; 03:48a9 $c1
     push DE                                            ;; 03:48aa $d5
     call destroyNPC                                    ;; 03:48ab $cd $5f $43
     pop  DE                                            ;; 03:48ae $d1
@@ -1697,6 +1695,8 @@ processNpcDeath:
     pop  BC                                            ;; 03:48b7 $c1
     call destroyNPC                                    ;; 03:48b8 $cd $5f $43
     ret                                                ;; 03:48bb $c9
+
+ds 2 ; Free space
 
 ; HL = A + ((A * RND()) >> 11)
 ; Add 12.5% randomness to A and store in HL
@@ -3939,9 +3939,7 @@ call_03_5499:
     call call_00_2c1b                                  ;; 03:54a0 $cd $1b $2c
     pop  BC                                            ;; 03:54a3 $c1
     push DE                                            ;; 03:54a4 $d5
-    push BC                                            ;; 03:54a5 $c5
     call getObjectNearestTilePosition                  ;; 03:54a6 $cd $ef $05
-    pop  BC                                            ;; 03:54a9 $c1
     push BC                                            ;; 03:54aa $c5
     push DE                                            ;; 03:54ab $d5
     call getObjectDirection                            ;; 03:54ac $cd $99 $0c
@@ -4042,6 +4040,8 @@ call_03_5499:
     pop  BC                                            ;; 03:5532 $c1
     xor  A, A                                          ;; 03:5533 $af
     ret                                                ;; 03:5534 $c9
+
+ds 2 ; Free space
 
 call_03_5535:
     push DE                                            ;; 03:5535 $d5

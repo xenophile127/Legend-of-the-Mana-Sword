@@ -7549,9 +7549,7 @@ scriptOpCodeChangeIntoEmptyChest:
     push HL                                            ;; 00:2ce7 $e5
     ld   A, [wNPCDroppingChest]                        ;; 00:2ce8 $fa $b0 $c5
     ld   C, A                                          ;; 00:2ceb $4f
-    push BC                                            ;; 00:2cec $c5
     call getObjectNearestTilePosition                  ;; 00:2ced $cd $ef $05
-    pop  BC                                            ;; 00:2cf0 $c1
     push DE                                            ;; 00:2cf1 $d5
     call destroyPushableObject                         ;; 00:2cf2 $cd $13 $2d
     pop  DE                                            ;; 00:2cf5 $d1
@@ -7561,6 +7559,8 @@ scriptOpCodeChangeIntoEmptyChest:
     pop  HL                                            ;; 00:2cfe $e1
     call getNextScriptInstruction                      ;; 00:2cff $cd $27 $37
     ret                                                ;; 00:2d02 $c9
+
+ds 2 ; Free space
 
 spawnSnowman:
     ld   C, $00                                        ;; 00:2d03 $0e $00
