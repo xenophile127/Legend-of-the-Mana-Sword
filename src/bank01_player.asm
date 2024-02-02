@@ -299,7 +299,7 @@ shutterEffectClose:
     ld   A, [wVideoLCDC]                               ;; 01:41f4 $fa $a5 $c0
     and  A, $fc                                        ;; 01:41f7 $e6 $fc
     ld   HL, rLCDC                                     ;; 01:41f9 $21 $40 $ff
-    call storeBatHLinVRAM                              ;; 01:41fc $cd $5e $1d
+    call storeAatHLinVRAM                              ;; 01:41fc $cd $5e $1d
     ld   HL, wScriptOpCounter                          ;; 01:41ff $21 $99 $d4
     inc  [HL]                                          ;; 01:4202 $34
     pop  HL                                            ;; 01:4203 $e1

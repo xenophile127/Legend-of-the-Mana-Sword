@@ -680,7 +680,7 @@ storeBatBackgroundDrawPosition:
     push AF                                            ;; 00:047c $f5
     call getBackgroundDrawAddress                      ;; 00:047d $cd $5d $04
     pop  AF                                            ;; 00:0480 $f1
-    call storeBatHLinVRAM                              ;; 00:0481 $cd $5e $1d
+    call storeAatHLinVRAM                              ;; 00:0481 $cd $5e $1d
     ret                                                ;; 00:0484 $c9
     db   $cd, $5d, $04, $cd, $8a, $1d, $c9             ;; 00:0485 ???????
 
@@ -5061,7 +5061,7 @@ clearItemBuff:
 
 ; Store A in the VRAM address HL and return the overridden value in A
 ; This waits till VRAM writting is available.
-storeBatHLinVRAM:
+storeAatHLinVRAM:
     ld   B, A                                          ;; 00:1d5e $47
     ldh  A, [rLCDC]                                    ;; 00:1d5f $f0 $40
     bit  7, A                                          ;; 00:1d61 $cb $7f
@@ -5219,7 +5219,7 @@ processBackgroundRenderRequests:
     call storeDEinVRAM                                 ;; 00:1e3f $cd $74 $1d
     jr   .jr_00_1e28                                   ;; 00:1e42 $18 $e4
 .jr_00_1e44:
-    call storeBatHLinVRAM                              ;; 00:1e44 $cd $5e $1d
+    call storeAatHLinVRAM                              ;; 00:1e44 $cd $5e $1d
     jr   .jr_00_1e28                                   ;; 00:1e47 $18 $df
 .jr_00_1e49:
     pop  HL                                            ;; 00:1e49 $e1
@@ -9445,7 +9445,7 @@ storeTileAatScreenPositionDE:
     ld b, a
     call tilePositionToVRAMAddress
     ld a, b
-    call storeBatHLinVRAM
+    call storeAatHLinVRAM
     pop bc
     pop hl
     ret

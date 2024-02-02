@@ -2402,7 +2402,7 @@ showFullscreenWindow:
     push BC                                            ;; 02:5162 $c5
     push HL                                            ;; 02:5163 $e5
     ld   A, $7f                                        ;; 02:5164 $3e $7f
-    call storeBatHLinVRAM                              ;; 02:5166 $cd $5e $1d
+    call storeAatHLinVRAM                              ;; 02:5166 $cd $5e $1d
     pop  HL                                            ;; 02:5169 $e1
     pop  BC                                            ;; 02:516a $c1
     inc  HL                                            ;; 02:516b $23
