@@ -232,3 +232,5 @@ IF DEF(PLAYER_GRAPHICS_AMANDA)
 ELIF DEF(PLAYER_GRAPHICS_ORIGINAL)
     NPC_DATA $91, $05, $50, $08, gfxNpcDuke, tileorderNpc, metaspritesShieldlessPC, $00, $01, $01, $00, $00, $00, $06, $03, $07, $08, script_003d, $0000 ;; 03:712a NPC_LAST_GUY
 ENDC
+; New faster Shadow Knight to push you off the waterfall.
+    NPC_DATA $91, $0e, $40, $0c, gfxEnemyDarkLord, tileorderNpc, metaspritesShadowKnight, $00, $01, $01, $00, $00, $00, $06, $06, $07, $08, script_003d, $0000 ;; 03:501a NPC_SHADOW_KNIGHT_FAST

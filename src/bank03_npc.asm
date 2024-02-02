@@ -1044,7 +1044,13 @@ prepareNpcPlacementOptions:
     ld A, [HL]
     jp scanRoomForNpcPlacementOptions_trampoline
 
-ds 63 ; Free space
+ds 39 ; Free space
+
+; Moved here to make room for an added NPC.
+tileorderNpc:
+    db   $00, $02, $01, $03, $04, $06, $05, $07
+    db   $08, $0a, $09, $0b, $0c, $0e, $0d, $0f
+    db   $10, $12, $11, $13, $14, $16, $15, $17
 
 spawnNpcsFromTable:
     push HL                                            ;; 03:44ed $e5
@@ -4290,11 +4296,6 @@ INCLUDE "data/npc/spawn.asm"
 
 tileorderOpenChest:
     db   $04, $02, $05, $03                            ;; 03:7b56 ????
-
-tileorderNpc:
-    db   $00, $02, $01, $03, $04, $06, $05, $07        ;; 03:7b5a ........
-    db   $08, $0a, $09, $0b, $0c, $0e, $0d, $0f        ;; 03:7b62 ........
-    db   $10, $12, $11, $13, $14, $16, $15, $17        ;; 03:7b6a ........
 
 INCLUDE "data/npc/metasprites.asm"
 
