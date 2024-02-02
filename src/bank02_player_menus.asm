@@ -2715,7 +2715,6 @@ jp_02_531c:
 .jr_02_537b:
     ld   [wMaxManaLow], A                              ;; 02:537b $ea $b8 $d7
     ld   [wManaLow], A                                 ;; 02:537e $ea $b6 $d7
-    call NOOP_2                                        ;; 02:5381 $cd $ae $77
     call hideAndSaveMenuMetasprites                    ;; 02:5384 $cd $51 $6b
     ld   HL, wWindowSecondaryFlags                     ;; 02:5387 $21 $72 $d8
     set  0, [HL]                                       ;; 02:538a $cb $c6
@@ -2725,6 +2724,8 @@ jp_02_531c:
     ld   A, $01                                        ;; 02:5393 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 02:5395 $ea $53 $d8
     ret                                                ;; 02:5398 $c9
+
+ds 3 ; Free space
 
 increaseLevel:
     ld   HL, wLevel                                    ;; 02:5399 $21 $ba $d7
@@ -6638,7 +6639,6 @@ nop
     db   $50, $01, $09                                 ;; 02:741e ???
 
 call_02_7421:
-    call NOOP_2                                        ;; 02:7421 $cd $ae $77
     ld   A, [wEquippedItem]                            ;; 02:7424 $fa $ef $d6
     ld   [wEquippedItemAndWeaponCopy], A               ;; 02:7427 $ea $f1 $d6
     and  A, $7f                                        ;; 02:742a $e6 $7f
@@ -6650,6 +6650,8 @@ call_02_7421:
     ld   B, $00                                        ;; 02:7439 $06 $00
     call setMenuStateCurrentFunction                   ;; 02:743b $cd $98 $6c
     ret                                                ;; 02:743e $c9
+
+ds 3 ; Free space
 
 ; Read a block of SRAM into memory pointing at DE
 readDEtimesBtoSRAM:
@@ -7235,8 +7237,7 @@ calculateChecksumForRange:
     jr   NZ, calculateChecksumForRange                 ;; 02:77ab $20 $f6
     ret                                                ;; 02:77ad $c9
 
-NOOP_2:
-    ret                                                ;; 02:77ae $c9
+ds 1 ; Free space
 
 giveStatusEffect:
     push AF                                            ;; 02:77af $f5

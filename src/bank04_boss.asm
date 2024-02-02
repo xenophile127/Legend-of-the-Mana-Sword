@@ -1140,7 +1140,7 @@ bonusDamageIfVulnerableBoss:
     add  HL, BC                                        ;; 04:466f $09
     ld   A, [HL]                                       ;; 04:4670 $7e
     push AF                                            ;; 04:4671 $f5
-    call getEquippedWeaponBonusTypes_wrapped           ;; 04:4672 $cd $e9 $3d
+    call getEquippedWeaponBonusTypes_trampoline        ;; 04:4672 $cd $f3 $30
     ld   D, A                                          ;; 04:4675 $57
     pop  AF                                            ;; 04:4676 $f1
     ld   E, A                                          ;; 04:4677 $5f

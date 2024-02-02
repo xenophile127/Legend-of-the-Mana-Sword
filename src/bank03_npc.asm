@@ -1855,7 +1855,7 @@ getEnemyDPIncludingVulnerability:
     add  HL, BC                                        ;; 03:496f $09
     ld   A, [HL]                                       ;; 03:4970 $7e
     push AF                                            ;; 03:4971 $f5
-    call getEquippedWeaponBonusTypes_wrapped           ;; 03:4972 $cd $e9 $3d
+    call getEquippedWeaponBonusTypes_trampoline        ;; 03:4972 $cd $f3 $30
     ld   D, A                                          ;; 03:4975 $57
     pop  AF                                            ;; 03:4976 $f1
     ld   E, A                                          ;; 03:4977 $5f

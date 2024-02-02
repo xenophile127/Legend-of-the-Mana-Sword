@@ -1754,8 +1754,9 @@ secondaryCollisionHandling:
     ret                                                ;; 00:0a6e $c9
 .enemyProjectile:
     pop  AF                                            ;; 00:0a6f $f1
-    call NOOP                                          ;; 00:0a70 $cd $02 $2c
     ret                                                ;; 00:0a73 $c9
+
+ds 3 ; Free space
 
 ; A  = movement speed
 ; C  = object type ("collision flags")
@@ -7429,8 +7430,7 @@ initProjectileRuntimeData:
     jr   NZ, .loop                                     ;; 00:2bff $20 $fb
     ret                                                ;; 00:2c01 $c9
 
-NOOP:
-    ret                                                ;; 00:2c02 $c9
+ds 1 ; Free space
 
 projectileCollisionHandling_trampoline:
     jp_to_bank 09, projectileCollisionHandling         ;; 00:2c03 $f5 $3e $08 $c3 $93 $1f
@@ -10369,9 +10369,7 @@ getEquippedElementalResistances:
     db   $cd, $f9, $30, $c5, $47, $fa, $b6, $d7        ;; 00:3dde ????????
     db   $80, $c1, $c9                                 ;; 00:3de6 ???
 
-getEquippedWeaponBonusTypes_wrapped:
-    call getEquippedWeaponBonusTypes_trampoline        ;; 00:3de9 $cd $f3 $30
-    ret                                                ;; 00:3dec $c9
+ds 4 ; Free space
 
 getHP:
     ld   A, [wHPHigh]                                  ;; 00:3ded $fa $b3 $d7
