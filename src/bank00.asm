@@ -763,7 +763,8 @@ bossClearObjectsTracking:
 bossCollisionHandling_trampoline:
     jp_to_bank 04, bossCollisionHandling               ;; 00:0511 $f5 $3e $05 $c3 $64 $1f
 
-ds 6 ; Free space
+processPhysicsForObject_4_trampoline:
+    jp_to_bank 04, processPhysicsForObject_4           ;; 00:0517 $f5 $3e $04 $c3 $64 $1f
 
 ; Draw the meta tile A (metatile index) at DE (YX tile number)
 ; Uses background requests to copy the bytes into VRAM
@@ -5943,7 +5944,7 @@ closeDoor:
     call Z, call_00_22bb                               ;; 00:234c $cc $bb $22
     ld   A, B                                          ;; 00:234f $78
     ld   B, $00                                        ;; 00:2350 $06 $00
-    call Z, updateObjectPosition                       ;; 00:2352 $cc $11 $06
+    call Z, updateObjectPosition_3_trampoline          ;; 00:2352 $cc $8f $28
     call popBankNrAndSwitch                            ;; 00:2355 $cd $0a $2a
     ret                                                ;; 00:2358 $c9
 .unsupported:
@@ -6748,7 +6749,8 @@ updateNPCsAndBoss:
     call bossUpdate                                    ;; 00:27ce $cd $aa $04
     jp_to_bank 03, npcRunBehaviorForAll                ;; 00:27d1 $f5 $3e $00 $c3 $35 $1f
 
-ds 6 ; Free space
+processPhysicsForObject_3_trampoline:
+    jp_to_bank 03, processPhysicsForObject_3           ;; 00:27d7 $f5 $3e $01 $c3 $35 $1f
 
 spawnNPC_trampoline:
     jp_to_bank 03, spawnNPC                            ;; 00:27dd $f5 $3e $02 $c3 $35 $1f
@@ -6853,7 +6855,11 @@ scriptObjectBehaviorMove:
 objectBehaviorMove_trampoline:
     jp_to_bank 03, objectBehaviorMove                  ;; 00:2883 $f5 $3e $0a $c3 $35 $1f
 
-ds 12 ; Free space
+moveGridlessObject_3_trampoline:
+    jp_to_bank 03, moveGridlessObject_3                ;; 00:2889 $f5 $3e $0b $c3 $35 $1f
+
+updateObjectPosition_3_trampoline:
+    jp_to_bank 03, updateObjectPosition_3              ;; 00:288f $f5 $3e $0c $c3 $35 $1f
 
 giveFollower_trampoline:
     jp_to_bank 03, giveFollower                        ;; 00:2895 $f5 $3e $0f $c3 $35 $1f
@@ -7398,7 +7404,8 @@ sub_HL_DE:
 projectileRunLogicForAll_trampoline:
     jp_to_bank 09, projectileRunLogicForAll            ;; 00:2bd1 $f5 $3e $00 $c3 $93 $1f
 
-ds 6 ; Free space
+processPhysicsForObject_9_trampoline:
+    jp_to_bank 09, processPhysicsForObject_9           ;; 00:2bd7 $f5 $3e $01 $c3 $93 $1f
 
 projectileLoadTiles_trampoline:
     cp   A, $ff                                        ;; 00:2bdd $fe $ff

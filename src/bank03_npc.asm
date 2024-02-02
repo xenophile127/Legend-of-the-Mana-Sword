@@ -10,7 +10,7 @@ SECTION "bank03", ROMX[$4000], BANK[$03]
 ;@call_to_bank_jumptable
 entryPointTableBank03:
     call_to_bank_target npcRunBehaviorForAll           ;; 03:4000 pP
-ds 2 ; Unused trampoline target
+    call_to_bank_target processPhysicsForObject_3      ;; 03:4002 pP
     call_to_bank_target spawnNPC                       ;; 03:4004 pP
     call_to_bank_target destroyNPC                     ;; 03:4006 pP
     call_to_bank_target spawnNpcsFromTable             ;; 03:4008 pP
@@ -20,7 +20,8 @@ ds 2 ; Unused trampoline target
     call_to_bank_target friendlyCollisionHandling      ;; 03:4010 pP
     call_to_bank_target damageNpc                      ;; 03:4012 ??
     call_to_bank_target objectBehaviorMove             ;; 03:4014 pP
-ds 4 ; Unused trampoline target
+    call_to_bank_target moveGridlessObject_3           ;; 03:4016 pP
+    call_to_bank_target updateObjectPosition_3         ;; 03:4018 pP
     call_to_bank_target updateNpcPosition              ;; 03:401a pP
     call_to_bank_target moveObjectsDuringScript        ;; 03:401c pP
     call_to_bank_target giveFollower                   ;; 03:401e pP
@@ -2129,7 +2130,17 @@ getNpcElementalImmunities:
     and  A, C                                          ;; 03:4aeb $a1
     ret                                                ;; 03:4aec $c9
 
-ds 12 ; Free space
+moveGridlessObject_3:
+    call moveGridlessObject                            ;; 03:4aed $cd $d4 $08
+    ret                                                ;; 03:4af0 $c9
+
+updateObjectPosition_3:
+    call updateObjectPosition                          ;; 03:4af1 $cd $11 $06
+    ret                                                ;; 03:4af4 $c9
+
+processPhysicsForObject_3:
+    call processPhysicsForObject                       ;; 03:4af5 $cd $95 $06
+    ret                                                ;; 03:4af8 $c9
 
 ; C = npc number
 ; DE = YX coordinates

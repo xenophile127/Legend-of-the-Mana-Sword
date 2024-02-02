@@ -10,7 +10,7 @@ SECTION "bank09", ROMX[$4000], BANK[$09]
 ;@call_to_bank_jumptable
 entryPointTableBank09:
     call_to_bank_target projectileRunLogicForAll       ;; 09:4000 pP
-ds 2 ; Unused trampoline slot
+    call_to_bank_target processPhysicsForObject_9      ;; 09:4002 pP
     call_to_bank_target projectileLoadTiles            ;; 09:4004 pP
     call_to_bank_target projectileDestroy              ;; 09:4006 pP
     call_to_bank_target spawnProjectile                ;; 09:4008 pP
@@ -19,7 +19,9 @@ ds 2 ; Unused trampoline slot
     call_to_bank_target getProjectilePower             ;; 09:400e ??
     call_to_bank_target projectileCollisionHandling    ;; 09:4010 pP
 
-ds 4 ; Free space
+processPhysicsForObject_9:
+    call processPhysicsForObject                       ;; 09:4012 $cd $95 $06
+    ret                                                ;; 09:4015 $c9
 
 projectileRunLogicForAll:
     ld   HL, wProjectileRuntimeData                    ;; 09:4016 $21 $c0 $c5
