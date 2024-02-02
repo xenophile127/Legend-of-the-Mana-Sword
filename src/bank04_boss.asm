@@ -13,7 +13,7 @@ entryPointTableBank04:
     call_to_bank_target spawnBoss                      ;; 04:4002 pP
     call_to_bank_target bossClearStatsObjects          ;; 04:4004 ??
     call_to_bank_target bossTakeDamage                 ;; 04:4006 pP
-    call_to_bank_target processPhysicsForObject_4      ;; 04:4008 ??
+ds 2 ; Unused trampoline slot
     call_to_bank_target bossCollisionHandling          ;; 04:400a pP
     call_to_bank_target checkPlayfieldBoundaryCollision ;; 04:400c pP
 
@@ -1280,9 +1280,7 @@ processHitBoss:
     ld   A, $40                                        ;; 04:4732 $3e $40
     ret                                                ;; 04:4734 $c9
 
-processPhysicsForObject_4:
-    call processPhysicsForObject                       ;; 04:4735 $cd $95 $06
-    ret                                                ;; 04:4738 $c9
+ds 4 ; Free space
 
 INCLUDE "data/boss.asm"
     db   $4c, $ff, $4e, $ff, $4e, $ff, $27, $00        ;; 04:7f79 ????????

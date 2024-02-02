@@ -552,7 +552,7 @@ processPhysicsForObjectDependingOnCollisionFlags:
 .npc:
     ld   A, B                                          ;; 02:4342 $78
     ld   B, $00                                        ;; 02:4343 $06 $00
-    call processPhysicsForObject_3_trampoline          ;; 02:4345 $cd $d7 $27
+    call processPhysicsForObject                       ;; 02:4345 $cd $95 $06
     ret                                                ;; 02:4348 $c9
 .player:
     ld   A, B                                          ;; 02:4349 $78
@@ -562,12 +562,12 @@ processPhysicsForObjectDependingOnCollisionFlags:
 .projectile:
     ld   A, B                                          ;; 02:4350 $78
     ld   B, $00                                        ;; 02:4351 $06 $00
-    call processPhysicsForObject_9_trampoline          ;; 02:4353 $cd $d7 $2b
+    call processPhysicsForObject                       ;; 02:4353 $cd $95 $06
     ret                                                ;; 02:4356 $c9
 .boss:
     ld   A, B                                          ;; 02:4357 $78
     ld   B, $00                                        ;; 02:4358 $06 $00
-    call processPhysicsForObject_4_trampoline          ;; 02:435a $cd $17 $05
+    call processPhysicsForObject                       ;; 02:435a $cd $95 $06
     ret                                                ;; 02:435d $c9
 
 ; Move objects with screenscroll. Destroy those that fall behind.

@@ -2337,7 +2337,7 @@ playerCollisionHandling:
 .jr_01_507a:
     pop  BC                                            ;; 01:507a $c1
     ld   B, $00                                        ;; 01:507b $06 $00
-    call updateObjectPosition_3_trampoline             ;; 01:507d $cd $8f $28
+    call updateObjectPosition                          ;; 01:507d $cd $11 $06
     ld   HL, $00                                       ;; 01:5080 $21 $00 $00
     ret                                                ;; 01:5083 $c9
 .pushable:
@@ -2448,7 +2448,7 @@ setPlayerNormalSprite:
     and  A, $0f                                        ;; 01:512c $e6 $0f
     ld   C, $07                                        ;; 01:512e $0e $07
     ld   B, $00                                        ;; 01:5130 $06 $00
-    call updateObjectPosition_3_trampoline             ;; 01:5132 $cd $8f $28
+    call updateObjectPosition                          ;; 01:5132 $cd $11 $06
     ret                                                ;; 01:5135 $c9
 
 setPlayerOnChocobo:
@@ -6157,7 +6157,7 @@ call_01_7647:
     ret                                                ;; 01:769e $c9
 .jr_01_769f:
     ld   A, L                                          ;; 01:769f $7d
-    call moveGridlessObject_3_trampoline               ;; 01:76a0 $cd $89 $28
+    call moveGridlessObject                            ;; 01:76a0 $cd $d4 $08
     pop  BC                                            ;; 01:76a3 $c1
     pop  AF                                            ;; 01:76a4 $f1
     inc  A                                             ;; 01:76a5 $3c
@@ -6272,7 +6272,7 @@ objectJumpHandler:
     ret                                                ;; 01:7721 $c9
 .jr_01_7722:
     ld   A, L                                          ;; 01:7722 $7d
-    call moveGridlessObject_3_trampoline               ;; 01:7723 $cd $89 $28
+    call moveGridlessObject                            ;; 01:7723 $cd $d4 $08
     pop  BC                                            ;; 01:7726 $c1
     pop  AF                                            ;; 01:7727 $f1
     inc  A                                             ;; 01:7728 $3c
