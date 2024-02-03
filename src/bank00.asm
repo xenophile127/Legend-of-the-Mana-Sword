@@ -5016,7 +5016,51 @@ cacheMetatileAttributesAndLoadRoomTiles:
 scanRoomForNpcPlacementOptions_trampoline:
     jp_to_bank 11, scanRoomForNpcPlacementOptions
 
-ds 86 ; Free space
+ds 36 ; Free space
+
+; Speeds up script execution by whitelisting certain opcodes to ignore the limit of one opcode per frame.
+speedUpScripts:
+.loop:
+    ld a, [wMainGameState]
+    cp $10
+    ret nz
+    ld a, [rLY]
+    cp $50
+    ret nc
+    ld a, [wScriptCommand]
+    ld b, a
+    ld hl, .speedupList
+.search:
+    ld a, [hl+]
+    cp b
+    jr z, .run
+    inc a
+    jr nz, .search
+    ret
+.run:
+    call gameStateScript.run_script_opcode
+    jr .loop
+
+.speedupList:
+    db $00 ; End
+    db $01 ; JR
+    db $02 ; Call
+    db $08 ; IfFlags
+    db $0b ; IfTriggeredOnBy
+    db $0c ; IfTriggeredOffBy
+    db $99 ; FollowerSetPosition
+    db $9c ; GiveFollower
+    db $a0 ; PlayerOnChocobo
+    db $a1 ; PlayerOnChocobot
+    db $a2 ; PlayerOnChocobot
+    db $b0 ; SetRoomTile
+    db $c7 ; RNG
+    db $da ; SetFlag
+    db $db ; ClearFlag
+    db $ec ; RunRoomScript
+    db $f8 ; SetMusic
+    db $f9 ; SFX
+    db $ff ; Terminate list
 
 ; checks for death, increases charge bar, and handles expiring Nectar/Stamina buffs
 playerHousekeeping:
@@ -5477,10 +5521,11 @@ MainLoop:
     dec [hl]
     call mainLoopPreInput                              ;; 00:1fde $cd $7b $21
     call runMainInputHandler_trampoline                ;; 00:1fe1 $cd $2c $02
+    call speedUpScripts
     call mainLoopPostInput                             ;; 00:1fe4 $cd $90 $21
     jr MainLoop
 
-ds 4 ; Free space
+ds 1 ; Free space
 
 InitPreIntEnable:
     ld   A, $00                                        ;; 00:1ff0 $3e $00
@@ -8393,9 +8438,9 @@ gameStateScript:
     call moveObjectsDuringScript_trampoline            ;; 00:3254 $cd $b0 $28
     ld   HL, wWindowFlags                              ;; 00:3257 $21 $74 $d8
     res  0, [HL]                                       ;; 00:325a $cb $86
-    jr   Z, .jr_00_3260                                ;; 00:325c $28 $02
+    jr   Z, .run_script_opcode                         ;; 00:325c $28 $02
     set  0, [HL]                                       ;; 00:325e $cb $c6
-.jr_00_3260:
+.run_script_opcode:
     call switchToScriptBank                            ;; 00:3260 $cd $60 $3c
     ld   HL, .ret_by_push                              ;; 00:3263 $21 $74 $32
     push HL                                            ;; 00:3266 $e5
