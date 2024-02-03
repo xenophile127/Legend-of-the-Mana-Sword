@@ -299,7 +299,7 @@ shutterEffectClose:
     ld   A, [wVideoLCDC]                               ;; 01:41f4 $fa $a5 $c0
     and  A, $fc                                        ;; 01:41f7 $e6 $fc
     ld   HL, rLCDC                                     ;; 01:41f9 $21 $40 $ff
-    call storeBatHLinVRAM                              ;; 01:41fc $cd $5e $1d
+    call storeAatHLinVRAM                              ;; 01:41fc $cd $5e $1d
     ld   HL, wScriptOpCounter                          ;; 01:41ff $21 $99 $d4
     inc  [HL]                                          ;; 01:4202 $34
     pop  HL                                            ;; 01:4203 $e1
@@ -361,7 +361,7 @@ loadFixedMinimap:
     ld   [wMapWidthTmp], A                             ;; 01:425b $ea $9f $d4
     ld   D, A                                          ;; 01:425e $57
     ld   A, $07                                        ;; 01:425f $3e $07
-    call loadMap                                       ;; 01:4261 $cd $dc $26
+    call loadMapGraphics
     call drawRoom
     ld   A, [wRoomXYTmp]                               ;; 01:4267 $fa $9e $d4
     ld   C, A                                          ;; 01:426a $4f
@@ -394,7 +394,7 @@ drawDynamicMinimapBackground:
     ld   E, A                                          ;; 01:429b $5f
     ld   D, $00                                        ;; 01:429c $16 $00
     ld   A, $07                                        ;; 01:429e $3e $07
-    call loadMap                                       ;; 01:42a0 $cd $dc $26
+    call loadMapGraphics
     call drawRoom
     ld   A, [wRoomXYTmp]                               ;; 01:42a6 $fa $9e $d4
     add  A, $44                                        ;; 01:42a9 $c6 $44
@@ -475,7 +475,7 @@ minimapFlashingMarkerInit:
     db   $0a, $00, $08, $0a                            ;; 01:432d ?...
 
 minimapCopyMapNumberAndXY:
-    call getMapNumber                                  ;; 01:4331 $cd $0a $22
+    ld a, [wMapNumber]
     ld   [wMapNumberTmp], A                            ;; 01:4334 $ea $9d $d4
     call LoadRoomXY_to_A                               ;; 01:4337 $cd $0e $22
     ld   [wRoomXYTmp], A                               ;; 01:433a $ea $9e $d4
@@ -492,7 +492,7 @@ minimapCloseRestoreRoom:
     and  A, $0f                                        ;; 01:4349 $e6 $0f
     ld   E, A                                          ;; 01:434b $5f
     ld   A, [wMapNumberTmp]                            ;; 01:434c $fa $9d $d4
-    call loadMap                                       ;; 01:434f $cd $dc $26
+    call loadMapGraphics
     ld   HL, wRoomTilesBackup                          ;; 01:4352 $21 $a0 $c3
     ld   DE, wRoomTiles                                ;; 01:4355 $11 $50 $c3
     ld   B, $50                                        ;; 01:4358 $06 $50
@@ -1179,7 +1179,7 @@ playerSpritesLoadPlayerSpriteTiles:
     bit  3, A                                          ;; 01:48e5 $cb $5f
     jr   NZ, .jr_01_48fd                               ;; 01:48e7 $20 $14
     push BC                                            ;; 01:48e9 $c5
-    call getPlayerNearestTilePostion                   ;; 01:48ea $cd $69 $01
+    call getPlayerNearestTilePosition                  ;; 01:48ea $cd $69 $01
     inc  D                                             ;; 01:48ed $14
     inc  E                                             ;; 01:48ee $1c
     call getRoomMetaTileAttributes                     ;; 01:48ef $cd $af $16

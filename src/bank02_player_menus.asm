@@ -338,38 +338,45 @@ animateTilesIncrementCounter:
     inc  [HL]                                          ;; 02:4216 $34
     ret                                                ;; 02:4217 $c9
 
-; Return: A = pressed buttons
-; Return: B = newly pressed buttons
-; Return: C = pressed buttons (copy)
+; Return: a = pressed buttons
+; Return: b = newly pressed buttons
+; Return: c = pressed buttons (copy)
 updateJoypadInput:
-    ld   HL, $ff00                                     ;; 02:4218 $21 $00 $ff
-    ld   [HL], $10                                     ;; 02:421b $36 $10
-    ld   A, [HL]                                       ;; 02:421d $7e
-    ld   A, [HL]                                       ;; 02:421e $7e
-    ld   [HL], $20                                     ;; 02:421f $36 $20
-    cpl                                                ;; 02:4221 $2f
-    and  A, $0f                                        ;; 02:4222 $e6 $0f
-    cp   A, $0f                                        ;; 02:4224 $fe $0f
-    jp   Z, FullReset                                  ;; 02:4226 $ca $50 $01
-    swap A                                             ;; 02:4229 $cb $37
-    ld   C, A                                          ;; 02:422b $4f
-    ld   B, $08                                        ;; 02:422c $06 $08
-.loop:
-    ld   A, [HL]                                       ;; 02:422e $7e
-    dec  B                                             ;; 02:422f $05
-    jr   NZ, .loop                                     ;; 02:4230 $20 $fc
-    ld   [HL], $30                                     ;; 02:4232 $36 $30
-    cpl                                                ;; 02:4234 $2f
-    and  A, $0f                                        ;; 02:4235 $e6 $0f
-    or   A, C                                          ;; 02:4237 $b1
-    ld   C, A                                          ;; 02:4238 $4f
-    ld   A, [wJoypadInput]                             ;; 02:4239 $fa $af $c0
-    xor  A, C                                          ;; 02:423c $a9
-    and  A, C                                          ;; 02:423d $a1
-    ld   B, A                                          ;; 02:423e $47
-    ld   A, C                                          ;; 02:423f $79
-    ld   [wJoypadInput], A                             ;; 02:4240 $ea $af $c0
-    ret                                                ;; 02:4243 $c9
+    ld hl, rP1
+    ld [hl], P1F_GET_BTN
+    ld a, [hl]
+    ld a, [hl]
+    ld [hl], P1F_GET_DPAD
+; If A, B, Start, and Select are all pressed, then reset the game.
+    and $0f
+    jp z, FullReset
+    swap a
+    ld c, a
+; Read buttons eight times to stabilizie their states. 
+; This was originally a loop but other games unroll it, and it only takes two additional bytes.
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld [hl], P1F_GET_NONE
+    and $0f
+    or a, c
+    cpl
+    ld hl, wJoypadInput
+    ld c, a
+    ld a, [hl]
+    xor c
+    and c
+    ld b, a
+    ld a, c
+    ld [hl], a
+    ret
+
+ds 2 ; Free space
 
 ; Given an object, check if it overlaps any of the Npc objects (objects 7 and up).
 ; Technically, this includes followers, non-player projectiles, and bosses as well.
@@ -1033,10 +1040,10 @@ menuFingerCurledTiles:
 
 ;@data format=pp amount=4
 menuTrashCanTileLoads:
-    dw   $80c0, $4c00                                  ;; 02:47b8 pP.. $00
-    dw   $80d0, data_02_4c20                           ;; 02:47bc pP.. $01
-    dw   $80e0, $4c10                                  ;; 02:47c0 pP.. $02
-    dw   $80f0, $4c30                                  ;; 02:47c4 pP.. $03
+    dw   _VRAM8000+$c0, trashbinGfx
+    dw   _VRAM8000+$d0, trashbinGfx+$20
+    dw   _VRAM8000+$e0, trashbinGfx+$10
+    dw   _VRAM8000+$f0, trashbinGfx+$30
 
 ;@jumptable amount=59
 gameStateMenuJumptable:
@@ -2402,7 +2409,7 @@ showFullscreenWindow:
     push BC                                            ;; 02:5162 $c5
     push HL                                            ;; 02:5163 $e5
     ld   A, $7f                                        ;; 02:5164 $3e $7f
-    call storeBatHLinVRAM                              ;; 02:5166 $cd $5e $1d
+    call storeAatHLinVRAM                              ;; 02:5166 $cd $5e $1d
     pop  HL                                            ;; 02:5169 $e1
     pop  BC                                            ;; 02:516a $c1
     inc  HL                                            ;; 02:516b $23
@@ -2715,7 +2722,6 @@ jp_02_531c:
 .jr_02_537b:
     ld   [wMaxManaLow], A                              ;; 02:537b $ea $b8 $d7
     ld   [wManaLow], A                                 ;; 02:537e $ea $b6 $d7
-    call NOOP_2                                        ;; 02:5381 $cd $ae $77
     call hideAndSaveMenuMetasprites                    ;; 02:5384 $cd $51 $6b
     ld   HL, wWindowSecondaryFlags                     ;; 02:5387 $21 $72 $d8
     set  0, [HL]                                       ;; 02:538a $cb $c6
@@ -2725,6 +2731,8 @@ jp_02_531c:
     ld   A, $01                                        ;; 02:5393 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 02:5395 $ea $53 $d8
     ret                                                ;; 02:5398 $c9
+
+ds 3 ; Free space
 
 increaseLevel:
     ld   HL, wLevel                                    ;; 02:5399 $21 $ba $d7
@@ -6638,7 +6646,6 @@ nop
     db   $50, $01, $09                                 ;; 02:741e ???
 
 call_02_7421:
-    call NOOP_2                                        ;; 02:7421 $cd $ae $77
     ld   A, [wEquippedItem]                            ;; 02:7424 $fa $ef $d6
     ld   [wEquippedItemAndWeaponCopy], A               ;; 02:7427 $ea $f1 $d6
     and  A, $7f                                        ;; 02:742a $e6 $7f
@@ -6650,6 +6657,8 @@ call_02_7421:
     ld   B, $00                                        ;; 02:7439 $06 $00
     call setMenuStateCurrentFunction                   ;; 02:743b $cd $98 $6c
     ret                                                ;; 02:743e $c9
+
+ds 3 ; Free space
 
 ; Read a block of SRAM into memory pointing at DE
 readDEtimesBtoSRAM:
@@ -7156,7 +7165,7 @@ windowInitContents:
 getGraphicsAndMusicState:
     ld   HL, wDialogX                                  ;; 02:7735 $21 $a7 $d4
     push HL                                            ;; 02:7738 $e5
-    call getMapNumber                                  ;; 02:7739 $cd $0a $22
+    ld a, [wMapNumber]
     pop  HL                                            ;; 02:773c $e1
     ld   [HL+], A                                      ;; 02:773d $22
     push HL                                            ;; 02:773e $e5
@@ -7164,7 +7173,7 @@ getGraphicsAndMusicState:
     pop  HL                                            ;; 02:7742 $e1
     ld   [HL+], A                                      ;; 02:7743 $22
     push HL                                            ;; 02:7744 $e5
-    call getPlayerNearestTilePostion                   ;; 02:7745 $cd $69 $01
+    call getPlayerNearestTilePosition                  ;; 02:7745 $cd $69 $01
     pop  HL                                            ;; 02:7748 $e1
     ld   [HL], E                                       ;; 02:7749 $73
     inc  HL                                            ;; 02:774a $23
@@ -7235,8 +7244,7 @@ calculateChecksumForRange:
     jr   NZ, calculateChecksumForRange                 ;; 02:77ab $20 $f6
     ret                                                ;; 02:77ad $c9
 
-NOOP_2:
-    ret                                                ;; 02:77ae $c9
+ds 1 ; Free space
 
 giveStatusEffect:
     push AF                                            ;; 02:77af $f5
@@ -7866,7 +7874,7 @@ titleScreenInit:
 ; Load the title screen "map"
     ld   A, $07                                        ;; 02:7b6a $3e $07
     ld   DE, $101                                      ;; 02:7b6c $11 $01 $01
-    call loadMap                                       ;; 02:7b6f $cd $dc $26
+    call loadMapGraphics
     call drawRoom_trampoline                           ;; 02:7b72 $cd $a4 $04
     ld   HL, wVideoWY                                  ;; 02:7b75 $21 $a9 $c0
     ld   A, [HL]                                       ;; 02:7b78 $7e

@@ -473,9 +473,7 @@ spawnProjectile:
     call getObjectDirection                            ;; 09:425a $cd $99 $0c
     pop  BC                                            ;; 09:425d $c1
     ld   B, A                                          ;; 09:425e $47
-    push BC                                            ;; 09:425f $c5
     call getObjectNearestTilePosition                  ;; 09:4260 $cd $ef $05
-    pop  BC                                            ;; 09:4263 $c1
     ld   A, B                                          ;; 09:4264 $78
     and  A, $0f                                        ;; 09:4265 $e6 $0f
     pop  HL                                            ;; 09:4267 $e1
@@ -530,6 +528,8 @@ spawnProjectile:
     pop  DE                                            ;; 09:42a7 $d1
     xor  A, A                                          ;; 09:42a8 $af
     ret                                                ;; 09:42a9 $c9
+
+ds 2 ; Free space
 
 ; A = projectile collision flags
 ; C = object id

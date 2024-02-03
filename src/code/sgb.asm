@@ -19,11 +19,12 @@ INCLUDE "code/gingerbread.asm"
 ; These are the palettes loaded during the ending.
 ; Palettes 1, 2, and 3 are only used on the final "End" screen.
 SGB_PAL01:
-;           #fff7de   #f7d673   #ad7331   #000000    #fff7de   #18a500   #085a00
-    db $01, $df, $6f, $5e, $3b, $d5, $19, $00, $00, $5e, $3b, $83, $02, $61, $01, $ff
+;           /------------ sepia-ish -------------\  /----------- stem ----------\
+;            #fff7de   #efce6b   #ad7331   #000000    #efce6b   #18a500   #085a00
+    db $01, $df, $6f, $3d, $37, $d5, $19, $00, $00, $3d, $37, $83, $02, $61, $01, $ff
 
 SGB_PAL23:
-;           /----------- most green -------------\  /------- plus yellow ------\
+;           /------------- leaves ---------------\  /------- plus yellow ------\
     db $09, $df, $6f, $68, $17, $83, $02, $61, $01, $68, $17, $7f, $03, $61, $01, $ff
 ;            #fff7de   #42de29   #18a500   #085a00    #42de29   #ffde00   #085a00
 

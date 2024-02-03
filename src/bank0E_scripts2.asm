@@ -7,6 +7,29 @@ INCLUDE "include/constants.inc"
 
 SECTION "bank0e", ROMX[$4000], BANK[$0e]
 
+script_027e:
+    sIF_TRIGGERED_ON_BY $c9, $a9
+      sSFX 24
+      sSET_ROOM_TILE $02, 8, 1
+    sENDIF
+    sIF_TRIGGERED_OFF_BY $c9
+      sSFX 24
+      sSET_ROOM_TILE $00, 8, 1
+    sENDIF
+    sEND
+
+script_027f:
+    sIF_TRIGGERED_ON_BY $c9
+      sIF_FLAG wScriptFlags0B.0
+        sCALL script_0473
+        sSET_FLAG wScriptFlags0B.7
+      sENDIF
+      sLOAD_ROOM 14, $53, 13, 12
+      sSET_MUSIC 4
+      sRUN_ROOM_SCRIPT
+    sENDIF
+    sEND
+
 script_0280:
     sIF_TRIGGERED_ON_BY $c9
       sIF_FLAG wScriptFlags0B.0
@@ -777,7 +800,10 @@ script_02d0:
 script_02d1:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4427 $0b $c9 $00 $06
       sLOAD_ROOM 5, $42, 16, 2                         ;; 0e:442b $f4 $05 $42 $10 $02
-      sRUN_ROOM_SCRIPT                                 ;; 0e:4430 $ec
+; Inlined from 03df to remove wall enemy conditional.
+      sSET_NPC_TYPES 7
+      sSPAWN_NPC 2
+      sSPAWN_NPC 0
     sENDIF                                             ;; 0e:4431
     sEND                                               ;; 0e:4431 $00
 
@@ -1195,6 +1221,10 @@ script_0315:
 script_0316:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:46e3 $0b $c9 $00 $06
       sLOAD_ROOM 2, $66, 16, 12                        ;; 0e:46e7 $f4 $02 $66 $10 $0c
+; Inlined from 012a to remove wall enemy conditional.
+      sSET_NPC_TYPES 4                                   ;; 0d:4aa1 $fc $04
+      sSPAWN_NPC 2
+      sSPAWN_NPC 0
       sRUN_ROOM_SCRIPT                                 ;; 0e:46ec $ec
     sENDIF                                             ;; 0e:46ed
     sEND                                               ;; 0e:46ed $00
@@ -1757,7 +1787,10 @@ script_036e:
 script_036f:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4aa1 $0b $c9 $00 $06
       sLOAD_ROOM 11, $11, 16, 2                        ;; 0e:4aa5 $f4 $0b $11 $10 $02
-      sRUN_ROOM_SCRIPT                                 ;; 0e:4aaa $ec
+; Inlined from 03df to remove wall enemy conditional.
+      sSET_NPC_TYPES 7
+      sSPAWN_NPC 2
+      sSPAWN_NPC 0
     sENDIF                                             ;; 0e:4aab
     sEND                                               ;; 0e:4aab $00
 
@@ -2424,6 +2457,8 @@ script_03d0:
 
 script_03d1:
     sIF_FLAG wScriptFlags.2                            ;; 0e:4f25 $08 $02 $00 $03
+      ; Add a sound if the player is looped back to the starting room in the Mt. Rocks cave.
+      sSFX 3
       sSET_NEXT_ROOM $00, $03                          ;; 0e:4f29 $ef $00 $03
     sENDIF                                             ;; 0e:4f2c
     sEND                                               ;; 0e:4f2c $00
@@ -2489,7 +2524,9 @@ script_03db:
 
 script_03dc:
     sSET_NPC_TYPES 21                                  ;; 0e:4f8c $fc $15
-    sSPAWN_NPC 2                                       ;; 0e:4f8e $fd $02
+    sIF_FLAG !wScriptFlags.1
+      sSPAWN_NPC 2
+    sENDIF
     sSPAWN_NPC 0                                       ;; 0e:4f90 $fd $00
     sEND                                               ;; 0e:4f92 $00
 
@@ -2501,7 +2538,9 @@ script_03de:
 
 script_03df:
     sSET_NPC_TYPES 7                                   ;; 0e:4f95 $fc $07
-    sSPAWN_NPC 2                                       ;; 0e:4f97 $fd $02
+    sIF_FLAG !wScriptFlags.4
+      sSPAWN_NPC 2
+    sENDIF
     sSPAWN_NPC 0                                       ;; 0e:4f99 $fd $00
     sEND                                               ;; 0e:4f9b $00
 
@@ -2513,7 +2552,9 @@ script_03e1:
 
 script_03e2:
     sSET_NPC_TYPES 32                                  ;; 0e:4f9e $fc $20
-    sSPAWN_NPC 0                                       ;; 0e:4fa0 $fd $00
+    sIF_FLAG !wScriptFlags.2
+      sSPAWN_NPC 0
+    sENDIF
     sSPAWN_NPC 2                                       ;; 0e:4fa2 $fd $02
     sEND                                               ;; 0e:4fa4 $00
 
@@ -2656,9 +2697,13 @@ script_03ee:
 
 script_03ef:
     sIF_FLAG wScriptFlags.1                            ;; 0e:50c5 $08 $01 $00 $03
+      ; Add a sound if the player is looped back to the starting room in the Mt. Rocks cave.
+      sSFX 3
       sSET_NEXT_ROOM $00, $03                          ;; 0e:50c9 $ef $00 $03
     sENDIF                                             ;; 0e:50cc
     sIF_FLAG wScriptFlags.2                            ;; 0e:50cc $08 $02 $00 $03
+      ; Add a sound if the player is looped back to the starting room in the Mt. Rocks cave.
+      sSFX 3
       sSET_NEXT_ROOM $00, $03                          ;; 0e:50d0 $ef $00 $03
     sENDIF                                             ;; 0e:50d3
     sEND                                               ;; 0e:50d3 $00
@@ -2818,18 +2863,52 @@ script_0404:
     sEND                                               ;; 0e:51fa $00
 
 script_0405:
-    sSET_MUSIC 0                                       ;; 0e:51fb $f8 $00
-    sMSG                                               ;; 0e:51fd $04
-      db "<1b> Good night!<12>"
-      db "<11>", $00   ;; 0e:51fe
-    sFADE_TO_BLACK                                     ;; 0e:5209 $bd
-    sSET_MUSIC 17                                      ;; 0e:520a $f8 $11
-    sFULL_HP                                           ;; 0e:520c $c0
-    sFULL_MANA                                         ;; 0e:520d $c1
-    sDELAY 60                                          ;; 0e:520e $f0 $3c
-    sFADE_TO_NORMAL                                    ;; 0e:5210 $bc
-    sSET_MUSIC 0
-    sEND                                               ;; 0e:5211 $00
+; Used by the inn script.
+    sIF_FLAG !wScriptFlags0E.5, !wScriptFlags0E.6, wScriptFlags0E.7
+      ; Welcome to Jadd.
+      sLOAD_ROOM_INSTANT 14, $14, 10, 6
+      sIF_FLAG !wScriptFlags05.0
+        sSET_MUSIC 0
+      sELSE
+        sSET_MUSIC 13
+      sENDIF
+    sENDIF
+    sIF_FLAG !wScriptFlags0E.5, wScriptFlags0E.6, !wScriptFlags0E.7
+      sLOAD_ROOM_INSTANT 0, $4d, 10, 4
+      sSET_MUSIC 20
+    sENDIF
+    sIF_FLAG !wScriptFlags0E.5, wScriptFlags0E.6, wScriptFlags0E.7
+      ; Welcome to Ish.
+      sLOAD_ROOM_INSTANT 15, $36, 2, 11
+      sIF_FLAG !wScriptFlags04.1
+        sSET_MUSIC 27
+      sELSE
+        sSET_MUSIC 4
+      sENDIF
+    sENDIF
+    sIF_FLAG wScriptFlags0E.5, !wScriptFlags0E.6, !wScriptFlags0E.7
+      ; Welcome to Topple.
+      sLOAD_ROOM_INSTANT 14, $01, 14, 5
+      sSET_MUSIC 4
+    sENDIF
+    sIF_FLAG wScriptFlags0E.5, !wScriptFlags0E.6, wScriptFlags0E.7
+      ; Welcome to Wendle.
+      sLOAD_ROOM_INSTANT 14, $17, 16, 8
+      sIF_FLAG wScriptFlags02.0, !wScriptFlags02.1
+        sSET_MUSIC 9
+      sELSE
+        sSET_MUSIC 11
+      sENDIF
+    sENDIF
+    sIF_FLAG wScriptFlags0E.5, wScriptFlags0E.6, !wScriptFlags0E.7
+      sLOAD_ROOM_INSTANT 0, $aa, 14, 8
+      sSET_MUSIC 20
+    sENDIF
+    sIF_FLAG wScriptFlags0E.5, wScriptFlags0E.6, wScriptFlags0E.7
+      sLOAD_ROOM_INSTANT 0, $7c, 8, 4
+      sSET_MUSIC 20
+    sENDIF
+    sEND
 
 script_0406:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:5212 $0b $c9 $00 $0a
@@ -3186,7 +3265,14 @@ script_0435:
     sEND                                               ;; 0e:54b8 $00
 
 script_0436:
-    sEND                                               ;; 0e:54b9 $00
+    sSFX 15
+    sCHANGE_INTO_EMPTY_CHEST
+    sMSG
+      db "<10>Found <FANG>Fang_\n<00>"
+    sDELAY 30
+    sMSG
+      db "_ But it's broken.<12><11><00>"
+    sEND
 
 script_0437:
     sGIVE_EQUIPMENT INV_SWORD_RUSTY                    ;; 0e:54ba $d8 $0d
@@ -3288,7 +3374,14 @@ script_043e:
     sEND                                               ;; 0e:55ad $00
 
 script_043f:
-    sEND                                               ;; 0e:55ae $00
+    sGIVE_ITEM INV_ITEM_BAG_FANG
+    sIF_FLAG !wScriptFlags.5
+      sSFX 15
+      sCHANGE_INTO_EMPTY_CHEST
+      sMSG
+        db "<10>Found <FANG>Fang!<12><11><00>"
+    sENDIF
+    sEND
 
 script_0440:
     sGIVE_ITEM INV_ITEM_POTION_ETHER                   ;; 0e:55af $d4 $02
@@ -3336,29 +3429,36 @@ script_0443:
     sEND                                               ;; 0e:560e $00
 
 script_0444:
+    ; Stop re-roll on bag full by using the bag-full bit to control the roll.
     sIF_FLAG !wScriptFlags.5
       sRNG
     sENDIF
-    sIF_FLAG !wScriptFlags0F.6                         ;; 0e:5610 $08 $fe $00 $18
-      sGIVE_ITEM INV_ITEM_BAG_FANG                     ;; 0e:5614 $d4 $32
-      sIF_FLAG !wScriptFlags.5                         ;; 0e:5616 $08 $85 $00 $10
-        sSFX 15                                        ;; 0e:561a $f9 $0f
-        sCHANGE_INTO_EMPTY_CHEST                       ;; 0e:561c $af
-        sMSG                                           ;; 0e:561d $04
-          db "<10>Found <FANG>Fang!<12>"
-          db "<11>", $00 ;; 0e:561e
-      sENDIF                                           ;; 0e:562a
-    sELSE                                              ;; 0e:562a $01 $0e
-      sSFX 15                                          ;; 0e:562c $f9 $0f
-      sCHANGE_INTO_EMPTY_CHEST                         ;; 0e:562e $af
-      sMSG                                             ;; 0e:562f $04
-        db "<10>Found <FANG>Fang_\n", $00
-        sDELAY 30
-      sMSG                                             ;; 0e:562f $04
-        db "_ But it's broken.<12>"
-        db "<11>", $00     ;; 0e:5630
-    sENDIF                                             ;; 0e:563a
-    sEND                                               ;; 0e:563a $00
+    ; Logic has been modified after the first broken Fang to increase the drop rate to 75%,
+    ; unless you have one in your inventory or have already killed Medusa.
+    ; If the first random check passes then give the Fang.
+    sIF_FLAG !wScriptFlags0F.6
+      sCALL script_043f
+    sELSE
+      ; Else if Medusa isn't dead, the second random bit passes,
+      ; and a reused bit from Jackal isn't set, then give the Fang.
+      sIF_FLAG !wScriptFlags04.7, wScriptFlags0F.7, !wScriptFlags01.0
+        sIF_INVENTORY INV_ITEM_BAG_FANG
+          ; If you are already carrying a Fang then the chest is a broken Fang.
+          sCALL script_0436
+        sELSE
+          ; Else, give the Fang.
+          sCALL script_043f
+        sENDIF
+      sELSE
+        ; Else it's the broken Fang.
+        sCALL script_0436
+        ; And if it is the broken fang and Medusa isn't dead yet, change the Jackal bit to influence future odds.
+        sIF_FLAG !wScriptFlags04.7
+          sCLEAR_FLAG wScriptFlags01.0
+        sENDIF
+      sENDIF
+    sENDIF
+    sEND
 
 script_0445:
     sRNG                                               ;; 0e:563b $c7
@@ -4728,12 +4828,12 @@ script_050f:
 
 script_0510:
     sIF_FLAG !wScriptFlags02.3                         ;; 0e:5fdc $08 $93 $00 $0e
+      sSPAWN_BOSS 18
       sDELAY 20                                        ;; 0e:5fe0 $f0 $14
       sSFX 20                                          ;; 0e:5fe2 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:5fe4 $bf
       sSFX 20                                          ;; 0e:5fe5 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:5fe7 $bf
-      sSPAWN_BOSS 18                                   ;; 0e:5fe8 $fe $12
       sSET_MUSIC 15                                    ;; 0e:5fea $f8 $0f
     sELSE                                              ;; 0e:5fec $01 $06
       sSFX 24                                          ;; 0e:5fee $f9 $18
@@ -4758,12 +4858,12 @@ script_0512:
 
 script_0513:
     sIF_FLAG !wScriptFlags02.5                         ;; 0e:601c $08 $95 $00 $0e
+      sSPAWN_BOSS 19
       sDELAY 20                                        ;; 0e:6020 $f0 $14
       sSFX 20                                          ;; 0e:6022 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:6024 $bf
       sSFX 20                                          ;; 0e:6025 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:6027 $bf
-      sSPAWN_BOSS 19                                   ;; 0e:6028 $fe $13
       sSET_MUSIC 15                                    ;; 0e:602a $f8 $0f
     sELSE                                              ;; 0e:602c $01 $03
       sSFX 16                                          ;; 0e:602e $f9 $10
@@ -6031,6 +6131,17 @@ script_0541:
     sDELAY 70                                          ;; 0e:7530 $f0 $46
     sFADE_TO_BLACK                                     ;; 0e:7532 $bd
     sLOAD_ROOM_INSTANT 10, $26, 20, 0                  ;; 0e:7533 $f3 $0a $26 $14 $00
+; The letterbox effect covers the back wall which makes this room look weird, so load a new one.
+    sSET_ROOM_TILE $16, 0, 1
+    sSET_ROOM_TILE $04, 1, 1
+    sSET_ROOM_TILE $04, 2, 1
+    sSET_ROOM_TILE $04, 3, 1
+    sSET_ROOM_TILE $04, 4, 1
+    sSET_ROOM_TILE $04, 5, 1
+    sSET_ROOM_TILE $04, 6, 1
+    sSET_ROOM_TILE $04, 7, 1
+    sSET_ROOM_TILE $04, 8, 1
+    sSET_ROOM_TILE $05, 9, 1
     sPLAYER_IN_MINECART                                ;; 0e:7538 $a3
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:7539 $86
     sSET_NPC_TYPES 102                                 ;; 0e:753a $fc $66
