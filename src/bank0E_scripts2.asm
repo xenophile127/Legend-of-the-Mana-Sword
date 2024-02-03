@@ -5919,18 +5919,36 @@ script_053f:
     sPLAYER_STEP_FORWARD                               ;; 0e:705b $80
     sDELAY 90                                          ;; 0e:705c $f0 $5a
     sMSG                                               ;; 0e:705e $04
-      db "<10>Mother:<GIRL>, the\n Mana Tree is\n gone now, but<12>"
-      db "<1b> you can become\n a new tree.<12>"
+      db "<10>Mother:<GIRL>, the\n Mana Tree is\n gone now, but", $00
+    sDELAY 80
+    sMSG
+      db "<1b> you can become\n a new tree.", $00
+    sDELAY 120
+    sMSG
       db "<1b><GIRL>:_ New tree?", $00 ;; 0e:705f
     sDELAY 40                                          ;; 0e:70a3 $f0 $28
     sMSG                                               ;; 0e:70a5 $04
-      db "\nMother:Remember\n what I told you?<12>"
-      db "<1b> We are the seeds\n of the Mana Tree.<12>"
-      db "<1b> You, yourself,\n will become the\n Mana Tree.<12>"
-      db "<1b> Last time, I was\n unable to protect\n the Mana Tree.<12>"
-      db "<1b> So I came here\n to become a new\n tree.<12>"
-      db "<1b><GIRL>:That tree__?\n It was you__?\nMother:_Yes, <GIRL>.<12>"
-      db "<1b> You can become a\n new Mana Tree and\n restore peace.<12>"
+      db "\nMother:Remember\n what I told you?", $00
+    sDELAY 80
+    sMSG
+      db "<1b> We are the seeds\n of the Mana Tree.", $00
+    sDELAY 80
+    sMSG
+      db "<1b> You, yourself,\n will become the\n Mana Tree.", $00
+    sDELAY 80
+    sMSG
+      db "<1b> Last time, I was\n unable to protect\n the Mana Tree.", $00
+    sDELAY 80
+    sMSG
+      db "<1b> So I came here\n to become a new\n tree.", $00
+    sDELAY 120
+    sMSG
+      db "<1b><GIRL>:That tree__?\n It was you__?\nMother:_Yes, <GIRL>.", $00
+    sDELAY 80
+    sMSG
+      db "<1b> You can become a\n new Mana Tree and\n restore peace.", $00
+    sDELAY 80
+    sMSG
       db "<1b> But_ <GIRL>_ It\n is your choice\n to make.", $00
     sDELAY 80                                          ;; 0e:71d9 $f0 $50
     sMSG                                               ;; 0e:71db $04
@@ -5954,7 +5972,7 @@ script_0540:
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:71fc $84
     sMSG                                               ;; 0e:71fd $04
       db "\n I will be the new\n Mana Tree.", $00   ;; 0e:71fe
-    sDELAY 120                                         ;; 0e:7214 $f0 $78
+    sDELAY 80
     sMSG                                               ;; 0e:7216 $04
       db "<1b> But if I am the\n last one left,\n when I fall_", $00 ;; 0e:7217
     sDELAY 100                                         ;; 0e:7236 $f0 $64
@@ -5968,7 +5986,7 @@ script_0540:
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:7283 $86
     sMSG                                               ;; 0e:7284 $04
       db "<1b> __ Don't worry.\n I will be here\n as long as_", $00 ;; 0e:7285
-    sDELAY 120                                         ;; 0e:72a5 $f0 $78
+    sDELAY 80
     sMSG                                               ;; 0e:72a7 $04
       db "<1b> _ you guard me\n from evil__<00>"
     sDELAY 120                                         ;; 0e:72be $f0 $78
@@ -5979,16 +5997,16 @@ script_0540:
     sDELAY 40                                          ;; 0e:72c5 $f0 $28
     sMSG                                               ;; 0e:72c7 $04
       db "Mother:<BOY>__\n Please protect\n my daughter.<00>"
-    sDELAY 120                                         ;; 0e:72e4 $f0 $78
+    sDELAY 80
     sMSG                                               ;; 0e:72e6 $04
       db "<1b> You are the only\n Gemma Knight for\n the Tree now__", $00 ;; 0e:72e7
-    sDELAY 120                                         ;; 0e:7309 $f0 $78
+    sDELAY 80
     sMSG                                               ;; 0e:730b $04
-      db "<1b>Mother:I will be\n withering soon_", $00 ;; 0e:730c
-    sDELAY 120                                         ;; 0e:7323 $f0 $78
+      db "<1b> I will be\n withering soon_", $00 ;; 0e:730c
+    sDELAY 80
     sMSG                                               ;; 0e:7325 $04
       db "<1b> Please tell my\n Gemma Knights\n that I said_", $00 ;; 0e:7326
-    sDELAY 120                                         ;; 0e:7345 $f0 $78
+    sDELAY 80
     sMSG                                               ;; 0e:7347 $04
       db "<1b> good-bye and\n thank you.", $00
     sDELAY 120                                         ;; 0e:735e $f0 $78
