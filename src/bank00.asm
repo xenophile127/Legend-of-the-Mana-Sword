@@ -64,11 +64,20 @@ VBlankInterruptHandler:
     call vblankGraphicsVRAMCopy                        ;; 00:0071 $cd $57 $2d
     call getRandomByte                                 ;; 00:0074 $cd $1e $2b
     ld   HL, wVBlankDone                               ;; 00:007e $21 $ad $c0
+    ld a, [hl]
     inc  [HL]                                          ;; 00:0081 $34
     pop  HL                                            ;; 00:0082 $e1
     pop  DE                                            ;; 00:0083 $d1
     pop  BC                                            ;; 00:0084 $c1
-    pop  AF                                            ;; 00:0085 $f1
+; If wVBlankDone was zero then the main loop has reached an infinite halt loop.
+; The only way out of that infinite loop is to muck with the stack.
+; This is to avoid the z80 halt bug(s).
+    or a
+    jr nz, .return
+; In this case it's safe to clobber af.
+    pop af
+.return
+    pop af
     reti
 
 DummyInterruptHandler:
@@ -5195,7 +5204,7 @@ processBackgroundRenderRequests:
     ret  Z                                             ;; 00:1ddf $c8
 ; Don't run if the engine is lagging behind the framerate.
     ld   A, [wVBlankDone]                              ;; 00:1de0 $fa $ad $c0
-    or a
+    dec a
     ret  NZ                                            ;; 00:1de5 $c0
     ldh  A, [rLY]                                      ;; 00:1de6 $f0 $44
     cp   A, $8c                                        ;; 00:1de8 $fe $8c
@@ -5505,34 +5514,37 @@ returnFromBankCall:
 Init:
     di                                                 ;; 00:1fca $f3
     ld   SP, hInitialSP                                ;; 00:1fcb $31 $fe $ff
+    call DisableLCD
     call InitPreIntEnable                              ;; 00:1fce $cd $f0 $1f
+; Due to the halt bug(s) workaround, wVblankDone must be non-zero when the first VBlank interupt happens.
+    ld hl, wVBlankDone
+    inc [hl]
     ei                                                 ;; 00:1fd1 $fb
     call titleScreenInit_trampoline                    ;; 00:1fd2 $cd $53 $31
 
 MainLoop:
-    ld hl, wVBlankDone
-    xor a
-.halt_until_vblank
-    or [hl]
-    jr nz, .run_engine
-    halt
-    jr .halt_until_vblank
-.run_engine:
-    dec [hl]
     call mainLoopPreInput                              ;; 00:1fde $cd $7b $21
     call runMainInputHandler_trampoline                ;; 00:1fe1 $cd $2c $02
     call speedUpScripts
     call mainLoopPostInput                             ;; 00:1fe4 $cd $90 $21
+    call HaltLoop
     jr MainLoop
 
-ds 1 ; Free space
+; To work around z80 halt bug(s), if wVBlankDone is zero then
+; the VBlank handler pops this function's return address from the stack
+; to exit the infinite halt loop.
+HaltLoop:
+    ld hl, wVBlankDone
+    dec [hl]
+    ret nz
+.loop:
+    halt
+    jr .loop
 
 InitPreIntEnable:
-    ld   A, $00                                        ;; 00:1ff0 $3e $00
-    ldh  [rIE], A                                      ;; 00:1ff2 $e0 $ff
-    call DisableLCD                                    ;; 00:1ff4 $cd $68 $21
-    ld   A, $00                                        ;; 00:1ff7 $3e $00
-    ld   HL, wOAMBuffer                                ;; 00:1ff9 $21 $00 $c0
+    xor a
+    ldh [rIE], a
+    ld hl, _RAM
     ld   BC, $2000                                     ;; 00:1ffc $01 $00 $20
     call FillHL_with_A_times_BC                        ;; 00:1fff $cd $54 $2b
     pop  DE                                            ;; 00:2002 $d1
