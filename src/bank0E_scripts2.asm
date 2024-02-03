@@ -6002,7 +6002,7 @@ script_0540:
       db "<1b> You are the only\n Gemma Knight for\n the Tree now__", $00 ;; 0e:72e7
     sDELAY 80
     sMSG                                               ;; 0e:730b $04
-      db "<1b> I will be\n withering soon_", $00 ;; 0e:730c
+      db "<1b> I will be\n withering soon_", $00
     sDELAY 80
     sMSG                                               ;; 0e:7325 $04
       db "<1b> Please tell my\n Gemma Knights\n that I said_", $00 ;; 0e:7326
