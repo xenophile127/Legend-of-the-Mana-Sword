@@ -4,6 +4,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/debug.inc"
 
 SECTION "bank11", ROMX[$4000], BANK[$11]
 
@@ -574,3 +575,8 @@ INCLUDE "code/color_fade.asm"
 ; This provides a replacement letterbox routine which blacks the border on SGB,
 ; and fade routines that use the SGB hardware.
 INCLUDE "code/sgb.asm"
+
+IF DEF(DEBUG)
+introDebugMsg:
+    DBG_STR STRCAT("LotMS Build ",__ISO_8601_UTC__)
+ENDC

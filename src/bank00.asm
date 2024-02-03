@@ -4,6 +4,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/debug.inc"
 
 SECTION "bank00", ROM0[$0000]
     db   $c3, $50, $01                                 ;; 00:0000 ???
@@ -107,11 +108,15 @@ LCDCInterruptHandler:
     pop  AF                                            ;; 00:00a8 $f1
     reti
 
+lotmsInit:
+    DBG_MSG_LABEL introDebugMsg
+    jp FullReset
+
 SECTION "entry", ROM0[$0100]
 
 entry:
     nop                                                ;; 00:0100 $00
-    jp   FullReset                                     ;; 00:0101 $c3 $50 $01
+    jp lotmsInit
 
 Header:
     ds   $30                                           ;; 00:0104
