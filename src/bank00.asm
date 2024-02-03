@@ -5068,7 +5068,6 @@ speedUpScripts:
     db $db ; ClearFlag
     db $ec ; RunRoomScript
     db $f8 ; SetMusic
-    db $f9 ; SFX
     db $ff ; Terminate list
 
 ; checks for death, increases charge bar, and handles expiring Nectar/Stamina buffs
