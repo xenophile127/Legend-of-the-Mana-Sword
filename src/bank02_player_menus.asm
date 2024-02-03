@@ -338,38 +338,45 @@ animateTilesIncrementCounter:
     inc  [HL]                                          ;; 02:4216 $34
     ret                                                ;; 02:4217 $c9
 
-; Return: A = pressed buttons
-; Return: B = newly pressed buttons
-; Return: C = pressed buttons (copy)
+; Return: a = pressed buttons
+; Return: b = newly pressed buttons
+; Return: c = pressed buttons (copy)
 updateJoypadInput:
-    ld   HL, $ff00                                     ;; 02:4218 $21 $00 $ff
-    ld   [HL], $10                                     ;; 02:421b $36 $10
-    ld   A, [HL]                                       ;; 02:421d $7e
-    ld   A, [HL]                                       ;; 02:421e $7e
-    ld   [HL], $20                                     ;; 02:421f $36 $20
-    cpl                                                ;; 02:4221 $2f
-    and  A, $0f                                        ;; 02:4222 $e6 $0f
-    cp   A, $0f                                        ;; 02:4224 $fe $0f
-    jp   Z, FullReset                                  ;; 02:4226 $ca $50 $01
-    swap A                                             ;; 02:4229 $cb $37
-    ld   C, A                                          ;; 02:422b $4f
-    ld   B, $08                                        ;; 02:422c $06 $08
-.loop:
-    ld   A, [HL]                                       ;; 02:422e $7e
-    dec  B                                             ;; 02:422f $05
-    jr   NZ, .loop                                     ;; 02:4230 $20 $fc
-    ld   [HL], $30                                     ;; 02:4232 $36 $30
-    cpl                                                ;; 02:4234 $2f
-    and  A, $0f                                        ;; 02:4235 $e6 $0f
-    or   A, C                                          ;; 02:4237 $b1
-    ld   C, A                                          ;; 02:4238 $4f
-    ld   A, [wJoypadInput]                             ;; 02:4239 $fa $af $c0
-    xor  A, C                                          ;; 02:423c $a9
-    and  A, C                                          ;; 02:423d $a1
-    ld   B, A                                          ;; 02:423e $47
-    ld   A, C                                          ;; 02:423f $79
-    ld   [wJoypadInput], A                             ;; 02:4240 $ea $af $c0
-    ret                                                ;; 02:4243 $c9
+    ld hl, rP1
+    ld [hl], P1F_GET_BTN
+    ld a, [hl]
+    ld a, [hl]
+    ld [hl], P1F_GET_DPAD
+; If A, B, Start, and Select are all pressed, then reset the game.
+    and $0f
+    jp z, FullReset
+    swap a
+    ld c, a
+; Read buttons eight times to stabilizie their states. 
+; This was originally a loop but other games unroll it, and it only takes two additional bytes.
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld a, [hl]
+    ld [hl], P1F_GET_NONE
+    and $0f
+    or a, c
+    cpl
+    ld hl, wJoypadInput
+    ld c, a
+    ld a, [hl]
+    xor c
+    and c
+    ld b, a
+    ld a, c
+    ld [hl], a
+    ret
+
+ds 2 ; Free space
 
 ; Given an object, check if it overlaps any of the Npc objects (objects 7 and up).
 ; Technically, this includes followers, non-player projectiles, and bosses as well.
