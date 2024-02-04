@@ -8,6 +8,7 @@ MACRO DBG_STR
     PUSHC
     SETCHARMAP main
     db \1
+    db $00
     POPC
     ENDM
 
