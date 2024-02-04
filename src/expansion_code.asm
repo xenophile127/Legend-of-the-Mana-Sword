@@ -576,7 +576,6 @@ INCLUDE "code/color_fade.asm"
 ; and fade routines that use the SGB hardware.
 INCLUDE "code/sgb.asm"
 
-IF DEF(DEBUG)
-introDebugMsg:
-    DBG_STR STRCAT("LotMS Build ",__ISO_8601_UTC__)
-ENDC
+; Load in debug messages used across the ROM.
+; This will not take any space if the DEBUG flag is not set.
+INCLUDE "include/debug_messages.inc"

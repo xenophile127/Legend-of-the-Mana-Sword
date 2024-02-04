@@ -108,15 +108,19 @@ LCDCInterruptHandler:
     pop  AF                                            ;; 00:00a8 $f1
     reti
 
+ds 58 ; Free space
+
 lotmsInit:
     DBG_MSG_LABEL introDebugMsg
-    jp FullReset
+    jr FullReset
 
 SECTION "entry", ROM0[$0100]
 
 entry:
     nop                                                ;; 00:0100 $00
-    jp lotmsInit
+    jr lotmsInit
+
+ds 1 ; Free space
 
 Header:
     ds   $30                                           ;; 00:0104
