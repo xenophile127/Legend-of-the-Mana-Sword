@@ -5025,7 +5025,7 @@ cacheMetatileAttributesAndLoadRoomTiles:
 scanRoomForNpcPlacementOptions_trampoline:
     jp_to_bank 11, scanRoomForNpcPlacementOptions
 
-ds 36 ; Free space
+ds 37 ; Free space
 
 ; Speeds up script execution by whitelisting certain opcodes to ignore the limit of one opcode per frame.
 speedUpScripts:
@@ -8255,7 +8255,9 @@ getEquippedShieldBlockElements_trampoline:
 
 getEquippedWeaponBonusTypes_trampoline:
     jp_to_bank 02, getEquippedWeaponBonusTypes         ;; 00:30f3 $f5 $3e $20 $c3 $06 $1f
-    db   $f5, $3e, $21, $c3, $06, $1f                  ;; 00:30f9 ??????
+
+getSpellOrBookPower_trampoline:
+    jp_to_bank 02, getSpellOrBookPower                 ;; 00:30f9 $f5 $3e $21 $c3 $06 $1f
 
 showFullscreenWindow_trampoline:
     jp_to_bank 02, showFullscreenWindow                ;; 00:30ff $f5 $3e $22 $c3 $06 $1f
@@ -8273,8 +8275,7 @@ drawMoneyOnStatusBar_trampoline:
 doSpellOrItemEffect_trampoline:
     jp_to_bank 02, doSpellOrItemEffect                 ;; 00:311d $f5 $3e $27 $c3 $06 $1f
 
-getCurrentMagicPower_trampoline:
-    jp_to_bank 02, getCurrentMagicPower                ;; 00:3123 $f5 $3e $28 $c3 $06 $1f
+ds 6 ; Free space
 
 attackWithWeaponUseWill_trampoline:
     jp_to_bank 02, attackWithWeaponUseWill             ;; 00:3129 $f5 $3e $29 $c3 $06 $1f
@@ -10381,23 +10382,31 @@ addMoneyAdjustValues:
     ld   A, L                                          ;; 00:3d86 $7d
     ld   [wMoneyLow], A                                ;; 00:3d87 $ea $be $d7
     ret                                                ;; 00:3d8d $c9
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00
 
-; The Japanese version did not have the overflow check resulting in high level Flare doing little or no damage
+ds 10 ; Free space
+
+; Magic Power is equal to the spell's power plus two times Wisdom.
+; The Japanese version had an overflow bug with Nuke and Wisodom 94 or above.
+; This was fixed in Final Fantasy Adventure both with an overflow check and also by nerfing Nuke.
+; Nuke has been buffed back to its original power: 57->68. Its power maxes at 255 with Wisdom 94.
+; It would be simple to change this to allow Nuke to have power above 255.
+; Return: a = power (base damage before random factor and modifications).
 getTotalMagicPower:
-    call getCurrentMagicPower_trampoline               ;; 00:3daf $cd $23 $31
-    and  A, A                                          ;; 00:3db2 $a7
-    ret  Z                                             ;; 00:3db3 $c8
-    push BC                                            ;; 00:3db4 $c5
-    ld   B, A                                          ;; 00:3db5 $47
-    ld   A, [wStatWisdom]                              ;; 00:3db6 $fa $c3 $d7
-    add  A, B                                          ;; 00:3db9 $80
-    jr   NC, .valid                                    ;; 00:3dba $30 $02
-    ld   A, $ff                                        ;; 00:3dbc $3e $ff
-.valid:
-    pop  BC                                            ;; 00:3dbe $c1
-    ret                                                ;; 00:3dbf $c9
+    call getSpellOrBookPower_trampoline
+    or a
+    ret z
+    ld b, a
+; Wisdom is capped at 99 so no need for an overflow check here.
+    ld a, [wStatWisdom]
+    add a
+; Add in the spell's power and do an overflow check.
+    add b
+    jr nc, .return
+    ld a, $ff
+.return:
+    ret
+
+ds 1 ; Free space
 
 getPlayerAttackElements:
     ld   A, [wMiscFlags]                               ;; 00:3dc0 $fa $6f $d8

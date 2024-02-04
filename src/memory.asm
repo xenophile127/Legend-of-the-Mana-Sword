@@ -1139,6 +1139,7 @@ wScriptFlags0E:
 wScriptFlags0F:
     ds 1                                               ;; d7d5
 
+; Unused. Free space.
 wCurrentMagicPower:
     ds 1                                               ;; d7d6
 
