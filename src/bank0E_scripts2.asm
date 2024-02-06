@@ -5354,7 +5354,7 @@ script_0537:
     sEND                                               ;; 0e:664a $00
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:664b $84
     sMSG                                               ;; 0e:664c $04
-      db "<10><BOY>:Wait!\n\nJulius:HA!<12>"
+      db "<10><BOY>:Wait!\nJulius:Fall!<12>"
       db "<11>", $00 ;; 0e:664d
     sDELAY 20                                          ;; 0e:6661 $f0 $14
     sLOOP 3, 4                                         ;; 0e:6663 $03 $03 $04
