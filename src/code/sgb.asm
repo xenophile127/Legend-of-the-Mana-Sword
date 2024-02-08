@@ -261,19 +261,18 @@ sgbSetEndScreenColors:
 ; The second and third palettes are untouched by fading to black, so they need to be blacked out first.
     ld bc, .SGB_PAL23_BLACK
     call SGBSendData
-    ld bc, .SGB_ATTR_BLK_1
+    ld bc, .SGB_ATTR
     call SGBSendData
-    ld bc, .SGB_ATTR_BLK_2
+    ld bc, .SGB_ATTR+$10
     call SGBSendData
     pop hl
     ret
 .SGB_PAL23_BLACK:
     db $09, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-.SGB_ATTR_BLK_1: ;/------ first region -----\   /----- second region -----\
-    db $21, $02, $01, $01, $0c, $0c, $0e, $0c, $01, $02, $0c, $0a, $0d, $0b, $00, $00
-.SGB_ATTR_BLK_2:
-    db $21, $01, $01, $03, $0e, $0a, $0f, $0b, $00, $00, $00, $00, $00, $00, $00, $00
-;                 \------ thrid region -----/   \----- fourth region -----/
+.SGB_ATTR:
+;            x    y   number   l->r  /----------------- data -----------------------\
+    db $39, $0c, $0a, $18, $00, $00, $af, $00, $00, $00, $00, $af, $00, $00, $00, $00
+    db $39, $0c, $0c, $03, $00, $00, $54, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 ; Given a SGB palette packet, creates a modified packet with colors faded between the original and black.
 ; c = fade amount from 0 (completely black) to 11 (unmodified colors)
