@@ -28,23 +28,31 @@ SGB_PAL23:
     db $09, $df, $6f, $68, $17, $83, $02, $61, $01, $68, $17, $7f, $03, $61, $01, $ff
 ;            #fff7de   #42de29   #18a500   #085a00    #42de29   #ffde00   #085a00
 
-checkSGB:
-; Returns whether the game is running on an SGB in carry.
-; Leaves it set to two controllers because it is only used during the ending.
+; Send a MLT_REQ command to the Super Game Boy to change the number of joypads to two.
+sgbSetTwoControllers:
     ld bc, .SGB_MLTREQ2
     call SGBSendData
+    ret
+.SGB_MLTREQ2:
+    db $89, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+; Check whether the game is running on Super Game Boy.
+; Requires number of controllers to be set to two (or four) beforehand.
+; For real SGBs and low level emulators multiple (three) frames must pass after changing number of controllers.
+; Return: Carry flag set if running on SGB.
+checkSGB:
     ld b, $04
     ld c, LOW(rP1)
 .loop:
-    ld a, $20
+    ld a, P1F_GET_DPAD
     ld [c], a ; Set P1.4 low to simulate normal reading.
     ld a, [c]
     ld a, [c]
-    ld a, $10
+    ld a, P1F_GET_BTN
     ld [c], a ; Set P1.5 low to advance to the next joypad.
     ld a, [c]
     ld a, [c]
-    ld a, $30
+    ld a, P1F_GET_NONE
     ld [c], a ; Set P1.4 and P1.5 high to read the joypad id.
     ld a, [c]
     ld a, [c]
@@ -55,12 +63,19 @@ checkSGB:
     jp nz, .is_sgb
     dec b
     jr nz, .loop
+    and a ; Clear carry
     ret
 .is_sgb
     scf
     ret
-.SGB_MLTREQ2:
-    db $89, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+; The Super Game Boy detection is done by testing for multiple controller support.
+; On real SGBs and low level emulators a three frame delay is required after sending this command.
+enhancedLetterboxSetTwoControllers:
+    call sgbSetTwoControllers
+    ld hl, wScriptOpCounter
+    inc [hl]
+    ret
 
 ; Rather than store the boot value, check for SGB support using the multiple controller method.
 enhancedLetterboxCheckSGB:
@@ -68,7 +83,11 @@ enhancedLetterboxCheckSGB:
     call prepareLetterboxEffect_trampoline
 ; Check whether SGB code should be run
     call checkSGB
-    ret nc
+    jr c, .sgb
+    xor a
+    ld [wScriptOpCounter], a
+    ret
+.sgb:
 ; Used by the fade effect and to set up palette attributes at the propper moment.
     ld hl, wSGBEndingCounter
     inc [hl]
@@ -242,6 +261,10 @@ enhancedLetterbox:
     or a
     ret
 .enhancedLetterboxJumptable:
+    dw enhancedLetterboxSetTwoControllers
+    dw enhancedLetterboxDelayFrame
+    dw enhancedLetterboxDelayFrame
+    dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxCheckSGB
     dw enhancedLetterboxFreezeScreen
     dw enhancedLetterboxTransferTilesPrepare
