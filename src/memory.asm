@@ -1674,19 +1674,8 @@ hScratch:
 
 ; Unused and ready for future features
 hUnused:
-    ds 90
+    ds 94
 
-; These next three are used as values for signed math. BadBoy understands this, yet still adds them here.
-hUnusedFFFA:
-    ds 2                                               ;; fffa
-
-hUnusedFFFC:
-    ds 1                                               ;; fffc
-
-hUnusedFFFD:
-    ds 1                                               ;; fffd
-
-; Used as the stack location at init for exactly one call, but also used as -2.
 hInitialSP:
     ds 1                                               ;; fffe
 
