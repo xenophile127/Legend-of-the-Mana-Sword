@@ -2,6 +2,6 @@
 IF DEF(DEBUG)
 
 introDebugMsg:
-    DBG_STR STRCAT("LotMS Build ",__ISO_8601_UTC__)
+    DBG_STR STRFMT("LotMS Build  %u-%02u-%02u", __UTC_YEAR__, __UTC_MONTH__, __UTC_DAY__)
 
 ENDC
