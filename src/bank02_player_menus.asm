@@ -8177,7 +8177,7 @@ titleScreenOptions:
 
 ;@ffa_text size=20 amount=2
 titleScreenLicenseText:
-    TXT  "LICENSED BY NINTENDO"                        ;; 02:7e62 ....................
+    TXT STRFMT("hack date %u-%02u-%02u", __UTC_YEAR__, __UTC_MONTH__, __UTC_DAY__)
     TXT  "<00><COPYRIGHT> 1991 SQUARE SOFT\n"                 ;; 02:7e76 ....................
 
 intoScrollText:
