@@ -135,42 +135,44 @@ enhancedLetterboxSetBlackBorderPrepare:
 ; Four tiles are required to encode the tilemap.
 ; They are stored over HUD tiles since the HUD is now permanently hidden.
     ld b, $20
-    ld de, $1000
-    ld hl, $8f10
+; d = snes tile number, e = snes attributes
+    ld de, $0110
+; The tiles are numbers $f1, $f2, $f3, and $f4.
+    ld hl, _VRAM + $0f10
 .tile_loop1:
 ; This weirdness is to set up the transparent parts of those four tiles
     ld a, $12
     cp b
     jr nz, .not_start
-    inc e
+; Switch to the transparent tile id.
+    dec d
 .not_start:
     ld a, $06
     cp b
     jr nz, .not_end
-    dec e
+; Switch back to the solid black tile id.
+    inc d
 .not_end:
-    push hl
-    push de
     call storeDEinVRAM
-    pop de
-    pop hl
-    inc hl
     inc hl
     dec b
     jr nz, .tile_loop1
 ; Set the tilemap with opaque and transparent tiles.
-    ld hl, $9c40
-    ld c, $1c
+; Starting just after the window data.
+    ld hl, _SCRN1 + $40
+; A total of 29 rows of tiles instead of 28 because the SNES palette fade commands cause scanline 225 to flash.
+    ld c, $1d
 .tilemap_loop_outer:
     ld b, $05
 .tilemap_loop_inner:
     push bc
     ld a, c
-    cp $06
+    cp $07
     jr c, .edge
-    cp $18
+    cp $19
     jr c, .middle
 .edge:
+; Edges (above and below the game screen) are solid black.
     ld de, $f1f1
     call storeDEinVRAM
     inc hl
@@ -178,6 +180,7 @@ enhancedLetterboxSetBlackBorderPrepare:
     inc hl
     jr .common
 .middle:
+; The middle area has a transparent cuttout for the game screen.
     ld de, $f2f3
     call storeDEinVRAM
     inc hl
@@ -190,7 +193,7 @@ enhancedLetterboxSetBlackBorderPrepare:
     ret z
     dec b
     jr nz, .tilemap_loop_inner
-    ld de, $000c
+    ld de, SCRN_VX_B - SCRN_X_B
     add hl, de
     jr .tilemap_loop_outer
 
