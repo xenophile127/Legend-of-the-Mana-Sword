@@ -537,7 +537,16 @@ drawRoomFromMap:
     ret                                                ;; 01:43a2 $c9
 
 ; Removes previous screen's objects, positions the player and any follower, and inits the shutter open effect.
+; The player graphics routines used by this don't work if there are tiles queued to transfer.
+; That can happen if the screen being loaded uses animated tiles.
+; If it happens, just return and try again next frame.
+; The worst that can happen is is probably three failures in a row with ocean plus river.
 loadMapWithShutterFinalSetup:
+    ld h, d
+    ld l, e
+    ld a, [wTileCopyRequestCount]
+    or a
+    ret nz
     push DE                                            ;; 01:43a3 $d5
     push BC                                            ;; 01:43a4 $c5
     call removeNpcObjects                              ;; 01:43a5 $cd $75 $03
@@ -547,24 +556,19 @@ loadMapWithShutterFinalSetup:
     call checkForFollower                              ;; 01:43ad $cd $c2 $28
     pop  HL                                            ;; 01:43b0 $e1
     jr   NZ, .jr_01_43cc                               ;; 01:43b1 $20 $19
-    ld   C, $00                                        ;; 01:43b3 $0e $00
     push HL                                            ;; 01:43b5 $e5
     call checkForMovingObjects                         ;; 01:43b6 $cd $9b $28
     pop  HL                                            ;; 01:43b9 $e1
     jr   NZ, .jr_01_43cc                               ;; 01:43ba $20 $10
-    ld   A, H                                          ;; 01:43bc $7c
-    inc  A                                             ;; 01:43bd $3c
-    add  A, A                                          ;; 01:43be $87
-    add  A, A                                          ;; 01:43bf $87
-    add  A, A                                          ;; 01:43c0 $87
-    ld   E, A                                          ;; 01:43c1 $5f
-    ld   A, L                                          ;; 01:43c2 $7d
-    inc  A                                             ;; 01:43c3 $3c
-    inc  A                                             ;; 01:43c4 $3c
-    add  A, A                                          ;; 01:43c5 $87
-    add  A, A                                          ;; 01:43c6 $87
-    add  A, A                                          ;; 01:43c7 $87
-    ld   D, A                                          ;; 01:43c8 $57
+; Do the tile coordinate to pixel coordinate  multiply by eight on both at the same time.
+    inc h
+    inc l
+    inc l
+    add hl, hl
+    add hl, hl
+    add hl, hl
+    ld d, h
+    ld e, l
     call updateNpcPosition_trampoline                  ;; 01:43c9 $cd $aa $28
 .jr_01_43cc:
     ld   HL, lcdcShutterEffectOpen                     ;; 01:43cc $21 $09 $41
@@ -586,7 +590,16 @@ loadMapWithShutterFinalSetup:
     ret                                                ;; 01:43ed $c9
 
 ; Removes previous screen's objects and positions the player and any follower.
+; The player graphics routines used by this don't work if there are tiles queued to transfer.
+; That can happen if the screen being loaded uses animated tiles.
+; If it happens, just return and try again next frame.
+; The worst that can happen is is probably three failures in a row with ocean plus river.
 loadMapInstantFinalSetup:
+    ld h, d
+    ld l, e
+    ld a, [wTileCopyRequestCount]
+    or a
+    ret nz
     push DE                                            ;; 01:43ee $d5
     push BC                                            ;; 01:43ef $c5
     call removeNpcObjects                              ;; 01:43f0 $cd $75 $03
@@ -596,24 +609,19 @@ loadMapInstantFinalSetup:
     call checkForFollower                              ;; 01:43f8 $cd $c2 $28
     pop  HL                                            ;; 01:43fb $e1
     jr   NZ, .jr_01_4417                               ;; 01:43fc $20 $19
-    ld   C, $00                                        ;; 01:43fe $0e $00
     push HL                                            ;; 01:4400 $e5
     call checkForMovingObjects                         ;; 01:4401 $cd $9b $28
     pop  HL                                            ;; 01:4404 $e1
     jr   NZ, .jr_01_4417                               ;; 01:4405 $20 $10
-    ld   A, H                                          ;; 01:4407 $7c
-    inc  A                                             ;; 01:4408 $3c
-    add  A, A                                          ;; 01:4409 $87
-    add  A, A                                          ;; 01:440a $87
-    add  A, A                                          ;; 01:440b $87
-    ld   E, A                                          ;; 01:440c $5f
-    ld   A, L                                          ;; 01:440d $7d
-    inc  A                                             ;; 01:440e $3c
-    inc  A                                             ;; 01:440f $3c
-    add  A, A                                          ;; 01:4410 $87
-    add  A, A                                          ;; 01:4411 $87
-    add  A, A                                          ;; 01:4412 $87
-    ld   D, A                                          ;; 01:4413 $57
+; Do the tile coordinate to pixel coordinate  multiply by eight on both at the same time.
+    inc h
+    inc l
+    inc l
+    add hl, hl
+    add hl, hl
+    add hl, hl
+    ld d, h
+    ld e, l
     call updateNpcPosition_trampoline                  ;; 01:4414 $cd $aa $28
 .jr_01_4417:
     call playerAttackDestroy
@@ -1216,6 +1224,9 @@ playerSpritesLoadPlayerSpriteTiles:
     ld   A, [wPlayerAnimation]                         ;; 01:491c $fa $94 $d3
     cp   A, $ff                                        ;; 01:491f $fe $ff
     jr   NZ, .jr_01_492c                               ;; 01:4921 $20 $09
+; This aborts if there are tiles waiting to be copied.
+; That was a problem for loading screens with animated tiles.
+; It's possible player animation is being skipped under similar circumstances.
     ld   A, [wTileCopyRequestCount]                    ;; 01:4923 $fa $e0 $c8
     cp   A, $00                                        ;; 01:4926 $fe $00
     jr   NZ, .jr_01_4954                               ;; 01:4928 $20 $2a
