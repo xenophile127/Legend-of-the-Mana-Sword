@@ -4,6 +4,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/debug.inc"
 
 SECTION "bank11", ROMX[$4000], BANK[$11]
 
@@ -574,3 +575,7 @@ INCLUDE "code/color_fade.asm"
 ; This provides a replacement letterbox routine which blacks the border on SGB,
 ; and fade routines that use the SGB hardware.
 INCLUDE "code/sgb.asm"
+
+; Load in debug messages used across the ROM.
+; This will not take any space if the DEBUG flag is not set.
+INCLUDE "include/debug_messages.inc"

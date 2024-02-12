@@ -27,7 +27,10 @@ SPAWN = -DSPAWN_NEW
 #RNG = -DRNG_ORIGINAL
 RNG = -DRNG_LCG
 
-DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(RNG) $(SPAWN)
+# Controls whether debug messages created with include/debug.inc are recorded
+DEBUG = -DDEBUG
+
+DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(RNG) $(SPAWN) $(DEBUG)
 
 all: $(ROM)
 

@@ -1216,9 +1216,12 @@ playerSpritesLoadPlayerSpriteTiles:
     ld   A, [wPlayerAnimation]                         ;; 01:491c $fa $94 $d3
     cp   A, $ff                                        ;; 01:491f $fe $ff
     jr   NZ, .jr_01_492c                               ;; 01:4921 $20 $09
+; This was a check for any tiles waiting for transfer.
+; It sometimes caused graphical glitches when loading a new screen with animated tiles.
     ld   A, [wTileCopyRequestCount]                    ;; 01:4923 $fa $e0 $c8
     cp   A, $00                                        ;; 01:4926 $fe $00
-    jr   NZ, .jr_01_4954                               ;; 01:4928 $20 $2a
+    nop
+    nop
     ld   A, $ff                                        ;; 01:492a $3e $ff
 .jr_01_492c:
     cp   A, E                                          ;; 01:492c $bb

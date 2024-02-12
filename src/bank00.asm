@@ -4,6 +4,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/debug.inc"
 
 SECTION "bank00", ROM0[$0000]
     db   $c3, $50, $01                                 ;; 00:0000 ???
@@ -64,11 +65,20 @@ VBlankInterruptHandler:
     call vblankGraphicsVRAMCopy                        ;; 00:0071 $cd $57 $2d
     call getRandomByte                                 ;; 00:0074 $cd $1e $2b
     ld   HL, wVBlankDone                               ;; 00:007e $21 $ad $c0
+    ld a, [hl]
     inc  [HL]                                          ;; 00:0081 $34
     pop  HL                                            ;; 00:0082 $e1
     pop  DE                                            ;; 00:0083 $d1
     pop  BC                                            ;; 00:0084 $c1
-    pop  AF                                            ;; 00:0085 $f1
+; If wVBlankDone was zero then the main loop has reached an infinite halt loop.
+; The only way out of that infinite loop is to muck with the stack.
+; This is to avoid the z80 halt bug(s).
+    or a
+    jr nz, .return
+; In this case it's safe to clobber af.
+    pop af
+.return
+    pop af
     reti
 
 DummyInterruptHandler:
@@ -98,11 +108,19 @@ LCDCInterruptHandler:
     pop  AF                                            ;; 00:00a8 $f1
     reti
 
+ds 58 ; Free space
+
+lotmsInit:
+    DBG_MSG_LABEL introDebugMsg
+    jr FullReset
+
 SECTION "entry", ROM0[$0100]
 
 entry:
     nop                                                ;; 00:0100 $00
-    jp   FullReset                                     ;; 00:0101 $c3 $50 $01
+    jr lotmsInit
+
+ds 1 ; Free space
 
 Header:
     ds   $30                                           ;; 00:0104
@@ -5028,17 +5046,23 @@ cacheMetatileAttributesAndLoadRoomTiles:
 scanRoomForNpcPlacementOptions_trampoline:
     jp_to_bank 11, scanRoomForNpcPlacementOptions
 
-ds 36 ; Free space
+ds 33 ; Free space
 
 ; Speeds up script execution by whitelisting certain opcodes to ignore the limit of one opcode per frame.
 speedUpScripts:
 .loop:
+; Check that a script is running.
     ld a, [wMainGameState]
     cp $10
     ret nz
+; Check that there is still time left in the current frame.
     ld a, [rLY]
     cp $50
     ret nc
+; Check that nothing is currently moving. Bug fix for player misalignment before Shadow Knight's push.
+    call checkForMovingObjects
+    ret nz
+; Check that the next command is in the whitelist.
     ld a, [wScriptCommand]
     ld b, a
     ld hl, .speedupList
@@ -5071,7 +5095,6 @@ speedUpScripts:
     db $db ; ClearFlag
     db $ec ; RunRoomScript
     db $f8 ; SetMusic
-    db $f9 ; SFX
     db $ff ; Terminate list
 
 ; checks for death, increases charge bar, and handles expiring Nectar/Stamina buffs
@@ -5207,7 +5230,7 @@ processBackgroundRenderRequests:
     ret  Z                                             ;; 00:1ddf $c8
 ; Don't run if the engine is lagging behind the framerate.
     ld   A, [wVBlankDone]                              ;; 00:1de0 $fa $ad $c0
-    or a
+    dec a
     ret  NZ                                            ;; 00:1de5 $c0
     ldh  A, [rLY]                                      ;; 00:1de6 $f0 $44
     cp   A, $8c                                        ;; 00:1de8 $fe $8c
@@ -5517,34 +5540,37 @@ returnFromBankCall:
 Init:
     di                                                 ;; 00:1fca $f3
     ld   SP, hInitialSP                                ;; 00:1fcb $31 $fe $ff
+    call DisableLCD
     call InitPreIntEnable                              ;; 00:1fce $cd $f0 $1f
+; Due to the halt bug(s) workaround, wVblankDone must be non-zero when the first VBlank interupt happens.
+    ld hl, wVBlankDone
+    inc [hl]
     ei                                                 ;; 00:1fd1 $fb
     call titleScreenInit_trampoline                    ;; 00:1fd2 $cd $53 $31
 
 MainLoop:
-    ld hl, wVBlankDone
-    xor a
-.halt_until_vblank
-    or [hl]
-    jr nz, .run_engine
-    halt
-    jr .halt_until_vblank
-.run_engine:
-    dec [hl]
     call mainLoopPreInput                              ;; 00:1fde $cd $7b $21
     call runMainInputHandler_trampoline                ;; 00:1fe1 $cd $2c $02
     call speedUpScripts
     call mainLoopPostInput                             ;; 00:1fe4 $cd $90 $21
+    call HaltLoop
     jr MainLoop
 
-ds 1 ; Free space
+; To work around z80 halt bug(s), if wVBlankDone is zero then
+; the VBlank handler pops this function's return address from the stack
+; to exit the infinite halt loop.
+HaltLoop:
+    ld hl, wVBlankDone
+    dec [hl]
+    ret nz
+.loop:
+    halt
+    jr .loop
 
 InitPreIntEnable:
-    ld   A, $00                                        ;; 00:1ff0 $3e $00
-    ldh  [rIE], A                                      ;; 00:1ff2 $e0 $ff
-    call DisableLCD                                    ;; 00:1ff4 $cd $68 $21
-    ld   A, $00                                        ;; 00:1ff7 $3e $00
-    ld   HL, wOAMBuffer                                ;; 00:1ff9 $21 $00 $c0
+    xor a
+    ldh [rIE], a
+    ld hl, _RAM
     ld   BC, $2000                                     ;; 00:1ffc $01 $00 $20
     call FillHL_with_A_times_BC                        ;; 00:1fff $cd $54 $2b
     pop  DE                                            ;; 00:2002 $d1
@@ -8256,7 +8282,9 @@ getEquippedShieldBlockElements_trampoline:
 
 getEquippedWeaponBonusTypes_trampoline:
     jp_to_bank 02, getEquippedWeaponBonusTypes         ;; 00:30f3 $f5 $3e $20 $c3 $06 $1f
-    db   $f5, $3e, $21, $c3, $06, $1f                  ;; 00:30f9 ??????
+
+getSpellOrBookPower_trampoline:
+    jp_to_bank 02, getSpellOrBookPower                 ;; 00:30f9 $f5 $3e $21 $c3 $06 $1f
 
 showFullscreenWindow_trampoline:
     jp_to_bank 02, showFullscreenWindow                ;; 00:30ff $f5 $3e $22 $c3 $06 $1f
@@ -8274,8 +8302,7 @@ drawMoneyOnStatusBar_trampoline:
 doSpellOrItemEffect_trampoline:
     jp_to_bank 02, doSpellOrItemEffect                 ;; 00:311d $f5 $3e $27 $c3 $06 $1f
 
-getCurrentMagicPower_trampoline:
-    jp_to_bank 02, getCurrentMagicPower                ;; 00:3123 $f5 $3e $28 $c3 $06 $1f
+ds 6 ; Free space
 
 attackWithWeaponUseWill_trampoline:
     jp_to_bank 02, attackWithWeaponUseWill             ;; 00:3129 $f5 $3e $29 $c3 $06 $1f
@@ -10382,23 +10409,31 @@ addMoneyAdjustValues:
     ld   A, L                                          ;; 00:3d86 $7d
     ld   [wMoneyLow], A                                ;; 00:3d87 $ea $be $d7
     ret                                                ;; 00:3d8d $c9
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00
 
-; The Japanese version did not have the overflow check resulting in high level Flare doing little or no damage
+ds 10 ; Free space
+
+; Magic Power is equal to the spell's power plus two times Wisdom.
+; The Japanese version had an overflow bug with Nuke and Wisodom 94 or above.
+; This was fixed in Final Fantasy Adventure both with an overflow check and also by nerfing Nuke.
+; Nuke has been buffed back to its original power: 57->68. Its power maxes at 255 with Wisdom 94.
+; It would be simple to change this to allow Nuke to have power above 255.
+; Return: a = power (base damage before random factor and modifications).
 getTotalMagicPower:
-    call getCurrentMagicPower_trampoline               ;; 00:3daf $cd $23 $31
-    and  A, A                                          ;; 00:3db2 $a7
-    ret  Z                                             ;; 00:3db3 $c8
-    push BC                                            ;; 00:3db4 $c5
-    ld   B, A                                          ;; 00:3db5 $47
-    ld   A, [wStatWisdom]                              ;; 00:3db6 $fa $c3 $d7
-    add  A, B                                          ;; 00:3db9 $80
-    jr   NC, .valid                                    ;; 00:3dba $30 $02
-    ld   A, $ff                                        ;; 00:3dbc $3e $ff
-.valid:
-    pop  BC                                            ;; 00:3dbe $c1
-    ret                                                ;; 00:3dbf $c9
+    call getSpellOrBookPower_trampoline
+    or a
+    ret z
+    ld b, a
+; Wisdom is capped at 99 so no need for an overflow check here.
+    ld a, [wStatWisdom]
+    add a
+; Add in the spell's power and do an overflow check.
+    add b
+    jr nc, .return
+    ld a, $ff
+.return:
+    ret
+
+ds 1 ; Free space
 
 getPlayerAttackElements:
     ld   A, [wMiscFlags]                               ;; 00:3dc0 $fa $6f $d8

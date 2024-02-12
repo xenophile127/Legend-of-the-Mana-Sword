@@ -28,23 +28,31 @@ SGB_PAL23:
     db $09, $df, $6f, $68, $17, $83, $02, $61, $01, $68, $17, $7f, $03, $61, $01, $ff
 ;            #fff7de   #42de29   #18a500   #085a00    #42de29   #ffde00   #085a00
 
-checkSGB:
-; Returns whether the game is running on an SGB in carry.
-; Leaves it set to two controllers because it is only used during the ending.
+; Send a MLT_REQ command to the Super Game Boy to change the number of joypads to two.
+sgbSetTwoControllers:
     ld bc, .SGB_MLTREQ2
     call SGBSendData
+    ret
+.SGB_MLTREQ2:
+    db $89, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+; Check whether the game is running on Super Game Boy.
+; Requires number of controllers to be set to two (or four) beforehand.
+; For real SGBs and low level emulators multiple (three) frames must pass after changing number of controllers.
+; Return: Carry flag set if running on SGB.
+checkSGB:
     ld b, $04
     ld c, LOW(rP1)
 .loop:
-    ld a, $20
+    ld a, P1F_GET_DPAD
     ld [c], a ; Set P1.4 low to simulate normal reading.
     ld a, [c]
     ld a, [c]
-    ld a, $10
+    ld a, P1F_GET_BTN
     ld [c], a ; Set P1.5 low to advance to the next joypad.
     ld a, [c]
     ld a, [c]
-    ld a, $30
+    ld a, P1F_GET_NONE
     ld [c], a ; Set P1.4 and P1.5 high to read the joypad id.
     ld a, [c]
     ld a, [c]
@@ -55,12 +63,19 @@ checkSGB:
     jp nz, .is_sgb
     dec b
     jr nz, .loop
+    and a ; Clear carry
     ret
 .is_sgb
     scf
     ret
-.SGB_MLTREQ2:
-    db $89, $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+; The Super Game Boy detection is done by testing for multiple controller support.
+; On real SGBs and low level emulators a three frame delay is required after sending this command.
+enhancedLetterboxSetTwoControllers:
+    call sgbSetTwoControllers
+    ld hl, wScriptOpCounter
+    inc [hl]
+    ret
 
 ; Rather than store the boot value, check for SGB support using the multiple controller method.
 enhancedLetterboxCheckSGB:
@@ -68,7 +83,11 @@ enhancedLetterboxCheckSGB:
     call prepareLetterboxEffect_trampoline
 ; Check whether SGB code should be run
     call checkSGB
-    ret nc
+    jr c, .sgb
+    xor a
+    ld [wScriptOpCounter], a
+    ret
+.sgb:
 ; Used by the fade effect and to set up palette attributes at the propper moment.
     ld hl, wSGBEndingCounter
     inc [hl]
@@ -116,42 +135,44 @@ enhancedLetterboxSetBlackBorderPrepare:
 ; Four tiles are required to encode the tilemap.
 ; They are stored over HUD tiles since the HUD is now permanently hidden.
     ld b, $20
-    ld de, $1000
-    ld hl, $8f10
+; d = snes tile number, e = snes attributes
+    ld de, $0110
+; The tiles are numbers $f1, $f2, $f3, and $f4.
+    ld hl, _VRAM + $0f10
 .tile_loop1:
 ; This weirdness is to set up the transparent parts of those four tiles
     ld a, $12
     cp b
     jr nz, .not_start
-    inc e
+; Switch to the transparent tile id.
+    dec d
 .not_start:
     ld a, $06
     cp b
     jr nz, .not_end
-    dec e
+; Switch back to the solid black tile id.
+    inc d
 .not_end:
-    push hl
-    push de
     call storeDEinVRAM
-    pop de
-    pop hl
-    inc hl
     inc hl
     dec b
     jr nz, .tile_loop1
 ; Set the tilemap with opaque and transparent tiles.
-    ld hl, $9c40
-    ld c, $1c
+; Starting just after the window data.
+    ld hl, _SCRN1 + $40
+; A total of 29 rows of tiles instead of 28 because the SNES palette fade commands cause scanline 225 to flash.
+    ld c, $1d
 .tilemap_loop_outer:
     ld b, $05
 .tilemap_loop_inner:
     push bc
     ld a, c
-    cp $06
+    cp $07
     jr c, .edge
-    cp $18
+    cp $19
     jr c, .middle
 .edge:
+; Edges (above and below the game screen) are solid black.
     ld de, $f1f1
     call storeDEinVRAM
     inc hl
@@ -159,6 +180,7 @@ enhancedLetterboxSetBlackBorderPrepare:
     inc hl
     jr .common
 .middle:
+; The middle area has a transparent cuttout for the game screen.
     ld de, $f2f3
     call storeDEinVRAM
     inc hl
@@ -171,7 +193,7 @@ enhancedLetterboxSetBlackBorderPrepare:
     ret z
     dec b
     jr nz, .tilemap_loop_inner
-    ld de, $000c
+    ld de, SCRN_VX_B - SCRN_X_B
     add hl, de
     jr .tilemap_loop_outer
 
@@ -242,6 +264,10 @@ enhancedLetterbox:
     or a
     ret
 .enhancedLetterboxJumptable:
+    dw enhancedLetterboxSetTwoControllers
+    dw enhancedLetterboxDelayFrame
+    dw enhancedLetterboxDelayFrame
+    dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxCheckSGB
     dw enhancedLetterboxFreezeScreen
     dw enhancedLetterboxTransferTilesPrepare
@@ -261,19 +287,18 @@ sgbSetEndScreenColors:
 ; The second and third palettes are untouched by fading to black, so they need to be blacked out first.
     ld bc, .SGB_PAL23_BLACK
     call SGBSendData
-    ld bc, .SGB_ATTR_BLK_1
+    ld bc, .SGB_ATTR
     call SGBSendData
-    ld bc, .SGB_ATTR_BLK_2
+    ld bc, .SGB_ATTR+$10
     call SGBSendData
     pop hl
     ret
 .SGB_PAL23_BLACK:
     db $09, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-.SGB_ATTR_BLK_1: ;/------ first region -----\   /----- second region -----\
-    db $21, $02, $01, $01, $0c, $0c, $0e, $0c, $01, $02, $0c, $0a, $0d, $0b, $00, $00
-.SGB_ATTR_BLK_2:
-    db $21, $01, $01, $03, $0e, $0a, $0f, $0b, $00, $00, $00, $00, $00, $00, $00, $00
-;                 \------ thrid region -----/   \----- fourth region -----/
+.SGB_ATTR:
+;            x    y   number   l->r  /----------------- data -----------------------\
+    db $39, $0c, $0a, $18, $00, $00, $af, $00, $00, $00, $00, $af, $00, $00, $00, $00
+    db $39, $0c, $0c, $03, $00, $00, $54, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
 ; Given a SGB palette packet, creates a modified packet with colors faded between the original and black.
 ; c = fade amount from 0 (completely black) to 11 (unmodified colors)

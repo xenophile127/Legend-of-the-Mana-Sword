@@ -2378,9 +2378,7 @@ script_019d:
         db "<10><BOY>:<GIRL>!\n<GIRL>:__", $00         ;; 0d:4c88
       sDELAY 30                                        ;; 0d:4c92 $f0 $1e
       sMSG                                             ;; 0d:4c94 $04
-        db "___<12>", $00
-      sDELAY 50                                        ;; 0d:4c98 $f0 $32
-      sMSG                                             ;; 0d:4c9a $04
+        db "___<12>"
         db "<1b>Julius:You're\n too late, <BOY>_<12>"
         db "<1b> I've already\n obtained the\n power of Mana!<12>"
         db "<1b> All will bow to\n me and my new\n Vandole Empire!<12>"

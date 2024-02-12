@@ -5354,7 +5354,7 @@ script_0537:
     sEND                                               ;; 0e:664a $00
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:664b $84
     sMSG                                               ;; 0e:664c $04
-      db "<10><BOY>:Wait!\n\nJulius:HA!<12>"
+      db "<10><BOY>:Wait!\nJulius:Fall!<12>"
       db "<11>", $00 ;; 0e:664d
     sDELAY 20                                          ;; 0e:6661 $f0 $14
     sLOOP 3, 4                                         ;; 0e:6663 $03 $03 $04
@@ -5919,18 +5919,36 @@ script_053f:
     sPLAYER_STEP_FORWARD                               ;; 0e:705b $80
     sDELAY 90                                          ;; 0e:705c $f0 $5a
     sMSG                                               ;; 0e:705e $04
-      db "<10>Mother:<GIRL>, the\n Mana Tree is\n gone now, but<12>"
-      db "<1b> you can become\n a new tree.<12>"
+      db "<10>Mother:<GIRL>, the\n Mana Tree is\n gone now, but", $00
+    sDELAY 120
+    sMSG
+      db "<1b> you can become\n a new tree.", $00
+    sDELAY 120
+    sMSG
       db "<1b><GIRL>:_ New tree?", $00 ;; 0e:705f
     sDELAY 40                                          ;; 0e:70a3 $f0 $28
     sMSG                                               ;; 0e:70a5 $04
-      db "\nMother:Remember\n what I told you?<12>"
-      db "<1b> We are the seeds\n of the Mana Tree.<12>"
-      db "<1b> You, yourself,\n will become the\n Mana Tree.<12>"
-      db "<1b> Last time, I was\n unable to protect\n the Mana Tree.<12>"
-      db "<1b> So I came here\n to become a new\n tree.<12>"
-      db "<1b><GIRL>:That tree__?\n It was you__?\nMother:_Yes, <GIRL>.<12>"
-      db "<1b> You can become a\n new Mana Tree and\n restore peace.<12>"
+      db "\nMother:Remember\n what I told you?", $00
+    sDELAY 120
+    sMSG
+      db "<1b> We are the seeds\n of the Mana Tree.", $00
+    sDELAY 120
+    sMSG
+      db "<1b> You, yourself,\n will become the\n Mana Tree.", $00
+    sDELAY 120
+    sMSG
+      db "<1b> Last time, I was\n unable to protect\n the Mana Tree.", $00
+    sDELAY 120
+    sMSG
+      db "<1b> So I came here\n to become a new\n tree.", $00
+    sDELAY 120
+    sMSG
+      db "<1b><GIRL>:That tree__?\n It was you__?\nMother:_Yes, <GIRL>.", $00
+    sDELAY 120
+    sMSG
+      db "<1b> You can become a\n new Mana Tree and\n restore peace.", $00
+    sDELAY 120
+    sMSG
       db "<1b> But_ <GIRL>_ It\n is your choice\n to make.", $00
     sDELAY 80                                          ;; 0e:71d9 $f0 $50
     sMSG                                               ;; 0e:71db $04
@@ -5984,13 +6002,13 @@ script_0540:
       db "<1b> You are the only\n Gemma Knight for\n the Tree now__", $00 ;; 0e:72e7
     sDELAY 120                                         ;; 0e:7309 $f0 $78
     sMSG                                               ;; 0e:730b $04
-      db "<1b>Mother:I will be\n withering soon_", $00 ;; 0e:730c
+      db "<1b> I will be\n withering soon_", $00
     sDELAY 120                                         ;; 0e:7323 $f0 $78
     sMSG                                               ;; 0e:7325 $04
       db "<1b> Please tell my\n Gemma Knights\n that I said_", $00 ;; 0e:7326
     sDELAY 120                                         ;; 0e:7345 $f0 $78
     sMSG                                               ;; 0e:7347 $04
-      db "<1b> good-bye and\n thank you.", $00
+      db "<1b> goodbye and\n thank you.<00>"
     sDELAY 120                                         ;; 0e:735e $f0 $78
     sMSG                                               ;; 0e:7360 $04
       db "<11>", $00                                   ;; 0e:7361
@@ -5999,14 +6017,14 @@ script_0540:
       sFLASH_SCREEN                                    ;; 0e:7368 $bf
     sEND                                               ;; 0e:7369 $00
     sMSG                                               ;; 0e:736a $04
-      db "<10>Mother:_ Good-bye_", $00                 ;; 0e:736b
+      db "<10>Mother:You should\n go now.<00>"
     sDELAY 70                                          ;; 0e:737b $f0 $46
     sMSG                                               ;; 0e:737d $04
       db "<1b>", $00                                   ;; 0e:737e
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:7380 $86
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0e:7381 $17
     sMSG                                               ;; 0e:7382 $04
-      db "<BOY>:_ <GIRL>_", $00                        ;; 0e:7383
+      db "<BOY>:<GIRL>_<00>"
     sDELAY 80                                          ;; 0e:738a $f0 $50
     sFLASH_SCREEN                                      ;; 0e:738c $bf
     sFLASH_SCREEN                                      ;; 0e:738d $bf
@@ -6031,10 +6049,10 @@ script_0540:
     sFLASH_SCREEN                                      ;; 0e:73ac $bf
     sFLASH_SCREEN                                      ;; 0e:73ad $bf
     sMSG                                               ;; 0e:73ae $04
-      db "<10><GIRL>:Good-bye.", $00                   ;; 0e:73af
+      db "<10><GIRL>:Farewell_\n <BOY>.<00>"
     sDELAY 70                                          ;; 0e:73ba $f0 $46
     sMSG                                               ;; 0e:73bc $04
-      db "\n<BOY>:_ <GIRL>_\n Good_ bye_", $00         ;; 0e:73bd
+      db "\n<BOY>:Farewell_<00>"
     sDELAY 120                                         ;; 0e:73ce $f0 $78
     sMSG                                               ;; 0e:73d0 $04
       db "<11>", $00                                   ;; 0e:73d1
@@ -6051,7 +6069,7 @@ script_0540:
       db "<10>", $00                                   ;; 0e:73e5
     sDELAY 60                                          ;; 0e:73e7 $f0 $3c
     sMSG                                               ;; 0e:73e9 $04
-      db "     Good-bye_", $00                         ;; 0e:73ea
+      db " Goodbye_<00>"
     sDELAY 60                                          ;; 0e:73f5 $f0 $3c
     sMSG                                               ;; 0e:73f7 $04
       db "\n     _", $00                               ;; 0e:73f8
@@ -6069,17 +6087,17 @@ script_0541:
     sSET_MUSIC 21                                      ;; 0e:740e $f8 $15
     sDELAY 120                                         ;; 0e:7410 $f0 $78
     sMSG                                               ;; 0e:7412 $04
-      db "<10>Gemma_\nThe guardian of\nthe peaceful land_", $00 ;; 0e:7413
-    sDELAY 150                                         ;; 0e:7432 $f0 $96
+      db "<10>A seed_\nbrings peace.\nA new Mana Sprout_<00>"
+    sDELAY 200
     sMSG                                               ;; 0e:7434 $04
-      db "<1b>The new Gemma\nmust not be lost\never after_", $00 ;; 0e:7435
-    sDELAY 150                                         ;; 0e:7454 $f0 $96
+      db "<1b>If it is tainted,\nthen peace will\nbe lost forever.<00>"
+    sDELAY 200
     sMSG                                               ;; 0e:7456 $04
-      db "<1b>We all must\nkeep it forever_", $00      ;; 0e:7457
-    sDELAY 150                                         ;; 0e:746d $f0 $96
+      db "<1b>And so it must be\nguarded with care.<00>"
+    sDELAY 200
     sMSG                                               ;; 0e:746f $04
-      db "<1b>And you, <BOY>,\nare the only\nGemma Knight now_", $00 ;; 0e:7470
-    sDELAY 150                                         ;; 0e:748f $f0 $96
+      db "<1b>As the last Gemma\nKnight, that duty\nis given to <BOY>.<00>"
+    sDELAY 200
     sMSG                                               ;; 0e:7491 $04
       db "<11>", $00                                   ;; 0e:7492
     sFADE_TO_BLACK                                     ;; 0e:7494 $bd

@@ -49,7 +49,7 @@ entryPointTableBank02:
     call_to_bank_target drawManaOnStatusBar_2          ;; 02:404a pP
     call_to_bank_target drawMoneyOnStatusBar           ;; 02:404c pP
     call_to_bank_target doSpellOrItemEffect            ;; 02:404e pP
-    call_to_bank_target getCurrentMagicPower           ;; 02:4050 ??
+ds 2 ; Unused trampoline target
     call_to_bank_target attackWithWeaponUseWill        ;; 02:4052 pP
     call_to_bank_target giveStatusEffect               ;; 02:4054 pP
     call_to_bank_target setAToZero_2                   ;; 02:4056 pP
@@ -5536,15 +5536,7 @@ copyStatsToLevelUpTmp:
     ld   [wStatStaminaLevelUpTmp], A                   ;; 02:6d22 $ea $8f $d7
     ret                                                ;; 02:6d25 $c9
 
-getCurrentMagicPower:
-    call getSpellOrBookPower                           ;; 02:6d26 $cd $f4 $6d
-    and  A, A                                          ;; 02:6d29 $a7
-    ret  Z                                             ;; 02:6d2a $c8
-    ld   B, A                                          ;; 02:6d2b $47
-    ld   A, [wStatWisdomLevelUpTmp]                    ;; 02:6d2c $fa $91 $d7
-    add  A, B                                          ;; 02:6d2f $80
-    ld   [wCurrentMagicPower], A                       ;; 02:6d30 $ea $d6 $d7
-    ret                                                ;; 02:6d33 $c9
+ds 14 ; Free space
 
 ; save all registers to a backup state (dialog related?)
 saveRegisterState1:
@@ -8185,7 +8177,7 @@ titleScreenOptions:
 
 ;@ffa_text size=20 amount=2
 titleScreenLicenseText:
-    TXT  "LICENSED BY NINTENDO"                        ;; 02:7e62 ....................
+    TXT STRFMT("hack date %u-%02u-%02u", __UTC_YEAR__, __UTC_MONTH__, __UTC_DAY__)
     TXT  "<00><COPYRIGHT> 1991 SQUARE SOFT\n"                 ;; 02:7e76 ....................
 
 intoScrollText:
