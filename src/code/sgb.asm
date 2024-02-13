@@ -281,25 +281,6 @@ enhancedLetterbox:
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxFinish
 
-; Sets up color regions for the very final End screen.
-sgbSetEndScreenColors:
-    push hl
-; The second and third palettes are untouched by fading to black, so they need to be blacked out first.
-    ld bc, .SGB_PAL23_BLACK
-    call SGBSendData
-    ld bc, .SGB_ATTR
-    call SGBSendData
-    ld bc, .SGB_ATTR+$10
-    call SGBSendData
-    pop hl
-    ret
-.SGB_PAL23_BLACK:
-    db $09, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-.SGB_ATTR:
-;            x    y   number   l->r  /----------------- data -----------------------\
-    db $39, $0c, $0a, $18, $00, $00, $af, $00, $00, $00, $00, $af, $00, $00, $00, $00
-    db $39, $0c, $0c, $03, $00, $00, $54, $00, $00, $00, $00, $00, $00, $00, $00, $00
-
 ; Given a SGB palette packet, creates a modified packet with colors faded between the original and black.
 ; c = fade amount from 0 (completely black) to 11 (unmodified colors)
 ; hl = address of packet
@@ -331,16 +312,9 @@ fadeToOrFromBlack:
 ; Fade to black using SNES palettes.
 ; Also manages loading the attribute maps to colorize the final "End" screen.
 sgbFadeToBlack:
-; This counter is used to time when the final fade-to-black is happening to load attributes.
-    ld a, [wSGBEndingCounter]
-    cp $07
-    jr nz, .fade
-    ld a, [wScriptOpCounter2]
-    dec a
-    jr z, .fade
     ld a, [wScriptOpCounter]
     cp $0a
-    jr z, .setEndScreenColors
+    jr z, .last_step
 .fade:
     ld a, [wScriptOpCounter2]
     or a
@@ -359,12 +333,47 @@ sgbFadeToBlack:
     pop hl
     ret
 
-.setEndScreenColors:
-; If this code is reached then the screen should have just gone black before the final fade-in for the End screen.
-    call sgbSetEndScreenColors
+; Handles loading color palettes if the next screen is the final "End" screen.
+.last_step:
+    push hl
+; Normally this only does anything on the first sub-step of a fade step.
+    ld a, [wScriptOpCounter2]
+    ld bc, .SGB_PAL01_BLACK
+    or a
+    jr z, .send_packet
+; This counter is used to time when the final fade-to-black is happening to load attributes.
+; When it hits seven, additional work is done to set up colors for the "End" screen.
+    ld a, [wSGBEndingCounter]
+    cp $07
+    jr nz, .return
+; The second and third palettes are untouched by fading to black, so they need to be blacked out.
+    ld a, [wScriptOpCounter2]
+    ld bc, .SGB_PAL23_BLACK
+    dec a
+    jr z, .send_packet
+; It takes two packets to load the color attributes for the sprout.
+    ld bc, .SGB_ATTR
+    dec a
+    jr z, .send_packet
+    ld bc, .SGB_ATTR+$10
+    dec a
+    jr nz, .return
+.send_packet:
+    call SGBSendData
+.return:
+    pop hl
     ret
 
-; Fade back from black. This should handle white as well, but that is never used during the ending.
+.SGB_PAL01_BLACK:
+    db $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+.SGB_PAL23_BLACK:
+    db $09, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+.SGB_ATTR:
+;            x    y   number   l->r  /----------------- data -----------------------\
+    db $39, $0c, $0a, $18, $00, $00, $af, $00, $00, $00, $00, $af, $00, $00, $00, $00
+    db $39, $0c, $0c, $03, $00, $00, $54, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+; Fade back from black. This would handle white as well, but that is never used during the ending.
 ; Two palette commands are managed here, one used only by the final "End" screen.
 sgbFadeToNormal:
 ; The primary script counter is used as the main fade control.
@@ -375,9 +384,9 @@ sgbFadeToNormal:
     ld c, a
     ld a, [wScriptOpCounter2]
     or a
-    jr nz, .second_step
+; The Super Game Boy can only handle one PAL packet per frame, so send them on alternate frames.
+    jr nz, .second_packet
     push hl
-; There is not enough time in one frame to calculate two palette packets and send both to the SGB.
 ; Calculate the first packet.
     ld hl, SGB_PAL01
     call fadeToOrFromBlack
@@ -387,11 +396,10 @@ sgbFadeToNormal:
     pop hl
     ret
 
-.second_step:
+.second_packet:
     dec a
     ret nz
     push hl
-; There is not enough time in one frame to calculate two palette packets and send both to the SGB.
 ; Calculate the second packet.
     ld hl, SGB_PAL23
     call fadeToOrFromBlack
