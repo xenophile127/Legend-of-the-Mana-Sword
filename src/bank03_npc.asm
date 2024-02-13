@@ -2391,21 +2391,16 @@ initEnemiesCounterAndMoveFolower:
     call checkAllEnemiesDefeated                       ;; 03:4c38 $cd $e0 $4b
 ; Fix a really subtle bug:
 ; When in a chocobo form for (two) frames after scrolling the chocobo follower would be teleported to your location.
-    call checkForFollower
-    ret nz
     ld a, [wOAMBuffer+$38] ; Y position of your follower. If you are riding your chocobo this will be 0.
     or a
+    ; If you do not currently have a follower this code might cause an early
+    ; short circuit exit, but that would be ok since moveFollowerToPlayer
+    ; also exits early if there is no follower.
     ret z
-    call getPlayerY                                    ;; 03:4c45 $cd $99 $02
-    ld   D, A                                          ;; 03:4c48 $57
-    push DE                                            ;; 03:4c49 $d5
-    call getPlayerX                                    ;; 03:4c4a $cd $93 $02
-    pop  DE                                            ;; 03:4c4d $d1
-    ld   E, A                                          ;; 03:4c4e $5f
-    ld   C, $00                                        ;; 03:4c4f $0e $00
-    call updateNpcPosition                             ;; 03:4c51 $cd $f9 $4a
-    ret                                                ;; 03:4c54 $c9
-nop
+    call moveFollowerToPlayer
+    ret
+
+ds 17 ; Free space
 
 ;@jumptable amount=224
 npcBehaviorJumptable:
