@@ -1155,6 +1155,8 @@ windowInitMenu:
     inc [hl]
     ret                                                ;; 02:4888 $c9
 
+ds 1 ; Free space
+
 windowInitMain:
     ld   HL, wEquippedItemAndWeaponCopy                ;; 02:4889 $21 $f1 $d6
     ld   A, [wEquippedItem]                            ;; 02:488c $fa $ef $d6
@@ -1189,6 +1191,8 @@ windowInitExistingFrame:
 .saveload_top_window:
     ld   A, $33                                        ;; 02:48c8 $3e $33
     jp   jp_02_5877                                    ;; 02:48ca $c3 $77 $58
+
+ds 3 ; Free space
 
 openLoadSaveBottomWindow:
     ld   A, $1c                                        ;; 02:48cd $3e $1c
@@ -2143,6 +2147,8 @@ levelUpDrawPreviewAPDP:
     ld [wMenuStateFunctionNew], a
     jp call_02_5880
 
+ds 11 ; Free space
+
 levelUpDrawPreviewStatsAndYesNoWindow:
     xor  A, A                                          ;; 02:4fa7 $af
     ld   [wSelectedMenuIndex], A                       ;; 02:4fa8 $ea $4b $d8
@@ -2159,8 +2165,6 @@ levelUpDrawPreviewStatsAndYesNoWindow:
     ld   A, $18                                        ;; 02:4fc0 $3e $18
     ld   [wDialogType], A                              ;; 02:4fc2 $ea $4a $d8
     jp   windowInitMain                                ;; 02:4fc5 $c3 $89 $48
-
-ds 2 ; Free space
 
 call_02_4fc8:
     call getSelectedMenuIndexes                        ;; 02:4fc8 $cd $b0 $57
@@ -2515,9 +2519,8 @@ sellToVendor:
     call addMoneyAdjustValues
     call vendorRemoveSoldItem                          ;; 02:522a $cd $3c $52
     jr   call_02_522d
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00
+
+ds 18 ; Free space
 
 call_02_522d:
     xor  A, A                                          ;; 02:522d $af
@@ -4320,24 +4323,20 @@ vendorInventories:
     data_wbbbbbbbbbbbbbb $1010, $03, $0a, $0e, $0a, $0f, $0a, $11, $0a, $12, $0a, $13, $0a, $ff, $00 ;; 02:65ea ???????????????? $10
 
 drawEmptyWillBar:
-    ld   HL, .emptyWillBarTiles                        ;; 02:65fa $21 $0f $66
-    ld   DE, $100                                      ;; 02:65fd $11 $00 $01
-    ld   B, $14                                        ;; 02:6600 $06 $14
+    ld hl, _SCRN1 + SCRN_VX_B
+    ld de, $7ff8
+    ld b, $09
 .loop:
-    ld   A, [HL+]                                      ;; 02:6602 $2a
-    push HL                                            ;; 02:6603 $e5
-    push DE                                            ;; 02:6604 $d5
-    call storeTileAatWindowPositionDE                  ;; 02:6605 $cd $66 $38
-    pop  DE                                            ;; 02:6608 $d1
-    pop  HL                                            ;; 02:6609 $e1
-    inc  DE                                            ;; 02:660a $13
-    dec  B                                             ;; 02:660b $05
-    jr   NZ, .loop                                     ;; 02:660c $20 $f4
-    ret                                                ;; 02:660e $c9
-.emptyWillBarTiles:
-    db   $7f, $f8, $fa, $fa, $fa, $fa, $fa, $fa        ;; 02:660f ........
-    db   $fa, $fa, $fa, $fa, $fa, $fa, $fa, $fa        ;; 02:6617 ........
-    db   $fa, $fa, $fe, $7f                            ;; 02:661f ....
+    call storeDEinVRAM
+    inc hl
+    ld de, $fafa
+    dec b
+    jr nz, .loop
+    ld de, $fe7f
+    call storeDEinVRAM
+    ret
+
+ds 16 ; Free space
 
 drawWillBarCharge:
     ld   A, [wWillCharge]                              ;; 02:6623 $fa $58 $d8
@@ -4483,9 +4482,6 @@ windowCloseMain:
 .jr_02_66f4:
     call showSpritesBehindWindow
     ret                                                ;; 02:66f7 $c9
-
-; Free space
-db $00
 
 ;@jumptable amount=4
 drawWindowJumptable:
@@ -4721,9 +4717,6 @@ call_02_6840:
     ld   [wD856], A                                    ;; 02:6851 $ea $56 $d8
     ret                                                ;; 02:6854 $c9
 
-; Free space
-db $00, $00, $00, $00, $00, $00, $00, $00, $00
-
 ; C=width of line
 ; DE=position on the screen
 ; HL=backup location for overwritten tiles
@@ -4749,9 +4742,6 @@ drawDialogTopOrBottomLine:
     call storeTileAatScreenPositionDE                  ;; 02:688e $cd $91 $38
     ld   [HL+], A                                      ;; 02:6891 $22
     ret                                                ;; 02:6892 $c9
-
-; Free space
-db $00, $00
 
 processWindowInput:
     ld   A, [wDialogType]                              ;; 02:6893 $fa $4a $d8
@@ -5536,7 +5526,7 @@ copyStatsToLevelUpTmp:
     ld   [wStatStaminaLevelUpTmp], A                   ;; 02:6d22 $ea $8f $d7
     ret                                                ;; 02:6d25 $c9
 
-ds 14 ; Free space
+ds 13 ; Free space
 
 ; save all registers to a backup state (dialog related?)
 saveRegisterState1:
@@ -6306,6 +6296,8 @@ openLoadScreen:
     set  2, [HL]                                       ;; 02:71e0 $cb $d6
     jr   openLoadSaveScreen_common                     ;; 02:71e2 $18 $05
 
+; Bug: The first byte of this ($21) is read when attempting to equip an empty slot.
+; Its distance from equipmentDataTable needs to be maintained.
 openSaveScreen:
     ld   HL, wWindowFlags                              ;; 02:71e4 $21 $74 $d8
     res  2, [HL]                                       ;; 02:71e7 $cb $96
@@ -8215,4 +8207,4 @@ intoScrollText:
     TXT "<01>"
 
 ; Free space
-ds 76
+ds 72
