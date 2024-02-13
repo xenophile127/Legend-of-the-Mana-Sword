@@ -9289,16 +9289,18 @@ popBCDEfromScriptStack:
     ld   [wScriptStackCount], A                        ;; 00:3723 $ea $65 $d8
     ret                                                ;; 00:3726 $c9
 
+; Advance to the next byte in a script.
+; Return: a = next byte, hl = incremented script pointer
 getNextScriptInstruction:
-    ld   A, [HL+]                                      ;; 00:3727 $2a
-    ld   [wScriptCommand], A                           ;; 00:3728 $ea $5a $d8
-    push AF                                            ;; 00:372b $f5
-    ld   A, H                                          ;; 00:372c $7c
-    ld   [wScriptPointerHigh], A                       ;; 00:372d $ea $b7 $d8
-    ld   A, L                                          ;; 00:3730 $7d
-    ld   [wScriptPointerLow], A                        ;; 00:3731 $ea $b6 $d8
-    pop  AF                                            ;; 00:3734 $f1
-    ret                                                ;; 00:3735 $c9
+    inc hl
+    ld a, l
+    ld [wScriptPointerLow], a
+    ld a, h
+    ld [wScriptPointerHigh], a
+    dec hl
+    ld a, [hl+]
+    ld [wScriptCommand], a
+    ret
 
 ; Return: Z set for dialog, clear for other windows.
 setDialogTextInsertionPoint:
