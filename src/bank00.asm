@@ -5257,7 +5257,7 @@ processBackgroundRenderRequests:
     ld   A, C                                          ;; 00:1e04 $79
     cp   A, $10                                        ;; 00:1e05 $fe $10
     jr   NC, .jr_00_1e3a                               ;; 00:1e07 $30 $31
-    ld   [$2100], A                                    ;; 00:1e09 $ea $00 $21
+    ld   [rROMB0], A                                   ;; 00:1e09 $ea $00 $20
     ld   C, $44                                        ;; 00:1e0c $0e $44
 ; check rLY
 .loop_inner:
@@ -5585,7 +5585,7 @@ InitPreIntEnable:
     ld   A, L                                          ;; 00:2016 $7d
     ldh  [hBankStackPointer], A                        ;; 00:2017 $e0 $8a
     ld   A, BANK(gfxStatusBar) ;@=bank gfxStatusBar    ;; 00:2019 $3e $08
-    ld   [$2100], A                                    ;; 00:201b $ea $00 $21
+    ld   [rROMB0], A                                   ;; 00:201b $ea $00 $20
     ld   HL, gfxStatusBar                              ;; 00:201e $21 $00 $67
     ld   DE, $8f00                                     ;; 00:2021 $11 $00 $8f
     ld   BC, $900                                      ;; 00:2024 $01 $00 $09
@@ -5606,7 +5606,7 @@ InitPreIntEnable:
     ld   B, $08                                        ;; 00:204d $06 $08
     call copyHLtoDE                                    ;; 00:204f $cd $49 $2b
     ld   A, BANK(initSoundEngine) ;@=bank initSoundEngine ;; 00:2052 $3e $0f
-    ld   [$2100], A                                    ;; 00:2054 $ea $00 $21
+    ld   [rROMB0], A                                   ;; 00:2054 $ea $00 $20
     call initSoundEngine                               ;; 00:2057 $cd $03 $40
     ld   A, $e4                                        ;; 00:205a $3e $e4
     ldh  [rBGP], A                                     ;; 00:205c $e0 $47
@@ -5623,7 +5623,7 @@ InitPreIntEnable:
     ld   A, $00                                        ;; 00:2076 $3e $00
     ld   [wVBlankDone], A                              ;; 00:2078 $ea $ad $c0
     ld   A, $01                                        ;; 00:207b $3e $01
-    ld   [$2100], A                                    ;; 00:207d $ea $00 $21
+    ld   [rROMB0], A                                   ;; 00:207d $ea $00 $20
     ld   A, $87                                        ;; 00:2080 $3e $87
     ld   [wVideoLCDC], A                               ;; 00:2082 $ea $a5 $c0
     call initMisc                                      ;; 00:2085 $cd $92 $20
@@ -5693,7 +5693,7 @@ initialVRAMLoad:
 
 copyInitialVRAMTiles:
     ld   A, BANK(gfxHand) ;@=bank gfxHand              ;; 00:2140 $3e $08
-    ld   [$2100], A                                    ;; 00:2142 $ea $00 $21
+    ld   [rROMB0], A                                   ;; 00:2142 $ea $00 $20
     ld   HL, initialVRAMLoad                           ;; 00:2145 $21 $d0 $20
     ld   B, $1c                                        ;; 00:2148 $06 $1c
 .loop:
@@ -7241,7 +7241,7 @@ pushBankNrAndSwitch:
     ld   A, H                                          ;; 00:2a02 $7c
     ld   H, $c0                                        ;; 00:2a03 $26 $c0
     ld   [HL], A                                       ;; 00:2a05 $77
-    ld   [$2100], A                                    ;; 00:2a06 $ea $00 $21
+    ld   [rROMB0], A                                   ;; 00:2a06 $ea $00 $20
     ret                                                ;; 00:2a09 $c9
 
 popBankNrAndSwitch:
@@ -7251,7 +7251,7 @@ popBankNrAndSwitch:
     ld   L, A                                          ;; 00:2a0f $6f
     ld   H, $c0                                        ;; 00:2a10 $26 $c0
     ld   A, [HL]                                       ;; 00:2a12 $7e
-    ld   [$2100], A                                    ;; 00:2a13 $ea $00 $21
+    ld   [rROMB0], A                                   ;; 00:2a13 $ea $00 $20
     ret                                                ;; 00:2a16 $c9
 
 getCurrentBankNr:
@@ -7729,7 +7729,7 @@ vblankGraphicsVRAMCopy:
     pop  AF                                            ;; 00:2d88 $f1
     pop  DE                                            ;; 00:2d89 $d1
     pop  HL                                            ;; 00:2d8a $e1
-    ld   [$2100], A                                    ;; 00:2d8b $ea $00 $21
+    ld   [rROMB0], A                                   ;; 00:2d8b $ea $00 $20
     ld   A, [HL+]                                      ;; 00:2d8e $2a
     ld   [DE], A                                       ;; 00:2d8f $12
     inc e
@@ -7819,7 +7819,7 @@ vblankGraphicsVRAMCopy:
     ld   L, A                                          ;; 00:2dcf $6f
     ld   SP, HL                                        ;; 00:2dd0 $f9
     call getCurrentBankNr                              ;; 00:2dd3 $cd $17 $2a
-    ld   [$2100], A                                    ;; 00:2dd6 $ea $00 $21
+    ld   [rROMB0], A                                   ;; 00:2dd6 $ea $00 $20
     ld   HL, wTileCopyRequestMutex                     ;; 00:2df0 $21 $e1 $c8
     dec  [HL]                                          ;; 00:2df3 $35
     ret                                                ;; 00:2df4 $c9

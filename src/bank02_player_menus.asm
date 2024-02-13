@@ -6680,12 +6680,12 @@ copyHLtoDEtimesB:
 
 enableSRAM:
     ld   A, $0a                                        ;; 02:7458 $3e $0a
-    ld   [$0000], A                                    ;; 02:745a $ea $00 $00
+    ld   [rRAMG], A                                    ;; 02:745a $ea $00 $00
     ret                                                ;; 02:745d $c9
 
 disableSRAM:
     ld   A, $09                                        ;; 02:745e $3e $09
-    ld   [$0000], A                                    ;; 02:7460 $ea $00 $00
+    ld   [rRAMG], A                                    ;; 02:7460 $ea $00 $00
     ret                                                ;; 02:7463 $c9
 
 writeSRAMByte:
