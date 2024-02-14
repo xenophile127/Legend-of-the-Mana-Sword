@@ -661,19 +661,7 @@ spriteShuffleDoFlash_trampoline:
 spriteShuffleShowHidden_trampoline:
     jp_to_bank 02, spriteShuffleShowHidden             ;; 00:0447 $f5 $3e $03 $c3 $06 $1f
 
-setSpriteScrollSpeed:
-    ld   HL, wSpriteScrollSpeed                        ;; 00:044d $21 $a1 $c4
-    ld   C, [HL]                                       ;; 00:0450 $4e
-    ld   [HL], A                                       ;; 00:0451 $77
-    ld   A, C                                          ;; 00:0452 $79
-    ret                                                ;; 00:0453 $c9
-
-overrideNextRoom:
-    ld   A, D                                          ;; 00:0454 $7a
-    ld   [wNextRoomOverride.x], A                      ;; 00:0455 $ea $45 $c3
-    ld   A, E                                          ;; 00:0458 $7b
-    ld   [wNextRoomOverride], A                        ;; 00:0459 $ea $44 $c3
-    ret                                                ;; 00:045c $c9
+ds 16 ; Free space 
 
 getBackgroundDrawAddress:
     ld   A, [wBackgroundDrawPositionY]                 ;; 00:045d $fa $43 $c3
@@ -698,7 +686,7 @@ getBackgroundDrawAddress:
     add  HL, BC                                        ;; 00:047a $09
     ret                                                ;; 00:047b $c9
 
-storeBatBackgroundDrawPosition:
+storeAatBackgroundDrawPosition:
     push AF                                            ;; 00:047c $f5
     call getBackgroundDrawAddress                      ;; 00:047d $cd $5d $04
     pop  AF                                            ;; 00:0480 $f1
@@ -2477,7 +2465,7 @@ drawMinimapRoomTile:
     add  A, $06                                        ;; 00:0e3b $c6 $06
     ld   E, A                                          ;; 00:0e3d $5f
     ld   A, C                                          ;; 00:0e3e $79
-    call storeBatBackgroundDrawPosition                ;; 00:0e3f $cd $7c $04
+    call storeAatBackgroundDrawPosition                ;; 00:0e3f $cd $7c $04
     pop  DE                                            ;; 00:0e42 $d1
     ret                                                ;; 00:0e43 $c9
 
@@ -2532,15 +2520,14 @@ scriptOpCodeRunRoomAllKilledScript:
     ret                                                ;; 00:0e7e $c9
 
 scriptOpCodeSetNextRoom:
-    ld   A, [HL+]                                      ;; 00:0e7f $2a
-    ld   E, A                                          ;; 00:0e80 $5f
-    ld   A, [HL+]                                      ;; 00:0e81 $2a
-    ld   D, A                                          ;; 00:0e82 $57
-    push HL                                            ;; 00:0e83 $e5
-    call overrideNextRoom                              ;; 00:0e84 $cd $54 $04
-    pop  HL                                            ;; 00:0e87 $e1
-    call getNextScriptInstruction                      ;; 00:0e88 $cd $27 $37
-    ret                                                ;; 00:0e8b $c9
+    ld a, [hl+]
+    ld [wNextRoomOverride], a
+    ld a, [hl+]
+    ld [wNextRoomOverride.x], a
+    call getNextScriptInstruction
+    ret
+
+ds 1 ; Free space
 
 scriptOpCodeShakeScreen:
     ld   A, [wVideoSCX]                                ;; 00:0e8c $fa $a6 $c0

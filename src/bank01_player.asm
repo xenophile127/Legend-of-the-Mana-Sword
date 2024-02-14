@@ -790,7 +790,7 @@ scrollRoom:
     cp   A, $00                                        ;; 01:4544 $fe $00
     jr   NZ, .jr_01_4569                               ;; 01:4546 $20 $21
     ld   A, D                                          ;; 01:4548 $7a
-    call setSpriteScrollSpeed                          ;; 01:4549 $cd $4d $04
+    ld [wSpriteScrollSpeed], a
     ld   A, [wNextRoomOverride]                        ;; 01:454c $fa $44 $c3
     ld   E, A                                          ;; 01:454f $5f
     ld   A, [wNextRoomOverride.x]                      ;; 01:4550 $fa $45 $c3
@@ -838,7 +838,7 @@ scrollRoom:
     cp   A, $00                                        ;; 01:459a $fe $00
     jr   NZ, .jr_01_45bf                               ;; 01:459c $20 $21
     ld   A, D                                          ;; 01:459e $7a
-    call setSpriteScrollSpeed                          ;; 01:459f $cd $4d $04
+    ld [wSpriteScrollSpeed], a
     ld   A, [wNextRoomOverride]                        ;; 01:45a2 $fa $44 $c3
     ld   E, A                                          ;; 01:45a5 $5f
     ld   A, [wNextRoomOverride.x]                      ;; 01:45a6 $fa $45 $c3
@@ -881,7 +881,7 @@ scrollRoom:
     cp   A, $00                                        ;; 01:45ea $fe $00
     jr   NZ, .jr_01_460f                               ;; 01:45ec $20 $21
     ld   A, D                                          ;; 01:45ee $7a
-    call setSpriteScrollSpeed                          ;; 01:45ef $cd $4d $04
+    ld [wSpriteScrollSpeed], a
     ld   A, [wNextRoomOverride]                        ;; 01:45f2 $fa $44 $c3
     ld   E, A                                          ;; 01:45f5 $5f
     ld   A, [wNextRoomOverride.x]                      ;; 01:45f6 $fa $45 $c3
@@ -925,7 +925,7 @@ scrollRoom:
     cp   A, $00                                        ;; 01:463d $fe $00
     jr   NZ, .jr_01_4662                               ;; 01:463f $20 $21
     ld   A, D                                          ;; 01:4641 $7a
-    call setSpriteScrollSpeed                          ;; 01:4642 $cd $4d $04
+    ld [wSpriteScrollSpeed], a
     ld   A, [wNextRoomOverride]                        ;; 01:4645 $fa $44 $c3
     ld   E, A                                          ;; 01:4648 $5f
     ld   A, [wNextRoomOverride.x]                      ;; 01:4649 $fa $45 $c3
@@ -1046,7 +1046,7 @@ scrollRoomScroll:
     cp   A, C                                          ;; 01:46f2 $b9
     ret  C                                             ;; 01:46f3 $d8
     ld   A, $00                                        ;; 01:46f4 $3e $00
-    call setSpriteScrollSpeed                          ;; 01:46f6 $cd $4d $04
+    ld [wSpriteScrollSpeed], a
     call ensureReservedObjectsExist
 
     ; Call remove any enemies that may be lingering. This can happen with jumpers.
