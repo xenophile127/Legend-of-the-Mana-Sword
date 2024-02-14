@@ -7,7 +7,7 @@ INCLUDE "include/constants.inc"
 INCLUDE "include/debug.inc"
 
 SECTION "bank00", ROM0[$0000]
-    db   $c3, $50, $01                                 ;; 00:0000 ???
+ds 64 ; Free space for RSTs.
 
 SECTION "isrVBlank", ROM0[$0040]
 
@@ -5529,9 +5529,6 @@ Init:
     ld   SP, hInitialSP                                ;; 00:1fcb $31 $fe $ff
     call DisableLCD
     call InitPreIntEnable                              ;; 00:1fce $cd $f0 $1f
-; Due to the halt bug(s) workaround, wVblankDone must be non-zero when the first VBlank interupt happens.
-    ld hl, wVBlankDone
-    inc [hl]
     ei                                                 ;; 00:1fd1 $fb
     call titleScreenInit_trampoline                    ;; 00:1fd2 $cd $53 $31
 
@@ -5553,6 +5550,8 @@ HaltLoop:
 .loop:
     halt
     jr .loop
+
+ds 4 ; Free space
 
 InitPreIntEnable:
     xor a
@@ -5605,20 +5604,22 @@ InitPreIntEnable:
     ld   [wVideoOBP1], A                               ;; 00:206a $ea $ac $c0
     ld   A, $00                                        ;; 00:206d $3e $00
     ldh  [rIF], A                                      ;; 00:206f $e0 $0f
-    ld   A, $30                                        ;; 00:2071 $3e $30
-    ld_long_store rP1, A                               ;; 00:2073 $ea $00 $ff
-    ld   A, $00                                        ;; 00:2076 $3e $00
+    ld a, P1F_GET_NONE                                 ;; 00:2071 $3e $30
+    ldh [rP1], a
+; Due to the halt bug(s) workaround, wVblankDone must be non-zero when the first VBlank interupt happens.
+    ld a, $01
     ld   [wVBlankDone], A                              ;; 00:2078 $ea $ad $c0
-    ld   A, $01                                        ;; 00:207b $3e $01
     ld   [rROMB0], A                                   ;; 00:207d $ea $00 $20
     ld   A, $87                                        ;; 00:2080 $3e $87
     ld   [wVideoLCDC], A                               ;; 00:2082 $ea $a5 $c0
     call initMisc                                      ;; 00:2085 $cd $92 $20
-    ld   A, $03                                        ;; 00:2088 $3e $03
+    ld   A, IEF_VBLANK | IEF_LCDC                      ;; 00:2088 $3e $03
     ldh  [rIE], A                                      ;; 00:208a $e0 $ff
     ld   A, [wVideoLCDC]                               ;; 00:208c $fa $a5 $c0
     ldh  [rLCDC], A                                    ;; 00:208f $e0 $40
     ret                                                ;; 00:2091 $c9
+
+ds 3 ; Free space
 
 initMisc:
     ld   A, [wVideoLCDC]                               ;; 00:2092 $fa $a5 $c0
