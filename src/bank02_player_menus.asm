@@ -7849,7 +7849,10 @@ itemsListDamage:
 titleScreenInit:
     ld   A, $11                                        ;; 02:7b3c $3e $11
     ld   [wMainGameState], A                           ;; 02:7b3e $ea $a0 $c0
-    ld   A, $3c                                        ;; 02:7b41 $3e $3c
+; A delay before drawing the text on the title screen.
+; Possibly to allow time for the title graphic to load completely.
+; Originally this was a full second, but it has been reduced to half that.
+    ld a, $1e
     ld   [wTitleScreenDelay], A                        ;; 02:7b43 $ea $8c $d8
     ld   HL, sSave1Header                              ;; 02:7b46 $21 $00 $a0
     ld   A, $08                                        ;; 02:7b49 $3e $08
