@@ -1760,7 +1760,7 @@ secondaryCollisionHandling:
     ret                                                ;; 00:0a69 $c9
 .friendly:
     pop  AF                                            ;; 00:0a6a $f1
-    call setHLToZero                                   ;; 00:0a6b $cd $1e $2d
+    ld hl, $0000
     ret                                                ;; 00:0a6e $c9
 .enemyProjectile:
     pop  AF                                            ;; 00:0a6f $f1
@@ -7654,9 +7654,7 @@ destroyPushableObject:
     call destroyNPC_trampoline                         ;; 00:2d1a $cd $e3 $27
     ret                                                ;; 00:2d1d $c9
 
-setHLToZero:
-    ld   HL, $00                                       ;; 00:2d1e $21 $00 $00
-    ret                                                ;; 00:2d21 $c9
+ds 4 ; Free space
 
 ; Handles empty chests and Ice spell snowmen
 pushableCollisionHandling:
