@@ -178,7 +178,6 @@ enhancedLetterboxSetBlackBorderPrepare:
     inc d
 .not_end:
     call storeDEinVRAM
-    inc hl
     dec b
     jr nz, .tile_loop1
 ; Set the tilemap with opaque and transparent tiles.
@@ -199,18 +198,14 @@ enhancedLetterboxSetBlackBorderPrepare:
 ; Edges (above and below the game screen) are solid black.
     ld de, $f1f1
     call storeDEinVRAM
-    inc hl
     call storeDEinVRAM
-    inc hl
     jr .common
 .middle:
 ; The middle area has a transparent cuttout for the game screen.
     ld de, $f2f3
     call storeDEinVRAM
-    inc hl
     ld de, $f3f4
     call storeDEinVRAM
-    inc hl
 .common:
     pop bc
     dec c

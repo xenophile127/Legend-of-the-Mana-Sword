@@ -4342,7 +4342,6 @@ drawEmptyWillBar:
     ld b, $09
 .loop:
     call storeDEinVRAM
-    inc hl
     ld de, $fafa
     dec b
     jr nz, .loop
@@ -4350,7 +4349,7 @@ drawEmptyWillBar:
     call storeDEinVRAM
     ret
 
-ds 16 ; Free space
+ds 17 ; Free space
 
 drawWillBarCharge:
     ld   A, [wWillCharge]                              ;; 02:6623 $fa $58 $d8

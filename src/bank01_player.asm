@@ -72,7 +72,6 @@ prepareLetterboxEffect:
     ld b, $08
 .loop_tile:
     call storeDEinVRAM
-    inc l
     dec b
     jr nz, .loop_tile
 ; Now modify the tilemap for the bottom two lines of the HUD.
@@ -82,7 +81,6 @@ prepareLetterboxEffect:
     ld b, $0a
 .loop_inner:
     call storeDEinVRAM
-    inc l
     dec b
     jr nz, .loop_inner
     ld a, LOW(_SCRN1+$20)
@@ -91,8 +89,7 @@ prepareLetterboxEffect:
     jr nc, .loop_outer
     ret
 
-; Free space
-db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+ds 13 ; Free space
 
 ; Only called by a script command that is unused.
 prepareDefaultEffect:

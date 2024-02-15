@@ -5090,7 +5090,7 @@ playerHousekeeping:
     call checkForPlayerDeath                           ;; 00:1d1c $cd $46 $3e
     pop  HL                                            ;; 00:1d1f $e1
     ld   A, [wMainGameState]                           ;; 00:1d20 $fa $a0 $c0
-    cp   A, $00                                        ;; 00:1d23 $fe $00
+    or a
     ret  NZ                                            ;; 00:1d25 $c0
     push HL                                            ;; 00:1d26 $e5
     ld   HL, wWillChargeSubPoint                       ;; 00:1d27 $21 $80 $d8
@@ -5147,24 +5147,26 @@ storeAatHLinVRAM:
     ld   [HL], B                                       ;; 00:1d72 $70
     ret                                                ;; 00:1d73 $c9
 
-; Store D and E at vram HL, waits till we can write to VRAM.
+; Store D and E at vram HL, waits until the beginning of mode 0 (HBlank).
+; Return: DE = DE, HL = HL + 2
 storeDEinVRAM:
     ldh  A, [rLCDC]                                    ;; 00:1d74 $f0 $40
     bit  7, A                                          ;; 00:1d76 $cb $7f
-    jr   Z, .jr_00_1d86                                ;; 00:1d78 $28 $0c
+    jr   Z, .write                                     ;; 00:1d78 $28 $0c
     ld   C, $41                                        ;; 00:1d7a $0e $41
-.jr_00_1d7c:
+.loop_while_mode_0:
     ldh  A, [C]                                        ;; 00:1d7c $f2
     and  A, $03                                        ;; 00:1d7d $e6 $03
-    jr   Z, .jr_00_1d7c                                ;; 00:1d7f $28 $fb
-.jr_00_1d81:
+    jr   Z, .loop_while_mode_0                         ;; 00:1d7f $28 $fb
+.loop_until_mode_0:
     ldh  A, [C]                                        ;; 00:1d81 $f2
     and  A, $03                                        ;; 00:1d82 $e6 $03
-    jr   NZ, .jr_00_1d81                               ;; 00:1d84 $20 $fb
-.jr_00_1d86:
+    jr   NZ, .loop_until_mode_0                        ;; 00:1d84 $20 $fb
+.write:
     ld   A, D                                          ;; 00:1d86 $7a
     ld   [HL+], A                                      ;; 00:1d87 $22
     ld   [HL], E                                       ;; 00:1d88 $73
+    inc hl
     ret                                                ;; 00:1d89 $c9
 
 ;@call_to_bank bank=11
@@ -5263,7 +5265,6 @@ processBackgroundRenderRequests:
     ld   D, C                                          ;; 00:1e1d $51
     ld   E, A                                          ;; 00:1e1e $5f
     call storeDEinVRAM                                 ;; 00:1e1f $cd $74 $1d
-    inc  HL                                            ;; 00:1e22 $23
     pop  DE                                            ;; 00:1e23 $d1
     pop  BC                                            ;; 00:1e24 $c1
     dec  B                                             ;; 00:1e25 $05
@@ -5317,6 +5318,8 @@ processBackgroundRenderRequests:
     pop  HL                                            ;; 00:1e6a $e1
     call CopyHL_to_DE_size_BC                          ;; 00:1e6b $cd $40 $2b
     ret                                                ;; 00:1e6e $c9
+
+ds 1 ; Free space
 
 ; Request to copy B bytes from bank A address HL to DE
 requestCopyToVRAM:
