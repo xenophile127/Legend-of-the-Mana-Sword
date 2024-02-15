@@ -5318,8 +5318,6 @@ processBackgroundRenderRequests:
     call CopyHL_to_DE_size_BC                          ;; 00:1e6b $cd $40 $2b
     ret                                                ;; 00:1e6e $c9
 
-ds 1 ; Free space
-
 ; Request to copy B bytes from bank A address HL to DE
 requestCopyToVRAM:
     push DE                                            ;; 00:1e6f $d5
@@ -5537,6 +5535,10 @@ MainLoop:
     call runMainInputHandler_trampoline                ;; 00:1fe1 $cd $2c $02
     call speedUpScripts
     call mainLoopPostInput                             ;; 00:1fe4 $cd $90 $21
+; To prevent glitches on the title screen stop processBackgroundRenderRequests from running with a tile backlog.
+    ld a, [wTileCopyRequestCount]
+    cp $08
+    call c, processBackgroundRenderRequests
     call HaltLoop
     jr MainLoop
 
@@ -5550,8 +5552,6 @@ HaltLoop:
 .loop:
     halt
     jr .loop
-
-ds 4 ; Free space
 
 InitPreIntEnable:
     xor a
@@ -5618,8 +5618,6 @@ InitPreIntEnable:
     ld   A, [wVideoLCDC]                               ;; 00:208c $fa $a5 $c0
     ldh  [rLCDC], A                                    ;; 00:208f $e0 $40
     ret                                                ;; 00:2091 $c9
-
-ds 3 ; Free space
 
 initMisc:
     ld   A, [wVideoLCDC]                               ;; 00:2092 $fa $a5 $c0
@@ -5744,7 +5742,9 @@ mainLoopPostInput:
     call updateStatusEffects_trampoline                ;; 00:21a4 $cd $3b $31
     ld   A, $ff                                        ;; 00:21a7 $3e $ff
     call timerCheckExpiredOrTickAllTimers              ;; 00:21a9 $cd $0a $30
-    jp processBackgroundRenderRequests
+    ret
+
+ds 2 ; Free space
 
 clearRoomStatusHistory:
     ld   HL, wRoomClearedStatus                        ;; 00:21b4 $21 $00 $c4
