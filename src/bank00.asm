@@ -8290,7 +8290,8 @@ drawMoneyOnStatusBar_trampoline:
 doSpellOrItemEffect_trampoline:
     jp_to_bank 02, doSpellOrItemEffect                 ;; 00:311d $f5 $3e $27 $c3 $06 $1f
 
-ds 6 ; Free space
+enhancedWarmBoot_trampoline:
+    jp_to_bank 11, enhancedWarmBoot
 
 attackWithWeaponUseWill_trampoline:
     jp_to_bank 02, attackWithWeaponUseWill             ;; 00:3129 $f5 $3e $29 $c3 $06 $1f

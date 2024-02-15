@@ -349,7 +349,7 @@ updateJoypadInput:
     ld [hl], P1F_GET_DPAD
 ; If A, B, Start, and Select are all pressed, then reset the game.
     and $0f
-    jp z, FullReset
+    jp z, enhancedWarmBoot_trampoline
     swap a
     ld c, a
 ; Read buttons eight times to stabilizie their states. 

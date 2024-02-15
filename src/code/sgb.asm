@@ -28,6 +28,22 @@ SGB_PAL23:
     db $09, $df, $6f, $68, $17, $83, $02, $61, $01, $68, $17, $7f, $03, $61, $01, $ff
 ;            #fff7de   #42de29   #18a500   #085a00    #42de29   #ffde00   #085a00
 
+; Used if the game is rebooted using A+B+Start+Select from the ending to ensure attribute changes are cleared.
+sgbClearAttributes:
+    ld bc, .SGB_ATTR_CLEAR
+    call SGBSendData
+    ret
+.SGB_ATTR_CLEAR:
+    db $31, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
+; Send a MLT_REQ command to the Super Game Boy to change the number of joypads to one.
+sgbSetOneController:
+    ld bc, .SGB_MLTREQ1
+    call SGBSendData
+    ret
+.SGB_MLTREQ1:
+    db $89, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+
 ; Send a MLT_REQ command to the Super Game Boy to change the number of joypads to two.
 sgbSetTwoControllers:
     ld bc, .SGB_MLTREQ2
@@ -67,6 +83,14 @@ checkSGB:
     ret
 .is_sgb
     scf
+    ret
+
+; The Super Game Boy detection is done by testing for multiple controller support.
+; This restores back to one controller afterwards in case the player chooses to reboot and play more.
+enhancedLetterboxSetOneController:
+    call sgbSetOneController
+    ld hl, wScriptOpCounter
+    inc [hl]
     ret
 
 ; The Super Game Boy detection is done by testing for multiple controller support.
@@ -247,13 +271,10 @@ enhancedLetterboxDelayFrame:
     inc [hl]
     ret
 
-; A number of packets are sent:
-; * Freezing the screen.
-; * Transferring tiles.
-; * Setting the black border.
-; * Setting the sepia palette.
-; * Unfreezing the screen.
-; Five packets total. Two trigger VRAM transfers.
+; In addition to setting the normal letterbox effect, checks for Super Game Boy support and if found:
+; * Loads an all-black SGB border.
+; * Sets a sepia(ish) color palette.
+; * Switches to using SNES hardware for screen fades.
 enhancedLetterbox:
     push hl
     ld a, [wScriptOpCounter]
@@ -279,6 +300,7 @@ enhancedLetterbox:
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxSetSGBPalette
     dw enhancedLetterboxDelayFrame
+    dw enhancedLetterboxSetTwoControllers
     dw enhancedLetterboxFinish
 
 ; Given a SGB palette packet, creates a modified packet with colors faded between the original and black.

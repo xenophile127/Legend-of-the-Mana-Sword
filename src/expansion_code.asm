@@ -16,6 +16,7 @@ entryPointTableBankExpansion:
     call_to_bank_target enhancedLetterbox
     call_to_bank_target scanRoomForNpcPlacementOptions
     call_to_bank_target enhancedFade
+    call_to_bank_target enhancedWarmBoot
 
 drawHPOnStatusBar:
     ld   C, $13 ; Mode/Max-digits to write
@@ -571,6 +572,14 @@ enhancedFade:
 
 ; Routines for calculating color fades.
 INCLUDE "code/color_fade.asm"
+
+; In the case that someone presses A+B+Start+Select during the ending
+; make sure to clear color attributes from the sprout.
+enhancedWarmBoot:
+    ld a, [wSGBEndingCounter]
+    or a
+    call nz, sgbClearAttributes
+    jp entry
 
 ; This provides a replacement letterbox routine which blacks the border on SGB,
 ; and fade routines that use the SGB hardware.
