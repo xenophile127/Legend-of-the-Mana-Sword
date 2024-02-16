@@ -133,15 +133,52 @@ enhancedLetterboxFreezeScreen:
 enhancedLetterboxTransferTilesPrepare:
     ld hl, wScriptOpCounter
     inc [hl]
-; Only two tiles need to be transferred: A transparent one and a solid one.
-; One will be all black, and the other all white.
-; It just so happens that if the screen is scrolled slightly then the transfer will be correct.
-    ld a, $f0
-    ld [wVideoSCX], a
+; The second tilemap is mostly unused...
+    ld a, $ed
+    ld [wVideoLCDC], a
+; ... Just need to scroll past the HUD.
+    ld hl, wVideoSCX
+    ld [hl], $00
+    inc hl
+    ld [hl], $10
 ; Set the palette correctly.
     ld a, $e4
     ld [wVideoBGP], a
+; Use the VBlank tile transfer mechanism.
+    ld a, BANK(@)
+    ld de, _VRAM + $0f10
+    ld hl, .TILE_WHITE
+    call addTileGraphicCopyRequest
+    ld a, BANK(@)
+    ld de, _VRAM + $0f20
+    ld hl, .TILE_BLACK
+    call addTileGraphicCopyRequest
+    ld a, BANK(@)
+; Set the tilemap directly. Each tile is written twice since these are monochrome 2bpp and SNES are 4bpp.
+    ld de, $f1f1
+    ld hl, _SCRN1 + 2 * SCRN_VX_B
+    call storeDEinVRAM
+    ld de, $f2f2
+    call storeDEinVRAM
     ret
+.TILE_WHITE:
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+.TILE_BLACK:
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
 
 enhancedLetterboxTransferTiles:
     ld hl, wScriptOpCounter
@@ -223,10 +260,10 @@ enhancedLetterboxSetBlackBorder:
     ld a, $ed
     ld [wVideoLCDC], a
 ; ... Just need to scroll past the HUD.
-    xor a
-    ld [wVideoSCX], a
-    ld a, $10
-    ld [wVideoSCY], a
+    ld hl, wVideoSCX
+    ld [hl], $00
+    inc hl
+    ld [hl], $10
 ; Set the palette correctly.
     ld a, $e4
     ld [wVideoBGP], a
@@ -288,6 +325,7 @@ enhancedLetterbox:
     dw enhancedLetterboxFreezeScreen
     dw enhancedLetterboxTransferTilesPrepare
     dw enhancedLetterboxTransferTiles ; Trigger VRAM transfer
+    dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxSetBlackBorderPrepare
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxSetBlackBorder ; Trigger VRAM transfer
