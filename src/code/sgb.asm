@@ -129,6 +129,31 @@ enhancedLetterboxFreezeScreen:
 .SGB_FREEZE_BLACK:
     db $b9, $02, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 
+; Load tiles from this bank.
+; b = number of tiles, hl = array containing pairs of destinations and sources.
+loadTiles:
+.loop:
+; Load the destination address.
+    ld a, [hl+]
+    ld e, a
+    ld a, [hl+]
+    ld d, a
+; Load the source address.
+    ld a, [hl+]
+    ld c, a
+    ld a, [hl+]
+    push hl
+    ld h, a
+    ld l, c
+; Load the bank number containing the tiles (this bank).
+    ld a, BANK(@)
+; Use the VBlank tile transfer mechanism.
+    call addTileGraphicCopyRequest
+    pop hl
+    dec b
+    jr nz, .loop
+    ret
+
 ; Setup for the border tile transfer.
 enhancedLetterboxTransferTilesPrepare:
     ld hl, wScriptOpCounter
@@ -144,20 +169,17 @@ enhancedLetterboxTransferTilesPrepare:
 ; Set the palette correctly.
     ld a, $e4
     ld [wVideoBGP], a
-; Use the VBlank tile transfer mechanism.
-    ld a, BANK(@)
-    ld de, _VRAM + $0f10
-    ld hl, .TILE_WHITE
-    call addTileGraphicCopyRequest
-    ld a, BANK(@)
-    ld de, _VRAM + $0f20
-    ld hl, .TILE_BLACK
-    call addTileGraphicCopyRequest
+; Load tiles into VRAM.
+    ld b, $03
+    ld hl, .tileLoads
+    call loadTiles
 ; Set the tilemap directly. Each tile is written twice since these are monochrome 2bpp and SNES are 4bpp.
-    ld de, $f1f1
     ld hl, _SCRN1 + 2 * SCRN_VX_B
+    ld de, $f1f1
     call storeDEinVRAM
     ld de, $f2f2
+    call storeDEinVRAM
+    ld de, $f3f3
     call storeDEinVRAM
     ret
 .TILE_WHITE:
@@ -178,6 +200,19 @@ enhancedLetterboxTransferTilesPrepare:
     dw `33333333
     dw `33333333
     dw `33333333
+.TILE_CORNER:
+    dw `33330000
+    dw `33000000
+    dw `30000000
+    dw `30000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+.tileLoads:
+    dw _VRAM + $0f10, .TILE_WHITE
+    dw _VRAM + $0f20, .TILE_BLACK
+    dw _VRAM + $0f30, .TILE_CORNER
 
 enhancedLetterboxTransferTiles:
     ld hl, wScriptOpCounter
@@ -192,25 +227,11 @@ enhancedLetterboxTransferTiles:
 enhancedLetterboxSetBlackBorderPrepare:
     ld hl, wScriptOpCounter
     inc [hl]
-; Four tiles are required to encode the tilemap.
+; Load the tiles required to encode the tilemap.
 ; They are stored over HUD tiles since the HUD is now permanently hidden.
-; Use the VBlank tile transfer mechanism.
-    ld a, BANK(@)
-    ld de, _VRAM + $0f10
-    ld hl, .TILE_SOLID
-    call addTileGraphicCopyRequest
-    ld a, BANK(@)
-    ld de, _VRAM + $0f20
-    ld hl, .TILE_LEFT
-    call addTileGraphicCopyRequest
-    ld a, BANK(@)
-    ld de, _VRAM + $0f30
-    ld hl, .TILE_TRANSPARENT
-    call addTileGraphicCopyRequest
-    ld a, BANK(@)
-    ld de, _VRAM + $0f40
-    ld hl, .TILE_RIGHT
-    call addTileGraphicCopyRequest
+    ld b, $08
+    ld hl, .tileLoads
+    call loadTiles
 ; Set the tilemap with opaque and transparent tiles.
 ; Starting just after the window data.
     ld hl, _SCRN1 + $40
@@ -222,22 +243,39 @@ enhancedLetterboxSetBlackBorderPrepare:
     push bc
     ld a, c
     cp $07
+    jr z, .bottom
     jr c, .edge
-    cp $19
+    cp $18
+    jr z, .top
     jr c, .middle
 .edge:
 ; Edges (above and below the game screen) are solid black.
     ld de, $f1f1
     call storeDEinVRAM
     call storeDEinVRAM
-    jr .common
+    jr .next
+.bottom:
+; Use rounded corners to black out the lower corners of dialog windows.
+; Also for a nice effect if the game is restarted with A+B+Start+Select.
+    ld de, $f7f3
+    call storeDEinVRAM
+    ld de, $f3f8
+    call storeDEinVRAM
+    jr .next
+.top:
+; Use rounded corners for a nice effect if the game is restarted with A+B+Start+Select.
+    ld de, $f5f3
+    call storeDEinVRAM
+    ld de, $f3f6
+    call storeDEinVRAM
+    jr .next
 .middle:
 ; The middle area has a transparent cuttout for the game screen.
     ld de, $f2f3
     call storeDEinVRAM
     ld de, $f3f4
     call storeDEinVRAM
-.common:
+.next:
     pop bc
     dec c
     ret z
@@ -282,6 +320,51 @@ enhancedLetterboxSetBlackBorderPrepare:
     db $01, $10
     db $01, $10
     db $01, $10
+.TILE_UPPER_LEFT:
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $02, $10
+    db $00, $10
+.TILE_UPPER_RIGHT:
+    db $00, $10
+    db $02, $50
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+.TILE_LOWER_LEFT:
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $02, $90
+    db $00, $10
+.TILE_LOWER_RIGHT:
+    db $00, $10
+    db $02, $d0
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+.tileLoads:
+    dw _VRAM + $0f10, .TILE_SOLID
+    dw _VRAM + $0f20, .TILE_LEFT
+    dw _VRAM + $0f30, .TILE_TRANSPARENT
+    dw _VRAM + $0f40, .TILE_RIGHT
+    dw _VRAM + $0f50, .TILE_UPPER_LEFT
+    dw _VRAM + $0f60, .TILE_UPPER_RIGHT
+    dw _VRAM + $0f70, .TILE_LOWER_LEFT
+    dw _VRAM + $0f80, .TILE_LOWER_RIGHT
 
 enhancedLetterboxSetBlackBorder:
     ld hl, wScriptOpCounter
