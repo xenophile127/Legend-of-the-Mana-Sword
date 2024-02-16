@@ -2421,21 +2421,15 @@ finalizePurchase:
 showFullscreenWindow:
     ld   A, [wVideoWY]                                 ;; 02:5157 $fa $a9 $c0
     ld   [wVideoWYBackup], A                           ;; 02:515a $ea $84 $d8
-    ld   B, $40                                        ;; 02:515d $06 $40
-    ld   HL, _SCRN1 ;@=ptr _SCRN1                      ;; 02:515f $21 $00 $9c
-.loop:
-    push BC                                            ;; 02:5162 $c5
-    push HL                                            ;; 02:5163 $e5
-    ld   A, $7f                                        ;; 02:5164 $3e $7f
-    call storeAatHLinVRAM                              ;; 02:5166 $cd $5e $1d
-    pop  HL                                            ;; 02:5169 $e1
-    pop  BC                                            ;; 02:516a $c1
-    inc  HL                                            ;; 02:516b $23
-    dec  B                                             ;; 02:516c $05
-    jr   NZ, .loop                                     ;; 02:516d $20 $f3
+; Clear the HUD's area.
+    ld b, $02
+    ld hl, _SCRN1
+    call clearVRAMArea
     xor  A, A                                          ;; 02:516f $af
     ld   [wVideoWY], A                                 ;; 02:5170 $ea $a9 $c0
     ret                                                ;; 02:5173 $c9
+
+ds 10 ; Free space
 
 windowVendorShowBuyMessageWindow:
     ld   A, $0f                                        ;; 02:5174 $3e $0f
@@ -3232,8 +3226,9 @@ windowReturnToScript:
 
 clearSaveLoadScreen:
     call hideAndSaveMenuMetasprites                    ;; 02:5658 $cd $51 $6b
-    ld hl, $9c40
-    ld b, $10
+; Clear the second screen, except the first two lines where the HUD will be drawn.
+    ld hl, _SCRN1 + 2 * SCRN_VX_B
+    ld b, SCRN_Y_B - $02
     call clearVRAMArea                                 ;; 02:5660 $cd $6a $56
     call drawDefaultStatusBar                          ;; 02:564c $cd $16 $6f
     call drawHPOnStatusBar_trampoline                  ;; 02:564f $cd $29 $6f
@@ -3268,9 +3263,7 @@ clearVRAMArea:
     jr nz, .loop_outer
     ret
 
-; Free space
-db $00, $00, $00, $00, $00, $00, $00, $00
-db $00, $00, $00, $00
+ds 12 ; Free space
 
 getEquipmentFlags1And2:
     or   A, A                                          ;; 02:568a $b7

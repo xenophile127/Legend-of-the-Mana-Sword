@@ -415,7 +415,7 @@ getMainGameStateForPlayerForm:
     db   $c9                                           ;; 00:02ea ?
 
 initLCDCEffect:
-    ld   A, $40                                        ;; 00:02eb $3e $40
+    ld   A, STATF_LYC                                  ;; 00:02eb $3e $40
     ldh  [rSTAT], A                                    ;; 00:02ed $e0 $41
     call setDefaultLCDCEffect                          ;; 00:02ef $cd $13 $03
     ret                                                ;; 00:02f2 $c9
@@ -488,9 +488,9 @@ LCDCInterrupt:
     inc  [HL]                                          ;; 00:0354 $34
     ld   HL, rLCDC                                     ;; 00:0355 $21 $40 $ff
     ldh  A, [rLCDC]                                    ;; 00:0358 $f0 $40
-    bit  7, A                                          ;; 00:035a $cb $7f
+    and LCDCF_ON
     jr   Z, .ready_to_write                            ;; 00:035c $28 $0c
-    ld   C, $41                                        ;; 00:035e $0e $41
+    ld   C, LOW(rSTAT)                                 ;; 00:035e $0e $41
 .loop_while_mode_0:
     ldh  A, [C]                                        ;; 00:0360 $f2
     and  A, $03                                        ;; 00:0361 $e6 $03
@@ -4604,6 +4604,7 @@ playerSpritesLoadTile:
     ld   B, A                                          ;; 00:1aaf $47
     cp   A, $10                                        ;; 00:1ab0 $fe $10
     jr   Z, .tile_sized                                ;; 00:1ab2 $28 $07
+; Dead code
     ld   A, $08                                        ;; 00:1ab4 $3e $08
     call requestCopyToVRAM                             ;; 00:1ab6 $cd $6f $1e
     jr   .return                                       ;; 00:1ab9 $18 $05
@@ -4641,6 +4642,7 @@ playerSpritesLoadBlankTile:
     push BC                                            ;; 00:1ade $c5
     cp   A, $10                                        ;; 00:1adf $fe $10
     jr   Z, .tile_sized                                ;; 00:1ae1 $28 $07
+; Dead code
     ld   A, $08                                        ;; 00:1ae3 $3e $08
     call requestCopyToVRAM                             ;; 00:1ae5 $cd $6f $1e
     jr   .return                                       ;; 00:1ae8 $18 $05
@@ -5126,48 +5128,49 @@ clearItemBuff:
     ld   [wNectarStaminaTimerNumber], A                ;; 00:1d5a $ea $7e $d8
     ret                                                ;; 00:1d5d $c9
 
-; Store A in the VRAM address HL and return the overridden value in A
-; This waits till VRAM writting is available.
-storeAatHLinVRAM:
-    ld   B, A                                          ;; 00:1d5e $47
-    ldh  A, [rLCDC]                                    ;; 00:1d5f $f0 $40
-    bit  7, A                                          ;; 00:1d61 $cb $7f
-    jr   Z, .jr_00_1d71                                ;; 00:1d63 $28 $0c
-    ld   C, $41                                        ;; 00:1d65 $0e $41
-.jr_00_1d67:
-    ldh  A, [C]                                        ;; 00:1d67 $f2
-    and  A, $03                                        ;; 00:1d68 $e6 $03
-    jr   Z, .jr_00_1d67                                ;; 00:1d6a $28 $fb
-.jr_00_1d6c:
-    ldh  A, [C]                                        ;; 00:1d6c $f2
-    and  A, $03                                        ;; 00:1d6d $e6 $03
-    jr   NZ, .jr_00_1d6c                               ;; 00:1d6f $20 $fb
-.jr_00_1d71:
-    ld   A, [HL]                                       ;; 00:1d71 $7e
-    ld   [HL], B                                       ;; 00:1d72 $70
-    ret                                                ;; 00:1d73 $c9
+ds 1 ; Free space
 
-; Store D and E at vram HL, waits until the beginning of mode 0 (HBlank).
-; Return: DE = DE, HL = HL + 2
-storeDEinVRAM:
-    ldh  A, [rLCDC]                                    ;; 00:1d74 $f0 $40
-    bit  7, A                                          ;; 00:1d76 $cb $7f
-    jr   Z, .write                                     ;; 00:1d78 $28 $0c
-    ld   C, $41                                        ;; 00:1d7a $0e $41
-.loop_while_mode_0:
-    ldh  A, [C]                                        ;; 00:1d7c $f2
-    and  A, $03                                        ;; 00:1d7d $e6 $03
-    jr   Z, .loop_while_mode_0                         ;; 00:1d7f $28 $fb
-.loop_until_mode_0:
-    ldh  A, [C]                                        ;; 00:1d81 $f2
-    and  A, $03                                        ;; 00:1d82 $e6 $03
-    jr   NZ, .loop_until_mode_0                        ;; 00:1d84 $20 $fb
+; Store a hl and return the overridden value in a.
+; Waits until PPU mode 0 (HBlank) or 1 (VBlank)
+; Worst case, mode 2 (OAM scan) has enough time to finish.
+; During mode 2 OAM ($fe00 to $fe9f) is inaccessible so do not use this for sprites.
+; Return: a = previous value at hl, b = value written, hl = hl
+storeAatHLinVRAM:
+    ld b, a
+    ldh a, [rLCDC]
+    and LCDCF_ON
+    jr z, .write
+.loop:
+    ldh a, [rSTAT]
+    and STATF_BUSY
+    jr nz, .loop
 .write:
-    ld   A, D                                          ;; 00:1d86 $7a
-    ld   [HL+], A                                      ;; 00:1d87 $22
-    ld   [HL], E                                       ;; 00:1d88 $73
+    ld a, [hl]
+    ld [hl], b
+    ret
+
+ds 6 ; Free space
+
+; Store de at hl. Waits until PPU mode 0 (HBlank) or 1 (VBlank).
+; Worst case, mode 2 (OAM scan) has enough time to finish.
+; During mode 2 OAM ($fe00 to $fe9f) is inaccessible so do not use this for sprites.
+; Return: de = de, hl = hl + 2
+storeDEinVRAM:
+    ldh a, [rLCDC]
+    and LCDCF_ON
+    jr z, .write
+.loop:
+    ldh a, [rSTAT]
+    and STATF_BUSY
+    jr nz, .loop
+.write:
+    ld a, d
+    ld [hl+], a
+    ld [hl], e
     inc hl
-    ret                                                ;; 00:1d89 $c9
+    ret
+
+ds 5 ; Free space
 
 ;@call_to_bank bank=11
 callFunctionInBank11:
@@ -5287,6 +5290,7 @@ processBackgroundRenderRequests:
     call storeDEinVRAM                                 ;; 00:1e3f $cd $74 $1d
     jr   .jr_00_1e28                                   ;; 00:1e42 $18 $e4
 .jr_00_1e44:
+; Dead code.
     call storeAatHLinVRAM                              ;; 00:1e44 $cd $5e $1d
     jr   .jr_00_1e28                                   ;; 00:1e47 $18 $df
 .jr_00_1e49:
@@ -5321,6 +5325,7 @@ processBackgroundRenderRequests:
 
 ds 1 ; Free space
 
+; Unused. Dead code.
 ; Request to copy B bytes from bank A address HL to DE
 requestCopyToVRAM:
     push DE                                            ;; 00:1e6f $d5
@@ -5624,7 +5629,7 @@ InitPreIntEnable:
 
 initMisc:
     ld   A, [wVideoLCDC]                               ;; 00:2092 $fa $a5 $c0
-    or   A, $60                                        ;; 00:2095 $f6 $60
+    or   A, LCDCF_WINON | LCDCF_WIN9C00                ;; 00:2095 $f6 $60
     ld   [wVideoLCDC], A                               ;; 00:2097 $ea $a5 $c0
     call initLCDCEffect                                ;; 00:209a $cd $eb $02
     ld   A, $07                                        ;; 00:209d $3e $07
