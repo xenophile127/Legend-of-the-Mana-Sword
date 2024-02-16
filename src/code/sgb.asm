@@ -153,7 +153,6 @@ enhancedLetterboxTransferTilesPrepare:
     ld de, _VRAM + $0f20
     ld hl, .TILE_BLACK
     call addTileGraphicCopyRequest
-    ld a, BANK(@)
 ; Set the tilemap directly. Each tile is written twice since these are monochrome 2bpp and SNES are 4bpp.
     ld de, $f1f1
     ld hl, _SCRN1 + 2 * SCRN_VX_B
@@ -195,28 +194,23 @@ enhancedLetterboxSetBlackBorderPrepare:
     inc [hl]
 ; Four tiles are required to encode the tilemap.
 ; They are stored over HUD tiles since the HUD is now permanently hidden.
-    ld b, $20
-; d = snes tile number, e = snes attributes
-    ld de, $0110
-; The tiles are numbers $f1, $f2, $f3, and $f4.
-    ld hl, _VRAM + $0f10
-.tile_loop1:
-; This weirdness is to set up the transparent parts of those four tiles
-    ld a, $12
-    cp b
-    jr nz, .not_start
-; Switch to the transparent tile id.
-    dec d
-.not_start:
-    ld a, $06
-    cp b
-    jr nz, .not_end
-; Switch back to the solid black tile id.
-    inc d
-.not_end:
-    call storeDEinVRAM
-    dec b
-    jr nz, .tile_loop1
+; Use the VBlank tile transfer mechanism.
+    ld a, BANK(@)
+    ld de, _VRAM + $0f10
+    ld hl, .TILE_SOLID
+    call addTileGraphicCopyRequest
+    ld a, BANK(@)
+    ld de, _VRAM + $0f20
+    ld hl, .TILE_LEFT
+    call addTileGraphicCopyRequest
+    ld a, BANK(@)
+    ld de, _VRAM + $0f30
+    ld hl, .TILE_TRANSPARENT
+    call addTileGraphicCopyRequest
+    ld a, BANK(@)
+    ld de, _VRAM + $0f40
+    ld hl, .TILE_RIGHT
+    call addTileGraphicCopyRequest
 ; Set the tilemap with opaque and transparent tiles.
 ; Starting just after the window data.
     ld hl, _SCRN1 + $40
@@ -252,6 +246,42 @@ enhancedLetterboxSetBlackBorderPrepare:
     ld de, SCRN_VX_B - SCRN_X_B
     add hl, de
     jr .tilemap_loop_outer
+.TILE_SOLID:
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+.TILE_LEFT:
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $00, $10
+    db $00, $10
+.TILE_TRANSPARENT:
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+.TILE_RIGHT:
+    db $00, $10
+    db $00, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
 
 enhancedLetterboxSetBlackBorder:
     ld hl, wScriptOpCounter
