@@ -25,8 +25,8 @@ SGB_PAL01:
 
 SGB_PAL23:
 ;           /------------- leaves ---------------\  /------- plus yellow ------\
-    db $09, $df, $6f, $68, $17, $83, $02, $61, $01, $68, $17, $7f, $03, $61, $01, $ff
-;            #fff7de   #42de29   #18a500   #085a00    #42de29   #ffde00   #085a00
+    db $09, $df, $6f, $68, $17, $83, $02, $61, $01, $68, $17, $df, $2b, $61, $01, $ff
+;            #fff7de   #42de29   #18a500   #085a00    #42de29   #fff752   #085a00
 
 ; Used if the game is rebooted using A+B+Start+Select from the ending to ensure attribute changes are cleared.
 sgbClearAttributes:
