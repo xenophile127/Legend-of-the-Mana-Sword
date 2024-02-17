@@ -2016,9 +2016,7 @@ getFacingOrSlidingDirection:
     and  A, $0f                                        ;; 00:0bc2 $e6 $0f
     ret                                                ;; 00:0bc4 $c9
 
-playerMetaspriteTable_bank0:
-    db   $20, $02, $00, $00, $00, $02, $00, $00        ;; 00:0bc5 ????????
-    db   $02, $00, $00, $02                            ;; 00:0bcd ?...
+ds 12 ; Free space
 
 ; Initializes all 20 objects and then reserves the first seven
 initObjects:
@@ -2055,7 +2053,7 @@ initObjects:
     push BC                                            ;; 00:0bfb $c5
     ld   A, $01                                        ;; 00:0bfc $3e $01
     ld   DE, $fefe                                     ;; 00:0bfe $11 $fe $fe
-    ld   HL, playerMetaspriteTable_bank0 ;@=ptr playerMetaspriteTable_bank0 ;; 00:0c01 $21 $c5 $0b
+    ld   HL, playerMetaspriteTable                     ;; 00:0c01 $21 $c5 $0b
     call createObject                                  ;; 00:0c04 $cd $74 $0a
     pop  BC                                            ;; 00:0c07 $c1
     dec  B                                             ;; 00:0c08 $05
@@ -7863,7 +7861,7 @@ playerAttackIceMetaspriteTable:
     db   $0a, $10, $08, $0a, $30, $0a, $08, $50
     db   $08, $0a, $10, $08, $0a, $70, $0a, $08
 
-playerMetaspriteTable_bank0_Dup:
+playerMetaspriteTable:
     db   $20, $02, $00, $00, $00, $02, $00, $00        ;; 00:2e8d ????????
     db   $02, $00, $00, $02                            ;; 00:2e95 ?...
 

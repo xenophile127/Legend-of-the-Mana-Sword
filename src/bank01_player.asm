@@ -1094,9 +1094,7 @@ drawRoom:
     call initEnemiesCounterAndMoveFolower_trampoline   ;; 01:474e $cd $26 $29
     ret                                                ;; 01:4751 $c9
 
-playerMetaspriteTable:
-    db   $20, $02, $00, $00, $00, $02, $00, $00        ;; 01:4752 ........
-    db   $02, $00, $00, $02                            ;; 01:475a ....
+ds 12 ; Free space
 
 playerTileNumbers:
     db   $0c, $0e, $0d, $0f, $0c, $0e, $0d, $0f        ;; 01:475e ........
@@ -4623,7 +4621,7 @@ ensureReservedObjectsExist:
     push BC                                            ;; 01:5d68 $c5
     ld   A, $01                                        ;; 01:5d69 $3e $01
     ld   DE, $fefe                                     ;; 01:5d6b $11 $fe $fe
-    ld   HL, playerMetaspriteTable_bank0_Dup           ;; 01:5d6e $21 $8d $2e
+    ld   HL, playerMetaspriteTable                     ;; 01:5d6e $21 $8d $2e
     call createObject                                  ;; 01:5d71 $cd $74 $0a
     pop  BC                                            ;; 01:5d74 $c1
     cp   A, $07                                        ;; 01:5d75 $fe $07
