@@ -4977,7 +4977,7 @@ cacheMetatileAttributesAndLoadRoomTiles:
     ; as a precaution in case this function is interrupted
     ; after other code changes.
     di
-    ld [wStackPointerBackupLow], SP
+    ld [wStackPointerBackup], SP
 
     ; Start at the end of the arrays and work backwards
     ; due to how push is implemented
@@ -5021,7 +5021,7 @@ cacheMetatileAttributesAndLoadRoomTiles:
     jr NZ, .loop
 
     ; Restore the stack pointer and enable interrupts 
-    ld HL, wStackPointerBackupLow
+    ld HL, wStackPointerBackup
     ld A, [HL+]
     ld H, [HL]
     ld L, A
@@ -5323,7 +5323,7 @@ processBackgroundRenderRequests:
     call CopyHL_to_DE_size_BC                          ;; 00:1e6b $cd $40 $2b
     ret                                                ;; 00:1e6e $c9
 
-ds 1 ; Free space
+ds 2 ; Free space
 
 ; Unused. Dead code.
 ; Request to copy B bytes from bank A address HL to DE
@@ -5610,7 +5610,7 @@ InitPreIntEnable:
     ldh  [rOBP1], A                                    ;; 00:2065 $e0 $49
     ld   [wVideoOBP0], A                               ;; 00:2067 $ea $ab $c0
     ld   [wVideoOBP1], A                               ;; 00:206a $ea $ac $c0
-    ld   A, $00                                        ;; 00:206d $3e $00
+    xor a
     ldh  [rIF], A                                      ;; 00:206f $e0 $0f
     ld a, P1F_GET_NONE                                 ;; 00:2071 $3e $30
     ldh [rP1], a
@@ -5737,7 +5737,6 @@ mainLoopPreInput:
     ret                                                ;; 00:218f $c9
 
 mainLoopPostInput:
-    ld   A, $00                                        ;; 00:2190 $3e $00
     call spriteShuffleDoFlash_trampoline               ;; 00:2192 $cd $3b $04
     call animateTiles_trampoline                       ;; 00:2195 $cd $70 $1a
     call runRoomScriptIfAllEnemiesDefeated_trampoline  ;; 00:2198 $cd $1a $29
@@ -5752,7 +5751,7 @@ mainLoopPostInput:
     call timerCheckExpiredOrTickAllTimers              ;; 00:21a9 $cd $0a $30
     ret
 
-ds 2 ; Free space
+ds 4 ; Free space
 
 clearRoomStatusHistory:
     ld   HL, wRoomClearedStatus                        ;; 00:21b4 $21 $00 $c4
@@ -7235,7 +7234,7 @@ pushBankNrAndSwitch:
     ldh  [hBankStackPointer], A                        ;; 00:29ff $e0 $8a
     ld   L, A                                          ;; 00:2a01 $6f
     ld   A, H                                          ;; 00:2a02 $7c
-    ld   H, $c0                                        ;; 00:2a03 $26 $c0
+    ld   H, HIGH(wBankStack)                           ;; 00:2a03 $26 $c0
     ld   [HL], A                                       ;; 00:2a05 $77
     ld   [rROMB0], A                                   ;; 00:2a06 $ea $00 $20
     ret                                                ;; 00:2a09 $c9
@@ -7245,7 +7244,7 @@ popBankNrAndSwitch:
     dec  A                                             ;; 00:2a0c $3d
     ldh  [hBankStackPointer], A                        ;; 00:2a0d $e0 $8a
     ld   L, A                                          ;; 00:2a0f $6f
-    ld   H, $c0                                        ;; 00:2a10 $26 $c0
+    ld   H, HIGH(wBankStack)                           ;; 00:2a10 $26 $c0
     ld   A, [HL]                                       ;; 00:2a12 $7e
     ld   [rROMB0], A                                   ;; 00:2a13 $ea $00 $20
     ret                                                ;; 00:2a16 $c9
@@ -7253,7 +7252,7 @@ popBankNrAndSwitch:
 getCurrentBankNr:
     ldh  A, [hBankStackPointer]                        ;; 00:2a17 $f0 $8a
     ld   L, A                                          ;; 00:2a19 $6f
-    ld   H, $c0                                        ;; 00:2a1a $26 $c0
+    ld   H, HIGH(wBankStack)                           ;; 00:2a1a $26 $c0
     ld   A, [HL]                                       ;; 00:2a1c $7e
     ret                                                ;; 00:2a1d $c9
 
@@ -7707,18 +7706,16 @@ vblankGraphicsVRAMCopy:
     or a
     ret  Z                                             ;; 00:2d5c $c8
     ld b, a
-    ld   HL, wTileCopyRequestMutex                     ;; 00:2d5d $21 $e1 $c8
-    ld a, [hl]
+    ld a, [wTileCopyRequestMutex]
     or a
     ret  NZ                                            ;; 00:2d63 $c0
-    inc  [HL]                                          ;; 00:2d64 $34
 ; Use the stack pointer for speed. This is simplified by being in an interrupt.
-    ld [wStackPointerBackupLow], sp
+    ld [wStackPointerBackup], sp
     ld sp, wTileCopyRequestData
-; Stop transferring tiles if the scanline is $98 (152).
 ; VBlank lasts from $90 (144) through the end of scanline $99 (153).
-; This ends with an entire unused scanline because this loop takes just over a scanline (468 dots of 456) to run.
-    ld c, $98
+; Or possibly $99 (153) is short and some of scanline $00 is also VBLank.
+; Due to this confusion, stop transferring tiles if the scanline is $98 (152).
+    ld c, SCRN_Y + $08
 .loop_transfer_tile:
     pop  AF                                            ;; 00:2d88 $f1
     pop  DE                                            ;; 00:2d89 $d1
@@ -7807,22 +7804,16 @@ vblankGraphicsVRAMCopy:
     dec b
     jr nz, .loop_move
 .finish:
-    ld   A, [wStackPointerBackupHigh]                  ;; 00:2dc8 $fa $e3 $c8
-    ld   H, A                                          ;; 00:2dcb $67
-    ld   A, [wStackPointerBackupLow]                   ;; 00:2dcc $fa $e2 $c8
-    ld   L, A                                          ;; 00:2dcf $6f
+    ld hl, wStackPointerBackup
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
     ld   SP, HL                                        ;; 00:2dd0 $f9
     call getCurrentBankNr                              ;; 00:2dd3 $cd $17 $2a
     ld   [rROMB0], A                                   ;; 00:2dd6 $ea $00 $20
-    ld   HL, wTileCopyRequestMutex                     ;; 00:2df0 $21 $e1 $c8
-    dec  [HL]                                          ;; 00:2df3 $35
-    ret                                                ;; 00:2df4 $c9
+    ret
 
-; Free space
-db $00, $00, $00, $00, $00, $00, $00, $00
-db $00, $00, $00, $00, $00, $00, $00, $00
-db $00, $00, $00, $00, $00, $00, $00, $00
-db $00, $00, $00, $00
+ds 36 ; Free space
 
 ; Request the VBlank handler to copy 1 graphics tile (16 bytes) from ROM into VRAM.
 ; A: source bank
@@ -7830,26 +7821,11 @@ db $00, $00, $00, $00
 ; HL: source ROM address
 addTileGraphicCopyRequest:
     push HL                                            ;; 00:2df5 $e5
-    push AF                                            ;; 00:2df6 $f5
-    ld   HL, wTileCopyRequestMutex                     ;; 00:2df7 $21 $e1 $c8
-    ld   A, $00                                        ;; 00:2dfa $3e $00
-    cp   A, [HL]                                       ;; 00:2dfc $be
-    jr   NZ, .jr_00_2e06                               ;; 00:2dfd $20 $07
-    inc  [HL]                                          ;; 00:2dff $34
-    ld   A, $01                                        ;; 00:2e00 $3e $01
-    cp   A, [HL]                                       ;; 00:2e02 $be
-    jr   Z, .jr_00_2e09                                ;; 00:2e03 $28 $04
-    dec  [HL]                                          ;; 00:2e05 $35
-.jr_00_2e06:
-    pop  AF                                            ;; 00:2e06 $f1
-    pop  HL                                            ;; 00:2e07 $e1
-    ret                                                ;; 00:2e08 $c9
-.jr_00_2e09:
-    pop  AF                                            ;; 00:2e09 $f1
+    ld hl, wTileCopyRequestMutex
+    inc [hl]
     push DE                                            ;; 00:2e0a $d5
-    ld   C, A                                          ;; 00:2e0b $4f
-    ld   A, [wTileCopyRequestCount]                    ;; 00:2e0c $fa $e0 $c8
-    ld   L, A                                          ;; 00:2e0f $6f
+    ld hl, wTileCopyRequestCount
+    ld l, [hl]
     ld   H, $00                                        ;; 00:2e10 $26 $00
     ld   D, H                                          ;; 00:2e12 $54
     ld   E, L                                          ;; 00:2e13 $5d
@@ -7858,7 +7834,6 @@ addTileGraphicCopyRequest:
     add  HL, HL                                        ;; 00:2e16 $29
     ld   DE, wTileCopyRequestData                      ;; 00:2e17 $11 $e0 $c5
     add  HL, DE                                        ;; 00:2e1a $19
-    ld   A, C                                          ;; 00:2e1b $79
     ld   [HL], $00                                     ;; 00:2e1c $36 $00
     inc  HL                                            ;; 00:2e1e $23
     ld   [HL+], A                                      ;; 00:2e1f $22
@@ -7877,16 +7852,7 @@ addTileGraphicCopyRequest:
     dec  [HL]                                          ;; 00:2e30 $35
     ret                                                ;; 00:2e31 $c9
 
-; Unused code. Some already harvested for free space.
-    db   $09, $e5, $62, $6b, $09, $54, $5d, $e1        ;; 00:2e32 ????????
-    db   $2b, $1b, $3a, $12, $1b, $0b, $78, $b1        ;; 00:2e3a ????????
-    db   $20, $f8, $c9, $e5, $f5, $21, $e1, $c8        ;; 00:2e42 ????????
-    db   $3e, $00, $be, $20, $07, $34, $3e, $01        ;; 00:2e4a ????????
-    db   $be, $28, $04, $35, $f1, $e1, $c9, $f1        ;; 00:2e52 ????????
-    db   $d5, $f5, $fa, $e0, $c8, $b7, $28, $13        ;; 00:2e5a ????????
-    db   $6f, $26, $00, $54, $5d, $29, $19, $29        ;; 00:2e62 ????????
-    db   $44, $4d, $21, $e0, $c5, $11, $e6, $c5        ;; 00:2e6a ????????
-    db   $cd, $32, $2e
+ds 85 ; Free space
 
 ; Give Ice its own metasprite table using OBP1 so it is blue under boot rom auto colorization.
 playerAttackIceMetaspriteTable:

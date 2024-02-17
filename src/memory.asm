@@ -536,11 +536,11 @@ wTileCopyRequestCount:
 wTileCopyRequestMutex:
     ds 1                                               ;; c8e1
 
-wStackPointerBackupLow:
-    ds 1                                               ;; c8e2
+wStackPointerBackup:
+    ds 2                                               ;; c8e2
 
-wStackPointerBackupHigh:
-    ds 5                                               ;; c8e3
+wUnused:
+    ds 4                                               ;; c8e4
 
 ; Blocks of 6 bytes:
 ;0) Bank number to load from (change is skipped if >= $10)

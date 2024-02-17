@@ -305,7 +305,7 @@ scanRoomForNpcPlacementOptions:
     ld E, B
 
     ; Backup stack pointer, stack operations will be used to speed up processing
-    ld [wStackPointerBackupLow], SP
+    ld [wStackPointerBackup], SP
 
     ; Disable interrupts and load in the scratch location
     ; into the stack pointer for fast writes.
@@ -510,7 +510,7 @@ scanRoomForNpcPlacementOptions:
     ld E, L
 
     ; Restore stack pointer and reenable interrupts
-    ld HL, wStackPointerBackupLow
+    ld HL, wStackPointerBackup
     ld A, [HL+]
     ld H, [HL]
     ld L, A
