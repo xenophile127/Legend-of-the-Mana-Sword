@@ -6,7 +6,9 @@ INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
 INCLUDE "include/debug.inc"
 
-SECTION "bank11", ROMX[$4000], BANK[$11]
+EXPANSION_CODE_BANK_1 EQU $11
+
+SECTION "bank11", ROMX[$4000], BANK[EXPANSION_CODE_BANK_1]
 
 ;@call_to_bank_jumptable
 entryPointTableBankExpansion:
@@ -588,3 +590,108 @@ INCLUDE "code/sgb.asm"
 ; Load in debug messages used across the ROM.
 ; This will not take any space if the DEBUG flag is not set.
 INCLUDE "include/debug_messages.inc"
+
+SECTION "bank11gfx", ROMX, BANK[EXPANSION_CODE_BANK_1], ALIGN[4]
+
+; These are used for Super Game Boy to load a black border with rounded corners.
+TILE_WHITE:
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+TILE_BLACK:
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+TILE_CORNER:
+    dw `33330000
+    dw `33000000
+    dw `30000000
+    dw `30000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+    dw `00000000
+
+; These are used to send a tilemap to the Super Gameboy for the black border.
+TILE_SOLID:
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+TILE_LEFT:
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $00, $10
+    db $00, $10
+TILE_TRANSPARENT:
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+    db $00, $10
+TILE_RIGHT:
+    db $00, $10
+    db $00, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+TILE_UPPER_LEFT:
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $02, $10
+    db $00, $10
+TILE_UPPER_RIGHT:
+    db $00, $10
+    db $02, $50
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+TILE_LOWER_LEFT:
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $02, $90
+    db $00, $10
+TILE_LOWER_RIGHT:
+    db $00, $10
+    db $02, $d0
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10
+    db $01, $10

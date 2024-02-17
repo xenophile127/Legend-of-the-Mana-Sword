@@ -182,37 +182,10 @@ enhancedLetterboxTransferTilesPrepare:
     ld de, $f3f3
     call storeDEinVRAM
     ret
-.TILE_WHITE:
-    dw `00000000
-    dw `00000000
-    dw `00000000
-    dw `00000000
-    dw `00000000
-    dw `00000000
-    dw `00000000
-    dw `00000000
-.TILE_BLACK:
-    dw `33333333
-    dw `33333333
-    dw `33333333
-    dw `33333333
-    dw `33333333
-    dw `33333333
-    dw `33333333
-    dw `33333333
-.TILE_CORNER:
-    dw `33330000
-    dw `33000000
-    dw `30000000
-    dw `30000000
-    dw `00000000
-    dw `00000000
-    dw `00000000
-    dw `00000000
 .tileLoads:
-    dw _VRAM + $0f10, .TILE_WHITE
-    dw _VRAM + $0f20, .TILE_BLACK
-    dw _VRAM + $0f30, .TILE_CORNER
+    dw _VRAM + $0f10, TILE_WHITE
+    dw _VRAM + $0f20, TILE_BLACK
+    dw _VRAM + $0f30, TILE_CORNER
 
 enhancedLetterboxTransferTiles:
     ld hl, wScriptOpCounter
@@ -284,87 +257,15 @@ enhancedLetterboxSetBlackBorderPrepare:
     ld de, SCRN_VX_B - SCRN_X_B
     add hl, de
     jr .tilemap_loop_outer
-.TILE_SOLID:
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-.TILE_LEFT:
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $00, $10
-    db $00, $10
-.TILE_TRANSPARENT:
-    db $00, $10
-    db $00, $10
-    db $00, $10
-    db $00, $10
-    db $00, $10
-    db $00, $10
-    db $00, $10
-    db $00, $10
-.TILE_RIGHT:
-    db $00, $10
-    db $00, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-.TILE_UPPER_LEFT:
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $02, $10
-    db $00, $10
-.TILE_UPPER_RIGHT:
-    db $00, $10
-    db $02, $50
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-.TILE_LOWER_LEFT:
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $02, $90
-    db $00, $10
-.TILE_LOWER_RIGHT:
-    db $00, $10
-    db $02, $d0
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
-    db $01, $10
 .tileLoads:
-    dw _VRAM + $0f10, .TILE_SOLID
-    dw _VRAM + $0f20, .TILE_LEFT
-    dw _VRAM + $0f30, .TILE_TRANSPARENT
-    dw _VRAM + $0f40, .TILE_RIGHT
-    dw _VRAM + $0f50, .TILE_UPPER_LEFT
-    dw _VRAM + $0f60, .TILE_UPPER_RIGHT
-    dw _VRAM + $0f70, .TILE_LOWER_LEFT
-    dw _VRAM + $0f80, .TILE_LOWER_RIGHT
+    dw _VRAM + $0f10, TILE_SOLID
+    dw _VRAM + $0f20, TILE_LEFT
+    dw _VRAM + $0f30, TILE_TRANSPARENT
+    dw _VRAM + $0f40, TILE_RIGHT
+    dw _VRAM + $0f50, TILE_UPPER_LEFT
+    dw _VRAM + $0f60, TILE_UPPER_RIGHT
+    dw _VRAM + $0f70, TILE_LOWER_LEFT
+    dw _VRAM + $0f80, TILE_LOWER_RIGHT
 
 enhancedLetterboxSetBlackBorder:
     ld hl, wScriptOpCounter
