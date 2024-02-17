@@ -2297,7 +2297,7 @@ playerCollisionHandling:
     ld   D, A                                          ;; 01:503b $57
     push DE                                            ;; 01:503c $d5
     call GetObjectX                                    ;; 01:503d $cd $2d $0c
-    call snapPositionToNearestTile8_1                  ;; 01:5040 $cd $88 $50
+    call snapPositionToNearestTile8                    ;; 01:5040 $cd $88 $50
     pop  DE                                            ;; 01:5043 $d1
     ld   E, A                                          ;; 01:5044 $5f
     ld   A, $04                                        ;; 01:5045 $3e $04
@@ -2308,7 +2308,7 @@ playerCollisionHandling:
     ld   E, A                                          ;; 01:504c $5f
     push DE                                            ;; 01:504d $d5
     call GetObjectY                                    ;; 01:504e $cd $3e $0c
-    call snapPositionToNearestTile8_1                  ;; 01:5051 $cd $88 $50
+    call snapPositionToNearestTile8                    ;; 01:5051 $cd $88 $50
     pop  DE                                            ;; 01:5054 $d1
     ld   D, A                                          ;; 01:5055 $57
     ld   A, $02                                        ;; 01:5056 $3e $02
@@ -2319,7 +2319,7 @@ playerCollisionHandling:
     ld   E, A                                          ;; 01:505d $5f
     push DE                                            ;; 01:505e $d5
     call GetObjectY                                    ;; 01:505f $cd $3e $0c
-    call snapPositionToNearestTile8_1                  ;; 01:5062 $cd $88 $50
+    call snapPositionToNearestTile8                    ;; 01:5062 $cd $88 $50
     pop  DE                                            ;; 01:5065 $d1
     ld   D, A                                          ;; 01:5066 $57
     ld   A, $01                                        ;; 01:5067 $3e $01
@@ -2330,7 +2330,7 @@ playerCollisionHandling:
     ld   D, A                                          ;; 01:506e $57
     push DE                                            ;; 01:506f $d5
     call GetObjectX                                    ;; 01:5070 $cd $2d $0c
-    call snapPositionToNearestTile8_1                  ;; 01:5073 $cd $88 $50
+    call snapPositionToNearestTile8                    ;; 01:5073 $cd $88 $50
     pop  DE                                            ;; 01:5076 $d1
     ld   E, A                                          ;; 01:5077 $5f
     ld   A, $08                                        ;; 01:5078 $3e $08
@@ -2344,12 +2344,7 @@ playerCollisionHandling:
     ld   HL, $00                                       ;; 01:5084 $21 $00 $00
     ret                                                ;; 01:5087 $c9
 
-snapPositionToNearestTile8_1:
-    and  A, $fc                                        ;; 01:5088 $e6 $fc
-    bit  2, A                                          ;; 01:508a $cb $57
-    ret  Z                                             ;; 01:508c $c8
-    add  A, $04                                        ;; 01:508d $c6 $04
-    ret                                                ;; 01:508f $c9
+ds 8 ; Free space
 
 createPlayerObject:
     push DE                                            ;; 01:5090 $d5

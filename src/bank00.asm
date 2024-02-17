@@ -4506,10 +4506,12 @@ clearPlayerAnimation:
 ; Return: A = VRAM tile number of the loaded tile
 loadMinimapTile:
     call loadRoomTile                                  ;; 00:1a3b $cd $a1 $1b
-    ld   DE, -256 ;@=value signed=True                 ;; 00:1a3e $11 $00 $ff
-    add  HL, DE                                        ;; 00:1a41 $19
+; The array for tile mapping immediately preceeds the array for tile load state and both are 256 bytes.
+    dec h
     ld   A, [HL]                                       ;; 00:1a42 $7e
     ret                                                ;; 00:1a43 $c9
+
+ds 3 ; Free space
 
 ; Checks the tile state cache for each tile in a metatile, refreshing it if it is already cached
 ; A = metatile number
@@ -7175,17 +7177,14 @@ HLandDE:
     ret                                                ;; 00:29b9 $c9
 
 snapObjectToNearestTile8:
-    push BC                                            ;; 00:29ba $c5
+    ld d, c
     call GetObjectY                                    ;; 00:29bb $cd $3e $0c
     call snapPositionToNearestTile8                    ;; 00:29be $cd $dc $29
-    pop  BC                                            ;; 00:29c1 $c1
-    ld   B, A                                          ;; 00:29c2 $47
-    push BC                                            ;; 00:29c3 $c5
+    ld c, d
+    ld d, a
     call GetObjectX                                    ;; 00:29c4 $cd $2d $0c
     call snapPositionToNearestTile8                    ;; 00:29c7 $cd $dc $29
-    pop  BC                                            ;; 00:29ca $c1
     ld   E, A                                          ;; 00:29cb $5f
-    ld   D, B                                          ;; 00:29cc $50
     push DE                                            ;; 00:29cd $d5
     push BC                                            ;; 00:29ce $c5
     call getObjectDirection                            ;; 00:29cf $cd $99 $0c
@@ -7196,12 +7195,14 @@ snapObjectToNearestTile8:
     call updateObjectPosition                          ;; 00:29d8 $cd $11 $06
     ret                                                ;; 00:29db $c9
 
+ds 3 ; Free space
+
 snapPositionToNearestTile8:
-    and  A, $fc                                        ;; 00:29dc $e6 $fc
-    bit  2, A                                          ;; 00:29de $cb $57
-    ret  Z                                             ;; 00:29e0 $c8
-    add  A, $04                                        ;; 00:29e1 $c6 $04
-    ret                                                ;; 00:29e3 $c9
+    add $04
+    and $f8
+    ret
+
+ds 3 ; Free space
 
 ; Takes a facing direction and returns the opposite.
 ; Used, for instance, to make characters walk backwards in cutscenes.
@@ -7227,33 +7228,36 @@ objectReverseDirection:
 .jr_00_29fa:
     ret                                                ;; 00:29fa $c9
 
+; Switch to bank A and put A on the bank stack.
 pushBankNrAndSwitch:
-    ld   H, A                                          ;; 00:29fb $67
-    ldh  A, [hBankStackPointer]                        ;; 00:29fc $f0 $8a
-    inc  A                                             ;; 00:29fe $3c
-    ldh  [hBankStackPointer], A                        ;; 00:29ff $e0 $8a
-    ld   L, A                                          ;; 00:2a01 $6f
-    ld   A, H                                          ;; 00:2a02 $7c
+    ld hl, hBankStackPointer
+    inc [hl]
+    ld l, [hl]
     ld   H, HIGH(wBankStack)                           ;; 00:2a03 $26 $c0
     ld   [HL], A                                       ;; 00:2a05 $77
     ld   [rROMB0], A                                   ;; 00:2a06 $ea $00 $20
     ret                                                ;; 00:2a09 $c9
 
+ds 1 ; Free space
+
+; Pop A from the top of the bank stack and switch to that bank.
 popBankNrAndSwitch:
-    ldh  A, [hBankStackPointer]                        ;; 00:2a0a $f0 $8a
-    dec  A                                             ;; 00:2a0c $3d
-    ldh  [hBankStackPointer], A                        ;; 00:2a0d $e0 $8a
-    ld   L, A                                          ;; 00:2a0f $6f
+    ld hl, hBankStackPointer
+    dec [hl]
+    ld l, [hl]
     ld   H, HIGH(wBankStack)                           ;; 00:2a10 $26 $c0
     ld   A, [HL]                                       ;; 00:2a12 $7e
     ld   [rROMB0], A                                   ;; 00:2a13 $ea $00 $20
     ret                                                ;; 00:2a16 $c9
 
-getCurrentBankNr:
+; Load A from the bank stack (without modifying the bank stack) and switch to that bank.
+; Not interrupt safe.
+getCurrentBankNrAndSwitch:
     ldh  A, [hBankStackPointer]                        ;; 00:2a17 $f0 $8a
     ld   L, A                                          ;; 00:2a19 $6f
     ld   H, HIGH(wBankStack)                           ;; 00:2a1a $26 $c0
     ld   A, [HL]                                       ;; 00:2a1c $7e
+    ld [rROMB0], a
     ret                                                ;; 00:2a1d $c9
 
 IF DEF(RNG_ORIGINAL)
@@ -7808,12 +7812,11 @@ vblankGraphicsVRAMCopy:
     ld a, [hl+]
     ld h, [hl]
     ld l, a
-    ld   SP, HL                                        ;; 00:2dd0 $f9
-    call getCurrentBankNr                              ;; 00:2dd3 $cd $17 $2a
-    ld   [rROMB0], A                                   ;; 00:2dd6 $ea $00 $20
+    ld sp, hl
+    call getCurrentBankNrAndSwitch
     ret
 
-ds 36 ; Free space
+ds 39 ; Free space
 
 ; Request the VBlank handler to copy 1 graphics tile (16 bytes) from ROM into VRAM.
 ; A: source bank
