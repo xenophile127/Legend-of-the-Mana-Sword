@@ -420,18 +420,13 @@ initLCDCEffect:
     call setDefaultLCDCEffect                          ;; 00:02ef $cd $13 $03
     ret                                                ;; 00:02f2 $c9
 
-; HL = buffer address
-; B = buffer length
-; This routine originally copied the buffer backwards in a pretty inefficient manner.
-; That was probably to ensure that it was always terminated just in case.
-; Testing has not shown any issues with copying it forwards.
-; Thank you to radimerry (Radiant Nighte) for this optimization.
+; Load a new effect.
+; Disable interrupts while this happens because recent testing has shown lockups
+; due to the STAT interrupt firing while this is running.
+; hl = buffer address
+; b = buffer length
 loadLCDCEffectBuffer:
-    ld a, b
-    srl a
-    srl a
-    dec a
-    ld [wLCDCEffectIndex], a
+    di
     ld de, wLCDCEffectBuffer
 .loop:
     ld a, [hl+]
@@ -439,11 +434,10 @@ loadLCDCEffectBuffer:
     inc de
     dec b
     jr nz, .loop
+    ei
     ret
 
-; Free space freed by changing loadLCDCEffectBuffer
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00, $00, $00, $00
+ds 19 ; Free space
 
 ; Load the default LCDC effect buffer, which handles the status bar not having sprites
 ; on top and the forces the color palette of the status bar.
