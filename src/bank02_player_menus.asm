@@ -908,19 +908,20 @@ spriteShuffleDoFlash:
     dec  B                                             ;; 02:4502 $05
     jr   NZ, .loop_clear_scratch                       ;; 02:4503 $20 $fc
     ld   A, [wSpriteShuffleHiddenSpriteAddressLow]     ;; 02:4505 $fa $a0 $c4
-    ld   C, A                                          ;; 02:4508 $4f
+    ld l, a
     ld   A, $ff                                        ;; 02:4509 $3e $ff
     ld   [wSpriteShuffleHiddenSpriteAddressLow], A     ;; 02:450b $ea $a0 $c4
     ld   B, OAM_COUNT                                  ;; 02:4510 $06 $28
-.loop:
     ld h, HIGH(wOAMBuffer)
-    ld   L, C                                          ;; 02:4512 $69
+.loop:
     ld   A, [HL]                                       ;; 02:4513 $7e
 ; Test if this sprite is already hidden (y position is zero or greater than 159) and if so skip it.
     or   A, A                                          ;; 02:4514 $b7
     jr   Z, .next                                      ;; 02:4515 $28 $35
     cp   A, SCRN_Y + $10                               ;; 02:4517 $fe $a0
     jr   NC, .next                                     ;; 02:4519 $30 $31
+    push hl
+; Push the sprite y position.
     ld   C, A                                          ;; 02:451b $4f
     push BC                                            ;; 02:451c $c5
     ld   C, L                                          ;; 02:451d $4d
@@ -947,28 +948,27 @@ spriteShuffleDoFlash:
     push hl
     call NC, spriteShuffleHideSprite                   ;; 02:4538 $d4 $d7 $44
     pop hl
+; Pop the sprite y position.
     pop  DE                                            ;; 02:453b $d1
     ld   A, E                                          ;; 02:453c $7b
-    ld   E, C                                          ;; 02:453d $59
-    push DE                                            ;; 02:453e $d5
 ; If not aligned to the eight pixel grid, then test a third eight pixel section.
     and  A, $07                                        ;; 02:453f $e6 $07
-    jr   Z, .jr_02_454b                                ;; 02:4541 $28 $08
+    jr   Z, .done                                      ;; 02:4541 $28 $08
     inc [hl]
     ld a, [hl]
     cp   A, $0b                                        ;; 02:4546 $fe $0b
     call NC, spriteShuffleHideSprite                   ;; 02:4548 $d4 $d7 $44
-.jr_02_454b:
-    pop  BC                                            ;; 02:454b $c1
+.done:
+    pop hl
 .next:
     ld   A, sizeof_OAM_ATTRS                           ;; 02:454c $3e $04
-    add  A, C                                          ;; 02:454e $81
+    add l
 ; This loop starts with the first hidden sprite from last frame but wraps around to test all 40 sprites.
     cp   A, OAM_COUNT * sizeof_OAM_ATTRS               ;; 02:454f $fe $a0
     jr   C, .jr_02_4555                                ;; 02:4551 $38 $02
     xor a
 .jr_02_4555:
-    ld   C, A                                          ;; 02:4555 $4f
+    ld l, a
     dec  B                                             ;; 02:4558 $05
     jr   NZ, .loop                                     ;; 02:4559 $20 $b7
     ld   A, [wSpriteShuffleHiddenSpriteAddressLow]     ;; 02:455b $fa $a0 $c4
@@ -978,7 +978,7 @@ spriteShuffleDoFlash:
     ld   [wSpriteShuffleHiddenSpriteAddressLow], A     ;; 02:4563 $ea $a0 $c4
     ret                                                ;; 02:4566 $c9
 
-ds 3 ; Free space
+ds 5 ; Free space
 
 getScriptOpcodeFunction:
     ld   A, [wScriptCommand]                           ;; 02:4567 $fa $5a $d8
