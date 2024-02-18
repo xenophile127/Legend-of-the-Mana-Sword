@@ -1230,15 +1230,11 @@ playerSpritesLoadPlayerSpriteTiles:
     ld   L, A                                          ;; 01:4939 $6f
     ld   DE, playerTileNumbers                         ;; 01:493a $11 $5e $47
     add  HL, DE                                        ;; 01:493d $19
-    ld   DE, gfxPlayer ;@=ptr gfxPlayer                ;; 01:493e $11 $40 $5a
-    ld   C, $04                                        ;; 01:4941 $0e $04
+    ld   DE, gfxPlayer                                 ;; 01:493e $11 $40 $5a
     ld   B, $00                                        ;; 01:4943 $06 $00
-    xor  A, A                                          ;; 01:4945 $af
     call playerSpritesLoadDoubleTile                   ;; 01:4946 $cd $76 $1a
-    ld   DE, gfxPlayer ;@=ptr gfxPlayer                ;; 01:4949 $11 $40 $5a
-    ld   C, $04                                        ;; 01:494c $0e $04
+    ld   DE, gfxPlayer                                 ;; 01:4949 $11 $40 $5a
     ld   B, $20                                        ;; 01:494e $06 $20
-    xor  A, A                                          ;; 01:4950 $af
     call playerSpritesLoadDoubleTile                   ;; 01:4951 $cd $76 $1a
 .jr_01_4954:
     ld   C, $04                                        ;; 01:4954 $0e $04
@@ -1246,6 +1242,8 @@ playerSpritesLoadPlayerSpriteTiles:
     pop  AF                                            ;; 01:4958 $f1
     call processPhysicsForObject                       ;; 01:4959 $cd $95 $06
     ret                                                ;; 01:495c $c9
+
+ds 6 ; Free space
 
 getModifiedPlayerState:
     ld   L, A                                          ;; 01:495d $6f
@@ -4083,7 +4081,6 @@ playerSpritesLoadAttackSpriteTiles:
     pop  BC                                            ;; 01:5a52 $c1
     pop  HL                                            ;; 01:5a53 $e1
     pop  DE                                            ;; 01:5a54 $d1
-    push AF                                            ;; 01:5a55 $f5
     push BC                                            ;; 01:5a56 $c5
     push DE                                            ;; 01:5a57 $d5
     call playerSpritesLoadDoubleTile                   ;; 01:5a58 $cd $76 $1a
@@ -4092,7 +4089,6 @@ playerSpritesLoadAttackSpriteTiles:
     ld   A, $20                                        ;; 01:5a5d $3e $20
     add  A, B                                          ;; 01:5a5f $80
     ld   B, A                                          ;; 01:5a60 $47
-    pop  AF                                            ;; 01:5a61 $f1
     call playerSpritesLoadDoubleTile                   ;; 01:5a62 $cd $76 $1a
     ret                                                ;; 01:5a65 $c9
 .return:
@@ -4101,6 +4097,8 @@ playerSpritesLoadAttackSpriteTiles:
     pop  DE                                            ;; 01:5a68 $d1
     pop  DE                                            ;; 01:5a69 $d1
     ret                                                ;; 01:5a6a $c9
+
+ds 2 ; Free space
 
 getEquippedWeaponAnimationType:
     ld   E, A                                          ;; 01:5a6b $5f

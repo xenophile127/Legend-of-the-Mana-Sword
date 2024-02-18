@@ -4554,33 +4554,32 @@ animateTiles_trampoline:
 ; B = VRAM offset from $8000
 ; DE = base address for tile data
 ; HL = index into tile data (multiplied by 16)
+; Return: HL = HL + 2 (index to the next tiles)
 playerSpritesLoadDoubleTile:
     push HL                                            ;; 00:1a76 $e5
     ld   C, B                                          ;; 00:1a77 $48
-    ld   B, $10                                        ;; 00:1a78 $06 $10
     call playerSpritesLoadTile                         ;; 00:1a7a $cd $8c $1a
     ld   A, $10                                        ;; 00:1a7d $3e $10
     add  A, C                                          ;; 00:1a7f $81
     ld   C, A                                          ;; 00:1a80 $4f
-    ld   B, $10                                        ;; 00:1a81 $06 $10
     call playerSpritesLoadTile                         ;; 00:1a83 $cd $8c $1a
     pop  HL                                            ;; 00:1a86 $e1
-    ld   DE, $02                                       ;; 00:1a87 $11 $02 $00
-    add  HL, DE                                        ;; 00:1a8a $19
+    inc hl
+    inc hl
     ret                                                ;; 00:1a8b $c9
 
+ds 6 ; Free space
+
 ; Loads a tile from bank 8. Has a fallback for non-tile sized chunks that is never used.
-; B = $10 (size of one tile)
 ; C = VRAM offset from $8000
 ; DE = base address for tile data
 ; HL = index into tile data (multiplied by $10)
 playerSpritesLoadTile:
     ld   A, [HL+]                                      ;; 00:1a8c $2a
     cp   A, $ff                                        ;; 00:1a8d $fe $ff
-    jr   Z, .blank                                     ;; 00:1a8f $28 $33
-    push BC                                            ;; 00:1a91 $c5
     push DE                                            ;; 00:1a92 $d5
     push HL                                            ;; 00:1a93 $e5
+    jr z, .blank
     swap A                                             ;; 00:1a94 $cb $37
     ld   L, A                                          ;; 00:1a96 $6f
     and  A, $0f                                        ;; 00:1a97 $e6 $0f
@@ -4594,66 +4593,31 @@ playerSpritesLoadTile:
     ld   L, A                                          ;; 00:1aa2 $6f
     add  HL, DE                                        ;; 00:1aa3 $19
     push HL                                            ;; 00:1aa4 $e5
-    ld   A, B                                          ;; 00:1aa5 $78
     ld   B, $00                                        ;; 00:1aa6 $06 $00
-    ld   HL, _VRAM8000 ;@=ptr _VRAM8000                ;; 00:1aa8 $21 $00 $80
+    ld   HL, _VRAM8000                                 ;; 00:1aa8 $21 $00 $80
     add  HL, BC                                        ;; 00:1aab $09
     ld   D, H                                          ;; 00:1aac $54
     ld   E, L                                          ;; 00:1aad $5d
     pop  HL                                            ;; 00:1aae $e1
-    ld   B, A                                          ;; 00:1aaf $47
-    cp   A, $10                                        ;; 00:1ab0 $fe $10
-    jr   Z, .tile_sized                                ;; 00:1ab2 $28 $07
-; Dead code
-    ld   A, $08                                        ;; 00:1ab4 $3e $08
-    call requestCopyToVRAM                             ;; 00:1ab6 $cd $6f $1e
-    jr   .return                                       ;; 00:1ab9 $18 $05
-.tile_sized:
-    ld   A, $08                                        ;; 00:1abb $3e $08
+    ld   A, BANK(gfxPlayer)                            ;; 00:1abb $3e $08
     call addTileGraphicCopyRequest                     ;; 00:1abd $cd $f5 $2d
-.return:
     pop  HL                                            ;; 00:1ac0 $e1
     pop  DE                                            ;; 00:1ac1 $d1
-    pop  BC                                            ;; 00:1ac2 $c1
     ret                                                ;; 00:1ac3 $c9
 .blank:
-    ld   A, B                                          ;; 00:1ac4 $78
-    srl  A                                             ;; 00:1ac5 $cb $3f
-    cpl                                                ;; 00:1ac7 $2f
-    inc  A                                             ;; 00:1ac8 $3c
-    call playerSpritesLoadBlankTile                    ;; 00:1ac9 $cd $cd $1a
-    ret                                                ;; 00:1acc $c9
-
-; A = -8 (if A != -8 it uses a generic VRAM copy routine instead of the tile routine, but that never happens.
-; C = VRAM offset from $8000
-playerSpritesLoadBlankTile:
-    push DE                                            ;; 00:1acd $d5
-    push HL                                            ;; 00:1ace $e5
     ld   B, $00                                        ;; 00:1acf $06 $00
-    ld   HL, _VRAM8000 ;@=ptr _VRAM8000                ;; 00:1ad1 $21 $00 $80
+    ld   HL, _VRAM8000                                 ;; 00:1ad1 $21 $00 $80
     add  HL, BC                                        ;; 00:1ad4 $09
     ld   D, H                                          ;; 00:1ad5 $54
     ld   E, L                                          ;; 00:1ad6 $5d
-    ld   HL, gfxBlankTiles08 ;@bank 8 size=3           ;; 00:1ad7 $21 $00 $5a
-    cpl                                                ;; 00:1ada $2f
-    inc  A                                             ;; 00:1adb $3c
-    add  A, A                                          ;; 00:1adc $87
-    ld   B, A                                          ;; 00:1add $47
-    push BC                                            ;; 00:1ade $c5
-    cp   A, $10                                        ;; 00:1adf $fe $10
-    jr   Z, .tile_sized                                ;; 00:1ae1 $28 $07
-; Dead code
-    ld   A, $08                                        ;; 00:1ae3 $3e $08
-    call requestCopyToVRAM                             ;; 00:1ae5 $cd $6f $1e
-    jr   .return                                       ;; 00:1ae8 $18 $05
-.tile_sized:
-    ld   A, $08                                        ;; 00:1aea $3e $08
+    ld   HL, gfxBlankTiles08                           ;; 00:1ad7 $21 $00 $5a
+    ld   A, BANK(gfxBlankTiles08)                      ;; 00:1aea $3e $08
     call addTileGraphicCopyRequest                     ;; 00:1aec $cd $f5 $2d
-.return:
-    pop  BC                                            ;; 00:1aef $c1
     pop  HL                                            ;; 00:1af0 $e1
     pop  DE                                            ;; 00:1af1 $d1
     ret                                                ;; 00:1af2 $c9
+
+ds 43 ; Free space
 
 initMapGraphicsState:
     ld   A, H                                          ;; 00:1af3 $7c
