@@ -7175,13 +7175,14 @@ HLandDE:
     ret                                                ;; 00:29b9 $c9
 
 snapObjectToNearestTile8:
-    ld d, c
+    ld e, c
     call GetObjectY                                    ;; 00:29bb $cd $3e $0c
     call snapPositionToNearestTile8                    ;; 00:29be $cd $dc $29
-    ld c, d
+    ld c, e
     ld d, a
     call GetObjectX                                    ;; 00:29c4 $cd $2d $0c
     call snapPositionToNearestTile8                    ;; 00:29c7 $cd $dc $29
+    ld c, e
     ld   E, A                                          ;; 00:29cb $5f
     push DE                                            ;; 00:29cd $d5
     push BC                                            ;; 00:29ce $c5
@@ -7193,7 +7194,7 @@ snapObjectToNearestTile8:
     call updateObjectPosition                          ;; 00:29d8 $cd $11 $06
     ret                                                ;; 00:29db $c9
 
-ds 3 ; Free space
+ds 2 ; Free space
 
 snapPositionToNearestTile8:
     add $04
