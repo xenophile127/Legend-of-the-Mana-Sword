@@ -426,8 +426,14 @@ initLCDCEffect:
 ; hl = buffer address
 ; b = buffer length
 loadLCDCEffectBuffer:
-    di
     ld de, wLCDCEffectBuffer
+; Fix a one frame white flash at the beginning of the shutter effect by setting the index to the status bar effect.
+    ld a, b
+    srl a
+    srl a
+    dec a
+    di
+    ld [wLCDCEffectIndex], a
 .loop:
     ld a, [hl+]
     ld [de], a
@@ -437,7 +443,7 @@ loadLCDCEffectBuffer:
     ei
     ret
 
-ds 20 ; Free space
+ds 11 ; Free space
 
 ; Load the default LCDC effect buffer, which handles the status bar not having sprites
 ; on top and the forces the color palette of the status bar.
