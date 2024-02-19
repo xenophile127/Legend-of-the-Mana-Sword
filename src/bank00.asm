@@ -437,7 +437,7 @@ loadLCDCEffectBuffer:
     ei
     ret
 
-ds 19 ; Free space
+ds 20 ; Free space
 
 ; Load the default LCDC effect buffer, which handles the status bar not having sprites
 ; on top and the forces the color palette of the status bar.
