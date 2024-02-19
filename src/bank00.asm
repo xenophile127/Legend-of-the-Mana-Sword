@@ -2373,8 +2373,9 @@ setDefaultLCDEffectAndBGP_trampoline:
 
 scriptOpCodeWaitMapClose:
     push HL                                            ;; 00:0dbc $e5
-    call updateJoypadInput_trampoline                  ;; 00:0dbd $cd $d1 $1e
-    cp   A, $00                                        ;; 00:0dc0 $fe $00
+; Joypad input is in d.
+    ld a, d
+    or a
     jr   NZ, .button_pressed                           ;; 00:0dc2 $20 $1d
     ld   A, [wScriptOpCounter2]                        ;; 00:0dc4 $fa $9a $d4
     inc  A                                             ;; 00:0dc7 $3c
@@ -2396,6 +2397,8 @@ scriptOpCodeWaitMapClose:
     pop  HL                                            ;; 00:0de1 $e1
     call getNextScriptInstruction                      ;; 00:0de2 $cd $27 $37
     ret                                                ;; 00:0de5 $c9
+
+ds 3 ; Free space
 
 drawMinimap:
     ld   A, [wMapTableBankNrTmp]                       ;; 00:0de6 $fa $a0 $d4
@@ -9879,8 +9882,8 @@ vendorCantCarry:
     ret                                                ;; 00:3b0c $c9
 
 opCodeFFWaitCantCarry:
-    call updateJoypadInput_trampoline                  ;; 00:3b0d $cd $d1 $1e
     pop  HL                                            ;; 00:3b10 $e1
+; Joypad input is in d and e.
     ld   A, D                                          ;; 00:3b11 $7a
     and  A, E                                          ;; 00:3b12 $a3
     ret  Z                                             ;; 00:3b13 $c8
@@ -9891,6 +9894,8 @@ opCodeFFWaitCantCarry:
     ld   B, $08                                        ;; 00:3b1b $06 $08
     call runVirtualScriptOpCodeFF                      ;; 00:3b1d $cd $69 $3c
     ret                                                ;; 00:3b20 $c9
+
+ds 3 ; Free space
 
 opCodeFFCloseWindow:
     call windowCloseAndRestoreHidden_trampoline        ;; 00:3b21 $cd $a5 $30

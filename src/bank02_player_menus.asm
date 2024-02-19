@@ -1063,10 +1063,10 @@ gameStateMenuJumptable:
     dw   windowDismiss                                 ;; 02:480e pP $23
     dw   windowVendorShowBuyMessageWindow              ;; 02:4810 pP $24
     dw   windowVendorShowBuyMessage                    ;; 02:4812 pP $25
-    dw   windowWaitForAnyButton                        ;; 02:4814 pP $26
-    dw   call_02_5475                                  ;; 02:4816 ?? $27
-    dw   call_02_547e                                  ;; 02:4818 ?? $28
-    dw   call_02_5490                                  ;; 02:481a ?? $29
+    dw   windowVendorBuyWaitAnyButton                  ;; 02:4814 pP $26
+    dw   windowVendorCantCarryOpen                     ;; 02:4816 ?? $27
+    dw   windowVendorCantCarryShowText                 ;; 02:4818 ?? $28
+    dw   windowVendorCantCarryWaitAnyButton            ;; 02:481a ?? $29
     dw   call_02_48f0                                  ;; 02:481c pP $2a
     dw   call_02_498c                                  ;; 02:481e pP $2b
     dw   call_02_492b                                  ;; 02:4820 pP $2c
@@ -2448,8 +2448,8 @@ windowVendorShowBuyMessage:
 .period:
     TXT  ".<00>"                                       ;; 02:51d3 ..
 
-windowWaitForAnyButton:
-    call updateJoypadInput
+windowVendorBuyWaitAnyButton:
+; Joypad input is in d and e.
     ld   A, E                                          ;; 02:51d8 $7b
     and  A, D                                          ;; 02:51d9 $a2
     ret  Z                                             ;; 02:51da $c8
@@ -2470,6 +2470,8 @@ windowWaitForAnyButton:
     ld   A, $39                                        ;; 02:51f5 $3e $39
     ld   [wMenuStateCurrentFunction], A                ;; 02:51f7 $ea $53 $d8
     ret                                                ;; 02:51fa $c9
+
+ds 3 ; Free space
 
 sellToVendor:
     call getSelectedMenuIndexes                        ;; 02:51fb $cd $b0 $57
@@ -2826,7 +2828,7 @@ giveEquipmentItemMagic:
     jr   Z, .jr_02_5444                                ;; 02:543d $28 $05
     dec  B                                             ;; 02:543f $05
     jr   NZ, giveEquipmentItemMagic                    ;; 02:5440 $20 $f3
-    jr   .jr_02_5464                                   ;; 02:5442 $18 $20
+    jr   .cant_carry                                   ;; 02:5442 $18 $20
 .jr_02_5444:
     ld   A, C                                          ;; 02:5444 $79
     dec  DE                                            ;; 02:5445 $1b
@@ -2853,7 +2855,7 @@ giveEquipmentItemMagic:
     ld   [DE], A                                       ;; 02:5461 $12
     rrca                                               ;; 02:5462 $0f
     ret                                                ;; 02:5463 $c9
-.jr_02_5464:
+.cant_carry:
     pop  DE                                            ;; 02:5464 $d1
     ld   HL, wMiscFlags                                ;; 02:5465 $21 $6f $d8
     set  1, [HL]                                       ;; 02:5468 $cb $ce
@@ -2863,13 +2865,13 @@ giveEquipmentItemMagic:
     ld   [wMenuStateCurrentFunction], A                ;; 02:5471 $ea $53 $d8
     ret                                                ;; 02:5474 $c9
 
-call_02_5475:
+windowVendorCantCarryOpen:
     call drawWindow                                    ;; 02:5475 $cd $00 $67
     ld   B, $28                                        ;; 02:5478 $06 $28
     call setMenuStateCurrentFunction                   ;; 02:547a $cd $98 $6c
     ret                                                ;; 02:547d $c9
 
-call_02_547e:
+windowVendorCantCarryShowText:
     ld   A, [wDialogType]                              ;; 02:547e $fa $4a $d8
     call windowInitContents                            ;; 02:5481 $cd $93 $76
     ld   HL, cantCarryTextLabel                        ;; 02:5484 $21 $10 $3f
@@ -2878,8 +2880,8 @@ call_02_547e:
     ld   [wMenuStateCurrentFunction], A                ;; 02:548c $ea $53 $d8
     ret                                                ;; 02:548f $c9
 
-call_02_5490:
-    call updateJoypadInput
+windowVendorCantCarryWaitAnyButton:
+; Joypad input is in d and e.
     ld   A, D                                          ;; 02:5493 $7a
     and  A, A                                          ;; 02:5494 $a7
     ret  Z                                             ;; 02:5495 $c8
@@ -2890,6 +2892,8 @@ call_02_5490:
     ld   A, $01                                        ;; 02:54a0 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 02:54a2 $ea $53 $d8
     ret                                                ;; 02:54a5 $c9
+
+ds 3 ; Free space
 
 jp_02_54a6:
     push BC                                            ;; 02:54a6 $c5
@@ -7987,8 +7991,8 @@ titleScreenIntroScrollPrintLine:
     ret                                                ;; 02:7c8e $c9
 
 titleScreenIntroScrollLoop:
-    call updateJoypadInput
-    bit  4, C                                          ;; 02:7c92 $cb $61
+; Joypad input is in d.
+    bit 4, d
     jr   NZ, .a_button                                 ;; 02:7c94 $20 $25
     ld   HL, wIntroScrollCounter1                      ;; 02:7c96 $21 $89 $d8
     dec  [HL]                                          ;; 02:7c99 $35
@@ -8015,6 +8019,8 @@ titleScreenIntroScrollLoop:
     ld   A, $03                                        ;; 02:7cc3 $3e $03
     ld   [wTitleScreenState], A                        ;; 02:7cc5 $ea $86 $d8
     ret                                                ;; 02:7cc8 $c9
+
+ds 3 ; Free space
 
 titleScreenIntroScrollInterupted:
     ld   A, [wIntroScrollSCYBackup]                    ;; 02:7cc9 $fa $88 $d8
