@@ -968,7 +968,7 @@ scrollRoom:
 
 drawRoomMetaTilesColumn:
     ld   B, $00                                        ;; 01:4690 $06 $00
-.jr_01_4692:
+.loop:
     push BC                                            ;; 01:4692 $c5
     push DE                                            ;; 01:4693 $d5
     ld   D, B                                          ;; 01:4694 $50
@@ -984,13 +984,13 @@ drawRoomMetaTilesColumn:
     pop  BC                                            ;; 01:46a2 $c1
     inc  B                                             ;; 01:46a3 $04
     ld   A, B                                          ;; 01:46a4 $78
-    cp   A, $08                                        ;; 01:46a5 $fe $08
-    jr   C, .jr_01_4692                                ;; 01:46a7 $38 $e9
+    cp   A, (SCRN_Y_B / 2) - 1                         ;; 01:46a5 $fe $08
+    jr   C, .loop                                      ;; 01:46a7 $38 $e9
     ret                                                ;; 01:46a9 $c9
 
 drawRoomMetatilesRow:
     ld   B, $00                                        ;; 01:46aa $06 $00
-.jr_01_46ac:
+.loop:
     push BC                                            ;; 01:46ac $c5
     push DE                                            ;; 01:46ad $d5
     ld   D, E                                          ;; 01:46ae $53
@@ -1006,8 +1006,8 @@ drawRoomMetatilesRow:
     pop  BC                                            ;; 01:46bc $c1
     inc  B                                             ;; 01:46bd $04
     ld   A, B                                          ;; 01:46be $78
-    cp   A, $0a                                        ;; 01:46bf $fe $0a
-    jr   C, .jr_01_46ac                                ;; 01:46c1 $38 $e9
+    cp   A, SCRN_X_B / 2                               ;; 01:46bf $fe $0a
+    jr   C, .loop                                      ;; 01:46c1 $38 $e9
     ret                                                ;; 01:46c3 $c9
 
 ; DE = yx scroll distances
@@ -1072,10 +1072,10 @@ drawRoom:
     ld   [wNextRoomOverride], A                        ;; 01:472c $ea $44 $c3
     ld   [wNextRoomOverride.x], A                      ;; 01:472f $ea $45 $c3
     ld   D, $00                                        ;; 01:4732 $16 $00
-    ld   C, $08                                        ;; 01:4734 $0e $08
+    ld   C, (SCRN_Y_B / 2) - 1                         ;; 01:4734 $0e $08
 .loop_outer:
     ld   E, $00                                        ;; 01:4736 $1e $00
-    ld   B, $0a                                        ;; 01:4738 $06 $0a
+    ld   B, SCRN_X_B / 2                               ;; 01:4738 $06 $0a
 .loop_inner:
     push BC                                            ;; 01:473a $c5
     push DE                                            ;; 01:473b $d5

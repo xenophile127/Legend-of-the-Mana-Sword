@@ -692,7 +692,7 @@ requestCopyTwoBytesToDrawAddress:
     push HL                                            ;; 00:048c $e5
     call getBackgroundDrawAddress                      ;; 00:048d $cd $5d $04
     pop  DE                                            ;; 00:0490 $d1
-    call requestCopyTwoByteToVRAM                      ;; 00:0491 $cd $9f $1e
+    call requestCopyTwoBytesToVRAM                     ;; 00:0491 $cd $9f $1e
     ret                                                ;; 00:0494 $c9
 
 storeDEatBackgroundDrawPosition:
@@ -5311,7 +5311,8 @@ requestCopyToVRAM:
     db   $7b, $22, $72, $21, $e8, $ce, $34, $c9        ;; 00:1e97 ????????
 
 ; Put in a request to copy 2 bytes from DE to HL
-requestCopyTwoByteToVRAM:
+; Only used to draw room metatiles.
+requestCopyTwoBytesToVRAM:
     push HL                                            ;; 00:1e9f $e5
     push DE                                            ;; 00:1ea0 $d5
     call getNextBackgroundRequestSlot                  ;; 00:1ea1 $cd $ca $1d
@@ -7382,9 +7383,9 @@ MultiplyDE_by_A:
 .loop:
     add  HL, HL                                        ;; 00:2b82 $29
     rlca                                               ;; 00:2b83 $07
-    jr   NC, .jr_00_2b87                               ;; 00:2b84 $30 $01
+    jr   NC, .next                                     ;; 00:2b84 $30 $01
     add  HL, DE                                        ;; 00:2b86 $19
-.jr_00_2b87:
+.next:
     dec  B                                             ;; 00:2b87 $05
     jr   NZ, .loop                                     ;; 00:2b88 $20 $f8
     ret                                                ;; 00:2b8a $c9
