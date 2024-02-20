@@ -28,6 +28,11 @@ SGB_PAL23:
     db $09, $df, $6f, $68, $17, $83, $02, $61, $01, $68, $17, $df, $2b, $61, $01, $ff
 ;            #fff7de   #42de29   #18a500   #085a00    #42de29   #fff752   #085a00
 
+SGB_PAL01_BLACK:
+    db $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+SGB_PAL23_BLACK:
+    db $09, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
+
 ; Used if the game is rebooted using A+B+Start+Select from the ending to ensure attribute changes are cleared.
 sgbClearAttributes:
     ld bc, .SGB_ATTR_CLEAR
@@ -83,6 +88,14 @@ checkSGB:
     ret
 .is_sgb
     scf
+    ret
+
+; Used to init palettes two and three before they are used for the final fade-in.
+enhancedLetterboxSetPAL23Black:
+    ld bc, SGB_PAL23_BLACK
+    call SGBSendData
+    ld hl, wScriptOpCounter
+    inc [hl]
     ret
 
 ; The Super Game Boy detection is done by testing for multiple controller support.
@@ -336,6 +349,9 @@ enhancedLetterbox:
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxCheckSGB
+    dw enhancedLetterboxDelayFrame
+    dw enhancedLetterboxSetPAL23Black
+    dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxFreezeScreen
     dw enhancedLetterboxTransferTilesPrepare
     dw enhancedLetterboxTransferTiles ; Trigger VRAM transfer
@@ -405,9 +421,9 @@ sgbFadeToBlack:
 ; Handles loading color palettes if the next screen is the final "End" screen.
 .last_step:
     push hl
-; Normally this only does anything on the first sub-step of a fade step.
+; The first frame of the last step is used to set the palette to black.
     ld a, [wScriptOpCounter2]
-    ld bc, .SGB_PAL01_BLACK
+    ld bc, SGB_PAL01_BLACK
     or a
     jr z, .send_packet
 ; This counter is used to time when the final fade-to-black is happening to load attributes.
@@ -415,17 +431,15 @@ sgbFadeToBlack:
     ld a, [wSGBEndingCounter]
     cp $07
     jr nz, .return
-; The second and third palettes are untouched by fading to black, so they need to be blacked out.
     ld a, [wScriptOpCounter2]
-    ld bc, .SGB_PAL23_BLACK
-    dec a
-    jr z, .send_packet
 ; It takes two packets to load the color attributes for the sprout.
+; Send the first one two frames after the color palette packet.
     ld bc, .SGB_ATTR
-    dec a
+    cp $02
     jr z, .send_packet
+; Send the second one two frames after the first.
     ld bc, .SGB_ATTR+$10
-    dec a
+    cp $04
     jr nz, .return
 .send_packet:
     call SGBSendData
@@ -433,10 +447,6 @@ sgbFadeToBlack:
     pop hl
     ret
 
-.SGB_PAL01_BLACK:
-    db $01, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
-.SGB_PAL23_BLACK:
-    db $09, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,
 .SGB_ATTR:
 ;            x    y   number   l->r  /----------------- data -----------------------\
     db $39, $0c, $0a, $18, $00, $00, $af, $00, $00, $00, $00, $af, $00, $00, $00, $00
@@ -466,7 +476,12 @@ sgbFadeToNormal:
     ret
 
 .second_packet:
-    dec a
+; Write on both the second and third frames of a fade, just in case.
+    cp $03
+    ret nc
+; But only on the final fade.
+    ld a, [wSGBEndingCounter]
+    cp $08
     ret nz
     push hl
 ; Calculate the second packet.
