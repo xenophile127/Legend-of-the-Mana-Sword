@@ -1610,9 +1610,17 @@ wSpawnPlacementScratch:
 wSGBEndingCounter:
     ds 1                                               ;; dac9
 
+; Free space.
+;In order to 16 byte align the RAM tiles following.
+wPadding:
+    ds 6                                               ;; daca
+
+wAnimatedTileRiverCorners:
+    ds 64                                              ;; dad0
+
 ; Free WRAM space.
 wFree:
-    ds 1334                                            ;; daca
+    ds 1264                                            ;; db10
 
 SECTION "hram", HRAM[$ff80]
 

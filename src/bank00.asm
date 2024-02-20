@@ -4549,7 +4549,7 @@ mapGraphicsStateCheckCache:
     ret                                                ;; 00:1a6f $c9
 
 animateTiles_trampoline:
-    jp_to_bank 02, animateTiles                        ;; 00:1a70 $f5 $3e $00 $c3 $06 $1f
+    jp_to_bank 11, animateTiles                        ;; 00:1a70
 
 ; Loads two tiles (for one 8*16 sprite) from bank 8.
 ; Used to load in the player and player attack graphics.

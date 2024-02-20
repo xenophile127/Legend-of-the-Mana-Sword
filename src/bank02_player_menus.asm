@@ -9,7 +9,7 @@ SECTION "bank02", ROMX[$4000], BANK[$02]
 
 ;@call_to_bank_jumptable amount=58
 entryPointTableBank02:
-    call_to_bank_target animateTiles                   ;; 02:4000 pP
+ds 2 ; Unused trampoline target
     call_to_bank_target updateJoypadInput              ;; 02:4002 pP
     call_to_bank_target spriteShuffleDoFlash           ;; 02:4004 pP
     call_to_bank_target spriteShuffleShowHidden        ;; 02:4006 pP
@@ -68,7 +68,7 @@ ds 2 ; Unused trampoline target
     call_to_bank_target endFujiStatusEffect            ;; 02:4070 ??
     call_to_bank_target getEquippedArmorElementalResistances ;; 02:4072 pP
 
-INCLUDE "code/animated_tiles.asm"
+ds 420 ; Free space
 
 INCLUDE "code/joypad.asm"
 

@@ -19,6 +19,7 @@ entryPointTableBankExpansion:
     call_to_bank_target scanRoomForNpcPlacementOptions
     call_to_bank_target enhancedFade
     call_to_bank_target enhancedWarmBoot
+    call_to_bank_target animateTiles
 
 drawHPOnStatusBar:
     ld   C, $13 ; Mode/Max-digits to write
@@ -586,6 +587,9 @@ enhancedWarmBoot:
 ; This provides a replacement letterbox routine which blacks the border on SGB,
 ; and fade routines that use the SGB hardware.
 INCLUDE "code/sgb.asm"
+
+; Background tile animation has been moved here to allow it to expand.
+INCLUDE "code/animated_tiles.asm"
 
 ; Load in debug messages used across the ROM.
 ; This will not take any space if the DEBUG flag is not set.

@@ -16,7 +16,7 @@ animateTiles:
     dw   animateTilesOcean                             ;; 02:408c pP $04
     dw   animateTilesOcean                             ;; 02:408e pP $05
     dw   animateTileRiver                              ;; 02:4090 pP $06
-    dw   animateTilesNop                               ;; 02:4092 pP $07
+    dw   animateTileRiver
     dw   animateTilesIncrementCounter                  ;; 02:4094 pP $08
     dw   animateTilesIncrementCounter                  ;; 02:4096 ?? $09
     dw   animateTilesWaterfall                         ;; 02:4098 pP $0a
@@ -24,7 +24,7 @@ animateTiles:
     dw   animateTilesOcean                             ;; 02:409c pP $0c
     dw   animateTilesOcean                             ;; 02:409e pP $0d
     dw   animateTileRiver                              ;; 02:40a0 pP $0e
-    dw   animateTilesNop                               ;; 02:40a2 pP $0f
+    dw   animateTileRiver
 
 animateTilesTwoframe_TileCopy:
     ld   B, $04                                        ;; 02:40a9 $06 $04
@@ -208,20 +208,144 @@ animateTilesOcean:
     ret                                                ;; 02:41cd $c9
 
 ; Check if we need to animate the river  tile, and scroll it 1 pixel.
+; For tilesets with river corners, also animate them.
+; That work is split between two calls on adjacent frames.
+; On even frames three tiles are queued, which is more than any other animation routine does.
 animateTileRiver:
+; Check for river tile usage.
+; None of the corners are used without the base river tile so it is acceptable to return early if it is unused.
     ld   A, [wBackgroundGraphicsTileState._10]         ;; 02:41ce $fa $80 $d1
-    cp   A, $00                                        ;; 02:41d1 $fe $00
+    or a
     ret  Z                                             ;; 02:41d3 $c8
+; Only animate the base river tile on even frames.
+    ld a, [wTileAnimationCounter]
+    bit 0, a
+    jr nz, .corners
     ld   HL, wAnimatedTileRiver                        ;; 02:41d4 $21 $70 $d3
-    ld   B, $10                                        ;; 02:41d7 $06 $10
-.loop:
-    rrc  [HL]                                          ;; 02:41d9 $cb $0e
-    inc  HL                                            ;; 02:41db $23
-    dec  B                                             ;; 02:41dc $05
-    jr   NZ, .loop                                     ;; 02:41dd $20 $fa
+; Unrolling this loop saves 81 cycles, or most of a scanline (81/114).
+REPT 16
+    ld a, [hl]
+    rrca
+    ld [hl+], a
+ENDR
+; Add the load request.
     ld   A, [wBackgroundGraphicsTileMapping._10]       ;; 02:41df $fa $80 $d0
     ld   BC, wAnimatedTileRiver                        ;; 02:41e2 $01 $70 $d3
-    jp requestBackgroundTileCopy
+    call requestBackgroundTileCopy
+.corners:
+; The corner tiles only exist for the tilesets used by maps 0, 1, 14, and 15.
+    ld a, [wMapNumber]
+    cp $02
+    jr c, .has_corners
+    cp $0e
+    ret c
+.has_corners
+    call animateTileRiverCorners
+    ret
+
+; Mask "tiles" for river corners. Anded with the river tile.
+; The and opperation allows forcing any pixel white, which is all that is currently required.
+; It could also be used to force a black pixel into either shade of gray.
+; These could be optimized to 1bpp. Or they could be an and-xor pair to allow more complex masks.
+cornerMasks:
+    dw `00003333
+    dw `00333333
+    dw `03333333
+    dw `03333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+
+    dw `33330000
+    dw `33333300
+    dw `33333330
+    dw `33333330
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `03333333
+    dw `03333333
+    dw `00333333
+    dw `00003333
+
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333333
+    dw `33333330
+    dw `33333330
+    dw `33333300
+    dw `33330000
+
+; Makes river corner tiles based off of the existing river tile and a mask.
+animateTileRiverCorners:
+; Split the work between two frames in order to load balance both CPU time and tile transfer load.
+; Do tiles 0 & 2 (nw and sw) on the even frames and 1 & 3 (ne and se) on odd frames.
+    ld a, [wTileAnimationCounter]
+    and $01
+    ld e, a
+    ld d, $00
+.loop_tiles:
+; Check for tile usage.
+    ld hl, wBackgroundGraphicsTileState + $27
+    add hl, de
+    ld a, [hl]
+    or a
+    jr z, .next
+; Multiply tile number by 16 (the size of a tile).
+    swap e
+; Create the composite tile.
+    push de
+    ld hl, wAnimatedTileRiverCorners
+    add hl, de
+    ld b, h
+    ld c, l
+    ld hl, cornerMasks
+    add hl, de
+    ld d, h
+    ld e, l
+    ld hl, wAnimatedTileRiver
+; Combine the river tile data with the mask using an and.
+.loop:
+    ld a, [de]
+    and [hl]
+    ld [bc], a
+    inc hl
+    inc de
+    inc bc
+; Tiles should have 16 byte alignment for the transfer function so enforce that and remove the need for a loop counter.
+    ld a, c
+    and $0f
+    jr nz, .loop
+; Add the load request.
+    pop de
+    ld hl, wAnimatedTileRiverCorners
+    add hl, de
+    ld b, h
+    ld c, l
+; Divide offset by 16 (the size of a tile) to get the tile number.
+    swap e
+    ld hl, wBackgroundGraphicsTileMapping+$27
+    add hl, de
+    ld a, [hl]
+    push de
+    call requestBackgroundTileCopy
+    pop de
+.next:
+    inc e
+    inc e
+    ld a, e
+    cp $04
+    jr c, .loop_tiles
+    ret
+
 
 animateTilesRight:
     ld   D, H                                          ;; 02:41e9 $54
@@ -241,7 +365,7 @@ animateTilesRight:
     jr   NZ, .loop                                     ;; 02:41fb $20 $f0
     ret                                                ;; 02:41fd $c9
 
-; Request to copy a background graphic tile from bank $0C into VRAM
+; Request to copy a background graphic tile from bank $1c into VRAM
 ; A: VRAM target tile number
 ; BC: source graphics address
 requestBackgroundTileCopy:
