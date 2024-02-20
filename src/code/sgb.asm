@@ -347,7 +347,7 @@ enhancedLetterbox:
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxSetSGBPalette
     dw enhancedLetterboxDelayFrame
-    dw enhancedLetterboxSetTwoControllers
+    dw enhancedLetterboxSetOneController
     dw enhancedLetterboxFinish
 
 ; Given a SGB palette packet, creates a modified packet with colors faded between the original and black.
