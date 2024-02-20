@@ -770,7 +770,7 @@ gameStateMenuJumptable:
     dw   call_02_4cc7                                  ;; 02:47dc ?? $0a
     dw   call_02_4d36                                  ;; 02:47de pP $0b
     dw   call_02_4d89                                  ;; 02:47e0 pP $0c
-    dw   call_02_4db0                                  ;; 02:47e2 pP $0d
+    dw   swapActiveEquipment                           ;; 02:47e2 pP $0d
     dw   call_02_4e5b                                  ;; 02:47e4 pP $0e
     dw   call_02_4e7b                                  ;; 02:47e6 pP $0f
     dw   call_02_4b7b                                  ;; 02:47e8 pP $10
@@ -1594,22 +1594,30 @@ call_02_4da4:
     call setMenuStateCurrentFunction                   ;; 02:4dac $cd $98 $6c
     ret                                                ;; 02:4daf $c9
 
-call_02_4db0:
+; Swaps out the current equipment when a double click
+; is performed in the EQUIP menu
+swapActiveEquipment:
     call loadRegisterState1                            ;; 02:4db0 $cd $5b $6d
     ld   A, [wDialogType]                              ;; 02:4db3 $fa $4a $d8
     cp   A, $04                                        ;; 02:4db6 $fe $04
     jp   NZ, jp_02_4e4c                                ;; 02:4db8 $c2 $4c $4e
     call saveRegisterState1                            ;; 02:4dbb $cd $34 $6d
     call getSelectedMenuIndexes                        ;; 02:4dbe $cd $b0 $57
-    ld   A, [wWindowFirstPointer.high]                 ;; 02:4dc1 $fa $93 $d8
-    ld   H, A                                          ;; 02:4dc4 $67
-    ld   A, [wWindowFirstPointer]                      ;; 02:4dc5 $fa $92 $d8
-    ld   L, A                                          ;; 02:4dc8 $6f
-    ld   B, $00                                        ;; 02:4dc9 $06 $00
-    add  HL, BC                                        ;; 02:4dcb $09
-    push BC                                            ;; 02:4dcc $c5
-    push HL                                            ;; 02:4dcd $e5
-    ld   BC, currentlyEquippedEquipmentPowerList       ;; 02:4dce $01 $67 $58
+
+    ; Swap out equipment indices
+    ld HL, wWindowSecondPointer
+    ld A, [HL+]
+    ld H, [HL]
+    ld L, A
+    ld   B, $00
+    add  HL, BC
+    ld   A, [HL]
+    and  A, A
+    call Z, playWindowErrorSound
+    jr   Z, .cleanup
+    push BC
+    push HL
+    ld   BC, currentlyEquippedEquipmentList
     call findSlotForEquipmentType                      ;; 02:4dd1 $cd $3c $58
     pop  HL                                            ;; 02:4dd4 $e1
     ld   A, [DE]                                       ;; 02:4dd5 $1a
@@ -1617,17 +1625,16 @@ call_02_4db0:
     ld   [HL], A                                       ;; 02:4dd7 $77
     ld   A, B                                          ;; 02:4dd8 $78
     ld   [DE], A                                       ;; 02:4dd9 $12
-    ld   A, [wWindowSecondPointer.high]                ;; 02:4dda $fa $95 $d8
-    ld   H, A                                          ;; 02:4ddd $67
-    ld   A, [wWindowSecondPointer]                     ;; 02:4dde $fa $94 $d8
-    ld   L, A                                          ;; 02:4de1 $6f
-    pop  BC                                            ;; 02:4de2 $c1
-    add  HL, BC                                        ;; 02:4de3 $09
-    ld   A, [HL]                                       ;; 02:4de4 $7e
-    and  A, A                                          ;; 02:4de5 $a7
-    jr   Z, .jr_02_4df5                                ;; 02:4de6 $28 $0d
-    push HL                                            ;; 02:4de8 $e5
-    ld   BC, currentlyEquippedEquipmentList            ;; 02:4de9 $01 $6f $58
+
+    ; Swap equipment powers
+    ld HL, wWindowFirstPointer
+    ld A, [HL+]
+    ld H, [HL]
+    ld L, A
+    pop BC
+    add  HL, BC
+    push HL
+    ld   BC, currentlyEquippedEquipmentPowerList
     call findSlotForEquipmentType                      ;; 02:4dec $cd $3c $58
     pop  HL                                            ;; 02:4def $e1
     ld   A, [DE]                                       ;; 02:4df0 $1a
@@ -1635,7 +1642,7 @@ call_02_4db0:
     ld   [HL], A                                       ;; 02:4df2 $77
     ld   A, B                                          ;; 02:4df3 $78
     ld   [DE], A                                       ;; 02:4df4 $12
-.jr_02_4df5:
+.cleanup:
     ld   A, [wMenuFlags]                               ;; 02:4df5 $fa $49 $d8
     ld   [wMenuFlagsBackup], A                         ;; 02:4df8 $ea $4e $d8
     ld   A, [wD848]                                    ;; 02:4dfb $fa $48 $d8
@@ -1647,6 +1654,8 @@ call_02_4db0:
     call saveRegisterState2                            ;; 02:4e0c $cd $80 $6d
     ld   A, $14                                        ;; 02:4e0f $3e $14
     jp   jp_02_5877                                    ;; 02:4e11 $c3 $77 $58
+
+ds 1 ; Free space
 
 call_02_4e14:
     ld   A, $04                                        ;; 02:4e14 $3e $04
@@ -3242,19 +3251,19 @@ inventoryMoveItems:
     ret                                                ;; 02:583b $c9
 
 findSlotForEquipmentType:
-    push BC                                            ;; 02:583c $c5
     ld   HL, wEquipmentInventory                       ;; 02:583d $21 $dd $d6
     ld   A, [wSelectedMenuIndex2]                      ;; 02:5840 $fa $4c $d8
-    ld   C, A                                          ;; 02:5843 $4f
-    ld   B, $00                                        ;; 02:5844 $06 $00
-    add  HL, BC                                        ;; 02:5846 $09
+    ld   E, A
+    ld   D, $00
+    add  HL, DE
     ld   A, [HL]                                       ;; 02:5847 $7e
+    and A, A
+    ret Z ; Return early for invalid selection
     ld   HL, equipmentDataTable + $09                  ;; 02:5848 $21 $f3 $61
     call indexIntoTable                                ;; 02:584b $cd $82 $76
     ld   A, [HL]                                       ;; 02:584e $7e
     and  A, $0f                                        ;; 02:584f $e6 $0f
     ld   HL, .equipmentTypeFlags                       ;; 02:5851 $21 $63 $58
-    pop  BC                                            ;; 02:5854 $c1
 .loop:
     cp   A, [HL]                                       ;; 02:5855 $be
     jr   Z, .found                                     ;; 02:5856 $28 $05
@@ -3269,7 +3278,7 @@ findSlotForEquipmentType:
     ld   A, [BC]                                       ;; 02:5860 $0a
     ld   D, A                                          ;; 02:5861 $57
     ret                                                ;; 02:5862 $c9
-; 1=weapon, 2=armor, 4=helm, 5=shield
+; 1=weapon, 2=armor, 4=helm, 8=shield
 .equipmentTypeFlags:
     db   $01, $02, $04, $08                            ;; 02:5863 ????
 
