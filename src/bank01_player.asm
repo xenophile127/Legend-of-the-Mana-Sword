@@ -179,7 +179,7 @@ loadMapWithShutterEffectSequence:
 ;@jumptable amount=8
 .loadMapWithShutterEffectJumptable:
     dw   prepareShutterEffect                          ;; 01:413c pP $00
-    dw   advanceScriptOpWhenVRAMCopiesDone             ;; 01:413e pP $01
+    dw   prepareShutterEffectUnsafe                    ;; 01:413e pP $01
     dw   shutterEffectClose                            ;; 01:4140 pP $02
     dw   drawRoomFromMap                               ;; 01:4142 pP $03
     dw   advanceScriptOpWhenVRAMCopiesDone             ;; 01:4144 pP $04
@@ -213,7 +213,7 @@ openMinimap:
 ;@jumptable amount=8
 .openMinimapJumptable:
     dw   prepareShutterEffect                          ;; 01:4170 pP $00
-    dw   advanceScriptOpWhenVRAMCopiesDone             ;; 01:4172 pP $01
+    dw   prepareShutterEffectUnsafe                    ;; 01:4172 pP $01
     dw   shutterEffectClose                            ;; 01:4174 pP $02
     dw   loadMinimapToBackground                       ;; 01:4176 pP $03
     dw   advanceScriptOpWhenVRAMCopiesDone             ;; 01:4178 pP $04
@@ -231,7 +231,7 @@ closeMinimap:
 ;@jumptable amount=8
 .closeMinimapJumptable:
     dw   prepareShutterEffect                          ;; 01:418c pP $00
-    dw   advanceScriptOpWhenVRAMCopiesDone             ;; 01:418e pP $01
+    dw   prepareShutterEffectUnsafe                    ;; 01:418e pP $01
     dw   shutterEffectClose                            ;; 01:4190 pP $02
     dw   minimapCloseRestoreRoom                       ;; 01:4192 pP $03
     dw   advanceScriptOpWhenVRAMCopiesDone             ;; 01:4194 pP $04
@@ -239,18 +239,23 @@ closeMinimap:
     dw   shutterEffectOpen                             ;; 01:4198 pP $06
     dw   LoadMapEnd                                    ;; 01:419a pP $07
 
+; Work around a problem with the LCDC Effect buffer load conflicting with interrupts.
+; Optimizations caused this to happen fairly often when loading a save.
 prepareShutterEffect:
+    call scriptCountersInit
+    ld a, [rLY]
+    cp $70
+    ret nc
+
+prepareShutterEffectUnsafe:
     push DE                                            ;; 01:419c $d5
-    ld   A, $00                                        ;; 01:419d $3e $00
-    ld   [wScriptOpCounter2], A                        ;; 01:419f $ea $9a $d4
-    ld   HL, wScriptOpCounter                          ;; 01:41a2 $21 $99 $d4
-    inc  [HL]                                          ;; 01:41a5 $34
+    call scriptCountersInit
     ld   HL, lcdcShutterEffectClose                    ;; 01:41a6 $21 $fc $40
     ld   A, [wPlayerSpecialFlags]                      ;; 01:41a9 $fa $d4 $c4
     bit  1, A                                          ;; 01:41ac $cb $4f
-    jr   Z, .jr_01_41b3                                ;; 01:41ae $28 $03
+    jr   Z, .load_effect                               ;; 01:41ae $28 $03
     ld   HL, lcdcShutterEffectDarkClose                ;; 01:41b0 $21 $16 $41
-.jr_01_41b3:
+.load_effect:
     ld   B, $0d                                        ;; 01:41b3 $06 $0d
     call loadLCDCEffectBuffer                          ;; 01:41b5 $cd $f3 $02
     ld   A, [wVideoLCDC]                               ;; 01:41b8 $fa $a5 $c0
@@ -263,13 +268,15 @@ prepareShutterEffect:
     ret                                                ;; 01:41c9 $c9
 
 scriptCountersInit:
-    push DE                                            ;; 01:41ca $d5
-    ld   A, $00                                        ;; 01:41cb $3e $00
-    ld   [wScriptOpCounter2], A                        ;; 01:41cd $ea $9a $d4
-    ld   HL, wScriptOpCounter                          ;; 01:41d0 $21 $99 $d4
-    inc  [HL]                                          ;; 01:41d3 $34
-    pop  HL                                            ;; 01:41d4 $e1
-    ret                                                ;; 01:41d5 $c9
+    xor a
+    ld hl, wScriptOpCounter2
+    ld [hl-], a
+    inc [hl]
+    ld h, d
+    ld l, e
+    ret
+
+ds 1 ; Free space
 
 shutterEffectClose:
     push DE                                            ;; 01:41d6 $d5
