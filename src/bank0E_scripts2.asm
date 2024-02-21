@@ -2892,7 +2892,7 @@ script_0405:
       sSET_MUSIC 4
     sENDIF
     sIF_FLAG wScriptFlags0E.5, !wScriptFlags0E.6, wScriptFlags0E.7
-      ; Welcome to Wendle.
+      ; Welcome to Wendel.
       sLOAD_ROOM_INSTANT 14, $17, 16, 8
       sIF_FLAG wScriptFlags02.0, !wScriptFlags02.1
         sSET_MUSIC 9
@@ -5523,8 +5523,8 @@ script_053a:
     sDELAY 144                                         ;; 0e:68e9 $f0 $90
     sMSG                                               ;; 0e:68eb $04
       db "<10> _ <GIRL>, you've\n grown so tall__\n<GIRL>:Mother!\n<12>"
-      db "<1b><BOY>:Mother?!\nCibba:Ah! The\n woman who gave<12>"
-      db "<1b> us strength in\n our fight against\n Vandole.<12>"
+      db "<1b><BOY>:Mother?!\nCibba:Ah! That's\n the woman who<12>"
+      db "<1b> gave us strength\n in our fight\n against Vandole.<12>"
       db "<1b>Mother:Listen to\n me carefully,\n <GIRL>.<12>"
       db "<1b> You and I are\n members of the\n Mana Family.<12>"
       db "<1b><BOY>:The Mana\n Family?<12>"
