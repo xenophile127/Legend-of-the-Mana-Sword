@@ -2648,7 +2648,14 @@ attackTileAxe:
     jr attackTileGrassCommon
 
 attackTileSickle:
+; On the worldmap it's better to replace the leafy foliage with marsh tiles.
+    ld a, [wMapNumber]
+    or a
     ld a, $04
+    jr nz, attackTileGrassCommon
+    cp a, b
+    ld h, $24
+    jr attackTileCheckTile
 
 attackTileGrassCommon:
     cp a, b
@@ -2673,10 +2680,7 @@ attackTileCheckTile:
     ld a, h
     jp setRoomTile
 
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00, $00
+ds 15 ; Free space
 
 runPlayerAttackObjectFunctions:
     ld   C, $00                                        ;; 01:52b3 $0e $00
