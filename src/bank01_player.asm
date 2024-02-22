@@ -243,7 +243,7 @@ closeMinimap:
 ; Optimizations caused this to happen fairly often when loading a save.
 prepareShutterEffect:
     call scriptCountersInit
-    ld a, [rLY]
+    ldh a, [rLY]
     cp $70
     ret nc
 
