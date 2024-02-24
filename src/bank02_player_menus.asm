@@ -6386,7 +6386,7 @@ copyHLtoDEtimesB:
     ret                                                ;; 02:7457 $c9
 
 enableSRAM:
-    ld   A, $0a                                        ;; 02:7458 $3e $0a
+    ld   A, CART_SRAM_ENABLE                           ;; 02:7458 $3e $0a
     ld   [rRAMG], A                                    ;; 02:745a $ea $00 $00
     ret                                                ;; 02:745d $c9
 
@@ -6419,12 +6419,15 @@ readSRAMByte:
     pop  BC                                            ;; 02:747a $c1
     ret                                                ;; 02:747b $c9
 
+; Check a save game's header byte and checksum.
+; A = bit mask for bit to set/clear in wWindowFlags to indicate a valid/invalid save file.
+; HL = beginning of save file
 checkSaveGameIntegrity:
     push AF                                            ;; 02:747c $f5
     call enableSRAM                                    ;; 02:747d $cd $58 $74
     call readSRAMByte                                  ;; 02:7480 $cd $6f $74
     cp   A, $6c                                        ;; 02:7483 $fe $6c
-    jr   NZ, .jr_02_74a5                               ;; 02:7485 $20 $1e
+    jr   NZ, .header_mismatch                          ;; 02:7485 $20 $1e
     call readSRAMByte                                  ;; 02:7487 $cd $6f $74
     ld   E, A                                          ;; 02:748a $5f
     call readSRAMByte                                  ;; 02:748b $cd $6f $74
@@ -6437,17 +6440,17 @@ checkSaveGameIntegrity:
     pop  DE                                            ;; 02:7499 $d1
     ld   A, D                                          ;; 02:749a $7a
     cp   A, H                                          ;; 02:749b $bc
-    jr   NZ, .jr_02_74a2                               ;; 02:749c $20 $04
+    jr   NZ, .checksum_mismatch                        ;; 02:749c $20 $04
     ld   A, E                                          ;; 02:749e $7b
     cp   A, L                                          ;; 02:749f $bd
-    jr   Z, .jr_02_74b6                                ;; 02:74a0 $28 $14
-.jr_02_74a2:
+    jr   Z, .valid                                     ;; 02:74a0 $28 $14
+.checksum_mismatch:
     pop  HL                                            ;; 02:74a2 $e1
-    jr   .jr_02_74a7                                   ;; 02:74a3 $18 $02
-.jr_02_74a5:
+    jr   .invalid                                      ;; 02:74a3 $18 $02
+.header_mismatch:
     inc  HL                                            ;; 02:74a5 $23
     inc  HL                                            ;; 02:74a6 $23
-.jr_02_74a7:
+.invalid:
     call disableSRAM                                   ;; 02:74a7 $cd $5e $74
     pop  AF                                            ;; 02:74aa $f1
     cpl                                                ;; 02:74ab $2f
@@ -6457,7 +6460,7 @@ checkSaveGameIntegrity:
     ld   [wWindowFlags], A                             ;; 02:74b1 $ea $74 $d8
     scf                                                ;; 02:74b4 $37
     ret                                                ;; 02:74b5 $c9
-.jr_02_74b6:
+.valid:
     call disableSRAM                                   ;; 02:74b6 $cd $5e $74
     pop  HL                                            ;; 02:74b9 $e1
     pop  AF                                            ;; 02:74ba $f1
