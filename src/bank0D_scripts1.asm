@@ -1913,7 +1913,6 @@ script_0138:
 
 script_0139:
     sSET_NPC_TYPES 5                                   ;; 0d:4aca $fc $05
-    sSPAWN_NPC 2
     sIF_FLAG !wScriptFlags.3
       sSPAWN_NPC 2
     sENDIF
