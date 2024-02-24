@@ -1586,16 +1586,19 @@ enemyCollisionHandling:
     ld   A, $00                                        ;; 03:4807 $3e $00
     ret                                                ;; 03:4809 $c9
 
+; C = NPC runtime table entry number.
+; DE = address of the wNpcRuntimeData entry for this NPC.
 processNpcDeath:
     push BC                                            ;; 03:480a $c5
     push DE                                            ;; 03:480b $d5
     call getObjectCollisionFlags                       ;; 03:480c $cd $6d $0c
     and  A, $f0                                        ;; 03:480f $e6 $f0
     cp   A, $90                                        ;; 03:4811 $fe $90
-    jr   Z, .jr_03_481a                                ;; 03:4813 $28 $05
+    jr   Z, .rewards                                   ;; 03:4813 $28 $05
     cp   A, $10                                        ;; 03:4815 $fe $10
-    jp   NZ, .jp_03_48b6                               ;; 03:4817 $c2 $b6 $48
-.jr_03_481a:
+    jp   NZ, .return                                   ;; 03:4817 $c2 $b6 $48
+.rewards:
+; Get the npcStatsTable entry address from the runtime data.
     pop  DE                                            ;; 03:481a $d1
     push DE                                            ;; 03:481b $d5
     ld   HL, $10                                       ;; 03:481c $21 $10 $00
@@ -1603,19 +1606,24 @@ processNpcDeath:
     ld   C, [HL]                                       ;; 03:4820 $4e
     inc  HL                                            ;; 03:4821 $23
     ld   B, [HL]                                       ;; 03:4822 $46
+; Get the offset for experience on kill.
     ld   HL, $0c                                       ;; 03:4823 $21 $0c $00
     add  HL, BC                                        ;; 03:4826 $09
+; Calculate experience reward.
     ld   A, [HL+]                                      ;; 03:4827 $2a
     push HL                                            ;; 03:4828 $e5
     call add12_5rnd_bank3                              ;; 03:4829 $cd $bc $48
     call addXP                                         ;; 03:482c $cd $16 $3d
     pop  HL                                            ;; 03:482f $e1
+; Calculate money reward.
     ld   A, [HL]                                       ;; 03:4830 $7e
     call add12_5rnd_bank3                              ;; 03:4831 $cd $bc $48
     call addMoney                                      ;; 03:4834 $cd $72 $3d
+; One in eight chance of dropping a chest (if the NPC type drops chests)..
     call getRandomByte                                 ;; 03:4837 $cd $1e $2b
     and  A, $07                                        ;; 03:483a $e6 $07
-    jr   NZ, .jp_03_48b6                               ;; 03:483c $20 $78
+    jr   NZ, .return                                   ;; 03:483c $20 $78
+; Get the npcDataTable entry address from the runtime data.
     pop  HL                                            ;; 03:483e $e1
     push HL                                            ;; 03:483f $e5
     ld   DE, $12                                       ;; 03:4840 $11 $12 $00
@@ -1623,22 +1631,24 @@ processNpcDeath:
     ld   A, [HL+]                                      ;; 03:4844 $2a
     ld   H, [HL]                                       ;; 03:4845 $66
     ld   L, A                                          ;; 03:4846 $6f
+; Use the npcDataTable entry address to calculate the NPC's npcDataTable entry number.
     ld   DE, npcDataTable                              ;; 03:4847 $11 $5a $5f
     call sub_HL_DE                                     ;; 03:484a $cd $ab $2b
     ld   A, $18                                        ;; 03:484d $3e $18
     call divMod                                        ;; 03:484f $cd $8b $2b
     ld   A, L                                          ;; 03:4852 $7d
+; Use the npcDataTable entry number to find the entry in wNPCSpawnTypes.
     ld   HL, wNPCSpawnTypes                            ;; 03:4853 $21 $a8 $c5
     ld   B, $03                                        ;; 03:4856 $06 $03
 .loop:
     cp   A, [HL]                                       ;; 03:4858 $be
-    jr   Z, .jr_03_4863                                ;; 03:4859 $28 $08
+    jr   Z, .found                                     ;; 03:4859 $28 $08
     inc  HL                                            ;; 03:485b $23
     dec  B                                             ;; 03:485c $05
     jr   NZ, .loop                                     ;; 03:485d $20 $f9
     ld   A, $00                                        ;; 03:485f $3e $00
     jr   .jr_03_4866                                   ;; 03:4861 $18 $03
-.jr_03_4863:
+.found:
     ld   A, $03                                        ;; 03:4863 $3e $03
     sub  A, B                                          ;; 03:4865 $90
 .jr_03_4866:
@@ -1658,6 +1668,7 @@ processNpcDeath:
     pop  DE                                            ;; 03:487d $d1
     push AF                                            ;; 03:487e $f5
     push HL                                            ;; 03:487f $e5
+; Get the npcDataTable entry address from the runtime data (again) and use that to get the chest script index..
     ld   HL, $12                                       ;; 03:4880 $21 $12 $00
     add  HL, DE                                        ;; 03:4883 $19
     ld   E, [HL]                                       ;; 03:4884 $5e
@@ -1670,17 +1681,20 @@ processNpcDeath:
     ld   L, A                                          ;; 03:488d $6f
     ld   A, H                                          ;; 03:488e $7c
     or   A, L                                          ;; 03:488f $b5
-    jr   Z, .jr_03_48b5                                ;; 03:4890 $28 $23
+    jr   Z, .has_no_chest_drop                         ;; 03:4890 $28 $23
     call getScriptPointerFromScriptPointerTable        ;; 03:4892 $cd $82 $32
     ld   D, H                                          ;; 03:4895 $54
     ld   E, L                                          ;; 03:4896 $5d
+; Create a script to call the NPC's chest script.
     pop  HL                                            ;; 03:4897 $e1
+; $02 = scriptOpCodeCall
     ld   A, $02                                        ;; 03:4898 $3e $02
     ld   [HL+], A                                      ;; 03:489a $22
     ld   A, D                                          ;; 03:489b $7a
     ld   [HL+], A                                      ;; 03:489c $22
     ld   A, E                                          ;; 03:489d $7b
     ld   [HL+], A                                      ;; 03:489e $22
+; $00 = scriptOpCodeEND
     ld   A, $00                                        ;; 03:489f $3e $00
     ld   [HL+], A                                      ;; 03:48a1 $22
     pop  AF                                            ;; 03:48a2 $f1
@@ -1694,9 +1708,9 @@ processNpcDeath:
     ld   C, A                                          ;; 03:48b0 $4f
     call spawnNPC                                      ;; 03:48b1 $cd $bd $42
     ret                                                ;; 03:48b4 $c9
-.jr_03_48b5:
+.has_no_chest_drop:
     pop  HL                                            ;; 03:48b5 $e1
-.jp_03_48b6:
+.return:
     pop  DE                                            ;; 03:48b6 $d1
     pop  BC                                            ;; 03:48b7 $c1
     call destroyNPC                                    ;; 03:48b8 $cd $5f $43
@@ -1995,10 +2009,13 @@ subHPNpc:
     ld   [HL], B                                       ;; 03:4a24 $70
     ret                                                ;; 03:4a25 $c9
 
+; C = object number being hit
+; DE = npc runtime data address
 processHitNpc:
     push DE                                            ;; 03:4a26 $d5
     push BC                                            ;; 03:4a27 $c5
     call getObjectCollisionFlags                       ;; 03:4a28 $cd $6d $0c
+; Check whether the NPC is a snowman or chest (collision flags = $a9)..
     cp   A, $a9                                        ;; 03:4a2b $fe $a9
     jr   Z, .jr_03_4a38                                ;; 03:4a2d $28 $09
     and  A, $0f                                        ;; 03:4a2f $e6 $0f
@@ -2013,7 +2030,7 @@ processHitNpc:
     add  HL, DE                                        ;; 03:4a3d $19
     ld   A, [HL]                                       ;; 03:4a3e $7e
     cp   A, $20                                        ;; 03:4a3f $fe $20
-    jr   NC, .jr_03_4a73                               ;; 03:4a41 $30 $30
+    jr   NC, .no_knockback                             ;; 03:4a41 $30 $30
     push BC                                            ;; 03:4a43 $c5
     push DE                                            ;; 03:4a44 $d5
     call snapObjectToNearestTile8                      ;; 03:4a45 $cd $ba $29
@@ -2043,7 +2060,7 @@ processHitNpc:
     call playSFX                                       ;; 03:4a6d $cd $7d $29
     ld   A, $40                                        ;; 03:4a70 $3e $40
     ret                                                ;; 03:4a72 $c9
-.jr_03_4a73:
+.no_knockback:
     ld   HL, $08                                       ;; 03:4a73 $21 $08 $00
     add  HL, DE                                        ;; 03:4a76 $19
     ld   [HL], $3c                                     ;; 03:4a77 $36 $3c
@@ -2420,12 +2437,12 @@ npcBehaviorJumptable:
     dw   call_03_4fd9                                  ;; 03:4c6f ?? $0d
     dw   npcWalkSpeed4                                 ;; 03:4c71 pP $0e
     dw   npcWalkSpeedDefault                           ;; 03:4c73 pP $0f
-    dw   call_03_500d                                  ;; 03:4c75 pP $10
-    dw   call_03_5019                                  ;; 03:4c77 pP $11
-    dw   call_03_5025                                  ;; 03:4c79 ?? $12
-    dw   call_03_5031                                  ;; 03:4c7b pP $13
-    dw   call_03_503d                                  ;; 03:4c7d ?? $14
-    dw   call_03_5049                                  ;; 03:4c7f ?? $15
+    dw   npcBehaviorDelay30                            ;; 03:4c75 pP $10
+    dw   npcBehaviorDelay60                            ;; 03:4c77 pP $11
+    dw   npcBehaviorSpecialSnowmanChest                ;; 03:4c79 ?? $12
+    dw   npcBehaviorDelay120                           ;; 03:4c7b pP $13
+    dw   npcBehaviorDelay150                           ;; 03:4c7d ?? $14
+    dw   npcBehaviorDelay180                           ;; 03:4c7f ?? $15
     dw   ld_C_into_A                                   ;; 03:4c81 ?? $16
     dw   ld_C_into_A                                   ;; 03:4c83 ?? $17
     dw   ld_C_into_A                                   ;; 03:4c85 ?? $18
@@ -2979,23 +2996,23 @@ npcWalkSpeedDefault:
     ld   A, $00                                        ;; 03:500a $3e $00
     ret                                                ;; 03:500c $c9
 
-call_03_500d:
+npcBehaviorDelay30:
     ld   A, C                                          ;; 03:500d $79
     cp   A, $00                                        ;; 03:500e $fe $00
     ld   C, $1e                                        ;; 03:5010 $0e $1e
     call Z, call_03_55cb                               ;; 03:5012 $cc $cb $55
-    call call_03_55df                                  ;; 03:5015 $cd $df $55
+    call npcBehaviorProcessDelayAction                 ;; 03:5015 $cd $df $55
     ret                                                ;; 03:5018 $c9
 
-call_03_5019:
+npcBehaviorDelay60:
     ld   A, C                                          ;; 03:5019 $79
     cp   A, $00                                        ;; 03:501a $fe $00
     ld   C, $3c                                        ;; 03:501c $0e $3c
     call Z, call_03_55cb                               ;; 03:501e $cc $cb $55
-    call call_03_55df                                  ;; 03:5021 $cd $df $55
+    call npcBehaviorProcessDelayAction                 ;; 03:5021 $cd $df $55
     ret                                                ;; 03:5024 $c9
 
-call_03_5025:
+npcBehaviorSpecialSnowmanChest:
     ld   A, C                                          ;; 03:5025 $79
     cp   A, $00                                        ;; 03:5026 $fe $00
     ld   C, $3c
@@ -3003,28 +3020,28 @@ call_03_5025:
     call delayWithMovingHold
     ret                                                ;; 03:5030 $c9
 
-call_03_5031:
+npcBehaviorDelay120:
     ld   A, C                                          ;; 03:5031 $79
     cp   A, $00                                        ;; 03:5032 $fe $00
     ld   C, $78                                        ;; 03:5034 $0e $78
     call Z, call_03_55cb                               ;; 03:5036 $cc $cb $55
-    call call_03_55df                                  ;; 03:5039 $cd $df $55
+    call npcBehaviorProcessDelayAction                 ;; 03:5039 $cd $df $55
     ret                                                ;; 03:503c $c9
 
-call_03_503d:
+npcBehaviorDelay150:
     ld   A, C                                          ;; 03:503d $79
     cp   A, $00                                        ;; 03:503e $fe $00
     ld   C, $96                                        ;; 03:5040 $0e $96
     call Z, call_03_55cb                               ;; 03:5042 $cc $cb $55
-    call call_03_55df                                  ;; 03:5045 $cd $df $55
+    call npcBehaviorProcessDelayAction                 ;; 03:5045 $cd $df $55
     ret                                                ;; 03:5048 $c9
 
-call_03_5049:
+npcBehaviorDelay180:
     ld   A, C                                          ;; 03:5049 $79
     cp   A, $00                                        ;; 03:504a $fe $00
     ld   C, $b4                                        ;; 03:504c $0e $b4
     call Z, call_03_55cb                               ;; 03:504e $cc $cb $55
-    call call_03_55df                                  ;; 03:5051 $cd $df $55
+    call npcBehaviorProcessDelayAction                 ;; 03:5051 $cd $df $55
     ret                                                ;; 03:5054 $c9
 
 npcFaceEast:
@@ -4182,7 +4199,7 @@ call_03_55cb:
     ld   A, L                                          ;; 03:55dd $7d
     ret                                                ;; 03:55de $c9
 
-call_03_55df:
+npcBehaviorProcessDelayAction:
     dec  A                                             ;; 03:55df $3d
     push AF                                            ;; 03:55e0 $f5
     push DE                                            ;; 03:55e1 $d5
@@ -4294,7 +4311,7 @@ tileorderOpenChest:
 
 INCLUDE "data/npc/metasprites.asm"
 
-; Same intent as call_03_55df (process delay action), but prevent
+; Same intent as npcBehaviorProcessDelayAction, but prevent
 ; delay timer hitting 0 while the object is moving. This is done by
 ; incrementing the delay timer by 2 when on an even delay timer value.
 ; It is not appropriate to increment the timer on every tick since the
