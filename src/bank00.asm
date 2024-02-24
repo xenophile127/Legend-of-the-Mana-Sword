@@ -8846,7 +8846,7 @@ scriptOpCodeMsg_HandleDualCharacters:
     ret                                                ;; 00:34e6 $c9
 
 textCtrlCodeOpenDialogWindow:
-    ld   A, $06                                        ;; 00:34e7 $3e $06
+    ld   A, WINDOW_DIALOG                              ;; 00:34e7 $3e $06
     ld   [wDialogType], A                              ;; 00:34e9 $ea $4a $d8
     call windowOpenDialog                              ;; 00:34ec $cd $27 $36
     pop  HL                                            ;; 00:34ef $e1
@@ -8894,7 +8894,7 @@ textCtrlCodeYesNo:
     ld   [wScriptSavedNextOpcode], A                   ;; 00:352e $ea $6c $d8
     ld   A, $00                                        ;; 00:3531 $3e $00
     ld   [wMenuStateCurrentFunction], A                ;; 00:3533 $ea $53 $d8
-    ld   A, $07                                        ;; 00:3536 $3e $07
+    ld   A, WINDOW_DIALOG_YES_NO                       ;; 00:3536 $3e $07
     ld   [wDialogType], A                              ;; 00:3538 $ea $4a $d8
     ld   A, $0f                                        ;; 00:353b $3e $0f
     ld   [wMainGameState], A                           ;; 00:353d $ea $a0 $c0
@@ -8915,7 +8915,7 @@ yesNoWindowFinish:
     and  A, $01                                        ;; 00:355b $e6 $01
     or   A, B                                          ;; 00:355d $b0
     ld   [wScriptFlags0F], A                           ;; 00:355e $ea $d5 $d7
-    ld   A, $06                                        ;; 00:3561 $3e $06
+    ld   A, WINDOW_DIALOG                              ;; 00:3561 $3e $06
     ld   [wDialogType], A                              ;; 00:3563 $ea $4a $d8
     push AF                                            ;; 00:3566 $f5
     call getDialogTextInsertionPoint                   ;; 00:3567 $cd $4d $37
@@ -9102,7 +9102,7 @@ clearWindow:
     ld   B, $02                                        ;; 00:3668 $06 $02
     call runVirtualScriptOpCodeFF                      ;; 00:366a $cd $69 $3c
     ld   A, [wDialogType]                              ;; 00:366d $fa $4a $d8
-    cp   A, $00                                        ;; 00:3670 $fe $00
+    cp   A, WINDOW_START_MENU                          ;; 00:3670 $fe $00
     jr   Z, jr_00_36a8                                 ;; 00:3672 $28 $34
     ret                                                ;; 00:3674 $c9
 
@@ -9236,7 +9236,7 @@ getNextScriptInstruction:
 ; Return: Z set for dialog, clear for other windows.
 setDialogTextInsertionPoint:
     ld   A, [wDialogType]                              ;; 00:3736 $fa $4a $d8
-    cp   A, $06                                        ;; 00:3739 $fe $06
+    cp   A, WINDOW_DIALOG                              ;; 00:3739 $fe $06
     ret  NZ                                            ;; 00:373b $c0
     ld   A, D                                          ;; 00:373c $7a
     ld   [wWindowTextInsertionPointY], A               ;; 00:373d $ea $b9 $d8
@@ -9251,7 +9251,7 @@ setDialogTextInsertionPoint:
 ; Return: Z set and DE BC set to distance from edges if the current window is dialog.
 getDialogTextInsertionPoint:
     ld   A, [wDialogType]                              ;; 00:374d $fa $4a $d8
-    cp   A, $06                                        ;; 00:3750 $fe $06
+    cp   A, WINDOW_DIALOG                              ;; 00:3750 $fe $06
     ret  NZ                                            ;; 00:3752 $c0
     ld   A, [wWindowTextInsertionPointY]               ;; 00:3753 $fa $b9 $d8
     ld   D, A                                          ;; 00:3756 $57
@@ -9292,7 +9292,7 @@ drawText:
     xor  A, $80                                        ;; 00:3794 $ee $80
     call storeTileAatDialogPositionDE                  ;; 00:3796 $cd $44 $38
     ld   A, [wDialogType]                              ;; 00:3799 $fa $4a $d8
-    cp   A, $1e ; Naming screen                        ;; 00:379c $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 00:379c $fe $1e
     jr   NZ, .checkIntro                               ;; 00:379e $20 $01
 ; Naming screen puts a space between each character
     inc  E                                             ;; 00:37a0 $1c
@@ -9329,7 +9329,7 @@ drawText:
     ld   A, E                                          ;; 00:37c0 $7b
     ld   [wWindowTextInsertionPointFinalX], A          ;; 00:37c1 $ea $c5 $d8
     ld   A, [wDialogType]                              ;; 00:37c4 $fa $4a $d8
-    cp   A, $06                                        ;; 00:37c7 $fe $06
+    cp   A, WINDOW_DIALOG                              ;; 00:37c7 $fe $06
     call NZ, menuNextItemPosition                      ;; 00:37c9 $c4 $0b $38
     xor  A, A                                          ;; 00:37cc $af
     ld   [wDualCharacterPosition], A                   ;; 00:37cd $ea $83 $d8
@@ -9350,7 +9350,7 @@ drawText:
     call setDialogTextInsertionPoint                   ;; 00:37e4 $cd $36 $37
     jr   Z, .jr_00_3804                                ;; 00:37e7 $28 $1b
     ld   A, [wDialogType]                              ;; 00:37e9 $fa $4a $d8
-    cp   A, $11                                        ;; 00:37ec $fe $11
+    cp   A, WINDOW_SELECT_MENU                         ;; 00:37ec $fe $11
     jr   Z, .jr_00_3800                                ;; 00:37ee $28 $10
 .loop_2:
     dec  D                                             ;; 00:37f0 $15
@@ -9380,7 +9380,7 @@ menuNextItemPosition:
     rrca                                               ;; 00:3812 $0f
     jr   NC, .new_line                                 ;; 00:3813 $30 $17
     ld   A, [wDialogType]                              ;; 00:3815 $fa $4a $d8
-    cp   A, $11                                        ;; 00:3818 $fe $11
+    cp   A, WINDOW_SELECT_MENU                         ;; 00:3818 $fe $11
     jr   Z, .jr_00_3827                                ;; 00:381a $28 $0b
     ld   A, [wDialogW]                                 ;; 00:381c $fa $a9 $d4
     inc  A                                             ;; 00:381f $3c
@@ -9396,9 +9396,9 @@ menuNextItemPosition:
 .new_line:
     ld   E, $02                                        ;; 00:382c $1e $02
     ld   A, [wDialogType]                              ;; 00:382e $fa $4a $d8
-    cp   A, $ff                                        ;; 00:3831 $fe $ff
+    cp   A, WINDOW_INTRO_SCROLL                        ;; 00:3831 $fe $ff
     jr   Z, .small_indent                              ;; 00:3833 $28 $04
-    cp   A, $06                                        ;; 00:3835 $fe $06
+    cp   A, WINDOW_DIALOG                              ;; 00:3835 $fe $06
     jr   NZ, .jr_00_383b                               ;; 00:3837 $20 $02
 .small_indent:
     ld   E, $01                                        ;; 00:3839 $1e $01
@@ -9687,7 +9687,7 @@ scriptOpCodeStartNameEntry:
     call showFullscreenWindow_trampoline               ;; 00:39d6 $cd $ff $30
     ld   A, $01                                        ;; 00:39d9 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 00:39db $ea $53 $d8
-    ld   A, $1d                                        ;; 00:39de $3e $1d
+    ld   A, WINDOW_NAMING_SCREEN_TOP                   ;; 00:39de $3e $1d
     ld   [wDialogType], A                              ;; 00:39e0 $ea $4a $d8
     ld   A, $0f                                        ;; 00:39e3 $3e $0f
     ld   [wMainGameState], A                           ;; 00:39e5 $ea $a0 $c0
@@ -9859,7 +9859,7 @@ scriptGivesCantCarry:
     ld   A, $05                                        ;; 00:3ad6 $3e $05
     call setScriptFlag                                 ;; 00:3ad8 $cd $e4 $3b
     push HL                                            ;; 00:3adb $e5
-    ld   A, $06                                        ;; 00:3adc $3e $06
+    ld   A, WINDOW_DIALOG                              ;; 00:3adc $3e $06
     ld   [wDialogType], A                              ;; 00:3ade $ea $4a $d8
     call windowOpenDialog                              ;; 00:3ae1 $cd $27 $36
     pop  HL                                            ;; 00:3ae4 $e1
@@ -9871,7 +9871,7 @@ scriptGivesCantCarry:
     ret                                                ;; 00:3aed $c9
 
 vendorCantCarry:
-    ld   A, $0f                                        ;; 00:3aee $3e $0f
+    ld   A, WINDOW_VENDOR_TEXT_TOP                     ;; 00:3aee $3e $0f
     ld   [wDialogType], A                              ;; 00:3af0 $ea $4a $d8
     ld   HL, cantCarryTextLabel                        ;; 00:3af3 $21 $10 $3f
     ld   A, [wWindowTextLength]                        ;; 00:3af6 $fa $9b $d8
@@ -10200,7 +10200,7 @@ scriptOpCodeOpenShop:
     ld   [wWindowVendorSellPointerSavedY], A           ;; 00:3cb8 $ea $d8 $d8
     ld   A, $01                                        ;; 00:3cbb $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 00:3cbd $ea $53 $d8
-    ld   A, $0f                                        ;; 00:3cc0 $3e $0f
+    ld   A, WINDOW_VENDOR_TEXT_TOP                     ;; 00:3cc0 $3e $0f
     ld   [wDialogType], A                              ;; 00:3cc2 $ea $4a $d8
     ld   A, $0f                                        ;; 00:3cc5 $3e $0f
     ld   [wMainGameState], A                           ;; 00:3cc7 $ea $a0 $c0
@@ -10227,7 +10227,7 @@ scriptResumeAfterWindow:
     ld   A, L                                          ;; 00:3cf3 $7d
     ld   [wScriptPointerLow], A                        ;; 00:3cf4 $ea $b6 $d8
     ld   A, [wDialogType]                              ;; 00:3cf7 $fa $4a $d8
-    cp   A, $1e                                        ;; 00:3cfa $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 00:3cfa $fe $1e
     call Z, getNextScriptInstruction                   ;; 00:3cfc $cc $27 $37
     jr   Z, .here                                      ;; 00:3cff $28 $00
 .here:
@@ -10489,7 +10489,7 @@ startLevelUp:
     call clearPoisStatusEffect_trampoline
     ld   A, $1c                                        ;; 00:3e79 $3e $1c
     ldh  [hCurrentMusic], A                            ;; 00:3e7b $e0 $90
-    ld   A, $21                                        ;; 00:3e7d $3e $21
+    ld   A, WINDOW_LEVELUP_FANFARE                     ;; 00:3e7d $3e $21
     ld   [wDialogType], A                              ;; 00:3e7f $ea $4a $d8
     call windowMenuStartSpecial_trampoline             ;; 00:3e82 $cd $b1 $30
     ld   HL, wWindowSecondaryFlags                     ;; 00:3e85 $21 $72 $d8

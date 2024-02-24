@@ -887,15 +887,15 @@ windowInitExistingFrame:
     push AF                                            ;; 02:48ac $f5
     call windowInitContents                            ;; 02:48ad $cd $93 $76
     pop  AF                                            ;; 02:48b0 $f1
-    cp   A, $1b                                        ;; 02:48b1 $fe $1b
+    cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:48b1 $fe $1b
     jr   Z, .saveload_top_window                       ;; 02:48b3 $28 $13
-    cp   A, $09                                        ;; 02:48b5 $fe $09
+    cp   A, WINDOW_START_MENU_STATUS                   ;; 02:48b5 $fe $09
     jr   Z, start_menu_status_effect_window            ;; 02:48b7 $28 $1f
-    cp   A, $0f                                        ;; 02:48b9 $fe $0f
+    cp   A, WINDOW_VENDOR_TEXT_TOP                     ;; 02:48b9 $fe $0f
     jr   Z, vendor_text_menu                           ;; 02:48bb $28 $22
-    cp   A, $1d                                        ;; 02:48bd $fe $1d
+    cp   A, WINDOW_NAMING_SCREEN_TOP                   ;; 02:48bd $fe $1d
     jr   Z, call_02_48f0                               ;; 02:48bf $28 $2f
-    cp   A, $12                                        ;; 02:48c1 $fe $12
+    cp   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:48c1 $fe $12
     jr   Z, call_02_48f0                               ;; 02:48c3 $28 $2b
     jp   call_02_49c7                                  ;; 02:48c5 $c3 $c7 $49
 .saveload_top_window:
@@ -905,7 +905,7 @@ windowInitExistingFrame:
 ds 3 ; Free space
 
 openLoadSaveBottomWindow:
-    ld   A, $1c                                        ;; 02:48cd $3e $1c
+    ld   A, WINDOW_SAVE_LOAD_FILE_2                    ;; 02:48cd $3e $1c
     ld   [wDialogType], A                              ;; 02:48cf $ea $4a $d8
     ld   B, $01                                        ;; 02:48d2 $06 $01
     call setMenuStateCurrentFunction                   ;; 02:48d4 $cd $98 $6c
@@ -934,16 +934,16 @@ jr_02_48e4:
 call_02_48f0:
     ld   A, [wDialogType]                              ;; 02:48f0 $fa $4a $d8
     ld   HL, data_02_4997                              ;; 02:48f3 $21 $97 $49
-    cp   A, $09                                        ;; 02:48f6 $fe $09
+    cp   A, WINDOW_START_MENU_STATUS                   ;; 02:48f6 $fe $09
     jr   Z, .jr_02_4911                                ;; 02:48f8 $28 $17
     ld   HL, data_02_49a3                              ;; 02:48fa $21 $a3 $49
-    cp   A, $0f                                        ;; 02:48fd $fe $0f
+    cp   A, WINDOW_VENDOR_TEXT_TOP                     ;; 02:48fd $fe $0f
     jr   Z, .jr_02_4911                                ;; 02:48ff $28 $10
     ld   HL, data_02_49af                              ;; 02:4901 $21 $af $49
-    cp   A, $12                                        ;; 02:4904 $fe $12
+    cp   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:4904 $fe $12
     jr   Z, .jr_02_4911                                ;; 02:4906 $28 $09
     ld   HL, data_02_4991                              ;; 02:4908 $21 $91 $49
-    cp   A, $1d                                        ;; 02:490b $fe $1d
+    cp   A, WINDOW_NAMING_SCREEN_TOP                   ;; 02:490b $fe $1d
     jr   Z, .jr_02_4911                                ;; 02:490d $28 $02
     jr   call_02_492b                                  ;; 02:490f $18 $1a
 .jr_02_4911:
@@ -1049,12 +1049,12 @@ data_02_49af:
 call_02_49c7:
     ld   A, [wDialogType]                              ;; 02:49c7 $fa $4a $d8
     push AF                                            ;; 02:49ca $f5
-    cp   A, $04                                        ;; 02:49cb $fe $04
+    cp   A, WINDOW_EQUIP_BOTTOM                        ;; 02:49cb $fe $04
     call Z, call_02_57b9                               ;; 02:49cd $cc $b9 $57
     call windowInitContents                            ;; 02:49d0 $cd $93 $76
     call saveRegisterState2                            ;; 02:49d3 $cd $80 $6d
     pop  AF                                            ;; 02:49d6 $f1
-    cp   A, $11                                        ;; 02:49d7 $fe $11
+    cp   A, WINDOW_SELECT_MENU                         ;; 02:49d7 $fe $11
     jr   NZ, .jr_02_49e8                               ;; 02:49d9 $20 $0d
     push AF                                            ;; 02:49db $f5
     ld   HL, selectMenuOptions                         ;; 02:49dc $21 $09 $7d
@@ -1064,9 +1064,9 @@ call_02_49c7:
     ld   [wWindowSecondPointer], A                     ;; 02:49e4 $ea $94 $d8
     pop  AF                                            ;; 02:49e7 $f1
 .jr_02_49e8:
-    cp   A, $03                                        ;; 02:49e8 $fe $03
+    cp   A, WINDOW_EQUIP_TOP                           ;; 02:49e8 $fe $03
     jp   NZ, jp_02_49f7                                ;; 02:49ea $c2 $f7 $49
-    ld   A, $04                                        ;; 02:49ed $3e $04
+    ld   A, WINDOW_EQUIP_BOTTOM                        ;; 02:49ed $3e $04
     ld   [wDialogType], A                              ;; 02:49ef $ea $4a $d8
     ld   A, $02                                        ;; 02:49f2 $3e $02
     jp   jp_02_5877                                    ;; 02:49f4 $c3 $77 $58
@@ -1075,7 +1075,7 @@ jp_02_49f7:
     ld   A, $96                                        ;; 02:49f7 $3e $96
     ld   [wLevelUpFanfareDelay], A                     ;; 02:49f9 $ea $7f $d8
     ld   A, [wDialogType]                              ;; 02:49fc $fa $4a $d8
-    cp   A, $0d                                        ;; 02:49ff $fe $0d
+    cp   A, WINDOW_VENDOR_SELL_TOP                     ;; 02:49ff $fe $0d
     ld   A, $1b                                        ;; 02:4a01 $3e $1b
     jp   NZ, jp_02_5877                                ;; 02:4a03 $c2 $77 $58
     push AF                                            ;; 02:4a06 $f5
@@ -1087,15 +1087,15 @@ jp_02_49f7:
 
 call_02_4a14:
     ld   A, [wDialogType]                              ;; 02:4a14 $fa $4a $d8
-    cp   A, $21                                        ;; 02:4a17 $fe $21
+    cp   A, WINDOW_LEVELUP_FANFARE                     ;; 02:4a17 $fe $21
     jr   Z, .jr_02_4a71                                ;; 02:4a19 $28 $56
     ld   H, $01                                        ;; 02:4a1b $26 $01
     ld   DE, $400                                      ;; 02:4a1d $11 $00 $04
-    cp   A, $1f                                        ;; 02:4a20 $fe $1f
+    cp   A, WINDOW_TITLE_SCREEN                        ;; 02:4a20 $fe $1f
     jr   Z, .jr_02_4a4c                                ;; 02:4a22 $28 $28
-    cp   A, $0d                                        ;; 02:4a24 $fe $0d
+    cp   A, WINDOW_VENDOR_SELL_TOP                     ;; 02:4a24 $fe $0d
     jr   Z, .vendor_sell_menu_top                      ;; 02:4a26 $28 $10
-    cp   A, $1b                                        ;; 02:4a28 $fe $1b
+    cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:4a28 $fe $1b
     jr   NZ, .jr_02_4a53                               ;; 02:4a2a $20 $27
     ld   A, [wWindowSecondaryFlags]                    ;; 02:4a2c $fa $72 $d8
     bit  5, A                                          ;; 02:4a2f $cb $6f
@@ -1126,7 +1126,7 @@ call_02_4a14:
     ld   A, B                                          ;; 02:4a60 $78
     call setMenuStateCurrentFunction                   ;; 02:4a61 $cd $98 $6c
     ld   A, [wDialogType]                              ;; 02:4a64 $fa $4a $d8
-    cp   A, $1f                                        ;; 02:4a67 $fe $1f
+    cp   A, WINDOW_TITLE_SCREEN                        ;; 02:4a67 $fe $1f
     ret  NZ                                            ;; 02:4a69 $c0
     ld   HL, $0b                                       ;; 02:4a6a $21 $0b $00
     call runScriptByIndex                              ;; 02:4a6d $cd $ad $31
@@ -1139,13 +1139,13 @@ call_02_4a14:
 
 call_02_4a79:
     ld   A, [wDialogType]                              ;; 02:4a79 $fa $4a $d8
-    cp   A, $1f                                        ;; 02:4a7c $fe $1f
+    cp   A, WINDOW_TITLE_SCREEN                        ;; 02:4a7c $fe $1f
     jr   NZ, .jr_02_4a85                               ;; 02:4a7e $20 $05
     ld   A, $00                                        ;; 02:4a80 $3e $00
     ld   [wWindowMainGameStateBackup], A               ;; 02:4a82 $ea $62 $d8
 .jr_02_4a85:
     ld   A, [wDialogType]                              ;; 02:4a85 $fa $4a $d8
-    cp   A, $19                                        ;; 02:4a88 $fe $19
+    cp   A, WINDOW_LEVELUP_YES_NO                      ;; 02:4a88 $fe $19
     jp   Z, call_02_4c53                               ;; 02:4a8a $ca $53 $4c
     call loadRegisterState1                            ;; 02:4a8d $cd $5b $6d
     ld   B, $19                                        ;; 02:4a90 $06 $19
@@ -1162,7 +1162,7 @@ call_02_4aa2:
     jr   Z, .jr_02_4ab9                                ;; 02:4aa7 $28 $10
     res  6, A                                          ;; 02:4aa9 $cb $b7
     ld   [wWindowFlags], A                             ;; 02:4aab $ea $74 $d8
-    ld   A, $1d                                        ;; 02:4aae $3e $1d
+    ld   A, WINDOW_NAMING_SCREEN_TOP                   ;; 02:4aae $3e $1d
     ld   [wDialogType], A                              ;; 02:4ab0 $ea $4a $d8
     ld   A, $01                                        ;; 02:4ab3 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 02:4ab5 $ea $53 $d8
@@ -1177,7 +1177,7 @@ call_02_4aa2:
     pop  BC                                            ;; 02:4ac4 $c1
     ret  NZ                                            ;; 02:4ac5 $c0
     ld   A, [wDialogType]                              ;; 02:4ac6 $fa $4a $d8
-    cp   A, $15                                        ;; 02:4ac9 $fe $15
+    cp   A, WINDOW_STATUS_SCREEN_TOP                   ;; 02:4ac9 $fe $15
     ld   A, B                                          ;; 02:4acb $78
     ld   [wSelectedMenuIndex], A                       ;; 02:4acc $ea $4b $d8
     ld   [wSelectedMenuIndex2], A                      ;; 02:4acf $ea $4c $d8
@@ -1194,7 +1194,7 @@ call_02_4aa2:
 
 call_02_4ae4:
     ld   A, [wDialogType]                              ;; 02:4ae4 $fa $4a $d8
-    cp   A, $1e                                        ;; 02:4ae7 $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:4ae7 $fe $1e
     jp   Z, windowNamingEntryRubLetter                 ;; 02:4ae9 $ca $a1 $4b
     push AF                                            ;; 02:4aec $f5
     call hideAndSaveMenuMetasprites                    ;; 02:4aed $cd $51 $6b
@@ -1240,7 +1240,7 @@ call_02_4ae4:
 
 call_02_4b2e:
     ld   A, [wDialogType]                              ;; 02:4b2e $fa $4a $d8
-    cp   A, $07                                        ;; 02:4b31 $fe $07
+    cp   A, WINDOW_DIALOG_YES_NO                       ;; 02:4b31 $fe $07
     jp   Z, jp_02_4e9b                                 ;; 02:4b33 $ca $9b $4e
     cp   A, $00                                        ;; 02:4b36 $fe $00
     ld   A, [wD85E]                                    ;; 02:4b38 $fa $5e $d8
@@ -1311,7 +1311,7 @@ windowDismiss:
     ld   B, $00                                        ;; 02:4b93 $06 $00
     call setMenuStateCurrentFunction                   ;; 02:4b95 $cd $98 $6c
     ld   A, [wDialogType]                              ;; 02:4b98 $fa $4a $d8
-    cp   A, $0b                                        ;; 02:4b9b $fe $0b
+    cp   A, WINDOW_VENDOR_BUY_SELL_EXIT                ;; 02:4b9b $fe $0b
 ; Vendor
     jp   Z, windowReturnToScript                       ;; 02:4b9d $ca $38 $56
     ret                                                ;; 02:4ba0 $c9
@@ -1362,7 +1362,7 @@ reopenSelectWindowAfterSaveScreen:
     jr   NZ, .jr_02_4c08                               ;; 02:4bf5 $20 $11
     call dismissSaveScreen                             ;; 02:4bf7 $cd $ac $72
     call call_02_5062                                  ;; 02:4bfa $cd $62 $50
-    ld   A, $11                                        ;; 02:4bfd $3e $11
+    ld   A, WINDOW_SELECT_MENU                         ;; 02:4bfd $3e $11
     ld   [wDialogType], A                              ;; 02:4bff $ea $4a $d8
     ld   A, $01                                        ;; 02:4c02 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 02:4c04 $ea $53 $d8
@@ -1394,7 +1394,7 @@ data_02_4c20:
     ld   [wD869], A                                    ;; 02:4c34 $ea $69 $d8
     call saveRegisterState1                            ;; 02:4c37 $cd $34 $6d
     ld   A, [wDialogType]                              ;; 02:4c3a $fa $4a $d8
-    cp   A, $18                                        ;; 02:4c3d $fe $18
+    cp   A, WINDOW_LEVELUP_JOBS                        ;; 02:4c3d $fe $18
     jp   Z, jp_02_4f19                                 ;; 02:4c3f $ca $19 $4f
     ld   B, $06                                        ;; 02:4c42 $06 $06
     call setMenuStateCurrentFunction                   ;; 02:4c44 $cd $98 $6c
@@ -1447,7 +1447,7 @@ call_02_4c79:
 
 call_02_4c9a:
     ld   A, [wDialogType]                              ;; 02:4c9a $fa $4a $d8
-    cp   A, $19                                        ;; 02:4c9d $fe $19
+    cp   A, WINDOW_LEVELUP_YES_NO                      ;; 02:4c9d $fe $19
     jr   Z, call_02_4cba                               ;; 02:4c9f $28 $19
     call clearFirstMetasprite                          ;; 02:4ca1 $cd $84 $6b
     ld   A, [wD89D]                                    ;; 02:4ca4 $fa $9d $d8
@@ -1496,17 +1496,17 @@ call_02_4cf7:
     call NZ, call_02_56c9                              ;; 02:4cfc $c4 $c9 $56
     ret  NZ                                            ;; 02:4cff $c0
     ld   A, [wDialogType]                              ;; 02:4d00 $fa $4a $d8
-    cp   A, $11                                        ;; 02:4d03 $fe $11
+    cp   A, WINDOW_SELECT_MENU                         ;; 02:4d03 $fe $11
     jp   Z, jp_02_4ea7                                 ;; 02:4d05 $ca $a7 $4e
-    cp   A, $15                                        ;; 02:4d08 $fe $15
+    cp   A, WINDOW_STATUS_SCREEN_TOP                   ;; 02:4d08 $fe $15
     jp   Z, jp_02_503a                                 ;; 02:4d0a $ca $3a $50
-    cp   A, $19                                        ;; 02:4d0d $fe $19
+    cp   A, WINDOW_LEVELUP_YES_NO                      ;; 02:4d0d $fe $19
     jp   Z, jp_02_531c                                 ;; 02:4d0f $ca $1c $53
-    cp   A, $1b                                        ;; 02:4d12 $fe $1b
+    cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:4d12 $fe $1b
     jp   Z, jp_02_71fb                                 ;; 02:4d14 $ca $fb $71
-    cp   A, $1e                                        ;; 02:4d17 $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:4d17 $fe $1e
     jp   Z, windowNamingEntryAddLetter                 ;; 02:4d19 $ca $c6 $52
-    cp   A, $1f                                        ;; 02:4d1c $fe $1f
+    cp   A, WINDOW_TITLE_SCREEN                        ;; 02:4d1c $fe $1f
     jp   Z, menuSelectionTitleScreen                   ;; 02:4d1e $ca $9f $7b
     call loadRegisterState1                            ;; 02:4d21 $cd $5b $6d
     call call_02_4fc8                                  ;; 02:4d24 $cd $c8 $4f
@@ -1599,7 +1599,7 @@ call_02_4da4:
 swapActiveEquipment:
     call loadRegisterState1                            ;; 02:4db0 $cd $5b $6d
     ld   A, [wDialogType]                              ;; 02:4db3 $fa $4a $d8
-    cp   A, $04                                        ;; 02:4db6 $fe $04
+    cp   A, WINDOW_EQUIP_BOTTOM                        ;; 02:4db6 $fe $04
     jp   NZ, jp_02_4e4c                                ;; 02:4db8 $c2 $4c $4e
     call saveRegisterState1                            ;; 02:4dbb $cd $34 $6d
     call getSelectedMenuIndexes                        ;; 02:4dbe $cd $b0 $57
@@ -1721,7 +1721,7 @@ call_02_4e7b:
     ld   B, $22                                        ;; 02:4e90 $06 $22
     call setMenuStateCurrentFunction                   ;; 02:4e92 $cd $98 $6c
     ld   A, [wDialogType]                              ;; 02:4e95 $fa $4a $d8
-    cp   A, $07                                        ;; 02:4e98 $fe $07
+    cp   A, WINDOW_DIALOG_YES_NO                       ;; 02:4e98 $fe $07
     ret  NZ                                            ;; 02:4e9a $c0
 
 jp_02_4e9b:
@@ -1765,7 +1765,7 @@ openLevelUpStatusScreen:
     call windowCloseAndRestoreHidden                   ;; 02:4ee6 $cd $7a $66
     ret  NZ                                            ;; 02:4ee9 $c0
     call showFullscreenWindow                          ;; 02:4eea $cd $57 $51
-    ld   A, $12                                        ;; 02:4eed $3e $12
+    ld   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:4eed $3e $12
     ld   [wDialogType], A                              ;; 02:4eef $ea $4a $d8
     ld   A, $01                                        ;; 02:4ef2 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 02:4ef4 $ea $53 $d8
@@ -1777,7 +1777,7 @@ openStatusScreen:
     call windowCloseAndRestoreHidden                   ;; 02:4efd $cd $7a $66
     ret  NZ                                            ;; 02:4f00 $c0
     call showFullscreenWindow                          ;; 02:4f01 $cd $57 $51
-    ld   A, $12                                        ;; 02:4f04 $3e $12
+    ld   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:4f04 $3e $12
     ld   [wDialogType], A                              ;; 02:4f06 $ea $4a $d8
     call hideAndSaveMenuMetasprites                    ;; 02:4f09 $cd $51 $6b
     ld   HL, wWindowSecondaryFlags                     ;; 02:4f0c $21 $72 $d8
@@ -1797,7 +1797,7 @@ jp_02_4f19:
     inc  HL                                            ;; 02:4f21 $23
     ld   B, [HL]                                       ;; 02:4f22 $46
     call setWindowDimensions                           ;; 02:4f23 $cd $73 $7a
-    ld   A, $12                                        ;; 02:4f26 $3e $12
+    ld   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:4f26 $3e $12
     ld   [wDialogType], A                              ;; 02:4f28 $ea $4a $d8
     call windowInitContents                            ;; 02:4f2b $cd $93 $76
     ld   A, [wWindowSecondaryFlags]                    ;; 02:4f2e $fa $72 $d8
@@ -1834,10 +1834,10 @@ jp_02_4f19:
 
 levelUpDrawPreviewAPDP:
 ; Draw the window, although this returns early.
-    ld   A, $1a                                        ;; 02:4f5f $3e $1a
+    ld   A, WINDOW_STATUS_SCREEN_AP_DP                 ;; 02:4f5f $3e $1a
     ld   [wDialogType], A                              ;; 02:4f61 $ea $4a $d8
     call drawWindow                                    ;; 02:4f64 $cd $00 $67
-    ld a, $1a
+    ld a, WINDOW_STATUS_SCREEN_AP_DP
     call windowInitContents                            ;; 02:4f67 $cd $93 $76
 ; Calculate the preview AP.
     ld   HL, wTotalAP                                  ;; 02:4f6a $21 $df $d7
@@ -1875,13 +1875,13 @@ levelUpDrawPreviewStatsAndYesNoWindow:
     bit  6, [HL]                                       ;; 02:4fae $cb $76
     jr   NZ, .jr_02_4fbc                               ;; 02:4fb0 $20 $0a
     set  6, [HL]                                       ;; 02:4fb2 $cb $f6
-    ld   A, $19                                        ;; 02:4fb4 $3e $19
+    ld   A, WINDOW_LEVELUP_YES_NO                      ;; 02:4fb4 $3e $19
     ld   [wDialogType], A                              ;; 02:4fb6 $ea $4a $d8
     jp   windowInitMain                                ;; 02:4fb9 $c3 $89 $48
 .jr_02_4fbc:
     res  6, [HL]                                       ;; 02:4fbc $cb $b6
     res  7, [HL]                                       ;; 02:4fbe $cb $be
-    ld   A, $18                                        ;; 02:4fc0 $3e $18
+    ld   A, WINDOW_LEVELUP_JOBS                        ;; 02:4fc0 $3e $18
     ld   [wDialogType], A                              ;; 02:4fc2 $ea $4a $d8
     jp   windowInitMain                                ;; 02:4fc5 $c3 $89 $48
 
@@ -1930,13 +1930,13 @@ call_02_4fff:
     cp   A, B                                          ;; 02:500d $b8
     jp   Z, jp_02_56c1                                 ;; 02:500e $ca $c1 $56
     ld   A, [wDialogType]                              ;; 02:5011 $fa $4a $d8
-    cp   A, $0b                                        ;; 02:5014 $fe $0b
+    cp   A, WINDOW_VENDOR_BUY_SELL_EXIT                ;; 02:5014 $fe $0b
     jp   Z, jp_02_54a6                                 ;; 02:5016 $ca $a6 $54
-    cp   A, $0e                                        ;; 02:5019 $fe $0e
+    cp   A, WINDOW_VENDOR_BUY_TOP                      ;; 02:5019 $fe $0e
     jr   Z, purchaseFromVendor                         ;; 02:501b $28 $69
-    cp   A, $0d                                        ;; 02:501d $fe $0d
+    cp   A, WINDOW_VENDOR_SELL_TOP                     ;; 02:501d $fe $0d
     jp   Z, call_02_5292                               ;; 02:501f $ca $92 $52
-    cp   A, $10                                        ;; 02:5022 $fe $10
+    cp   A, WINDOW_VENDOR_SELL_NO                      ;; 02:5022 $fe $10
     jp   Z, sellToVendor                               ;; 02:5024 $ca $fb $51
     ld   B, $00                                        ;; 02:5027 $06 $00
     ld   A, [wWindowSecondPointer.high]                ;; 02:5029 $fa $95 $d8
@@ -1956,7 +1956,7 @@ jp_02_503a:
     bit  0, [HL]                                       ;; 02:503d $cb $46
     jr   NZ, call_02_5062                              ;; 02:503f $20 $21
     call increaseLevel                                 ;; 02:5041 $cd $99 $53
-    ld   A, $17                                        ;; 02:5044 $3e $17
+    ld   A, WINDOW_LEVELUP_MESSAGE                     ;; 02:5044 $3e $17
     ld   [wDialogType], A                              ;; 02:5046 $ea $4a $d8
     ld   A, $2e                                        ;; 02:5049 $3e $2e
     ld   [wMenuStateCurrentFunction], A                ;; 02:504b $ea $53 $d8
@@ -1977,7 +1977,7 @@ call_02_5062:
     call clearSaveLoadScreen                           ;; 02:5065 $cd $4c $56
     call hideFullscreenWindow                          ;; 02:5068 $cd $27 $7a
     ld   A, [wDialogType]                              ;; 02:506b $fa $4a $d8
-    cp   A, $1b                                        ;; 02:506e $fe $1b
+    cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:506e $fe $1b
     jr   Z, .jr_02_507b                                ;; 02:5070 $28 $09
     ld   A, $00                                        ;; 02:5072 $3e $00
     ld   [wMenuStateCurrentFunction], A                ;; 02:5074 $ea $53 $d8
@@ -2106,7 +2106,7 @@ finalizePurchase:
     dec  E                                             ;; 02:5135 $1d
     dec  B                                             ;; 02:5136 $05
     jr   NZ, .loop_2                                   ;; 02:5137 $20 $f3
-    ld   A, $0c                                        ;; 02:5139 $3e $0c
+    ld   A, WINDOW_VENDOR_MONEY                        ;; 02:5139 $3e $0c
     ld   [wDialogType], A                              ;; 02:513b $ea $4a $d8
     call drawMoneyOnDialog                             ;; 02:513e $cd $f4 $75
     ld   B, $a4                                        ;; 02:5141 $06 $a4
@@ -2116,7 +2116,7 @@ finalizePurchase:
     ret                                                ;; 02:5148 $c9
 .jp_02_5149:
     call playWindowErrorSound                          ;; 02:5149 $cd $1f $7a
-    ld   A, $0f                                        ;; 02:514c $3e $0f
+    ld   A, WINDOW_VENDOR_TEXT_TOP                     ;; 02:514c $3e $0f
     ld   [wDialogType], A                              ;; 02:514e $ea $4a $d8
     ld   A, $81                                        ;; 02:5151 $3e $81
     ld   [wMenuStateCurrentFunction], A                ;; 02:5153 $ea $53 $d8
@@ -2137,7 +2137,7 @@ showFullscreenWindow:
 ds 10 ; Free space
 
 windowVendorShowBuyMessageWindow:
-    ld   A, $0f                                        ;; 02:5174 $3e $0f
+    ld   A, WINDOW_VENDOR_TEXT_TOP                     ;; 02:5174 $3e $0f
     ld   [wDialogType], A                              ;; 02:5176 $ea $4a $d8
     call drawWindow                                    ;; 02:5179 $cd $00 $67
     ld   B, $25                                        ;; 02:517c $06 $25
@@ -2196,11 +2196,11 @@ windowVendorBuyWaitAnyButton:
     ret  Z                                             ;; 02:51da $c8
     ld   B, $0f                                        ;; 02:51db $06 $0f
     ld   A, [wDialogType]                              ;; 02:51dd $fa $4a $d8
-    cp   A, $20                                        ;; 02:51e0 $fe $20
+    cp   A, WINDOW_STATUS_BEGIN                        ;; 02:51e0 $fe $20
     jp   Z, .window_status_effect_inflicted            ;; 02:51e2 $ca $f5 $51
-    cp   A, $17                                        ;; 02:51e5 $fe $17
+    cp   A, WINDOW_LEVELUP_MESSAGE                     ;; 02:51e5 $fe $17
     jr   NZ, .jr_02_51eb                               ;; 02:51e7 $20 $02
-    ld   B, $18                                        ;; 02:51e9 $06 $18
+    ld   B, WINDOW_LEVELUP_JOBS                        ;; 02:51e9 $06 $18
 .jr_02_51eb:
     ld   A, B                                          ;; 02:51eb $78
     ld   [wDialogType], A                              ;; 02:51ec $ea $4a $d8
@@ -2240,7 +2240,7 @@ ds 18 ; Free space
 call_02_522d:
     xor  A, A                                          ;; 02:522d $af
     ld   [wDrawWindowStep], A                          ;; 02:522e $ea $54 $d8
-    ld   A, $0f                                        ;; 02:5231 $3e $0f
+    ld   A, WINDOW_VENDOR_TEXT_TOP                     ;; 02:5231 $3e $0f
     ld   [wDialogType], A                              ;; 02:5233 $ea $4a $d8
     ld   A, $81                                        ;; 02:5236 $3e $81
     ld   [wMenuStateCurrentFunction], A                ;; 02:5238 $ea $53 $d8
@@ -2318,7 +2318,7 @@ call_02_5292:
     ld   [wWindowVendorSellItemIndex], A               ;; 02:52b0 $ea $76 $d8
     ld   A, $b2                                        ;; 02:52b3 $3e $b2
     ld   [wMenuStateCurrentFunction], A                ;; 02:52b5 $ea $53 $d8
-    ld   A, $10                                        ;; 02:52b8 $3e $10
+    ld   A, WINDOW_VENDOR_SELL_NO                      ;; 02:52b8 $3e $10
     ld   [wDialogType], A                              ;; 02:52ba $ea $4a $d8
     call drawWindow                                    ;; 02:52bd $cd $00 $67
     ld   B, $93                                        ;; 02:52c0 $06 $93
@@ -2444,7 +2444,7 @@ jp_02_531c:
     ld   HL, wWindowSecondaryFlags                     ;; 02:5387 $21 $72 $d8
     set  0, [HL]                                       ;; 02:538a $cb $c6
     res  1, [HL]                                       ;; 02:538c $cb $8e
-    ld   A, $12                                        ;; 02:538e $3e $12
+    ld   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:538e $3e $12
     ld   [wDialogType], A                              ;; 02:5390 $ea $4a $d8
     ld   A, $01                                        ;; 02:5393 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 02:5395 $ea $53 $d8
@@ -2600,7 +2600,7 @@ giveEquipmentItemMagic:
     pop  DE                                            ;; 02:5464 $d1
     ld   HL, wMiscFlags                                ;; 02:5465 $21 $6f $d8
     set  1, [HL]                                       ;; 02:5468 $cb $ce
-    ld   A, $0f                                        ;; 02:546a $3e $0f
+    ld   A, WINDOW_VENDOR_TEXT_TOP                     ;; 02:546a $3e $0f
     ld   [wDialogType], A                              ;; 02:546c $ea $4a $d8
     ld   A, $a7                                        ;; 02:546f $3e $a7
     ld   [wMenuStateCurrentFunction], A                ;; 02:5471 $ea $53 $d8
@@ -2628,7 +2628,7 @@ windowVendorCantCarryWaitAnyButton:
     ret  Z                                             ;; 02:5495 $c8
     ld   HL, wMiscFlags                                ;; 02:5496 $21 $6f $d8
     res  1, [HL]                                       ;; 02:5499 $cb $8e
-    ld   A, $0f                                        ;; 02:549b $3e $0f
+    ld   A, WINDOW_VENDOR_TEXT_TOP                     ;; 02:549b $3e $0f
     ld   [wDialogType], A                              ;; 02:549d $ea $4a $d8
     ld   A, $01                                        ;; 02:54a0 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 02:54a2 $ea $53 $d8
@@ -2828,13 +2828,13 @@ jp_02_54a6:
     inc  HL                                            ;; 02:55ad $23
     jr   .jr_02_5594                                   ;; 02:55ae $18 $e4
 .jr_02_55b0:
-    ld   A, $0d                                        ;; 02:55b0 $3e $0d
+    ld   A, WINDOW_VENDOR_SELL_TOP                     ;; 02:55b0 $3e $0d
     ld   [wDialogType], A                              ;; 02:55b2 $ea $4a $d8
     ld   A, $81                                        ;; 02:55b5 $3e $81
     ld   [wMenuStateCurrentFunction], A                ;; 02:55b7 $ea $53 $d8
     ret                                                ;; 02:55ba $c9
 .jp_02_55bb:
-    ld   A, $0e                                        ;; 02:55bb $3e $0e
+    ld   A, WINDOW_VENDOR_BUY_TOP                      ;; 02:55bb $3e $0e
     ld   [wDialogType], A                              ;; 02:55bd $ea $4a $d8
     ld   B, $81                                        ;; 02:55c0 $06 $81
     call setMenuStateCurrentFunction                   ;; 02:55c2 $cd $98 $6c
@@ -2979,7 +2979,7 @@ getEquipmentFlags1And2:
     jr   Z, jr_02_56ad                                 ;; 02:568b $28 $20
     ld   B, A                                          ;; 02:568d $47
     ld   A, [wDialogType]                              ;; 02:568e $fa $4a $d8
-    cp   A, $01                                        ;; 02:5691 $fe $01
+    cp   A, WINDOW_ITEMS                               ;; 02:5691 $fe $01
     ld   A, B                                          ;; 02:5693 $78
     jr   Z, getItemFlags1And2                          ;; 02:5694 $28 $06
     push HL                                            ;; 02:5696 $e5
@@ -3065,11 +3065,11 @@ call_02_5709:
     ld   B, A                                          ;; 02:5712 $47
     ld   A, [wDialogType]                              ;; 02:5713 $fa $4a $d8
     ld   C, A                                          ;; 02:5716 $4f
-    cp   A, $00                                        ;; 02:5717 $fe $00
+    cp   A, WINDOW_START_MENU                          ;; 02:5717 $fe $00
     jr   NZ, .jr_02_5734                               ;; 02:5719 $20 $19
     ld   A, B                                          ;; 02:571b $78
     ld   [wDialogType], A                              ;; 02:571c $ea $4a $d8
-    cp   A, $04                                        ;; 02:571f $fe $04
+    cp   A, WINDOW_EQUIP_BOTTOM                        ;; 02:571f $fe $04
     ret  NZ                                            ;; 02:5721 $c0
     ld   B, $00                                        ;; 02:5722 $06 $00
     call setMenuStateCurrentFunction                   ;; 02:5724 $cd $98 $6c
@@ -3316,31 +3316,31 @@ call_02_5880:
 call_02_5895:
     ld   A, [wDialogType]                              ;; 02:5895 $fa $4a $d8
     ld   B, A                                          ;; 02:5898 $47
-    ld   HL, .data_02_58a7                             ;; 02:5899 $21 $a7 $58
+    ld   HL, .windows                                  ;; 02:5899 $21 $a7 $58
 .loop:
     ld   A, [HL+]                                      ;; 02:589c $2a
     inc  A                                             ;; 02:589d $3c
-    jr   Z, .jr_02_58b7                                ;; 02:589e $28 $17
+    jr   Z, .not_matched                               ;; 02:589e $28 $17
     dec  A                                             ;; 02:58a0 $3d
     cp   A, B                                          ;; 02:58a1 $b8
     jr   NZ, .loop                                     ;; 02:58a2 $20 $f8
     jp   jp_02_5b2c                                    ;; 02:58a4 $c3 $2c $5b
-.data_02_58a7:
+.windows:
     db   $00, $07, $0b, $10, $11, $0f, $12, $14        ;; 02:58a7 ........
     db   $17, $18, $19, $1d, $1e, $1f, $21, $ff        ;; 02:58af ........
-.jr_02_58b7:
+.not_matched:
     ld   A, B                                          ;; 02:58b7 $78
-    cp   A, $15                                        ;; 02:58b8 $fe $15
+    cp   A, WINDOW_STATUS_SCREEN_TOP                   ;; 02:58b8 $fe $15
     jp   Z, jp_02_5959                                 ;; 02:58ba $ca $59 $59
-    cp   A, $13                                        ;; 02:58bd $fe $13
+    cp   A, WINDOW_STATUS_SCREEN_MONEY                 ;; 02:58bd $fe $13
     jp   Z, .jp_02_58d6                                ;; 02:58bf $ca $d6 $58
-    cp   A, $09                                        ;; 02:58c2 $fe $09
+    cp   A, WINDOW_START_MENU_STATUS                   ;; 02:58c2 $fe $09
     jp   Z, jp_02_5aac                                 ;; 02:58c4 $ca $ac $5a
-    cp   A, $1b                                        ;; 02:58c7 $fe $1b
+    cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:58c7 $fe $1b
     jp   Z, drawLoadSaveWindowContents_top             ;; 02:58c9 $ca $62 $5a
-    cp   A, $1c                                        ;; 02:58cc $fe $1c
+    cp   A, WINDOW_SAVE_LOAD_FILE_2                    ;; 02:58cc $fe $1c
     jp   Z, drawLoadSaveWindowContents_bottom          ;; 02:58ce $ca $69 $5a
-    cp   A, $0c                                        ;; 02:58d1 $fe $0c
+    cp   A, WINDOW_VENDOR_MONEY                        ;; 02:58d1 $fe $0c
     jp   NZ, .jp_02_58db                               ;; 02:58d3 $c2 $db $58
 .jp_02_58d6:
     call drawMoneyOnDialog                             ;; 02:58d6 $cd $f4 $75
@@ -3364,11 +3364,11 @@ call_02_5895:
     call call_02_59fe                                  ;; 02:58f6 $cd $fe $59
     push AF                                            ;; 02:58f9 $f5
     ld   A, [wDialogType]                              ;; 02:58fa $fa $4a $d8
-    cp   A, $0e                                        ;; 02:58fd $fe $0e
+    cp   A, WINDOW_VENDOR_BUY_TOP                      ;; 02:58fd $fe $0e
     jr   Z, .jr_02_5909                                ;; 02:58ff $28 $08
-    cp   A, $1a                                        ;; 02:5901 $fe $1a
+    cp   A, WINDOW_STATUS_SCREEN_AP_DP                 ;; 02:5901 $fe $1a
     jr   Z, .jr_02_5909                                ;; 02:5903 $28 $04
-    cp   A, $0d                                        ;; 02:5905 $fe $0d
+    cp   A, WINDOW_VENDOR_SELL_TOP                     ;; 02:5905 $fe $0d
     jr   NZ, .jr_02_590b                               ;; 02:5907 $20 $02
 .jr_02_5909:
     dec  D                                             ;; 02:5909 $15
@@ -3377,9 +3377,9 @@ call_02_5895:
     pop  AF                                            ;; 02:590b $f1
     call C, call_02_5ae0                               ;; 02:590c $dc $e0 $5a
     ld   A, [wDialogType]                              ;; 02:590f $fa $4a $d8
-    cp   A, $0e                                        ;; 02:5912 $fe $0e
+    cp   A, WINDOW_VENDOR_BUY_TOP                      ;; 02:5912 $fe $0e
     jr   Z, .jr_02_5918                                ;; 02:5914 $28 $02
-    cp   A, $0d                                        ;; 02:5916 $fe $0d
+    cp   A, WINDOW_VENDOR_SELL_TOP                     ;; 02:5916 $fe $0d
 .jr_02_5918:
     call Z, call_02_5a18                               ;; 02:5918 $cc $18 $5a
     pop  BC                                            ;; 02:591b $c1
@@ -3396,7 +3396,7 @@ jp_02_5922:
     ld   DE, $071a                                     ;; 02:592c $11 $1b $07
     ld   BC, $1f01                                     ;; 02:592f $01 $01 $1f
     ld   A, [wDialogType]                              ;; 02:5932 $fa $4a $d8
-    cp   A, $1f                                        ;; 02:5935 $fe $1f
+    cp   A, WINDOW_TITLE_SCREEN                        ;; 02:5935 $fe $1f
     push AF                                            ;; 02:5937 $f5
     call Z, drawText                                   ;; 02:5938 $cc $77 $37
     ld   DE, $061b                                     ;; 02:593b $11 $1c $06
@@ -3548,7 +3548,7 @@ call_02_5a18:
     push DE                                            ;; 02:5a29 $d5
     ld   HL, wVendorBuyPrices                          ;; 02:5a2a $21 $01 $d7
     ld   A, [wDialogType]                              ;; 02:5a2d $fa $4a $d8
-    cp   A, $0e                                        ;; 02:5a30 $fe $0e
+    cp   A, WINDOW_VENDOR_BUY_TOP                      ;; 02:5a30 $fe $0e
     jr   Z, .jr_02_5a37                                ;; 02:5a32 $28 $03
     ld   HL, wVendorSellPrices                         ;; 02:5a34 $21 $4f $d7
 .jr_02_5a37:
@@ -3610,7 +3610,7 @@ drawLoadSaveWindowContents_common:
     ld   A, [wMenuStateFunctionNew]                    ;; 02:5a8d $fa $50 $d8
     ld   [wMenuStateCurrentFunction], A                ;; 02:5a90 $ea $53 $d8
     ld   A, [wDialogType]                              ;; 02:5a93 $fa $4a $d8
-    cp   A, $1c                                        ;; 02:5a96 $fe $1c
+    cp   A, WINDOW_SAVE_LOAD_FILE_2                    ;; 02:5a96 $fe $1c
     ret  NZ                                            ;; 02:5a98 $c0
     ld   HL, wDialogType                               ;; 02:5a99 $21 $4a $d8
     dec  [HL]                                          ;; 02:5a9c $35
@@ -3671,11 +3671,11 @@ call_02_5ae0:
     cp   A, $80                                        ;; 02:5ae0 $fe $80
     ret  Z                                             ;; 02:5ae2 $c8
     ld   A, [wDialogType]                              ;; 02:5ae3 $fa $4a $d8
-    cp   A, $0e                                        ;; 02:5ae6 $fe $0e
+    cp   A, WINDOW_VENDOR_BUY_TOP                      ;; 02:5ae6 $fe $0e
     jr   Z, .jr_02_5af4                                ;; 02:5ae8 $28 $0a
-    cp   A, $0d                                        ;; 02:5aea $fe $0d
+    cp   A, WINDOW_VENDOR_SELL_TOP                     ;; 02:5aea $fe $0d
     jr   Z, .jr_02_5af4                                ;; 02:5aec $28 $06
-    cp   A, $1a                                        ;; 02:5aee $fe $1a
+    cp   A, WINDOW_STATUS_SCREEN_AP_DP                 ;; 02:5aee $fe $1a
     jr   NZ, .jr_02_5afa                               ;; 02:5af0 $20 $08
     dec  E                                             ;; 02:5af2 $1d
     dec  E                                             ;; 02:5af3 $1d
@@ -3734,7 +3734,7 @@ jp_02_5b2c:
     ld   L, A                                          ;; 02:5b36 $6f
     ld   A, [wDialogType]                              ;; 02:5b37 $fa $4a $d8
     push AF                                            ;; 02:5b3a $f5
-    cp   A, $1d                                        ;; 02:5b3b $fe $1d
+    cp   A, WINDOW_NAMING_SCREEN_TOP                   ;; 02:5b3b $fe $1d
     jr   NZ, .jr_02_5b49                               ;; 02:5b3d $20 $0a
     ld   A, [wWindowFlags]                             ;; 02:5b3f $fa $74 $d8
     bit  5, A                                          ;; 02:5b42 $cb $6f
@@ -3743,7 +3743,7 @@ jp_02_5b2c:
     ld   HL, nameLabel                                 ;; 02:5b46 $21 $fd $7d
 .jr_02_5b49:
     pop  AF                                            ;; 02:5b49 $f1
-    cp   A, $1e                                        ;; 02:5b4a $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:5b4a $fe $1e
     call Z, call_02_5b8e                               ;; 02:5b4c $cc $8e $5b
     ld   A, [wWindowTextLength]                        ;; 02:5b4f $fa $9b $d8
     ld   B, A                                          ;; 02:5b52 $47
@@ -3765,9 +3765,9 @@ windowPrintMenuText:
     call drawText                                      ;; 02:5b6d $cd $77 $37
     push HL                                            ;; 02:5b70 $e5
     ld   A, [wDialogType]                              ;; 02:5b71 $fa $4a $d8
-    cp   A, $14                                        ;; 02:5b74 $fe $14
+    cp   A, WINDOW_STATUS_SCREEN_HP_MP                 ;; 02:5b74 $fe $14
     call Z, statusWindowPrintHPMPCurOrMax              ;; 02:5b76 $cc $5c $76
-    cp   A, $12                                        ;; 02:5b79 $fe $12
+    cp   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:5b79 $fe $12
     call Z, windowStatusScreenPrintStatValue           ;; 02:5b7b $cc $cf $5a
     ld   HL, wD846                                     ;; 02:5b7e $21 $46 $d8
     inc  [HL]                                          ;; 02:5b81 $34
@@ -3866,31 +3866,26 @@ windowData:
     db   $0e, $00, $05, $03, $01, $04, $01, $00, $00, $00 ;; 02:5c86 ?????????? $16
 ; Levelup message ("Level up! Select your growth type."):
     db   $00, $00, $13, $05, $02, $11, $02, $00, $00, $00 ;; 02:5c90 .......... $17
-; There is a break in the table due to a non-aligned label that BadBoy doesn't handle
-;@data amount=10 format=bbbbbbbbbb
-; (#18)
 .selectLevelupStats:
-    db   $00, $00, $13, $05, $04, $07, $04, $03, $02, $09 ;; 02:5c9a .......... $00
-; (#19) Levelup Yes, No: (#19)
-    db   $00, $06, $09, $05, $02, $05, $02, $02, $01, $00 ;; 02:5ca4 .......... $01
-; (#1a) Status screen AP, DP (this has an invisible border, but is a different window):
-    db   $00, $0b, $06, $09, $02, $05, $02, $00, $01, $00 ;; 02:5cae .......... $02
-; (#1b) Save/Load top window:
-    db   $00, $02, $13, $06, $01, $0f, $02, $00, $02, $00 ;; 02:5cb8 .......... $03
-; (#1c) Save/Load bottom window:
-    db   $00, $0a, $13, $06, $01, $0f, $02, $00, $02, $00 ;; 02:5cc2 .......... $04
-; (#1d)
+    db   $00, $00, $13, $05, $04, $07, $04, $03, $02, $09 ;; 02:5c9a .......... $18
+; Levelup Yes, No:
+    db   $00, $06, $09, $05, $02, $05, $02, $02, $01, $00 ;; 02:5ca4 .......... $19
+; Status screen AP, DP (this has an invisible border, but is a different window):
+    db   $00, $0b, $06, $09, $02, $05, $02, $00, $01, $00 ;; 02:5cae .......... $1a
+; Save/Load top window:
+    db   $00, $02, $13, $06, $01, $0f, $02, $00, $02, $00 ;; 02:5cb8 .......... $1b
+; Save/Load bottom window:
+    db   $00, $0a, $13, $06, $01, $0f, $02, $00, $02, $00 ;; 02:5cc2 .......... $1c
 .namingScreenTop:
-    db   $00, $00, $0e, $03, $01, $05, $01, $00, $00, $00 ;; 02:5ccc .......... $05
-; (#1e)
+    db   $00, $00, $0e, $03, $01, $05, $01, $00, $00, $00 ;; 02:5ccc .......... $1d
 .namingScreenBottom:
-    db   $00, $04, $13, $0d, $06, $09, $51, $01, $09, $02 ;; 02:5cd6 .......... $06
-; (#1f) Title screen menu (New Game, Continue):
-    db   $06, $09, $09, $05, $02, $08, $02, $00, $01, $00 ;; 02:5ce0 .......... $07
-; (#20) Status effect inflicted message (Pois, Ston, Moog, Dark):
-    db   $0b, $01, $07, $03, $01, $04, $01, $00, $00, $00 ;; 02:5cea ?????????? $08
-; (#21) Levelup HP/MP recovered message:
-    db   $00, $0a, $13, $07, $03, $10, $04, $00, $00, $00 ;; 02:5cf4 .......... $09
+    db   $00, $04, $13, $0d, $06, $09, $51, $01, $09, $02 ;; 02:5cd6 .......... $1e
+; Title screen menu (New Game, Continue):
+    db   $06, $09, $09, $05, $02, $08, $02, $00, $01, $00 ;; 02:5ce0 .......... $1f
+; Status effect inflicted message (Pois, Ston, Moog, Dark):
+    db   $0b, $01, $07, $03, $01, $04, $01, $00, $00, $00 ;; 02:5cea ?????????? $20
+; Levelup HP/MP recovered message:
+    db   $00, $0a, $13, $07, $03, $10, $04, $00, $00, $00 ;; 02:5cf4 .......... $21
 
 ;@data amount=4 format=bbbb
 levelUpStatChoices:
@@ -4137,11 +4132,11 @@ windowCloseInit:
     call getWindowDimensions                           ;; 02:6690 $cd $67 $7a
     ld   A, [wDialogType]                              ;; 02:6693 $fa $4a $d8
 ; Clearing rectangle for the titlescreen "window" (used for the New Game and Continue options) includes a tiny piece of the logo, so move it a tile to the right.
-    cp a, $1f
+    cp a, WINDOW_TITLE_SCREEN
     jr nz, .not_titlescreen
     inc e
 .not_titlescreen
-    cp   A, $04                                        ;; 02:6696 $fe $04
+    cp   A, WINDOW_EQUIP_BOTTOM                        ;; 02:6696 $fe $04
     jr   NZ, .jr_02_66a0                               ;; 02:6698 $20 $06
     ld   DE, $00                                       ;; 02:669a $11 $00 $00
     ld   BC, $1113                                     ;; 02:669d $01 $13 $11
@@ -4183,13 +4178,13 @@ windowCloseMain:
     push BC                                            ;; 02:66da $c5
     pop  HL                                            ;; 02:66db $e1
     ld   A, [wDialogType]                              ;; 02:66dc $fa $4a $d8
-    cp   A, $04                                        ;; 02:66df $fe $04
+    cp   A, WINDOW_EQUIP_BOTTOM                        ;; 02:66df $fe $04
     jr   Z, .jr_02_66ee                                ;; 02:66e1 $28 $0b
-    cp   A, $1b                                        ;; 02:66e3 $fe $1b
+    cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:66e3 $fe $1b
     jr   Z, .jr_02_66ee                                ;; 02:66e5 $28 $07
-    cp   A, $19                                        ;; 02:66e7 $fe $19
+    cp   A, WINDOW_LEVELUP_YES_NO                      ;; 02:66e7 $fe $19
     ret  Z                                             ;; 02:66e9 $c8
-    cp   A, $0c                                        ;; 02:66ea $fe $0c
+    cp   A, WINDOW_VENDOR_MONEY                        ;; 02:66ea $fe $0c
     jr   NZ, .jr_02_66f4                               ;; 02:66ec $20 $06
 .jr_02_66ee:
     ld   HL, $1214                                     ;; 02:66ee $21 $14 $12
@@ -4215,9 +4210,9 @@ drawWindow:
 ; The level up preview screen draws the stats window and the Yes/No window in parallel.
 ; They could be detangled but it's easier to just let them be slow.
     ld a, [wDialogType]
-    cp $18
+    cp WINDOW_LEVELUP_JOBS
     ret z
-    cp $19
+    cp WINDOW_LEVELUP_YES_NO
     ret z
 ; If scanline is 96 or above, return.
     ldh a, [rLY]
@@ -4241,9 +4236,9 @@ drawWindowStart:
     inc  HL                                            ;; 02:671d $23
     ld   D, [HL]                                       ;; 02:671e $56
     pop  AF                                            ;; 02:671f $f1
-    cp   A, $21                                        ;; 02:6720 $fe $21
+    cp   A, WINDOW_LEVELUP_FANFARE                     ;; 02:6720 $fe $21
     jr   Z, .moveWindowIfOverlapsPlayer                ;; 02:6722 $28 $04
-    cp   A, $06                                        ;; 02:6724 $fe $06
+    cp   A, WINDOW_DIALOG                              ;; 02:6724 $fe $06
     jr   NZ, .set_dimensions                           ;; 02:6726 $20 $11
 .moveWindowIfOverlapsPlayer:
     ; This handles moving the dialog window (or the initial level up window).
@@ -4274,13 +4269,13 @@ drawWindowStart:
     push BC                                            ;; 02:6745 $c5
     pop  HL                                            ;; 02:6746 $e1
     ld   A, [wDialogType]                              ;; 02:6747 $fa $4a $d8
-    cp   A, $03                                        ;; 02:674a $fe $03
+    cp   A, WINDOW_EQUIP_TOP                           ;; 02:674a $fe $03
     jr   Z, .jr_02_675a                                ;; 02:674c $28 $0c
-    cp   A, $1b                                        ;; 02:674e $fe $1b
+    cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:674e $fe $1b
     jr   Z, .jr_02_675a                                ;; 02:6750 $28 $08
-    cp   A, $12                                        ;; 02:6752 $fe $12
+    cp   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:6752 $fe $12
     jr   Z, .jr_02_675a                                ;; 02:6754 $28 $04
-    cp   A, $0c                                        ;; 02:6756 $fe $0c
+    cp   A, WINDOW_VENDOR_MONEY                        ;; 02:6756 $fe $0c
     jr   NZ, .jr_02_6760                               ;; 02:6758 $20 $06
 .jr_02_675a:
     ld   HL, $1214                                     ;; 02:675a $21 $14 $12
@@ -4294,9 +4289,9 @@ drawWindowStart:
     ld   A, $77                                        ;; 02:676d $3e $77
     ld   [wDialogBorderTile], A                        ;; 02:676f $ea $63 $d8
     ld   A, [wDialogType]                              ;; 02:6772 $fa $4a $d8
-    cp   A, $1a                                        ;; 02:6775 $fe $1a
+    cp   A, WINDOW_STATUS_SCREEN_AP_DP                 ;; 02:6775 $fe $1a
     jr   Z, windowDrawFinished                         ;; 02:6777 $28 $3e
-    cp   A, $1f                                        ;; 02:6779 $fe $1f
+    cp   A, WINDOW_TITLE_SCREEN                        ;; 02:6779 $fe $1f
     jr   Z, windowDrawFinished                         ;; 02:677b $28 $3a
     ld hl, wDrawWindowStep
     inc [hl]
@@ -4359,7 +4354,7 @@ windowDrawFinished:
     ld   BC, $913                                      ;; 02:67c5 $01 $13 $09
     call saveRegisterState2                            ;; 02:67c8 $cd $80 $6d
     ld   A, [wDialogType]                              ;; 02:67cb $fa $4a $d8
-    cp   A, $03                                        ;; 02:67ce $fe $03
+    cp   A, WINDOW_EQUIP_TOP                           ;; 02:67ce $fe $03
     jr   Z, .draw_equipment_screen_bottom              ;; 02:67d0 $28 $18
     ld hl, wMenuStateCurrentFunction
     res 7, [hl]
@@ -4367,11 +4362,11 @@ windowDrawFinished:
     ld [hl], $00
     cp   A, $04                                        ;; 02:67e1 $fe $04
     ret  NZ                                            ;; 02:67e3 $c0
-    ld   A, $03                                        ;; 02:67e4 $3e $03
+    ld   A, WINDOW_EQUIP_TOP                           ;; 02:67e4 $3e $03
     ld   [wDialogType], A                              ;; 02:67e6 $ea $4a $d8
     ret                                                ;; 02:67e9 $c9
 .draw_equipment_screen_bottom:
-    ld   A, $04                                        ;; 02:67ea $3e $04
+    ld   A, WINDOW_EQUIP_BOTTOM                        ;; 02:67ea $3e $04
     ld   [wDialogType], A                              ;; 02:67ec $ea $4a $d8
     ld   A, $02                                        ;; 02:67ef $3e $02
     ld   [wDrawWindowStep], A                          ;; 02:67f1 $ea $54 $d8
@@ -4460,7 +4455,7 @@ drawDialogTopOrBottomLine:
 
 processWindowInput:
     ld   A, [wDialogType]                              ;; 02:6893 $fa $4a $d8
-    cp   A, $15                                        ;; 02:6896 $fe $15
+    cp   A, WINDOW_STATUS_SCREEN_TOP                   ;; 02:6896 $fe $15
     jr   Z, .check_buttons                             ;; 02:6898 $28 $12
     bit  0, C                                          ;; 02:689a $cb $41
     jr   NZ, .dpad_right                               ;; 02:689c $20 $3d
@@ -4479,7 +4474,7 @@ processWindowInput:
     ret  Z                                             ;; 02:68b7 $c8
 ; B button
     ld   A, [wDialogType]                              ;; 02:68b8 $fa $4a $d8
-    cp   A, $18                                        ;; 02:68bb $fe $18
+    cp   A, WINDOW_LEVELUP_JOBS                        ;; 02:68bb $fe $18
     ret  Z                                             ;; 02:68bd $c8
     ld   A, H                                          ;; 02:68be $7c
     ld   [wSRAMSaveHeader._a], A                       ;; 02:68bf $ea $b1 $d7
@@ -4515,7 +4510,7 @@ processWindowInput:
     ld   E, A                                          ;; 02:68f7 $5f
     inc  H                                             ;; 02:68f8 $24
     ld   A, [wDialogType]                              ;; 02:68f9 $fa $4a $d8
-    cp   A, $11                                        ;; 02:68fc $fe $11
+    cp   A, WINDOW_SELECT_MENU                         ;; 02:68fc $fe $11
     ret  NZ                                            ;; 02:68fe $c0
     ld   A, H                                          ;; 02:68ff $7c
     inc  A                                             ;; 02:6900 $3c
@@ -4541,7 +4536,7 @@ processWindowInput:
     ld   E, A                                          ;; 02:691e $5f
     dec  H                                             ;; 02:691f $25
     ld   A, [wDialogType]                              ;; 02:6920 $fa $4a $d8
-    cp   A, $11                                        ;; 02:6923 $fe $11
+    cp   A, WINDOW_SELECT_MENU                         ;; 02:6923 $fe $11
     ret  NZ                                            ;; 02:6925 $c0
     ld   A, H                                          ;; 02:6926 $7c
     inc  A                                             ;; 02:6927 $3c
@@ -4567,7 +4562,7 @@ processWindowInput:
     ret                                                ;; 02:6942 $c9
 .start_button:
     ld   A, [wDialogType]                              ;; 02:6943 $fa $4a $d8
-    cp   A, $1e                                        ;; 02:6946 $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:6946 $fe $1e
     ret  NZ                                            ;; 02:6948 $c0
 ; Everything from here on deals with the naming screen
     ld   A, [wNameEntryNameLength]                     ;; 02:6949 $fa $85 $d8
@@ -4629,9 +4624,9 @@ processWindowInput:
 
 call_02_69aa:
     ld   A, [wDialogType]                              ;; 02:69aa $fa $4a $d8
-    cp   A, $1b                                        ;; 02:69ad $fe $1b
+    cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:69ad $fe $1b
     jr   Z, .jr_02_69fe                                ;; 02:69af $28 $4d
-    cp   A, $11                                        ;; 02:69b1 $fe $11
+    cp   A, WINDOW_SELECT_MENU                         ;; 02:69b1 $fe $11
     scf                                                ;; 02:69b3 $37
     ret  Z                                             ;; 02:69b4 $c8
     ld   A, [wWindowNumberOfSelections]                ;; 02:69b5 $fa $45 $d8
@@ -4639,7 +4634,7 @@ call_02_69aa:
     cp   A, H                                          ;; 02:69b9 $bc
     ret  C                                             ;; 02:69ba $d8
     ld   A, [wDialogType]                              ;; 02:69bb $fa $4a $d8
-    cp   A, $1e                                        ;; 02:69be $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:69be $fe $1e
     jr   NZ, .jr_02_69c6                               ;; 02:69c0 $20 $04
     ld   A, $09                                        ;; 02:69c2 $3e $09
     jr   .jr_02_69cc                                   ;; 02:69c4 $18 $06
@@ -4662,10 +4657,10 @@ call_02_69aa:
     ccf                                                ;; 02:69df $3f
     ret  Z                                             ;; 02:69e0 $c8
     ld   A, [wDialogType]                              ;; 02:69e1 $fa $4a $d8
-    cp   A, $19                                        ;; 02:69e4 $fe $19
+    cp   A, WINDOW_LEVELUP_YES_NO                      ;; 02:69e4 $fe $19
     ccf                                                ;; 02:69e6 $3f
     ret  Z                                             ;; 02:69e7 $c8
-    cp   A, $18                                        ;; 02:69e8 $fe $18
+    cp   A, WINDOW_LEVELUP_JOBS                        ;; 02:69e8 $fe $18
     ccf                                                ;; 02:69ea $3f
     ret  Z                                             ;; 02:69eb $c8
     ld   L, $fe                                        ;; 02:69ec $2e $fe
@@ -4700,7 +4695,7 @@ call_02_6a09:
     ld   [wMenuFlags], A                               ;; 02:6a0e $ea $49 $d8
     ld   L, $01                                        ;; 02:6a11 $2e $01
     ld   A, [wDialogType]                              ;; 02:6a13 $fa $4a $d8
-    cp   A, $1e                                        ;; 02:6a16 $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:6a16 $fe $1e
     jr   Z, .jr_02_6a21                                ;; 02:6a18 $28 $07
     ld   A, [wMenuFlags]                               ;; 02:6a1a $fa $49 $d8
     and  A, $01                                        ;; 02:6a1d $e6 $01
@@ -4737,11 +4732,11 @@ jr_02_6a47:
 
 call_02_6a59:
     ld   A, [wDialogType]                              ;; 02:6a59 $fa $4a $d8
-    cp   A, $1b                                        ;; 02:6a5c $fe $1b
+    cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:6a5c $fe $1b
     jr   Z, .jr_02_6aa5                                ;; 02:6a5e $28 $45
-    cp   A, $1e                                        ;; 02:6a60 $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:6a60 $fe $1e
     jr   NZ, .jr_02_6a68                               ;; 02:6a62 $20 $04
-    ld   A, $09                                        ;; 02:6a64 $3e $09
+    ld   A, WINDOW_START_MENU_STATUS                   ;; 02:6a64 $3e $09
     jr   .jr_02_6a6e                                   ;; 02:6a66 $18 $06
 .jr_02_6a68:
     ld   A, [wMenuFlags]                               ;; 02:6a68 $fa $49 $d8
@@ -4762,7 +4757,7 @@ call_02_6a59:
     sub  A, L                                          ;; 02:6a7c $95
     jr   NC, .jr_02_6ab0                               ;; 02:6a7d $30 $31
     ld   A, [wDialogType]                              ;; 02:6a7f $fa $4a $d8
-    cp   A, $1e                                        ;; 02:6a82 $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:6a82 $fe $1e
     jr   NZ, .jr_02_6a88                               ;; 02:6a84 $20 $02
     ld   L, $01                                        ;; 02:6a86 $2e $01
 .jr_02_6a88:
@@ -4775,7 +4770,7 @@ call_02_6a59:
     ld   [wD848], A                                    ;; 02:6a92 $ea $48 $d8
     ld   [wD846], A                                    ;; 02:6a95 $ea $46 $d8
     ld   A, [wDialogType]                              ;; 02:6a98 $fa $4a $d8
-    cp   A, $1e                                        ;; 02:6a9b $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:6a9b $fe $1e
     jr   NZ, .jr_02_6aa1                               ;; 02:6a9d $20 $02
     ld   L, $09                                        ;; 02:6a9f $2e $09
 .jr_02_6aa1:
@@ -4799,9 +4794,9 @@ call_02_6a59:
     cp   A, $fe                                        ;; 02:6ab1 $fe $fe
     jr   Z, .jr_02_6ad0                                ;; 02:6ab3 $28 $1b
     ld   A, [wDialogType]                              ;; 02:6ab5 $fa $4a $d8
-    cp   A, $1e                                        ;; 02:6ab8 $fe $1e
+    cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:6ab8 $fe $1e
     jr   NZ, .jr_02_6ac0                               ;; 02:6aba $20 $04
-    ld   A, $09                                        ;; 02:6abc $3e $09
+    ld   A, WINDOW_START_MENU_STATUS                   ;; 02:6abc $3e $09
     jr   .jr_02_6ac6                                   ;; 02:6abe $18 $06
 .jr_02_6ac0:
     ld   A, [wMenuFlags]                               ;; 02:6ac0 $fa $49 $d8
@@ -4840,7 +4835,7 @@ call_02_6ae7:
     push HL                                            ;; 02:6aec $e5
     push DE                                            ;; 02:6aed $d5
     ld   A, [wDialogType]                              ;; 02:6aee $fa $4a $d8
-    cp   A, $19                                        ;; 02:6af1 $fe $19
+    cp   A, WINDOW_LEVELUP_YES_NO                      ;; 02:6af1 $fe $19
     call Z, call_02_6b18                               ;; 02:6af3 $cc $18 $6b
     ld   A, [wD898]                                    ;; 02:6af6 $fa $98 $d8
     ld   E, A                                          ;; 02:6af9 $5f
@@ -4888,7 +4883,7 @@ call_02_6b20:
 
 call_02_6b3a:
     ld   A, [wDialogType]                              ;; 02:6b3a $fa $4a $d8
-    cp   A, $19                                        ;; 02:6b3d $fe $19
+    cp   A, WINDOW_LEVELUP_YES_NO                      ;; 02:6b3d $fe $19
     jr   Z, .jr_02_6b48                                ;; 02:6b3f $28 $07
     ld   A, [wSelectedMenuIndex]                       ;; 02:6b41 $fa $4b $d8
     cp   A, H                                          ;; 02:6b44 $bc
@@ -4969,7 +4964,7 @@ showMenuFingerPointing_2:
 
 showMenuFingerCurled:
     ld   A, [wDialogType]                              ;; 02:6bad $fa $4a $d8
-    cp   A, $15                                        ;; 02:6bb0 $fe $15
+    cp   A, WINDOW_STATUS_SCREEN_TOP                   ;; 02:6bb0 $fe $15
     ret  Z                                             ;; 02:6bb2 $c8
     push HL                                            ;; 02:6bb3 $e5
     push DE                                            ;; 02:6bb4 $d5
@@ -4980,7 +4975,7 @@ showMenuFingerCurled:
 
 showMenuFingerPointing_1:
     ld   A, [wDialogType]                              ;; 02:6bbe $fa $4a $d8
-    cp   A, $15                                        ;; 02:6bc1 $fe $15
+    cp   A, WINDOW_STATUS_SCREEN_TOP                   ;; 02:6bc1 $fe $15
     ret  Z                                             ;; 02:6bc3 $c8
     push HL                                            ;; 02:6bc4 $e5
     push DE                                            ;; 02:6bc5 $d5
@@ -5052,7 +5047,7 @@ call_02_6c0b:
     call menuTrashCanLoadTiles                         ;; 02:6c14 $cd $76 $47
     ld   DE, $f10                                      ;; 02:6c17 $11 $10 $0f
     ld   A, [wDialogType]                              ;; 02:6c1a $fa $4a $d8
-    cp   A, $04                                        ;; 02:6c1d $fe $04
+    cp   A, WINDOW_EQUIP_BOTTOM                        ;; 02:6c1d $fe $04
     jr   NZ, .jr_02_6c23                               ;; 02:6c1f $20 $02
     ld   D, $07                                        ;; 02:6c21 $16 $07
 .jr_02_6c23:
@@ -5180,10 +5175,11 @@ menuSelectButtonBItemOrSpell:
     dec  A                                             ;; 02:6cbe $3d
     call getEquippedWeaponAnimationType_trampoline     ;; 02:6cbf $cd $d9 $2e
     ld   A, [wDialogType]                              ;; 02:6cc2 $fa $4a $d8
-    cp   A, $00                                        ;; 02:6cc5 $fe $00
+    cp   A, WINDOW_START_MENU                          ;; 02:6cc5 $fe $00
     ret  Z                                             ;; 02:6cc7 $c8
-    cp   A, $03                                        ;; 02:6cc8 $fe $03
+    cp   A, WINDOW_EQUIP_TOP                           ;; 02:6cc8 $fe $03
     ret  NC                                            ;; 02:6cca $d0
+; Only continue for ITEMS (1), MAGIC (2), or EQUIP (3).
     ld   B, $00                                        ;; 02:6ccb $06 $00
     cp   A, $01                                        ;; 02:6ccd $fe $01
     jr   NZ, .jr_02_6cd3                               ;; 02:6ccf $20 $02
@@ -6021,7 +6017,7 @@ openLoadSaveScreen_common:
     call windowCloseAndRestoreHidden                   ;; 02:71e9 $cd $7a $66
     ret  NZ                                            ;; 02:71ec $c0
     call showFullscreenWindow                          ;; 02:71ed $cd $57 $51
-    ld   A, $1b                                        ;; 02:71f0 $3e $1b
+    ld   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:71f0 $3e $1b
     ld   [wDialogType], A                              ;; 02:71f2 $ea $4a $d8
     ld   B, $01                                        ;; 02:71f5 $06 $01
     call setMenuStateCurrentFunction                   ;; 02:71f7 $cd $98 $6c
@@ -6093,7 +6089,7 @@ jp_02_71fb:
     ld   A, $c6                                        ;; 02:7286 $3e $c6
     call writeSRAMByte                                 ;; 02:7288 $cd $64 $74
     call disableSRAM                                   ;; 02:728b $cd $5e $74
-    ld   A, $1b                                        ;; 02:728e $3e $1b
+    ld   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:728e $3e $1b
     ld   [wDialogType], A                              ;; 02:7290 $ea $4a $d8
     ld   A, $01                                        ;; 02:7293 $3e $01
     ld   [wMenuStateCurrentFunction], A                ;; 02:7295 $ea $53 $d8
@@ -6666,7 +6662,7 @@ drawMoneyOnDialog:
     call windowInitContents                            ;; 02:75f8 $cd $93 $76
     ld   DE, $200                                      ;; 02:75fb $11 $07 $02
     pop  AF                                            ;; 02:75fe $f1
-    cp   A, $13                                        ;; 02:75ff $fe $13
+    cp   A, WINDOW_STATUS_SCREEN_MONEY                 ;; 02:75ff $fe $13
     jr   NZ, .jr_02_761c
     dec  D                                             ;; 02:7603 $15
 .jr_02_761c:
@@ -6835,16 +6831,16 @@ windowInitContents:
     ld   A, [wD848]                                    ;; 02:76fe $fa $48 $d8
     ld   [wD846], A                                    ;; 02:7701 $ea $46 $d8
     ld   A, [wDialogType]                              ;; 02:7704 $fa $4a $d8
-    cp   A, $06                                        ;; 02:7707 $fe $06
+    cp   A, WINDOW_DIALOG                              ;; 02:7707 $fe $06
     jr   NZ, .not_dialog                               ;; 02:7709 $20 $05
     ld   DE, $201                                      ;; 02:770b $11 $01 $02
     jr   .jr_02_7720                                   ;; 02:770e $18 $10
 .not_dialog:
-    cp   A, $14                                        ;; 02:7710 $fe $14
+    cp   A, WINDOW_STATUS_SCREEN_HP_MP                 ;; 02:7710 $fe $14
     jr   Z, .jr_02_771f                                ;; 02:7712 $28 $0b
-    cp   A, $12                                        ;; 02:7714 $fe $12
+    cp   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:7714 $fe $12
     jr   Z, .jr_02_771f                                ;; 02:7716 $28 $07
-    cp   A, $17                                        ;; 02:7718 $fe $17
+    cp   A, WINDOW_LEVELUP_MESSAGE                     ;; 02:7718 $fe $17
     jr   NZ, .jr_02_7720                               ;; 02:771a $20 $04
     dec  E                                             ;; 02:771c $1d
     jr   .jr_02_7720                                   ;; 02:771d $18 $01
@@ -6964,7 +6960,7 @@ giveStatusEffect:
     call playSFX                                       ;; 02:77ca $cd $7d $29
     ld   A, $38                                        ;; 02:77cd $3e $38
     ld   [wMenuStateCurrentFunction], A                ;; 02:77cf $ea $53 $d8
-    ld   A, $20                                        ;; 02:77d2 $3e $20
+    ld   A, WINDOW_STATUS_BEGIN                        ;; 02:77d2 $3e $20
     ld   [wDialogType], A                              ;; 02:77d4 $ea $4a $d8
     ret                                                ;; 02:77d7 $c9
 
@@ -7596,7 +7592,7 @@ titleScreenShowMenu:
     ret  NZ                                            ;; 02:7b89 $c0
     ld   A, $0f                                        ;; 02:7b8a $3e $0f
     ld   [wMainGameState], A                           ;; 02:7b8c $ea $a0 $c0
-    ld   A, $1f                                        ;; 02:7b8f $3e $1f
+    ld   A, WINDOW_TITLE_SCREEN                        ;; 02:7b8f $3e $1f
     ld   [wDialogType], A                              ;; 02:7b91 $ea $4a $d8
     call gameStateMenu                                 ;; 02:7b94 $cd $60 $48
     xor  A, A                                          ;; 02:7b97 $af
@@ -7714,7 +7710,7 @@ titleScreenIntroScrollPrintLine:
     ld   [wIntroScrollTextPointer.high], A             ;; 02:7c64 $ea $8f $d8
     ld   A, L                                          ;; 02:7c67 $7d
     ld   [wIntroScrollTextPointer], A                  ;; 02:7c68 $ea $8e $d8
-    ld   A, $ff                                        ;; 02:7c6b $3e $ff
+    ld   A, WINDOW_INTRO_SCROLL                        ;; 02:7c6b $3e $ff
     ld   [wDialogType], A                              ;; 02:7c6d $ea $4a $d8
     ld   A, [wRegisterSave2.D]                         ;; 02:7c70 $fa $ad $d8
     ld   D, A                                          ;; 02:7c73 $57
