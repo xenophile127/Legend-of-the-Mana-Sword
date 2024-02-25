@@ -2740,14 +2740,14 @@ script_01b1:
       db "<1b>\n  Davias falls__<12>"
       db "<11>", $00 ;; 0d:50e0
     sSET_MUSIC 0                                       ;; 0d:5110 $f8 $00
-    sDELAY 60                                          ;; 0d:5112 $f0 $3c
+    sFADE_TO_BLACK
     sFOLLOWER_DELETE                                   ;; 0d:5114 $98
-    sDELAY 30                                          ;; 0d:5115 $f0 $1e
     sSET_PLAYER_DIRECTION_UP                           ;; 0d:5117 $84
-    sLOAD_ROOM 14, $04, 12, 10                         ;; 0d:5118 $f4 $0e $04 $0c $0a
+    sLOAD_ROOM_INSTANT 14, $04, 12, 10
     sDELAY 30                                          ;; 0d:511d $f0 $1e
     sSET_NPC_TYPES 62                                  ;; 0d:511f $fc $3e
     sSPAWN_NPC 1                                       ;; 0d:5121 $fd $01
+    sFADE_TO_NORMAL
     sMSG                                               ;; 0d:5123 $04
       db "<10>Lester:__Going?\n<BOY>:Yeah, but Mt.\n Rocks is blocked_<12>"
       db "<1b>Lester:My harp\n tunes will clear\n the gas.<12>"
