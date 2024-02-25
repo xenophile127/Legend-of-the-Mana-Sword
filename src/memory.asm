@@ -489,6 +489,7 @@ wPlayerSpecialFlags:
 ; 08: Damage timer
 ; 0a: Status (bit7: Slep, bit6: Mute)
 ; 0c-0d: HP
+; 0e-0f: Temporary storage for incoming HP damage.
 ; 10-11: npcStatsTable entry pointer
 ; 12-13: npcDataTable entry pointer
 wNpcRuntimeData:
