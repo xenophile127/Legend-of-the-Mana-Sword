@@ -8303,6 +8303,8 @@ startScriptIfRequested:
 ; C=Player collision flags
 ; HL=Script index
 runScriptByIndex:
+    bit 7, h
+    ret nz
     push HL                                            ;; 00:31ad $e5
     ld   HL, wMainGameStateFlags                       ;; 00:31ae $21 $a1 $c0
     bit  1, [HL]                                       ;; 00:31b1 $cb $4e
@@ -8316,6 +8318,7 @@ runScriptByIndex:
     or   A, $80                                        ;; 00:31c2 $f6 $80
     ld   [wWindowFlags], A                             ;; 00:31c4 $ea $74 $d8
 
+; HL = script index
 runScriptFromScriptByIndex:
     ; Text speed 2 still allows pressing a button to further speed up text display.
     ld   A, $02
@@ -8336,12 +8339,12 @@ runScriptFromScriptByIndex:
 .dynamic_script:
     push DE                                            ;; 00:31e6 $d5
     pop  HL                                            ;; 00:31e7 $e1
-    jr   .jr_00_31f1                                   ;; 00:31e8 $18 $07
+    jr   .setup_script                                 ;; 00:31e8 $18 $07
 .normal_script:
     call getScriptPointerFromScriptPointerTable        ;; 00:31ea $cd $82 $32
     ld   DE, $4000 ;@=value hex=True                   ;; 00:31ed $11 $00 $40
     add  HL, DE                                        ;; 00:31f0 $19
-.jr_00_31f1:
+.setup_script:
     ld   A, H                                          ;; 00:31f1 $7c
     ld   [wScriptPointerHigh], A                       ;; 00:31f2 $ea $b7 $d8
     ld   A, L                                          ;; 00:31f5 $7d
@@ -8351,11 +8354,13 @@ runScriptFromScriptByIndex:
     push HL                                            ;; 00:31ff $e5
     call popBankNrAndSwitch                            ;; 00:3200 $cd $0a $2a
     ld   HL, wMainGameStateFlags                       ;; 00:3203 $21 $a1 $c0
-    set  2, [HL]                                       ;; 00:3206 $cb $d6
-    set  1, [HL]                                       ;; 00:3208 $cb $ce
-    ld   HL, wMainGameStateFlags.nextFrame             ;; 00:320a $21 $a2 $c0
-    set  2, [HL]                                       ;; 00:320d $cb $d6
-    set  1, [HL]                                       ;; 00:320f $cb $ce
+    ld a, [hl]
+    or $06
+    ld [hl+], a
+; wMainGameStateFlags.nextFrame
+    ld a, [hl]
+    or $06
+    ld [hl+], a
     pop  HL                                            ;; 00:3211 $e1
     ret                                                ;; 00:3212 $c9
 
