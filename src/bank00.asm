@@ -8299,10 +8299,13 @@ startScriptIfRequested:
     set  3, [HL]                                       ;; 00:31aa $cb $de
     ret                                                ;; 00:31ac $c9
 
+; Init script related flags and then start a script.
+; Used to run scripts from directly from non-script code.
 ; A=Player facing direction
 ; C=Player collision flags
 ; HL=Script index
 runScriptByIndex:
+; First a check for script numbers larger than $7fff in order to protect against invalid room scripts.
     bit 7, h
     ret nz
     push HL                                            ;; 00:31ad $e5
@@ -8318,7 +8321,10 @@ runScriptByIndex:
     or   A, $80                                        ;; 00:31c2 $f6 $80
     ld   [wWindowFlags], A                             ;; 00:31c4 $ea $74 $d8
 
+; Run a script. Requires script related flags to have already been initialized.
+; Handles three special script numbers that run scripts from RAM: $000b, $000f, and $0013.
 ; HL = script index
+; Return: HL = script address
 runScriptFromScriptByIndex:
     ; Text speed 2 still allows pressing a button to further speed up text display.
     ld   A, $02
@@ -8350,8 +8356,8 @@ runScriptFromScriptByIndex:
     ld   A, L                                          ;; 00:31f5 $7d
     ld   [wScriptPointerLow], A                        ;; 00:31f6 $ea $b6 $d8
     call getBankNrForScript                            ;; 00:31f9 $cd $44 $3c
+    push hl
     call getNextScriptInstruction                      ;; 00:31fc $cd $27 $37
-    push HL                                            ;; 00:31ff $e5
     call popBankNrAndSwitch                            ;; 00:3200 $cd $0a $2a
     ld   HL, wMainGameStateFlags                       ;; 00:3203 $21 $a1 $c0
     ld a, [hl]
@@ -8364,50 +8370,42 @@ runScriptFromScriptByIndex:
     pop  HL                                            ;; 00:3211 $e1
     ret                                                ;; 00:3212 $c9
 
-; A=Player facing direction?
+; Used by script commands that run the entry, exit, and all-clear scripts for a room.
 ; C=Player collision flags
 ; HL=Script index
 runSubScriptFromScriptByIndex:
+; Save the bank of the current script to restore later.
     ld   A, [wScriptBank]                              ;; 00:3213 $fa $6a $d8
-    push AF                                            ;; 00:3216 $f5
-    ld   A, [wScriptPointerHigh]                       ;; 00:3217 $fa $b7 $d8
-    ld   D, A                                          ;; 00:321a $57
-    ld   A, [wScriptPointerLow]                        ;; 00:321b $fa $b6 $d8
-    ld   E, A                                          ;; 00:321e $5f
-    ld   A, D                                          ;; 00:321f $7a
-    cp   A, $80                                        ;; 00:3220 $fe $80
-    jr   NC, .jr_00_322e                               ;; 00:3222 $30 $0a
-    pop  AF                                            ;; 00:3224 $f1
-    push AF                                            ;; 00:3225 $f5
-    cp   A, $0d                                        ;; 00:3226 $fe $0d
-    jr   NZ, .jr_00_322e                               ;; 00:3228 $20 $04
-    ld   A, D                                          ;; 00:322a $7a
-    sub  A, $40                                        ;; 00:322b $d6 $40
-    ld   D, A                                          ;; 00:322d $57
-.jr_00_322e:
+    ld b, a
+; Load the current script address (in the range $4000 to $7fff, or a RAM address).
+    ld a, [wScriptPointerLow]
+    ld e, a
+    ld a, [wScriptPointerHigh]
+    ld d, a
+; An area in RAM is used for scripts. Its pointers must not be changed.
+; BUG: This will be a problem in the fourth script bank.
+    cp HIGH(wOpenChestScript1)
+    jr z, .run_script
+; Turn the address and bank of the current running script into a 16 bit pointer.
+    ld a, b
+    call calculateScriptPointerFromAddress
+.run_script:
     push DE                                            ;; 00:322e $d5
+; Initialize the new script.
     call runScriptFromScriptByIndex                    ;; 00:322f $cd $c7 $31
-    push HL                                            ;; 00:3232 $e5
-    pop  DE                                            ;; 00:3233 $d1
+    ld d, h
+    ld e, l
     pop  HL                                            ;; 00:3234 $e1
-    ld   B, $02                                        ;; 00:3235 $06 $02
-    ld   A, [wScriptBank]                              ;; 00:3237 $fa $6a $d8
-    cp   A, $0e                                        ;; 00:323a $fe $0e
-    jr   Z, .jr_00_3242                                ;; 00:323c $28 $04
-    ld   A, D                                          ;; 00:323e $7a
-    sub  A, $40                                        ;; 00:323f $d6 $40
-    ld   D, A                                          ;; 00:3241 $57
-.jr_00_3242:
-    dec  DE                                            ;; 00:3242 $1b
+; Now turn the address and bank of the new script into a 16 bit pointer.
     ld   A, [wScriptBank]                              ;; 00:3243 $fa $6a $d8
-    ld   B, A                                          ;; 00:3246 $47
-    pop  AF                                            ;; 00:3247 $f1
+    call calculateScriptPointerFromAddress
+; Restore original script bank, required for a calculation when pushing the old location.
+    ld a, b
     ld   [wScriptBank], A                              ;; 00:3248 $ea $6a $d8
-    push BC                                            ;; 00:324b $c5
-    call jumpToScriptAtAddressDE                       ;; 00:324c $cd $04 $33
-    pop  BC                                            ;; 00:324f $c1
-    ld   A, B                                          ;; 00:3250 $78
-    ld   [wScriptBank], A                              ;; 00:3251 $ea $6a $d8
+; Call the new script.
+; At this point wScriptBank and hl are set with the old script, de with the new.
+    ld b, $02 ; sCALL
+    call callScriptAtAddressDE
 
 gameStateScript:
     call moveObjectsDuringScript_trampoline            ;; 00:3254 $cd $b0 $28
@@ -8436,6 +8434,28 @@ gameStateScript:
     pop  HL                                            ;; 00:3280 $e1
     ret                                                ;; 00:3281 $c9
 
+; Turn a memory address (including bank number) into a 16 bit script pointer covering four banks.
+; a = script bank
+; de = script address ($4000 to $7fff)
+; Return: de = $4000 * script bank + (de & $3fff)
+calculateScriptPointerFromAddress:
+    push af
+; And de with $3fff.
+    res 7, d
+    res 6, d
+; Get the script bank, from 0 to 3.
+    sub BANK(script_0000)
+; Multiply by $4000.
+    rrca
+    rrca
+; Add to de.
+    add d
+    ld d, a
+    pop af
+    ret
+
+ds 10 ; Free space
+
 ; Input: HL, index in the script pointer table
 ; Output: HL, script pointer value
 getScriptPointerFromScriptPointerTable:
@@ -8454,6 +8474,7 @@ getScriptPointerFromScriptPointerTable:
     pop  HL                                            ;; 00:3295 $e1
     ret                                                ;; 00:3296 $c9
 
+; Handles end of scripts and loops.
 scriptOpCodeEND:
     ld   A, [wWindowFlags]                             ;; 00:3297 $fa $74 $d8
     bit  0, A                                          ;; 00:329a $cb $47
@@ -8479,9 +8500,9 @@ scriptOpCodeEND:
     call popBCDEfromScriptStack                        ;; 00:32c1 $cd $05 $37
     pop  HL                                            ;; 00:32c4 $e1
     ld   A, B                                          ;; 00:32c5 $78
-    cp   A, $03                                        ;; 00:32c6 $fe $03
+    cp   A, $03 ; sLOOP                                ;; 00:32c6 $fe $03
     jr   Z, .loop                                      ;; 00:32c8 $28 $19
-    cp   A, $02                                        ;; 00:32ca $fe $02
+    cp   A, $02 ; sCALL                                ;; 00:32ca $fe $02
     jr   Z, .return_from_call                          ;; 00:32cc $28 $01
     ret                                                ;; 00:32ce $c9
 .return_from_call:
@@ -8524,24 +8545,32 @@ scriptOpCodeCall:
     ld   A, [HL+]                                      ;; 00:3302 $2a
     ld   E, A                                          ;; 00:3303 $5f
 
-; DE = Script address (not index number)
-; This assumes we have already have a running script
-jumpToScriptAtAddressDE:
+; Call a new script, saving the current script position to return to after it completes.
+; This assumes there is already a running script.
+; DE = New script address (not index number)
+; HL = Current script address
+callScriptAtAddressDE:
     push DE                                            ;; 00:3304 $d5
     ld   A, H                                          ;; 00:3305 $7c
-    cp   A, $80                                        ;; 00:3306 $fe $80
-    jr   NC, .jr_00_3315                               ;; 00:3308 $30 $0b
-    ld   A, [wScriptBank]                              ;; 00:330a $fa $6a $d8
-    cp   A, $0e                                        ;; 00:330d $fe $0e
-    jr   NZ, .jr_00_3315                               ;; 00:330f $20 $04
-    ld   DE, mapRoomPointers_03                        ;; 00:3311 $11 $00 $40
-    add  HL, DE                                        ;; 00:3314 $19
-.jr_00_3315:
+; An area in RAM is used for scripts. Its pointers must not be changed.
+; BUG: This will be a problem in the fourth script bank.
+    cp HIGH(wOpenChestScript1)
+    jr z, .call
+    ld d, h
+    ld e, l
+    ld a, [wScriptBank]
+; Turn the address and bank of the current running script into a 16 bit pointer.
+    call calculateScriptPointerFromAddress
+    ld a, d
+; Add $4000 to the pointer, so the first script bank is at $4000 and the fourth is at $0000..
+    add $40
+    ld h, a
+    ld l, e
+.call:
     call pushBCHLtoScriptStack                         ;; 00:3315 $cd $df $36
     pop  HL                                            ;; 00:3318 $e1
-    ld   DE, mapRoomPointers_00                        ;; 00:3319 $11 $00 $40
-    add  HL, DE                                        ;; 00:331c $19
-    ld   A, H                                          ;; 00:331d $7c
+    ld a, h
+    add $40
     ld   [wScriptPointerHigh], A                       ;; 00:331e $ea $b7 $d8
     ld   A, L                                          ;; 00:3321 $7d
     ld   [wScriptPointerLow], A                        ;; 00:3322 $ea $b6 $d8
@@ -10122,30 +10151,40 @@ setDirectionScriptFlags:
     pop  BC                                            ;; 00:3c42 $c1
     ret                                                ;; 00:3c43 $c9
 
+; Calculates the bank and address for the current script pointer and switches to the bank.
 getBankNrForScript:
-    ld   A, [wScriptPointerHigh]                       ;; 00:3c44 $fa $b7 $d8
-    ld   H, A                                          ;; 00:3c47 $67
-    ld   A, [wScriptPointerLow]                        ;; 00:3c48 $fa $b6 $d8
-    ld   L, A                                          ;; 00:3c4b $6f
-    ld   A, H                                          ;; 00:3c4c $7c
-    cp   A, $80                                        ;; 00:3c4d $fe $80
-    ld   B, BANK(script_0000) ;@=bank script_0000      ;; 00:3c4f $06 $0d
-    jr   C, .jr_00_3c5c                                ;; 00:3c51 $38 $09
-    ld   B, $0e                                        ;; 00:3c53 $06 $0e
-    sub  A, $40                                        ;; 00:3c55 $d6 $40
-    cp   A, $80                                        ;; 00:3c57 $fe $80
-    jr   NC, .jr_00_3c5c                               ;; 00:3c59 $30 $01
+; Load the script pointer.
+    ld hl, wScriptPointerHigh
+    ld a, [hl-]
+    ld l, [hl]
+    ld h, a
+; An area in RAM is used for scripts. Its pointers must not be changed.
+; BUG: This will be a problem in the fourth script bank.
+    cp HIGH(wOpenChestScript1)
+    jr z, switchToScriptBank
+; Subtract bank size and increment bank number until the address is between $0000 and $3fff.
+    ld b, BANK(script_0000) - 1
+.loop:
+    inc b
+    sub $40
+    cp $40
+    jr nc, .loop
+; Correct the address to between $4000 and $7fff.
+    add $40
     ld   H, A                                          ;; 00:3c5b $67
-.jr_00_3c5c:
+; Set the script bank.
     ld   A, B                                          ;; 00:3c5c $78
     ld   [wScriptBank], A                              ;; 00:3c5d $ea $6a $d8
 
+; Switch to the bank of the current script.
 switchToScriptBank:
     ld   A, [wScriptBank]                              ;; 00:3c60 $fa $6a $d8
     push HL                                            ;; 00:3c63 $e5
     call pushBankNrAndSwitch                           ;; 00:3c64 $cd $fb $29
     pop  HL                                            ;; 00:3c67 $e1
     ret                                                ;; 00:3c68 $c9
+
+ds 2 ; Free space
 
 runVirtualScriptOpCodeFF:
     ld   A, B                                          ;; 00:3c69 $78

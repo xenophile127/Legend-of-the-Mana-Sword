@@ -102,7 +102,7 @@ dw (__script_pointer_\1 - scriptPointersTable) / 2
 ENDM
 MACRO SCRIPT_POINTER
 __script_pointer_\1::
-  dw ((\1 - $4000) + ((BANK(\1) - $0D) * $4000))
+  dw ((\1 - $4000) + ((BANK(\1) - BANK(script_0000)) * $4000))
 ENDM
 MACRO TXT
 SETCHARMAP BASIC
@@ -942,7 +942,7 @@ db $9e
 ENDM
 MACRO sCALL
 db $02
-db ((BANK(\1) - $0D) << 6) | (HIGH(\1) & $3F), LOW(\1)
+db ((BANK(\1) - BANK(script_0000)) << 6) | (HIGH(\1) & $3F), LOW(\1)
 ENDM
 MACRO sCHANGE_INTO_EMPTY_CHEST
 db $af
