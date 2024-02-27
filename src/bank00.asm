@@ -9208,51 +9208,76 @@ startDialog:
     ld   [wScriptCommand], A                           ;; 00:36db $ea $5a $d8
     ret                                                ;; 00:36de $c9
 
-; push 4 bytes to the script stack (not interrupt safe!)
+; Push 4 bytes to the script stack.
+; b = opcode number ($02 == sCALL or $03 == sLOOP)
+; c = loop counter, if used by a loop.
+; hl = script address
+; Return: bc, hl unmodified.
 pushBCHLtoScriptStack:
-    push HL                                            ;; 00:36df $e5
-    pop  DE                                            ;; 00:36e0 $d1
-    ld   [wStackBackup], SP                            ;; 00:36e1 $08 $be $d8
-    ld   A, [wScriptStackPointer.high]                 ;; 00:36e4 $fa $bd $d8
-    ld   H, A                                          ;; 00:36e7 $67
-    ld   A, [wScriptStackPointer]                      ;; 00:36e8 $fa $bc $d8
-    ld   L, A                                          ;; 00:36eb $6f
-    ld   SP, HL                                        ;; 00:36ec $f9
-    push DE                                            ;; 00:36ed $d5
-    push BC                                            ;; 00:36ee $c5
-    ld   [wScriptStackPointer], SP                     ;; 00:36ef $08 $bc $d8
-    ld   A, [wStackBackup.high]                        ;; 00:36f2 $fa $bf $d8
-    ld   H, A                                          ;; 00:36f5 $67
-    ld   A, [wStackBackup]                             ;; 00:36f6 $fa $be $d8
-    ld   L, A                                          ;; 00:36f9 $6f
-    ld   SP, HL                                        ;; 00:36fa $f9
-    ld   A, [wScriptStackCount]                        ;; 00:36fb $fa $65 $d8
-    inc  A                                             ;; 00:36fe $3c
-    ld   [wScriptStackCount], A                        ;; 00:36ff $ea $65 $d8
-    push DE                                            ;; 00:3702 $d5
-    pop  HL                                            ;; 00:3703 $e1
-    ret                                                ;; 00:3704 $c9
+    ld d, h
+    ld e, l
+; Load the script stack pointer.
+    ld hl, wScriptStackPointer
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+; Pre-decrement.
+    dec hl
+; Push hl (now in de).
+    ld a, d
+    ld [hl-], a
+    ld a, e
+    ld [hl-], a
+; Push bc.
+    ld a, b
+    ld [hl-], a
+    ld [hl], c
+; Store the pointer to the top of the script stack.
+    ld a, l
+    ld [wScriptStackPointer], a
+    ld a, h
+    ld [wScriptStackPointer.high], a
+; Increment the stack count.
+    ld hl, wScriptStackCount
+    inc [hl]
+; Restore hl to the original value.
+    ld h, d
+    ld l, e
+    ret
 
-; pop 4 bytes from the script stack (not interrupt safe!)
+ds 7 ; Free space
+
+; pop 4 bytes from the script stack.
+; Return: b = saved opcode number ($02 == sCALL or $03 == sLOOP)
+; Return: c = saved loop counter, if used by a loop.
+; Return: hl = saved script address
 popBCDEfromScriptStack:
-    ld   [wStackBackup], SP                            ;; 00:3705 $08 $be $d8
-    ld   A, [wScriptStackPointer.high]                 ;; 00:3708 $fa $bd $d8
-    ld   H, A                                          ;; 00:370b $67
-    ld   A, [wScriptStackPointer]                      ;; 00:370c $fa $bc $d8
-    ld   L, A                                          ;; 00:370f $6f
-    ld   SP, HL                                        ;; 00:3710 $f9
-    pop  BC                                            ;; 00:3711 $c1
-    pop  DE                                            ;; 00:3712 $d1
-    ld   [wScriptStackPointer], SP                     ;; 00:3713 $08 $bc $d8
-    ld   A, [wStackBackup.high]                        ;; 00:3716 $fa $bf $d8
-    ld   H, A                                          ;; 00:3719 $67
-    ld   A, [wStackBackup]                             ;; 00:371a $fa $be $d8
-    ld   L, A                                          ;; 00:371d $6f
-    ld   SP, HL                                        ;; 00:371e $f9
-    ld   A, [wScriptStackCount]                        ;; 00:371f $fa $65 $d8
-    dec  A                                             ;; 00:3722 $3d
-    ld   [wScriptStackCount], A                        ;; 00:3723 $ea $65 $d8
-    ret                                                ;; 00:3726 $c9
+; Load pointer to top item on the script stack.
+    ld hl, wScriptStackPointer
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+; Pop bc.
+    ld a, [hl+]
+    ld c, a
+    ld a, [hl+]
+    ld b, a
+; Pop de.
+    ld a, [hl+]
+    ld e, a
+    ld a, [hl+]
+    ld d, a
+; Store the pointer to the top of the script stack.
+    ld a, l
+    ld [wScriptStackPointer], a
+    ld a, h
+    ld [wScriptStackPointer.high], a
+; Decrement the stack count.
+    ld hl, wScriptStackCount
+    dec [hl]
+    ret
+
+ds 7 ; Free space
 
 ; Advance to the next byte in a script.
 ; Return: a = next byte, hl = incremented script pointer

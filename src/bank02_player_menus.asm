@@ -1473,7 +1473,7 @@ call_02_4cc7:
     push AF                                            ;; 02:4ccc $f5
     call NZ, call_02_6c0b                              ;; 02:4ccd $c4 $0b $6c
     pop  AF                                            ;; 02:4cd0 $f1
-    call Z, clearThirdMetasprite                       ;; 02:4cd1 $cc $74 $6b
+    call Z, clearTrashcanMetasprite                    ;; 02:4cd1 $cc $74 $6b
     ld   A, [wMenuFlags]                               ;; 02:4cd4 $fa $49 $d8
     and  A, $bf                                        ;; 02:4cd7 $e6 $bf
     ld   [wMenuFlags], A                               ;; 02:4cd9 $ea $49 $d8
@@ -4225,8 +4225,10 @@ drawWindow:
     ret                                                ;; 02:6709 $c9
 
 drawWindowStart:
+; Backup the first three sprites. Windows may use up to three sprites:
+; Two hand pointers and a trashcan.
     ld   HL, wOAMBuffer                                ;; 02:670a $21 $00 $c0
-    ld   DE, wScriptStackTop                           ;; 02:670d $11 $83 $d6
+    ld   DE, wOAMBufferBackup                          ;; 02:670d $11 $83 $d6
     ld   B, $18                                        ;; 02:6710 $06 $18
     call copyHLtoDE                                    ;; 02:6712 $cd $49 $2b
     ld   A, [wDialogType]                              ;; 02:6715 $fa $4a $d8
@@ -4765,7 +4767,7 @@ call_02_6a59:
     sub  A, L                                          ;; 02:6a8b $95
     ret  C                                             ;; 02:6a8c $d8
     push AF                                            ;; 02:6a8d $f5
-    call clearThirdMetasprite                          ;; 02:6a8e $cd $74 $6b
+    call clearTrashcanMetasprite                       ;; 02:6a8e $cd $74 $6b
     pop  AF                                            ;; 02:6a91 $f1
     ld   [wD848], A                                    ;; 02:6a92 $ea $48 $d8
     ld   [wD846], A                                    ;; 02:6a95 $ea $46 $d8
@@ -4898,13 +4900,15 @@ hideAndSaveMenuMetasprites:
     push HL                                            ;; 02:6b51 $e5
     push DE                                            ;; 02:6b52 $d5
     push BC                                            ;; 02:6b53 $c5
+; Restore the first three sprites.
     ld   DE, wOAMBuffer                                ;; 02:6b54 $11 $00 $c0
-    ld   HL, wScriptStackTop                           ;; 02:6b57 $21 $83 $d6
+    ld   HL, wOAMBufferBackup                          ;; 02:6b57 $21 $83 $d6
     ld   B, $18                                        ;; 02:6b5a $06 $18
     call copyHLtoDE                                    ;; 02:6b5c $cd $49 $2b
+; Then clear the first three sprites.
     call clearSecondMetasprite                         ;; 02:6b5f $cd $8c $6b
     call clearFirstMetasprite                          ;; 02:6b62 $cd $84 $6b
-    call clearThirdMetasprite                          ;; 02:6b65 $cd $74 $6b
+    call clearTrashcanMetasprite                       ;; 02:6b65 $cd $74 $6b
     pop  BC                                            ;; 02:6b68 $c1
     pop  DE                                            ;; 02:6b69 $d1
     pop  HL                                            ;; 02:6b6a $e1
@@ -4913,7 +4917,8 @@ hideAndSaveMenuMetasprites:
     ld   [wWindowSecondaryFlags], A                    ;; 02:6b70 $ea $72 $d8
     ret                                                ;; 02:6b73 $c9
 
-clearThirdMetasprite:
+; Used for the trash can in ITEMS and EQUIP.
+clearTrashcanMetasprite:
     ld   A, [wMenuFlags]                               ;; 02:6b74 $fa $49 $d8
     and  A, $7f                                        ;; 02:6b77 $e6 $7f
     ld   [wMenuFlags], A                               ;; 02:6b79 $ea $49 $d8
@@ -5492,7 +5497,7 @@ initStartingStatsAndTimers:
     inc  A                                             ;; 02:6eb3 $3c
     ld   [wLevel], A                                   ;; 02:6eb4 $ea $ba $d7
     call setNextXPLevel                                ;; 02:6eb7 $cd $a3 $3e
-    ld   HL, wScriptStackTop                           ;; 02:6eba $21 $83 $d6
+    ld   HL, wScriptStack.top                          ;; 02:6eba $21 $83 $d6
     ld   A, H                                          ;; 02:6ebd $7c
     ld   [wScriptStackPointer.high], A                 ;; 02:6ebe $ea $bd $d8
     ld   A, L                                          ;; 02:6ec1 $7d

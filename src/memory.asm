@@ -88,6 +88,7 @@ wScratchBankCallL:
 wScratchBankCallH:
     ds 11                                              ;; c0b5
 
+; Grows upwards, unlike hardware stacks.
 wBankStack:
     ds 64                                              ;; c0c0
 
@@ -895,12 +896,17 @@ wOpenChestScript2:
 wOpenChestScript3:
     ds 4                                               ;; d633
 ._4:
-    ds 76                                              ;; d637
+    ds 12                                              ;; d637
 
-; End of the script stack, used by script call/loop operations
-; 4 bytes are pushed onto this at a time. Stack grows upwards!
-; Memory below this label is also used to backup and restore some OAM data (when?)
-wScriptStackTop:
+; Bottom of the script stack, used by script call/loop operations
+; 4 bytes are pushed onto this at a time. Stack grows stack grows from the top downwards.
+wScriptStack:
+    ds 64                                              ;; d643
+.top:
+
+; Used to backup the first three metasprites while windows are up.
+; They might be used for the two hand pointers and the trashcan.
+wOAMBufferBackup:
     ds 24                                              ;; d683
 
 ; START OF SRAM PART 3
@@ -1544,11 +1550,9 @@ wScriptStackPointer:
 .high:
     ds 1                                               ;; d8bd
 
-; SP is stored here while operating on the script stack
+; Unused. Free space.
 wStackBackup:
-    ds 1                                               ;; d8be
-.high:
-    ds 1                                               ;; d8bf
+    ds 2                                               ;; d8be
 
 wNextXPLevelLow:
     ds 1                                               ;; d8c0
