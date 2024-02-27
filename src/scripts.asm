@@ -5,7 +5,10 @@ INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
 
-SECTION "bank0d", ROMX[$4000], BANK[$0d]
+SCRIPT_BANK_1 EQU $0d
+
+; Start of the first script bank.
+SECTION "script bank 1", ROMX[$4000], BANK[SCRIPT_BANK_1]
 
 script_0000:
     sEND                                               ;; 0d:4000 $00
@@ -5177,14 +5180,9 @@ script_027d:
       sSET_ROOM_TILE $02, 1, 1                         ;; 0d:7d6c $b0 $02 $01 $01
     sENDIF                                             ;; 0d:7d70
     sEND                                               ;; 0d:7d70 $00
-;; Disassembled with BadBoy Disassembler: https://github.com/daid/BadBoy
 
-INCLUDE "include/hardware.inc"
-INCLUDE "include/macros.inc"
-INCLUDE "include/charmaps.inc"
-INCLUDE "include/constants.inc"
-
-SECTION "bank0e", ROMX[$4000], BANK[$0e]
+; Start of the second script bank.
+SECTION "script bank 2", ROMX[$4000], BANK[SCRIPT_BANK_1 + 1]
 
 script_027e:
     sIF_TRIGGERED_ON_BY $c9, $a9
