@@ -3893,11 +3893,24 @@ script_0216:
 script_0217:
     sMSG                                               ;; 0d:64c9 $04
       db "<10> __??", $00                              ;; 0d:64ca
-    sDELAY 80                                          ;; 0d:64d0 $f0 $50
+; Add some movement to the egg by flipping its direction.
+    sDELAY 10
+    sSET_NPC_1_DIRECTION_RIGHT
+    sDELAY 10
+    sSET_NPC_1_DIRECTION_LEFT
+    sDELAY 10
+    sSET_NPC_1_DIRECTION_RIGHT
+    sDELAY 10
+    sSET_NPC_1_DIRECTION_LEFT
+    sDELAY 20
     sMSG                                               ;; 0d:64d2 $04
       db "  Wow!\n It's moving!<12>"
       db "<11>", $00 ;; 0d:64d3
-    sDELAY 60                                          ;; 0d:64e4 $f0 $3c
+    sDELAY 10
+    sSET_NPC_1_DIRECTION_RIGHT
+    sDELAY 10
+    sSET_NPC_1_DIRECTION_LEFT
+    sDELAY 40
     sDEL_NPC_1                                         ;; 0d:64e6 $18
     sSFX 15                                            ;; 0d:64e7 $f9 $0f
     sSPAWN_NPC 1                                       ;; 0d:64e9 $fd $01
@@ -5146,6 +5159,9 @@ script_0278:
     sENDIF                                             ;; 0d:7c88
     sEND                                               ;; 0d:7c88 $00
 
+; Start of the second script bank.
+SECTION "script bank 2", ROMX[$4000], BANK[SCRIPT_BANK_1 + 1]
+
 script_0279:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7c89 $0b $c9 $00 $39
       sIF_FLAG wScriptFlags0B.0                        ;; 0d:7c8d $08 $58 $00 $05
@@ -5163,9 +5179,6 @@ script_0279:
       sENDIF                                           ;; 0d:7cc6
     sENDIF                                             ;; 0d:7cc6
     sEND                                               ;; 0d:7cc6 $00
-
-; Start of the second script bank.
-SECTION "script bank 2", ROMX[$4000], BANK[SCRIPT_BANK_1 + 1]
 
 script_027a:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7cc7 $0b $c9 $00 $7c
@@ -11854,6 +11867,9 @@ script_0545:
     sEND                                               ;; 0e:7906 $00
     sEND                                               ;; 0e:7907 $00
 
+; Start of the third script bank.
+SECTION "script bank 3", ROMX[$4000], BANK[SCRIPT_BANK_1 + 2]
+
 script_0546:
     sSET_ROOM_TILE $09, 3, 0                           ;; 0e:7908 $b0 $09 $03 $00
     sSET_ROOM_TILE $79, 4, 0                           ;; 0e:790c $b0 $79 $04 $00
@@ -11889,9 +11905,6 @@ script_0546:
     sSET_ROOM_TILE $0a, 7, 2                           ;; 0e:797f $b0 $0a $07 $02
     sSFX 37                                            ;; 0e:7983 $f9 $25
     sEND                                               ;; 0e:7985 $00
-
-; Start of the third script bank.
-SECTION "script bank 3", ROMX[$4000], BANK[SCRIPT_BANK_1 + 2]
 
 script_0547:
     sSET_ROOM_TILE $09, 3, 0                           ;; 0e:7986 $b0 $09 $03 $00

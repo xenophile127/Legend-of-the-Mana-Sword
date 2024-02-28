@@ -142,7 +142,7 @@ ENDC
     NPC_DATA $81, $5e, $40, $08, data_09_5f00, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01e6, $0000 ;; 03:69aa NPC_GUY_WENDEL
     NPC_DATA $81, $5e, $40, $08, gfxNpcWatts, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_01f8, $0000 ;; 03:69c2 NPC_WATTS
     NPC_DATA $81, $5e, $5c, $02, gfxNpcMinecart, tileorderNpc, metaspritesTable5cUnmovingRed, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01f9, $0000 ;; 03:69da NPC_MINECART
-    NPC_DATA $81, $5e, $40, $04, gfxNpcEgg, tileorderNpc, data_03_7d46, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0217, $0000 ;; 03:69f2 NPC_CHOCOBO_EGG
+    NPC_DATA $81, $5e, $40, $04, gfxNpcEgg, tileorderNpc, data_03_7b72, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_0217, $0000 ;; 03:69f2 NPC_CHOCOBO_EGG
     NPC_DATA $81, $5f, $40, $08, gfxNpcDavias, tileorderNpc, data_03_7cb6, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0218, $0000 ;; 03:6a0a NPC_DAVIAS
     NPC_DATA $81, $5e, $5c, $02, gfxNpcLesterInstrument, tileorderNpc, metaspritesTable5cUnmoving, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0222, $0000 ;; 03:6a22 NPC_LESTER_1
     NPC_DATA $81, $5f, $50, $04, gfxNpcParrot, tileorderNpc, data_03_7b96, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_0219, $0000 ;; 03:6a3a NPC_LESTER_PARROT
