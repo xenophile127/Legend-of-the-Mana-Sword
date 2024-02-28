@@ -4905,6 +4905,13 @@ MultiplyDE_by_C_24bit:
 ; DE = YX metatile position
 updateMetatileAttributeCacheAndDrawImmediate:
     ld B, A
+
+    ; Check range in X direction to allow drawing tiles offscreen for the shake effect without bugs.
+    ld A, E
+    cp (SCRN_X_B / 2)
+    ld A, B
+    jr nc, .draw_metatile
+
     ld A, BANK(metatilesOutdoor)
     call pushBankNrAndSwitch
     ld A, B ; need A restored for getTileInfoPointer
@@ -4928,6 +4935,8 @@ updateMetatileAttributeCacheAndDrawImmediate:
 
     call popBankNrAndSwitch
     pop AF
+
+.draw_metatile:
     ld HL, wRoomTiles
     jp drawMetaTile_immediate
 
@@ -5002,7 +5011,7 @@ cacheMetatileAttributesAndLoadRoomTiles:
 scanRoomForNpcPlacementOptions_trampoline:
     jp_to_bank 11, scanRoomForNpcPlacementOptions
 
-ds 33 ; Free space
+ds 27 ; Free space
 
 ; Speeds up script execution by whitelisting certain opcodes to ignore the limit of one opcode per frame.
 speedUpScripts:
