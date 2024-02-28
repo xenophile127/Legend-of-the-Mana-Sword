@@ -487,6 +487,7 @@ wPlayerSpecialFlags:
 ; 02: Movement speed
 ; 03: Melee state? Set to 01 on using a melee projectile, 04 while it's active, and ff otherwise. Likely to keep the NPC from moving?
 ; 04: Current behavior index
+; 05: Current behavior counter
 ; 08: Damage timer
 ; 0a: Status (bit7: Slep, bit6: Mute)
 ; 0c-0d: HP

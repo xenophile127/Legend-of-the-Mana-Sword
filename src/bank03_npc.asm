@@ -56,27 +56,35 @@ npcRunBehaviorForAll:
 
 ; HL = Npc Runtime Data entry pointer
 npcRunBehavior:
+; Decrement delay until next move and return if not zero.
     inc  HL                                            ;; 03:404a $23
     dec  [HL]                                          ;; 03:404b $35
     ret  NZ                                            ;; 03:404c $c0
+; Re-init delay until next move from movement speed.
     inc  HL                                            ;; 03:404d $23
     ld   A, [HL-]                                      ;; 03:404e $3a
     ld   [HL-], A                                      ;; 03:404f $32
+; Store movement speed in B for knockback calculations.
     ld   B, A                                          ;; 03:4050 $47
+; Load the NPC's damage timer.
     push HL                                            ;; 03:4051 $e5
     ld   D, H                                          ;; 03:4052 $54
     ld   E, L                                          ;; 03:4053 $5d
     ld   HL, $08                                       ;; 03:4054 $21 $08 $00
     add  HL, DE                                        ;; 03:4057 $19
     ld   A, [HL]                                       ;; 03:4058 $7e
+; Run knockback code if the damage timer hasn't run out.
     cp   A, $00                                        ;; 03:4059 $fe $00
     call NZ, npcDamageKnockback                        ;; 03:405b $c4 $07 $41
+; Load the NPC's current behavior and the current behavior's counter.
     ld   HL, $04                                       ;; 03:405e $21 $04 $00
     add  HL, DE                                        ;; 03:4061 $19
     ld   A, [HL+]                                      ;; 03:4062 $2a
     ld   C, [HL]                                       ;; 03:4063 $4e
+; If the current behavior isn't zero then continue the behavior.
     cp   A, $00                                        ;; 03:4064 $fe $00
-    jr   NZ, .jr_03_40c7                               ;; 03:4066 $20 $5f
+    jr   NZ, .run_behavior                             ;; 03:4066 $20 $5f
+; When choosing a new behavior ensure the NPC is snapped to the grid.
     ld   A, [DE]                                       ;; 03:4068 $1a
     ld   C, A                                          ;; 03:4069 $4f
     push BC                                            ;; 03:406a $c5
@@ -84,22 +92,27 @@ npcRunBehavior:
     call snapObjectToNearestTile8                      ;; 03:406c $cd $ba $29
     pop  DE                                            ;; 03:406f $d1
     pop  BC                                            ;; 03:4070 $c1
+; Load NPC current HP into DE.
     ld   HL, $0c                                       ;; 03:4071 $21 $0c $00
     add  HL, DE                                        ;; 03:4074 $19
     ld   E, [HL]                                       ;; 03:4075 $5e
     inc  HL                                            ;; 03:4076 $23
     ld   D, [HL]                                       ;; 03:4077 $56
+; If NPC HP is zero then run the death behavior.
     ld   A, E                                          ;; 03:4078 $7b
     or   A, D                                          ;; 03:4079 $b2
-    jr   Z, .jr_03_40fb                                ;; 03:407a $28 $7f
+    jr   Z, .death_behavior                            ;; 03:407a $28 $7f
+; If the NPC is sliding (on ice or such) run the sliding behavior.
     push DE                                            ;; 03:407c $d5
     call getObjectSliding                              ;; 03:407d $cd $d3 $0c
     pop  DE                                            ;; 03:4080 $d1
     cp   A, $00                                        ;; 03:4081 $fe $00
-    jp   NZ, .jp_03_40ff                               ;; 03:4083 $c2 $ff $40
+    jp   NZ, .sliding                                  ;; 03:4083 $c2 $ff $40
+; Choose a behavior set.
     pop  HL                                            ;; 03:4086 $e1
     push HL                                            ;; 03:4087 $e5
-    call call_03_41fc                                  ;; 03:4088 $cd $fc $41
+    call npcChooseBehaviorSet                          ;; 03:4088 $cd $fc $41
+; Get the address of the NPC's npcDataTable entry in ROM.
     pop  HL                                            ;; 03:408b $e1
     push HL                                            ;; 03:408c $e5
     ld   BC, $12                                       ;; 03:408d $01 $12 $00
@@ -107,8 +120,10 @@ npcRunBehavior:
     ld   A, [HL+]                                      ;; 03:4091 $2a
     ld   H, [HL]                                       ;; 03:4092 $66
     ld   L, A                                          ;; 03:4093 $6f
+; Get the entry for the chosen behavior set.
     add  HL, DE                                        ;; 03:4094 $19
     ld   A, [HL]                                       ;; 03:4095 $7e
+; Multiply by 32.
     ld   L, A                                          ;; 03:4096 $6f
     ld   H, $00                                        ;; 03:4097 $26 $00
     add  HL, HL                                        ;; 03:4099 $29
@@ -116,18 +131,22 @@ npcRunBehavior:
     add  HL, HL                                        ;; 03:409b $29
     add  HL, HL                                        ;; 03:409c $29
     add  HL, HL                                        ;; 03:409d $29
-    ld   DE, data_03_563e                              ;; 03:409e $11 $3e $56
+; Load the behavior set entry address.
+    ld   DE, behaviorSets                              ;; 03:409e $11 $3e $56
     add  HL, DE                                        ;; 03:40a1 $19
+; Choose a behavior at random from the set.
+; There are 32 possibilites, 16 common and 16 uncommon..
     push HL                                            ;; 03:40a2 $e5
     call getRandomByte                                 ;; 03:40a3 $cd $1e $2b
     pop  HL                                            ;; 03:40a6 $e1
     ld   C, A                                          ;; 03:40a7 $4f
     and  A, $0f                                        ;; 03:40a8 $e6 $0f
     cp   A, C                                          ;; 03:40aa $b9
-    jr   NZ, .jr_03_40b1                               ;; 03:40ab $20 $04
+    jr   NZ, .load_behavior_index                      ;; 03:40ab $20 $04
+; Choose an uncommon behavior. One in sixteen chance, so 1/256 chance of each uncommon coming up.
     ld   DE, $10                                       ;; 03:40ad $11 $10 $00
     add  HL, DE                                        ;; 03:40b0 $19
-.jr_03_40b1:
+.load_behavior_index:
     ld   E, A                                          ;; 03:40b1 $5f
     ld   D, $00                                        ;; 03:40b2 $16 $00
     add  HL, DE                                        ;; 03:40b4 $19
@@ -136,7 +155,8 @@ npcRunBehavior:
     push DE                                            ;; 03:40b7 $d5
     call checkSlepOrMute                               ;; 03:40b8 $cd $8b $41
     jr   Z, .slep_or_mute                              ;; 03:40bb $28 $46
-.jr_03_40bd:
+.set_new_behavior:
+; Set the new behavior number in the wNpcRuntimeData entry.
     pop  HL                                            ;; 03:40bd $e1
     push HL                                            ;; 03:40be $e5
     ld   DE, $04                                       ;; 03:40bf $11 $04 $00
@@ -144,7 +164,7 @@ npcRunBehavior:
     ld   [HL+], A                                      ;; 03:40c3 $22
     ld   C, $00                                        ;; 03:40c4 $0e $00
     ld   [HL], C                                       ;; 03:40c6 $71
-.jr_03_40c7:
+.run_behavior:
     pop  DE                                            ;; 03:40c7 $d1
     push DE                                            ;; 03:40c8 $d5
     push AF                                            ;; 03:40c9 $f5
@@ -181,16 +201,18 @@ npcRunBehavior:
     add  HL, DE                                        ;; 03:40f7 $19
     ld   [HL], $01                                     ;; 03:40f8 $36 $01
     ret                                                ;; 03:40fa $c9
-.jr_03_40fb:
+.death_behavior:
     ld   A, $01                                        ;; 03:40fb $3e $01
-    jr   .jr_03_40bd                                   ;; 03:40fd $18 $be
-.jp_03_40ff:
+    jr   .set_new_behavior                             ;; 03:40fd $18 $be
+.sliding:
     ld   A, $1b                                        ;; 03:40ff $3e $1b
-    jr   .jr_03_40bd                                   ;; 03:4101 $18 $ba
+    jr   .set_new_behavior                             ;; 03:4101 $18 $ba
 .slep_or_mute:
     ld   A, $00                                        ;; 03:4103 $3e $00
-    jr   .jr_03_40bd                                   ;; 03:4105 $18 $b6
+    jr   .set_new_behavior                             ;; 03:4105 $18 $b6
 
+; B = NPC movement speed
+; HL = NPC Runtime Data entry pointer
 npcDamageKnockback:
     cp   A, $2c                                        ;; 03:4107 $fe $2c
     jr   C, .jr_03_411f                                ;; 03:4109 $38 $14
@@ -285,6 +307,7 @@ npcDamageKnockback:
     pop  DE                                            ;; 03:4189 $d1
     ret                                                ;; 03:418a $c9
 
+; A = attempted behavior
 ; DE = NPC runtime data address
 ; Return: Z = set if the given enemy is asleep or mute, clear if not.
 checkSlepOrMute:
@@ -296,7 +319,7 @@ checkSlepOrMute:
     call getObjectCollisionFlags                       ;; 03:4190 $cd $6d $0c
     and  A, $f0                                        ;; 03:4193 $e6 $f0
     cp   A, $d0                                        ;; 03:4195 $fe $d0
-    jr   Z, .return_false                              ;; 03:4197 $28 $58
+    jr   Z, .allow_behavior                            ;; 03:4197 $28 $58
     ld   A, [wSlepTimerNumber]                         ;; 03:4199 $fa $60 $cf
     cp   A, $00                                        ;; 03:419c $fe $00
     jr   Z, .check_mute                                ;; 03:419e $28 $25
@@ -318,49 +341,61 @@ checkSlepOrMute:
     pop  BC                                            ;; 03:41bd $c1
     push BC                                            ;; 03:41be $c5
     push DE                                            ;; 03:41bf $d5
+; Only four behaviors are allowed: Doing nothing, dying, or projectile creation and management.
+; It is unclear how using a projectile is normally prevented,
+; but if an NPC is slept with a projectile in flight it goes into an autofire loop.
     ld   A, C                                          ;; 03:41c0 $79
     cp   A, $04                                        ;; 03:41c1 $fe $04
-    jr   NC, .return_true                              ;; 03:41c3 $30 $32
+    jr   NC, .block_behavior                           ;; 03:41c3 $30 $32
 .check_mute:
     ld   A, [wMuteTimerNumber]                         ;; 03:41c5 $fa $61 $cf
     cp   A, $00                                        ;; 03:41c8 $fe $00
-    jr   Z, .return_false                              ;; 03:41ca $28 $25
+    jr   Z, .allow_behavior                            ;; 03:41ca $28 $25
     call timerCheckExpiredOrTickAllTimers              ;; 03:41cc $cd $0a $30
     jr   NZ, .mute_active                              ;; 03:41cf $20 $0d
     ld   A, [wMuteTimerNumber]                         ;; 03:41d1 $fa $61 $cf
     call timerFree                                     ;; 03:41d4 $cd $ca $2f
     ld   A, $00                                        ;; 03:41d7 $3e $00
     ld   [wMuteTimerNumber], A                         ;; 03:41d9 $ea $61 $cf
-    jr   .return_false                                 ;; 03:41dc $18 $13
+    jr   .allow_behavior                               ;; 03:41dc $18 $13
 .mute_active:
     pop  DE                                            ;; 03:41de $d1
     push DE                                            ;; 03:41df $d5
     ld   HL, $0a                                       ;; 03:41e0 $21 $0a $00
     add  HL, DE                                        ;; 03:41e3 $19
     bit  6, [HL]                                       ;; 03:41e4 $cb $76
-    jr   Z, .return_false                              ;; 03:41e6 $28 $09
+    jr   Z, .allow_behavior                            ;; 03:41e6 $28 $09
+; The NPC is afflicted with Mute.
     pop  DE                                            ;; 03:41e8 $d1
     pop  BC                                            ;; 03:41e9 $c1
     push BC                                            ;; 03:41ea $c5
     push DE                                            ;; 03:41eb $d5
+; If the NPC is trying to use a projectile attack (behavior 2) put a stop to it.
     ld   A, C                                          ;; 03:41ec $79
     cp   A, $02                                        ;; 03:41ed $fe $02
-    jr   Z, .return_true                               ;; 03:41ef $28 $06
-.return_false:
+    jr   Z, .block_behavior                            ;; 03:41ef $28 $06
+.allow_behavior:
     xor  A, A                                          ;; 03:41f1 $af
     inc  A                                             ;; 03:41f2 $3c
     pop  DE                                            ;; 03:41f3 $d1
     pop  BC                                            ;; 03:41f4 $c1
     ld   A, C                                          ;; 03:41f5 $79
     ret                                                ;; 03:41f6 $c9
-.return_true:
+.block_behavior:
     xor  A, A                                          ;; 03:41f7 $af
     pop  DE                                            ;; 03:41f8 $d1
     pop  BC                                            ;; 03:41f9 $c1
     ld   A, C                                          ;; 03:41fa $79
     ret                                                ;; 03:41fb $c9
 
-call_03_41fc:
+; Choose one of the four behavior sets depending on HP and position compared to the player.
+; Highest priority is if the the NPC is aligned to to the north or south of the player.
+; Second priority is east or west alignment to the player.
+; If not aligned then select the correct set for the relative HP.
+; HL = wNpcRuntimeData entry address.
+; DE = NPC current HP.
+; Return: DE = offset for the chosen behavior set ($10 to $13).
+npcChooseBehaviorSet:
     push DE                                            ;; 03:41fc $d5
     ld   C, [HL]                                       ;; 03:41fd $4e
     push BC                                            ;; 03:41fe $c5
@@ -371,42 +406,42 @@ call_03_41fc:
     call getPlayerX                                    ;; 03:4205 $cd $93 $02
     pop  BC                                            ;; 03:4208 $c1
     sub  A, B                                          ;; 03:4209 $90
-    jr   Z, .jr_03_423d                                ;; 03:420a $28 $31
-    jr   NC, .jr_03_4210                               ;; 03:420c $30 $02
+    jr   Z, .north_or_south_of_player                  ;; 03:420a $28 $31
+    jr   NC, .check_x_difference_within_8              ;; 03:420c $30 $02
     cpl                                                ;; 03:420e $2f
     inc  A                                             ;; 03:420f $3c
-.jr_03_4210:
+.check_x_difference_within_8:
     cp   A, $08                                        ;; 03:4210 $fe $08
-    jr   C, .jr_03_423d                                ;; 03:4212 $38 $29
-    jr   Z, .jr_03_423d                                ;; 03:4214 $28 $27
+    jr   C, .north_or_south_of_player                  ;; 03:4212 $38 $29
+    jr   Z, .north_or_south_of_player                  ;; 03:4214 $28 $27
     call GetObjectY                                    ;; 03:4216 $cd $3e $0c
     ld   B, A                                          ;; 03:4219 $47
     push BC                                            ;; 03:421a $c5
     call getPlayerY                                    ;; 03:421b $cd $99 $02
     pop  BC                                            ;; 03:421e $c1
     sub  A, B                                          ;; 03:421f $90
-    jr   Z, .jr_03_4242                                ;; 03:4220 $28 $20
-    jr   NC, .jr_03_4226                               ;; 03:4222 $30 $02
+    jr   Z, .east_or_west_of_player                    ;; 03:4220 $28 $20
+    jr   NC, .check_y_difference_within_8              ;; 03:4222 $30 $02
     cpl                                                ;; 03:4224 $2f
     inc  A                                             ;; 03:4225 $3c
-.jr_03_4226:
+.check_y_difference_within_8:
     cp   A, $08                                        ;; 03:4226 $fe $08
-    jr   C, .jr_03_4242                                ;; 03:4228 $38 $18
-    jr   Z, .jr_03_4242                                ;; 03:422a $28 $16
+    jr   C, .east_or_west_of_player                    ;; 03:4228 $38 $18
+    jr   Z, .east_or_west_of_player                    ;; 03:422a $28 $16
     call getHP                                         ;; 03:422c $cd $ed $3d
     pop  DE                                            ;; 03:422f $d1
     call sub_HL_DE                                     ;; 03:4230 $cd $ab $2b
-    jr   C, .jr_03_4239                                ;; 03:4233 $38 $04
+    jr   C, .hp_higher_than_player                     ;; 03:4233 $38 $04
     ld   DE, $10                                       ;; 03:4235 $11 $10 $00
     ret                                                ;; 03:4238 $c9
-.jr_03_4239:
+.hp_higher_than_player:
     ld   DE, $11                                       ;; 03:4239 $11 $11 $00
     ret                                                ;; 03:423c $c9
-.jr_03_423d:
+.north_or_south_of_player:
     pop  HL                                            ;; 03:423d $e1
     ld   DE, $12                                       ;; 03:423e $11 $12 $00
     ret                                                ;; 03:4241 $c9
-.jr_03_4242:
+.east_or_west_of_player:
     pop  HL                                            ;; 03:4242 $e1
     ld   DE, $13                                       ;; 03:4243 $11 $13 $00
     ret                                                ;; 03:4246 $c9
@@ -2426,7 +2461,7 @@ npcBehaviorJumptable:
     dw   ld_C_into_A                                   ;; 03:4c55 ?? $00
     dw   npcBehaviorDeath                              ;; 03:4c57 pP $01
     dw   npcBehaviorSpawnProjectile                    ;; 03:4c59 pP $02
-    dw   call_03_4ef0                                  ;; 03:4c5b pP $03
+    dw   npcBehaviorManageProjectile                   ;; 03:4c5b pP $03
     dw   npcStepForward                                ;; 03:4c5d pP $04
     dw   npcStepBackward                               ;; 03:4c5f pP $05
     dw   npcTurnRight                                  ;; 03:4c61 pP $06
@@ -2450,7 +2485,7 @@ npcBehaviorJumptable:
     dw   ld_C_into_A                                   ;; 03:4c85 ?? $18
     dw   ld_C_into_A                                   ;; 03:4c87 ?? $19
     dw   ld_C_into_A                                   ;; 03:4c89 ?? $1a
-    dw   call_03_4eb5                                  ;; 03:4c8b ?? $1b
+    dw   npcBehaviorSliding                            ;; 03:4c8b ?? $1b
     dw   npcFaceEast                                   ;; 03:4c8d pP $1c
     dw   npcFaceWest                                   ;; 03:4c8f pP $1d
     dw   npcFaceNorth                                  ;; 03:4c91 pP $1e
@@ -2746,11 +2781,14 @@ ld_C_into_A:
     ld   A, C                                          ;; 03:4eb3 $79
     ret                                                ;; 03:4eb4 $c9
 
-call_03_4eb5:
+npcBehaviorSliding:
+; Load the NPC's object index.
     ld   A, [DE]                                       ;; 03:4eb5 $1a
+; Set the NPC's delay until next move to 1 (max speed).
     ld   HL, $01                                       ;; 03:4eb6 $21 $01 $00
     add  HL, DE                                        ;; 03:4eb9 $19
     ld   [HL], $01                                     ;; 03:4eba $36 $01
+; Attempt to slide the NPC.
     ld   C, A                                          ;; 03:4ebc $4f
     ld   B, $00                                        ;; 03:4ebd $06 $00
     ld   A, $00                                        ;; 03:4ebf $3e $00
@@ -2781,10 +2819,10 @@ npcBehaviorSpawnProjectile:
     ld   C, $1e                                        ;; 03:4ee6 $0e $1e
     call call_03_55cb                                  ;; 03:4ee8 $cd $cb $55
     ld   C, A                                          ;; 03:4eeb $4f
-    call call_03_4ef0                                  ;; 03:4eec $cd $f0 $4e
+    call npcBehaviorManageProjectile                   ;; 03:4eec $cd $f0 $4e
     ret                                                ;; 03:4eef $c9
 
-call_03_4ef0:
+npcBehaviorManageProjectile:
     ld   A, C                                          ;; 03:4ef0 $79
     dec  A                                             ;; 03:4ef1 $3d
     push AF                                            ;; 03:4ef2 $f5
@@ -4269,8 +4307,10 @@ call_03_55fb:
     ret                                                ;; 03:563d $c9
 
 ;@data format=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb amount=30
-; Table usage unknown, record size gained from code.
-data_03_563e:
+; Every NPC has four behavior sets, selected based on comparing their position and HP to the player.
+; Every set has 16 common behaviors and 16 uncommon behaviors.
+; There is a 15/16 chance that a common behavior will be selected and a 1/16 chance of an uncommon.
+behaviorSets:
     db   $11, $11, $11, $11, $11, $11, $11, $11, $11, $08, $06, $06, $06, $07, $07, $07, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11 ;; 03:563e ................??.?..????.????. $00
     db   $11, $11, $11, $11, $11, $08, $06, $06, $06, $07, $07, $07, $02, $02, $02, $02, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11, $11 ;; 03:565e ???????????????????????????????? $01
     db   $07, $06, $07, $06, $07, $08, $04, $04, $04, $04, $04, $04, $04, $04, $0f, $0f, $09, $09, $09, $09, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10 ;; 03:567e ............................?... $02

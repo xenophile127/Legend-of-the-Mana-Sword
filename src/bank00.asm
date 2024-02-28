@@ -7436,8 +7436,10 @@ divMod:
     jr   NZ, .loop                                     ;; 00:2ba8 $20 $ee
     ret                                                ;; 00:2baa $c9
 
-; HL -= DE
+; Subtract DE from HL and set Z and C flags appropriately.
+; Return: DE = DE * -1, HL = HL - DE, Z flag set if HL is zero, C flag set if DE > HL.
 sub_HL_DE:
+; Multiply DE by -1.
     ld   A, D                                          ;; 00:2bab $7a
     cpl                                                ;; 00:2bac $2f
     ld   D, A                                          ;; 00:2bad $57
@@ -7447,11 +7449,11 @@ sub_HL_DE:
     inc  DE                                            ;; 00:2bb1 $13
     ld   A, D                                          ;; 00:2bb2 $7a
     or   A, E                                          ;; 00:2bb3 $b3
-    jr   Z, .jr_00_2bb9                                ;; 00:2bb4 $28 $03
+    jr   Z, .calculate_zero_flag                       ;; 00:2bb4 $28 $03
     add  HL, DE                                        ;; 00:2bb6 $19
     ccf                                                ;; 00:2bb7 $3f
     ret  C                                             ;; 00:2bb8 $d8
-.jr_00_2bb9:
+.calculate_zero_flag:
     ld   A, H                                          ;; 00:2bb9 $7c
     or   A, L                                          ;; 00:2bba $b5
     ret                                                ;; 00:2bbb $c9
