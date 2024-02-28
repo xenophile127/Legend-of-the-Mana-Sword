@@ -342,20 +342,20 @@ checkSlepOrMute:
     push BC                                            ;; 03:41be $c5
     push DE                                            ;; 03:41bf $d5
 ; Only four behaviors are allowed: Doing nothing, dying, or projectile creation and management.
+; It is unclear how using a projectile is normally prevented,
+; but if an NPC is slept with a projectile in flight it goes into an autofire loop.
     ld   A, C                                          ;; 03:41c0 $79
     cp   A, $04                                        ;; 03:41c1 $fe $04
     jr   NC, .block_behavior                           ;; 03:41c3 $30 $32
-; Fix to disallow NPCs from firing projectiles while asleep.
-    jr .block_projectile
 .check_mute:
     ld   A, [wMuteTimerNumber]                         ;; 03:41c5 $fa $61 $cf
-    or a
+    cp   A, $00                                        ;; 03:41c8 $fe $00
     jr   Z, .allow_behavior                            ;; 03:41ca $28 $25
     call timerCheckExpiredOrTickAllTimers              ;; 03:41cc $cd $0a $30
     jr   NZ, .mute_active                              ;; 03:41cf $20 $0d
     ld   A, [wMuteTimerNumber]                         ;; 03:41d1 $fa $61 $cf
     call timerFree                                     ;; 03:41d4 $cd $ca $2f
-    xor a
+    ld   A, $00                                        ;; 03:41d7 $3e $00
     ld   [wMuteTimerNumber], A                         ;; 03:41d9 $ea $61 $cf
     jr   .allow_behavior                               ;; 03:41dc $18 $13
 .mute_active:
@@ -372,7 +372,6 @@ checkSlepOrMute:
     push DE                                            ;; 03:41eb $d5
 ; If the NPC is trying to use a projectile attack (behavior 2) put a stop to it.
     ld   A, C                                          ;; 03:41ec $79
-.block_projectile:
     cp   A, $02                                        ;; 03:41ed $fe $02
     jr   Z, .block_behavior                            ;; 03:41ef $28 $06
 .allow_behavior:
