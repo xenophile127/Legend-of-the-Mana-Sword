@@ -5,7 +5,7 @@ INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
 
-SCRIPT_BANK_1 EQU $0d
+SCRIPT_BANK_1 EQU $12
 
 ; Start of the first script bank.
 SECTION "script bank 1", ROMX[$4000], BANK[SCRIPT_BANK_1]
@@ -2837,6 +2837,23 @@ script_01b6:
 
 script_01b7:
     sSET_MUSIC 9                                       ;; 0d:5258 $f8 $09
+; Fill tiles just outside the screen before the shake effect.
+    sSET_ROOM_TILE $64, 10, 0
+    sSET_ROOM_TILE $64, 10, 1
+    sSET_ROOM_TILE $64, 10, 2
+    sSET_ROOM_TILE $53, 10, 3
+    sSET_ROOM_TILE $64, 10, 4
+    sSET_ROOM_TILE $64, 10, 5
+    sSET_ROOM_TILE $64, 10, 6
+    sSET_ROOM_TILE $64, 10, 7
+    sSET_ROOM_TILE $64, 15, 0
+    sSET_ROOM_TILE $54, 15, 1
+    sSET_ROOM_TILE $32, 15, 2
+    sSET_ROOM_TILE $51, 15, 3
+    sSET_ROOM_TILE $43, 15, 4
+    sSET_ROOM_TILE $30, 15, 5
+    sSET_ROOM_TILE $51, 15, 6
+    sSET_ROOM_TILE $54, 15, 7
     sSFX 37                                            ;; 0d:525a $f9 $25
     sSHAKE_SCREEN                                      ;; 0d:525c $fb
     sCALL script_0248                                  ;; 0d:525d $02 $33 $e7
@@ -3624,6 +3641,23 @@ script_0207:
     sEND                                               ;; 0d:5fc9 $00
     sSET_PLAYER_POSITION 20, 0                         ;; 0d:5fca $8a $14 $00
     sCREATE_EFFECT $10, $0e, $05                       ;; 0d:5fcd $ba $10 $0e $05
+; Fill tiles just outside the screen before the shake effect.
+    sSET_ROOM_TILE $21, 10, 0
+    sSET_ROOM_TILE $73, 10, 1
+    sSET_ROOM_TILE $74, 10, 2
+    sSET_ROOM_TILE $52, 10, 3
+    sSET_ROOM_TILE $1e, 10, 4
+    sSET_ROOM_TILE $00, 10, 5
+    sSET_ROOM_TILE $00, 10, 6
+    sSET_ROOM_TILE $1c, 10, 7
+    sSET_ROOM_TILE $0b, 15, 0
+    sSET_ROOM_TILE $0b, 15, 1
+    sSET_ROOM_TILE $0b, 15, 2
+    sSET_ROOM_TILE $0b, 15, 3
+    sSET_ROOM_TILE $0b, 15, 4
+    sSET_ROOM_TILE $2d, 15, 5
+    sSET_ROOM_TILE $2d, 15, 6
+    sSET_ROOM_TILE $07, 15, 7
     sSFX 25                                            ;; 0d:5fd1 $f9 $19
     sFLASH_SCREEN                                      ;; 0d:5fd3 $bf
     sSHAKE_SCREEN                                      ;; 0d:5fd4 $fb
@@ -4484,6 +4518,16 @@ script_0248:
     sEND                                               ;; 0d:73f3 $00
 
 script_0249:
+; Fill tiles just outside the screen before the shake effect.
+; Because you must scroll in only one side needs to be done.
+    sSET_ROOM_TILE $50, 15, 0
+    sSET_ROOM_TILE $50, 15, 1
+    sSET_ROOM_TILE $50, 15, 2
+    sSET_ROOM_TILE $51, 15, 3
+    sSET_ROOM_TILE $00, 15, 4
+    sSET_ROOM_TILE $00, 15, 5
+    sSET_ROOM_TILE $00, 15, 6
+    sSET_ROOM_TILE $11, 15, 7
     sFLASH_SCREEN                                      ;; 0d:73f4 $bf
     sSFX 37                                            ;; 0d:73f5 $f9 $25
     sFLASH_SCREEN                                      ;; 0d:73f7 $bf
@@ -4576,6 +4620,12 @@ script_0249:
     sSET_ROOM_TILE $64, 8, 7                           ;; 0d:75af $b0 $64 $08 $07
     sSET_ROOM_TILE $64, 9, 6                           ;; 0d:75b3 $b0 $64 $09 $06
     sSET_ROOM_TILE $64, 9, 7                           ;; 0d:75b7 $b0 $64 $09 $07
+; Fill tiles just outside the screen before the shake effect.
+; Only the area where the bridge was needs to be changed.
+    sSET_ROOM_TILE $64, 10, 3
+    sSET_ROOM_TILE $64, 10, 4
+    sSET_ROOM_TILE $64, 10, 5
+    sSET_ROOM_TILE $64, 10, 6
     sSFX 37                                            ;; 0d:75bb $f9 $25
     sSHAKE_SCREEN                                      ;; 0d:75bd $fb
     sFLASH_SCREEN                                      ;; 0d:75be $bf
@@ -5114,6 +5164,9 @@ script_0279:
     sENDIF                                             ;; 0d:7cc6
     sEND                                               ;; 0d:7cc6 $00
 
+; Start of the second script bank.
+SECTION "script bank 2", ROMX[$4000], BANK[SCRIPT_BANK_1 + 1]
+
 script_027a:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7cc7 $0b $c9 $00 $7c
       sIF_EQUIPED INV_SWORD_SILVER                     ;; 0d:7ccb $09 $46 $00 $09
@@ -5180,9 +5233,6 @@ script_027d:
       sSET_ROOM_TILE $02, 1, 1                         ;; 0d:7d6c $b0 $02 $01 $01
     sENDIF                                             ;; 0d:7d70
     sEND                                               ;; 0d:7d70 $00
-
-; Start of the second script bank.
-SECTION "script bank 2", ROMX[$4000], BANK[SCRIPT_BANK_1 + 1]
 
 script_027e:
     sIF_TRIGGERED_ON_BY $c9, $a9
@@ -5838,6 +5888,23 @@ script_02be:
         sDELAY 70                                      ;; 0e:4346 $f0 $46
         sSFX 22                                        ;; 0e:4348 $f9 $16
         sDELAY 70                                      ;; 0e:434a $f0 $46
+; Fill tiles just outside the screen before the shake effect.
+        sSET_ROOM_TILE $61, 10, 0
+        sSET_ROOM_TILE $62, 10, 1
+        sSET_ROOM_TILE $60, 10, 2
+        sSET_ROOM_TILE $70, 10, 3
+        sSET_ROOM_TILE $70, 10, 4
+        sSET_ROOM_TILE $70, 10, 5
+        sSET_ROOM_TILE $00, 10, 6
+        sSET_ROOM_TILE $30, 10, 7
+        sSET_ROOM_TILE $11, 15, 0
+        sSET_ROOM_TILE $21, 15, 1
+        sSET_ROOM_TILE $08, 15, 2
+        sSET_ROOM_TILE $08, 15, 3
+        sSET_ROOM_TILE $08, 15, 4
+        sSET_ROOM_TILE $08, 15, 5
+        sSET_ROOM_TILE $08, 15, 6
+        sSET_ROOM_TILE $08, 15, 7
         sSFX 37                                        ;; 0e:434c $f9 $25
         sSHAKE_SCREEN                                  ;; 0e:434e $fb
         sMSG                                           ;; 0e:434f $04
@@ -6753,6 +6820,23 @@ script_0351:
 script_0352:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4925 $0b $c9 $00 $60
       sIF_FLAG !wScriptFlags06.7                       ;; 0e:4929 $08 $b7 $00 $55
+; Fill tiles just outside the screen before the shake effect.
+        sSET_ROOM_TILE $12, 10, 0
+        sSET_ROOM_TILE $12, 10, 1
+        sSET_ROOM_TILE $12, 10, 2
+        sSET_ROOM_TILE $12, 10, 3
+        sSET_ROOM_TILE $12, 10, 4
+        sSET_ROOM_TILE $12, 10, 5
+        sSET_ROOM_TILE $12, 10, 6
+        sSET_ROOM_TILE $12, 10, 7
+        sSET_ROOM_TILE $64, 15, 0
+        sSET_ROOM_TILE $64, 15, 1
+        sSET_ROOM_TILE $25, 15, 2
+        sSET_ROOM_TILE $64, 15, 3
+        sSET_ROOM_TILE $53, 15, 4
+        sSET_ROOM_TILE $64, 15, 5
+        sSET_ROOM_TILE $64, 15, 6
+        sSET_ROOM_TILE $79, 15, 7
         sSFX 37                                        ;; 0e:492d $f9 $25
         sSHAKE_SCREEN                                  ;; 0e:492f $fb
         sMSG                                           ;; 0e:4930 $04
@@ -7769,6 +7853,12 @@ script_03e8:
         sPLAYER_STEP_FORWARD                           ;; 0e:4fbf $80
         sPLAYER_STEP_FORWARD                           ;; 0e:4fc0 $80
         sDELAY 40                                      ;; 0e:4fc1 $f0 $28
+; Fill tiles just outside the screen before the shake effect.
+; Because you must scroll in from a similar screen only part of one side needs to be done.
+        sSET_ROOM_TILE $41, 15, 0
+        sSET_ROOM_TILE $51, 15, 1
+        sSET_ROOM_TILE $39, 15, 6
+        sSET_ROOM_TILE $41, 15, 7
         sSHAKE_SCREEN                                  ;; 0e:4fc3 $fb
         sFLASH_SCREEN                                  ;; 0e:4fc4 $bf
         sSFX 37                                        ;; 0e:4fc5 $f9 $25
@@ -8117,13 +8207,49 @@ script_040a:
           db "<10>   Rusty sword\n  released its\n  mystic power__<12>"
           db "<11>", $00 ;; 0e:523d
         sDELAY 120                                     ;; 0e:5260 $f0 $78
+; Fill tiles just outside the screen before the shake effect.
+        sSET_ROOM_TILE $06, 10, 0
+        sSET_ROOM_TILE $10, 10, 1
+        sSET_ROOM_TILE $10, 10, 2
+        sSET_ROOM_TILE $10, 10, 3
+        sSET_ROOM_TILE $40, 10, 4
+        sSET_ROOM_TILE $40, 10, 5
+        sSET_ROOM_TILE $40, 10, 6
+        sSET_ROOM_TILE $50, 10, 7
+        sSET_ROOM_TILE $05, 15, 0
+        sSET_ROOM_TILE $15, 15, 1
+        sSET_ROOM_TILE $15, 15, 2
+        sSET_ROOM_TILE $25, 15, 3
+        sSET_ROOM_TILE $35, 15, 4
+        sSET_ROOM_TILE $45, 15, 5
+        sSET_ROOM_TILE $45, 15, 6
+        sSET_ROOM_TILE $55, 15, 7
         sSFX 37                                        ;; 0e:5262 $f9 $25
         sSHAKE_SCREEN                                  ;; 0e:5264 $fb
         sSFX 37                                        ;; 0e:5265 $f9 $25
         sSHAKE_SCREEN                                  ;; 0e:5267 $fb
         sSET_FLAG wScriptFlags04.2                     ;; 0e:5268 $da $22
         sLOAD_ROOM 0, $70, 14, 11                      ;; 0e:526a $f4 $00 $70 $0e $0b
+; Turn the crystal into a hole ASAP.
+        sSET_ROOM_TILE $4b, 7, 5
         sCALL script_049a
+; Fill tiles just outside the screen before the shake effect.
+        sSET_ROOM_TILE $11, 10, 0
+        sSET_ROOM_TILE $21, 10, 1
+        sSET_ROOM_TILE $05, 10, 2
+        sSET_ROOM_TILE $05, 10, 3
+        sSET_ROOM_TILE $05, 10, 4
+        sSET_ROOM_TILE $05, 10, 5
+        sSET_ROOM_TILE $05, 10, 6
+        sSET_ROOM_TILE $46, 10, 7
+        sSET_ROOM_TILE $11, 15, 0
+        sSET_ROOM_TILE $11, 15, 1
+        sSET_ROOM_TILE $11, 15, 2
+        sSET_ROOM_TILE $21, 15, 3
+        sSET_ROOM_TILE $05, 15, 4
+        sSET_ROOM_TILE $05, 15, 5
+        sSET_ROOM_TILE $05, 15, 6
+        sSET_ROOM_TILE $46, 15, 7
         sSFX 37                                        ;; 0e:526f $f9 $25
         sSHAKE_SCREEN                                  ;; 0e:5271 $fb
         sMSG                                           ;; 0e:5272 $04
@@ -10511,6 +10637,16 @@ script_0537:
       db "<1b><GIRL>:Klnka Imra\n Miryon Tin Qua_ _<12>"
       db "<11>", $00 ;; 0e:660e
     sDELAY 40                                          ;; 0e:662b $f0 $28
+; Fill tiles just outside the screen before the shake effect.
+; Because you must scroll in only one side needs to be done.
+        sSET_ROOM_TILE $41, 15, 0
+        sSET_ROOM_TILE $51, 15, 1
+        sSET_ROOM_TILE $37, 15, 2
+        sSET_ROOM_TILE $07, 15, 3
+        sSET_ROOM_TILE $17, 15, 4
+        sSET_ROOM_TILE $17, 15, 5
+        sSET_ROOM_TILE $27, 15, 6
+        sSET_ROOM_TILE $37, 15, 7
     sSFX 37                                            ;; 0e:662d $f9 $25
     sSHAKE_SCREEN                                      ;; 0e:662f $fb
     sSHAKE_SCREEN                                      ;; 0e:6630 $fb
@@ -10730,6 +10866,23 @@ script_053a:
       sSFX 20                                          ;; 0e:6a60 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:6a62 $bf
     sEND                                               ;; 0e:6a63 $00
+; Fill tiles just outside the screen before the shake effect.
+        sSET_ROOM_TILE $06, 10, 0
+        sSET_ROOM_TILE $10, 10, 1
+        sSET_ROOM_TILE $10, 10, 2
+        sSET_ROOM_TILE $10, 10, 3
+        sSET_ROOM_TILE $40, 10, 4
+        sSET_ROOM_TILE $40, 10, 5
+        sSET_ROOM_TILE $40, 10, 6
+        sSET_ROOM_TILE $50, 10, 7
+        sSET_ROOM_TILE $05, 15, 0
+        sSET_ROOM_TILE $15, 15, 1
+        sSET_ROOM_TILE $15, 15, 2
+        sSET_ROOM_TILE $15, 15, 3
+        sSET_ROOM_TILE $45, 15, 4
+        sSET_ROOM_TILE $45, 15, 5
+        sSET_ROOM_TILE $45, 15, 6
+        sSET_ROOM_TILE $55, 15, 7
     sSFX 37                                            ;; 0e:6a64 $f9 $25
     sSHAKE_SCREEN                                      ;; 0e:6a66 $fb
     sSET_MUSIC 9                                       ;; 0e:6a67 $f8 $09
@@ -11531,6 +11684,16 @@ script_0542:
     sPLAYER_STEP_FORWARD                               ;; 0e:7724 $80
     sSET_PLAYER_POSITION 20, 0                         ;; 0e:7725 $8a $14 $00
     sDELAY 90                                          ;; 0e:7728 $f0 $5a
+; Fill tiles just outside the screen before the shake effect.
+; Because you must scroll in only one side needs to be done.
+        sSET_ROOM_TILE $41, 15, 0
+        sSET_ROOM_TILE $51, 15, 1
+        sSET_ROOM_TILE $37, 15, 2
+        sSET_ROOM_TILE $07, 15, 3
+        sSET_ROOM_TILE $17, 15, 4
+        sSET_ROOM_TILE $17, 15, 5
+        sSET_ROOM_TILE $27, 15, 6
+        sSET_ROOM_TILE $37, 15, 7
     sSFX 37                                            ;; 0e:772a $f9 $25
     sSHAKE_SCREEN                                      ;; 0e:772c $fb
     sDELAY 20                                          ;; 0e:772d $f0 $14
@@ -11726,6 +11889,9 @@ script_0546:
     sSET_ROOM_TILE $0a, 7, 2                           ;; 0e:797f $b0 $0a $07 $02
     sSFX 37                                            ;; 0e:7983 $f9 $25
     sEND                                               ;; 0e:7985 $00
+
+; Start of the third script bank.
+SECTION "script bank 3", ROMX[$4000], BANK[SCRIPT_BANK_1 + 2]
 
 script_0547:
     sSET_ROOM_TILE $09, 3, 0                           ;; 0e:7986 $b0 $09 $03 $00
