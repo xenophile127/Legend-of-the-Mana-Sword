@@ -134,7 +134,7 @@ npcRunBehavior:
     ld   A, [HL]                                       ;; 03:40b5 $7e
     pop  DE                                            ;; 03:40b6 $d1
     push DE                                            ;; 03:40b7 $d5
-    call call_03_418b                                  ;; 03:40b8 $cd $8b $41
+    call checkSlepOrMute                               ;; 03:40b8 $cd $8b $41
     jr   Z, .slep_or_mute                              ;; 03:40bb $28 $46
 .jr_03_40bd:
     pop  HL                                            ;; 03:40bd $e1
@@ -285,7 +285,9 @@ npcDamageKnockback:
     pop  DE                                            ;; 03:4189 $d1
     ret                                                ;; 03:418a $c9
 
-call_03_418b:
+; DE = NPC runtime data address
+; Return: Z = set if the given enemy is asleep or mute, clear if not.
+checkSlepOrMute:
     ld   C, A                                          ;; 03:418b $4f
     push BC                                            ;; 03:418c $c5
     push DE                                            ;; 03:418d $d5
@@ -294,64 +296,64 @@ call_03_418b:
     call getObjectCollisionFlags                       ;; 03:4190 $cd $6d $0c
     and  A, $f0                                        ;; 03:4193 $e6 $f0
     cp   A, $d0                                        ;; 03:4195 $fe $d0
-    jr   Z, .jr_03_41f1                                ;; 03:4197 $28 $58
+    jr   Z, .return_false                              ;; 03:4197 $28 $58
     ld   A, [wSlepTimerNumber]                         ;; 03:4199 $fa $60 $cf
     cp   A, $00                                        ;; 03:419c $fe $00
-    jr   Z, .jr_03_41c5                                ;; 03:419e $28 $25
+    jr   Z, .check_mute                                ;; 03:419e $28 $25
     call timerCheckExpiredOrTickAllTimers              ;; 03:41a0 $cd $0a $30
-    jr   NZ, .jr_03_41b2                               ;; 03:41a3 $20 $0d
+    jr   NZ, .slep_active                              ;; 03:41a3 $20 $0d
     ld   A, [wSlepTimerNumber]                         ;; 03:41a5 $fa $60 $cf
     call timerFree                                     ;; 03:41a8 $cd $ca $2f
     ld   A, $00                                        ;; 03:41ab $3e $00
     ld   [wSlepTimerNumber], A                         ;; 03:41ad $ea $60 $cf
-    jr   .jr_03_41c5                                   ;; 03:41b0 $18 $13
-.jr_03_41b2:
+    jr   .check_mute                                   ;; 03:41b0 $18 $13
+.slep_active:
     pop  DE                                            ;; 03:41b2 $d1
     push DE                                            ;; 03:41b3 $d5
     ld   HL, $0a                                       ;; 03:41b4 $21 $0a $00
     add  HL, DE                                        ;; 03:41b7 $19
     bit  7, [HL]                                       ;; 03:41b8 $cb $7e
-    jr   Z, .jr_03_41c5                                ;; 03:41ba $28 $09
+    jr   Z, .check_mute                                ;; 03:41ba $28 $09
     pop  DE                                            ;; 03:41bc $d1
     pop  BC                                            ;; 03:41bd $c1
     push BC                                            ;; 03:41be $c5
     push DE                                            ;; 03:41bf $d5
     ld   A, C                                          ;; 03:41c0 $79
     cp   A, $04                                        ;; 03:41c1 $fe $04
-    jr   NC, .jr_03_41f7                               ;; 03:41c3 $30 $32
-.jr_03_41c5:
+    jr   NC, .return_true                              ;; 03:41c3 $30 $32
+.check_mute:
     ld   A, [wMuteTimerNumber]                         ;; 03:41c5 $fa $61 $cf
     cp   A, $00                                        ;; 03:41c8 $fe $00
-    jr   Z, .jr_03_41f1                                ;; 03:41ca $28 $25
+    jr   Z, .return_false                              ;; 03:41ca $28 $25
     call timerCheckExpiredOrTickAllTimers              ;; 03:41cc $cd $0a $30
-    jr   NZ, .jr_03_41de                               ;; 03:41cf $20 $0d
+    jr   NZ, .mute_active                              ;; 03:41cf $20 $0d
     ld   A, [wMuteTimerNumber]                         ;; 03:41d1 $fa $61 $cf
     call timerFree                                     ;; 03:41d4 $cd $ca $2f
     ld   A, $00                                        ;; 03:41d7 $3e $00
     ld   [wMuteTimerNumber], A                         ;; 03:41d9 $ea $61 $cf
-    jr   .jr_03_41f1                                   ;; 03:41dc $18 $13
-.jr_03_41de:
+    jr   .return_false                                 ;; 03:41dc $18 $13
+.mute_active:
     pop  DE                                            ;; 03:41de $d1
     push DE                                            ;; 03:41df $d5
     ld   HL, $0a                                       ;; 03:41e0 $21 $0a $00
     add  HL, DE                                        ;; 03:41e3 $19
     bit  6, [HL]                                       ;; 03:41e4 $cb $76
-    jr   Z, .jr_03_41f1                                ;; 03:41e6 $28 $09
+    jr   Z, .return_false                              ;; 03:41e6 $28 $09
     pop  DE                                            ;; 03:41e8 $d1
     pop  BC                                            ;; 03:41e9 $c1
     push BC                                            ;; 03:41ea $c5
     push DE                                            ;; 03:41eb $d5
     ld   A, C                                          ;; 03:41ec $79
     cp   A, $02                                        ;; 03:41ed $fe $02
-    jr   Z, .jr_03_41f7                                ;; 03:41ef $28 $06
-.jr_03_41f1:
+    jr   Z, .return_true                               ;; 03:41ef $28 $06
+.return_false:
     xor  A, A                                          ;; 03:41f1 $af
     inc  A                                             ;; 03:41f2 $3c
     pop  DE                                            ;; 03:41f3 $d1
     pop  BC                                            ;; 03:41f4 $c1
     ld   A, C                                          ;; 03:41f5 $79
     ret                                                ;; 03:41f6 $c9
-.jr_03_41f7:
+.return_true:
     xor  A, A                                          ;; 03:41f7 $af
     pop  DE                                            ;; 03:41f8 $d1
     pop  BC                                            ;; 03:41f9 $c1
