@@ -9951,6 +9951,9 @@ script_04f9:
       sSFX 16                                          ;; 0e:5ebc $f9 $10
       sCLOSE_NORTH_DOOR                                ;; 0e:5ebe $e1
     sENDIF                                             ;; 0e:5ebf
+; This puzzle originally had a "hint" in that the active switch caused a slight delay when stepped on.
+; Since the script speed optimization removes that delay, add it in manually.
+    sDELAY 3
     sEND                                               ;; 0e:5ebf $00
 
 script_04fa:
