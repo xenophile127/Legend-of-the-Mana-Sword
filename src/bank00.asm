@@ -8403,7 +8403,9 @@ runSubScriptFromScriptByIndex:
 .run_script:
     push DE                                            ;; 00:322e $d5
 ; Initialize the new script.
+    push bc
     call runScriptFromScriptByIndex                    ;; 00:322f $cd $c7 $31
+    pop bc
     ld d, h
     ld e, l
     pop  HL                                            ;; 00:3234 $e1
@@ -8465,7 +8467,7 @@ calculateScriptPointerFromAddress:
     pop af
     ret
 
-ds 10 ; Free space
+ds 8 ; Free space
 
 ; Input: HL, index in the script pointer table
 ; Output: HL, script pointer value
