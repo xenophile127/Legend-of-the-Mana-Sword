@@ -179,24 +179,31 @@ npcRunBehavior:
     call callJumptable                                 ;; 03:40d6 $cd $70 $2b
     pop  DE                                            ;; 03:40d9 $d1
     push DE                                            ;; 03:40da $d5
+; Push the new NPC behavior counter value.
     push AF                                            ;; 03:40db $f5
+; Load the NPC damage timer into C. This is never checked.
     ld   HL, $08                                       ;; 03:40dc $21 $08 $00
     add  HL, DE                                        ;; 03:40df $19
     ld   A, [DE]                                       ;; 03:40e0 $1a
     ld   C, A                                          ;; 03:40e1 $4f
+; This code does nothing because it is followed by a pop AF.
     ld   A, [HL]                                       ;; 03:40e2 $7e
     cp   A, $00                                        ;; 03:40e3 $fe $00
     jr   Z, .jr_03_40e9                                ;; 03:40e5 $28 $02
     cp   A, $10                                        ;; 03:40e7 $fe $10
 .jr_03_40e9:
+; Store the new NPC behavior counter value.
     pop  AF                                            ;; 03:40e9 $f1
     pop  DE                                            ;; 03:40ea $d1
     ld   HL, $05                                       ;; 03:40eb $21 $05 $00
     add  HL, DE                                        ;; 03:40ee $19
     ld   [HL-], A                                      ;; 03:40ef $32
     cp   A, $00                                        ;; 03:40f0 $fe $00
+; If the NPC behavior counter value is not zero, return.
     ret  NZ                                            ;; 03:40f2 $c0
+; Set the NPC behavior to zero.
     ld   [HL], A                                       ;; 03:40f3 $77
+; Set the delay until next move to one.
     ld   DE, -3 ;@=value signed=True                   ;; 03:40f4 $11 $fd $ff
     add  HL, DE                                        ;; 03:40f7 $19
     ld   [HL], $01                                     ;; 03:40f8 $36 $01
@@ -211,8 +218,10 @@ npcRunBehavior:
     ld   A, $00                                        ;; 03:4103 $3e $00
     jr   .set_new_behavior                             ;; 03:4105 $18 $b6
 
+; A = NPC damage timer
 ; B = NPC movement speed
-; HL = NPC Runtime Data entry pointer
+; DE = NPC Runtime Data entry pointer
+; HL = NPC Runtime Data entry pointer + 8 (damage timer)
 npcDamageKnockback:
     cp   A, $2c                                        ;; 03:4107 $fe $2c
     jr   C, .jr_03_411f                                ;; 03:4109 $38 $14
@@ -220,6 +229,7 @@ npcDamageKnockback:
     sub  A, B                                          ;; 03:410d $90
     cp   A, $2c                                        ;; 03:410e $fe $2c
     jr   C, .jr_03_4153                                ;; 03:4110 $38 $41
+; Check the NPC's current behavior. If it is zero, set the behavior to 5 (step backwards).
     push HL                                            ;; 03:4112 $e5
     ld   HL, $04                                       ;; 03:4113 $21 $04 $00
     add  HL, DE                                        ;; 03:4116 $19
@@ -269,12 +279,15 @@ npcDamageKnockback:
     pop  DE                                            ;; 03:4151 $d1
     ret                                                ;; 03:4152 $c9
 .jr_03_4153:
+; Load NPC movement speed backup.
     ld   HL, $09                                       ;; 03:4153 $21 $09 $00
     add  HL, DE                                        ;; 03:4156 $19
     ld   A, [HL]                                       ;; 03:4157 $7e
     cp   A, $00                                        ;; 03:4158 $fe $00
     jr   Z, .jr_03_4163                                ;; 03:415a $28 $07
+; Clear NPC movement speed backup.
     ld   [HL], $00                                     ;; 03:415c $36 $00
+; Set NPC movement speed to the backup value.
     ld   HL, $02                                       ;; 03:415e $21 $02 $00
     add  HL, DE                                        ;; 03:4161 $19
     ld   [HL], A                                       ;; 03:4162 $77
@@ -2048,6 +2061,7 @@ subHPNpc:
 
 ; C = object number being hit
 ; DE = npc runtime data address
+; Return: A = $40 (a collision occurred)
 processHitNpc:
     push DE                                            ;; 03:4a26 $d5
     push BC                                            ;; 03:4a27 $c5
@@ -2071,19 +2085,23 @@ processHitNpc:
     push BC                                            ;; 03:4a43 $c5
     push DE                                            ;; 03:4a44 $d5
     call snapObjectToNearestTile8                      ;; 03:4a45 $cd $ba $29
+; Set the NPC's current behavior and behavior counter to 0.
     pop  DE                                            ;; 03:4a48 $d1
     ld   HL, $04                                       ;; 03:4a49 $21 $04 $00
     add  HL, DE                                        ;; 03:4a4c $19
     ld   A, $00                                        ;; 03:4a4d $3e $00
     ld   [HL+], A                                      ;; 03:4a4f $22
     ld   [HL+], A                                      ;; 03:4a50 $22
+; Set the NPC movement speed to one (maximum).
     ld   HL, $02                                       ;; 03:4a51 $21 $02 $00
     add  HL, DE                                        ;; 03:4a54 $19
     ld   A, [HL]                                       ;; 03:4a55 $7e
     ld   [HL], $01                                     ;; 03:4a56 $36 $01
+; Backup the original movement speed.
     ld   HL, $09                                       ;; 03:4a58 $21 $09 $00
     add  HL, DE                                        ;; 03:4a5b $19
     ld   [HL-], A                                      ;; 03:4a5c $32
+; Set the damage timer to 60 (one second).
     ld   [HL], $3c                                     ;; 03:4a5d $36 $3c
     ld   H, D                                          ;; 03:4a5f $62
     ld   L, E                                          ;; 03:4a60 $6b
@@ -2098,6 +2116,7 @@ processHitNpc:
     ld   A, $40                                        ;; 03:4a70 $3e $40
     ret                                                ;; 03:4a72 $c9
 .no_knockback:
+; Set the damage timer to 60 (one second).
     ld   HL, $08                                       ;; 03:4a73 $21 $08 $00
     add  HL, DE                                        ;; 03:4a76 $19
     ld   [HL], $3c                                     ;; 03:4a77 $36 $3c
@@ -2139,13 +2158,13 @@ inflictVulnerableNpcsSlep:
     push BC                                            ;; 03:4aa8 $c5
     push HL                                            ;; 03:4aa9 $e5
     call getNpcElementalImmunities                     ;; 03:4aaa $cd $e3 $4a
-    jr   NZ, .jr_03_4ab7                               ;; 03:4aad $20 $08
+    jr   NZ, .immune                                   ;; 03:4aad $20 $08
     pop  DE                                            ;; 03:4aaf $d1
     push DE                                            ;; 03:4ab0 $d5
     ld   HL, -6 ;@=value signed=True                   ;; 03:4ab1 $21 $fa $ff
     add  HL, DE                                        ;; 03:4ab4 $19
     set  7, [HL]                                       ;; 03:4ab5 $cb $fe
-.jr_03_4ab7:
+.immune:
     pop  HL                                            ;; 03:4ab7 $e1
     pop  BC                                            ;; 03:4ab8 $c1
     ld   DE, $18                                       ;; 03:4ab9 $11 $18 $00
@@ -2163,13 +2182,13 @@ inflictVulnerableNpcsMute:
     push BC                                            ;; 03:4aca $c5
     push HL                                            ;; 03:4acb $e5
     call getNpcElementalImmunities                     ;; 03:4acc $cd $e3 $4a
-    jr   NZ, .jr_03_4ad9                               ;; 03:4acf $20 $08
+    jr   NZ, .immune                                   ;; 03:4acf $20 $08
     pop  DE                                            ;; 03:4ad1 $d1
     push DE                                            ;; 03:4ad2 $d5
     ld   HL, -6 ;@=value signed=True                   ;; 03:4ad3 $21 $fa $ff
     add  HL, DE                                        ;; 03:4ad6 $19
     set  6, [HL]                                       ;; 03:4ad7 $cb $f6
-.jr_03_4ad9:
+.immune:
     pop  HL                                            ;; 03:4ad9 $e1
     pop  BC                                            ;; 03:4ada $c1
     ld   DE, $18                                       ;; 03:4adb $11 $18 $00
@@ -2180,6 +2199,7 @@ inflictVulnerableNpcsMute:
 
 ; C = player attack elements
 ; HL = a pointer to to a pointer to the Npc's stat table
+; Return: Z flag set if not immune, Z flag clear if immune to any of the player's attack's elements.
 getNpcElementalImmunities:
     ld   A, [HL+]                                      ;; 03:4ae3 $2a
     ld   H, [HL]                                       ;; 03:4ae4 $66

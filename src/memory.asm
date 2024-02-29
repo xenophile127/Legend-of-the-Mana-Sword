@@ -489,6 +489,7 @@ wPlayerSpecialFlags:
 ; 04: Current behavior index
 ; 05: Current behavior counter
 ; 08: Damage timer
+; 09: Backup movement speed during knockback
 ; 0a: Status (bit7: Slep, bit6: Mute)
 ; 0c-0d: HP
 ; 0e-0f: Temporary storage for incoming HP damage.
