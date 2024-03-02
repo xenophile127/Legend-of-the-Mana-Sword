@@ -1313,9 +1313,7 @@ script_00e6:
     sSET_PLAYER_DIRECTION_UP                           ;; 0d:46df $84
     sDELAY 20                                          ;; 0d:46e0 $f0 $14
     sMSG                                               ;; 0d:46e2 $04
-      db "<10>Now fight! Give\nShadow Knight a\ngood show.<12>", $00
-    sDELAY 20
-    sMSG                                               ;; 0d:46ed $04
+      db "<10>Now fight! Give\nShadow Knight a\ngood show.<12>"
       db "<11>", $00                                   ;; 0d:46ee
     sSET_MUSIC 26                                      ;; 0d:46f0 $f8 $1a
     sDELAY 60                                          ;; 0d:46f2 $f0 $3c
@@ -10372,9 +10370,7 @@ script_0531:
 ;      sLOCK_TEXT_SPEED
       sDELAY 90                                        ;; 0e:6130 $f0 $5a
       sMSG                                             ;; 0e:6132 $04
-        db "<10><BOY> was a captive\nof the cruel\nKingdom of Granz.<12>", $00
-      sDELAY 80                                        ;; 0e:614a $f0 $50
-      sMSG                                             ;; 0e:614c $04
+        db "<10><BOY> was a captive\nof the cruel\nKingdom of Granz.<12>"
         db "<11>", $00                                 ;; 0e:614d
       sFULL_HP                                         ;; 0e:614f $c0
       sFADE_TO_BLACK                                   ;; 0e:6150 $bd
