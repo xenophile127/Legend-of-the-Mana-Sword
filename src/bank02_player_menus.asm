@@ -580,6 +580,9 @@ spriteShuffleHideSprite:
     ld   L, C                                          ;; 02:44e3 $69
     ld   H, HIGH(wOAMBuffer)                           ;; 02:44e4 $26 $c0
     ld   A, [HL]                                       ;; 02:44e6 $7e
+; This can be called up to three times for a sprite so return if it has already been hidden.
+    cp   A, SCRN_Y + $10                               ;; 02:44e7 $fe $a0
+    ret nc
     ld   [HL], $ce                                     ;; 02:44eb $36 $ce
     srl  L                                             ;; 02:44ed $cb $3d
     srl  L                                             ;; 02:44ef $cb $3d
@@ -589,7 +592,7 @@ spriteShuffleHideSprite:
     ld   [HL], A                                       ;; 02:44f7 $77
     ret                                                ;; 02:44f9 $c9
 
-ds 6 ; Free space
+ds 3 ; Free space
 
 ; Tests the screen in eight pixel sections for more than ten sprites.
 ; A sprite that is not aligned to a vertical multiple of eight is treated as if it is 24 pixels tall.
