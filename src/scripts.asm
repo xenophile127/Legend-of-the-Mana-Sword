@@ -1312,9 +1312,13 @@ script_00e6:
     sDELAY 30                                          ;; 0d:46dd $f0 $1e
     sSET_PLAYER_DIRECTION_UP                           ;; 0d:46df $84
     sDELAY 20                                          ;; 0d:46e0 $f0 $14
-    sMSG                                               ;; 0d:46e2 $04
-      db "<10>Now fight! Give\nShadow Knight a\ngood show.<12>"
-      db "<11>", $00                                   ;; 0d:46ee
+    sIF_FLAG !wScriptFlags01.0
+      sMSG
+        db "<10>Now, fight for\nShadow Knight's\nentertainment!<12><11><00>"
+    sELSE
+      sMSG
+        db "<10>Now fight!\nGive Shadow Knight\na good show!<12><11><00>"
+    sENDIF
     sSET_MUSIC 26                                      ;; 0d:46f0 $f8 $1a
     sDELAY 60                                          ;; 0d:46f2 $f0 $3c
     sSET_ROOM_TILE $6a, 4, 1                           ;; 0d:46f4 $b0 $6a $04 $01
@@ -10380,7 +10384,7 @@ script_0531:
 ;      sUNLOCK_TEXT_SPEED
       sMSG                                             ;; 0e:615a $04
         db "<10><BOY> and friends\nwere forced to\nfight every day<12>"
-        db "<1b>just for the\nentertainment of\nShadow Knight.<12>"
+        db "<1b>just for the\namusement of\nShadow Knight.<12>"
         db "<1b>", $00 ;; 0e:615b
       sCALL script_0532                                ;; 0e:6198 $02 $61 $9f
       sCALL script_0533                                ;; 0e:619b $02 $61 $fa
