@@ -376,6 +376,8 @@ metatilesIndoor:
     db   $bc, $bd, $be, $bf, $30, $51                  ;; $69
     db   $c0, $c1, $c2, $c3, $30, $05                  ;; $6a
     db   $1b, $1c, $1d, $1e, $00, $05                  ;; $6b
+; Two new metatiles for a room in Castle Granz with a stairway behind a wall.
+; This brings the wall out to a whole metatile border, which allows walking closer to it.
     db   $48, $25, $2a, $2b, $00, $00                  ;; $6c
     db   $26, $4f, $28, $29, $00, $00                  ;; $6d
 
