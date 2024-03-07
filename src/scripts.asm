@@ -10902,12 +10902,16 @@ script_053a:
     sSFX 37                                            ;; 0e:6a64 $f9 $25
     sSHAKE_SCREEN                                      ;; 0e:6a66 $fb
     sSET_MUSIC 9                                       ;; 0e:6a67 $f8 $09
+; Speed up Cibba so he can move out from under the text windo.
+    sUNK_1A
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:6a69 $85
+    sSET_NPC_1_DIRECTION_DOWN
     sFOLLOWER_DIRECTION_DOWN                           ;; 0e:6a6a $95
     sPLAYER_STEP_FORWARD                               ;; 0e:6a6b $80
     sPLAYER_STEP_FORWARD                               ;; 0e:6a6c $80
-    sSET_NPC_1_DIRECTION_DOWN
+    sNPC_1_STEP_FORWARD
     sFOLLOWER_STEP_FORWARD                             ;; 0e:6a6e $90
+    sNPC_1_STEP_FORWARD
     sPLAYER_STEP_FORWARD                               ;; 0e:6a6f $80
     sSET_PLAYER_DIRECTION_RIGHT
     sFOLLOWER_STEP_FORWARD                             ;; 0e:6a70 $90
