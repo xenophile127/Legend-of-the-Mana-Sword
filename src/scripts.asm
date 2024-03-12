@@ -10870,10 +10870,7 @@ script_053a:
     sDELAY 40                                          ;; 0e:6a30 $f0 $28
     sFADE_TO_NORMAL                                    ;; 0e:6a32 $bc
     sMSG                                               ;; 0e:6a33 $04
-      db "<10><1f> Her image fades_", $00 ;; 0e:6a34
-    sDELAY 60                                          ;; 0e:6a4c $f0 $3c
-    sMSG                                               ;; 0e:6a4e $04
-      db "<11>", $00                                   ;; 0e:6a4f
+      db "<10><1f> Her image fades_<12><11><00>"
     sDELAY 60                                          ;; 0e:6a51 $f0 $3c
     sMSG                                               ;; 0e:6a53 $04
       db "<10><GIRL>:Mom_<12>"
