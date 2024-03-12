@@ -181,9 +181,11 @@ sgb_packet_transfer:
 .sgb_packet_transfer_0:
     push    bc
     xor        a
-    ld        [rP1], a                    ; Initial pulse (Start write). P14 = LOW and P15 = LOW
+    nop
+    ldh       [rP1], a                    ; Initial pulse (Start write). P14 = LOW and P15 = LOW
     ld        a, P1F_4 | P1F_5
-    ld        [rP1], a                    ; P14 = HIGH and P15 = HIGH between pulses
+    nop
+    ldh       [rP1], a                    ; P14 = HIGH and P15 = HIGH between pulses
     ld        b, 16                        ; Number of bytes per packet
 .sgb_packet_transfer_1:
     ld        e, 8                        ; Bits per byte
@@ -195,18 +197,22 @@ sgb_packet_transfer:
     jr        nz, .sgb_packet_transfer_3
     ld        a, P1F_5                    ; P14 = LOW and P15 = HIGH (Write 0)
 .sgb_packet_transfer_3:
-    ld        [rP1], a                    ; We send one bit
+    nop
+    ldh       [rP1], a                    ; We send one bit
     ld        a, P1F_4 | P1F_5
-    ld        [rP1], a                    ; P14 = HIGH and P15 = HIGH between pulses
+    nop
+    ldh       [rP1], a                    ; P14 = HIGH and P15 = HIGH between pulses
     rr        d                            ; We rotate the register so that the next bit goes to position 0
     dec        e
     jr        nz, .sgb_packet_transfer_2    ; We jump while there are bits left to be sent
     dec        b
     jr        nz, .sgb_packet_transfer_1    ; We jump while there are bytes left to be sent
     ld        a, P1F_5
-    ld        [rP1], a                    ; Bit 129, stop bit (Write 0)
+    nop
+    ldh        [rP1], a                    ; Bit 129, stop bit (Write 0)
     ld        a, P1F_4 | P1F_5
-    ld        [rP1], a                    ; P14 = HIGH and P15 = HIGH between pulses
+    nop
+    ldh       [rP1], a                    ; P14 = HIGH and P15 = HIGH between pulses
 
     call    sgb_packet_transfer_wait    ; 280024 clock cycles are consumed (66.768646240234375 milliseconds) at 4.194304 mhz + 24 cycles from call
 
