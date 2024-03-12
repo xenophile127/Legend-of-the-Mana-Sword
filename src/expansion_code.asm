@@ -582,7 +582,8 @@ enhancedWarmBoot:
     ld a, [wSGBEndingCounter]
     or a
     call nz, sgbClearAttributes
-    jp entry
+; Reset, but don't re-init the Super Game Boy border.
+    jp FullReset
 
 ; This provides a replacement letterbox routine which blacks the border on SGB,
 ; and fade routines that use the SGB hardware.
