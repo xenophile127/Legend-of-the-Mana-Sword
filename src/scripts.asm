@@ -8962,6 +8962,7 @@ script_0451:
         db "<11>", $00 ;; 0e:57d7
       sSET_FLAG wScriptFlags09.0                       ;; 0e:57e5 $da $48
       sIF_FLAG wScriptFlags0A.2                        ;; 0e:57e7 $08 $52 $00 $42
+        sDELAY 10
         sMSG                                           ;; 0e:57eb $04
           db "<10>Man:Show it to the\n guy at Kett's!<12>"
           db "<1b> He'll scream and\n show his true \n colors!<12>"
