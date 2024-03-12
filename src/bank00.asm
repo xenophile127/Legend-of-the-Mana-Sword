@@ -5542,7 +5542,6 @@ HaltLoop:
     ret nz
 .loop:
     halt
-    nop
     jr .loop
 
 InitPreIntEnable:
