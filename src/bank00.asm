@@ -5017,7 +5017,7 @@ cacheMetatileAttributesAndLoadRoomTiles:
 scanRoomForNpcPlacementOptions_trampoline:
     jp_to_bank 11, scanRoomForNpcPlacementOptions
 
-ds 27 ; Free space
+ds 28 ; Free space
 
 ; Speeds up script execution by whitelisting certain opcodes to ignore the limit of one opcode per frame.
 speedUpScripts:
@@ -5027,7 +5027,7 @@ speedUpScripts:
     cp $10
     ret nz
 ; Check that there is still time left in the current frame.
-    ld a, [rLY]
+    ldh a, [rLY]
     cp $50
     ret nc
 ; Check that nothing is currently moving. Bug fix for player misalignment before Shadow Knight's push.
