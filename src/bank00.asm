@@ -108,10 +108,16 @@ LCDCInterruptHandler:
     pop  AF                                            ;; 00:00a8 $f1
     reti
 
-ds 58 ; Free space
+ds 50 ; Free space
 
 lotmsInit:
+; Init the Super Game Boy border immediately.
+    ld a, BANK(sgb_init)
+    ld [rROMB0], a
+    call sgb_init
+; If debugging is turned on print the assembly date.
     DBG_MSG_LABEL introDebugMsg
+; Continue with the normal reset.
     jr FullReset
 
 SECTION "entry", ROM0[$0100]

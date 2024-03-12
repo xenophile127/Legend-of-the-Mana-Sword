@@ -91,6 +91,8 @@ checkSGB:
     ret
 
 ; Used to init palettes two and three before they are used for the final fade-in.
+; Also causes the background color to become black,
+; which blacks out the transparent parts of the default border before the fade to black and palette set.
 enhancedLetterboxSetPAL23Black:
     ld bc, SGB_PAL23_BLACK
     call SGBSendData
@@ -330,6 +332,21 @@ enhancedLetterboxDelayFrame:
     inc [hl]
     ret
 
+; Give the border change fade-to-black time to finish.
+enhancedLetterboxDelay70Frames:
+    ld hl, wScriptOpCounter2
+    ld a, [hl]
+    or a
+    jr nz, .delay
+    ld a, $46
+.delay:
+    dec a
+    ld [hl], a
+    ret nz
+    ld hl, wScriptOpCounter
+    inc [hl]
+    ret
+
 ; In addition to setting the normal letterbox effect, checks for Super Game Boy support and if found:
 ; * Loads an all-black SGB border.
 ; * Sets a sepia(ish) color palette.
@@ -361,10 +378,10 @@ enhancedLetterbox:
     dw enhancedLetterboxSetBlackBorder ; Trigger VRAM transfer
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxDelayFrame
-    dw enhancedLetterboxSetSGBPalette
-    dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxSetOneController
+    dw enhancedLetterboxDelay70Frames ; Default border shows some background so wait to set the palette.
+    dw enhancedLetterboxSetSGBPalette
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxFinish
 
