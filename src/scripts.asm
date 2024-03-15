@@ -11048,7 +11048,7 @@ script_053b:
     sNPC_1_STEP_FORWARD                                ;; 0e:6c24 $10
     sNPC_1_STEP_FORWARD                                ;; 0e:6c25 $10
     sMSG                                               ;; 0e:6c26 $04
-      db "<10>Julius:You have\n no chance against\n me, my dear!<12>"
+      db "<10>Julius:You stand\n no chance against\n my magical power.<12>"
       db "<11>", $00 ;; 0e:6c27
     sSET_NPC_1_DIRECTION_DOWN                          ;; 0e:6c4c $15
     sNPC_1_STEP_FORWARD                                ;; 0e:6c4d $10
