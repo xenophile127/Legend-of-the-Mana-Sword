@@ -3178,10 +3178,11 @@ script_01e0:
         sMSG
           db "<12><1b>Your friend?\nNo__\nI do not know her.<12>"
           db "<11>", $00
+      sELSE
+        sMSG
+          db "<12>"
+          db "<11>", $00
       sENDIF
-      sMSG
-        db "<12>"
-        db "<11>", $00               ;; 0d:5636
     sENDIF                                             ;; 0d:5639
     sEND                                               ;; 0d:5639 $00
 
