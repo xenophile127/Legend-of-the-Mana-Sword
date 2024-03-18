@@ -58,7 +58,7 @@ ENDM
 SuperGameBoyBorderInjector:
     ld        a, c
     cp        $14
-    jr        nz, .end ;not in SGB mode, return
+    jp        nz, .end ;not in SGB mode, return
 
     push    bc
     push    de
@@ -66,22 +66,24 @@ SuperGameBoyBorderInjector:
 
     ; Delay 0.6875s for SGB boot up (needed for Analogue Pocket SGB core at least)
     ld a, $04
-    ld [rIE], a
+    ld [rIE], a ; enable timer interrupt, but rIME is still not enabled
+    xor a, a
+    ld [rTMA], a ; set timer modulo for 256 clicks per interrupt (usually the default)
     ld a, $fc
-    ld [rTAC], a
-    ld a, $f5 ; Waits for 0.6875s
+    ld [rTAC], a ; enable timer with 1/4096 click speed
+    ld a, $0b ; Will wait 11 interrupts, or 0.6875s
     ei
     nop
 .halt_loop:
     halt
     nop
-    inc a
+    dec a
     jr nz, .halt_loop
     di
     xor a, a
-    ld [rIE], a
+    ld [rIE], a ; turn off timer interrupt
     ld a, $f8
-    ld [rTAC], a
+    ld [rTAC], a ; turn off timer
 
     ; freeze GB screen to avoid garbled graphics being shown when transfering later to VRAM
     ld        hl, SGB_COMMAND_FREEZE_SCREEN
