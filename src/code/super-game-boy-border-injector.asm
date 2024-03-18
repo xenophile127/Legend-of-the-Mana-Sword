@@ -64,7 +64,24 @@ SuperGameBoyBorderInjector:
     push    de
     push    hl
 
+    ; Delay 0.6875s for SGB boot up (needed for Analogue Pocket SGB core at least)
+    ld a, $04
+    ld [rIE], a
+    ld a, $fc
+    ld [rTAC], a
+    ld a, $f5 ; Waits for 0.6875s
+    ei
+    nop
+.halt_loop:
+    halt
+    nop
+    inc a
+    jr nz, .halt_loop
     di
+    xor a, a
+    ld [rIE], a
+    ld a, $f8
+    ld [rTAC], a
 
     ; freeze GB screen to avoid garbled graphics being shown when transfering later to VRAM
     ld        hl, SGB_COMMAND_FREEZE_SCREEN
