@@ -9227,10 +9227,11 @@ script_0470:
           db "<11>", $00 ;; 0e:5a4d
       sENDIF                                           ;; 0e:5a63
     sELSE                                              ;; 0e:5a63 $01 $16
-      ; Remove Ston and Pois.
-      ; Originally Pois was not removed but only paused.
-      ; This meant if you immediately hopped off again Pois would be running with normal music.
-      sPLAYER_CURE_STATUS 9
+      ; Remove Poison, Stone, and Moogle.
+      ; Originally only Moogle was removed.
+      ; If you had Poison and you immediately hopped off again Poison would be running with normal music.
+      ; If you had Stone you would be stuck until you hopped off again.
+      sPLAYER_CURE_STATUS 13
       sSFX 7                                           ;; 0e:5a67 $f9 $07
       sDELAY 7                                         ;; 0e:5a69 $f0 $07
       sSFX 7                                           ;; 0e:5a6b $f9 $07
