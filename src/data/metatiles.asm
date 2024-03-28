@@ -3,8 +3,41 @@
 ; https://github.com/arathron123/mystic-editor
 
 ; Each metatile is six bytes.
-;  0-3: Tile graphic index.
+;  offset 0-3: Tile graphic indexs.
 ;  4-5: Behavior and collision info.
+;  offset 4: Behavior when attacked, and land/water collision info:
+;   bits 0-2: Behavior when attacked:
+;    0: No effect.
+;    1: Chain pole.
+;    2: Mattock destructible.
+;    3: Mattock to reveal stairs.
+;    4: Axe tree with stump.
+;    5: Axe tree without stump.
+;    6: Sickle cut foliage.
+;    7: Run script (used for the track switches in the Mithril Mine).
+;   bit 3: Open door pieces.
+;   bit 4-5:
+;    0: Blocked to land objects (player and many NPCs).
+;    1: Land, top blocked, bottom can be entered but the centerline is blocked.
+;    2: Land, bottom blocked, top can be entered but the centerline is blocked.
+;    3: Land, not blocked.
+;   bit 6: Bottom is water.
+;   bit 7: Top is water.
+;   offset 5: Additional behavior and collision info.
+;    bit 0: Passable to projectiles.
+;    bit 1: Passable to objects with collision flags & $07 == $04, which seems unused.
+;    bit 2: Passable to airborn NPCs.
+;    bit 3: Face north (used for vines and chains).
+;    bit 4-6: Spike damage, or slide direction.
+;     0: No damage or slide
+;     1: Spike damage equal to player level.
+;     2: Spike damage equal to twice player level.
+;     3: Spike damage equal to three times player level.
+;     4: Slide east.
+;     5: Slide west.
+;     6: Slide north.
+;     7: Slide south.
+;    bit 7: Trigger a script when stepped on.
 metatilesOutdoor:
     db   $2e, $2f, $2e, $2f, $30, $05                  ;; $00
     db   $2e, $2f, $9e, $9f, $00, $05                  ;; $01
