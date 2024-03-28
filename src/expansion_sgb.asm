@@ -14,28 +14,6 @@ sgb_init:
     cp a, $14
     ret nz
 
-    ; Disable LCD
-    ld hl, rLY
-    ld a, $92
-.wait_for_vblank:
-    cp a, [HL]
-    jr nz, .wait_for_vblank
-    xor a, a
-    ldh [rLCDC], a
-
-    ; Delay for SGB warm up
-    ld hl, rDIV ; Operates at 16384 Hz on SGB2, 16779 on SGB1
-    ld b, $2d ; 45*256/16779 = 0.69 seconds
-    xor a, a
-.inner_delay_loop:
-    cp a, [hl]
-    jr nz, .inner_delay_loop
-.reset_inner_loop:
-    cp a, [hl]
-    jr z, .reset_inner_loop
-    dec b
-    jr nz, .inner_delay_loop
-
     ; Call border injector
     call SuperGameBoyBorderInjector
     ret

@@ -27,10 +27,6 @@
 
 ; MACROS
 
-MACRO RGB
-    DW (\3 << 10 | \2 << 5 | \1)
-ENDM
-
 ;https://gbdev.io/pandocs/SGB_Command_Summary.html
 MACRO SGB_COMMAND
     ;parameter 0: command
@@ -58,7 +54,7 @@ ENDM
 SuperGameBoyBorderInjector:
     ld        a, c
     cp        $14
-    jr        nz, .end ;not in SGB mode, return
+    jp        nz, .end ;not in SGB mode, return
 
     push    bc
     push    de
@@ -66,12 +62,21 @@ SuperGameBoyBorderInjector:
 
     di
 
-    ; freeze GB screen to avoid garbled graphics being shown when transfering later to VRAM
-    ld        hl, SGB_COMMAND_FREEZE_SCREEN
-    call    sgb_packet_transfer
+    ; delay two frames for SGB warm up (see https://gbdev.io/pandocs/SGB_Command_System.html#sgb-command-17--mask_en)
+    call lcd_off
+    ld hl, rDIV ; operates at 16384 Hz on SGB2, 16779 on SGB1
+    ld b, $2e ; 46, but div may already be close to 0, so 45*256/16779 = 0.69 seconds
+    xor a
+.inner_delay_loop:
+    cp a, [hl]
+    jr nz, .inner_delay_loop
+.reset_inner_loop:
+    cp a, [hl]
+    jr z, .reset_inner_loop
+    dec b
+    jr nz, .inner_delay_loop
 
-    ; On warm boot (SNES' reset button) with a real NA Super Game Boy the freeze does not work.
-    ; Possibly just delaying would be enough, but there is no reason not to just send it twice.
+    ; freeze GB screen to avoid garbled graphics being shown when transfering later to VRAM
     ld        hl, SGB_COMMAND_FREEZE_SCREEN
     call    sgb_packet_transfer
 
@@ -107,6 +112,13 @@ SuperGameBoyBorderInjector:
     ld        de, SGB_COMMAND_TRANSFER_BORDER
     ld        hl, _data_sgb_border_map
     call    mem_copy_sgb_4kb
+
+    ;blank VRAM - fixes garbled graphics
+    call lcd_off
+    ld bc, 4096 + (32*14) - 12
+    ld hl, _VRAM8800
+    call mem_empty
+    call lcd_on
 
     ; unfreeze GB screen rendering
     ld        hl, SGB_COMMAND_UNFREEZE_SCREEN
@@ -159,9 +171,7 @@ mem_copy_sgb:
     jr        nz, .loop_row
 
 .finished:
-
-    ld        a, LCDCF_ON|LCDCF_BG8800|LCDCF_BG9800|LCDCF_BGON|LCDCF_OBJ16|LCDCF_OBJOFF|LCDCF_WIN9C00|LCDCF_WINOFF
-    ldh        [rLCDC], a
+    call lcd_on
 
     pop        hl ;restore packet offset
     call    sgb_packet_transfer
@@ -251,6 +261,11 @@ lcd_off:
     ldh        [rLCDC], a            ; We turn off the LCD
     ret
 
+lcd_on:
+       ld              a, LCDCF_ON|LCDCF_BG8800|LCDCF_BG9800|LCDCF_BGON|LCDCF_OBJ16|LCDCF_OBJOFF|LCDCF_WIN9C00|LCDCF_WINOFF
+       ldh             [rLCDC], a
+       ret
+
 mem_copy:
     ld        a, [hli]
     ld        [de], a
@@ -260,6 +275,15 @@ mem_copy:
     or        b
     jr        nz,    mem_copy
     ret
+
+mem_empty:
+       xor             a
+       ld              [hli], a
+       dec             bc
+       ld              a, c
+       or              b
+       jr              nz,     mem_empty
+       ret
 
 ;SGB PACKETS
 ;initialization SGB packets
@@ -285,7 +309,7 @@ DB $79, $10, $08, $00, $0b, $4c, $20, $08, $ea, $ea, $ea, $ea, $ea, $60, $ea, $e
 
 
 SGB_COMMAND_FREEZE_SCREEN:
-    SGB_COMMAND $17, 1 ;MASK_EN(1) - freeze screen
+    SGB_COMMAND $17, 3 ;MASK_EN(3) - freeze screen
 
 SGB_COMMAND_UNFREEZE_SCREEN:
     SGB_COMMAND $17, 0 ;MASK_EN(0) - unfreeze screen
