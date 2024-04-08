@@ -4376,7 +4376,7 @@ checkTileCollision:
     push HL                                            ;; 00:1966 $e5
     call HLandDE                                       ;; 00:1967 $cd $b2 $29
     pop  HL                                            ;; 00:196a $e1
-    jr   Z, .jr_00_197d                                ;; 00:196b $28 $10
+    jr   Z, .water_check_top                           ;; 00:196b $28 $10
     ld   DE, $40                                       ;; 00:196d $11 $40 $00
     call HLandDE                                       ;; 00:1970 $cd $b2 $29
     pop  DE                                            ;; 00:1973 $d1
@@ -4386,7 +4386,7 @@ checkTileCollision:
     bit  0, D                                          ;; 00:1978 $cb $42
     ld   B, $00                                        ;; 00:197a $06 $00
     ret                                                ;; 00:197c $c9
-.jr_00_197d:
+.water_check_top:
     pop  DE                                            ;; 00:197d $d1
     bit  0, D                                          ;; 00:197e $cb $42
     ld   B, $00                                        ;; 00:1980 $06 $00
