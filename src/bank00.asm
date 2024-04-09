@@ -5589,6 +5589,9 @@ InitPreIntEnable:
     ld   A, BANK(initSoundEngine) ;@=bank initSoundEngine ;; 00:2052 $3e $0f
     ld   [rROMB0], A                                   ;; 00:2054 $ea $00 $20
     call initSoundEngine                               ;; 00:2057 $cd $03 $40
+IF DEF(COLOR)
+    call initPalettes
+ELSE
     ld   A, $e4                                        ;; 00:205a $3e $e4
     ldh  [rBGP], A                                     ;; 00:205c $e0 $47
     ld   [wVideoBGP], A                                ;; 00:205e $ea $aa $c0
@@ -5597,6 +5600,7 @@ InitPreIntEnable:
     ldh  [rOBP1], A                                    ;; 00:2065 $e0 $49
     ld   [wVideoOBP0], A                               ;; 00:2067 $ea $ab $c0
     ld   [wVideoOBP1], A                               ;; 00:206a $ea $ac $c0
+ENDC
     xor a
     ldh  [rIF], A                                      ;; 00:206f $e0 $0f
     ld a, P1F_GET_NONE                                 ;; 00:2071 $3e $30
@@ -5613,6 +5617,17 @@ InitPreIntEnable:
     ld   A, [wVideoLCDC]                               ;; 00:208c $fa $a5 $c0
     ldh  [rLCDC], A                                    ;; 00:208f $e0 $40
     ret                                                ;; 00:2091 $c9
+
+IF DEF(COLOR)
+; Init GBC palettes to match bios colorization.
+initPalettes:
+    ld a, BANK(gbc_init)
+    ld [rROMB0], a
+    call gbc_init
+    ret
+
+ds 7 ; Free space
+ENDC
 
 initMisc:
     ld   A, [wVideoLCDC]                               ;; 00:2092 $fa $a5 $c0
