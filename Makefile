@@ -30,6 +30,9 @@ RNG = -DRNG_LCG
 # Controls whether debug messages created with include/debug.inc are recorded
 DEBUG = -DDEBUG
 
+# Experimental color build
+COLOR = -DCOLOR
+
 DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(RNG) $(SPAWN)
 
 all: debug
@@ -54,6 +57,10 @@ duke: DEFS = -DPLAYER_GRAPHICS_ORIGINAL -DPLAYER_GENDER_MALE -DGLADIATOR_AMANDA 
 duke: $(ROM)
 	-rm -f LotMS-Duke-*.gb
 	mv $(ROM) LotMS-Duke-`date +%F`.gb
+
+color: clean
+color: DEFS += $(COLOR) $(DEBUG)
+color: $(ROM)
 
 $(ROM): $(patsubst src/%.asm,.obj/%.o,$(SRCS))
 	@mkdir -p $(@D)

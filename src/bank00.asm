@@ -132,7 +132,11 @@ Header:
     ds   $30                                           ;; 00:0104
 ; This title matches the GBC hash to select the red and blue sprite palettes and a white, green, blue, black background palette.
     db   "FFA-->LOTMS", $00, $00, $00, $00             ;; 00:0134
+IF DEF(COLOR)
+    db   CART_COMPATIBLE_GBC                           ;; 00:0143
+ELSE
     db   CART_COMPATIBLE_DMG                           ;; 00:0143
+ENDC
     db   "01"                                          ;; 00:0144
     db   CART_INDICATOR_SGB                            ;; 00:0146
 ; Use MBC5 instead of MBC2.
