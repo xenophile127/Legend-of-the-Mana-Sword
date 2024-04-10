@@ -2562,9 +2562,7 @@ scriptOpCodeCreateEffect:
     call callJumptable                                 ;; 00:0eba $cd $70 $2b
     ret                                                ;; 00:0ebd $c9
 
-specialEffectMetatileTable:
-    db   $00, $10, $10, $00, $10, $10, $00, $10        ;; 00:0ebe ????????
-    db   $10, $00, $10, $10                            ;; 00:0ec6 ????
+INCLUDE "data/metasprites_effects.asm"
 
 ;@jumptable amount=2
 specialEffectJumptable:
@@ -2581,7 +2579,7 @@ specialEffectInit:
     inc  HL                                            ;; 00:0ed4 $23
     push HL                                            ;; 00:0ed5 $e5
     push AF                                            ;; 00:0ed6 $f5
-    ld   HL, specialEffectMetatileTable ;@=ptr specialEffectMetatileTable ;; 00:0ed7 $21 $be $0e
+    ld   HL, specialEffectMetaspriteTable              ;; 00:0ed7 $21 $be $0e
     ld   C, $07                                        ;; 00:0eda $0e $07
     ld   A, $00                                        ;; 00:0edc $3e $00
     call createObject                                  ;; 00:0ede $cd $74 $0a
