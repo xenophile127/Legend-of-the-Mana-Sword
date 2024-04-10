@@ -858,7 +858,19 @@ getProjectilePower:
     ld   A, [HL]                                       ;; 09:4477 $7e
     ret                                                ;; 09:4478 $c9
 
-INCLUDE "data/projectiles.asm"
+INCLUDE "data/projectiles/main.asm"
+
+INCLUDE "data/projectiles/metasprites.asm"
+
+INCLUDE "data/projectiles/patterns.asm"
+
+; Unused trash
+    db   $17, $31, $50, $56, $14, $40, $90, $12        ;; 09:48d0 ????????
+    db   $30, $50, $11, $32, $50, $10, $20, $8c        ;; 09:48d8 ????????
+    db   $60, $cc, $5c, $1d, $10, $ca, $15, $10        ;; 09:48e0 ????????
+    db   $ce, $15, $22, $0c, $62, $cc, $44, $05        ;; 09:48e8 ????????
+    db   $62, $4c, $53, $0f, $20, $18, $33, $67        ;; 09:48f0 ????????
+    db   $12, $33, $27, $11, $42, $e7, $53, $14        ;; 09:48f8 ????????
 
 ;@gfximg name=boss/julius2 width=2 height=16
 bossGfxJulius2:
