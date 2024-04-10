@@ -50,44 +50,7 @@ entryPointTableBank01:
     call_to_bank_target call_01_5db6                   ;; 01:404c ??
     call_to_bank_target attackTile                     ;; 01:404e pP
 
-lcdcLetterboxEffect:
-    db   $0e, $fc, $03, $e4, $7e, $fc, $01, $e0        ;; 01:4050 ????????
-    db   $ff                                           ;; 01:4058 ?
-
-prepareLetterboxEffect:
-    ld   A, $ff                                        ;; 01:4059 $3e $ff
-    ld   [wVideoBGP], A                                ;; 01:405b $ea $aa $c0
-    ld   A, [wVideoLCDC]                               ;; 01:405e $fa $a5 $c0
-    and  A, $fc                                        ;; 01:4061 $e6 $fc
-    xor  A, $01                                        ;; 01:4063 $ee $01
-    ld   [wVideoLCDC], A                               ;; 01:4065 $ea $a5 $c0
-    ld   HL, lcdcLetterboxEffect                       ;; 01:4068 $21 $50 $40
-    ld   B, $09                                        ;; 01:406b $06 $09
-    call loadLCDCEffectBuffer                          ;; 01:406d $cd $f3 $02
-; Fix letterbox. Previously it would display a bunch of the letter H at the bottom of the screen
-; for a frame because it queued a tile transfer for VBlank but wrote the tilemap mid frame.
-; The fix is to use the same mechanism to store the tile and modify the tilemap.
-    ld hl, _VRAM8800+$70*$10
-    ld de, $ffff
-    ld b, $08
-.loop_tile:
-    call storeDEinVRAM
-    dec b
-    jr nz, .loop_tile
-; Now modify the tilemap for the bottom two lines of the HUD.
-    ld hl, _SCRN1
-    ld de, $f0f0
-.loop_outer:
-    ld b, $0a
-.loop_inner:
-    call storeDEinVRAM
-    dec b
-    jr nz, .loop_inner
-    ld a, LOW(_SCRN1+$20)
-    cp l
-    ld l, a
-    jr nc, .loop_outer
-    ret
+INCLUDE "code/line-effects/letterbox.asm"
 
 ds 13 ; Free space
 
@@ -105,69 +68,13 @@ setDefaultLCDEffectAndBGP:
     call setDefaultLCDCEffect
     ret
 
-nop
+ds 1 ; Free space
 
-lcdcIntroScrollEffect:
-    db   $06, $fc, $03, $40, $16, $fc, $03, $90        ;; 01:40b1 ........
-    db   $26, $fc, $03, $e4, $66, $fc, $03, $90        ;; 01:40b9 ........
-    db   $76, $fc, $03, $40, $86, $fc, $03, $00        ;; 01:40c1 ........
-    db   $ff                                           ;; 01:40c9 .
+INCLUDE "code/line-effects/intro-scroll.asm"
 
-prepareIntroScrollEffect:
-    ld   HL, lcdcIntroScrollEffect                     ;; 01:40ca $21 $b1 $40
-    ld   B, $19                                        ;; 01:40cd $06 $19
-    call loadLCDCEffectBuffer                          ;; 01:40cf $cd $f3 $02
-    ld   A, $00                                        ;; 01:40d2 $3e $00
-    ld   [wVideoBGP], A                                ;; 01:40d4 $ea $aa $c0
-    ret                                                ;; 01:40d7 $c9
+ds 4 ; Free space
 
-introScrollEffectUpdateLCDEffect:
-    ld   A, [wVideoSCY]                                ;; 01:40d8 $fa $a7 $c0
-; Adjust to exact tile boundaries to get rid of one miscolored line of pixels.
-    add a, $0a
-    cpl                                                ;; 01:40dd $2f
-    and  A, $0f                                        ;; 01:40de $e6 $0f
-    ld   C, A                                          ;; 01:40e0 $4f
-    ld   HL, wLCDCEffectBuffer                         ;; 01:40e1 $21 $a0 $d3
-    ld   B, $06                                        ;; 01:40e4 $06 $06
-    ld   DE, $04                                       ;; 01:40e6 $11 $04 $00
-.loop:
-    ld   A, [HL]                                       ;; 01:40e9 $7e
-    and  A, $f0                                        ;; 01:40ea $e6 $f0
-    or   A, C                                          ;; 01:40ec $b1
-; If you try to run an LCDC on LCY=$8f it will actually run on line 0.
-; That creates a brief flash of a visible line at the top that should be all white. 
-    cp $8f
-    jr nz, .safe
-    dec a
-.safe:
-    ld   [HL], A                                       ;; 01:40ed $77
-    add  HL, DE                                        ;; 01:40ee $19
-    dec  B                                             ;; 01:40ef $05
-    jr   NZ, .loop                                     ;; 01:40f0 $20 $f7
-    ret                                                ;; 01:40f2 $c9
-
-; Free space
-db $00, $00, $00, $00
-
-lcdcShutterEffectClose:
-    db   $00, $fc, $03, $e4, $7c, $fc, $00, $fc        ;; 01:40fc ........
-    db   $7e, $fc, $01, $e0, $ff                       ;; 01:4104 .....
-
-lcdcShutterEffectOpen:
-    db   $3c, $fc, $03, $e4, $40, $fc, $00, $fc        ;; 01:4109 ........
-    db   $7e, $fc, $01, $e0, $ff                       ;; 01:4111 .....
-
-; This effect originally applied the dark effect to the status bar, now fixed.
-lcdcShutterEffectDarkClose:
-    db   $00, $fc, $03, $3f, $7c, $fc, $00, $ff        ;; 01:4116 ????????
-    db   $7e, $fc, $01, $e0, $ff                       ;; 01:411e ?????
-
-; This effect was originally not used, with the above close effect accidentally used instead.
-; It also, like the above effect, originally applied the dark effect to the status bar.
-lcdcShutterEffectDarkOpen:
-    db   $3c, $fc, $03, $3f, $40, $fc, $00, $ff        ;; 01:4123 ????????
-    db   $7e, $fc, $01, $e0, $ff                       ;; 01:412b ?????
+INCLUDE "code/line-effects/shutter.asm"
 
 loadMapWithShutterEffectSequence:
     ld   D, H                                          ;; 01:4130 $54
