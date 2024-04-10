@@ -8,12 +8,12 @@
 ; * Value to be XORed with the current LCDC value.
 ; * BGP palette to be set.
 lcdcIntroScrollEffect:
-    db   $06, $fc, $03, $40
-    db   $16, $fc, $03, $90
-    db   $26, $fc, $03, $e4
-    db   $66, $fc, $03, $90
-    db   $76, $fc, $03, $40
-    db   $86, $fc, $03, $00
+    db   $06, $fc, LCDCF_OBJON | LCDCF_BGON, $40
+    db   $16, $fc, LCDCF_OBJON | LCDCF_BGON, $90
+    db   $26, $fc, LCDCF_OBJON | LCDCF_BGON, $e4
+    db   $66, $fc, LCDCF_OBJON | LCDCF_BGON, $90
+    db   $76, $fc, LCDCF_OBJON | LCDCF_BGON, $40
+    db   $86, $fc, LCDCF_OBJON | LCDCF_BGON, $00
     db   $ff
 
 prepareIntroScrollEffect:

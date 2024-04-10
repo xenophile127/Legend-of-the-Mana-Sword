@@ -21,5 +21,5 @@ setDefaultLCDCEffect:
 ; * Value to be XORed with the current LCDC value.
 ; * BGP palette to be set.
 .lcdcDefaultEffect:
-    db   $7e, $fc, $01, $e4
+    db   $7e, $fc, LCDCF_OBJOFF | LCDCF_BGON, $e4
     db   $ff

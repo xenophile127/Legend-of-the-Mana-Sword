@@ -7,8 +7,8 @@
 ; * Value to be XORed with the current LCDC value.
 ; * BGP palette to be set.
 lcdcLetterboxEffect:
-    db   $0e, $fc, $03, $e4
-    db   $7e, $fc, $01, $e0
+    db   $0e, $fc, LCDCF_OBJON | LCDCF_BGON, $e4
+    db   $7e, $fc, LCDCF_OBJOFF | LCDCF_BGON, $e0
     db   $ff
 
 prepareLetterboxEffect:
