@@ -7593,20 +7593,7 @@ pushObject:
     call processPhysicsForObject                       ;; 00:2c8f $cd $95 $06
     ret                                                ;; 00:2c92 $c9
 
-snowmanMetaspriteTable:
-    db   $10, $74, $76, $10, $74, $76, $10, $74        ;; 00:2c93 ????????
-    db   $76, $10, $74, $76, $10, $74, $76, $10        ;; 00:2c9b ????????
-    db   $74, $76, $10, $74, $76, $10, $74, $76        ;; 00:2ca3 ????????
-
-chestMetaspriteTable:
-    db   $00, $78, $7a, $00, $78, $7a, $00, $78        ;; 00:2cab ........
-    db   $7a, $00, $78, $7a, $00, $78, $7a, $00        ;; 00:2cb3 ....????
-    db   $78, $7a, $00, $78, $7a, $00, $78, $7a        ;; 00:2cbb ????????
-
-chestEmptyMetaspriteTable:
-    db   $00, $7c, $7e, $00, $7c, $7e, $00, $7c        ;; 00:2cc3 ........
-    db   $7e, $00, $7c, $7e, $00, $7c, $7e, $00        ;; 00:2ccb ....????
-    db   $7c, $7e, $00, $7c, $7e, $00, $7c, $7e        ;; 00:2cd3 ????????
+INCLUDE "data/npc/metasprites_extra.asm"
 
 ; Unused
 spawnChest:
