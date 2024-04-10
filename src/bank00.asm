@@ -7834,25 +7834,7 @@ addTileGraphicCopyRequest:
 
 ds 85 ; Free space
 
-; Give Ice its own metasprite table using OBP1 so it is blue under boot rom auto colorization.
-playerAttackIceMetaspriteTable:
-    db   $30, $0a, $08, $10, $08, $0a, $50, $08        ;; 00:2e75
-    db   $0a, $10, $08, $0a, $30, $0a, $08, $50
-    db   $08, $0a, $10, $08, $0a, $70, $0a, $08
-
-playerMetaspriteTable:
-    db   $20, $02, $00, $00, $00, $02, $00, $00        ;; 00:2e8d ????????
-    db   $02, $00, $00, $02                            ;; 00:2e95 ?...
-
-playerAttackFirstMetaspriteTable:
-    db   $20, $0a, $08, $00, $08, $0a, $40, $08        ;; 00:2e99 ........
-    db   $0a, $00, $08, $0a, $20, $0a, $08, $40        ;; 00:2ea1 ........
-    db   $08, $0a, $00, $08, $0a, $60, $0a, $08        ;; 00:2ea9 ........
-
-playerAttackSecondMetaspriteTable:
-    db   $20, $0e, $0c, $00, $0c, $0e, $40, $0c        ;; 00:2eb1 ???...??
-    db   $0e, $00, $0c, $0e, $20, $0e, $0c, $40        ;; 00:2eb9 ?......?
-    db   $0c, $0e, $00, $0c, $0e, $60, $0e, $0c        ;; 00:2ec1 ??......
+INCLUDE "data/metasprites_player.asm"
 
 initSpecialAttackTimer:
     ld   HL, $1e0                                      ;; 00:2ec9 $21 $e0 $01
