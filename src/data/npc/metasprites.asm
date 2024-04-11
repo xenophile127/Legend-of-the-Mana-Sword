@@ -185,16 +185,16 @@ metaspritesTable40Red:
     db   OAMF_XFLIP  | OAMF_PAL0, $46, $44
     db   OAMF_XFLIP  | OAMF_PAL0, $42, $40
 
-;@data format=bbb amount=8
-data_03_7cfe:
-    db   OAMF_XFLIP  | OAMF_PAL1, $5a, $58
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a
-    db   OAMF_NOFLIP | OAMF_PAL1, $54, $56
-    db   OAMF_NOFLIP | OAMF_PAL1, $50, $52
-    db   OAMF_XFLIP  | OAMF_PAL1, $5e, $5c
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e
-    db   OAMF_XFLIP  | OAMF_PAL1, $56, $54
-    db   OAMF_XFLIP  | OAMF_PAL1, $52, $50
+; Used for NPCs like town people that have walk cycles in all four directions.
+metaspritesTabel50Normal:
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $5a, $58
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $5e, $5c
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $52, $50
 
 metaspritesEyeSpy:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $42, $40
