@@ -21,20 +21,19 @@ metaspritesTable40FrontFacing:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
 
-;@data format=bbb amount=12
-data_03_7b96:
-    db   OAMF_XFLIP  | OAMF_PAL1, $52, $50                                 ;; 03:7b96 ... $00
-    db   OAMF_NOFLIP | OAMF_PAL1, $50, $52                                 ;; 03:7b99 ... $01
-    db   OAMF_NOFLIP | OAMF_PAL1, $50, $52                                 ;; 03:7b9c ... $02
-    db   OAMF_NOFLIP | OAMF_PAL1, $50, $52                                 ;; 03:7b9f ... $03
-    db   OAMF_XFLIP  | OAMF_PAL1, $56, $54                                 ;; 03:7ba2 ... $04
-    db   OAMF_NOFLIP | OAMF_PAL1, $54, $56                                 ;; 03:7ba5 ... $05
-    db   OAMF_NOFLIP | OAMF_PAL1, $54, $56                                 ;; 03:7ba8 ... $06
-    db   OAMF_NOFLIP | OAMF_PAL1, $54, $56                                 ;; 03:7bab ... $07
-    db   OAMF_XFLIP  | OAMF_PAL1, $5a, $58                                 ;; 03:7bae ... $08
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7bb1 ... $09
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7bb4 ??? $0a
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7bb7 ... $0b
+metaspritesTable50FrontFacing:
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $52, $50
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $5a, $58
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
 
 metaspritesTable60FrontFacing:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $62, $60
@@ -50,7 +49,6 @@ metaspritesTable60FrontFacing:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $68, $6a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $68, $6a
 
-;@data format=bbb amount=8
 metaspritesMyconid:
     db   OAMF_NOFLIP | OAMF_PAL0, $50, $52                                 ;; 03:7bde ... $00
     db   OAMF_NOFLIP | OAMF_PAL0, $50, $52                                 ;; 03:7be1 ... $01
@@ -64,7 +62,6 @@ metaspritesMyconid:
 ; For a standard NPC like a townsperson in the third slot that should be red by using OBP0.
 ; Tables on either side are shortened (by removing unused entries) to make room for this one.
 ; Unused
-;@data format=bbb amount=8
 metaspritesTable60Red:
     db   OAMF_XFLIP  | OAMF_PAL0, $6a, $68
     db   OAMF_NOFLIP | OAMF_PAL0, $68, $6a
@@ -96,7 +93,6 @@ metaspritesEvilSword:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
 
 ; Tables on either side are shortened (by removing unused entries) to make room for this one.
-;@data format=bbb amount=8
 metaspritesCompanionRed:
     db   OAMF_XFLIP  | OAMF_PAL0, $2a, $28
     db   OAMF_NOFLIP | OAMF_PAL0, $28, $2a
@@ -117,7 +113,6 @@ metaspritesZombie:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4a, $48
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $42, $40
 
-;@data format=bbb amount=12
 metaspritesPumpkin:
     db   OAMF_XFLIP  | OAMF_PAL0, $46, $44                                 ;; 03:7c6e ??? $00
     db   OAMF_NOFLIP | OAMF_PAL0, $44, $46                                 ;; 03:7c71 ??? $01
@@ -174,7 +169,6 @@ metaspritesTabel60Normal:
 ; For Fuji when loaded as a normal NPC. Probably in the Airship.
 ; For a standard NPC like a townsperson in the third slot that should be red by using OBP0.
 ; Tables on either side are shortened (by removing unused entries) to make room for this one.
-;@data format=bbb amount=8
 metaspritesTable40Red:
     db   OAMF_XFLIP  | OAMF_PAL0, $4a, $48
     db   OAMF_NOFLIP | OAMF_PAL0, $48, $4a
@@ -238,35 +232,33 @@ metaspritesShadowZero:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
 
-;@data format=bbb amount=12
 metaspritesEarthElemental:
-    db   OAMF_NOFLIP | OAMF_PAL1, $50, $52                                 ;; 03:7d8e ??? $00
-    db   OAMF_NOFLIP | OAMF_PAL1, $54, $56                                 ;; 03:7d91 ??? $01
-    db   OAMF_NOFLIP | OAMF_PAL1, $50, $52                                 ;; 03:7d94 ??? $02
-    db   OAMF_NOFLIP | OAMF_PAL1, $54, $56                                 ;; 03:7d97 ??? $03
-    db   OAMF_XFLIP  | OAMF_PAL1, $5a, $58                                 ;; 03:7d9a ??? $04
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7d9d ??? $05
-    db   OAMF_XFLIP  | OAMF_PAL1, $56, $54                                 ;; 03:7da0 ??? $06
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7da3 ??? $07
-    db   OAMF_XFLIP  | OAMF_PAL1, $5a, $58                                 ;; 03:7da6 ??? $08
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7da9 ??? $09
-    db   OAMF_XFLIP  | OAMF_PAL1, $56, $54                                 ;; 03:7dac ??? $0a
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7daf ??? $0b
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $5a, $58
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $5a, $58
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
 
-;@data format=bbb amount=12
 metaspritesDoppelMirror:
-    db   OAMF_XFLIP  | OAMF_PAL1, $56, $54                                 ;; 03:7db2 ??? $00
-    db   OAMF_NOFLIP | OAMF_PAL1, $54, $56                                 ;; 03:7db5 ??? $01
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7db8 ??? $02
-    db   OAMF_NOFLIP | OAMF_PAL1, $50, $52                                 ;; 03:7dbb ??? $03
-    db   OAMF_XFLIP  | OAMF_PAL1, $56, $54                                 ;; 03:7dbe ??? $04
-    db   OAMF_NOFLIP | OAMF_PAL1, $54, $56                                 ;; 03:7dc1 ??? $05
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7dc4 ??? $06
-    db   OAMF_NOFLIP | OAMF_PAL1, $50, $52                                 ;; 03:7dc7 ??? $07
-    db   OAMF_XFLIP  | OAMF_PAL1, $56, $54                                 ;; 03:7dca ??? $08
-    db   OAMF_NOFLIP | OAMF_PAL1, $54, $56                                 ;; 03:7dcd ??? $09
-    db   OAMF_NOFLIP | OAMF_PAL1, $58, $5a                                 ;; 03:7dd0 ??? $0a
-    db   OAMF_NOFLIP | OAMF_PAL1, $50, $52                                 ;; 03:7dd3 ??? $0b
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
 
 metaspritesPhantasm:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
@@ -366,20 +358,19 @@ metaspritesShadowKnight:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
 
-;@data format=bbb amount=12
 metaspritesTable5cUnmoving:
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7ed2 ??? $00
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7ed5 ??? $01
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7ed8 ??? $02
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7edb ??? $03
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7ede ??? $04
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7ee1 ??? $05
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7ee4 ??? $06
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7ee7 ??? $07
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7eea ??? $08
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7eed ??? $09
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7ef0 ??? $0a
-    db   OAMF_NOFLIP | OAMF_PAL1, $5c, $5e                                 ;; 03:7ef3 ??? $0b
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
 
 metaspritesTable40Unmoving:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
@@ -387,7 +378,6 @@ metaspritesTable40Unmoving:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
 
-;@data format=bbb amount=12
 metaspritesTable40UnmovingRed:
     db   OAMF_NOFLIP | OAMF_PAL0, $40, $42                                 ;; 03:7f1a ??? $00
     db   OAMF_NOFLIP | OAMF_PAL0, $40, $42                                 ;; 03:7f1d ??? $01
@@ -444,8 +434,7 @@ metaspritesWilly:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
 
-;@data format=bbb amount=8
-; A variant of the data_03_7b96 metasprites table using OBP0 to turn certain enemies red.
+; A variant of metaspritesTable50FrontFacing using OBP0 to turn certain enemies red.
 metaspritesRabiteFlowerFlameRed:
     db   OAMF_XFLIP  | OAMF_PAL0, $52, $50                                 ;; 03:7f92 ??? $00
     db   OAMF_NOFLIP | OAMF_PAL0, $50, $52                                 ;; 03:7f95 ??? $01
@@ -460,8 +449,7 @@ metaspritesRabiteFlowerFlameRed:
     db   OAMF_NOFLIP | OAMF_PAL0, $58, $5a                                 ;; 03:7fb0 ??? $0a
     db   OAMF_NOFLIP | OAMF_PAL0, $58, $5a                                 ;; 03:7fb3 ??? $0b
 
-;@data format=bbb amount=
-; A variant of the data_03_7cfe metasprites table using OBP0 to turn certain npcs red.
+; A variant of metaspritesTabel50Normal using OBP0 to turn certain NPCs red.
 metaspritesShieldlessPC:
     db   OAMF_XFLIP  | OAMF_PAL0, $5a, $58
     db   OAMF_NOFLIP | OAMF_PAL0, $58, $5a
