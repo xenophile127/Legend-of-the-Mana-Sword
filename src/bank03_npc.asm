@@ -4,6 +4,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/oam_attributes.inc"
 
 SECTION "bank03", ROMX[$4000], BANK[$03]
 

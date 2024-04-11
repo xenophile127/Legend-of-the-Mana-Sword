@@ -6,38 +6,38 @@
 
 ; Give Ice its own metasprite table using OBP1 so it is blue under boot rom auto colorization.
 playerAttackIceMetaspriteTable:
-    db   $30, $0a, $08
-    db   $10, $08, $0a
-    db   $50, $08, $0a
-    db   $10, $08, $0a
-    db   $30, $0a, $08
-    db   $50, $08, $0a
-    db   $10, $08, $0a
-    db   $70, $0a, $08
+    db   OAMF_XFLIP  | OAMF_PAL1, $0a, $08
+    db   OAMF_NOFLIP | OAMF_PAL1, $08, $0a
+    db   OAMF_YFLIP  | OAMF_PAL1, $08, $0a
+    db   OAMF_NOFLIP | OAMF_PAL1, $08, $0a
+    db   OAMF_XFLIP  | OAMF_PAL1, $0a, $08
+    db   OAMF_YFLIP  | OAMF_PAL1, $08, $0a
+    db   OAMF_NOFLIP | OAMF_PAL1, $08, $0a
+    db   OAMF_XYFLIP | OAMF_PAL1, $0a, $08
 
 playerMetaspriteTable:
-    db   $20, $02, $00
-    db   $00, $00, $02
-    db   $00, $00, $02
-    db   $00, $00, $02
+    db   OAMF_XFLIP  | OAMF_PAL0, $02, $00
+    db   OAMF_NOFLIP | OAMF_PAL0, $00, $02
+    db   OAMF_NOFLIP | OAMF_PAL0, $00, $02
+    db   OAMF_NOFLIP | OAMF_PAL0, $00, $02
 
 playerAttackFirstMetaspriteTable:
-    db   $20, $0a, $08
-    db   $00, $08, $0a
-    db   $40, $08, $0a
-    db   $00, $08, $0a
-    db   $20, $0a, $08
-    db   $40, $08, $0a
-    db   $00, $08, $0a
-    db   $60, $0a, $08
+    db   OAMF_XFLIP  | OAMF_PAL0, $0a, $08
+    db   OAMF_NOFLIP | OAMF_PAL0, $08, $0a
+    db   OAMF_YFLIP  | OAMF_PAL0, $08, $0a
+    db   OAMF_NOFLIP | OAMF_PAL0, $08, $0a
+    db   OAMF_XFLIP  | OAMF_PAL0, $0a, $08
+    db   OAMF_YFLIP  | OAMF_PAL0, $08, $0a
+    db   OAMF_NOFLIP | OAMF_PAL0, $08, $0a
+    db   OAMF_XYFLIP | OAMF_PAL0, $0a, $08
 
 playerAttackSecondMetaspriteTable:
-    db   $20, $0e, $0c
-    db   $00, $0c, $0e
-    db   $40, $0c, $0e
-    db   $00, $0c, $0e
-    db   $20, $0e, $0c
-    db   $40, $0c, $0e
-    db   $00, $0c, $0e
-    db   $60, $0e, $0c
+    db   OAMF_XFLIP  | OAMF_PAL0, $0e, $0c
+    db   OAMF_NOFLIP | OAMF_PAL0, $0c, $0e
+    db   OAMF_YFLIP  | OAMF_PAL0, $0c, $0e
+    db   OAMF_NOFLIP | OAMF_PAL0, $0c, $0e
+    db   OAMF_XFLIP  | OAMF_PAL0, $0e, $0c
+    db   OAMF_YFLIP  | OAMF_PAL0, $0c, $0e
+    db   OAMF_NOFLIP | OAMF_PAL0, $0c, $0e
+    db   OAMF_XYFLIP | OAMF_PAL0, $0e, $0c
 

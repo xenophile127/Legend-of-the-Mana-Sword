@@ -4,7 +4,7 @@
 ; The first four entries are for standing facing the four directions.
 
 specialEffectMetaspriteTable:
-    db   $00, $10, $10
-    db   $00, $10, $10
-    db   $00, $10, $10
-    db   $00, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL0, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL0, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL0, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL0, $10, $10

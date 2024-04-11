@@ -8,31 +8,31 @@
 ; The second four entries are for stepping in those directions.
 
 snowmanMetaspriteTable:
-    db   $10, $74, $76
-    db   $10, $74, $76
-    db   $10, $74, $76
-    db   $10, $74, $76
-    db   $10, $74, $76
-    db   $10, $74, $76
-    db   $10, $74, $76
-    db   $10, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
 
 chestMetaspriteTable:
-    db   $00, $78, $7a
-    db   $00, $78, $7a
-    db   $00, $78, $7a
-    db   $00, $78, $7a
-    db   $00, $78, $7a
-    db   $00, $78, $7a
-    db   $00, $78, $7a
-    db   $00, $78, $7a
+    db   OAMF_NOFLIP | OAMF_PAL0, $78, $7a
+    db   OAMF_NOFLIP | OAMF_PAL0, $78, $7a
+    db   OAMF_NOFLIP | OAMF_PAL0, $78, $7a
+    db   OAMF_NOFLIP | OAMF_PAL0, $78, $7a
+    db   OAMF_NOFLIP | OAMF_PAL0, $78, $7a
+    db   OAMF_NOFLIP | OAMF_PAL0, $78, $7a
+    db   OAMF_NOFLIP | OAMF_PAL0, $78, $7a
+    db   OAMF_NOFLIP | OAMF_PAL0, $78, $7a
 
 chestEmptyMetaspriteTable:
-    db   $00, $7c, $7e
-    db   $00, $7c, $7e
-    db   $00, $7c, $7e
-    db   $00, $7c, $7e
-    db   $00, $7c, $7e
-    db   $00, $7c, $7e
-    db   $00, $7c, $7e
-    db   $00, $7c, $7e
+    db   OAMF_NOFLIP | OAMF_PAL0, $7c, $7e
+    db   OAMF_NOFLIP | OAMF_PAL0, $7c, $7e
+    db   OAMF_NOFLIP | OAMF_PAL0, $7c, $7e
+    db   OAMF_NOFLIP | OAMF_PAL0, $7c, $7e
+    db   OAMF_NOFLIP | OAMF_PAL0, $7c, $7e
+    db   OAMF_NOFLIP | OAMF_PAL0, $7c, $7e
+    db   OAMF_NOFLIP | OAMF_PAL0, $7c, $7e
+    db   OAMF_NOFLIP | OAMF_PAL0, $7c, $7e

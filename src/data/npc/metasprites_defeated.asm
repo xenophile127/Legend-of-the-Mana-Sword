@@ -5,12 +5,12 @@
 ; The next four entries are for walking in the four directions.
 
 npcKillExplosionMetaspriteTable:
-    db   $20, $72, $70
-    db   $00, $70, $72
-    db   $00, $70, $72
-    db   $00, $70, $72
+    db   OAMF_XFLIP  | OAMF_PAL0, $72, $70
+    db   OAMF_NOFLIP | OAMF_PAL0, $70, $72
+    db   OAMF_NOFLIP | OAMF_PAL0, $70, $72
+    db   OAMF_NOFLIP | OAMF_PAL0, $70, $72
 
-    db   $20, $72, $70
-    db   $00, $70, $72
-    db   $00, $70, $72
-    db   $00, $70, $72
+    db   OAMF_XFLIP  | OAMF_PAL0, $72, $70
+    db   OAMF_NOFLIP | OAMF_PAL0, $70, $72
+    db   OAMF_NOFLIP | OAMF_PAL0, $70, $72
+    db   OAMF_NOFLIP | OAMF_PAL0, $70, $72

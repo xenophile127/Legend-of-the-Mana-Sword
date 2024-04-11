@@ -4,6 +4,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/oam_attributes.inc"
 INCLUDE "include/debug.inc"
 
 SECTION "bank00", ROM0[$0000]
