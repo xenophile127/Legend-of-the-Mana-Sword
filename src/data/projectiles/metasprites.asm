@@ -3,10 +3,10 @@
 ; These metasprite tables are made up of entries of [attr, tile1, tile2].
 
 projectileIceMetatileTable:
-    db   OAMF_XFLIP  | OAMF_PAL1, $32, $30
-    db   OAMF_NOFLIP | OAMF_PAL1, $30, $32
-    db   OAMF_NOFLIP | OAMF_PAL1, $34, $36
-    db   OAMF_YFLIP  | OAMF_PAL1, $34, $36
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_SNOW, $32, $30
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $34, $36
+    db   OAMF_YFLIP  | OAMF_PAL1 | PAL_SNOW, $34, $36
 
 data_09_4789:
     db   OAMF_XFLIP  | OAMF_PAL0, $3a, $38

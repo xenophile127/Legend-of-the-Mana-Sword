@@ -8,14 +8,14 @@
 ; The second four entries are for stepping in those directions.
 
 snowmanMetaspriteTable:
-    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
-    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
-    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
-    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
-    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
-    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
-    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
-    db   OAMF_NOFLIP | OAMF_PAL1, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $74, $76
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $74, $76
 
 chestMetaspriteTable:
     db   OAMF_NOFLIP | OAMF_PAL0, $78, $7a
