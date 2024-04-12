@@ -7700,6 +7700,25 @@ vblankGraphicsVRAMCopy:
 ; Switch to the requested graphics bank.
     pop  AF                                            ;; 00:2d88 $f1
     ld [rROMB0], a
+IF DEF(COLOR)
+; If built for GBC use a HDMA for tile transfer.
+; This requires 16 byte alignment of data.
+; Write the source address into rHDMA1 and rHDMA2.
+    pop de
+    ld hl, rHDMA1
+    ld a, d
+    ld [hl+], a
+    ld a, e
+    ld [hl+], a
+; Write the destination address into rHDMA3 and rHDMA4.
+    pop de
+    ld a, d
+    ld [hl+], a
+    ld a, e
+    ld [hl+], a
+; Write zero into rHDMA5 to start an immediate transfer of one tile.
+    ld [hl], HDMA5F_MODE_GP
+ELSE
 ; Copy 16 bytes from hl to de.
 ; Take advantage of alignment to use inc e instead of inc de.
     pop hl
@@ -7751,6 +7770,7 @@ vblankGraphicsVRAMCopy:
     inc e
     ld   A, [HL+]                                      ;; 00:2dbb $2a
     ld   [DE], A                                       ;; 00:2dbc $12
+ENDC
     dec  B                                             ;; 00:2dbd $05
     jr z, .break
     ldh  A, [rLY]                                      ;; 00:2d83 $f0 $44
