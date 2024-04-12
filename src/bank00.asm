@@ -7697,10 +7697,13 @@ vblankGraphicsVRAMCopy:
 ; Due to this confusion, stop transferring tiles if the scanline is $98 (152).
     ld c, SCRN_Y + $08
 .loop_transfer_tile:
+; Switch to the requested graphics bank.
     pop  AF                                            ;; 00:2d88 $f1
-    pop  DE                                            ;; 00:2d89 $d1
-    pop  HL                                            ;; 00:2d8a $e1
-    ld   [rROMB0], A                                   ;; 00:2d8b $ea $00 $20
+    ld [rROMB0], a
+; Copy 16 bytes from hl to de.
+; Take advantage of alignment to use inc e instead of inc de.
+    pop hl
+    pop de
     ld   A, [HL+]                                      ;; 00:2d8e $2a
     ld   [DE], A                                       ;; 00:2d8f $12
     inc e
@@ -7799,10 +7802,13 @@ ds 39 ; Free space
 ; DE: target VRAM address
 ; HL: source ROM address
 addTileGraphicCopyRequest:
-    push HL                                            ;; 00:2df5 $e5
+    push de
+    push hl
+; Take the lock so VBlank doesn't modify the data while this is working on it.
+; It should be safe to blindly set the lock.
     ld hl, wTileCopyRequestMutex
     inc [hl]
-    push DE                                            ;; 00:2e0a $d5
+; Calculate the address to record this request.
     ld hl, wTileCopyRequestCount
     ld l, [hl]
     ld   H, $00                                        ;; 00:2e10 $26 $00
@@ -7813,20 +7819,25 @@ addTileGraphicCopyRequest:
     add  HL, HL                                        ;; 00:2e16 $29
     ld   DE, wTileCopyRequestData                      ;; 00:2e17 $11 $e0 $c5
     add  HL, DE                                        ;; 00:2e1a $19
+; Write the bank number (16-bit).
     ld   [HL], $00                                     ;; 00:2e1c $36 $00
     inc  HL                                            ;; 00:2e1e $23
     ld   [HL+], A                                      ;; 00:2e1f $22
+; Write the source address.
     pop  DE                                            ;; 00:2e20 $d1
     ld   A, E                                          ;; 00:2e21 $7b
     ld   [HL+], A                                      ;; 00:2e22 $22
     ld   A, D                                          ;; 00:2e23 $7a
     ld   [HL+], A                                      ;; 00:2e24 $22
+; Write the destination address.
     pop  DE                                            ;; 00:2e25 $d1
     ld   A, E                                          ;; 00:2e26 $7b
     ld   [HL+], A                                      ;; 00:2e27 $22
     ld   [HL], D                                       ;; 00:2e28 $72
+; Increment request count.
     ld   HL, wTileCopyRequestCount                     ;; 00:2e29 $21 $e0 $c8
     inc  [HL]                                          ;; 00:2e2c $34
+; Drop the lock.
     ld   HL, wTileCopyRequestMutex                     ;; 00:2e2d $21 $e1 $c8
     dec  [HL]                                          ;; 00:2e30 $35
     ret                                                ;; 00:2e31 $c9
