@@ -7847,10 +7847,17 @@ addTileGraphicCopyRequest:
     pop  DE                                            ;; 00:2e20 $d1
     ld   A, E                                          ;; 00:2e21 $7b
     ld   [HL+], A                                      ;; 00:2e22 $22
-    ld   A, D                                          ;; 00:2e23 $7a
-    ld   [HL+], A                                      ;; 00:2e24 $22
+    ld [hl], d
+    inc hl
 ; Write the destination address.
     pop  DE                                            ;; 00:2e25 $d1
+; Test that source and destination address are both aligned to 16 bytes.
+; This is a requirement to use GBC VRAM DMA and good practice otherwise.
+    or e
+    and $0f
+    jr z, .debug_end
+    DBG_MSG_LABEL nonAlignedTileCopy
+.debug_end:
     ld   A, E                                          ;; 00:2e26 $7b
     ld   [HL+], A                                      ;; 00:2e27 $22
     ld   [HL], D                                       ;; 00:2e28 $72
@@ -7862,7 +7869,7 @@ addTileGraphicCopyRequest:
     dec  [HL]                                          ;; 00:2e30 $35
     ret                                                ;; 00:2e31 $c9
 
-ds 85 ; Free space
+ds 69 ; Free space
 
 INCLUDE "data/metasprites_player.asm"
 
