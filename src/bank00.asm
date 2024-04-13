@@ -2835,8 +2835,9 @@ scriptOpCodeFadeToBlack:
     ld [hl], a
     pop  HL                                            ;; 00:1076 $e1
 .finish:
-    call fadeEffectAdjustCounters                      ;; 00:1077 $cd $42 $11
-    ret                                                ;; 00:107a $c9
+    jp fadeEffectAdjustCounters
+;    call fadeEffectAdjustCounters                      ;; 00:1077 $cd $42 $11
+;    ret                                                ;; 00:107a $c9
 
 fadeToWhiteBGP:
     db   $e4, $a4, $a4, $a4, $a4, $a0, $a0, $a0        ;; 00:107b ????????
