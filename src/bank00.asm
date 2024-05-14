@@ -18,7 +18,7 @@ isrVBlank:
 SECTION "isrLCDC", ROM0[$0048]
 
 isrLCDC:
-    jr LCDCInterruptHandler
+    jp LCDCInterrupt
 
 SECTION "isrTimer", ROM0[$0050]
 
@@ -121,18 +121,6 @@ DummyInterruptHandler:
     pop  BC                                            ;; 00:0094 $c1
     pop  AF                                            ;; 00:0095 $f1
     ret                                                ;; 00:0096 $c9
-
-LCDCInterruptHandler:
-    push AF                                            ;; 00:0097 $f5
-    push BC                                            ;; 00:0098 $c5
-    push DE                                            ;; 00:0099 $d5
-    push HL                                            ;; 00:009a $e5
-    call LCDCInterrupt                                 ;; 00:009b $cd $2d $03
-    pop  HL                                            ;; 00:00a5 $e1
-    pop  DE                                            ;; 00:00a6 $d1
-    pop  BC                                            ;; 00:00a7 $c1
-    pop  AF                                            ;; 00:00a8 $f1
-    reti
 
 lotmsInit:
 ; Init the Super Game Boy border immediately.
@@ -481,6 +469,10 @@ INCLUDE "code/line-effects/default.asm"
 
 ; Manages line effects.
 LCDCInterrupt:
+    push af
+    push bc
+    push de
+    push hl
 ; Each entry in the line effect buffer is four bytes long.
     ld   A, [wLCDCEffectIndex]                         ;; 00:032d $fa $e2 $d3
     add  A, A                                          ;; 00:0330 $87
@@ -521,6 +513,9 @@ IF DEF(COLOR)
     cp [hl]
     jr nz, .loop
     inc hl
+; Reset the address and set autoinc before waiting for time to write.
+    ld a, BCPSF_AUTOINC
+    ldh [rBCPS], a
 ENDC
 ; Nothing should ever turn off the LCD/PPU with this interrupt on, but guard against it anyway.
     ldh  A, [rLCDC]                                    ;; 00:0358 $f0 $40
@@ -542,10 +537,7 @@ ENDC
     ldh [rLCDC], a
 IF DEF(COLOR)
 ; Write the first background palette.
-    ld a, BCPSF_AUTOINC
-    ld c, LOW(rBCPS)
-    ldh [c], a
-    inc c
+    ld c, LOW(rBCPD)
     ld a, [hl+]
     ldh [c], a
     ld a, [hl+]
@@ -567,7 +559,11 @@ ELSE
     ld   A, E                                          ;; 00:036b $7b
     ldh  [rBGP], A                                     ;; 00:036c $e0 $47
 ENDC
-    ret                                                ;; 00:036e $c9
+    pop hl
+    pop de
+    pop bc
+    pop af
+    reti
 
 ; Lookup table for line effect palettes. BGP values are used as keys.
 colorPalettes:
