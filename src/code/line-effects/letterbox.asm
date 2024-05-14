@@ -5,18 +5,25 @@
 ; * Scanline number (minus two) to effect the change.
 ; * Value to be ANDed with the current LCDC value.
 ; * Value to be XORed with the current LCDC value.
-; * BGP palette to be set.
+; * BGP palette. When running in color this is used to look up the real palette.
 lcdcLetterboxEffect:
-    db   $0e, $fc, LCDCF_OBJON | LCDCF_BGON, $e4
-    db   $7e, $fc, LCDCF_OBJOFF | LCDCF_BGON, $e0
+    db   $0e, $f4, LCDCF_BG9800 | LCDCF_OBJON | LCDCF_BGON, $e4
+    db   $7e, $f4, LCDCF_BG9800 | LCDCF_OBJOFF | LCDCF_BGON, $e0
     db   $ff
 
 prepareLetterboxEffect:
+IF DEF(COLOR)
+    ld b, $08
+    ld de, wPaletteBackground
+    ld hl, colorPalettes.letterbox
+    call copyHLtoDE
+ELSE
     ld   A, $ff                                        ;; 01:4059 $3e $ff
     ld   [wVideoBGP], A                                ;; 01:405b $ea $aa $c0
+ENDC
     ld   A, [wVideoLCDC]                               ;; 01:405e $fa $a5 $c0
-    and  A, $fc                                        ;; 01:4061 $e6 $fc
-    xor  A, $01                                        ;; 01:4063 $ee $01
+    and a, $f4
+    xor a, LCDCF_BG9C00 | LCDCF_OBJOFF | LCDCF_BGON
     ld   [wVideoLCDC], A                               ;; 01:4065 $ea $a5 $c0
     ld   HL, lcdcLetterboxEffect                       ;; 01:4068 $21 $50 $40
     ld   B, $09                                        ;; 01:406b $06 $09
@@ -45,4 +52,3 @@ prepareLetterboxEffect:
     ld l, a
     jr nc, .loop_outer
     ret
-

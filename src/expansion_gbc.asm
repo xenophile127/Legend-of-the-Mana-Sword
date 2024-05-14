@@ -7,12 +7,15 @@ SECTION "Game Boy Color Bank - Code", ROMX[$4000], BANK[SGB_CODE_BANK]
 ; Initial palette loading.
 gbc_init:
     ld hl, .bgp
+    ld de, wPaletteBackground
     ld a, BCPSF_AUTOINC
     ldh [rBCPS], a
     ld b, $40
 .loop_bgp:
     ld a, [hl+]
     ldh [rBCPD], a
+    ld [de], a
+    inc de
     dec b
     jr nz, .loop_bgp
 
@@ -29,7 +32,7 @@ gbc_init:
 
 ; Initial background palettes.
 .bgp:
-INCBIN "pal/bios_bgp.pal",0,8
+INCBIN "pal/background_default.pal",0,8
 INCBIN "pal/monochrome.pal",0,8
 INCBIN "pal/monochrome.pal",0,8
 INCBIN "pal/monochrome.pal",0,8
