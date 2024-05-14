@@ -21,12 +21,14 @@ MACRO DBG_STR
 MACRO DBG_MSG
 IF DEF(DEBUG)
     ld d, d
+ELSE
+    nop
+ENDC
     jr .end\@
     DW $6464
     DW $0000
     DBG_STR \1
 .end\@:
-    ENDC
     ENDM
 
 ; Accepts a label as input (even from another bank)
@@ -47,11 +49,13 @@ IF DEF(DEBUG)
 MACRO DBG_MSG_LABEL
 IF DEF(DEBUG)
     ld d, d
+ELSE
+    nop
+ENDC
     jr .end\@
     DW $6464
     DW $0001
     DW \1
     DW BANK(\1)
 .end\@:
-    ENDC
     ENDM

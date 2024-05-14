@@ -4,6 +4,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/oam_attributes.inc"
 INCLUDE "include/debug.inc"
 
 SECTION "bank00", ROM0[$0000]
@@ -2562,9 +2563,7 @@ scriptOpCodeCreateEffect:
     call callJumptable                                 ;; 00:0eba $cd $70 $2b
     ret                                                ;; 00:0ebd $c9
 
-specialEffectMetatileTable:
-    db   $00, $10, $10, $00, $10, $10, $00, $10        ;; 00:0ebe ????????
-    db   $10, $00, $10, $10                            ;; 00:0ec6 ????
+INCLUDE "data/metasprites_effects.asm"
 
 ;@jumptable amount=2
 specialEffectJumptable:
@@ -2581,7 +2580,7 @@ specialEffectInit:
     inc  HL                                            ;; 00:0ed4 $23
     push HL                                            ;; 00:0ed5 $e5
     push AF                                            ;; 00:0ed6 $f5
-    ld   HL, specialEffectMetatileTable ;@=ptr specialEffectMetatileTable ;; 00:0ed7 $21 $be $0e
+    ld   HL, specialEffectMetaspriteTable              ;; 00:0ed7 $21 $be $0e
     ld   C, $07                                        ;; 00:0eda $0e $07
     ld   A, $00                                        ;; 00:0edc $3e $00
     call createObject                                  ;; 00:0ede $cd $74 $0a
@@ -7593,20 +7592,7 @@ pushObject:
     call processPhysicsForObject                       ;; 00:2c8f $cd $95 $06
     ret                                                ;; 00:2c92 $c9
 
-snowmanMetaspriteTable:
-    db   $10, $74, $76, $10, $74, $76, $10, $74        ;; 00:2c93 ????????
-    db   $76, $10, $74, $76, $10, $74, $76, $10        ;; 00:2c9b ????????
-    db   $74, $76, $10, $74, $76, $10, $74, $76        ;; 00:2ca3 ????????
-
-chestMetaspriteTable:
-    db   $00, $78, $7a, $00, $78, $7a, $00, $78        ;; 00:2cab ........
-    db   $7a, $00, $78, $7a, $00, $78, $7a, $00        ;; 00:2cb3 ....????
-    db   $78, $7a, $00, $78, $7a, $00, $78, $7a        ;; 00:2cbb ????????
-
-chestEmptyMetaspriteTable:
-    db   $00, $7c, $7e, $00, $7c, $7e, $00, $7c        ;; 00:2cc3 ........
-    db   $7e, $00, $7c, $7e, $00, $7c, $7e, $00        ;; 00:2ccb ....????
-    db   $7c, $7e, $00, $7c, $7e, $00, $7c, $7e        ;; 00:2cd3 ????????
+INCLUDE "data/npc/metasprites_extra.asm"
 
 ; Unused
 spawnChest:
@@ -7711,10 +7697,32 @@ vblankGraphicsVRAMCopy:
 ; Due to this confusion, stop transferring tiles if the scanline is $98 (152).
     ld c, SCRN_Y + $08
 .loop_transfer_tile:
+; Switch to the requested graphics bank.
     pop  AF                                            ;; 00:2d88 $f1
-    pop  DE                                            ;; 00:2d89 $d1
-    pop  HL                                            ;; 00:2d8a $e1
-    ld   [rROMB0], A                                   ;; 00:2d8b $ea $00 $20
+    ld [rROMB0], a
+IF DEF(COLOR)
+; If built for GBC use a HDMA for tile transfer.
+; This requires 16 byte alignment of data.
+; Write the source address into rHDMA1 and rHDMA2.
+    pop de
+    ld hl, rHDMA1
+    ld a, d
+    ld [hl+], a
+    ld a, e
+    ld [hl+], a
+; Write the destination address into rHDMA3 and rHDMA4.
+    pop de
+    ld a, d
+    ld [hl+], a
+    ld a, e
+    ld [hl+], a
+; Write zero into rHDMA5 to start an immediate transfer of one tile.
+    ld [hl], HDMA5F_MODE_GP
+ELSE
+; Copy 16 bytes from hl to de.
+; Take advantage of alignment to use inc e instead of inc de.
+    pop hl
+    pop de
     ld   A, [HL+]                                      ;; 00:2d8e $2a
     ld   [DE], A                                       ;; 00:2d8f $12
     inc e
@@ -7762,6 +7770,7 @@ vblankGraphicsVRAMCopy:
     inc e
     ld   A, [HL+]                                      ;; 00:2dbb $2a
     ld   [DE], A                                       ;; 00:2dbc $12
+ENDC
     dec  B                                             ;; 00:2dbd $05
     jr z, .break
     ldh  A, [rLY]                                      ;; 00:2d83 $f0 $44
@@ -7813,10 +7822,13 @@ ds 39 ; Free space
 ; DE: target VRAM address
 ; HL: source ROM address
 addTileGraphicCopyRequest:
-    push HL                                            ;; 00:2df5 $e5
+    push de
+    push hl
+; Take the lock so VBlank doesn't modify the data while this is working on it.
+; It should be safe to blindly set the lock.
     ld hl, wTileCopyRequestMutex
     inc [hl]
-    push DE                                            ;; 00:2e0a $d5
+; Calculate the address to record this request.
     ld hl, wTileCopyRequestCount
     ld l, [hl]
     ld   H, $00                                        ;; 00:2e10 $26 $00
@@ -7827,45 +7839,39 @@ addTileGraphicCopyRequest:
     add  HL, HL                                        ;; 00:2e16 $29
     ld   DE, wTileCopyRequestData                      ;; 00:2e17 $11 $e0 $c5
     add  HL, DE                                        ;; 00:2e1a $19
+; Write the bank number (16-bit).
     ld   [HL], $00                                     ;; 00:2e1c $36 $00
     inc  HL                                            ;; 00:2e1e $23
     ld   [HL+], A                                      ;; 00:2e1f $22
+; Write the source address.
     pop  DE                                            ;; 00:2e20 $d1
     ld   A, E                                          ;; 00:2e21 $7b
     ld   [HL+], A                                      ;; 00:2e22 $22
-    ld   A, D                                          ;; 00:2e23 $7a
-    ld   [HL+], A                                      ;; 00:2e24 $22
+    ld [hl], d
+    inc hl
+; Write the destination address.
     pop  DE                                            ;; 00:2e25 $d1
+; Test that source and destination address are both aligned to 16 bytes.
+; This is a requirement to use GBC VRAM DMA and good practice otherwise.
+    or e
+    and $0f
+    jr z, .debug_end
+    DBG_MSG_LABEL nonAlignedTileCopy
+.debug_end:
     ld   A, E                                          ;; 00:2e26 $7b
     ld   [HL+], A                                      ;; 00:2e27 $22
     ld   [HL], D                                       ;; 00:2e28 $72
+; Increment request count.
     ld   HL, wTileCopyRequestCount                     ;; 00:2e29 $21 $e0 $c8
     inc  [HL]                                          ;; 00:2e2c $34
+; Drop the lock.
     ld   HL, wTileCopyRequestMutex                     ;; 00:2e2d $21 $e1 $c8
     dec  [HL]                                          ;; 00:2e30 $35
     ret                                                ;; 00:2e31 $c9
 
-ds 85 ; Free space
+ds 69 ; Free space
 
-; Give Ice its own metasprite table using OBP1 so it is blue under boot rom auto colorization.
-playerAttackIceMetaspriteTable:
-    db   $30, $0a, $08, $10, $08, $0a, $50, $08        ;; 00:2e75
-    db   $0a, $10, $08, $0a, $30, $0a, $08, $50
-    db   $08, $0a, $10, $08, $0a, $70, $0a, $08
-
-playerMetaspriteTable:
-    db   $20, $02, $00, $00, $00, $02, $00, $00        ;; 00:2e8d ????????
-    db   $02, $00, $00, $02                            ;; 00:2e95 ?...
-
-playerAttackFirstMetaspriteTable:
-    db   $20, $0a, $08, $00, $08, $0a, $40, $08        ;; 00:2e99 ........
-    db   $0a, $00, $08, $0a, $20, $0a, $08, $40        ;; 00:2ea1 ........
-    db   $08, $0a, $00, $08, $0a, $60, $0a, $08        ;; 00:2ea9 ........
-
-playerAttackSecondMetaspriteTable:
-    db   $20, $0e, $0c, $00, $0c, $0e, $40, $0c        ;; 00:2eb1 ???...??
-    db   $0e, $00, $0c, $0e, $20, $0e, $0c, $40        ;; 00:2eb9 ?......?
-    db   $0c, $0e, $00, $0c, $0e, $60, $0e, $0c        ;; 00:2ec1 ??......
+INCLUDE "data/metasprites_player.asm"
 
 initSpecialAttackTimer:
     ld   HL, $1e0                                      ;; 00:2ec9 $21 $e0 $01

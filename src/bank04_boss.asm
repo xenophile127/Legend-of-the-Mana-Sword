@@ -3,6 +3,7 @@
 INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
+INCLUDE "include/oam_attributes.inc"
 INCLUDE "include/constants.inc"
 
 SECTION "bank04", ROMX[$4000], BANK[$04]
@@ -1284,7 +1285,10 @@ processPhysicsForObject_4:
     call processPhysicsForObject                       ;; 04:4735 $cd $95 $06
     ret                                                ;; 04:4738 $c9
 
-INCLUDE "data/boss.asm"
+INCLUDE "data/boss/main.asm"
+
+INCLUDE "data/boss/metasprites.asm"
+
     db   $4c, $ff, $4e, $ff, $4e, $ff, $27, $00        ;; 04:7f79 ????????
     db   $00, $10, $00, $38, $10, $7e, $30, $7f        ;; 04:7f81 ????????
     db   $22, $7f, $32, $ff, $33, $ff, $73, $ff        ;; 04:7f89 ????????

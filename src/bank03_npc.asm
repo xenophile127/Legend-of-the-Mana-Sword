@@ -4,6 +4,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/oam_attributes.inc"
 
 SECTION "bank03", ROMX[$4000], BANK[$03]
 
@@ -2723,10 +2724,7 @@ call_03_4e15:
     call setObjectCollisionFlags                       ;; 03:4e2e $cd $86 $0c
     ret                                                ;; 03:4e31 $c9
 
-npcKillExplosionMetaspriteTable:
-    db   $20, $72, $70, $00, $70, $72, $00, $70        ;; 03:4e32 ......??
-    db   $72, $00, $70, $72, $20, $72, $70, $00        ;; 03:4e3a ????????
-    db   $70, $72, $00, $70, $72, $00, $70, $72        ;; 03:4e42 ????????
+INCLUDE "data/npc/metasprites_defeated.asm"
 
 npcKilledExplosionInit:
     push BC                                            ;; 03:4e4a $c5
