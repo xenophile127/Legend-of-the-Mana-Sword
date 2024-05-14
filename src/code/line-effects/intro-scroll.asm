@@ -6,7 +6,7 @@
 ; * Scanline number (minus two) to effect the change.
 ; * Value to be ANDed with the current LCDC value.
 ; * Value to be XORed with the current LCDC value.
-; * BGP palette to be set.
+; * BGP palette. When running in color this is used to look up the real palette.
 lcdcIntroScrollEffect:
     db   $06, $fc, LCDCF_OBJON | LCDCF_BGON, $40
     db   $16, $fc, LCDCF_OBJON | LCDCF_BGON, $90
@@ -20,8 +20,15 @@ prepareIntroScrollEffect:
     ld   HL, lcdcIntroScrollEffect                     ;; 01:40ca $21 $b1 $40
     ld   B, $19                                        ;; 01:40cd $06 $19
     call loadLCDCEffectBuffer                          ;; 01:40cf $cd $f3 $02
+IF DEF(COLOR)
+    ld b, $08
+    ld de, wPaletteBackground
+    ld hl, colorPalettes.intro_scroll0
+    call copyHLtoDE
+ELSE
     ld   A, $00                                        ;; 01:40d2 $3e $00
     ld   [wVideoBGP], A                                ;; 01:40d4 $ea $aa $c0
+ENDC
     ret                                                ;; 01:40d7 $c9
 
 introScrollEffectUpdateLCDEffect:

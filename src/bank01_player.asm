@@ -52,8 +52,6 @@ entryPointTableBank01:
 
 INCLUDE "code/line-effects/letterbox.asm"
 
-ds 13 ; Free space
-
 ; Only called by a script command that is unused.
 prepareDefaultEffect:
     ld hl, wVideoLCDC
@@ -61,18 +59,49 @@ prepareDefaultEffect:
     or a, $03
     ld [hl], a
 
-; Only used at the end of the intro scroll. Could be inlined.
+; Used after the intro scroll and shutter effects to restore the original palette.
 setDefaultLCDEffectAndBGP:
+setDefaultLCDCEffectAndPalette:
+IF DEF(COLOR)
+    ld b, $08
+    ld de, wPaletteBackground
+    ld hl, colorPalettes.default
+    call copyHLtoDE
+ELSE
     ld a, $e4
     ld [wVideoBGP], a
+ENDC
     call setDefaultLCDCEffect
     ret
 
-ds 1 ; Free space
-
 INCLUDE "code/line-effects/intro-scroll.asm"
 
-ds 4 ; Free space
+; Load the correct shutter line-effect and palette depending on whether the Blind condition is active.
+loadLCDCEffectBufferAndPaletteShutterOpen:
+    ld hl, lcdcShutterEffectOpen
+    ld a, [wPlayerSpecialFlags]
+    bit 1, a
+    jr z, .load
+    ld hl, lcdcShutterEffectDarkOpen
+.load:
+    ld b, $0d
+IF DEF(COLOR)
+    ld de, colorPalettes.shutter
+ELSE
+    jp loadLCDCEffectBuffer
+ENDC
+
+; Load line-effect and palette.
+; de = pointer to four color palette
+; hl = effect buffer address
+loadLCDCEffectBufferAndPalette:
+    push de
+    call loadLCDCEffectBuffer
+    ld b, $08
+    ld de, wPaletteBackground
+    pop hl
+    call copyHLtoDE
+    ret
 
 INCLUDE "code/line-effects/shutter.asm"
 
@@ -164,11 +193,20 @@ prepareShutterEffectUnsafe:
     ld   HL, lcdcShutterEffectDarkClose                ;; 01:41b0 $21 $16 $41
 .load_effect:
     ld   B, $0d                                        ;; 01:41b3 $06 $0d
+IF DEF(COLOR)
+    ld de, colorPalettes.shutter
+    call loadLCDCEffectBufferAndPalette
+ELSE
     call loadLCDCEffectBuffer                          ;; 01:41b5 $cd $f3 $02
-    ld   A, [wVideoLCDC]                               ;; 01:41b8 $fa $a5 $c0
-    ld   [wVideoLCDCBackup], A                         ;; 01:41bb $ea $9c $d4
-    and  A, $fc                                        ;; 01:41be $e6 $fc
-    ld   [wVideoLCDC], A                               ;; 01:41c0 $ea $a5 $c0
+ENDC
+; Set the new LCDC value for the start of the frame and back up the old one.
+    ld hl, wVideoLCDC
+    ld a, [hl]
+    ld [wVideoLCDCBackup], a
+    and $f4
+    xor a, LCDCF_BG9C00 | LCDCF_OBJOFF | LCDCF_BGOFF
+    ld [hl], a
+; Start the sound effect.
     ld   A, $24                                        ;; 01:41c3 $3e $24
     call playSFX                                       ;; 01:41c5 $cd $7d $29
     pop  HL                                            ;; 01:41c8 $e1
@@ -183,8 +221,6 @@ scriptCountersInit:
     ld l, e
     ret
 
-ds 1 ; Free space
-
 shutterEffectClose:
     push DE                                            ;; 01:41d6 $d5
     ld   HL, wLCDCEffectBuffer                         ;; 01:41d7 $21 $a0 $d3
@@ -198,15 +234,16 @@ shutterEffectClose:
     ld   A, [HL]                                       ;; 01:41e2 $7e
     sub  A, $02                                        ;; 01:41e3 $d6 $02
     cp   A, C                                          ;; 01:41e5 $b9
-    jr   C, .jr_01_41f1                                ;; 01:41e6 $38 $09
-    jr   Z, .jr_01_41f1                                ;; 01:41e8 $28 $07
+    jr   C, .finished                                  ;; 01:41e6 $38 $09
+    jr   Z, .finished                                  ;; 01:41e8 $28 $07
     ld   [HL], A                                       ;; 01:41ea $77
     ld   HL, wScriptOpCounter2                         ;; 01:41eb $21 $9a $d4
     inc  [HL]                                          ;; 01:41ee $34
     pop  HL                                            ;; 01:41ef $e1
     ret                                                ;; 01:41f0 $c9
-.jr_01_41f1:
+.finished:
     call setDefaultLCDCEffect                          ;; 01:41f1 $cd $13 $03
+; This set of LCDC is unneeded.
     ld   A, [wVideoLCDC]                               ;; 01:41f4 $fa $a5 $c0
     and  A, $fc                                        ;; 01:41f7 $e6 $fc
     ld   HL, rLCDC                                     ;; 01:41f9 $21 $40 $ff
@@ -220,7 +257,7 @@ shutterEffectOpen:
     push DE                                            ;; 01:4205 $d5
     ld   HL, wScriptOpCounter2                         ;; 01:4206 $21 $9a $d4
     dec  [HL]                                          ;; 01:4209 $35
-    jr   Z, .jr_01_421c                                ;; 01:420a $28 $10
+    jr   Z, .finished                                  ;; 01:420a $28 $10
     ld   HL, wLCDCEffectBuffer                         ;; 01:420c $21 $a0 $d3
     ld   A, [HL]                                       ;; 01:420f $7e
     sub  A, $02                                        ;; 01:4210 $d6 $02
@@ -233,8 +270,8 @@ shutterEffectOpen:
     ld   [HL], A                                       ;; 01:4219 $77
     pop  HL                                            ;; 01:421a $e1
     ret                                                ;; 01:421b $c9
-.jr_01_421c:
-    call setDefaultLCDCEffect                          ;; 01:421c $cd $13 $03
+.finished:
+    call setDefaultLCDCEffectAndPalette
     ld   A, [wVideoLCDCBackup]                         ;; 01:421f $fa $9c $d4
     ld   [wVideoLCDC], A                               ;; 01:4222 $ea $a5 $c0
     ld   HL, wScriptOpCounter                          ;; 01:4225 $21 $99 $d4
@@ -457,12 +494,12 @@ loadMapWithShutterFinalSetup:
     call showPlayerAtTile                              ;; 01:43aa $cd $a5 $44
     call checkForFollower                              ;; 01:43ad $cd $c2 $28
     pop  HL                                            ;; 01:43b0 $e1
-    jr   NZ, .jr_01_43cc                               ;; 01:43b1 $20 $19
+    jr   NZ, .open_shutter                             ;; 01:43b1 $20 $19
     ld   C, $00                                        ;; 01:43b3 $0e $00
     push HL                                            ;; 01:43b5 $e5
     call checkForMovingObjects                         ;; 01:43b6 $cd $9b $28
     pop  HL                                            ;; 01:43b9 $e1
-    jr   NZ, .jr_01_43cc                               ;; 01:43ba $20 $10
+    jr   NZ, .open_shutter                             ;; 01:43ba $20 $10
     ld   A, H                                          ;; 01:43bc $7c
     inc  A                                             ;; 01:43bd $3c
     add  A, A                                          ;; 01:43be $87
@@ -477,15 +514,8 @@ loadMapWithShutterFinalSetup:
     add  A, A                                          ;; 01:43c7 $87
     ld   D, A                                          ;; 01:43c8 $57
     call updateNpcPosition_trampoline                  ;; 01:43c9 $cd $aa $28
-.jr_01_43cc:
-    ld   HL, lcdcShutterEffectOpen                     ;; 01:43cc $21 $09 $41
-    ld   A, [wPlayerSpecialFlags]                      ;; 01:43cf $fa $d4 $c4
-    bit  1, A                                          ;; 01:43d2 $cb $4f
-    jr   Z, .jr_01_43d9                                ;; 01:43d4 $28 $03
-    ld   HL, lcdcShutterEffectDarkOpen                 ;; 01:43d6 $21 $16 $41
-.jr_01_43d9:
-    ld   B, $0d                                        ;; 01:43d9 $06 $0d
-    call loadLCDCEffectBuffer                          ;; 01:43db $cd $f3 $02
+.open_shutter:
+    call loadLCDCEffectBufferAndPaletteShutterOpen
     ld   HL, wScriptOpCounter                          ;; 01:43de $21 $99 $d4
     inc  [HL]                                          ;; 01:43e1 $34
     ld   A, $23                                        ;; 01:43e2 $3e $23
@@ -506,12 +536,12 @@ loadMapInstantFinalSetup:
     call showPlayerAtTile                              ;; 01:43f5 $cd $a5 $44
     call checkForFollower                              ;; 01:43f8 $cd $c2 $28
     pop  HL                                            ;; 01:43fb $e1
-    jr   NZ, .jr_01_4417                               ;; 01:43fc $20 $19
+    jr   NZ, .finished                                 ;; 01:43fc $20 $19
     ld   C, $00                                        ;; 01:43fe $0e $00
     push HL                                            ;; 01:4400 $e5
     call checkForMovingObjects                         ;; 01:4401 $cd $9b $28
     pop  HL                                            ;; 01:4404 $e1
-    jr   NZ, .jr_01_4417                               ;; 01:4405 $20 $10
+    jr   NZ, .finished                                 ;; 01:4405 $20 $10
     ld   A, H                                          ;; 01:4407 $7c
     inc  A                                             ;; 01:4408 $3c
     add  A, A                                          ;; 01:4409 $87
@@ -526,7 +556,7 @@ loadMapInstantFinalSetup:
     add  A, A                                          ;; 01:4412 $87
     ld   D, A                                          ;; 01:4413 $57
     call updateNpcPosition_trampoline                  ;; 01:4414 $cd $aa $28
-.jr_01_4417:
+.finished:
     call playerAttackDestroy
     ld   HL, wScriptOpCounter                          ;; 01:441a $21 $99 $d4
     inc  [HL]                                          ;; 01:441d $34
@@ -540,17 +570,10 @@ openMinimapFinalSetup:
     push DE                                            ;; 01:4422 $d5
     ld   A, [wMapWidthTmp]                             ;; 01:4423 $fa $9f $d4
     cp   A, $00                                        ;; 01:4426 $fe $00
-    jr   Z, .jr_01_442d                                ;; 01:4428 $28 $03
+    jr   Z, .open_shutter                              ;; 01:4428 $28 $03
     call drawMinimap                                   ;; 01:442a $cd $e6 $0d
-.jr_01_442d:
-    ld   HL, lcdcShutterEffectOpen                     ;; 01:442d $21 $09 $41
-    ld   A, [wPlayerSpecialFlags]                      ;; 01:4430 $fa $d4 $c4
-    bit  1, A                                          ;; 01:4433 $cb $4f
-    jr   Z, .jr_01_443a                                ;; 01:4435 $28 $03
-    ld   HL, lcdcShutterEffectDarkOpen                 ;; 01:4437 $21 $16 $41
-.jr_01_443a:
-    ld   B, $0d                                        ;; 01:443a $06 $0d
-    call loadLCDCEffectBuffer                          ;; 01:443c $cd $f3 $02
+.open_shutter:
+    call loadLCDCEffectBufferAndPaletteShutterOpen
     ld   HL, wScriptOpCounter                          ;; 01:443f $21 $99 $d4
     inc  [HL]                                          ;; 01:4442 $34
     ld   A, $23                                        ;; 01:4443 $3e $23
@@ -562,16 +585,10 @@ openMinimapFinalSetup:
     pop  HL                                            ;; 01:4454 $e1
     ret                                                ;; 01:4455 $c9
 
+; Used by minimap.
 shutterEffectOpenInit:
     push DE                                            ;; 01:4456 $d5
-    ld   HL, lcdcShutterEffectOpen                     ;; 01:4457 $21 $09 $41
-    ld   A, [wPlayerSpecialFlags]                      ;; 01:445a $fa $d4 $c4
-    bit  1, A                                          ;; 01:445d $cb $4f
-    jr   Z, .jr_01_4464                                ;; 01:445f $28 $03
-    ld   HL, lcdcShutterEffectDarkOpen                 ;; 01:4461 $21 $16 $41
-.jr_01_4464:
-    ld   B, $0d                                        ;; 01:4464 $06 $0d
-    call loadLCDCEffectBuffer                          ;; 01:4466 $cd $f3 $02
+    call loadLCDCEffectBufferAndPaletteShutterOpen
     ld   HL, wScriptOpCounter                          ;; 01:4469 $21 $99 $d4
     inc  [HL]                                          ;; 01:446c $34
     ld   A, $23                                        ;; 01:446d $3e $23
@@ -1008,7 +1025,7 @@ drawRoom:
     call initEnemiesCounterAndMoveFolower_trampoline   ;; 01:474e $cd $26 $29
     ret                                                ;; 01:4751 $c9
 
-ds 12 ; Free space
+SECTION "bank01_align", ROMX[$475e], BANK[$01]
 
 playerTileNumbers:
     db   $0c, $0e, $0d, $0f, $0c, $0e, $0d, $0f        ;; 01:475e ........

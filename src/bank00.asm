@@ -57,12 +57,37 @@ VBlankInterruptHandler:
     ldh [rWX], a
     ld a, [hl+]    ; wVideoWY
     ldh [rWY], a
+IF DEF(COLOR)
+; The first background palette (and only the first) is used by line effects.
+    ld hl, wPaletteBackground
+    ld a, BCPSF_AUTOINC
+    ld c, LOW(rBCPS)
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+ELSE
     ld a, [hl+]    ; wVideoBGP
     ldh [rBGP], a
     ld a, [hl+]    ; wVideoOBP0
     ldh [rOBP0], a
     ld a, [hl+]    ; wVideoOBP1
     ldh [rOBP1], a
+ENDC
     call vblankGraphicsVRAMCopy                        ;; 00:0071 $cd $57 $2d
     call getRandomByte                                 ;; 00:0074 $cd $1e $2b
     ld   HL, wVBlankDone                               ;; 00:007e $21 $ad $c0
@@ -109,8 +134,6 @@ LCDCInterruptHandler:
     pop  AF                                            ;; 00:00a8 $f1
     reti
 
-ds 50 ; Free space
-
 lotmsInit:
 ; Init the Super Game Boy border immediately.
     ld a, BANK(sgb_init)
@@ -119,7 +142,7 @@ lotmsInit:
 ; If debugging is turned on print the assembly date.
     DBG_MSG_LABEL introDebugMsg
 ; Continue with the normal reset.
-    jr FullReset
+    jp FullReset
 
 SECTION "entry", ROM0[$0100]
 
@@ -454,11 +477,11 @@ loadLCDCEffectBuffer:
     ei
     ret
 
-ds 11 ; Free space
-
 INCLUDE "code/line-effects/default.asm"
 
+; Manages line effects.
 LCDCInterrupt:
+; Each entry in the line effect buffer is four bytes long.
     ld   A, [wLCDCEffectIndex]                         ;; 00:032d $fa $e2 $d3
     add  A, A                                          ;; 00:0330 $87
     add  A, A                                          ;; 00:0331 $87
@@ -466,28 +489,44 @@ LCDCInterrupt:
     ld   D, $00                                        ;; 00:0333 $16 $00
     ld   HL, wLCDCEffectBuffer                         ;; 00:0335 $21 $a0 $d3
     add  HL, DE                                        ;; 00:0338 $19
+; The second and third bytes are for ANDing and XORing with the current LCDC state.
     inc  HL                                            ;; 00:0339 $23
     ld   A, [wVideoLCDC]                               ;; 00:033a $fa $a5 $c0
     and  A, [HL]                                       ;; 00:033d $a6
     inc  HL                                            ;; 00:033e $23
     xor  A, [HL]                                       ;; 00:033f $ae
     ld   D, A                                          ;; 00:0340 $57
+; The third byte is a BGP.
     inc  HL                                            ;; 00:0341 $23
     ld   E, [HL]                                       ;; 00:0342 $5e
+; The first byte of each entry is the line number to trigger an interrupt.
+; Or $ff to loop to the begining.
     inc  HL                                            ;; 00:0343 $23
     ld   A, [HL]                                       ;; 00:0344 $7e
     cp   A, $ff                                        ;; 00:0345 $fe $ff
-    jr   NZ, .jr_00_034f                               ;; 00:0347 $20 $06
+    jr   NZ, .set_next_interrupt                       ;; 00:0347 $20 $06
     ld   [wLCDCEffectIndex], A                         ;; 00:0349 $ea $e2 $d3
     ld   A, [wLCDCEffectBuffer]                        ;; 00:034c $fa $a0 $d3
-.jr_00_034f:
+.set_next_interrupt:
     ldh  [rLYC], A                                     ;; 00:034f $e0 $45
     ld   HL, wLCDCEffectIndex                          ;; 00:0351 $21 $e2 $d3
     inc  [HL]                                          ;; 00:0354 $34
-    ld   HL, rLCDC                                     ;; 00:0355 $21 $40 $ff
+IF DEF(COLOR)
+; For color use the DMG BGP value as a key to look up a color palette.
+    ld bc, $0009
+    ld hl, colorPalettes - $0009
+    ld a, e
+.loop:
+    add hl, bc
+    cp [hl]
+    jr nz, .loop
+    inc hl
+ENDC
+; Nothing should ever turn off the LCD/PPU with this interrupt on, but guard against it anyway.
     ldh  A, [rLCDC]                                    ;; 00:0358 $f0 $40
     and LCDCF_ON
     jr   Z, .ready_to_write                            ;; 00:035c $28 $0c
+; The LYC values used are two before the target scanline, so wait a bit.
     ld   C, LOW(rSTAT)                                 ;; 00:035e $0e $41
 .loop_while_mode_0:
     ldh  A, [C]                                        ;; 00:0360 $f2
@@ -498,10 +537,67 @@ LCDCInterrupt:
     and  A, $03                                        ;; 00:0366 $e6 $03
     jr   NZ, .loop_until_mode_0                        ;; 00:0368 $20 $fb
 .ready_to_write:
-    ld   [HL], D                                       ;; 00:036a $72
+; Write the new LCDC value.
+    ld a, d
+    ldh [rLCDC], a
+IF DEF(COLOR)
+; Write the first background palette.
+    ld a, BCPSF_AUTOINC
+    ld c, LOW(rBCPS)
+    ldh [c], a
+    inc c
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+ELSE
+; Write the new BGP value
     ld   A, E                                          ;; 00:036b $7b
     ldh  [rBGP], A                                     ;; 00:036c $e0 $47
+ENDC
     ret                                                ;; 00:036e $c9
+
+; Lookup table for line effect palettes. BGP values are used as keys.
+colorPalettes:
+    db $00
+.intro_scroll0:
+    INCBIN "pal/line-effects/intro-scroll0.pal",0,8 ; $00
+
+    db $3f
+    INCBIN "pal/background_blind.pal",0,8 ; $3f
+
+    db $40
+    INCBIN "pal/line-effects/intro-scroll1.pal",0,8 ; $40
+
+    db $90
+    INCBIN "pal/line-effects/intro-scroll2.pal",0,8 ; $90
+
+    db $e0
+    INCBIN "pal/line-effects/statusbar.pal",0,8 ; $e0
+
+    db $e4
+.default:
+    INCBIN "pal/background_default.pal",0,8 ; $e4
+
+    db $fc
+.shutter:
+    INCBIN "pal/line-effects/shutter.pal",0,8 ; $fc
+
+    db $ff
+.letterbox:
+    INCBIN "pal/line-effects/letterbox.pal",0,8 ; $ff
 
 checkPlayfieldBoundaryCollision_trampoline:
     jp_to_bank 04, checkPlayfieldBoundaryCollision     ;; 00:036f $f5 $3e $06 $c3 $64 $1f
@@ -658,8 +754,6 @@ spriteShuffleDoFlash_trampoline:
 
 spriteShuffleShowHidden_trampoline:
     jp_to_bank 02, spriteShuffleShowHidden             ;; 00:0447 $f5 $3e $03 $c3 $06 $1f
-
-ds 16 ; Free space 
 
 getBackgroundDrawAddress:
     ld   A, [wBackgroundDrawPositionY]                 ;; 00:045d $fa $43 $c3
@@ -1764,8 +1858,6 @@ secondaryCollisionHandling:
     pop  AF                                            ;; 00:0a6f $f1
     ret                                                ;; 00:0a73 $c9
 
-ds 3 ; Free space
-
 ; A  = movement speed
 ; C  = object type ("collision flags")
 ; DE = position in tiles
@@ -2013,8 +2105,6 @@ getFacingOrSlidingDirection:
 .jr_00_0bc2:
     and  A, $0f                                        ;; 00:0bc2 $e6 $0f
     ret                                                ;; 00:0bc4 $c9
-
-ds 12 ; Free space
 
 ; Initializes all 20 objects and then reserves the first seven
 initObjects:
@@ -2402,8 +2492,6 @@ scriptOpCodeWaitMapClose:
     call getNextScriptInstruction                      ;; 00:0de2 $cd $27 $37
     ret                                                ;; 00:0de5 $c9
 
-ds 3 ; Free space
-
 drawMinimap:
     ld   A, [wMapTableBankNrTmp]                       ;; 00:0de6 $fa $a0 $d4
     call pushBankNrAndSwitch                           ;; 00:0de9 $cd $fb $29
@@ -2525,8 +2613,6 @@ scriptOpCodeSetNextRoom:
     ld [wNextRoomOverride.x], a
     call getNextScriptInstruction
     ret
-
-ds 1 ; Free space
 
 scriptOpCodeShakeScreen:
     ld   A, [wVideoSCX]                                ;; 00:0e8c $fa $a6 $c0
@@ -2781,8 +2867,6 @@ scriptOpCodeFlashScreen:
     ld   [wVideoOBP0], A                               ;; 00:100c $ea $ab $c0
     ld   [wVideoOBP1], A                               ;; 00:100f $ea $ac $c0
     ret                                                ;; 00:1019 $c9
-
-ds 2 ; Free space
 
 ; One trampoline shared by the three fade commands.
 ; They are differentiated by their opcode in the call.
@@ -3880,8 +3964,6 @@ scriptOpWaitWhileMovement:
     db   $4f, $2a, $b9, $c8, $fe, $ff, $20, $f9        ;; 00:16a3 ????????
     db   $79, $fe, $ff, $c9                            ;; 00:16ab ????
 
-ds 7 ; Free space
-
 ; D = object y tile coordinate
 ; E = object x tile coordinate
 ; Return: HL = tile attributes
@@ -3941,8 +4023,6 @@ getMetatileAttributeCacheIndex:
     ret NC
     inc H
     ret
-
-ds 17 ; Free space
 
 ; B = object direction bits. If bit 7 is set then the player will not take spike damage.
 ; C = object collision flags
@@ -4509,8 +4589,6 @@ loadMinimapTile:
     ld   A, [HL]                                       ;; 00:1a42 $7e
     ret                                                ;; 00:1a43 $c9
 
-ds 3 ; Free space
-
 ; Checks the tile state cache for each tile in a metatile, refreshing it if it is already cached
 ; A = metatile number
 ; Return: Z if all tiles are already cached, NZ if not
@@ -4568,8 +4646,6 @@ playerSpritesLoadDoubleTile:
     inc hl
     ret                                                ;; 00:1a8b $c9
 
-ds 6 ; Free space
-
 ; Loads a tile from bank 8. Has a fallback for non-tile sized chunks that is never used.
 ; C = VRAM offset from $8000
 ; DE = base address for tile data
@@ -4617,7 +4693,7 @@ playerSpritesLoadTile:
     pop  DE                                            ;; 00:1af1 $d1
     ret                                                ;; 00:1af2 $c9
 
-ds 43 ; Free space
+SECTION "bank00_align_1af3", ROM0[$1af3]
 
 initMapGraphicsState:
     ld   A, H                                          ;; 00:1af3 $7c
