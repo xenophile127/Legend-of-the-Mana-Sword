@@ -1319,9 +1319,9 @@ gameStateNormal:
     ld a, [wEquippedItem]
     cp $02
     jr z, .b_button_only
-    cp $11
+    cp $91
     jr z, .b_button_only
-    cp $12
+    cp $92
     jr z, .b_button_only
     jr .dpad
 .not_moogle:
