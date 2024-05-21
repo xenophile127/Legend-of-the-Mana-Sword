@@ -2392,6 +2392,8 @@ script_019d:
       sLOAD_ROOM 1, $67, 9, 10                         ;; 0d:4d1f $f4 $01 $67 $09 $0a
       sCALL script_011e                                ;; 0d:4d24 $02 $09 $48
     sELSE                                              ;; 0d:4d27 $01 $13
+; Teleport to the starting position to avoid saving under Julius' initial ambush.
+      sSET_PLAYER_POSITION 8, 10
       sSET_ROOM_TILE $11, 4, 7                         ;; 0d:4d29 $b0 $11 $04 $07
       sSFX 16                                          ;; 0d:4d2d $f9 $10
       sDELAY 10                                        ;; 0d:4d2f $f0 $0a
