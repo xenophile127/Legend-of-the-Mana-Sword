@@ -307,6 +307,10 @@ metatilesTown:
     db   $4a, $4b, $70, $4d, $10, $04                  ;; $82 ($20)
     db   $52, $53, $54, $71, $10, $04                  ;; $83 ($22)
     db   $70, $3e, $36, $37, $20, $04                  ;; $84 ($3b)
+; Parapet with shadowed grass, used in Wendel.
+    db   $84, $71, $9c, $9b, $20, $05                  ;; $85 ($75)
+; Parapet with shaddowed stone, used in Jadd.
+    db   $20, $23, $9c, $9b, $20, $05                  ;; $86 ($78)
 
 metatilesIndoor:
     db   $1b, $1c, $1d, $1e, $30, $05                  ;; $00
