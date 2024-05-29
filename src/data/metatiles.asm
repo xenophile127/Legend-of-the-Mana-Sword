@@ -756,6 +756,9 @@ metatilesWorldmap:
     db   $88, $89, $8a, $8b, $f0, $87                  ;; $7d
     db   $25, $25, $25, $25, $00, $05                  ;; $7e
     db   $96, $97, $98, $99, $05, $04                  ;; $7f
+; Expansion:
+; Dime Tower rises in front of crystals:
+    db   $aa, $ab, $b4, $31, $20, $04                  ;; $80 ($66)
 
 metatilesManaland:
     db   $70, $71, $70, $71, $30, $05                  ;; $00

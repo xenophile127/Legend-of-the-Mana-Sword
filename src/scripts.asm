@@ -7909,9 +7909,9 @@ script_03e8:
         sFLASH_SCREEN                                  ;; 0e:501e $bf
         sSFX 37                                        ;; 0e:501f $f9 $25
         sSET_ROOM_TILE $6c, 3, 0                       ;; 0e:5021 $b0 $6c $03 $00
-        sSET_ROOM_TILE $66, 4, 0                       ;; 0e:5025 $b0 $66 $04 $00
+        sSET_ROOM_TILE $80, 4, 0                       ;; 0e:5025 $b0 $66 $04 $00
         sSET_ROOM_TILE $6c, 5, 0                       ;; 0e:5029 $b0 $6c $05 $00
-        sSET_ROOM_TILE $66, 6, 0                       ;; 0e:502d $b0 $66 $06 $00
+        sSET_ROOM_TILE $80, 6, 0                       ;; 0e:502d $b0 $66 $06 $00
         sSET_ROOM_TILE $6c, 7, 0                       ;; 0e:5031 $b0 $6c $07 $00
 ;        sSET_ROOM_TILE $6c, 3, 1                       ;; 0e:5035 $b0 $6c $03 $01
         sSET_ROOM_TILE $65, 4, 1                       ;; 0e:5039 $b0 $65 $04 $01
