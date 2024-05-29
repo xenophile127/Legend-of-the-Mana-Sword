@@ -299,6 +299,9 @@ metatilesTown:
     db   $1e, $1f, $1f, $1e, $30, $85                  ;; $7d
     db   $f3, $f2, $f3, $f2, $30, $85                  ;; $7e
     db   $3a, $3b, $4c, $7e, $30, $8d                  ;; $7f
+; Expansion:
+; Cliff edge with grass, used in Ifrit's antechamber.
+    db   $70, $59, $5a, $5b, $20, $05                  ;; $80 ($05)
 
 metatilesIndoor:
     db   $1b, $1c, $1d, $1e, $30, $05                  ;; $00
