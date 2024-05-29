@@ -6257,7 +6257,9 @@ getRoomMetaTile:
     ld   A, [HL]                                       ;; 00:2429 $7e
     ret                                                ;; 00:242a $c9
 
-; Load the metatiles from RLE data at HL into wRoomTiles
+; Load the metatiles from run-length encoding (RLE) data at HL into wRoomTiles.
+; hl = address of the RLE compressed room metatiles
+; Return: hl = address of the room tile array
 loadRoomMetaTilesRLE:
     push HL                                            ;; 00:242b $e5
     ld   A, $07                                        ;; 00:242c $3e $07
@@ -6269,27 +6271,42 @@ loadRoomMetaTilesRLE:
     pop  DE                                            ;; 00:243c $d1
     ld   HL, wRoomTiles                                ;; 00:243d $21 $50 $c3
     ld   B, $50                                        ;; 00:2440 $06 $50
-.loop_outer:
-    ld   A, [DE]                                       ;; 00:2442 $1a
-    bit  7, A                                          ;; 00:2443 $cb $7f
-    jr   Z, .jr_00_2457                                ;; 00:2445 $28 $10
-    ld   A, [wMapTileRLECount]                         ;; 00:2447 $fa $f9 $c3
-    ld   C, A                                          ;; 00:244a $4f
-    ld   A, [DE]                                       ;; 00:244b $1a
-    and  A, $7f                                        ;; 00:244c $e6 $7f
-.loop_inner:
-    dec  C                                             ;; 00:244e $0d
-    jr   Z, .jr_00_2457                                ;; 00:244f $28 $06
-    ld   [HL+], A                                      ;; 00:2451 $22
-    dec  B                                             ;; 00:2452 $05
-    jr   NZ, .loop_inner                               ;; 00:2453 $20 $f9
-    jr   .jr_00_245c                                   ;; 00:2455 $18 $05
-.jr_00_2457:
-    ld   [HL+], A                                      ;; 00:2457 $22
-    inc  DE                                            ;; 00:2458 $13
-    dec  B                                             ;; 00:2459 $05
-    jr   NZ, .loop_outer                               ;; 00:245a $20 $e6
-.jr_00_245c:
+; Maps (aside from caves and indoors) are RLE compressed.
+; Even with rom expansion this is needed for the worldmap because it is too large to fit in one bank.
+; The original compression limited the maximum number of metatiles to 128.
+; The new compression increases this limit to 247 (or all the way to 255 if you are very careful).
+
+; Maps are compressed in ten byte chunks of metatile ids.
+; One or more bytes of literal metatile ids may be followed by a repeat value.
+; Repeat values must either be followed by a literal or end at a ten byte boundary.
+; Repeat values are any byte following a literal which is greater than $f7.
+; They repeat the previous literal two to nine times (creating a run from three to ten bytes total).
+; The value $f8 repeats the previously output literal two times (for a run of three bytes total).
+; The value $ff repeats the previously output literal nine times (for a run of ten bytes total).
+    ld a, [de]
+    jr .literal
+.loop:
+    ld a, [de]
+    cp $f8
+    jr c, .literal
+    sub $f7
+    ld c, a
+    ; Adjust the loop counter all at once for repetitions.
+    ld a, b
+    sub c
+    ld b, a
+    ; Reload the previous littoral value.
+    dec hl
+    ld a, [hl+]
+.repeat:
+    ld [hl+], a
+    dec c
+    jr nz, .repeat
+.literal:
+    inc de
+    ld [hl+], a
+    dec b
+    jr nz, .loop
     ld   HL, wRoomTiles                                ;; 00:245c $21 $50 $c3
     ret                                                ;; 00:245f $c9
 

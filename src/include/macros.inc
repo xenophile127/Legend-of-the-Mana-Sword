@@ -66,26 +66,37 @@ MACRO NPC_DATA
     ENDC
 ENDM
 MACRO RLE
-
+; Maps are compressed in ten byte chunks of metatile ids.
+; One or more bytes of literal metatile ids may be followed by a repeat value.
+; Repeat values must either be followed by a literal or end at a ten byte boundary.
+; Repeat values are any byte following a literal which is greater than $f7.
+; They repeat the previous literal two to nine times (creating a run from three to ten bytes total).
+; The value $f8 repeats the previously output literal two times (for a run of three bytes total).
+; The value $ff repeats the previously output literal nine times (for a run of ten bytes total).
+  REDEF N = -1
   REPT _NARG
     IF _NARG > 0
-      REDEF N = \1
-      REDEF DO_RLE = 1
-      IF _NARG < RLE_SIZE
-        REDEF DO_RLE = 0
-      ELSE
-        REPT RLE_SIZE - 1
-          IF N != \2
-            REDEF DO_RLE = 0
-          ENDC
+      IF (N == \1) && (_NARG > 1)
+        IF (\1 != \2)
+          REDEF N = \1
           SHIFT 1
-        ENDR
-        SHIFT 1-RLE_SIZE
-      ENDC
-      IF DO_RLE
-        SHIFT RLE_SIZE
-        db N | $80
+          db N
+        ELSE
+        ; The run length is at least three.
+          REDEF RUN_LENGTH = -2
+          REDEF RLE_CONTINUE = 1
+          REPT _NARG
+            IF (RLE_CONTINUE == 1) && (N == \1)
+              SHIFT 1
+              REDEF RUN_LENGTH = RUN_LENGTH + 1
+            ELSE
+              REDEF RLE_CONTINUE = 0
+            ENDC
+          ENDR
+          db $f8 + RUN_LENGTH
+        ENDC
       ELSE
+        REDEF N = \1
         SHIFT 1
         db N
       ENDC
