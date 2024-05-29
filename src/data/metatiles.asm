@@ -302,6 +302,11 @@ metatilesTown:
 ; Expansion:
 ; Cliff edge with grass, used in Ifrit's antechamber.
     db   $70, $59, $5a, $5b, $20, $05                  ;; $80 ($05)
+; Mountain corners with grass, used in Lich's arena.
+    db   $3f, $71, $44, $40, $20, $05                  ;; $81 ($10)
+    db   $4a, $4b, $70, $4d, $10, $04                  ;; $82 ($20)
+    db   $52, $53, $54, $71, $10, $04                  ;; $83 ($22)
+    db   $70, $3e, $36, $37, $20, $04                  ;; $84 ($3b)
 
 metatilesIndoor:
     db   $1b, $1c, $1d, $1e, $30, $05                  ;; $00
