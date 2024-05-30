@@ -23,17 +23,13 @@ FF_OR_MANA = -DMANA
 #SPAWN = -DSPAWN_ORIGINAL
 SPAWN = -DSPAWN_NEW
 
-# Controls whether to use the original random number generator or a linear congruential generator.
-#RNG = -DRNG_ORIGINAL
-RNG = -DRNG_LCG
-
 # Controls whether debug messages created with include/debug.inc are recorded
 DEBUG = -DDEBUG
 
 # Experimental color build
 COLOR = -DCOLOR
 
-DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(RNG) $(SPAWN)
+DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(SPAWN)
 
 all: debug
 
@@ -47,13 +43,13 @@ debug: DEFS += $(DEBUG)
 debug: $(ROM)
 
 amanda: clean
-amanda: DEFS = -DPLAYER_GRAPHICS_AMANDA -DPLAYER_GENDER_FEMALE -DGLADIATOR_DUKE -DMANA -DRNG_LCG -DSPAWN_NEW
+amanda: DEFS = -DPLAYER_GRAPHICS_AMANDA -DPLAYER_GENDER_FEMALE -DGLADIATOR_DUKE -DMANA -DSPAWN_NEW
 amanda: $(ROM)
 	-rm -f LotMS-Amanda-*.gb
 	mv $(ROM) LotMS-Amanda-`date +%F`.gb
 
 duke: clean
-duke: DEFS = -DPLAYER_GRAPHICS_ORIGINAL -DPLAYER_GENDER_MALE -DGLADIATOR_AMANDA -DMANA -DRNG_LCG -DSPAWN_NEW
+duke: DEFS = -DPLAYER_GRAPHICS_ORIGINAL -DPLAYER_GENDER_MALE -DGLADIATOR_AMANDA -DMANA -DSPAWN_NEW
 duke: $(ROM)
 	-rm -f LotMS-Duke-*.gb
 	mv $(ROM) LotMS-Duke-`date +%F`.gb
