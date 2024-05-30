@@ -771,6 +771,8 @@ metatilesWorldmap:
 ; Expansion:
 ; Dime Tower rises in front of crystals:
     db   $aa, $ab, $b4, $31, $20, $04                  ;; $80 ($66)
+; Vertical bridge that blocks Chocoboat for the bridge to the Snowfields.
+    db   $88, $89, $8a, $8b, $30, $07                  ;; $81 ($2a)
 
 metatilesManaland:
     db   $70, $71, $70, $71, $30, $05                  ;; $00
