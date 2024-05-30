@@ -906,3 +906,6 @@ metatilesManaland:
     db   $1e, $1f, $1f, $1e, $30, $85                  ;; $7d
     db   $f3, $f2, $f3, $f2, $30, $85                  ;; $7e
     db   $3a, $3b, $4c, $7e, $30, $8d                  ;; $7f
+; Expansion:
+; Parapet with cloud, used in Castle Granz.
+    db   $8e, $93, $9a, $9b, $00, $75                  ;; $80 ($63)
