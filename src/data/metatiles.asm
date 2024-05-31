@@ -928,3 +928,5 @@ metatilesManaland:
     db   $34, $35, $9c, $9b, $20, $05                  ;; $83 ($75)
 ; Parapet with decerative bricks below but unshaded, used in Castle Granz.
     db   $9a, $9b, $95, $95, $20, $05                  ;; $84 ($41)
+; Mountain with cloud, used in the Mana Land sky.
+    db   $3f, $d0, $44, $40, $20, $05                  ;; $85 ($10)
