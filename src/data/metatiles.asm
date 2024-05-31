@@ -311,6 +311,13 @@ metatilesTown:
     db   $84, $71, $9c, $9b, $20, $05                  ;; $85 ($75)
 ; Parapet with shaddowed stone, used in Jadd.
     db   $20, $23, $9c, $9b, $20, $05                  ;; $86 ($78)
+; Cliff edge with rubble, used at Mithril Mine's bridge .
+    db   $56, $1f, $57, $58, $20, $05                  ;; $87 ($04)
+    db   $1e, $59, $5a, $5b, $20, $05                  ;; $88 ($05)
+; Mountain corners with rubble, used at Mithril Mine's bridge.
+    db   $3f, $1f, $44, $40, $20, $05                  ;; $89 ($10)
+    db   $4a, $4b, $1f, $4d, $10, $04                  ;; $8a ($20)
+    db   $52, $53, $54, $1e, $10, $04                  ;; $8b ($22)
 
 metatilesIndoor:
     db   $1b, $1c, $1d, $1e, $30, $05                  ;; $00
