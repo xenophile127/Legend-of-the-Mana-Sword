@@ -318,6 +318,8 @@ metatilesTown:
     db   $3f, $1f, $44, $40, $20, $05                  ;; $89 ($10)
     db   $4a, $4b, $1f, $4d, $10, $04                  ;; $8a ($20)
     db   $52, $53, $54, $1e, $10, $04                  ;; $8b ($22)
+; Mountain with cloud, used in the outside area of Kary's cave.
+    db   $3f, $d0, $44, $40, $20, $05                  ;; $8c ($10)
 
 metatilesIndoor:
     db   $1b, $1c, $1d, $1e, $30, $05                  ;; $00
