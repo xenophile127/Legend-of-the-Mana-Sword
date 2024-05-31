@@ -829,7 +829,7 @@ metatilesManaland:
     db   $af, $b0, $af, $b0, $00, $04                  ;; $2e
     db   $94, $b6, $94, $b6, $00, $05                  ;; $2f
     db   $9a, $9b, $94, $94, $00, $05                  ;; $30
-    db   $9d, $9e, $9a, $9b, $20, $05                  ;; $31
+    db   $9d, $9e, $9c, $9b, $20, $05                  ;; $31
     db   $93, $93, $9a, $9b, $20, $05                  ;; $32
     db   $d6, $d7, $d8, $d9, $30, $85                  ;; $33
     db   $de, $df, $e0, $e1, $30, $85                  ;; $34
@@ -911,3 +911,11 @@ metatilesManaland:
 ; Expansion:
 ; Parapet with cloud, used in Castle Granz.
     db   $8e, $93, $9a, $9b, $00, $75                  ;; $80 ($63)
+; Parapet with shadowed grass, used in Castle Granz.
+    db   $84, $71, $9c, $9b, $20, $05                  ;; $81 ($75)
+; Parapet with shaddowed stone, used in Castle Granz.
+    db   $20, $23, $9c, $9b, $20, $05                  ;; $82 ($78)
+; Parapet with tree, used in Castle Granz.
+    db   $34, $35, $9c, $9b, $20, $05                  ;; $83 ($75)
+; Parapet with decerative bricks below but unshaded, used in Castle Granz.
+    db   $9a, $9b, $95, $95, $20, $05                  ;; $84 ($41)
