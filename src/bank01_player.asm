@@ -64,7 +64,7 @@ setDefaultLCDEffectAndBGP:
 setDefaultLCDCEffectAndPalette:
 IF DEF(COLOR)
     ld b, $08
-    ld de, wPaletteBackground
+    ld de, wPaletteBackgroundActive
     ld hl, colorPalettes.default
     call copyHLtoDE
 ELSE
@@ -98,7 +98,7 @@ loadLCDCEffectBufferAndPalette:
     push de
     call loadLCDCEffectBuffer
     ld b, $08
-    ld de, wPaletteBackground
+    ld de, wPaletteBackgroundActive
     pop hl
     call copyHLtoDE
     ret

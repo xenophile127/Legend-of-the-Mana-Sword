@@ -6,19 +6,37 @@ SECTION "Game Boy Color Bank - Code", ROMX[$4000], BANK[SGB_CODE_BANK]
 
 ; Initial palette loading.
 gbc_init:
+    ; Load the normal background palette into RAM.
     ld hl, .bgp
-    ld de, wPaletteBackground
+    ld de, wPaletteBackgroundNormal
+    ld b, $40
+    call copyHLtoDE
+    ; Load the normal background palette into the active palette RAM.
+    ld hl, .bgp
+    ld de, wPaletteBackgroundActive
+    ld b, $40
+    call copyHLtoDE
+    ; Load the normal background palette into CRAM.
+    ld hl, .bgp
     ld a, BCPSF_AUTOINC
     ldh [rBCPS], a
     ld b, $40
 .loop_bgp:
     ld a, [hl+]
     ldh [rBCPD], a
-    ld [de], a
-    inc de
     dec b
     jr nz, .loop_bgp
-
+    ; Load the normal object palette into RAM.
+    ld hl, .obj
+    ld de, wPaletteObjectNormal
+    ld b, $40
+    call copyHLtoDE
+    ; Load the normal object palette into the active palette RAM.
+    ld hl, .obj
+    ld de, wPaletteObjectActive
+    ld b, $40
+    call copyHLtoDE
+    ; Load the normal object palette into CRAM.
     ld hl, .obj
     ld a, OCPSF_AUTOINC
     ldh [rOCPS], a

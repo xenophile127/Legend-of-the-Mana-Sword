@@ -1625,12 +1625,27 @@ wPadding:
 wAnimatedTileRiverCorners:
     ds 64                                              ;; dad0
 
-wPaletteBackground:
+wPaletteBackgroundActive:
     ds 64                                              ;; db10
+
+wPaletteObjectActive:
+    ds 64                                              ;; db50
+
+wPaletteBackgroundNormal:
+    ds 64                                              ;; db90
+
+wPaletteObjectNormal:
+    ds 64                                              ;; dbd0
+
+wPaletteBackgroundBlind:
+    ds 64                                              ;; dc10
+
+wPaletteObjectBlind:
+    ds 64                                              ;; dc50
 
 ; Free WRAM space.
 wFree:
-    ds 1200                                            ;; db50
+    ds 880                                             ;; dc90
 
 SECTION "hram", HRAM[$ff80]
 

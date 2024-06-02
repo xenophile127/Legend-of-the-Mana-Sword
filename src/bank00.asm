@@ -59,7 +59,7 @@ VBlankInterruptHandler:
     ldh [rWY], a
 IF DEF(COLOR)
 ; The first background palette (and only the first) is used by line effects.
-    ld hl, wPaletteBackground
+    ld hl, wPaletteBackgroundActive
     ld a, BCPSF_AUTOINC
     ld c, LOW(rBCPS)
     ldh [c], a
