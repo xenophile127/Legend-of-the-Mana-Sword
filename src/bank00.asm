@@ -572,7 +572,7 @@ colorPalettes:
     INCBIN "pal/line-effects/intro-scroll0.pal",0,8 ; $00
 
     db $3f
-    INCBIN "pal/background_blind.pal",0,8 ; $3f
+    INCBIN "pal/init/blind/bgp0.pal",0,8 ; $3f
 
     db $40
     INCBIN "pal/line-effects/intro-scroll1.pal",0,8 ; $40
@@ -585,7 +585,7 @@ colorPalettes:
 
     db $e4
 .default:
-    INCBIN "pal/background_default.pal",0,8 ; $e4
+    INCBIN "pal/init/normal/bgp0.pal",0,8 ; $e4
 
     db $fc
 .shutter:

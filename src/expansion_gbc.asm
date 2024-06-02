@@ -32,23 +32,23 @@ gbc_init:
 
 ; Initial background palettes.
 .bgp:
-INCBIN "pal/background_default.pal",0,8
-INCBIN "pal/monochrome.pal",0,8
-INCBIN "pal/monochrome.pal",0,8
-INCBIN "pal/monochrome.pal",0,8
-INCBIN "pal/monochrome.pal",0,8
-INCBIN "pal/monochrome.pal",0,8
-INCBIN "pal/monochrome.pal",0,8
-INCBIN "pal/monochrome.pal",0,8
+INCBIN "pal/init/normal/bgp0.pal",0,8
+INCBIN "pal/init/normal/bgp1.pal",0,8
+INCBIN "pal/init/normal/bgp2.pal",0,8
+INCBIN "pal/init/normal/bgp3.pal",0,8
+INCBIN "pal/init/normal/bgp4.pal",0,8
+INCBIN "pal/init/normal/bgp5.pal",0,8
+INCBIN "pal/init/normal/bgp6.pal",0,8
+INCBIN "pal/init/normal/bgp7.pal",0,8
 
 ; Initial sprite (object) palettes.
 ; Player, player attack, snowman, follower, enemy projectile, and three for NPCs.
 .obj:
-INCBIN "pal/bios_obj_red.pal",0,8
-INCBIN "pal/bios_obj_red.pal",0,8
-INCBIN "pal/bios_obj_blue.pal",0,8
-INCBIN "pal/bios_obj_blue.pal",0,8
-INCBIN "pal/bios_obj_red.pal",0,8
-INCBIN "pal/bios_obj_blue.pal",0,8
-INCBIN "pal/bios_obj_blue.pal",0,8
-INCBIN "pal/bios_obj_blue.pal",0,8
+INCBIN "pal/init/normal/obj0.pal",0,8
+INCBIN "pal/init/normal/obj1.pal",0,8
+INCBIN "pal/init/normal/obj2.pal",0,8
+INCBIN "pal/init/normal/obj3.pal",0,8
+INCBIN "pal/init/normal/obj4.pal",0,8
+INCBIN "pal/init/normal/obj5.pal",0,8
+INCBIN "pal/init/normal/obj6.pal",0,8
+INCBIN "pal/init/normal/obj7.pal",0,8
