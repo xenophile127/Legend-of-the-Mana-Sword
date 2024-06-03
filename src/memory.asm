@@ -1705,9 +1705,13 @@ hSoundEffectLoopCounterChannel4:
 hScratch:
     ds 2
 
+; If this is set then VBlank loads all palettes.
+hPalettesDirty:
+    ds 1
+
 ; Unused and ready for future features
 hUnused:
-    ds 94
+    ds 93
 
 hInitialSP:
     ds 1                                               ;; fffe

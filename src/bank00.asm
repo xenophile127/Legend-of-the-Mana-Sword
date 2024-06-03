@@ -58,7 +58,14 @@ VBlankInterruptHandler:
     ld a, [hl+]    ; wVideoWY
     ldh [rWY], a
 IF DEF(COLOR)
+; If palettes have been changed then set all background and object palettes.
+    ldh a, [hPalettesDirty]
+    or a
+    jr z, .restoreFirstBackgroundPalette
+    call loadPalettesToCRAM
+    jr .finish
 ; The first background palette (and only the first) is used by line effects.
+.restoreFirstBackgroundPalette:
     ld hl, wPaletteBackgroundActive
     ld a, BCPSF_AUTOINC
     ld c, LOW(rBCPS)
@@ -88,6 +95,7 @@ ELSE
     ld a, [hl+]    ; wVideoOBP1
     ldh [rOBP1], a
 ENDC
+.finish:
     call vblankGraphicsVRAMCopy                        ;; 00:0071 $cd $57 $2d
     call getRandomByte                                 ;; 00:0074 $cd $1e $2b
     ld   HL, wVBlankDone                               ;; 00:007e $21 $ad $c0
@@ -272,20 +280,36 @@ scriptOpCodeSetPlayerLaydownSprite:
     ret                                                ;; 00:01f3 $c9
 
 setDarkGraphicEffect:
+IF DEF(COLOR)
+    ; Load the blind background palettes into the active palette RAM.
+    ld hl, wPaletteBackgroundBlind
+    ld de, wPaletteObjectBlind
+    call setPalettes
+    nop
+ELSE
     ld   A, $3f                                        ;; 00:01f4 $3e $3f
     ld   [wVideoBGP], A                                ;; 00:01f6 $ea $aa $c0
     ld   A, $bf                                        ;; 00:01f9 $3e $bf
     ld   [wVideoOBP1], A                               ;; 00:01fb $ea $ac $c0
+ENDC
     ld   HL, wPlayerSpecialFlags                       ;; 00:01fe $21 $d4 $c4
     set  1, [HL]                                       ;; 00:0201 $cb $ce
     ret                                                ;; 00:0203 $c9
 
 removeDarkGraphicEffect:
+IF DEF(COLOR)
+    ; Load the normal background palettes into the active palette RAM.
+    ld hl, wPaletteBackgroundNormal
+    ld de, wPaletteObjectNormal
+    call setPalettes
+    nop
+ELSE
     ld   A, $e4                                        ;; 00:0204 $3e $e4
     ld   [wVideoBGP], A                                ;; 00:0206 $ea $aa $c0
     ld   A, $d0                                        ;; 00:0209 $3e $d0
     ld   [wVideoOBP1], A                               ;; 00:020b $ea $ac $c0
     ld   HL, wPlayerSpecialFlags                       ;; 00:020e $21 $d4 $c4
+ENDC
     res  1, [HL]                                       ;; 00:0211 $cb $8e
     ret                                                ;; 00:0213 $c9
 
@@ -7342,7 +7366,99 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 256 ; Free space
+ds 161 ; Free space
+
+; Loads all background and object palettes into CRAM.
+; Used in VBlank.
+loadPalettesToCRAM:
+    ; Clear the dirty flag
+    xor a
+    ldh [hPalettesDirty], a
+    ; Load the palette background active buffer into CRAM.
+    ld hl, wPaletteBackgroundActive
+    ; Set the Background Palette Index
+    ld a, BCPSF_AUTOINC
+    ld c, LOW(rBCPS)
+    ldh [c], a
+    ; Set c to rBCPD by incrementing
+    inc c
+    ; The loop is unrolled to transfer one palette (eight bytes) at a time, so it runs eight times.
+    ld b, $08
+.loop_bgp:
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    dec b
+    jr nz, .loop_bgp
+    ; Load the palette object active buffer into CRAM.
+    ld hl, wPaletteObjectActive
+    ; Set the Background Palette Index
+    ld a, OCPSF_AUTOINC
+    ld c, LOW(rOCPS)
+    ldh [c], a
+    ; Set c to rOCPD by incrementing
+    inc c
+    ; The loop is unrolled to transfer one palette (eight bytes) at a time, so it runs eight times.
+    ld b, $08
+.loop_obj:
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    ld a, [hl+]
+    ldh [c], a
+    dec b
+    jr nz, .loop_obj
+    ret
+
+; Load all palettes and flag them to be transferred during the next VBlank.
+; hl = background palette address
+; de = object palette address
+setPalettes:
+    ld a, $01
+    ldh [hPalettesDirty], a
+    push de
+    call loadPaletteBackgroundActive
+    pop hl
+    call loadPaletteObjectActive
+    ret
+
+; Load all background palettes.
+loadPaletteBackgroundActive:
+    ld de, wPaletteBackgroundActive
+    ld b, $40
+    call copyHLtoDE
+    ret
+
+; Load all object palettes.
+loadPaletteObjectActive:
+    ld de, wPaletteObjectActive
+    ld b, $40
+    call copyHLtoDE
+    ret
 
 SECTION "bank00_align_2b40", ROM0[$2b40]
 

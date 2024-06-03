@@ -16,6 +16,11 @@ gbc_init:
     ld de, wPaletteBackgroundActive
     ld b, $40
     call copyHLtoDE
+    ; Load the blind background palette into RAM.
+    ld hl, .bgp_blind
+    ld de, wPaletteBackgroundBlind
+    ld b, $40
+    call copyHLtoDE
     ; Load the normal background palette into CRAM.
     ld hl, .bgp
     ld a, BCPSF_AUTOINC
@@ -34,6 +39,11 @@ gbc_init:
     ; Load the normal object palette into the active palette RAM.
     ld hl, .obj
     ld de, wPaletteObjectActive
+    ld b, $40
+    call copyHLtoDE
+    ; Load the blind object palette into RAM.
+    ld hl, .obj_blind
+    ld de, wPaletteObjectBlind
     ld b, $40
     call copyHLtoDE
     ; Load the normal object palette into CRAM.
@@ -70,3 +80,28 @@ INCBIN "pal/init/normal/obj4.pal",0,8
 INCBIN "pal/init/normal/obj5.pal",0,8
 INCBIN "pal/init/normal/obj6.pal",0,8
 INCBIN "pal/init/normal/obj7.pal",0,8
+
+; Initial background palettes for the Blind effect
+.bgp_blind:
+INCBIN "pal/init/blind/bgp0.pal",0,8
+INCBIN "pal/init/blind/bgp1.pal",0,8
+INCBIN "pal/init/blind/bgp2.pal",0,8
+INCBIN "pal/init/blind/bgp3.pal",0,8
+INCBIN "pal/init/blind/bgp4.pal",0,8
+INCBIN "pal/init/blind/bgp5.pal",0,8
+INCBIN "pal/init/blind/bgp6.pal",0,8
+INCBIN "pal/init/blind/bgp7.pal",0,8
+
+; Initial sprite (object) palettes for the Blind effect.
+; Player, player attack, snowman, follower, enemy projectile, and three for NPCs.
+; On DMG the player, all attacks (player, enemy, and follower), and snowmen are unaffected.
+; In Legend of the Mana Sword certain NPCs, followers, attacks, and snowmen have been changed in order to control coloring.
+.obj_blind:
+INCBIN "pal/init/blind/obj0.pal",0,8
+INCBIN "pal/init/blind/obj1.pal",0,8
+INCBIN "pal/init/blind/obj2.pal",0,8
+INCBIN "pal/init/blind/obj3.pal",0,8
+INCBIN "pal/init/blind/obj4.pal",0,8
+INCBIN "pal/init/blind/obj5.pal",0,8
+INCBIN "pal/init/blind/obj6.pal",0,8
+INCBIN "pal/init/blind/obj7.pal",0,8
