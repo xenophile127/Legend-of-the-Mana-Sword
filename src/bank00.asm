@@ -2879,17 +2879,27 @@ scriptOpCodeCloseSouthDoor:
     call getNextScriptInstruction                      ;; 00:0fdc $cd $27 $37
     ret                                                ;; 00:0fdf $c9
 
+; Flashes the screen once quickly.
 scriptOpCodeFlashScreen:
     ld   A, [wScriptOpCounter]                         ;; 00:0fe0 $fa $99 $d4
     inc a
     ld [wScriptOpCounter], a
     cp   A, $05                                        ;; 00:0fe3 $fe $05
     jr   C, .dark                                      ;; 00:0fe5 $38 $20
+IF DEF(COLOR)
+    ; Use the normal palettes.
+    push hl
+    ld hl, wPaletteBackgroundNormal
+    ld de, wPaletteObjectNormal
+    call setPalettes
+    pop hl
+ELSE
     ld   A, $e4                                        ;; 00:0fe7 $3e $e4
     ld   [wVideoBGP], A                                ;; 00:0fe9 $ea $aa $c0
     ld   A, $d0                                        ;; 00:0fec $3e $d0
     ld   [wVideoOBP0], A                               ;; 00:0fee $ea $ab $c0
     ld   [wVideoOBP1], A                               ;; 00:0ff1 $ea $ac $c0
+ENDC
     ld   A, [wScriptOpCounter]                         ;; 00:0ff4 $fa $99 $d4
     cp   A, $0a                                        ;; 00:0ffb $fe $0a
     ret  C                                             ;; 00:0ffd $d8
@@ -2898,10 +2908,19 @@ scriptOpCodeFlashScreen:
     call getNextScriptInstruction                      ;; 00:1003 $cd $27 $37
     ret                                                ;; 00:1006 $c9
 .dark:
+IF DEF(COLOR)
+    ; Use the flash palettes.
+    push hl
+    ld hl, wPaletteBackgroundFlash
+    ld de, wPaletteObjectFlash
+    call setPalettes
+    pop hl
+ELSE
     ld   A, $3f                                        ;; 00:1007 $3e $3f
     ld   [wVideoBGP], A                                ;; 00:1009 $ea $aa $c0
     ld   [wVideoOBP0], A                               ;; 00:100c $ea $ab $c0
     ld   [wVideoOBP1], A                               ;; 00:100f $ea $ac $c0
+ENDC
     ret                                                ;; 00:1019 $c9
 
 ; One trampoline shared by the three fade commands.

@@ -26,6 +26,11 @@ gbc_init:
     ld de, wPaletteBackgroundBossDamage
     ld b, $40
     call copyHLtoDE
+    ; Load the screen flash background palette into RAM.
+    ld hl, .bgp_flash
+    ld de, wPaletteBackgroundFlash
+    ld b, $40
+    call copyHLtoDE
     ; Load the normal background palette into CRAM.
     ld hl, .bgp
     ld a, BCPSF_AUTOINC
@@ -54,6 +59,11 @@ gbc_init:
     ; Load the boss damage object palette into RAM.
     ld hl, .obj_damage
     ld de, wPaletteObjectBossDamage
+    ld b, $40
+    call copyHLtoDE
+    ; Load the screen flash object palette into RAM.
+    ld hl, .obj_flash
+    ld de, wPaletteObjectFlash
     ld b, $40
     call copyHLtoDE
     ; Load the normal object palette into CRAM.
@@ -139,3 +149,25 @@ INCBIN "pal/init/damage/obj4.pal",0,8
 INCBIN "pal/init/damage/obj5.pal",0,8
 INCBIN "pal/init/damage/obj6.pal",0,8
 INCBIN "pal/init/damage/obj7.pal",0,8
+
+; Initial background palettes for the Screen Flash effect.
+.bgp_flash:
+INCBIN "pal/init/flash/bgp0.pal",0,8
+INCBIN "pal/init/flash/bgp1.pal",0,8
+INCBIN "pal/init/flash/bgp2.pal",0,8
+INCBIN "pal/init/flash/bgp3.pal",0,8
+INCBIN "pal/init/flash/bgp4.pal",0,8
+INCBIN "pal/init/flash/bgp5.pal",0,8
+INCBIN "pal/init/flash/bgp6.pal",0,8
+INCBIN "pal/init/flash/bgp7.pal",0,8
+
+; Initial sprite (object) palettes for the Screen Flash effect.
+.obj_flash:
+INCBIN "pal/init/flash/obj0.pal",0,8
+INCBIN "pal/init/flash/obj1.pal",0,8
+INCBIN "pal/init/flash/obj2.pal",0,8
+INCBIN "pal/init/flash/obj3.pal",0,8
+INCBIN "pal/init/flash/obj4.pal",0,8
+INCBIN "pal/init/flash/obj5.pal",0,8
+INCBIN "pal/init/flash/obj6.pal",0,8
+INCBIN "pal/init/flash/obj7.pal",0,8
