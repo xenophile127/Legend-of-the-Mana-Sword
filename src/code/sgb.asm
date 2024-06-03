@@ -118,11 +118,11 @@ enhancedLetterboxSetTwoControllers:
 
 ; Rather than store the boot value, check for SGB support using the multiple controller method.
 enhancedLetterboxCheckSGB:
-; Run the original letterbox code
-    call prepareLetterboxEffect_trampoline
 ; Check whether SGB code should be run
     call checkSGB
     jr c, .sgb
+; Run the original letterbox code
+    call prepareLetterboxEffect_trampoline
     xor a
     ld [wScriptOpCounter], a
     ret
@@ -317,6 +317,13 @@ enhancedLetterboxSetSGBPalette:
     ld bc, SGB_PAL01
     jp SGBSendData
 
+; Just runs the original letterbox code
+enhancedLetterboxRunOriginalLetterbox:
+    ld hl, wScriptOpCounter
+    inc [hl]
+    call prepareLetterboxEffect_trampoline
+    ret
+
 ; Unfreeze the screen and continues script execution.
 enhancedLetterboxFinish:
     xor a
@@ -380,6 +387,7 @@ enhancedLetterbox:
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxDelayFrame
     dw enhancedLetterboxSetOneController
+    dw enhancedLetterboxRunOriginalLetterbox
     dw enhancedLetterboxDelay70Frames ; Default border shows some background so wait to set the palette.
     dw enhancedLetterboxSetSGBPalette
     dw enhancedLetterboxDelayFrame
