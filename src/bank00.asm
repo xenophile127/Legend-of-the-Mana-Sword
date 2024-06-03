@@ -827,30 +827,46 @@ drawRoom_trampoline:
     jp_to_bank 01, drawRoom                            ;; 00:04a4 $f5 $3e $19 $c3 $d7 $1e
 
 bossUpdate:
+; If no boss is active then this is set to $ff.
     ld   A, [wBossFirstObjectID]                       ;; 00:04aa $fa $e8 $d3
-    cp   A, $ff                                        ;; 00:04ad $fe $ff
+    inc a
     ret  Z                                             ;; 00:04af $c8
-    ld   A, [wBossIframes]                             ;; 00:04b0 $fa $eb $d3
-    cp   A, $00                                        ;; 00:04b3 $fe $00
-    jr   Z, .jr_00_04d7                                ;; 00:04b5 $28 $20
+; If the bosscurrently invincible from having prevously taken damage then process that.
+    ld hl, wBossIframes
+    ld a, [hl]
+    or a
+    jr   Z, .tick_boss_speed                           ;; 00:04b5 $28 $20
+; Tick the counter.
+    dec [hl]
     ld   C, A                                          ;; 00:04b7 $4f
+IF DEF(COLOR)
+; Set palettes for the damage flash.
+; Background palettes are set as well in case a full-screen flash is wanted.
+    ld hl, wPaletteBackgroundNormal
+    ld de, wPaletteObjectNormal
+    bit 3, c
+    jr z, .set_palette
+    ld hl, wPaletteBackgroundBossDamage
+    ld de, wPaletteObjectBossDamage
+.set_palette:
+    call setPalettes
+ELSE
+; Do the damage flash.
     ld   A, $d0                                        ;; 00:04b8 $3e $d0
     bit  3, C                                          ;; 00:04ba $cb $59
     jr   Z, .jr_00_04c0                                ;; 00:04bc $28 $02
     ld   A, $bf                                        ;; 00:04be $3e $bf
 .jr_00_04c0:
     ld   [wVideoOBP1], A                               ;; 00:04c0 $ea $ac $c0
+ENDC
     ld   A, C                                          ;; 00:04c3 $79
     dec  A                                             ;; 00:04c4 $3d
-    ld   [wBossIframes], A                             ;; 00:04c5 $ea $eb $d3
-    jr   NZ, .jr_00_04d7                               ;; 00:04c8 $20 $0d
+    jr   NZ, .tick_boss_speed                          ;; 00:04c8 $20 $0d
+; On the final tick run the damage routine if bit 7 of [wDamageDoneToBoss] is set.
     ld   A, [wDamageDoneToBoss.high]                   ;; 00:04ca $fa $f3 $d3
-    ld   H, A                                          ;; 00:04cd $67
-    ld   A, [wDamageDoneToBoss]                        ;; 00:04ce $fa $f2 $d3
-    ld   L, A                                          ;; 00:04d1 $6f
-    bit  7, H                                          ;; 00:04d2 $cb $7c
-    call NZ, bossTakeDamage_trampoline                 ;; 00:04d4 $c4 $f4 $04
-.jr_00_04d7:
+    rla
+    call c, bossTakeDamage_trampoline
+.tick_boss_speed:
     ld   HL, wBossSpeedTimer                           ;; 00:04d7 $21 $e9 $d3
     dec  [HL]                                          ;; 00:04da $35
     ret  NZ                                            ;; 00:04db $c0

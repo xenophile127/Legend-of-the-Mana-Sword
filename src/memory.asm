@@ -1643,9 +1643,15 @@ wPaletteBackgroundBlind:
 wPaletteObjectBlind:
     ds 64                                              ;; dc50
 
+wPaletteBackgroundBossDamage:
+    ds 64                                              ;; dc90
+
+wPaletteObjectBossDamage:
+    ds 64                                              ;; dcd0
+
 ; Free WRAM space.
 wFree:
-    ds 880                                             ;; dc90
+    ds 752                                             ;; dd10
 
 SECTION "hram", HRAM[$ff80]
 

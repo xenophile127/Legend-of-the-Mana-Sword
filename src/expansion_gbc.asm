@@ -21,6 +21,11 @@ gbc_init:
     ld de, wPaletteBackgroundBlind
     ld b, $40
     call copyHLtoDE
+    ; Load the boss damage background palette into RAM.
+    ld hl, .bgp_damage
+    ld de, wPaletteBackgroundBossDamage
+    ld b, $40
+    call copyHLtoDE
     ; Load the normal background palette into CRAM.
     ld hl, .bgp
     ld a, BCPSF_AUTOINC
@@ -44,6 +49,11 @@ gbc_init:
     ; Load the blind object palette into RAM.
     ld hl, .obj_blind
     ld de, wPaletteObjectBlind
+    ld b, $40
+    call copyHLtoDE
+    ; Load the boss damage object palette into RAM.
+    ld hl, .obj_damage
+    ld de, wPaletteObjectBossDamage
     ld b, $40
     call copyHLtoDE
     ; Load the normal object palette into CRAM.
@@ -105,3 +115,27 @@ INCBIN "pal/init/blind/obj4.pal",0,8
 INCBIN "pal/init/blind/obj5.pal",0,8
 INCBIN "pal/init/blind/obj6.pal",0,8
 INCBIN "pal/init/blind/obj7.pal",0,8
+
+; Initial background palettes for the Boss Damage effect.
+.bgp_damage:
+INCBIN "pal/init/damage/bgp0.pal",0,8
+INCBIN "pal/init/damage/bgp1.pal",0,8
+INCBIN "pal/init/damage/bgp2.pal",0,8
+INCBIN "pal/init/damage/bgp3.pal",0,8
+INCBIN "pal/init/damage/bgp4.pal",0,8
+INCBIN "pal/init/damage/bgp5.pal",0,8
+INCBIN "pal/init/damage/bgp6.pal",0,8
+INCBIN "pal/init/damage/bgp7.pal",0,8
+
+; Initial sprite (object) palettes for the Boss Damage effect.
+; Player, player attack, snowman, follower, enemy projectile, and three for NPCs.
+; This should only affect the palettes used by the boss(es).
+.obj_damage:
+INCBIN "pal/init/damage/obj0.pal",0,8
+INCBIN "pal/init/damage/obj1.pal",0,8
+INCBIN "pal/init/damage/obj2.pal",0,8
+INCBIN "pal/init/damage/obj3.pal",0,8
+INCBIN "pal/init/damage/obj4.pal",0,8
+INCBIN "pal/init/damage/obj5.pal",0,8
+INCBIN "pal/init/damage/obj6.pal",0,8
+INCBIN "pal/init/damage/obj7.pal",0,8
