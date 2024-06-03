@@ -538,17 +538,6 @@ enhancedFade:
     ld a, [wSGBEndingCounter]
     or a
     ret z
-; To save space in bank 0 use one trampoline and check the script opcode to determine intended behavior.
-    ld a, [wScriptCommand]
-    cp $bc ; scriptOpCodeFadeToNormal
-    jr z, .normal
-    cp $bd ; scriptOpCodeFadeToBlack
-    jr z, .black
-; Fade-to-white is not used during the ending so don't handle it.
-    ;cp $be ; scriptOpCodeFadeToWhite
-    xor a
-    ret
-.normal:
 ; This counter is started by the letterbox effect during the ending.
 ; Since that happens when the screen has been faded by the DMG fade, the first fade back should be DMG.
 ; The difference is hidden by it being on the completely black room.
@@ -563,6 +552,17 @@ enhancedFade:
 .check:
     cp $02
     ret z
+; To save space in bank 0 use one trampoline and check the script opcode to determine intended behavior.
+    ld a, [wScriptCommand]
+    cp $bc ; scriptOpCodeFadeToNormal
+    jr z, .normal
+    cp $bd ; scriptOpCodeFadeToBlack
+    jr z, .black
+; Fade-to-white is not used during the ending so don't handle it.
+    ;cp $be ; scriptOpCodeFadeToWhite
+    xor a
+    ret
+.normal:
     call sgbFadeToNormal
     xor a
     inc a

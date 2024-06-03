@@ -454,9 +454,9 @@ sgbFadeToBlack:
     or a
     jr z, .send_packet
 ; This counter is used to time when the final fade-to-black is happening to load attributes.
-; When it hits seven, additional work is done to set up colors for the "End" screen.
+; When it hits 13, additional work is done to set up colors for the "End" screen.
     ld a, [wSGBEndingCounter]
-    cp $07
+    cp $0d
     jr nz, .return
     ld a, [wScriptOpCounter2]
 ; It takes two packets to load the color attributes for the sprout.
@@ -508,7 +508,7 @@ sgbFadeToNormal:
     ret nc
 ; But only on the final fade.
     ld a, [wSGBEndingCounter]
-    cp $08
+    cp $0e
     ret nz
     push hl
 ; Calculate the second packet.
