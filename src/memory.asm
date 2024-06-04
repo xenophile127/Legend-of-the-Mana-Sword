@@ -52,6 +52,9 @@ wVideoWY:
 wVideoBGP:
     ds 1                                               ;; c0aa
 
+; OBP0 is not used for color except it's was used by the fade-in effect to track white vs black,
+;  so keep using it for that, but give it an alias.
+wLastFade:
 wVideoOBP0:
     ds 1                                               ;; c0ab
 

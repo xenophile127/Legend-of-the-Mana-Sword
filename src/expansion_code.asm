@@ -532,8 +532,9 @@ scanRoomForNpcPlacementOptions:
 
     ret
 
-; Provides SGB enhanced fade effects using SNES palettes.
+; Provides smooth fades using either SGB or GBC capabilities, if present.
 enhancedFade:
+IF !DEF(COLOR)
 ; Check whether to use the SGB fade effect. If not, return zero and the DMG effect will be used instead.
     ld a, [wSGBEndingCounter]
     or a
@@ -552,23 +553,44 @@ enhancedFade:
 .check:
     cp $02
     ret z
+ENDC
 ; To save space in bank 0 use one trampoline and check the script opcode to determine intended behavior.
     ld a, [wScriptCommand]
     cp $bc ; scriptOpCodeFadeToNormal
     jr z, .normal
     cp $bd ; scriptOpCodeFadeToBlack
     jr z, .black
-; Fade-to-white is not used during the ending so don't handle it.
     ;cp $be ; scriptOpCodeFadeToWhite
+; Track which palette is active so one routine can handle fading back from either.
     xor a
+    ld [wLastFade], a
+IF DEF(COLOR)
+    call gbcFadeToWhite
+    xor a
+    inc a
+ELSE
+; Fade-to-white is not used during the ending so don't handle it.
+    xor a
+ENDC
     ret
 .normal:
+IF DEF(COLOR)
+    call gbcFadeToNormal
+ELSE
     call sgbFadeToNormal
+ENDC
     xor a
     inc a
     ret
 .black:
+; Track which palette is active so one routine can handle fading back from either.
+    ld a, $01
+    ld [wLastFade], a
+IF DEF(COLOR)
+    call gbcFadeToBlack
+ELSE
     call sgbFadeToBlack
+ENDC
     xor a
     inc a
     ret
@@ -588,6 +610,9 @@ enhancedWarmBoot:
 ; This provides a replacement letterbox routine which blacks the border on SGB,
 ; and fade routines that use the SGB hardware.
 INCLUDE "code/sgb.asm"
+
+; Fade routines for Game Boy Color.
+INCLUDE "code/gbc_fade.asm"
 
 ; Background tile animation has been moved here to allow it to expand.
 INCLUDE "code/animated_tiles.asm"
