@@ -49,8 +49,14 @@ fadeBlack:
     jr nz, .loop_bgp
     ld de, wPaletteObjectActive
     ld hl, wPaletteObjectNormal
-    ld b, $20
+    ld b, $08
 .loop_obj:
+; Color 0 of object palettes is unused.
+    inc de
+    inc de
+    inc hl
+    inc hl
+FOR n, 3
     push bc
     push de
     call fadeBlackColor
@@ -61,6 +67,7 @@ fadeBlack:
     ld [de], a
     inc de
     pop bc
+ENDR
     dec b
     jr nz, .loop_obj
 ; Tell the VBlank handler to set palettes.
@@ -103,8 +110,14 @@ fadeWhite:
     jr nz, .loop_bgp
     ld de, wPaletteObjectActive
     ld hl, wPaletteObjectNormal
-    ld b, $20
+    ld b, $08
 .loop_obj:
+; Color 0 of object palettes is unused.
+    inc de
+    inc de
+    inc hl
+    inc hl
+FOR n, 3
     push bc
     push de
     call fadeWhiteColor
@@ -115,6 +128,7 @@ fadeWhite:
     ld [de], a
     inc de
     pop bc
+ENDR
     dec b
     jr nz, .loop_obj
 ; Tell the VBlank handler to set palettes.
