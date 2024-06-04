@@ -528,15 +528,17 @@ LCDCInterrupt:
     ld   HL, wLCDCEffectIndex                          ;; 00:0351 $21 $e2 $d3
     inc  [HL]                                          ;; 00:0354 $34
 IF DEF(COLOR)
-; For color use the DMG BGP value as a key to look up a color palette.
-    ld bc, $0009
-    ld hl, colorPalettes - $0009
-    ld a, e
+; For color use the DMG BGP value as a key to look up the address of the real color palette.
+    ld hl, .lookup_table - 1
 .loop:
-    add hl, bc
-    cp [hl]
-    jr nz, .loop
     inc hl
+    ld a, [hl+]
+    cp e
+; Speculatively load the first byte of the address because it is the same speed as an increment.
+    ld a, [hl+]
+    jr nz, .loop
+    ld h, [hl]
+    ld l, a
 ; Reset the address and set autoinc before waiting for time to write.
     ld a, BCPSF_AUTOINC
     ldh [rBCPS], a
@@ -590,32 +592,38 @@ ENDC
     reti
 
 ; Lookup table for line effect palettes. BGP values are used as keys.
+.lookup_table:
+    db $00 ; Final step of the intro text scroll fading away.
+    dw colorPalettes.intro_white
+    db $2a ; Magic value used for fades when the letterbox effect is on.
+    dw wPaletteBackground0LCDC
+    db $3f ; Used by the Blind effect.
+    dw wPaletteBackgroundBlind
+    db $40 ; Second step of the intro text scroll fading away.
+    dw colorPalettes.intro_light
+    db $90 ; First step of the intro text scroll fading away.
+    dw colorPalettes.intro_dark
+    db $e0 ; Used for the status bar. Looks the same as $e4 when running in black and white.
+    dw colorPalettes.statusbar
+    db $e4 ; Default.
+    dw wPaletteBackgroundNormal
+    db $fc ; Used for the blank part of shutter effects (both normal and Blind).
+    dw colorPalettes.shutter
+    db $ff ; The top 16 lines of the ending letterbox effect are blacked out.
+    dw colorPalettes.letterbox
+
+; Color palettes used by line effects.
 colorPalettes:
-    db $00
-.intro_scroll0:
+.intro_white:
     INCBIN "pal/line-effects/intro-scroll0.pal",0,8 ; $00
-
-    db $3f
-    INCBIN "pal/init/blind/bgp0.pal",0,8 ; $3f
-
-    db $40
+.intro_light:
     INCBIN "pal/line-effects/intro-scroll1.pal",0,8 ; $40
-
-    db $90
+.intro_dark:
     INCBIN "pal/line-effects/intro-scroll2.pal",0,8 ; $90
-
-    db $e0
+.statusbar:
     INCBIN "pal/line-effects/statusbar.pal",0,8 ; $e0
-
-    db $e4
-.default:
-    INCBIN "pal/init/normal/bgp0.pal",0,8 ; $e4
-
-    db $fc
 .shutter:
     INCBIN "pal/line-effects/shutter.pal",0,8 ; $fc
-
-    db $ff
 .letterbox:
     INCBIN "pal/line-effects/letterbox.pal",0,8 ; $ff
 

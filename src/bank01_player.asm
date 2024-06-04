@@ -65,7 +65,7 @@ setDefaultLCDCEffectAndPalette:
 IF DEF(COLOR)
     ld b, $08
     ld de, wPaletteBackgroundActive
-    ld hl, colorPalettes.default
+    ld hl, wPaletteBackgroundNormal
     call copyHLtoDE
 ELSE
     ld a, $e4

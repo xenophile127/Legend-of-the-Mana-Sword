@@ -12,8 +12,8 @@ gbcFadeToNormal:
     ld c, a
     ld a, [wLastFade]
     or a
-    jr z, fadeWhite
-    jr fadeBlack
+    jr nz, fadeBlack
+    jp fadeWhite
 
 ; Fade to black.
 gbcFadeToBlack:
@@ -34,6 +34,33 @@ fadeBlack:
     ld de, wPaletteBackgroundActive
     ld hl, wPaletteBackgroundNormal
     ld b, $20
+; Hack to support the ending Letterbox mode by skipping the first palette.
+; The original code has a similar hack, also switched off of the first line effect line number.
+    ld a, [wLCDCEffectBuffer]
+    cp $7e
+    jr z, .loop_bgp
+; Load a magic value (42) to cause the LCDC interrupt to use the value in wPaletteBackground0LCDC.
+    ld a, $2a
+    ld [wLCDCEffectBuffer + 3], a
+; Process BGP0 and put the result into this special buffer.
+    ld de, wPaletteBackground0LCDC
+    ld b, $04
+.loop_bgp0:
+    push bc
+    push de
+    call fadeBlackColor
+    pop de
+    ld [de], a
+    inc de
+    ld a, b
+    ld [de], a
+    inc de
+    pop bc
+    dec b
+    jr nz, .loop_bgp
+; Run the normal loop starting with BGP1.
+    ld de, wPaletteBackgroundActive+$08
+    ld b, $1c
 .loop_bgp:
     push bc
     push de

@@ -1658,9 +1658,13 @@ wPaletteBackgroundFlash:
 wPaletteObjectFlash:
     ds 64                                              ;; dd50
 
+; Stores faded color BGP0 during fades when the letterbox effect is enabled.
+wPaletteBackground0LCDC:
+    ds 8                                               ;; dd90
+
 ; Free WRAM space.
 wFree:
-    ds 624                                             ;; dd90
+    ds 616                                             ;; dd98
 
 SECTION "hram", HRAM[$ff80]
 

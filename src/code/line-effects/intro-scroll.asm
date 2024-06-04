@@ -23,7 +23,7 @@ prepareIntroScrollEffect:
 IF DEF(COLOR)
     ld b, $08
     ld de, wPaletteBackgroundActive
-    ld hl, colorPalettes.intro_scroll0
+    ld hl, colorPalettes.intro_white
     call copyHLtoDE
 ELSE
     ld   A, $00                                        ;; 01:40d2 $3e $00
