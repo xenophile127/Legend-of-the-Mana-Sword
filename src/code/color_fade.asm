@@ -11,7 +11,15 @@ fadeBlackComponent:
     ld e, [hl]
     inc hl
     ld d, [hl]
-    call MultiplyDE_by_A
+; Do a 5 bit by 16 bit multiply by pre-shifting jumping midway into the normal multiply routine.
+    ld hl, $0000
+    ld b, $05
+    add a
+    add a
+    add a
+    call MultiplyDE_by_A.loop
+; Use the high byte of the result.
+; Essentially the constant multiplication factor is a fixed point number.
     ld a, h
     pop hl
     pop de
@@ -40,9 +48,15 @@ fadeBlackColor:
     sra d
     rra
 ; Green times eight is now in a, and blue is in d.
-    call fadeBlackComponent ; green * 8
-; Low bits need to be masked off after a multiply.
-    and $f8
+    rra
+    rra
+    rra
+; High bits need to be masked off before a multiply.
+    and $1f
+    call fadeBlackComponent ; green
+    add a
+    add a
+    add a
 ; Load blue from d, and store the processed green in its place.
     ld b, a
     ld a, d
@@ -57,7 +71,7 @@ fadeBlackColor:
     ld b, a
     ld a, e
     ld e, b
-; High bits need to be masked off befoer a multiply.
+; High bits need to be masked off before a multiply.
     and $1f
     call fadeBlackComponent ; red
 ; Combine red with the lower three bits of green.
@@ -80,11 +94,22 @@ fadeWhiteComponent:
     ld e, [hl]
     inc hl
     ld d, [hl]
+; Save the original input component value.
     ldh [hScratch], a
+; Subtract it from $1f (the white value).
     cpl
     add $1f + 1
-    call MultiplyDE_by_A
+; Do a 5 bit by 16 bit multiply by pre-shifting jumping midway into the normal multiply routine.
+    ld hl, $0000
+    ld b, $05
+    add a
+    add a
+    add a
+    call MultiplyDE_by_A.loop
+; For white the multiplication result is added to the input component value.
     ldh a, [hScratch]
+; Use the high byte of the result.
+; Essentially the constant multiplication factor is a fixed point number.
     add h
     pop hl
     pop de
@@ -115,10 +140,10 @@ fadeWhiteColor:
     sra d
     rra
 ; Green times eight is now in a, and blue is in d.
-; Unlike black fades, due to the addition shifted values cannot be used.
     rra
     rra
     rra
+; High bits need to be masked off before a multiply.
     and $1f
     call fadeWhiteComponent ; green
     add a
@@ -138,7 +163,7 @@ fadeWhiteColor:
     ld b, a
     ld a, e
     ld e, b
-; High bits need to be masked off befoer a multiply.
+; High bits need to be masked off before a multiply.
     and $1f
     call fadeWhiteComponent ; red
 ; Combine red with the lower three bits of green.
