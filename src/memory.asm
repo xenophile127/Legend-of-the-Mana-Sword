@@ -52,9 +52,6 @@ wVideoWY:
 wVideoBGP:
     ds 1                                               ;; c0aa
 
-; OBP0 is not used for color except it's was used by the fade-in effect to track white vs black,
-;  so keep using it for that, but give it an alias.
-wLastFade:
 wVideoOBP0:
     ds 1                                               ;; c0ab
 
@@ -1662,9 +1659,13 @@ wPaletteObjectFlash:
 wPaletteBackground0LCDC:
     ds 8                                               ;; dd90
 
+; Used on Super Game Boy to track whether the last fade was to white or black.
+wLastFade:
+    ds 1                                               ;; dd91
+
 ; Free WRAM space.
 wFree:
-    ds 616                                             ;; dd98
+    ds 615                                             ;; dd99
 
 SECTION "hram", HRAM[$ff80]
 
