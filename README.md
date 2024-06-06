@@ -1,3 +1,1 @@
-# FFA-Disassembly
-
-Discord: https://discord.gg/CFdyrbWsWZ
+# Legend of the Mana Sword
