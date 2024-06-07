@@ -11,11 +11,11 @@ The `pal` directory contains all the palettes used, stored in `.pal` files. The 
 
 You can use Game Boy Color Picker anywhere Legend of the Mana Sword's color port can run to choose colors, or to view the colors in a `.pal` file. Viewing is hopefully as easy as renaming `<something>.pal` to `GBColorPicker.sav` and replacing the existing `GBColorPicker.sav` before running `GBColorPicker.gb`. Colors can then be edited, `GBColorPicker.gb` closed, and `GBColorPicker.sav` can be moved (or copied) over whichever `.pal` file you like.
 
-> **Note:** Most emulators and flash cartridges will create `.sav` files that are much larger than necessary. Only the first eight bytes are used, but it is safe to add `.pal` files of any size--everything after the first eight bytes will be ignored.
+> 💡**Note:** Most emulators and flash cartridges will create `.sav` files that are much larger than necessary. Only the first eight bytes are used, but it is safe to add `.pal` files of any size--everything after the first eight bytes will be ignored.
 
 After changing `.pal` files you will need to run `make color` to build a file named `rom.gb` which can be run on any Game Boy Color or Game Boy Advance emulator, or on real hardware using a Game Boy flash cartridge.
 
-> **Note:** Game Boy Advance flash cartridges that use Goomba Color to run Game Boy Color games are unlikely to work. While Goomba Color is an impressive piece of engineering, it makes accuracy compromises.
+> 💡**Note:** Game Boy Advance flash cartridges that use Goomba Color to run Game Boy Color games are unlikely to work. While Goomba Color is an impressive piece of engineering, it makes accuracy compromises.
 
 ## Organization of the `pal` directory
 
@@ -37,4 +37,4 @@ Currently there are three directories within `pal`:
     * Shutter effect. Used when selecting a save game to continue, to transition from one map to another, and when displaying the in-game maps. All four colors in this palette should be the same, but it can be used to change the effect from white to black, or any other color you may like.
     * Status bar effect. Used by the status bar at the bottom of the screen that shows HP, MP, Lucre, and the stamina gauge. At this point there are some visual glitches related to changing this.
 3. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
-> **Note:** Super Game Boy support is disabled when assembling with Game Boy Color/Advance support with `make color`.
+> 💡**Note:** Super Game Boy support is disabled when assembling with Game Boy Color/Advance support with `make color`.
