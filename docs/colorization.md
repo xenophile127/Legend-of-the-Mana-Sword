@@ -3,7 +3,8 @@
 Every fan-made Game Boy Color (GBC) conversion has gotten criticism about color choices. Legend of the Mana Sword (LotMS) is being colorized with the goal of allowing relatively non-technical people to make whatever changes they like. However, colorization is currently at a very early stage.
 
 ## Setup
-You *will* need to be able to assemble the source. The main requirements are a *nix style CLI with `make`, and [RGBDS](https://rgbds.gbdev.io/).
+You *will* need to be able to assemble the source. The main requirements are [RGBDS](https://rgbds.gbdev.io/) and `make`. The color version of Legend of the Mana Sword is built with `make color`.
+> 💡**Note:** LotMS is in the `lotms` branch of this fork of `FFA-Disassembly`.
 
 ## Game Boy Color Picker
 
@@ -20,11 +21,21 @@ After changing `.pal` files you will need to run `make color` to build a file na
 ## Organization of the `pal` directory
 
 Currently there are three directories within `pal`:
-1. **`init` -** The main palette(s). Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files (only `bgp0.pal` is currently used) and eight sprite (`obj`) `.pal` files.:
-    - **`blind` -** Used when inflicted with the status effect Blind (shortened to "Dark" in the original Final Fantasy Adventure and Mystic Quest localizations). These palettes mimic the effect as rendered on GBC's BIOS compatability colorization, with Legend of the Mana Sword's chosen palette. That means backgrounds are all black except normally black areas are white, and sprites are either unmodified (such as the player) or all black except normally black areas are replaced with either dark red or dark blue (depending on the usually used palette). These could be customized with dark gray or white used instead of dark blue/red for sprites, or the background could have all colors dimmed instead of made completely black.
-    - **`damage` -** Used for boss' flash that indicates when they take damage. Most of these are identical to the default palettes with the exception or `obj5.pal`, `obj6.pal`, and `obj7.pal`. Only `obj5.pal` is currently used for bosses, but bosses will be free to use all three of these, and some bosses will use other ones. Currently these mimic GBC auto-colorization of Legend of the Mana Sword, with dark blue where black would normally be, and the other colors black. Any number of boss flash effects could be done by changing these: for instance, Secret of Mana's white flash. Background palettes are also included in case a full screen flash is desired when a boss is hit.
-    - **`flash` -** Used for full screen flashes, triggered either by a script command or as a part of some bosses' death effect. Once again, currently patterned off how Legend of the Mana Sword looks when playing on GBC with auto-colorization. These could be changed in any number of ways, including making them less contrasting, or eliminating them for a "no flash" patch by copying the files from `pal/normal`.
-    - **`normal` -** What is used most of the time. Currently--in addition to `bgp0.pal`:
+1. **`init` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files (only `bgp0.pal` is currently used) and eight sprite (`obj`) `.pal` files.:
+    - **`blind` -** Used when inflicted with the status effect Blind (shortened to "Dark" in the original Final Fantasy Adventure and Mystic Quest localizations).
+      
+        These palettes mimic the effect as rendered on GBC's BIOS compatability colorization, with Legend of the Mana Sword's chosen palette. That means backgrounds are all black except normally black areas are white, and sprites are either unmodified (such as the player) or all black except normally black areas are replaced with either dark red or dark blue (depending on the usually used palette).
+
+        These could be customized with dark gray or white used instead of dark blue/red for sprites, or the background could have all colors dimmed instead of made completely black.
+    - **`damage` -** Used for the flash that indicates when a boss takes damage. Most of these are identical to the default palettes with the exception or `obj5.pal`, `obj6.pal`, and `obj7.pal`. Only `obj5.pal` is currently used for bosses, but bosses will be free to use all three of these, and some bosses will use more.
+
+        Currently these mimic GBC auto-colorization of Legend of the Mana Sword, with dark blue where black would normally be, and the other colors black.
+
+        Any number of boss flash effects could be done by changing these: for instance, Secret of Mana's white flash. Background palettes are also included in case a full screen flash is desired when a boss is hit.
+    - **`flash` -** Used for full screen flashes, triggered either by a script command or as a part of some bosses' death effect. Once again, currently patterned off how Legend of the Mana Sword looks when playing on GBC with auto-colorization.
+
+        These could be changed in any number of ways, including making them less contrasting, or eliminating them for a "no flash" patch by copying the files from `pal/normal`.
+    - **`normal` -** What is used most of the time. In addition to `bgp0.pal` these sprite palettes are used:
         * `obj0.pal` is used for the player, some NPCs, and enemies.
         * `obj1.pal` is used for the player's attacks, including spells (except for Ice).
         * `obj2.pal` is used for the snowmen created by using the Ice spell and similar items, and ice attacks by the player and enemies. Right now this is the sprite palette with the most consistency: very few things use it, and all of them are ice/snow related. Changing it to use dark blue instead of black--or something else that fits ice/snow--is possible.
@@ -34,7 +45,8 @@ Currently there are three directories within `pal`:
 2. **`line-effects` -** Contains a small number of palettes used for special effects:
     * New Game intro scroll "vignette" fade effect. These can be replaced to change the three steps of the fade. For instance, the fade can be disabled completely by copying `pal/init/normal/bgp0.pal` over all three of the `intro-scroll?.pal` files.
     * Ending credits "letterbox" effect. This serves to black out the top 16 pixels of the screen for the ending credits. Recommended to keep this as is.
-    * Shutter effect. Used when selecting a save game to continue, to transition from one map to another, and when displaying the in-game maps. All four colors in this palette should be the same, but it can be used to change the effect from white to black, or any other color you may like.
+    * Shutter effect. Used when selecting a save game to continue, to transition from one map to another, and when displaying the in-game maps. This can be used to change the effect from white to black, or any other color you may like.
+      > 💡**Note:** All four colors in this palette should be the same as it uses the area of memory that contains the status bar.
     * Status bar effect. Used by the status bar at the bottom of the screen that shows HP, MP, Lucre, and the stamina gauge. At this point there are some visual glitches related to changing this.
 3. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
 > 💡**Note:** Super Game Boy support is disabled when assembling with Game Boy Color/Advance support with `make color`.
