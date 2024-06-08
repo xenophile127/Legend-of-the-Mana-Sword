@@ -1,5 +1,14 @@
 ; Use DBG_STR to define the message. Refer to debug.inc for further instructions.
 
+; Messages SHOULD use one of these log levels:
+; TRACE: Temporary messages, not to be checked in.
+; DEBUG: Raw data useful for debugging.
+; INFO: Standard logging level indicating something happened.
+; WARN: Something unexpected happened, but there is no impact on gameplay.
+; ERROR: Something happened that may cause unintended behavior noticible to the player.
+; FATAL: Detected an invalid state that makes it undesirable to continue execution.
+;        FATAL level messages SHOULD be followed with an infinite loop to preserve state.
+
 introDebugMsg:
     DBG_STR STRFMT("[INFO] LotMS Build  %u-%02u-%02u", __UTC_YEAR__, __UTC_MONTH__, __UTC_DAY__)
 
