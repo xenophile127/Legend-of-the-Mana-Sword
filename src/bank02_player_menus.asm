@@ -4358,7 +4358,9 @@ windowDrawBottom:
 
 windowDrawFinished:
     ld   A, D                                          ;; 02:67b7 $7a
-    cp   A, $0f                                        ;; 02:67b8 $fe $0f
+; Check the bottom y coordinate for overlap with the status bar
+; and disable the sprite hiding effect if needed.
+    cp a, $11
     call NC, disableStatusBarEffect                    ;; 02:67ba $d4 $44 $7a
     ld   DE, $800                                      ;; 02:67c2 $11 $00 $08
     ld   BC, $913                                      ;; 02:67c5 $01 $13 $09
