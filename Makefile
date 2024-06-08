@@ -29,6 +29,9 @@ DEBUG = -DDEBUG
 # Experimental color build
 COLOR = -DCOLOR
 
+# Set Double Speed Mode. Only an option for the experimental color build.
+DOUBLE_SPEED = -DDOUBLE_SPEED
+
 DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(SPAWN)
 
 all: debug
@@ -55,7 +58,7 @@ duke: $(ROM)
 	mv $(ROM) LotMS-Duke-`date +%F`.gb
 
 color: clean
-color: DEFS += $(COLOR) $(DEBUG)
+color: DEFS += $(COLOR) $(DEBUG) $(DOUBLE_SPEED)
 color: $(ROM)
 
 $(ROM): $(patsubst src/%.asm,.obj/%.o,$(SRCS))

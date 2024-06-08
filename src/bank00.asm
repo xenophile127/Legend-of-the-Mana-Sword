@@ -7417,13 +7417,29 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 120 ; Free space
+ds 87 ; Free space
 
 colorInit:
 ; Refuse to run unless color capable hardware is found.
     ldh a, [hBootup.a]
     cp $11
     jr nz, .fatal
+IF DEF(DOUBLE_SPEED)
+; Perform switch to Double Speed Mode
+    ldh a, [rKEY1]
+    and KEY1F_DBLSPEED
+    jr nz, .done
+    ld a, P1F_GET_NONE
+    ldh [rP1], a
+    ld a, KEY1F_PREPARE
+    ldh [rKEY1], a
+    stop
+    ldh a, [rKEY1]
+    and KEY1F_DBLSPEED
+    jr z, .done
+    DBG_MSG_LABEL debugMsgDoubleSpeed
+.done: 
+ENDC
     jp FullReset
 .fatal:
     DBG_MSG_LABEL debugMsgColorIncompatible

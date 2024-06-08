@@ -28,3 +28,6 @@ ENDC
 
 debugMsgColorIncompatible:
     DBG_STR "[FATAL] Requires Game Boy Color or Game Boy Advance."
+
+debugMsgDoubleSpeed:
+    DBG_STR "[DEBUG] Performed switch to Double Speed Mode."
