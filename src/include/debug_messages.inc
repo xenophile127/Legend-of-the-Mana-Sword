@@ -25,3 +25,6 @@ ELSE
 ; If tiles are crossing a 16 byte boundary it's more likely a bug than intentional.
     DBG_STR STRFMT("[WARN] Non-aligned tile copy.")
 ENDC
+
+debugMsgColorIncompatible:
+    DBG_STR "[FATAL] Requires Game Boy Color or Game Boy Advance."

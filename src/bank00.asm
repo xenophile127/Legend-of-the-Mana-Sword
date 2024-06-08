@@ -141,12 +141,12 @@ lotmsInit:
     ldh [hBootup.c], a
 ; Log the initial state of the registers.
     DBG_MSG_LABEL bootupRegisterStates
-; Init the Super Game Boy border before anything else. This detects SGB by testing c=$14.
-    ld a, BANK(sgb_init)
-    ld [rROMB0], a
-    call sgb_init
+IF DEF(COLOR)
+    jp colorInit
+ELSE
 ; Continue with the normal reset.
     jp FullReset
+ENDC
 
 SECTION "entry", ROM0[$0100]
 
@@ -5654,6 +5654,10 @@ returnFromBankCall:
 Init:
     di                                                 ;; 00:1fca $f3
     ld   SP, hInitialSP                                ;; 00:1fcb $31 $fe $ff
+; Init the Super Game Boy border before anything else. This detects SGB by testing c=$14.
+    ld a, BANK(sgb_init)
+    ld [rROMB0], a
+    call sgb_init
     call DisableLCD
     call InitPreIntEnable                              ;; 00:1fce $cd $f0 $1f
     ei                                                 ;; 00:1fd1 $fb
@@ -7413,7 +7417,18 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 142 ; Free space
+ds 120 ; Free space
+
+colorInit:
+; Refuse to run unless color capable hardware is found.
+    ldh a, [hBootup.a]
+    cp $11
+    jr nz, .fatal
+    jp FullReset
+.fatal:
+    DBG_MSG_LABEL debugMsgColorIncompatible
+.loop:
+    jr .loop
 
 ; Loads all background and object palettes into CRAM.
 ; Used in VBlank.
