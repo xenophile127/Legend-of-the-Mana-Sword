@@ -602,6 +602,8 @@ shutterEffectOpenInit:
     pop  HL                                            ;; 01:4475 $e1
     ret                                                ;; 01:4476 $c9
 
+SECTION "bank01_align_4477", ROMX[$4477], BANK[$01]
+
 advanceScriptOpWhenVRAMCopiesDone:
     push DE                                            ;; 01:4477 $d5
     ld   A, [wTileCopyRequestCount]                    ;; 01:4478 $fa $e0 $c8
@@ -1030,7 +1032,7 @@ drawRoom:
     call initEnemiesCounterAndMoveFolower_trampoline   ;; 01:474e $cd $26 $29
     ret                                                ;; 01:4751 $c9
 
-SECTION "bank01_align", ROMX[$475e], BANK[$01]
+SECTION "bank01_align_475e", ROMX[$475e], BANK[$01]
 
 playerTileNumbers:
     db   $0c, $0e, $0d, $0f, $0c, $0e, $0d, $0f        ;; 01:475e ........
