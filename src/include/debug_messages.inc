@@ -3,6 +3,10 @@
 introDebugMsg:
     DBG_STR STRFMT("[INFO] LotMS Build  %u-%02u-%02u", __UTC_YEAR__, __UTC_MONTH__, __UTC_DAY__)
 
+bootupRegisterStates:
+; $fffc == hBootup.a, $fffd == hBootup.b, $fffe == hBootupc
+    DBG_STR "[DEBUG] Initial register values: a=%($fffc)% b=%($fffd)% c=%($fffe)%"
+
 nonAlignedTileCopy:
 IF DEF(COLOR)
 ; Tile copies must be aligned to a 16 byte boundary--both source and destination--on GBC for VRAM DMA.

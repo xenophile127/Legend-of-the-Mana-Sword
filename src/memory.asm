@@ -1667,6 +1667,9 @@ wLastFade:
 wFree:
     ds 615                                             ;; dd99
 
+hInitialSP:
+    ds 0                                               ;; e000
+
 SECTION "hram", HRAM[$ff80]
 
 hOAM_DMA_Routine:
@@ -1731,10 +1734,21 @@ hPalettesDirty:
 
 ; Unused and ready for future features
 hUnused:
-    ds 93
+    ds 91
 
-hInitialSP:
+; These are used to store the inital values for later identification of the Game Boy model.
+; They are not cleared during reset intitialization.
+; Their addresses are hard coded in a debug message in include/debug_messages.inc.
+SECTION "hram_uncleared", HRAM[$fffc]
+hBootup:
+.a:
+    ds 1                                               ;; fffc
+.b:
+    ds 1                                               ;; fffd
+.c:
     ds 1                                               ;; fffe
+
+; ffff is the Interrup Enable register (rIE)
 
 SECTION "vram", VRAM[$8000]
     ds 8192                                            ;; 8000

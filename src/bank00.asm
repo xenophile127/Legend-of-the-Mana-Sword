@@ -131,12 +131,20 @@ DummyInterruptHandler:
     ret                                                ;; 00:0096 $c9
 
 lotmsInit:
-; Init the Super Game Boy border immediately.
+; If debugging is turned on print the assembly date.
+    DBG_MSG_LABEL introDebugMsg
+; Capture the state of registers that can be used to detect the model of Game Boy.
+    ldh [hBootup.a], a
+    ld a, b
+    ldh [hBootup.b], a
+    ld a, c
+    ldh [hBootup.c], a
+; Log the initial state of the registers.
+    DBG_MSG_LABEL bootupRegisterStates
+; Init the Super Game Boy border before anything else. This detects SGB by testing c=$14.
     ld a, BANK(sgb_init)
     ld [rROMB0], a
     call sgb_init
-; If debugging is turned on print the assembly date.
-    DBG_MSG_LABEL introDebugMsg
 ; Continue with the normal reset.
     jp FullReset
 
@@ -5674,19 +5682,15 @@ HaltLoop:
     halt
     jr .loop
 
+; Do various initialization before interrupts are enabled.
 InitPreIntEnable:
+; Disable all interrups with the Interrupt Enable register.
     xor a
     ldh [rIE], a
-    ld hl, _RAM
-    ld   BC, $2000                                     ;; 00:1ffc $01 $00 $20
-    call FillHL_with_A_times_BC                        ;; 00:1fff $cd $54 $2b
-    pop  DE                                            ;; 00:2002 $d1
-    ld   SP, $e000                                     ;; 00:2003 $31 $00 $e0
-    push DE                                            ;; 00:2006 $d5
-    ld   A, $00                                        ;; 00:2007 $3e $00
-    ld   HL, hOAM_DMA_Routine                          ;; 00:2009 $21 $80 $ff
-    ld   B, $80                                        ;; 00:200c $06 $80
-    call fillMemory                                    ;; 00:200e $cd $5d $2b
+; Clear RAM, except for the portion currently used by the stack.
+    call clearRAM
+; Clear HRAM, except for the portion currently used to save the values of registers at boot.
+    call clearHRAM
     ld   HL, wBankStack                                ;; 00:2011 $21 $c0 $c0
     ld   [HL], $01                                     ;; 00:2014 $36 $01
     ld   A, L                                          ;; 00:2016 $7d
@@ -5751,9 +5755,9 @@ initPalettes:
     ld [rROMB0], a
     call gbc_init
     ret
-
-ds 7 ; Free space
 ENDC
+
+SECTION "bank00_align_2092", ROM0[$2092]
 
 initMisc:
     ld   A, [wVideoLCDC]                               ;; 00:2092 $fa $a5 $c0
@@ -7409,7 +7413,7 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 161 ; Free space
+ds 142 ; Free space
 
 ; Loads all background and object palettes into CRAM.
 ; Used in VBlank.
@@ -7502,6 +7506,23 @@ loadPaletteObjectActive:
     ld b, $40
     call copyHLtoDE
     ret
+
+; Clear RAM up to the stack.
+clearRAM:
+    xor a
+    ld hl, $0000 - _RAM
+    add hl, sp
+    ld b, h
+    ld c, l
+    ld hl, _RAM
+    jr FillHL_with_A_times_BC
+
+; Clear HRAM up to the area used to store initial boot state.
+clearHRAM:
+    xor a
+    ld b, hBootup - _HRAM
+    ld hl, _HRAM
+    jr fillMemory
 
 SECTION "bank00_align_2b40", ROM0[$2b40]
 
