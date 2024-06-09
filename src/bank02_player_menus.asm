@@ -1203,28 +1203,35 @@ call_02_4ae4:
     call hideAndSaveMenuMetasprites                    ;; 02:4aed $cd $51 $6b
     pop  AF                                            ;; 02:4af0 $f1
     ld   B, A                                          ;; 02:4af1 $47
-    ld   DE, .data_02_4b08                             ;; 02:4af2 $11 $08 $4b
-    ld   HL, .data_02_4b11                             ;; 02:4af5 $21 $11 $4b
-.jr_02_4af8:
+    ld   DE, .window_list                              ;; 02:4af2 $11 $08 $4b
+    ld   HL, .function_list                            ;; 02:4af5 $21 $11 $4b
+.loop:
     ld   A, [DE]                                       ;; 02:4af8 $1a
     and  A, A                                          ;; 02:4af9 $a7
-    jr   Z, .jr_02_4b21                                ;; 02:4afa $28 $25
+    jr   Z, .not_matched                               ;; 02:4afa $28 $25
     cp   A, B                                          ;; 02:4afc $b8
-    jr   Z, .jr_02_4b04                                ;; 02:4afd $28 $05
+    jr   Z, .matched                                   ;; 02:4afd $28 $05
     inc  DE                                            ;; 02:4aff $13
     inc  HL                                            ;; 02:4b00 $23
     inc  HL                                            ;; 02:4b01 $23
-    jr   .jr_02_4af8                                   ;; 02:4b02 $18 $f4
-.jr_02_4b04:
+    jr   .loop                                         ;; 02:4b02 $18 $f4
+.matched:
     ld   A, [HL+]                                      ;; 02:4b04 $2a
     ld   H, [HL]                                       ;; 02:4b05 $66
     ld   L, A                                          ;; 02:4b06 $6f
     jp   HL                                            ;; 02:4b07 $e9
-.data_02_4b08:
-    db   $0d, $0f, $10, $0e, $15, $18, $1f, $1b        ;; 02:4b08 ........
+.window_list:
+    db WINDOW_VENDOR_SELL_TOP
+    db WINDOW_VENDOR_TEXT_TOP
+    db WINDOW_VENDOR_SELL_NO
+    db WINDOW_VENDOR_BUY_TOP
+    db WINDOW_STATUS_SCREEN_TOP
+    db WINDOW_LEVELUP_JOBS
+    db WINDOW_TITLE_SCREEN
+    db WINDOW_SAVE_LOAD_FILE_1
     db   $00                                           ;; 02:4b10 .
 ;@jumptable amount=8
-.data_02_4b11:
+.function_list:
     dw   call_02_522d                                  ;; 02:4b11 pP $00
     dw   call_02_522d                                  ;; 02:4b13 ?? $01
     dw   call_02_522d                                  ;; 02:4b15 ?? $02
@@ -1233,7 +1240,7 @@ call_02_4ae4:
     dw   call_02_4a79                                  ;; 02:4b1b ?? $05
     dw   call_02_4a14                                  ;; 02:4b1d ?? $06
     dw   reopenSelectWindowAfterSaveScreen             ;; 02:4b1f pP $07
-.jr_02_4b21:
+.not_matched:
     call windowCloseAndRestoreHidden                   ;; 02:4b21 $cd $7a $66
     ld   B, $23                                        ;; 02:4b24 $06 $23
     ld   A, B                                          ;; 02:4b26 $78
@@ -3334,8 +3341,22 @@ call_02_5895:
     jr   NZ, .loop                                     ;; 02:58a2 $20 $f8
     jp   jp_02_5b2c                                    ;; 02:58a4 $c3 $2c $5b
 .windows:
-    db   $00, $07, $0b, $10, $11, $0f, $12, $14        ;; 02:58a7 ........
-    db   $17, $18, $19, $1d, $1e, $1f, $21, $ff        ;; 02:58af ........
+    db WINDOW_START_MENU
+    db WINDOW_DIALOG_YES_NO
+    db WINDOW_VENDOR_BUY_SELL_EXIT
+    db WINDOW_VENDOR_SELL_NO
+    db WINDOW_SELECT_MENU
+    db WINDOW_VENDOR_TEXT_TOP
+    db WINDOW_STATUS_SCREEN_RIGHT
+    db WINDOW_STATUS_SCREEN_HP_MP
+    db WINDOW_LEVELUP_MESSAGE
+    db WINDOW_LEVELUP_JOBS
+    db WINDOW_LEVELUP_YES_NO
+    db WINDOW_NAMING_SCREEN_TOP
+    db WINDOW_NAMING_SCREEN_BOTTOM
+    db WINDOW_TITLE_SCREEN
+    db WINDOW_LEVELUP_FANFARE
+    db $ff
 .not_matched:
     ld   A, B                                          ;; 02:58b7 $78
     cp   A, WINDOW_STATUS_SCREEN_TOP                   ;; 02:58b8 $fe $15
