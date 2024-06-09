@@ -1236,7 +1236,7 @@ call_02_4ae4:
     dw   call_02_522d                                  ;; 02:4b13 ?? $01
     dw   call_02_522d                                  ;; 02:4b15 ?? $02
     dw   call_02_522d                                  ;; 02:4b17 pP $03
-    dw   call_02_5062                                  ;; 02:4b19 ?? $04
+    dw   fullscreenWindowShowGameScreen                ;; 02:4b19 ?? $04
     dw   call_02_4a79                                  ;; 02:4b1b ?? $05
     dw   call_02_4a14                                  ;; 02:4b1d ?? $06
     dw   reopenSelectWindowAfterSaveScreen             ;; 02:4b1f pP $07
@@ -1372,7 +1372,7 @@ reopenSelectWindowAfterSaveScreen:
     bit  2, [HL]                                       ;; 02:4bf3 $cb $56
     jr   NZ, .jr_02_4c08                               ;; 02:4bf5 $20 $11
     call dismissSaveScreen                             ;; 02:4bf7 $cd $ac $72
-    call call_02_5062                                  ;; 02:4bfa $cd $62 $50
+    call fullscreenWindowShowGameScreen                ;; 02:4bfa $cd $62 $50
     ld   A, WINDOW_SELECT_MENU                         ;; 02:4bfd $3e $11
     ld   [wDialogType], A                              ;; 02:4bff $ea $4a $d8
     ld   A, $01                                        ;; 02:4c02 $3e $01
@@ -1965,7 +1965,7 @@ call_02_4fff:
 jp_02_503a:
     ld   HL, wWindowSecondaryFlags                     ;; 02:503a $21 $72 $d8
     bit  0, [HL]                                       ;; 02:503d $cb $46
-    jr   NZ, call_02_5062                              ;; 02:503f $20 $21
+    jr   NZ, fullscreenWindowShowGameScreen            ;; 02:503f $20 $21
     call increaseLevel                                 ;; 02:5041 $cd $99 $53
     ld   A, WINDOW_LEVELUP_MESSAGE                     ;; 02:5044 $3e $17
     ld   [wDialogType], A                              ;; 02:5046 $ea $4a $d8
@@ -1983,18 +1983,22 @@ call_02_504f:
     ld   A, $26                                        ;; 02:505d $3e $26
     jp   jp_02_5877                                    ;; 02:505f $c3 $77 $58
 
-call_02_5062:
+; Used for the Save screen, the Stats screen, and the Level up! screen.
+fullscreenWindowShowGameScreen:
     call hideAndSaveMenuMetasprites                    ;; 02:5062 $cd $51 $6b
-    call clearSaveLoadScreen                           ;; 02:5065 $cd $4c $56
-    call hideFullscreenWindow                          ;; 02:5068 $cd $27 $7a
+; These next two calls have been switched in order to prevent a brief visual glitch.
+    call hideFullscreenWindow
+    call clearSaveLoadScreen
+; When leaving the Save screen return to the Select window.
     ld   A, [wDialogType]                              ;; 02:506b $fa $4a $d8
     cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:506e $fe $1b
-    jr   Z, .jr_02_507b                                ;; 02:5070 $28 $09
+    jr   Z, .clear_temp                                ;; 02:5070 $28 $09
+; Exit back to gameplay.
     ld   A, $00                                        ;; 02:5072 $3e $00
     ld   [wMenuStateCurrentFunction], A                ;; 02:5074 $ea $53 $d8
     ld   B, A                                          ;; 02:5077 $47
     call setMenuStateCurrentFunction                   ;; 02:5078 $cd $98 $6c
-.jr_02_507b:
+.clear_temp:
     ld   HL, wLevelUpStatChoicesCopy                   ;; 02:507b $21 $31 $d8
     ld   B, $10                                        ;; 02:507e $06 $10
     xor  A, A                                          ;; 02:5080 $af
@@ -6205,7 +6209,7 @@ jp_02_72be:
     call loadSRAMInitGame                              ;; 02:7315 $cd $22 $73
     call getEquippedWeaponElements                     ;; 02:7318 $cd $56 $71
     call getEquippedItemElements                       ;; 02:731b $cd $65 $71
-    call call_02_7421                                  ;; 02:731e $cd $21 $74
+    call loadGameFinish                                ;; 02:731e $cd $21 $74
     ret                                                ;; 02:7321 $c9
 
 ; Inits most of the game related things. Creates a script to load the proper room, follower, and more.
@@ -6376,15 +6380,17 @@ nop
     db   $02, $06, $52, $00, $07, $65, $00, $08        ;; 02:7416 ????????
     db   $50, $01, $09                                 ;; 02:741e ???
 
-call_02_7421:
+; Dismiss the Load screen and start the game.
+loadGameFinish:
     ld   A, [wEquippedItem]                            ;; 02:7424 $fa $ef $d6
     ld   [wEquippedItemAndWeaponCopy], A               ;; 02:7427 $ea $f1 $d6
     and  A, $7f                                        ;; 02:742a $e6 $7f
     dec  A                                             ;; 02:742c $3d
     call getEquippedItemAnimationType_trampoline       ;; 02:742d $cd $df $2e
     call hideAndSaveMenuMetasprites                    ;; 02:7430 $cd $51 $6b
-    call clearSaveLoadScreen                           ;; 02:7433 $cd $4c $56
-    call hideFullscreenWindow                          ;; 02:7436 $cd $27 $7a
+; These next two calls have been switched in order to prevent a brief visual glitch.
+    call hideFullscreenWindow
+    call clearSaveLoadScreen
     ld   B, $00                                        ;; 02:7439 $06 $00
     call setMenuStateCurrentFunction                   ;; 02:743b $cd $98 $6c
     ret                                                ;; 02:743e $c9
