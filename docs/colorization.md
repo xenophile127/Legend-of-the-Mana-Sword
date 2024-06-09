@@ -24,7 +24,7 @@ Currently there are three directories within `pal`:
 1. **`init` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files (only `bgp0.pal` is currently used) and eight sprite (`obj`) `.pal` files.:
     - **`blind` -** Used when inflicted with the status effect Blind (shortened to "Dark" in the original Final Fantasy Adventure and Mystic Quest localizations).
       
-        These palettes mimic the effect as rendered on GBC's BIOS compatability colorization, with Legend of the Mana Sword's chosen palette. That means backgrounds are all black except normally black areas are white, and sprites are either unmodified (such as the player) or all black except normally black areas are replaced with either dark red or dark blue (depending on the usually used palette).
+        These palettes mimic the effect as rendered on GBC's BIOS compatibility colorization, with Legend of the Mana Sword's chosen palette. That means backgrounds are all black except normally black areas are white, and sprites are either unmodified (such as the player) or all black except normally black areas are replaced with either dark red or dark blue (depending on the usually used palette).
 
         These could be customized with dark gray or white used instead of dark blue/red for sprites, or the background could have all colors dimmed instead of made completely black.
     - **`damage` -** Used for the flash that indicates when a boss takes damage. Most of these are identical to the default palettes with the exception or `obj5.pal`, `obj6.pal`, and `obj7.pal`. Only `obj5.pal` is currently used for bosses, but bosses will be free to use all three of these, and some bosses will use more.
