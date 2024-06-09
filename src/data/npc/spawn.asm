@@ -88,7 +88,7 @@ NPCSpawnPointers:
     dw   data_03_7830, data_03_7ab6, data_03_7adc      ;; 03:7322 ??????
     dw   data_03_775e, data_03_775e, data_03_775e      ;; 03:7328 ??????
     dw   data_03_7af8, data_03_7af8, data_03_7af8      ;; 03:732e ??????
-    dw   data_03_7aa2, data_03_7aac, data_03_76e8      ;; 03:7334 ??????
+    dw   data_03_7aa2, npcChocobo2Offscreen, data_03_76e8      ;; 03:7334 ??????
     dw   data_03_7a52, data_03_7a7a, data_03_7a7a      ;; 03:733a ......
     dw   data_03_7a66, data_03_7a70, data_03_7a70      ;; 03:7340 ......
     dw   data_03_7880, data_03_7530, data_03_7530      ;; 03:7346 ??????
@@ -914,9 +914,9 @@ data_03_7aa2:
     db   1, 1, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2 ;; 03:7aa2 ??????
     db   $12, $07, $80, $80                            ;; 03:7aa8 ????
 
-data_03_7aac:
+npcChocobo2Offscreen:
     db   1, 1, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2 ;; 03:7aac ??????
-    db   $00, $07, $80, $80                            ;; 03:7ab2 ????
+    db   $fe, $00, $80, $80                            ;; 03:7ab2 ????
 
 data_03_7ab6:
     db   1, 1, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2 ;; 03:7ab6 ??????

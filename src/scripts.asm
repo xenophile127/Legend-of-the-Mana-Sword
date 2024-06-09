@@ -10741,8 +10741,10 @@ script_0538:
     sMSG                                               ;; 0e:66c6 $04
       db "__?<12>"
       db "<11>", $00                ;; 0e:66c7
-    sSPAWN_NPC 0                                       ;; 0e:66cc $fd $00
+; This NPC is changed to spawn offscreen so its direction can be set before it is shown.
+    sSPAWN_NPC 1
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0e:66ce $17
+    sSET_NPC_1_POSITION 18, 7
     sDELAY 30                                          ;; 0e:66cf $f0 $1e
     sUNK_1A                                            ;; 0e:66d1 $1a
     sLOOP 7, 2                                         ;; 0e:66d2 $03 $07 $02
@@ -10764,8 +10766,10 @@ script_0538:
     sSET_NPC_TYPES 83                                  ;; 0e:66ed $fc $53
     sSPAWN_NPC 1                                       ;; 0e:66ef $fd $01
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0e:66f1 $16
+; This NPC is changed to spawn offscreen so it can walk in from offscreen.
+    sSET_NPC_1_POSITION -2, 7
     sUNK_1A                                            ;; 0e:66f2 $1a
-    sLOOP 10, 2                                        ;; 0e:66f3 $03 $0a $02
+    sLOOP 12, 2                                        ;; 0e:66f3 $03 $0a $02
       sNPC_1_STEP_FORWARD                              ;; 0e:66f6 $10
     sEND                                               ;; 0e:66f7 $00
     sSET_NPC_1_DIRECTION_UP                            ;; 0e:66f8 $14
