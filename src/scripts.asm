@@ -10545,6 +10545,12 @@ script_0536:
     sDELAY 30                                          ;; 0e:6441 $f0 $1e
     sSPAWN_NPC 1                                       ;; 0e:6443 $fd $01
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0e:6445 $17
+; This version of Shadow Knight has been modified to move faster and spawn just offscreen.
+; Slow him down for his initial walk onto the screen, then speed him up for the charge.
+    sUNK_1A
+    sNPC_1_STEP_FORWARD
+    sNPC_1_STEP_FORWARD
+    sUNK_1B
     sDELAY 30                                          ;; 0e:6446 $f0 $1e
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:6448 $86
     sDELAY 30                                          ;; 0e:6449 $f0 $1e

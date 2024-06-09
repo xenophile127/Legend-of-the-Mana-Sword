@@ -534,9 +534,10 @@ data_03_7742:
     db   $0a, $0c, $80, $80                            ;; 03:7748 ..??
 
 ; Used to push Hero off the waterfall.
+; Spawns just offscreen.
 shadowKnightFast:
     db   1, 1, NPC_SHADOW_KNIGHT_FAST, NPC_SHADOW_KNIGHT_FAST, NPC_SHADOW_KNIGHT_FAST, NPC_SHADOW_KNIGHT_FAST ;; 03:774c ..?.?.
-    db   $12, $07, $80, $80                            ;; 03:7752 ..??
+    db   $14, $07, $80, $80                            ;; 03:7752 ..??
 
 data_03_7756:
     db   1, 1, NPC_AMANDA_1, NPC_AMANDA_1, NPC_AMANDA_1, NPC_AMANDA_1 ;; 03:7756 ...???
