@@ -1791,3 +1791,55 @@ ENDM
 MACRO short_stop
 db $10
 ENDM
+
+MACRO COLOR_PALETTE
+color_palette_\1:
+.bgp:
+    DEF n = 0
+    REPT 8
+        INCBIN "pal/\1/normal/bgp{u:n}.pal",0,8
+        DEF n = n + 1
+    ENDR
+.obj:
+    DEF n = 0
+    REPT 8
+        INCBIN "pal/\1/normal/obj{u:n}.pal",0,8
+        DEF n = n + 1
+    ENDR
+.bgp_blind:
+    DEF n = 0
+    REPT 8
+        INCBIN "pal/\1/blind/bgp{u:n}.pal",0,8
+        DEF n = n + 1
+    ENDR
+.obj_blind:
+    DEF n = 0
+    REPT 8
+        INCBIN "pal/\1/blind/obj{u:n}.pal",0,8
+        DEF n = n + 1
+    ENDR
+.bgp_damage:
+    DEF n = 0
+    REPT 8
+        INCBIN "pal/\1/damage/bgp{u:n}.pal",0,8
+        DEF n = n + 1
+    ENDR
+.obj_damage:
+    DEF n = 0
+    REPT 8
+        INCBIN "pal/\1/damage/obj{u:n}.pal",0,8
+        DEF n = n + 1
+    ENDR
+.bgp_flash:
+    DEF n = 0
+    REPT 8
+        INCBIN "pal/\1/flash/bgp{u:n}.pal",0,8
+        DEF n = n + 1
+    ENDR
+.obj_flash:
+    DEF n = 0
+    REPT 8
+        INCBIN "pal/\1/flash/obj{u:n}.pal",0,8
+        DEF n = n + 1
+    ENDR
+ENDM
