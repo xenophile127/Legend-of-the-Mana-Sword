@@ -316,8 +316,8 @@ ELSE
     ld   [wVideoBGP], A                                ;; 00:0206 $ea $aa $c0
     ld   A, $d0                                        ;; 00:0209 $3e $d0
     ld   [wVideoOBP1], A                               ;; 00:020b $ea $ac $c0
-    ld   HL, wPlayerSpecialFlags                       ;; 00:020e $21 $d4 $c4
 ENDC
+    ld   HL, wPlayerSpecialFlags                       ;; 00:020e $21 $d4 $c4
     res  1, [HL]                                       ;; 00:0211 $cb $8e
     ret                                                ;; 00:0213 $c9
 
