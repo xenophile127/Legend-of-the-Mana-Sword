@@ -13,7 +13,7 @@ gbc_init:
     call copyHLtoDE_long
 
     ; Load the normal palettes into the active palette.
-    ld hl, color_palette_init
+    ld hl, wColorPalettes.normal
     ld de, wColorPalettes.active
     ld b, $80
     call copyHLtoDE

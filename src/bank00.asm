@@ -66,7 +66,7 @@ IF DEF(COLOR)
     jr .finish
 ; The first background palette (and only the first) is used by line effects.
 .restoreFirstBackgroundPalette:
-    ld hl, wColorPalettes.bgp_active
+    ld hl, wColorPalettes.active_bgp0
     ld a, BCPSF_AUTOINC
     ld c, LOW(rBCPS)
     ldh [c], a
@@ -604,7 +604,7 @@ ENDC
     db $2a ; Magic value used for fades when the letterbox effect is on.
     dw wPaletteBackground0LCDC
     db $3f ; Used by the Blind effect.
-    dw wColorPalettes.bgp_blind
+    dw wColorPalettes.blind_bgp0
     db $40 ; Second step of the intro text scroll fading away.
     dw colorPalettes.intro_light
     db $90 ; First step of the intro text scroll fading away.
@@ -612,7 +612,7 @@ ENDC
     db $e0 ; Used for the status bar. Looks the same as $e4 when running in black and white.
     dw colorPalettes.statusbar
     db $e4 ; Default.
-    dw wColorPalettes.bgp_normal
+    dw wColorPalettes.normal_bgp0
     db $fc ; Used for the blank part of shutter effects (both normal and Blind).
     dw colorPalettes.shutter
     db $ff ; The top 16 lines of the ending letterbox effect are blacked out.
