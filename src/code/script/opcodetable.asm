@@ -8,7 +8,7 @@ scriptOpcodeTable:
     dw   scriptOpCodeCall                              ;; 02:457a pP $02
     dw   scriptOpCodeLoop                              ;; 02:457c pP $03
     dw   scriptOpCodeMsg                               ;; 02:457e pP $04
-    dw   scriptOpCodeNOP                               ;; 02:4580 ?? $05
+    dw   scriptOpCodeLoadColorPalette                  ;; 02:4580 ?? $05 ; Added for colorization.
     dw   scriptOpCodeNOP                               ;; 02:4582 ?? $06
     dw   scriptOpCodeNOP                               ;; 02:4584 ?? $07
     dw   scriptOpCodeIfFlags                           ;; 02:4586 pP $08

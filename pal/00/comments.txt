@@ -1,0 +1,9 @@
+The main palette for the color target, loaded at startup.
+
+Mimicks the BIOS auto-colorization ("lazy DX") of non-colorized Legend of the Mana Sword.
+
+Background colors are white, green, blue, and black.
+
+Only the first background palette is populated, the rest are monochrome and unused.
+
+Sprite palettes are either red or blue.

@@ -31,3 +31,6 @@ debugMsgColorIncompatible:
 
 debugMsgDoubleSpeed:
     DBG_STR "[DEBUG] Performed switch to Double Speed Mode."
+
+debugMsgLoadPalette:
+    DBG_STR "[DEBUG] Switched to palette %a%"

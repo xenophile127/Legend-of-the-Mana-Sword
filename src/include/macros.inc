@@ -1262,8 +1262,9 @@ MACRO sMSG
 db $04
 SETCHARMAP SCRIPT
 ENDM
-MACRO sNOP_05
+MACRO sLOAD_PALETTE ; Added for colorization.
 db $05
+db \1
 ENDM
 MACRO sNOP_06
 db $06

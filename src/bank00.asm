@@ -5750,8 +5750,9 @@ IF DEF(COLOR)
 ; Init GBC palettes to match bios colorization.
 initPalettes:
     ld a, BANK(gbc_init)
-    ld [rROMB0], a
+    call pushBankNrAndSwitch
     call gbc_init
+    call popBankNrAndSwitch
     ret
 ENDC
 
@@ -7411,7 +7412,45 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 105 ; Free space
+ds 50 ; Free space
+
+; sLOAD_PALETTE
+; A new script opcode for loading palettes.
+scriptOpCodeLoadColorPalette:
+    ld a, [hl+]
+IF DEF(COLOR)
+    call loadPalettes
+ENDC
+    call getNextScriptInstruction
+    ret
+
+; Load a set of palettes from ROM into RAM, and setup the transer to CRAM.
+loadPalettes:
+    push hl
+    push af
+    ; Switch to the palette bank
+    ld a, BANK(ColorPalettesROM)
+    call pushBankNrAndSwitch
+    ; Calculate the address of the palette
+    pop af
+    push af
+    add a, a
+    add HIGH(ColorPalettesROM)
+    ld h, a
+    xor a
+    ld l, a
+    ; Load all the palettes into RAM.
+    ld de, wColorPalettes
+    ld bc, $0200
+    call copyHLtoDE_long
+; Prepare the copy to CRAM.
+    ld hl, wColorPalettes.normal
+    call setPalettes
+    call popBankNrAndSwitch
+    pop af
+    pop hl
+    DBG_MSG_LABEL debugMsgLoadPalette
+    ret
 
 colorInit:
 ; Refuse to run unless color capable hardware is found.

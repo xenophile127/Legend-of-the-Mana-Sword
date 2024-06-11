@@ -20,8 +20,8 @@ After changing `.pal` files you will need to run `make color` to build a file na
 
 ## Organization of the `pal` directory
 
-Currently there are three directories within `pal`:
-1. **`init` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files (only `bgp0.pal` is currently used) and eight sprite (`obj`) `.pal` files.:
+Currently there are four directories within `pal`:
+1. **`00` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files (only `bgp0.pal` is currently used) and eight sprite (`obj`) `.pal` files.:
     - **`blind` -** Used when inflicted with the status effect Blind (shortened to "Dark" in the original Final Fantasy Adventure and Mystic Quest localizations).
       
         These palettes mimic the effect as rendered on GBC's BIOS compatibility colorization, with Legend of the Mana Sword's chosen palette. That means backgrounds are all black except normally black areas are white, and sprites are either unmodified (such as the player) or all black except normally black areas are replaced with either dark red or dark blue (depending on the usually used palette).
@@ -42,11 +42,32 @@ Currently there are three directories within `pal`:
         * `obj3.pal` is used for most companions/followers that join you and their attacks.
         * `obj4.pal` is used for enemies' attacks.
         * The last three sprite palettes are used for NPCs, enemies, and bosses.
-2. **`line-effects` -** Contains a small number of palettes used for special effects:
+2. **`01` -** Identical to `00` except `blind/obj05.pal`, `damage/obj05.pal`, and `normal/obj05.pal` use red instead of blue. This is used for the Red Dragon boss. (Blind is unused so far.)
+3. **`line-effects` -** Contains a small number of palettes used for special effects:
     * New Game intro scroll "vignette" fade effect. These can be replaced to change the three steps of the fade. For instance, the fade can be disabled completely by copying `pal/init/normal/bgp0.pal` over all three of the `intro-scroll?.pal` files.
     * Ending credits "letterbox" effect. This serves to black out the top 16 pixels of the screen for the ending credits. Recommended to keep this as is.
     * Shutter effect. Used when selecting a save game to continue, to transition from one map to another, and when displaying the in-game maps. This can be used to change the effect from white to black, or any other color you may like.
       > 💡**Note:** All four colors in this palette should be the same as it uses the area of memory that contains the status bar.
     * Status bar effect. Used by the status bar at the bottom of the screen that shows HP, MP, Lucre, and the stamina gauge. At this point there are some visual glitches related to changing this.
-3. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
+4. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
 > 💡**Note:** Super Game Boy support is disabled when assembling with Game Boy Color/Advance support with `make color`.
+
+## Changing palettes used
+
+Adding palettes (instead of just changing the colors in an existing palette) is possible, but at an early stage.
+
+To add a Palettes:
+1. Add a directory to `pal`. It is easiest to copy an existing one to get all the needed files and structure.
+2. Add an entry to the end of `pal/palette_list.inc`. Copy the last entry, and use the directory name as the argument. This is a plain text file that gets included in the build. Comments can be added by using a semicolon (';').
+> 💡**Note:** These directories do not need to be numbered, however when they are used they are reffered to by number according to their order in `pal/palette_list.inc`, so naming them with sequential numbers may be helpful.
+
+Using a palette, either an existing one or one you just added, is done through the game's scripting system. The scripting system is a simple but powerful method of coding things that is used for everything from cutscenes, dialog, doors and teleporters that transport you to other rooms, and spawning NPCs, enemies, and bosses. You can change the colors of NPCs, enemies, or a boss by adding one command to the script that spawns them.
+
+All scripts are contained in `src/scripts.asm`. The command `sLOAD_PALETTE` is used to change which palette is used. It takes one argument--a number that specifies which palette to load. This number corresponds with the order palettes are listed in `pal/palette_list.inc`.
+
+To use `pal/01/` for Red Dragon three `sLOAD_PALETTE` commands were added:
+1. `sLOAD_PALETTE 1` in `script_01a3` just before Red Dragon is spawned with `sSPAWN_BOSS 20`.
+2. `sLOAD_PALETTE 0` `script_01a4` which is the script that runs when you leave the room, to restore the main palette.
+3. `sLOAD_PALETTE 0` `script_01a5` which is run when Red Dragon is killed to, to restore the main palette right after the "Defeated Red Dragon!" message that is displayed to the player.
+
+ > 💡**Note:** Scripts for rooms are always arranged sequentially in this order: entry, exit, last enemy killed.
