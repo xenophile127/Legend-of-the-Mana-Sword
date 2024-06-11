@@ -1626,30 +1626,35 @@ wAnimatedTileRiverCorners:
     ds 64                                              ;; dad0
 
 wColorPalettes:
+.normal:
 .bgp_normal:
     ds 64                                              ;; db10
 
 .obj_normal:
     ds 64                                              ;; db50
 
+.blind:
 .bgp_blind:
     ds 64                                              ;; db90
 
 .obj_blind:
     ds 64                                              ;; dbd0
 
+.damage:
 .bgp_damage:
     ds 64                                              ;; dc10
 
 .obj_damage:
     ds 64                                              ;; dc50
 
+.flash:
 .bgp_flash:
     ds 64                                              ;; dc90
 
 .obj_flash:
     ds 64                                              ;; dcd0
 
+.active:
 .bgp_active:
     ds 64                                              ;; dd10
 

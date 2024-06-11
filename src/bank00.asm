@@ -290,10 +290,8 @@ scriptOpCodeSetPlayerLaydownSprite:
 setDarkGraphicEffect:
 IF DEF(COLOR)
     ; Load the blind background palettes into the active palette RAM.
-    ld hl, wColorPalettes.bgp_blind
-    ld de, wColorPalettes.obj_blind
+    ld hl, wColorPalettes.blind
     call setPalettes
-    nop
 ELSE
     ld   A, $3f                                        ;; 00:01f4 $3e $3f
     ld   [wVideoBGP], A                                ;; 00:01f6 $ea $aa $c0
@@ -307,10 +305,8 @@ ENDC
 removeDarkGraphicEffect:
 IF DEF(COLOR)
     ; Load the normal background palettes into the active palette RAM.
-    ld hl, wColorPalettes.bgp_normal
-    ld de, wColorPalettes.obj_normal
+    ld hl, wColorPalettes.normal
     call setPalettes
-    nop
 ELSE
     ld   A, $e4                                        ;; 00:0204 $3e $e4
     ld   [wVideoBGP], A                                ;; 00:0206 $ea $aa $c0
@@ -320,6 +316,8 @@ ENDC
     ld   HL, wPlayerSpecialFlags                       ;; 00:020e $21 $d4 $c4
     res  1, [HL]                                       ;; 00:0211 $cb $8e
     ret                                                ;; 00:0213 $c9
+
+SECTION "bank00_align_0214", ROM0[$0214]
 
 setStonEffectFlag:
     ld   HL, wPlayerSpecialFlags                       ;; 00:0214 $21 $d4 $c4
@@ -858,12 +856,10 @@ bossUpdate:
 IF DEF(COLOR)
 ; Set palettes for the damage flash.
 ; Background palettes are set as well in case a full-screen flash is wanted.
-    ld hl, wColorPalettes.bgp_normal
-    ld de, wColorPalettes.obj_normal
+    ld hl, wColorPalettes.normal
     bit 3, c
     jr z, .set_palette
-    ld hl, wColorPalettes.bgp_damage
-    ld de, wColorPalettes.obj_damage
+    ld hl, wColorPalettes.damage
 .set_palette:
     call setPalettes
 ELSE
@@ -2905,8 +2901,7 @@ scriptOpCodeFlashScreen:
 IF DEF(COLOR)
     ; Use the normal palettes.
     push hl
-    ld hl, wColorPalettes.bgp_normal
-    ld de, wColorPalettes.obj_normal
+    ld hl, wColorPalettes.normal
     call setPalettes
     pop hl
 ELSE
@@ -2927,8 +2922,7 @@ ENDC
 IF DEF(COLOR)
     ; Use the flash palettes.
     push hl
-    ld hl, wColorPalettes.bgp_flash
-    ld de, wColorPalettes.obj_flash
+    ld hl, wColorPalettes.flash
     call setPalettes
     pop hl
 ELSE
@@ -7417,7 +7411,7 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 87 ; Free space
+ds 105 ; Free space
 
 colorInit:
 ; Refuse to run unless color capable hardware is found.
@@ -7514,28 +7508,12 @@ loadPalettesToCRAM:
 
 ; Load all palettes and flag them to be transferred during the next VBlank.
 ; hl = background palette address
-; de = object palette address
 setPalettes:
+    ld de, wColorPalettes.active
+    ld b, $80
+    call copyHLtoDE
     ld a, $01
     ldh [hPalettesDirty], a
-    push de
-    call loadPaletteBackgroundActive
-    pop hl
-    call loadPaletteObjectActive
-    ret
-
-; Load all background palettes.
-loadPaletteBackgroundActive:
-    ld de, wColorPalettes.bgp_active
-    ld b, $40
-    call copyHLtoDE
-    ret
-
-; Load all object palettes.
-loadPaletteObjectActive:
-    ld de, wColorPalettes.obj_active
-    ld b, $40
-    call copyHLtoDE
     ret
 
 ; Clear RAM up to the stack.
