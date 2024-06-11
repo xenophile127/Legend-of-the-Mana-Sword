@@ -66,7 +66,7 @@ IF DEF(COLOR)
     jr .finish
 ; The first background palette (and only the first) is used by line effects.
 .restoreFirstBackgroundPalette:
-    ld hl, wPaletteBackgroundActive
+    ld hl, wColorPalettes.bgp_active
     ld a, BCPSF_AUTOINC
     ld c, LOW(rBCPS)
     ldh [c], a
@@ -290,8 +290,8 @@ scriptOpCodeSetPlayerLaydownSprite:
 setDarkGraphicEffect:
 IF DEF(COLOR)
     ; Load the blind background palettes into the active palette RAM.
-    ld hl, wPaletteBackgroundBlind
-    ld de, wPaletteObjectBlind
+    ld hl, wColorPalettes.bgp_blind
+    ld de, wColorPalettes.obj_blind
     call setPalettes
     nop
 ELSE
@@ -307,8 +307,8 @@ ENDC
 removeDarkGraphicEffect:
 IF DEF(COLOR)
     ; Load the normal background palettes into the active palette RAM.
-    ld hl, wPaletteBackgroundNormal
-    ld de, wPaletteObjectNormal
+    ld hl, wColorPalettes.bgp_normal
+    ld de, wColorPalettes.obj_normal
     call setPalettes
     nop
 ELSE
@@ -606,7 +606,7 @@ ENDC
     db $2a ; Magic value used for fades when the letterbox effect is on.
     dw wPaletteBackground0LCDC
     db $3f ; Used by the Blind effect.
-    dw wPaletteBackgroundBlind
+    dw wColorPalettes.bgp_blind
     db $40 ; Second step of the intro text scroll fading away.
     dw colorPalettes.intro_light
     db $90 ; First step of the intro text scroll fading away.
@@ -614,7 +614,7 @@ ENDC
     db $e0 ; Used for the status bar. Looks the same as $e4 when running in black and white.
     dw colorPalettes.statusbar
     db $e4 ; Default.
-    dw wPaletteBackgroundNormal
+    dw wColorPalettes.bgp_normal
     db $fc ; Used for the blank part of shutter effects (both normal and Blind).
     dw colorPalettes.shutter
     db $ff ; The top 16 lines of the ending letterbox effect are blacked out.
@@ -858,12 +858,12 @@ bossUpdate:
 IF DEF(COLOR)
 ; Set palettes for the damage flash.
 ; Background palettes are set as well in case a full-screen flash is wanted.
-    ld hl, wPaletteBackgroundNormal
-    ld de, wPaletteObjectNormal
+    ld hl, wColorPalettes.bgp_normal
+    ld de, wColorPalettes.obj_normal
     bit 3, c
     jr z, .set_palette
-    ld hl, wPaletteBackgroundBossDamage
-    ld de, wPaletteObjectBossDamage
+    ld hl, wColorPalettes.bgp_damage
+    ld de, wColorPalettes.obj_damage
 .set_palette:
     call setPalettes
 ELSE
@@ -2905,8 +2905,8 @@ scriptOpCodeFlashScreen:
 IF DEF(COLOR)
     ; Use the normal palettes.
     push hl
-    ld hl, wPaletteBackgroundNormal
-    ld de, wPaletteObjectNormal
+    ld hl, wColorPalettes.bgp_normal
+    ld de, wColorPalettes.obj_normal
     call setPalettes
     pop hl
 ELSE
@@ -2927,8 +2927,8 @@ ENDC
 IF DEF(COLOR)
     ; Use the flash palettes.
     push hl
-    ld hl, wPaletteBackgroundFlash
-    ld de, wPaletteObjectFlash
+    ld hl, wColorPalettes.bgp_flash
+    ld de, wColorPalettes.obj_flash
     call setPalettes
     pop hl
 ELSE
@@ -7453,7 +7453,7 @@ loadPalettesToCRAM:
     xor a
     ldh [hPalettesDirty], a
     ; Load the palette background active buffer into CRAM.
-    ld hl, wPaletteBackgroundActive
+    ld hl, wColorPalettes.bgp_active
     ; Set the Background Palette Index
     ld a, BCPSF_AUTOINC
     ld c, LOW(rBCPS)
@@ -7482,7 +7482,7 @@ loadPalettesToCRAM:
     dec b
     jr nz, .loop_bgp
     ; Load the palette object active buffer into CRAM.
-    ld hl, wPaletteObjectActive
+    ld hl, wColorPalettes.obj_active
     ; Set the Background Palette Index
     ld a, OCPSF_AUTOINC
     ld c, LOW(rOCPS)
@@ -7526,14 +7526,14 @@ setPalettes:
 
 ; Load all background palettes.
 loadPaletteBackgroundActive:
-    ld de, wPaletteBackgroundActive
+    ld de, wColorPalettes.bgp_active
     ld b, $40
     call copyHLtoDE
     ret
 
 ; Load all object palettes.
 loadPaletteObjectActive:
-    ld de, wPaletteObjectActive
+    ld de, wColorPalettes.obj_active
     ld b, $40
     call copyHLtoDE
     ret

@@ -14,7 +14,7 @@ lcdcLetterboxEffect:
 prepareLetterboxEffect:
 IF DEF(COLOR)
     ld b, $08
-    ld de, wPaletteBackgroundActive
+    ld de, wColorPalettes.bgp_active
     ld hl, colorPalettes.letterbox
     call copyHLtoDE
 ELSE

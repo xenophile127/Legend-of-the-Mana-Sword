@@ -31,8 +31,8 @@ gbcFadeToBlack:
 ; c = fade step from 0 to 11.
 fadeBlack:
     push hl
-    ld de, wPaletteBackgroundActive
-    ld hl, wPaletteBackgroundNormal
+    ld de, wColorPalettes.bgp_active
+    ld hl, wColorPalettes.bgp_normal
     ld b, $20
 ; Hack to support the ending Letterbox mode by skipping the first palette.
 ; The original code has a similar hack, also switched off of the first line effect line number.
@@ -59,7 +59,7 @@ fadeBlack:
     dec b
     jr nz, .loop_bgp
 ; Run the normal loop starting with BGP1.
-    ld de, wPaletteBackgroundActive+$08
+    ld de, wColorPalettes.bgp_active+$08
     ld b, $1c
 .loop_bgp:
     push bc
@@ -74,8 +74,8 @@ fadeBlack:
     pop bc
     dec b
     jr nz, .loop_bgp
-    ld de, wPaletteObjectActive
-    ld hl, wPaletteObjectNormal
+    ld de, wColorPalettes.obj_active
+    ld hl, wColorPalettes.obj_normal
     ld b, $08
 .loop_obj:
 ; Color 0 of object palettes is unused.
@@ -119,8 +119,8 @@ gbcFadeToWhite:
 ; c = fade step from 0 to 11.
 fadeWhite:
     push hl
-    ld de, wPaletteBackgroundActive
-    ld hl, wPaletteBackgroundNormal
+    ld de, wColorPalettes.bgp_active
+    ld hl, wColorPalettes.bgp_normal
     ld b, $20
 .loop_bgp:
     push bc
@@ -135,8 +135,8 @@ fadeWhite:
     pop bc
     dec b
     jr nz, .loop_bgp
-    ld de, wPaletteObjectActive
-    ld hl, wPaletteObjectNormal
+    ld de, wColorPalettes.obj_active
+    ld hl, wColorPalettes.obj_normal
     ld b, $08
 .loop_obj:
 ; Color 0 of object palettes is unused.

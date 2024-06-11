@@ -22,7 +22,7 @@ prepareIntroScrollEffect:
     call loadLCDCEffectBuffer                          ;; 01:40cf $cd $f3 $02
 IF DEF(COLOR)
     ld b, $08
-    ld de, wPaletteBackgroundActive
+    ld de, wColorPalettes.bgp_active
     ld hl, colorPalettes.intro_white
     call copyHLtoDE
 ELSE

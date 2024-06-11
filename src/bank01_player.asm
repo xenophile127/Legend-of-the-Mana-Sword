@@ -63,14 +63,14 @@ prepareDefaultEffect:
 setDefaultLCDEffectAndBGP:
 setDefaultLCDCEffectAndPalette:
 IF DEF(COLOR)
-    ld hl, wPaletteBackgroundNormal
+    ld hl, wColorPalettes.bgp_normal
     ld a, [wPlayerSpecialFlags]
     bit 1, a
     jr z, .copy
-    ld hl, wPaletteBackgroundBlind
+    ld hl, wColorPalettes.bgp_blind
 .copy:
     ld b, $08
-    ld de, wPaletteBackgroundActive
+    ld de, wColorPalettes.bgp_active
     call copyHLtoDE
 ELSE
     ld a, $e4
@@ -103,7 +103,7 @@ loadLCDCEffectBufferAndPalette:
     push de
     call loadLCDCEffectBuffer
     ld b, $08
-    ld de, wPaletteBackgroundActive
+    ld de, wColorPalettes.bgp_active
     pop hl
     call copyHLtoDE
     ret

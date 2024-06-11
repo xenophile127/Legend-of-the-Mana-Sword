@@ -1625,34 +1625,35 @@ wPadding:
 wAnimatedTileRiverCorners:
     ds 64                                              ;; dad0
 
-wPaletteBackgroundActive:
+wColorPalettes:
+.bgp_normal:
     ds 64                                              ;; db10
 
-wPaletteObjectActive:
+.obj_normal:
     ds 64                                              ;; db50
 
-wPaletteBackgroundNormal:
+.bgp_blind:
     ds 64                                              ;; db90
 
-wPaletteObjectNormal:
+.obj_blind:
     ds 64                                              ;; dbd0
 
-wPaletteBackgroundBlind:
+.bgp_damage:
     ds 64                                              ;; dc10
 
-wPaletteObjectBlind:
+.obj_damage:
     ds 64                                              ;; dc50
 
-wPaletteBackgroundBossDamage:
+.bgp_flash:
     ds 64                                              ;; dc90
 
-wPaletteObjectBossDamage:
+.obj_flash:
     ds 64                                              ;; dcd0
 
-wPaletteBackgroundFlash:
+.bgp_active:
     ds 64                                              ;; dd10
 
-wPaletteObjectFlash:
+.obj_active:
     ds 64                                              ;; dd50
 
 ; Stores faded color BGP0 during fades when the letterbox effect is enabled.
