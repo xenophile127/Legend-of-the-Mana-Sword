@@ -7535,6 +7535,7 @@ clearHRAM:
 
 SECTION "bank00_align_2b40", ROM0[$2b40]
 
+copyHLtoDE_long:
 CopyHL_to_DE_size_BC:
     ld   A, B                                          ;; 00:2b40 $78
     or   A, C                                          ;; 00:2b41 $b1
