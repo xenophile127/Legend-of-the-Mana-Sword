@@ -260,22 +260,25 @@ shutterEffectClose:
 
 shutterEffectOpen:
     push DE                                            ;; 01:4205 $d5
-    ld   HL, wScriptOpCounter2                         ;; 01:4206 $21 $9a $d4
-    dec  [HL]                                          ;; 01:4209 $35
-    jr   Z, .finished                                  ;; 01:420a $28 $10
     ld   HL, wLCDCEffectBuffer                         ;; 01:420c $21 $a0 $d3
     ld   A, [HL]                                       ;; 01:420f $7e
     sub  A, $02                                        ;; 01:4210 $d6 $02
+    jr z, .finished
     ld   [HL+], A                                      ;; 01:4212 $22
     inc  HL                                            ;; 01:4213 $23
     inc  HL                                            ;; 01:4214 $23
     inc  HL                                            ;; 01:4215 $23
-    ld   A, [HL]                                       ;; 01:4216 $7e
-    add  A, $02                                        ;; 01:4217 $c6 $02
-    ld   [HL], A                                       ;; 01:4219 $77
+    inc [hl]
+    inc [hl]
     pop  HL                                            ;; 01:421a $e1
     ret                                                ;; 01:421b $c9
 .finished:
+; Ensure the effect isn't switched off before the final step sets the normal palette.
+; Without this turning on CPU Double Speed Mode results in a white flash at the end.
+.loop:
+    ldh a, [rLY]
+    cp $04
+    jr c, .loop
     call setDefaultLCDCEffectAndPalette
     ld   A, [wVideoLCDCBackup]                         ;; 01:421f $fa $9c $d4
     ld   [wVideoLCDC], A                               ;; 01:4222 $ea $a5 $c0
