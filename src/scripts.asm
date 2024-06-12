@@ -3193,8 +3193,9 @@ script_01e0:
 
 script_01e1:
     sMSG                                               ;; 0d:563a $04
-      db "<10>The mystic Mirror\nreveals people's\ntrue colors.<12>"
-      db "<1b>I heard that the\nman here threw it\naway in a cave.<12>"
+      db "<10>I'm searching for\nthe Moon Mirror.<12>"
+      db "<1b>They say it shows\nthe true nature\nof evil things.<12>"
+      db "<1b>The owner of this\nhouse hid it in a\ncave. Why do that?<12>"
       db "<11>", $00 ;; 0d:563b
     sEND                                               ;; 0d:567e $00
 
@@ -3226,10 +3227,10 @@ script_01e3:
 
 script_01e4:
     sMSG                                               ;; 0d:56e8 $04
-      db "<10>Man:Your friend\n is missing?<12>"
-      db "<1b> Many girls have\n disappeared at\n Kett's Mansion.<12>"
-      db "<1b> They must be kept\n in the caskets in\n the basement.<12>"
-      db "<1b> Looking for the \n Mirror?  Do you\n want me to help?<12>"
+      db "<10>Traveler:A woman\n is missing?\n I heard that<12>"
+      db "<1b> young women often\n disappear at\n Kett's Mansion.<12>"
+      db "<1b> They say there\n are coffins in\n the basement.<12>"
+      db "<1b> Looking for the \n Mirror? Perhaps\n I can help?<12>"
       db "<13><11>", $00 ;; 0d:56e9
     sIF_FLAG !wScriptFlags0F.7                         ;; 0d:5767 $08 $ff $00 $04
       sGIVE_FOLLOWER 2                                 ;; 0d:576b $9c $02
@@ -3252,14 +3253,18 @@ script_01e6:
 script_01e7:
     sIF_FLAG wScriptFlags02.0, !wScriptFlags02.1       ;; 0d:5798 $08 $10 $91 $00 $19
       sMSG                                             ;; 0d:579d $04
-        db "<10>H_ he attacked\nme from behind_!<12>"
+        db "<10>Ouch_! He attacked\nme from behind!\nThat man is_<12>"
         db "<11>", $00 ;; 0d:579e
     sENDIF                                             ;; 0d:57b6
     sEND                                               ;; 0d:57b6 $00
 
 script_01e8:
     sMSG                                               ;; 0d:57b7 $04
-      db "<10>Man:Hello again!\n How've you been?<12>"
+; For the English script this was reduced down to "Hello again! How've you been?"
+; This form is still simplified down, with an "embaressed laugh" cut from Hero's line,
+; and originally Hero gets in the last word (or last embarresed mumbling).
+      db "<10>Traveler:We meet\n again. Take care\n of your girl.<12>"
+      db "<1b><BOY>:My girl_\nTraveler:Why are\n you blushing?<12>"
       db "<11>", $00 ;; 0d:57b8
     sEND                                               ;; 0d:57d3 $00
 
@@ -5108,6 +5113,9 @@ script_0274:
     sENDIF                                             ;; 0d:7c16
     sEND                                               ;; 0d:7c16 $00
 
+; Start of the second script bank.
+SECTION "script bank 2", ROMX[$4000], BANK[SCRIPT_BANK_1 + 1]
+
 script_0275:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7c17 $0b $c9 $00 $29
       sIF_EQUIPED INV_ITEM_BRONZE_KEY                  ;; 0d:7c1b $09 $21 $00 $1a
@@ -5166,9 +5174,6 @@ script_0278:
       sRUN_ROOM_SCRIPT                                 ;; 0d:7c87 $ec
     sENDIF                                             ;; 0d:7c88
     sEND                                               ;; 0d:7c88 $00
-
-; Start of the second script bank.
-SECTION "script bank 2", ROMX[$4000], BANK[SCRIPT_BANK_1 + 1]
 
 script_0279:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7c89 $0b $c9 $00 $39
@@ -5519,7 +5524,7 @@ script_0294:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4000 $0b $c9 $00 $33
       sIF_FLAG wScriptFlags0A.2
         sMSG                                           ;; 0e:4009 $04
-          db "<10>Man:Didn't you\n come here to get\n the Mirror?<12>"
+          db "<10>Man:Didn't you\n come here to find\n the Mirror?<12>"
           db "<11>", $00 ;; 0e:400a
         sFOLLOWER_DELETE                               ;; 0e:402b $98
         sCLEAR_FLAG wScriptFlags0A.2                   ;; 0e:402c $db $52
@@ -8974,9 +8979,9 @@ script_0451:
       sIF_FLAG wScriptFlags0A.2                        ;; 0e:57e7 $08 $52 $00 $42
         sDELAY 10
         sMSG                                           ;; 0e:57eb $04
-          db "<10>Man:Show it to the\n guy at Kett's!<12>"
-          db "<1b> He'll scream and\n show his true \n colors!<12>"
-          db "<1b> Bye!<12>"
+          db "<10>Traveler:Try it\n on that jerk at\n Kett's Mansion.<12>"
+          db "<1b> It'll show if he\n has something to\n hide.<12>"
+          db "<1b> I wish you luck,\n but I must leave.\n Bye!<12>"
           db "<11>", $00 ;; 0e:57ec
         sFOLLOWER_DELETE                               ;; 0e:582a $98
         sCLEAR_FLAG wScriptFlags0A.2                   ;; 0e:582b $db $52
@@ -10940,8 +10945,9 @@ script_053a:
     sSET_NPC_2_DIRECTION_UP                            ;; 0e:6a75 $24
     sNPC_2_STEP_FORWARD                                ;; 0e:6a76 $20
     sMSG                                               ;; 0e:6a77 $04
-      db "<10>Man:Granz is\n attacking by air!\nCibba:What?!<12>"
-      db "<1b>Man:I'll take you\n to a safe place!\n<GIRL>:Thank you.<12>"
+      db "<10>Traveler:Granz is\n attacking by air!\nCibba:What?!<12>"
+      db "<1b>Traveler:Fuji,\n come with me to\n a safe place!<12>"
+      db "<1b><GIRL>:Thank you.<12>"
       db "<11>", $00 ;; 0e:6a78
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:6abe $25
     sLOOP 3, 3                                         ;; 0e:6abf $03 $03 $03
@@ -11835,6 +11841,9 @@ script_0544:
     sSFX 37                                            ;; 0e:783c $f9 $25
     sEND                                               ;; 0e:783e $00
 
+; Start of the third script bank.
+SECTION "script bank 3", ROMX[$4000], BANK[SCRIPT_BANK_1 + 2]
+
 script_0545:
     sLOOP 4, 189
       sSET_ROOM_TILE $09, 3, 0                         ;; 0e:7842 $b0 $09 $03 $00
@@ -11892,9 +11901,6 @@ script_0545:
       sCALL script_0546                                ;; 0e:7903 $02 $79 $08
     sEND                                               ;; 0e:7906 $00
     sEND                                               ;; 0e:7907 $00
-
-; Start of the third script bank.
-SECTION "script bank 3", ROMX[$4000], BANK[SCRIPT_BANK_1 + 2]
 
 script_0546:
     sSET_ROOM_TILE $09, 3, 0                           ;; 0e:7908 $b0 $09 $03 $00
