@@ -6725,7 +6725,7 @@ drawMoneyOnDialog:
     ld   B, $02
     ld   E, $07
     ld   HL, statusScreenGoldLabel
-    jp   drawText
+    call drawText
     pop  BC
     ret
     db   $00, $00, $00, $00, $00, $00, $00, $00
