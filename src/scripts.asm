@@ -8973,7 +8973,7 @@ script_0451:
     sIF_FLAG !wScriptFlags.5                           ;; 0e:57d1 $08 $85 $00 $62
       sCHANGE_INTO_EMPTY_CHEST                         ;; 0e:57d5 $af
       sMSG                                             ;; 0e:57d6 $04
-        db "<10>Found the <7c>Mirror!<12>"
+        db "<10>Found <7c>Mirror!<12>"
         db "<11>", $00 ;; 0e:57d7
       sSET_FLAG wScriptFlags09.0                       ;; 0e:57e5 $da $48
       sIF_FLAG wScriptFlags0A.2                        ;; 0e:57e7 $08 $52 $00 $42
