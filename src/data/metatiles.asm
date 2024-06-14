@@ -793,7 +793,8 @@ metatilesManaland:
     db   $27, $10, $10, $10, $00, $07                  ;; $06
     db   $10, $28, $10, $10, $00, $07                  ;; $07
     db   $1e, $1f, $1f, $1e, $30, $05                  ;; $08
-    db   $08, $09, $08, $09, $30, $77                  ;; $09
+; Waterfalls in this tileset originally were set to walkable, slide south. Changed to not be walkable.
+    db   $08, $09, $08, $09, $00, $05                  ;; $09
     db   $74, $75, $76, $77, $00, $05                  ;; $0a
     db   $3a, $3b, $4c, $7e, $30, $0d                  ;; $0b
     db   $26, $26, $26, $26, $00, $05                  ;; $0c
