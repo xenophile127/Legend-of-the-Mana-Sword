@@ -311,3 +311,9 @@ DEF WINDOW_TITLE_SCREEN = $1f
 DEF WINDOW_STATUS_BEGIN = $20
 DEF WINDOW_LEVELUP_FANFARE = $21
 DEF WINDOW_INTRO_SCROLL = $ff
+;;Constants: MISC
+; These are the joypad values but are also used for character's facing direction and scrolling.
+DEF DIRECTION_SOUTH EQU $08
+DEF DIRECTION_NORTH EQU $04
+DEF DIRECTION_WEST  EQU $02
+DEF DIRECTION_EAST  EQU $01

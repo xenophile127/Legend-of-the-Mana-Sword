@@ -1881,11 +1881,15 @@ secondaryCollisionHandling:
     jr   Z, .friendly                                  ;; 00:0a4c $28 $1c
     cp   A, $b0                                        ;; 00:0a4e $fe $b0
     jr   Z, .friendly                                  ;; 00:0a50 $28 $18
-    cp   A, $60                                        ;; 00:0a52 $fe $60
-    jr   Z, .enemyProjectile                           ;; 00:0a54 $28 $19
-    cp   A, $70                                        ;; 00:0a56 $fe $70
-    jr   Z, .enemyProjectile                           ;; 00:0a58 $28 $15
-    ret                                                ;; 00:0a5a $c9
+    pop af
+    ret
+; This relied on never being passed a value less than $30, equal to $80, or >= $d0.
+; If that was ever false then it would have returned to something that wasn't intended as an address.
+;    cp   A, $60                                        ;; 00:0a52 $fe $60
+;    jr   Z, .enemyProjectile                           ;; 00:0a54 $28 $19
+;    cp   A, $70                                        ;; 00:0a56 $fe $70
+;    jr   Z, .enemyProjectile                           ;; 00:0a58 $28 $15
+;    ret                                                ;; 00:0a5a $c9
 .player:
     pop  AF                                            ;; 00:0a5b $f1
     call playerCollisionHandling_trampoline            ;; 00:0a5c $cd $44 $02
@@ -1902,9 +1906,6 @@ secondaryCollisionHandling:
     pop  AF                                            ;; 00:0a6a $f1
     ld hl, $0000
     ret                                                ;; 00:0a6e $c9
-.enemyProjectile:
-    pop  AF                                            ;; 00:0a6f $f1
-    ret                                                ;; 00:0a73 $c9
 
 ; A  = movement speed
 ; C  = object type ("collision flags")
@@ -1918,10 +1919,11 @@ createObject:
     ld   HL, wObjectRuntimeData                        ;; 00:0a77 $21 $00 $c2
     ld   DE, $10                                       ;; 00:0a7a $11 $10 $00
     ld   A, $ff                                        ;; 00:0a7d $3e $ff
+; A max of 20 objects because the GB only allows 40 hardware sprites and each object needs two.
     ld   B, $14                                        ;; 00:0a7f $06 $14
 .loop:
     cp   A, [HL]                                       ;; 00:0a81 $be
-    jr   Z, .jr_00_0a8e                                ;; 00:0a82 $28 $0a
+    jr   Z, .create                                    ;; 00:0a82 $28 $0a
     add  HL, DE                                        ;; 00:0a84 $19
     dec  B                                             ;; 00:0a85 $05
     jr   NZ, .loop                                     ;; 00:0a86 $20 $f9
@@ -1930,30 +1932,39 @@ createObject:
     pop  DE                                            ;; 00:0a8a $d1
     ld   C, $ff                                        ;; 00:0a8b $0e $ff
     ret                                                ;; 00:0a8d $c9
-.jr_00_0a8e:
+.create:
     pop  AF                                            ;; 00:0a8e $f1
     pop  DE                                            ;; 00:0a8f $d1
     push HL                                            ;; 00:0a90 $e5
-    ld   [HL], $08                                     ;; 00:0a91 $36 $08
+; Orientation (objects are always created facing south).
+    ld   [HL], DIRECTION_SOUTH                         ;; 00:0a91 $36 $08
     inc  HL                                            ;; 00:0a93 $23
+; Movement speed (delay until action).
     ld   [HL], A                                       ;; 00:0a94 $77
     inc  HL                                            ;; 00:0a95 $23
+; Collision flags.
     ld   [HL], C                                       ;; 00:0a96 $71
     inc  HL                                            ;; 00:0a97 $23
+; Unknown.
     ld   [HL], $00                                     ;; 00:0a98 $36 $00
     inc  HL                                            ;; 00:0a9a $23
+; Initialize Y position to zero for now.
     ld   [HL], $00                                     ;; 00:0a9b $36 $00
     inc  HL                                            ;; 00:0a9d $23
+; Initialize X position to zero for now.
     ld   [HL], $00                                     ;; 00:0a9e $36 $00
     inc  HL                                            ;; 00:0aa0 $23
+; Metasprite table pointer.
     ld   [HL], E                                       ;; 00:0aa1 $73
     inc  HL                                            ;; 00:0aa2 $23
     ld   [HL], D                                       ;; 00:0aa3 $72
     pop  HL                                            ;; 00:0aa4 $e1
     push BC                                            ;; 00:0aa5 $c5
+; Set initial animation frame to south facing.
     ld   DE, $09                                       ;; 00:0aa6 $11 $09 $00
     call setMetaspriteForObject                        ;; 00:0aa9 $cd $8a $08
     pop  BC                                            ;; 00:0aac $c1
+; Calculate the object position in pixels given the requested position in tiles.
     pop  DE                                            ;; 00:0aad $d1
     ld   A, D                                          ;; 00:0aae $7a
     add  A, $02                                        ;; 00:0aaf $c6 $02
@@ -1967,10 +1978,12 @@ createObject:
     add  A, A                                          ;; 00:0ab9 $87
     add  A, A                                          ;; 00:0aba $87
     ld   E, A                                          ;; 00:0abb $5f
+; The purpose of this flag is unknown, but the script system  also uses it.
     ld   A, [wMainGameStateFlags]                      ;; 00:0abc $fa $a1 $c0
     push AF                                            ;; 00:0abf $f5
     set  1, A                                          ;; 00:0ac0 $cb $cf
     ld   [wMainGameStateFlags], A                      ;; 00:0ac2 $ea $a1 $c0
+; Set the object postion.
     push BC                                            ;; 00:0ac5 $c5
     call moveObject                                    ;; 00:0ac6 $cd $61 $09
     pop  BC                                            ;; 00:0ac9 $c1
