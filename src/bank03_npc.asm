@@ -551,7 +551,9 @@ getNpcStatsEntry:
 
 ; Create an NPC object.
 ; C=NPC type
+; DE = yx tile coordinate
 spawnNPC:
+; Multiply c by 24 to calculate the data offset.
     push DE                                            ;; 03:42bd $d5
     ld   A, C                                          ;; 03:42be $79
     ld   L, A                                          ;; 03:42bf $6f
@@ -566,6 +568,7 @@ spawnNPC:
     ld   DE, npcDataTable                              ;; 03:42c9 $11 $5a $5f
     add  HL, DE                                        ;; 03:42cc $19
     pop  DE                                            ;; 03:42cd $d1
+; Initialize an object with the NPC's collision flags, position, metatiles pointer, and speed=2.
     push HL                                            ;; 03:42ce $e5
     ld   A, [HL]                                       ;; 03:42cf $7e
     ld   BC, $08                                       ;; 03:42d0 $01 $08 $00
@@ -575,6 +578,7 @@ spawnNPC:
     ld   H, [HL]                                       ;; 03:42d6 $66
     ld   L, A                                          ;; 03:42d7 $6f
     ld   A, $02                                        ;; 03:42d8 $3e $02
+; At this time, a=speed, c=type, de=position, hl=metatile table pointer.
     call createObject                                  ;; 03:42da $cd $74 $0a
     cp   A, $ff                                        ;; 03:42dd $fe $ff
     jr   Z, .failed                                    ;; 03:42df $28 $7a
