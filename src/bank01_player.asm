@@ -1331,7 +1331,7 @@ gameStateNormal:
     jr z, .b_button_only
     cp $91
     jr z, .b_button_only
-    cp $92
+    cp $12
     jr z, .b_button_only
     jr .dpad
 .not_moogle:
