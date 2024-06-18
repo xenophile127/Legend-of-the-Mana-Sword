@@ -12,8 +12,6 @@ INCLUDE "pal/npc/palette_list.inc"
 ; a = NPC id
 ; hl = metatile table pointer
 loadNPCPalette_and_createObject_expansion:
-; Load the first byte of the metatile table. This is a sprite attribute with a palette number.
-    ld b, [hl]
 ; Calculate the address of the palette.
     push hl
     ld l, a

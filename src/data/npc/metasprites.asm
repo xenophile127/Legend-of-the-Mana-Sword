@@ -94,14 +94,14 @@ metaspritesEvilSword:
 
 ; Tables on either side are shortened (by removing unused entries) to make room for this one.
 metaspritesCompanionRed:
-    db   OAMF_XFLIP  | OAMF_PAL0, $2a, $28
-    db   OAMF_NOFLIP | OAMF_PAL0, $28, $2a
-    db   OAMF_NOFLIP | OAMF_PAL0, $24, $26
-    db   OAMF_NOFLIP | OAMF_PAL0, $20, $22
-    db   OAMF_XFLIP  | OAMF_PAL0, $2e, $2c
-    db   OAMF_NOFLIP | OAMF_PAL0, $2c, $2e
-    db   OAMF_XFLIP  | OAMF_PAL0, $26, $24
-    db   OAMF_XFLIP  | OAMF_PAL0, $22, $20
+    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $2a, $28
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $28, $2a
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $24, $26
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $20, $22
+    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $2e, $2c
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $2c, $2e
+    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $26, $24
+    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $22, $20
 
 metaspritesZombie:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42

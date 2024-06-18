@@ -7428,7 +7428,7 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 25 ; Free space
+ds 24 ; Free space
 
 ; Loads the (four color) color palette set for an NPC before continuing creation.
 ; The color palette set loaded is the number of the NPC id.
@@ -7436,9 +7436,11 @@ ds 25 ; Free space
 ; a = NPC id
 ; hl = metatile table pointer
 loadNPCPalette_and_createObject:
-; Only handle snowman (NPC 0) for now.
-    cp NPC_SNOWMAN_STILL + 1
+; Only handle snowman and companions for now.
+    cp NPC_CHOCOBO_FOLLOWING + 1
     jr nc, .create
+; Load the first byte of the metatile table. This is a sprite attribute with a palette number.
+    ld b, [hl]
     push af
 ;   Switch the bank.
     ld a, BANK(ColorSinglePalettesROM)
