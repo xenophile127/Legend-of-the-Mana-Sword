@@ -2,6 +2,13 @@
 
 ; These metasprite tables are made up of entries of [attr, tile1, tile2].
 
+
+metasprites30FourDirections:
+    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_PROJECTILE, $32, $30
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $34, $36
+    db   OAMF_YFLIP  | OAMF_PAL0 | PAL_PROJECTILE, $34, $36
+
 projectileIceMetatileTable:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_SNOW, $32, $30
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $30, $32
