@@ -1844,3 +1844,15 @@ color_palette_\1:
         DEF n = n + 1
     ENDR
 ENDM
+
+MACRO COLOR_PALETTE_NPC
+color_palette_\1:
+.main:
+        INCBIN "pal/npc/\1/main.pal",0,8
+.blind:
+        INCBIN "pal/npc/\1/blind.pal",0,8
+.damage:
+        INCBIN "pal/npc/\1/damage.pal",0,8
+.flash:
+        INCBIN "pal/npc/\1/flash.pal",0,8
+ENDM

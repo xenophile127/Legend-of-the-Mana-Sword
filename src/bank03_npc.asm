@@ -550,7 +550,7 @@ getNpcStatsEntry:
     ret                                                ;; 03:42bc $c9
 
 ; Create an NPC object.
-; C=NPC type
+; C=NPC id
 ; DE = yx tile coordinate
 spawnNPC:
 ; Multiply c by 24 to calculate the data offset.
@@ -570,6 +570,7 @@ spawnNPC:
     pop  DE                                            ;; 03:42cd $d1
 ; Initialize an object with the NPC's collision flags, position, metatiles pointer, and speed=2.
     push HL                                            ;; 03:42ce $e5
+    push af
     ld   A, [HL]                                       ;; 03:42cf $7e
     ld   BC, $08                                       ;; 03:42d0 $01 $08 $00
     add  HL, BC                                        ;; 03:42d3 $09
@@ -577,9 +578,13 @@ spawnNPC:
     ld   A, [HL+]                                      ;; 03:42d5 $2a
     ld   H, [HL]                                       ;; 03:42d6 $66
     ld   L, A                                          ;; 03:42d7 $6f
-    ld   A, $02                                        ;; 03:42d8 $3e $02
-; At this time, a=speed, c=type, de=position, hl=metatile table pointer.
-    call createObject                                  ;; 03:42da $cd $74 $0a
+    pop af
+; At this time a=NPC id, c=type, de=position, hl=metatile table pointer.
+IF DEF(COLOR)
+    call loadNPCPalette_and_createObject
+ELSE
+    call createObject_speed2
+ENDC
     cp   A, $ff                                        ;; 03:42dd $fe $ff
     jr   Z, .failed                                    ;; 03:42df $28 $7a
     push BC                                            ;; 03:42e1 $c5

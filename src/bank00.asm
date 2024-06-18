@@ -1907,6 +1907,9 @@ secondaryCollisionHandling:
     ld hl, $0000
     ret                                                ;; 00:0a6e $c9
 
+createObject_speed2:
+    ld a, $02
+
 ; A  = movement speed
 ; C  = object type ("collision flags")
 ; DE = position in tiles
@@ -7425,7 +7428,33 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 50 ; Free space
+ds 25 ; Free space
+
+; Loads the (four color) color palette set for an NPC before continuing creation.
+; The color palette set loaded is the number of the NPC id.
+; It is loaded into the object palette number of the first entry in the metatile table.
+; a = NPC id
+; hl = metatile table pointer
+loadNPCPalette_and_createObject:
+; Only handle snowman (NPC 0) for now.
+    cp NPC_SNOWMAN_STILL + 1
+    jr nc, .create
+    push af
+;   Switch the bank.
+    ld a, BANK(ColorSinglePalettesROM)
+    push hl
+    call pushBankNrAndSwitch
+    pop hl
+    pop af
+; Make the call.
+    call loadNPCPalette_and_createObject_expansion
+; Switch back to the correct bank.
+    push hl
+    call popBankNrAndSwitch
+    pop hl
+.create:
+    call createObject_speed2
+    ret
 
 ; sLOAD_PALETTE
 ; A new script opcode for loading palettes.

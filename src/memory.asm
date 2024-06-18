@@ -1626,11 +1626,13 @@ wAnimatedTileRiverCorners:
     ds 64                                              ;; dad0
 
 wColorPalettes:
+.main:
 .normal:
 .normal_bgp0:
 .bgp_normal:
     ds 64                                              ;; db10
 
+.obj_main:
 .obj_normal:
     ds 64                                              ;; db50
 
