@@ -9274,9 +9274,13 @@ script_0471:
     sEND                                               ;; 0e:5a8f $00
 
 script_0472:
-    sMSG                                               ;; 0e:5a90 $04
-      db "<10>Take your\nChocobo with you?<12>"
-      db "<13>", $00 ;; 0e:5a91
+    sIF_FLAG wScriptFlags04.1
+      sMSG
+        db "<10>Take Chocobot\nwith you?<12><13><00>"
+    sELSE
+      sMSG
+        db "<10>Take your\nChocobo with you?<12><13><00>"
+    sENDIF
     sIF_FLAG !wScriptFlags0F.7                         ;; 0e:5aa8 $08 $ff $00 $2c
       sGIVE_FOLLOWER 9                                 ;; 0e:5aac $9c $09
       sSET_FLAG wScriptFlags0B.0                       ;; 0e:5aae $da $58
