@@ -14,6 +14,8 @@ You can use Game Boy Color Picker anywhere Legend of the Mana Sword's color port
 
 > 💡**Note:** Most emulators and flash cartridges will create `.sav` files that are much larger than necessary. Only the first eight bytes are used, but it is safe to add `.pal` files of any size--everything after the first eight bytes will be ignored.
 
+You may also be able to use the (unsuported) Windows utility [url=https://www.romhacking.net/utilities/1743/]GBC Palette Editor[/url] to view and edit `.pal` files, however GBC Palette Editor seems to expect `.pal` files to contain at least 32 colors and will give an error if any of the LotMS's included `.pal` files are opened, but `.pal` files created by GBC Palette Editor should work correctly with LotMS.
+
 After changing `.pal` files you will need to run `make color` to build a file named `rom.gb` which can be run on any Game Boy Color or Game Boy Advance emulator, or on real hardware using a Game Boy flash cartridge.
 
 > 💡**Note:** Game Boy Advance flash cartridges that use Goomba Color to run Game Boy Color games are unlikely to work. While Goomba Color is an impressive piece of engineering, it makes accuracy compromises.
