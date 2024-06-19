@@ -1,4 +1,5 @@
 INCLUDE "include/macros.inc"
+INCLUDE "include/constants.inc"
 
 COLOR_SINGLE_PALETTES_BANK_1 EQU $19
 
@@ -12,6 +13,15 @@ INCLUDE "pal/npc/palette_list.inc"
 ; a = NPC id
 ; hl = metatile table pointer
 loadNPCPalette_and_createObject_expansion:
+; Do not load palettes for chests.
+    cp NPC_CHEST_1
+    ret z
+    cp NPC_CHEST_2
+    ret z
+    cp NPC_CHEST_3
+    ret z
+    cp NPC_CHEST_4
+    ret z
 ; Calculate the address of the palette.
     push hl
     ld l, a

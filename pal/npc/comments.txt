@@ -1,0 +1,9 @@
+Palette sets for NPCs, which includes enemies, companions, townfolk, and even invisibles that do thing like open walls when hit with a Mattok.
+
+Each has four palettes:
+* main.pal: The three colors (the first one is unused/transparent) that are used most of the time.
+* blind.pal: Used when the player is afflicted with the Blind (Dark) status effect. This can be the same as main.pal if you do not want an NPC to be obscured by Blind. For instance, the snowmen that result from the Ice spell, or companions.
+* damage.pal: Used when a boss is hit. This SHOULD be the same as main.pal unless you want companions to blink when a boss is hit (like they did originally).
+* flash.pal: Used when the screen is flashed by a script command or certain boss effects.
+
+The file palette_list.inc in this directory has an entry for each NPC. A single palette set can be mapped to multiple NPCs by using its name on multiple lines in palette_list.inc.

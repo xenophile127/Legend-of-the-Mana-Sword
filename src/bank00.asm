@@ -7436,9 +7436,6 @@ ds 24 ; Free space
 ; a = NPC id
 ; hl = metatile table pointer
 loadNPCPalette_and_createObject:
-; Only handle snowman and companions for now.
-    cp NPC_CHOCOBO_FOLLOWING + 1
-    jr nc, .create
 ; Load the first byte of the metatile table. This is a sprite attribute with a palette number.
     ld b, [hl]
     push af

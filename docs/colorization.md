@@ -20,7 +20,7 @@ After changing `.pal` files you will need to run `make color` to build a file na
 
 ## Organization of the `pal` directory
 
-Currently there are four directories within `pal`:
+Currently there are five directories within `pal`:
 1. **`00` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files (only `bgp0.pal` is currently used) and eight sprite (`obj`) `.pal` files.:
     - **`blind` -** Used when inflicted with the status effect Blind (shortened to "Dark" in the original Final Fantasy Adventure and Mystic Quest localizations).
       
@@ -38,10 +38,10 @@ Currently there are four directories within `pal`:
     - **`normal` -** What is used most of the time. In addition to `bgp0.pal` these sprite palettes are used:
         * `obj0.pal` is used for the player, some NPCs, and enemies.
         * `obj1.pal` is used for the player's attacks, including spells (except for Ice).
-        * `obj2.pal` is used for the snowmen created by using the Ice spell and similar items, and ice attacks by the player and enemies. Right now this is the sprite palette with the most consistency: very few things use it, and all of them are ice/snow related. Changing it to use dark blue instead of black--or something else that fits ice/snow--is possible.
-        * `obj3.pal` is used for most companions/followers that join you and their attacks.
+        * `obj2.pal` is used for the snowmen created by using the Ice spell and similar items, and ice attacks by the player and enemies. This palette is replaced from the `pal/npc/000/` directory when a snowman is created.
+        * `obj3.pal` is used for most companions/followers that join you and their attacks. This palette is replaced with an entry from the `pal/npc/` directory whenever a companion joins (including when loading a game).
         * `obj4.pal` is used for enemies' attacks.
-        * The last three sprite palettes are used for NPCs, enemies, and bosses.
+        * The last three sprite palettes are used for NPCs, enemies, and bosses. They are replaced with entries from the `pal/npc/` directory whenever NPCs are spawned. Bosses (except for Red Dragon) do not yet initialize palettes when they spawn so it may be possible for some bosses colors to be affected by recently encountered enemies.
 2. **`01` -** Identical to `00` except `blind/obj05.pal`, `damage/obj05.pal`, and `normal/obj05.pal` use red instead of blue. This is used for the Red Dragon boss. (Blind is unused so far.)
 3. **`line-effects` -** Contains a small number of palettes used for special effects:
     * New Game intro scroll "vignette" fade effect. These can be replaced to change the three steps of the fade. For instance, the fade can be disabled completely by copying `pal/init/normal/bgp0.pal` over all three of the `intro-scroll?.pal` files.
@@ -49,12 +49,19 @@ Currently there are four directories within `pal`:
     * Shutter effect. Used when selecting a save game to continue, to transition from one map to another, and when displaying the in-game maps. This can be used to change the effect from white to black, or any other color you may like.
       > 💡**Note:** All four colors in this palette should be the same as it uses the area of memory that contains the status bar.
     * Status bar effect. Used by the status bar at the bottom of the screen that shows HP, MP, Lucre, and the stamina gauge. At this point there are some visual glitches related to changing this.
-4. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
+4. **`npc` -** The file `pal/npc/palette_list.inc` has an entry for every distinct NPC in the game, though some NPCs (like shop keepers) are internally identical. Each entry indicates which palette set directory inside of `pal/npc/` to load when that NPC is loaded. Palette sets can be reused for multiple NPCs but there is no space savings to doing so. Each line in this file is commented to indicate which NPC it affects, but when it doubt, test.
+    Each palette set directory within `pal/npc` contains four `.pal` files:
+        * `main.pal` are the colors you will see most of the time.
+        * `blind.pal` is used when the player is afflicted with the Blind effect. If you do not wish an NPC to change appearance under the Blind status effect, make this identical to the `main.pal`.
+        * `damage.pal` is used whenever a boss takes damage. This should only ever be used for companions (Watts, Lester, etc.) who accompany you to boss fights. Originally these characters would blink when the boss was damaged, but unless duplicating the original behavior is your goal this should be the same as `main.pal`.
+        * `flash.pal` are the colors shown when the full screen flash effect is used.
+      > 💡**Note:** Objects are restricted by hardware to three colors. The first color in each of these `.pal` files is unused (transparent).
+5. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
 > 💡**Note:** Super Game Boy support is disabled when assembling with Game Boy Color/Advance support with `make color`.
 
 ## Changing palettes used
 
-Adding palettes (instead of just changing the colors in an existing palette) is possible, but at an early stage.
+Adding palettes (instead of just changing the colors in an existing palette) is possible, but at an early stage. At this point most palettes are intended to load dynamically so palettes added and used by this message may be replaced with other palettes, such as when loading an NPC.
 
 To add a Palettes:
 1. Add a directory to `pal`. It is easiest to copy an existing one to get all the needed files and structure.

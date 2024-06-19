@@ -1845,8 +1845,10 @@ color_palette_\1:
     ENDR
 ENDM
 
+DEF COLOR_PALETTE_NPC_NUMBER = $00
 MACRO COLOR_PALETTE_NPC
-color_palette_\1:
+color_palette_npc_{02x:COLOR_PALETTE_NPC_NUMBER}:
+        DEF COLOR_PALETTE_NPC_NUMBER = COLOR_PALETTE_NPC_NUMBER + 1
 .main:
         INCBIN "pal/npc/\1/main.pal",0,8
 .blind:
