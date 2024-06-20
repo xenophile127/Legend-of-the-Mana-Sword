@@ -470,14 +470,14 @@ wFlyingSwordSpecialOriginalLocationY:
 wPlayerDamagedTimer:
     ds 2                                               ;; c4d2
 
-;Bit0: ?
+;Bit0: Unused
 ;Bit1: Dark
 ;Bit2: Ston
 ;Bit3: Moog
 ;Bit4: Player Minecart Sprite
 ;Bit5: Player Hurt Sprite
 ;Bit6: Player Down Sprite
-;Bit7: ?
+;Bit7: Unused
 wPlayerSpecialFlags:
     ds 12                                              ;; c4d4
 

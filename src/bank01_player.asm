@@ -1123,6 +1123,7 @@ playerSpritesLoadPlayerSpriteTiles:
     call HLandDE                                       ;; 01:48f5 $cd $b2 $29
     pop  BC                                            ;; 01:48f8 $c1
     jr   Z, .jr_01_48fd                                ;; 01:48f9 $28 $02
+; Face north on vines.
     ld   C, $04                                        ;; 01:48fb $0e $04
 .jr_01_48fd:
     ld   A, C                                          ;; 01:48fd $79
@@ -1186,6 +1187,9 @@ playerSpritesLoadPlayerSpriteTiles:
 
 ds 6 ; Free space
 
+; a = wPlayerSpecialFlags except Blind (Stone, Moogle, minecart, hurt or down sprite.)
+; b = base sprite offset in the table, except the lowest two bits are actually the highest ($21 = $0120)
+; c = direction
 getModifiedPlayerState:
     ld   L, A                                          ;; 01:495d $6f
     bit  4, L                                          ;; 01:495e $cb $65

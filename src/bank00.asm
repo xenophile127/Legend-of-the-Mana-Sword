@@ -4189,7 +4189,11 @@ tileScriptOrSpikeDamage:
     ld   [wPlayerDamagedTimer], A                      ;; 00:177a $ea $d2 $c4
     ret                                                ;; 00:177d $c9
 
+; b = object id
+; c = object collision flags
+; de = yy pixel coordinate
 call_00_177e:
+; Convert pixel coordinate to tile coordinate.
     srl  D                                             ;; 00:177e $cb $3a
     srl  D                                             ;; 00:1780 $cb $3a
     srl  D                                             ;; 00:1782 $cb $3a
@@ -4198,16 +4202,19 @@ call_00_177e:
     srl  E                                             ;; 00:1787 $cb $3b
     srl  E                                             ;; 00:1789 $cb $3b
     dec  E                                             ;; 00:178b $1d
+; Load the metatile bank.
     push DE                                            ;; 00:178c $d5
     push BC                                            ;; 00:178d $c5
     ld   A, BANK(metatilesOutdoor) ;@=bank metatilesOutdoor ;; 00:178e $3e $08
     call pushBankNrAndSwitch                           ;; 00:1790 $cd $fb $29
     pop  BC                                            ;; 00:1793 $c1
+; Init sliding (ice and minecart tracks) to zero and save the previous value in L.
     push BC                                            ;; 00:1794 $c5
     ld   A, $00                                        ;; 00:1795 $3e $00
     ld   C, B                                          ;; 00:1797 $48
     call setObjectSliding                              ;; 00:1798 $cd $e4 $0c
     ld   L, A                                          ;; 00:179b $6f
+; Check for sprites frozen by a script or screen scroll and return if so.
     pop  BC                                            ;; 00:179c $c1
     pop  DE                                            ;; 00:179d $d1
     ld   A, [wMainGameStateFlags]                      ;; 00:179e $fa $a1 $c0

@@ -275,11 +275,12 @@ processPhysicsForObjectDependingOnCollisionFlags:
 
 ; Move objects with screenscroll. Destroy those that fall behind.
 ; Enemies and NPCs are meant to be left behind but jumpers can survive the scroll.
-; A = room scroll sprite speed
-; B = room scroll sprite speed?
+; A = top: $b, bottom: scrolling direction
+; B = room scroll sprite speed
 ; C = object ID
 scrollMoveObject:
     push AF                                            ;; 02:435e $f5
+; Reset bit 7 of the object's direction, which is set if it is moving off grid.
     push BC                                            ;; 02:435f $c5
     call getObjectDirection                            ;; 02:4360 $cd $99 $0c
     cp   A, $ff                                        ;; 02:4363 $fe $ff
@@ -289,6 +290,7 @@ scrollMoveObject:
     and  A, $7f                                        ;; 02:4369 $e6 $7f
     call setObjectDirection                            ;; 02:436b $cd $a6 $0c
     pop  BC                                            ;; 02:436e $c1
+; Set the object's speed so it keeps up with the room scroll.
     push BC                                            ;; 02:436f $c5
     ld   A, B                                          ;; 02:4370 $78
     cp   A, $00                                        ;; 02:4371 $fe $00
@@ -363,6 +365,7 @@ scrollMoveObject:
 
 ; Manages objects during the screen scroll transition.
 ; Enemies and NPCs are meant to be left behind but jumpers can survive the scroll, which is a bug.
+; A = top: $b, bottom: scrolling direction
 scrollMoveSprites:
     push AF                                            ;; 02:43dd $f5
     ld   A, [wSpriteScrollSpeed]                       ;; 02:43de $fa $a1 $c4
