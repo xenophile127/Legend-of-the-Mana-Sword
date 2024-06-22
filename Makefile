@@ -19,10 +19,6 @@ GLADIATOR = -DGLADIATOR_DUKE
 FF_OR_MANA = -DMANA
 #FF_OR_MANA = -DFINAL_FANTASY
 
-# Controls whether to use the original spawn placement routine or the new bounded one
-#SPAWN = -DSPAWN_ORIGINAL
-SPAWN = -DSPAWN_NEW
-
 # Controls whether debug messages created with include/debug.inc are recorded
 DEBUG = -DDEBUG
 
@@ -32,7 +28,7 @@ COLOR = -DCOLOR
 # Set Double Speed Mode. Only an option for the experimental color build.
 DOUBLE_SPEED = -DDOUBLE_SPEED
 
-DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA) $(SPAWN)
+DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA)
 
 all: debug
 
@@ -46,13 +42,13 @@ debug: DEFS += $(DEBUG)
 debug: $(ROM)
 
 amanda: clean
-amanda: DEFS = -DPLAYER_GRAPHICS_AMANDA -DPLAYER_GENDER_FEMALE -DGLADIATOR_DUKE -DMANA -DSPAWN_NEW
+amanda: DEFS = -DPLAYER_GRAPHICS_AMANDA -DPLAYER_GENDER_FEMALE -DGLADIATOR_DUKE -DMANA
 amanda: $(ROM)
 	-rm -f LotMS-Amanda-*.gb
 	mv $(ROM) LotMS-Amanda-`date +%F`.gb
 
 duke: clean
-duke: DEFS = -DPLAYER_GRAPHICS_ORIGINAL -DPLAYER_GENDER_MALE -DGLADIATOR_AMANDA -DMANA -DSPAWN_NEW
+duke: DEFS = -DPLAYER_GRAPHICS_ORIGINAL -DPLAYER_GENDER_MALE -DGLADIATOR_AMANDA -DMANA
 duke: $(ROM)
 	-rm -f LotMS-Duke-*.gb
 	mv $(ROM) LotMS-Duke-`date +%F`.gb
@@ -72,7 +68,7 @@ $(ROM): $(patsubst src/%.asm,.obj/%.o,$(SRCS))
 
 .gfx/%.bin: gfx/%.png
 	@mkdir -p $(dir .gfx/$*)
-	rgbgfx -o .gfx/$*.bin $< -c '#ffffff,#c8c8c8,#646464,#000000'
+	rgbgfx -o .gfx/$*.bin $< #-c '#ffffff,#c8c8c8,#646464,#000000'
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(patsubst src/%.asm,.dep/%.mk,$(SRCS))
