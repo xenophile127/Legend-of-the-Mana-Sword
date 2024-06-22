@@ -136,10 +136,6 @@ metaspritesAirElemental:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4a, $48
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $46, $44
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4a, $48
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
 
 ; Used for NPCs like town people that have walk cycles in all four directions.
 metaspritesTabel40Normal:
@@ -227,20 +223,12 @@ metaspritesShadowZero:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $68, $6a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $64, $66
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $66, $64
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
 
 metaspritesEarthElemental:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $5a, $58
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $5a, $58
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
@@ -255,20 +243,12 @@ metaspritesDoppelMirror:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $56, $54
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52
 
 metaspritesPhantasm:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
@@ -325,20 +305,12 @@ metaspritesDeathGauntlet:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $5c, $5e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $64, $66
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $54, $56
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $5e, $5c
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $5c, $5e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $64, $66
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $54, $56
 
 metaspritesDarkStalker:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $6a, $68
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $68, $6a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $58, $5a
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $6e, $6c
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6c, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $64, $66
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $5c, $5e
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $6e, $6c
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6c, $6e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $64, $66
@@ -353,16 +325,8 @@ metaspritesShadowKnight:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $54, $56
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $52, $50
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $50, $52
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
 
 metaspritesTable5cUnmoving:
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
@@ -393,18 +357,8 @@ metaspritesTable5cUnmovingRed:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
-
-ds 12 ; Free space
 
 metaspritesInvisible:
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
@@ -423,10 +377,6 @@ metaspritesCompanion:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_FOLLOWER, $2c, $2e
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_FOLLOWER, $26, $24
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_FOLLOWER, $22, $20
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_FOLLOWER, $2a, $28
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_FOLLOWER, $28, $2a
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_FOLLOWER, $24, $26
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_FOLLOWER, $20, $22
 
 metaspritesWilly:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
