@@ -1724,7 +1724,7 @@ processNpcDeath:
 .jr_03_4878:
     ld   HL, wOpenChestScript1                         ;; 03:4878 $21 $13 $d6
 .jr_03_487b:
-    add  A, $0c                                        ;; 03:487b $c6 $0c
+    add  A, NPC_CHEST_1                                ;; 03:487b $c6 $0c
     pop  DE                                            ;; 03:487d $d1
     push AF                                            ;; 03:487e $f5
     push HL                                            ;; 03:487f $e5

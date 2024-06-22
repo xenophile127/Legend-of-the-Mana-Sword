@@ -7890,7 +7890,7 @@ spawnChest:
     db   $0e, $0c, $cd, $dd, $27, $c9                  ;; 00:2cdb ??????
 
 spawnEmptyChest:
-    ld   C, $0f                                        ;; 00:2ce1 $0e $0f
+    ld   C, NPC_CHEST_4                                ;; 00:2ce1 $0e $0f
     call spawnNPC_trampoline                           ;; 00:2ce3 $cd $dd $27
     ret                                                ;; 00:2ce6 $c9
 
@@ -7912,7 +7912,7 @@ scriptOpCodeChangeIntoEmptyChest:
 ds 2 ; Free space
 
 spawnSnowman:
-    ld   C, $00                                        ;; 00:2d03 $0e $00
+    ld   C, NPC_SNOWMAN_STILL                          ;; 00:2d03 $0e $00
     call spawnNPC_trampoline                           ;; 00:2d05 $cd $dd $27
     cp   A, $ff                                        ;; 00:2d08 $fe $ff
     ret  Z                                             ;; 00:2d0a $c8
