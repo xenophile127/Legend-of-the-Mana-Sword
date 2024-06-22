@@ -16,7 +16,7 @@ entryPointTableBank03:
     call_to_bank_target destroyNPC                     ;; 03:4006 pP
     call_to_bank_target spawnNpcsFromTable             ;; 03:4008 pP
     call_to_bank_target setNpcSpawnTable               ;; 03:400a pP
-    call_to_bank_target setHLToZero_3                  ;; 03:400c ??
+ds 2 ; Unused trampoline target
     call_to_bank_target enemyCollisionHandling         ;; 03:400e pP
     call_to_bank_target friendlyCollisionHandling      ;; 03:4010 pP
     call_to_bank_target damageNpc                      ;; 03:4012 ??
@@ -1030,9 +1030,7 @@ spawnNpcsFromTable:
     pop  HL                                            ;; 03:455b $e1
     ret                                                ;; 03:455c $c9
 
-setHLToZero_3:
-    ld   HL, $00                                       ;; 03:455d $21 $00 $00
-    ret                                                ;; 03:4560 $c9
+ds 4 ; Free space
 
 ; Handles collisions with objects that run a script when touched.
 ; A = interacting object's collision flags

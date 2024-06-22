@@ -1864,6 +1864,7 @@ moveObject:
     ret                                                ;; 00:0a32 $c9
 
 ; This only gets run if a collision has already been found and checked.
+; Return: hl = yx position delta.
 secondaryCollisionHandling:
     push AF                                            ;; 00:0a33 $f5
     and  A, $f0                                        ;; 00:0a34 $e6 $f0
@@ -1875,14 +1876,16 @@ secondaryCollisionHandling:
     jr   Z, .playerOrFollowerAttack                    ;; 00:0a40 $28 $1e
     cp   A, $50                                        ;; 00:0a42 $fe $50
     jr   Z, .playerOrFollowerAttack                    ;; 00:0a44 $28 $1a
-    cp   A, $90                                        ;; 00:0a46 $fe $90
-    jr   Z, .enemy                                     ;; 00:0a48 $28 $1b
-    cp   A, $a0                                        ;; 00:0a4a $fe $a0
-    jr   Z, .friendly                                  ;; 00:0a4c $28 $1c
-    cp   A, $b0                                        ;; 00:0a4e $fe $b0
-    jr   Z, .friendly                                  ;; 00:0a50 $28 $18
     pop af
+    ld hl, $0000
     ret
+; These all just set hl to $0000.
+;    cp   A, $90                                        ;; 00:0a46 $fe $90
+;    jr   Z, .enemy                                     ;; 00:0a48 $28 $1b
+;    cp   A, $a0                                        ;; 00:0a4a $fe $a0
+;    jr   Z, .friendly                                  ;; 00:0a4c $28 $1c
+;    cp   A, $b0                                        ;; 00:0a4e $fe $b0
+;    jr   Z, .friendly                                  ;; 00:0a50 $28 $18
 ; This relied on never being passed a value less than $30, equal to $80, or >= $d0.
 ; If that was ever false then it would have returned to something that wasn't intended as an address.
 ;    cp   A, $60                                        ;; 00:0a52 $fe $60
@@ -1898,14 +1901,6 @@ secondaryCollisionHandling:
     pop  AF                                            ;; 00:0a60 $f1
     call playerOrFriendlyAttackCollisionHandling_trampoline ;; 00:0a61 $cd $fd $2e
     ret                                                ;; 00:0a64 $c9
-.enemy:
-    pop  AF                                            ;; 00:0a65 $f1
-    call setHLToZero_3_trampoline                      ;; 00:0a66 $cd $47 $28
-    ret                                                ;; 00:0a69 $c9
-.friendly:
-    pop  AF                                            ;; 00:0a6a $f1
-    ld hl, $0000
-    ret                                                ;; 00:0a6e $c9
 
 createObject_speed2:
     ld a, $02
@@ -7059,8 +7054,9 @@ spawnNpcsFromTable_trampoline:
     ld   A, [HL+]                                      ;; 00:2840 $2a
     jp_to_bank 03, spawnNpcsFromTable                  ;; 00:2841 $f5 $3e $04 $c3 $35 $1f
 
-setHLToZero_3_trampoline:
-    jp_to_bank 03, setHLToZero_3                       ;; 00:2847 $f5 $3e $06 $c3 $35 $1f
+ds 6 ; Free space
+; setHLToZero_3_trampoline:
+;     jp_to_bank 03, setHLToZero_3                       ;; 00:2847 $f5 $3e $06 $c3 $35 $1f
 
 friendlyCollisionHandling_trampoline:
     jp_to_bank 03, friendlyCollisionHandling           ;; 00:284d $f5 $3e $08 $c3 $35 $1f
