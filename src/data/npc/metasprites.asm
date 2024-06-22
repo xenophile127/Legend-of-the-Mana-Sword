@@ -459,7 +459,3 @@ metaspritesShieldlessPC:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
     db   OAMF_XFLIP  | OAMF_PAL0 | PAL_NPC2, $56, $54
     db   OAMF_XFLIP  | OAMF_PAL0 | PAL_NPC2, $52, $50
-    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_NPC2, $5a, $58
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $58, $5a
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $54, $56
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $50, $52

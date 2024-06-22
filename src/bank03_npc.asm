@@ -4198,6 +4198,8 @@ tileorderOpenChest:
 
 INCLUDE "data/npc/metasprites.asm"
 
+ds 12 ; Free space
+
 ; Same intent as npcBehaviorProcessDelayAction, but prevent
 ; delay timer hitting 0 while the object is moving. This is done by
 ; incrementing the delay timer by 2 when on an even delay timer value.
