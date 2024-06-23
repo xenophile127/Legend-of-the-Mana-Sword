@@ -11,8 +11,8 @@ gbcFadeToNormal:
     add $0a + 1 ; Fold the increment into the addition.
     ld c, a
     ld a, [wLastFade]
-    or a
-    jr nz, fadeBlack
+    cp $01
+    jr z, fadeBlack
     jp fadeWhite
 
 ; Fade to black.

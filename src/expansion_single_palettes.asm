@@ -70,9 +70,11 @@ loadNPCPalette_and_createObject_expansion:
 ; Copy the flash palette.
     ld b, $08
     call copyHLtoDE
-; Activate the palette.
+; Activate the palette if the screen isn't currently faded to black or white.
     ld hl, wColorPalettes.main
-    call setPalettes
+    ld a, [wLastFade]
+    or a
+    call z, setPalettes
 ; And finish.
     pop de
     pop hl

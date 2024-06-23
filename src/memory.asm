@@ -1669,6 +1669,7 @@ wPaletteBackground0LCDC:
     ds 8                                               ;; dd90
 
 ; Used on Super Game Boy to track whether the last fade was to white or black.
+; Normal (not faded) = $00, Black = $01, White = $02.
 wLastFade:
     ds 1                                               ;; dd91
 

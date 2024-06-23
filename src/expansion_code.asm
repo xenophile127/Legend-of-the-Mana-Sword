@@ -561,9 +561,6 @@ ENDC
     cp $bd ; scriptOpCodeFadeToBlack
     jr z, .black
     ;cp $be ; scriptOpCodeFadeToWhite
-; Track which palette is active so one routine can handle fading back from either.
-    xor a
-    ld [wLastFade], a
 IF DEF(COLOR)
     call gbcFadeToWhite
     xor a
@@ -583,9 +580,6 @@ ENDC
     inc a
     ret
 .black:
-; Track which palette is active so one routine can handle fading back from either.
-    ld a, $01
-    ld [wLastFade], a
 IF DEF(COLOR)
     call gbcFadeToBlack
 ELSE

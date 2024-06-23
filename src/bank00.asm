@@ -3144,6 +3144,11 @@ fadeEffectAdjustCounters:
     ret  C                                             ;; 00:115a $d8
     ld   A, $00                                        ;; 00:115b $3e $00
     ld   [wScriptOpCounter], A                         ;; 00:115d $ea $99 $d4
+; Store the current fade type.
+    dec hl
+    ld a, [hl+]
+    sub $bc ; scriptOpCodeFadeToNormal
+    ld [wLastFade], a
     call getNextScriptInstruction                      ;; 00:1160 $cd $27 $37
     ret                                                ;; 00:1163 $c9
 
