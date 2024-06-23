@@ -1499,35 +1499,14 @@ processNpcDeath:
     call getRandomByte                                 ;; 03:4837 $cd $1e $2b
     and  A, $07                                        ;; 03:483a $e6 $07
     jr   NZ, .return                                   ;; 03:483c $20 $78
-; Get the npcDataTable entry address from the runtime data.
+; Get the npc "slot" by using the GBC palette index in the metasprite table.
     pop  HL                                            ;; 03:483e $e1
     push HL                                            ;; 03:483f $e5
-    ld   DE, $12                                       ;; 03:4840 $11 $12 $00
-    add  HL, DE                                        ;; 03:4843 $19
-    ld   A, [HL+]                                      ;; 03:4844 $2a
-    ld   H, [HL]                                       ;; 03:4845 $66
-    ld   L, A                                          ;; 03:4846 $6f
-; Use the npcDataTable entry address to calculate the NPC's npcDataTable entry number.
-    ld   DE, npcDataTable                              ;; 03:4847 $11 $5a $5f
-    call sub_HL_DE                                     ;; 03:484a $cd $ab $2b
-    ld   A, $18                                        ;; 03:484d $3e $18
-    call divMod                                        ;; 03:484f $cd $8b $2b
-    ld   A, L                                          ;; 03:4852 $7d
-; Use the npcDataTable entry number to find the entry in wNPCSpawnTypes.
-    ld   HL, wNPCSpawnTypes                            ;; 03:4853 $21 $a8 $c5
-    ld   B, $03                                        ;; 03:4856 $06 $03
-.loop:
-    cp   A, [HL]                                       ;; 03:4858 $be
-    jr   Z, .found                                     ;; 03:4859 $28 $08
-    inc  HL                                            ;; 03:485b $23
-    dec  B                                             ;; 03:485c $05
-    jr   NZ, .loop                                     ;; 03:485d $20 $f9
-    ld   A, $00                                        ;; 03:485f $3e $00
-    jr   .jr_03_4866                                   ;; 03:4861 $18 $03
-.found:
-    ld   A, $03                                        ;; 03:4863 $3e $03
-    sub  A, B                                          ;; 03:4865 $90
-.jr_03_4866:
+    ld c, [hl]
+    call getObjectMetaspriteTablePointer
+    ld a, [hl]
+    and $3
+    dec a
     cp   A, $00                                        ;; 03:4866 $fe $00
     jr   Z, .jr_03_4878                                ;; 03:4868 $28 $0e
     cp   A, $01                                        ;; 03:486a $fe $01
@@ -1591,6 +1570,8 @@ processNpcDeath:
     pop  BC                                            ;; 03:48b7 $c1
     call destroyNPC                                    ;; 03:48b8 $cd $5f $43
     ret                                                ;; 03:48bb $c9
+
+ds 31 ; Free space
 
 ; HL = A + ((A * RND()) >> 11)
 ; Add 12.5% randomness to A and store in HL
