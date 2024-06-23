@@ -734,8 +734,8 @@ destroyNPC:
     ld   B, $17                                        ;; 03:43af $06 $17
     call fillMemory                                    ;; 03:43b1 $cd $5d $2b
     ret                                                ;; 03:43b4 $c9
-    db   $21, $e0, $c4, $06, $0d, $11, $18, $00        ;; 03:43b5 ????????
-    db   $3e, $ff, $77, $19, $05, $20, $fb, $c9        ;; 03:43bd ????????
+
+ds 16 ; Free space
 
 giveFollower:
     ld   C, A                                          ;; 03:43c5 $4f
@@ -926,7 +926,7 @@ prepareNpcPlacementOptions:
     ld A, [HL]
     jp scanRoomForNpcPlacementOptions_trampoline
 
-ds 39 ; Free space
+ds 25 ; Free space
 
 ; Moved here to make room for an added NPC.
 tileorderNpc:
@@ -1029,8 +1029,6 @@ spawnNpcsFromTable:
     jr   NZ, .random_loop                              ;; 03:4559 $20 $f0
     pop  HL                                            ;; 03:455b $e1
     ret                                                ;; 03:455c $c9
-
-ds 4 ; Free space
 
 ; Handles collisions with objects that run a script when touched.
 ; A = interacting object's collision flags
@@ -1593,8 +1591,6 @@ processNpcDeath:
     pop  BC                                            ;; 03:48b7 $c1
     call destroyNPC                                    ;; 03:48b8 $cd $5f $43
     ret                                                ;; 03:48bb $c9
-
-ds 2 ; Free space
 
 ; HL = A + ((A * RND()) >> 11)
 ; Add 12.5% randomness to A and store in HL
@@ -2302,8 +2298,6 @@ initEnemiesCounterAndMoveFolower:
     call moveFollowerToPlayer
     ret
 
-ds 17 ; Free space
-
 ;@jumptable amount=224
 npcBehaviorJumptable:
     dw   ld_C_into_A                                   ;; 03:4c55 ?? $00
@@ -2551,23 +2545,31 @@ call_03_4e15:
     call setObjectCollisionFlags                       ;; 03:4e2e $cd $86 $0c
     ret                                                ;; 03:4e31 $c9
 
-INCLUDE "data/npc/metasprites_defeated.asm"
-
-npcKilledExplosionInit:
-    push BC                                            ;; 03:4e4a $c5
-    push DE                                            ;; 03:4e4b $d5
-    ld   HL, npcKillExplosionMetaspriteTable           ;; 03:4e4c $21 $32 $4e
-    call setObjectMetaspritePointer                    ;; 03:4e4f $cd $ba $0c
-    ld   A, $0b                                        ;; 03:4e52 $3e $0b
-    call playSFX                                       ;; 03:4e54 $cd $7d $29
-    pop  DE                                            ;; 03:4e57 $d1
-    pop  BC                                            ;; 03:4e58 $c1
-    ret                                                ;; 03:4e59 $c9
-
+; Animate an explosion for a defeated enemy.
+; Modified to use the same color palette as the defeated enemy.
 npcKilledExplosion:
     ld   A, B                                          ;; 03:4e5a $78
-    cp   A, $00                                        ;; 03:4e5b $fe $00
-    call Z, npcKilledExplosionInit                     ;; 03:4e5d $cc $4a $4e
+    or a
+    jr nz, .post_init
+    push de
+    call getObjectMetaspriteTablePointer
+    ld a, [hl]
+    and $03
+    ld hl, npcKillExplosion1MetaspriteTable
+    dec a
+    jr z, .set
+    ld hl, npcKillExplosion2MetaspriteTable
+    dec a
+    jr z, .set
+    ld hl, npcKillExplosion3MetaspriteTable
+.set:
+    push bc
+    call setObjectMetaspritePointer
+    pop bc
+    ld a, $0b
+    call playSFX
+    pop de
+.post_init
     ld   A, B                                          ;; 03:4e60 $78
     cp   A, $02                                        ;; 03:4e61 $fe $02
     jr   Z, .finished                                  ;; 03:4e63 $28 $11
@@ -3944,8 +3946,6 @@ call_03_5499:
     xor  A, A                                          ;; 03:5533 $af
     ret                                                ;; 03:5534 $c9
 
-ds 2 ; Free space
-
 call_03_5535:
     push DE                                            ;; 03:5535 $d5
     ld   HL, $06                                       ;; 03:5536 $21 $06 $00
@@ -4198,7 +4198,8 @@ tileorderOpenChest:
 
 INCLUDE "data/npc/metasprites.asm"
 
-ds 25 ; Free space
+; For the explosion when an enemy is defeated.
+INCLUDE "data/npc/metasprites_defeated.asm"
 
 ; Same intent as npcBehaviorProcessDelayAction, but prevent
 ; delay timer hitting 0 while the object is moving. This is done by
