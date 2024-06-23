@@ -33,10 +33,10 @@ ENDC
     NPC_DATA $d9, $09, $20, $08, gfxNpcChocobo, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:6032 NPC_CHOCOBOT_FOLLOWING
     NPC_DATA $91, $25, $50, $08, gfxEnemyWerewolf, tileorderNpc, metaspritesTabel50Normal, $00, $01, $00, $00, $01, $00, $0f, $05, $05, $05, script_003d, $0000 ;; 03:604a NPC_WEREWOLF_1
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, metaspritesInvisible, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01f1, $0000 ;; 03:6062 NPC_INV_CURE
-    NPC_DATA $87, $0c, $78, $02, gfxChest, tileorderNpc, chestMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000b, $0000 ;; 03:607a NPC_CHEST_1
-    NPC_DATA $87, $0d, $78, $02, gfxChest, tileorderNpc, chestMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000f, $0000 ;; 03:6092 NPC_CHEST_2
-    NPC_DATA $87, $0e, $78, $02, gfxChest, tileorderNpc, chestMetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0013, $0000 ;; 03:60aa NPC_CHEST_3
-    NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmptyMetaspriteTable, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_003d, $0000 ;; 03:60c2 NPC_CHEST_4
+    NPC_DATA $87, $0c, $78, $02, gfxChest, tileorderNpc, chest1MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000b, $0000 ;; 03:607a NPC_CHEST_1
+    NPC_DATA $87, $0d, $78, $02, gfxChest, tileorderNpc, chest2MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000f, $0000 ;; 03:6092 NPC_CHEST_2
+    NPC_DATA $87, $0e, $78, $02, gfxChest, tileorderNpc, chest3MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0013, $0000 ;; 03:60aa NPC_CHEST_3
+    NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmpty1MetaspriteTable, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_003d, $0000 ;; 03:60c2 NPC_CHEST_4
     NPC_DATA $91, $10, $40, $04, gfxEnemyChibidevil, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $00, $00, $00, $00, $0d, $0e, $0d, $0d, script_003d, script_0438 ;; 03:60da NPC_CHIBIDEVIL
     NPC_DATA $91, $11, $50, $06, gfxEnemyRabite, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $02, $00, $00, $00, $0f, $10, $10, $10, script_003d, $0000 ;; 03:60f2 NPC_RABBITE
     NPC_DATA $91, $12, $40, $08, gfxEnemyGoblin, tileorderNpc, metaspritesTabel40Normal, $00, $01, $00, $00, $00, $00, $02, $02, $03, $03, script_003d, script_0438 ;; 03:610a NPC_GOBLIN
@@ -234,3 +234,11 @@ ELIF DEF(PLAYER_GRAPHICS_ORIGINAL)
 ENDC
 ; New faster Shadow Knight to push you off the waterfall.
     NPC_DATA $91, $0e, $40, $0c, gfxEnemyDarkLord, tileorderNpc, metaspritesShadowKnight, $00, $01, $01, $00, $00, $00, $06, $06, $07, $08, script_003d, $0000 ;; 03:501a NPC_SHADOW_KNIGHT_FAST
+
+; Chests for use by enemy drops to allow use of the dropping enemy's color palette.
+    NPC_DATA $87, $0c, $78, $02, gfxChest, tileorderNpc, chest1MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000b, $0000 ;; 03:607a NPC_CHEST_DROP_1
+    NPC_DATA $87, $0d, $78, $02, gfxChest, tileorderNpc, chest2MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000f, $0000 ;; 03:6092 NPC_CHEST_DROP_2
+    NPC_DATA $87, $0e, $78, $02, gfxChest, tileorderNpc, chest3MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0013, $0000 ;; 03:60aa NPC_CHEST_DROP_3
+    NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmpty1MetaspriteTable, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_003d, $0000 ;; 03:60c2 NPC_CHEST_DROP_EMPTY_1
+    NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmpty2MetaspriteTable, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_003d, $0000 ;; 03:60c2 NPC_CHEST_DROP_EMPTY_2
+    NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmpty3MetaspriteTable, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_003d, $0000 ;; 03:60c2 NPC_CHEST_DROP_EMPTY_3

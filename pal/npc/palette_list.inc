@@ -14,12 +14,12 @@
     COLOR_PALETTE_NPC blue             ; NPC_WEREWOLF_1 = $0a
     COLOR_PALETTE_NPC blue             ; NPC_INV_CURE = $0b
 
-; These next four relating to chests are unused,
-; but something needs to be here to keep the offsets correct.
-    COLOR_PALETTE_NPC blue             ; NPC_CHEST_1 = $0c
-    COLOR_PALETTE_NPC blue             ; NPC_CHEST_2 = $0d
-    COLOR_PALETTE_NPC blue             ; NPC_CHEST_3 = $0e
-    COLOR_PALETTE_NPC blue             ; NPC_CHEST_4 = $0f
+; These next four are for the chests spawned from scripts, not dropped randomly by enemies.
+; Chests dropped randomly by enemies use the palette of the the enemy which dropped them.
+    COLOR_PALETTE_NPC 012              ; NPC_CHEST_1 = $0c
+    COLOR_PALETTE_NPC 012              ; NPC_CHEST_2 = $0d
+    COLOR_PALETTE_NPC 012              ; NPC_CHEST_3 = $0e
+    COLOR_PALETTE_NPC 012              ; NPC_CHEST_4 = $0f
 
     COLOR_PALETTE_NPC 016              ; NPC_CHIBIDEVIL = $10
     COLOR_PALETTE_NPC 017              ; NPC_RABBITE = $11

@@ -2241,10 +2241,8 @@ GetObjectX:
     add  HL, HL                                        ;; 00:0c31 $29
     add  HL, HL                                        ;; 00:0c32 $29
     add  HL, HL                                        ;; 00:0c33 $29
-    ld   BC, wObjectRuntimeData                        ;; 00:0c34 $01 $00 $c2
+    ld bc, wObjectRuntimeData + $0005
     add  HL, BC                                        ;; 00:0c37 $09
-    ld BC, $05
-    add HL, BC
     ld   A, [HL]                                       ;; 00:0c3c $7e
     ret                                                ;; 00:0c3d $c9
 
@@ -2255,14 +2253,26 @@ GetObjectY:
     add  HL, HL                                        ;; 00:0c42 $29
     add  HL, HL                                        ;; 00:0c43 $29
     add  HL, HL                                        ;; 00:0c44 $29
-    ld   BC, wObjectRuntimeData                        ;; 00:0c45 $01 $00 $c2
+    ld bc, wObjectRuntimeData + $0004
     add  HL, BC                                        ;; 00:0c48 $09
-    ld BC, $04
-    add HL, BC
     ld   A, [HL]                                       ;; 00:0c4d $7e
     ret                                                ;; 00:0c4e $c9
-    db   $69, $26, $00, $29, $29, $29, $29, $01        ;; 00:0c4f ????????
-    db   $00, $c2, $09, $23, $3a, $c9                  ;; 00:0c57 ??????
+
+; c = object number
+; Return: hl = metsprite table pointer
+getObjectMetaspriteTablePointer:
+    ld l, c
+    ld h, $00
+    add hl, hl
+    add hl, hl
+    add hl, hl
+    add hl, hl
+    ld de, wObjectRuntimeData + $0006
+    add hl, de
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    ret
 
 setObjectSpeed:
     ld   L, C                                          ;; 00:0c5d $69
@@ -7439,6 +7449,9 @@ ds 24 ; Free space
 ; a = NPC id
 ; hl = metatile table pointer
 loadNPCPalette_and_createObject:
+; There are special NPCs for chests that inherit a palette. Make sure not to load palettes for them.
+    cp a, NPC_CHEST_DROP_1
+    jr nc, .create
 ; Load the first byte of the metatile table. This is a sprite attribute with a palette number.
     ld b, [hl]
     push af
@@ -7881,24 +7894,26 @@ pushObject:
 
 INCLUDE "data/npc/metasprites_extra.asm"
 
-; Unused
-spawnChest:
-    db   $0e, $0c, $cd, $dd, $27, $c9                  ;; 00:2cdb ??????
-
-spawnEmptyChest:
-    ld   C, NPC_CHEST_4                                ;; 00:2ce1 $0e $0f
-    call spawnNPC_trampoline                           ;; 00:2ce3 $cd $dd $27
-    ret                                                ;; 00:2ce6 $c9
-
+; Switch to the empty chest graphic.
+; For the sake of color there are now three special empty chest NPCs
+; They inherit the palette of the chest being opened.
 scriptOpCodeChangeIntoEmptyChest:
     push HL                                            ;; 00:2ce7 $e5
     ld   A, [wNPCDroppingChest]                        ;; 00:2ce8 $fa $b0 $c5
     ld   C, A                                          ;; 00:2ceb $4f
+    call getObjectMetaspriteTablePointer
+    ld a, [hl]
+    and $07
+    add NPC_CHEST_DROP_EMPTY_1 - $05
+    ld b, a
     call getObjectNearestTilePosition                  ;; 00:2ced $cd $ef $05
+    push bc
     push DE                                            ;; 00:2cf1 $d5
     call destroyPushableObject                         ;; 00:2cf2 $cd $13 $2d
     pop  DE                                            ;; 00:2cf5 $d1
-    call spawnEmptyChest                               ;; 00:2cf6 $cd $e1 $2c
+    pop bc
+    ld c, b
+    call spawnNPC_trampoline
     ld   A, $0f                                        ;; 00:2cf9 $3e $0f
     call playSFX                                       ;; 00:2cfb $cd $7d $29
     pop  HL                                            ;; 00:2cfe $e1

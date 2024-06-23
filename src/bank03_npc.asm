@@ -1542,7 +1542,7 @@ processNpcDeath:
 .jr_03_4878:
     ld   HL, wOpenChestScript1                         ;; 03:4878 $21 $13 $d6
 .jr_03_487b:
-    add  A, NPC_CHEST_1                                ;; 03:487b $c6 $0c
+    add a, NPC_CHEST_DROP_1
     pop  DE                                            ;; 03:487d $d1
     push AF                                            ;; 03:487e $f5
     push HL                                            ;; 03:487f $e5
@@ -4198,7 +4198,7 @@ tileorderOpenChest:
 
 INCLUDE "data/npc/metasprites.asm"
 
-ds 168 ; Free space
+ds 25 ; Free space
 
 ; Same intent as npcBehaviorProcessDelayAction, but prevent
 ; delay timer hitting 0 while the object is moving. This is done by

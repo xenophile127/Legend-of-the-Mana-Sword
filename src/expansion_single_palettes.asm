@@ -13,15 +13,6 @@ INCLUDE "pal/npc/palette_list.inc"
 ; a = NPC id
 ; hl = metatile table pointer
 loadNPCPalette_and_createObject_expansion:
-; Do not load palettes for chests.
-    cp NPC_CHEST_1
-    ret z
-    cp NPC_CHEST_2
-    ret z
-    cp NPC_CHEST_3
-    ret z
-    cp NPC_CHEST_4
-    ret z
 ; Calculate the address of the palette.
     push hl
     ld l, a
@@ -34,7 +25,7 @@ loadNPCPalette_and_createObject_expansion:
     push de
     ld de, ColorSinglePalettesROM
     add hl, de
-;   Now calculate the address of the palette to replace.
+; Now calculate the address of the palette to replace.
     ld a, b
     and $07
     add a
