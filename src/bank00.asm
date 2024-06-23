@@ -141,6 +141,9 @@ lotmsInit:
     ldh [hBootup.c], a
 ; Log the initial state of the registers.
     DBG_MSG_LABEL bootupRegisterStates
+; Load the SGB border.
+    cp $14
+    call z, sgbInit
 IF DEF(COLOR)
     jp colorInit
 ELSE
@@ -5676,10 +5679,6 @@ returnFromBankCall:
 Init:
     di                                                 ;; 00:1fca $f3
     ld   SP, hInitialSP                                ;; 00:1fcb $31 $fe $ff
-; Init the Super Game Boy border before anything else. This detects SGB by testing c=$14.
-    ld a, BANK(sgb_init)
-    ld [rROMB0], a
-    call sgb_init
     call DisableLCD
     call InitPreIntEnable                              ;; 00:1fce $cd $f0 $1f
     ei                                                 ;; 00:1fd1 $fb
@@ -7441,7 +7440,7 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 24 ; Free space
+ds 15 ; Free space
 
 ; Loads the (four color) color palette set for an NPC before continuing creation.
 ; The color palette set loaded is the number of the NPC id.
@@ -7507,6 +7506,14 @@ loadPalettes:
     pop af
     pop hl
     DBG_MSG_LABEL debugMsgLoadPalette
+    ret
+
+; Init the Super Game Boy border before anything else.
+sgbInit:
+    ld a, BANK(sgb_init)
+    ld [rROMB0], a
+; This detects SGB by testing c=$14.
+    call sgb_init
     ret
 
 colorInit:
