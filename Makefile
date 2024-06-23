@@ -68,7 +68,7 @@ $(ROM): $(patsubst src/%.asm,.obj/%.o,$(SRCS))
 
 .gfx/%.bin: gfx/%.png
 	@mkdir -p $(dir .gfx/$*)
-	rgbgfx -o .gfx/$*.bin $< #-c '#ffffff,#c8c8c8,#646464,#000000'
+	rgbgfx -o .gfx/$*.bin $< -c '#ffffff,#c8c8c8,#646464,#000000'
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(patsubst src/%.asm,.dep/%.mk,$(SRCS))
