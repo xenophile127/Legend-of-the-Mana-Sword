@@ -51,15 +51,18 @@ Currently there are five directories within `pal`:
     * Shutter effect. Used when selecting a save game to continue, to transition from one map to another, and when displaying the in-game maps. This can be used to change the effect from white to black, or any other color you may like.
       > 💡**Note:** All four colors in this palette should be the same as it uses the area of memory that contains the status bar.
     * Status bar effect. Used by the status bar at the bottom of the screen that shows HP, MP, Lucre, and the stamina gauge. At this point there are some visual glitches related to changing this.
-4. **`npc` -** The file `pal/npc/palette_list.inc` has an entry for every distinct NPC in the game, though some NPCs (like shop keepers) are internally identical. Each entry indicates which palette set directory inside of `pal/npc/` to load when that NPC is loaded. Palette sets can be reused for multiple NPCs but there is no space savings to doing so. Each line in this file is commented to indicate which NPC it affects, but when it doubt, test.
-    Each palette set directory within `pal/npc` contains four `.pal` files:
-        * `main.pal` are the colors you will see most of the time.
-        * `blind.pal` is used when the player is afflicted with the Blind effect. If you do not wish an NPC to change appearance under the Blind status effect, make this identical to the `main.pal`.
-        * `damage.pal` is used whenever a boss takes damage. This should only ever be used for companions (Watts, Lester, etc.) who accompany you to boss fights. Originally these characters would blink when the boss was damaged, but unless duplicating the original behavior is your goal this should be the same as `main.pal`.
-        * `flash.pal` are the colors shown when the full screen flash effect is used.
-      > 💡**Note:** Objects are restricted by hardware to three colors. The first color in each of these `.pal` files is unused (transparent).
-5. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
-> 💡**Note:** Super Game Boy support is disabled when assembling with Game Boy Color/Advance support with `make color`.
+4. **`npc` -** The file `pal/npc/palette_list.inc` has an entry for every distinct NPC in the game, though some NPCs (like shop keepers) are internally identical. Each entry indicates which palette set directory inside of `pal/npc/` to load when that NPC is loaded. Palette sets can be reused for multiple NPCs but there is no space savings to doing so. Each line in this file is commented to indicate which NPC it affects, but when in doubt, test.
+
+   Each palette set directory within `pal/npc` contains four `.pal` files:
+    * `main.pal` are the colors you will see most of the time.
+    * `blind.pal` is used when the player is afflicted with the Blind effect. If you do not wish an NPC to change appearance under the Blind status effect, make this identical to the `main.pal`.
+    * `damage.pal` is used whenever a boss takes damage. This should only ever be used for companions (Watts, Lester, etc.) who accompany you to boss fights. Originally these characters would blink when the boss was damaged, but unless duplicating the original behavior is your goal this should be the same as `main.pal`.
+    * `flash.pal` are the colors shown when the full screen flash effect is used.
+    > 💡**Note:** For enemies the color palette is also used for the explosion effect when defeated and for any chests dropped. Chest colors especially may be worth considering when choosing a palette for enemies.
+    
+    > 💡**Note:** Objects are restricted by hardware to three colors. The first color in each of these `.pal` files is unused (transparent).
+6. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
+    > 💡**Note:** Super Game Boy support is disabled when assembling with Game Boy Color/Advance support with `make color`.
 
 ## Changing palettes used
 
