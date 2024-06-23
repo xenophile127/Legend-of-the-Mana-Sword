@@ -31,7 +31,7 @@ ENDC
     NPC_DATA $d9, $07, $20, $08, gfxNpcMarcie, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0200, $0000 ;; 03:6002 NPC_MARCIE_FOLLOWING
     NPC_DATA $d9, $08, $20, $08, gfxNpcChocobot, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:601a NPC_CHOCOBO_FOLLOWING
     NPC_DATA $d9, $09, $20, $08, gfxNpcChocobo, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:6032 NPC_CHOCOBOT_FOLLOWING
-    NPC_DATA $91, $25, $50, $08, gfxEnemyWerewolf, tileorderNpc, metaspritesTabel50Normal, $00, $01, $00, $00, $01, $00, $0f, $05, $05, $05, script_003d, $0000 ;; 03:604a NPC_WEREWOLF_1
+    NPC_DATA $91, $25, $50, $08, gfxEnemyWerewolf, tileorderNpc, metaspritesTabel50Normal, $00, $01, $00, $00, $01, $00, $0f, $05, $05, $05, script_003d, $0000 ;; 03:604a NPC_KETTS_BUTTLER_WEREWOLF
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, metaspritesInvisible, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01f1, $0000 ;; 03:6062 NPC_INV_CURE
     NPC_DATA $87, $0c, $78, $02, gfxChest, tileorderNpc, chest1MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000b, $0000 ;; 03:607a NPC_CHEST_1
     NPC_DATA $87, $0d, $78, $02, gfxChest, tileorderNpc, chest2MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000f, $0000 ;; 03:6092 NPC_CHEST_2
@@ -136,7 +136,7 @@ ENDC
     NPC_DATA $81, $5e, $5c, $02, gfxNpcMother, tileorderNpc, metaspritesTable5cUnmoving, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01fe, $0000 ;; 03:691a NPC_MOTHER
     NPC_DATA $81, $5f, $60, $08, gfxNpcBogard, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0257, $0000 ;; 03:6932 NPC_BOGARD_1
     NPC_DATA $81, $5e, $40, $08, gfxNpcBogard, tileorderNpc, metaspritesTable40Unmoving, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0257, $0000 ;; 03:694a NPC_BOGARD_2
-    NPC_DATA $81, $5f, $40, $08, data_09_6900, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_01e0, $0000 ;; 03:6962 NPC_KETTS_WEREWOLF
+    NPC_DATA $81, $5f, $40, $08, data_09_6900, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_01e0, $0000 ;; 03:6962 NPC_KETTS_BUTTLER
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, metaspritesInvisible, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01e3, $0000 ;; 03:697a NPC_INV_FUJI_COFFIN
     NPC_DATA $81, $5f, $60, $08, gfxNpcCibba, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_025a, $0000 ;; 03:6992 NPC_CIBBA
     NPC_DATA $81, $5e, $40, $08, data_09_5f00, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01e6, $0000 ;; 03:69aa NPC_GUY_WENDEL

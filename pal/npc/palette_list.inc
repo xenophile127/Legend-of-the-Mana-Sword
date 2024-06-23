@@ -11,7 +11,7 @@
     COLOR_PALETTE_NPC 007              ; NPC_MARCIE_FOLLOWING = $07
     COLOR_PALETTE_NPC 008              ; NPC_CHOCOBO_FOLLOWING = $08
     COLOR_PALETTE_NPC 009              ; NPC_CHOCOBOT_FOLLOWING = $09
-    COLOR_PALETTE_NPC blue             ; NPC_WEREWOLF_1 = $0a
+    COLOR_PALETTE_NPC 010              ; NPC_KETTS_BUTTLER_WEREWOLF = $0a
     COLOR_PALETTE_NPC blue             ; NPC_INV_CURE = $0b
 
 ; These next four are for the chests spawned from scripts, not dropped randomly by enemies.
@@ -30,7 +30,7 @@
     COLOR_PALETTE_NPC 022              ; NPC_LIZARDMAN = $16
     COLOR_PALETTE_NPC 023              ; NPC_FLOWER = $17
     COLOR_PALETTE_NPC blue             ; NPC_FACEORB = $18
-    COLOR_PALETTE_NPC blue             ; NPC_SKELETON = $19
+    COLOR_PALETTE_NPC 025              ; NPC_SKELETON = $19
     COLOR_PALETTE_NPC blue             ; NPC_EVIL_PLANT = $1a
     COLOR_PALETTE_NPC blue             ; NPC_FLYING_FISH = $1b
     COLOR_PALETTE_NPC blue             ; NPC_ZOMBIE = $1c
@@ -51,7 +51,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_PORCUPINE = $2b
     COLOR_PALETTE_NPC blue             ; NPC_CARROT = $2c
     COLOR_PALETTE_NPC blue             ; NPC_EYE_SPY = $2d
-    COLOR_PALETTE_NPC blue             ; NPC_WEREWOLF_2 = $2e
+    COLOR_PALETTE_NPC 046              ; NPC_WEREWOLF_2 = $2e
     COLOR_PALETTE_NPC blue             ; NPC_GHOST = $2f
     COLOR_PALETTE_NPC blue             ; NPC_BASILISK = $30
     COLOR_PALETTE_NPC red              ; NPC_SCORPION = $31
@@ -112,7 +112,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_MOTHER = $68
     COLOR_PALETTE_NPC blue             ; NPC_BOGARD_1 = $69
     COLOR_PALETTE_NPC blue             ; NPC_BOGARD_2 = $6a
-    COLOR_PALETTE_NPC blue             ; NPC_KETTS_WEREWOLF = $6b
+    COLOR_PALETTE_NPC blue             ; NPC_KETTS_BUTTLER = $6b
     COLOR_PALETTE_NPC blue             ; NPC_INV_FUJI_COFFIN = $6c
     COLOR_PALETTE_NPC blue             ; NPC_CIBBA = $6d
     COLOR_PALETTE_NPC blue             ; NPC_GUY_WENDEL = $6e

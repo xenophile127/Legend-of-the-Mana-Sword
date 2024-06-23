@@ -592,11 +592,11 @@ data_03_77cc:
     db   $06, $07, $80, $80                            ;; 03:77d2 ????
 
 data_03_77d6:
-    db   1, 1, NPC_KETTS_WEREWOLF, NPC_KETTS_WEREWOLF, NPC_KETTS_WEREWOLF, NPC_KETTS_WEREWOLF ;; 03:77d6 ??????
+    db   1, 1, NPC_KETTS_BUTTLER, NPC_KETTS_BUTTLER, NPC_KETTS_BUTTLER, NPC_KETTS_BUTTLER ;; 03:77d6 ??????
     db   $10, $07, $80, $80                            ;; 03:77dc ????
 
 data_03_77e0:
-    db   1, 1, NPC_WEREWOLF_1, NPC_WEREWOLF_1, NPC_WEREWOLF_1, NPC_WEREWOLF_1 ;; 03:77e0 ??????
+    db   1, 1, NPC_KETTS_BUTTLER_WEREWOLF, NPC_KETTS_BUTTLER_WEREWOLF, NPC_KETTS_BUTTLER_WEREWOLF, NPC_KETTS_BUTTLER_WEREWOLF ;; 03:77e0 ??????
     db   $10, $07, $80, $80                            ;; 03:77e6 ????
 
 data_03_77ea:
