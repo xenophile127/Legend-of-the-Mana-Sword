@@ -2923,11 +2923,11 @@ attackObjectFunction02:
     add  A, E                                          ;; 01:5453 $83
     ld   E, A                                          ;; 01:5454 $5f
     cp   A, $a1                                        ;; 01:5455 $fe $a1
-    jr   NC, .jr_01_54ac                               ;; 01:5457 $30 $53
+    jr   NC, .remove_attack_object
     ld   A, [wVideoWY]                                 ;; 01:5459 $fa $a9 $c0
     add  A, $08                                        ;; 01:545c $c6 $08
     cp   A, D                                          ;; 01:545e $ba
-    jr   C, .jr_01_54ac                                ;; 01:545f $38 $4b
+    jr   C, .remove_attack_object
     push HL                                            ;; 01:5461 $e5
     push DE                                            ;; 01:5462 $d5
     call getSelectedY                                  ;; 01:5463 $cd $14 $2f
@@ -2955,7 +2955,7 @@ attackObjectFunction02:
     res  7, A                                          ;; 01:5483 $cb $bf
 .jr_01_5485:
     call moveGridlessObject                            ;; 01:5485 $cd $d4 $08
-    jr   Z, .jr_01_54ac                                ;; 01:5488 $28 $22
+    jr   Z, .remove_attack_object
     ld   A, [wSelectedObjectID]                        ;; 01:548a $fa $5a $cf
     ld   C, A                                          ;; 01:548d $4f
     ld   B, $00                                        ;; 01:548e $06 $00
@@ -2963,7 +2963,7 @@ attackObjectFunction02:
     add  HL, BC                                        ;; 01:5493 $09
     ld   A, [HL]                                       ;; 01:5494 $7e
     cp   A, $00                                        ;; 01:5495 $fe $00
-    jr   Z, .jr_01_54ac                                ;; 01:5497 $28 $13
+    jr   Z, .remove_attack_object
     pop  HL                                            ;; 01:5499 $e1
     ld   A, [HL]                                       ;; 01:549a $7e
     call playerSpritesLoadAttackSpriteTiles            ;; 01:549b $cd $ea $59
@@ -2977,35 +2977,27 @@ attackObjectFunction02:
     add  HL, DE                                        ;; 01:54a9 $19
     inc  [HL]                                          ;; 01:54aa $34
     ret                                                ;; 01:54ab $c9
-; This section of code is called when the weapon attack has collided
-; with a barrier or hit the edge of the screen. The weapon objects are
+; This section of code is called when the attack has collided with
+; a barrier or hit the edge of the screen. The attack objects are
 ; not destroyed, but instead are moved off-screen.
-.jr_01_54ac:
+.remove_attack_object:
     pop  HL                                            ;; 01:54ac $e1
     ld   A, [wSelectedObjectID]                        ;; 01:54ad $fa $5a $cf
     ld   C, A                                          ;; 01:54b0 $4f
-    ; Re-initialize the main weapon object
+    ; Re-initialize the main attack object
     call playerAttackObjectInit                        ;; 01:54b1 $cd $d0 $59
 
-    ; At this point, the game checks for another weapon object associated with
-    ; the attack. This may have been written specifically for the butt of the
-    ; spear. The weapon object logic will always create a secondary object (if
-    ; existent) at one ID lower than the current wSelectedObjectID. Strangely,
-    ; the original code decrements twice from the current ID instead of once.
-    ; Thus, the spear butt was never cleaned up properly. This may have been a
-    ; copy mistake, but it was hiding another bug with the flying sword attack.
-    ; Sword attacks were set to start at an ID of $05 instead of $06, and on
-    ; flying sword attack the collision flag check of $40 will pass on object ID
-    ; $04 (the hero). This would have resulted in regular sword warp glitches. As
-    ; such, the object ID in attackSwordFrame1 was set changed to $06 to match
-    ; the other weapons.
+    ; Check for a secondary attack object that is collisionless (e.g., spear
+    ; butt). The convention is to use an ID two lower than the current ID. This
+    ; was done to skip the hero at object $04. For example, Lit uses object $06
+    ; for the initial magic hands effect, $05 for the front of the lightning
+    ; bolt, skips $04 to protect the hero object ID, and uses $03 for the back of
+    ; the lightning bolt.
     ld   A, [wSelectedObjectID]                        ;; 01:54b4 $fa $5a $cf
     dec  A                                             ;; 01:54b7 $3d
-    nop ; to prevent shift
+    dec  A                                             ;; 01:54b8 $3d
     ld   C, A                                          ;; 01:54b9 $4f
     push BC                                            ;; 01:54ba $c5
-    ; Only reset the object at lower ID if the collision flags are set to $40.
-    ; This may have been intended specifically for the spear butt.
     call getObjectCollisionFlags                       ;; 01:54bb $cd $6d $0c
     and  A, $f0                                        ;; 01:54be $e6 $f0
     pop  BC                                            ;; 01:54c0 $c1
@@ -4925,11 +4917,8 @@ data_01_60c1:
 ; 24: special west
 ; 26: special north
 ; 28: special south
-
-; Object ID for the sword was changed from $05 to $06 to prevent a sword warp
-; glitch that coincides with correcting the spear butt end glitch.
 attackSwordFrame1:
-    db   $04, $48, $02, $06, $0a, $00                  ;; 01:60ff .....?
+    db   $04, $48, $02, $05, $0a, $00                  ;; 01:60ff .....?
     dw   gfxAttackSword, data_01_68df                  ;; 01:6105 ....
     dw   data_01_69a1, data_01_69b0, data_01_69bf, data_01_69ce ;; 01:6109 .P.P.P.P
     dw   data_01_69dd, data_01_69f0, data_01_6a03, data_01_6a16 ;; 01:6111 .P.P.P.P
@@ -5261,16 +5250,20 @@ data_01_678f:
     dw   data_01_6ce4, data_01_6d13, data_01_6d42, data_01_6d71 ;; 01:67a9 ????????
     dw   data_01_6ce4, data_01_6d13, data_01_6d42, data_01_6d71 ;; 01:67b1 ????????
 
+; Updated to use object ID $03 to match code expectations for secondary object destruction
+; in attackObjectFunction02.remove_attack_object. Now follows same pattern as Lit.
 attackSpearFrame1:
-    db   $04, $48, $02, $06, $09, $00                  ;; 01:67b9 ??????
+    db   $04, $48, $02, $05, $09, $00                  ;; 01:67b9 ??????
     dw   gfxAttackSpear, data_01_696f                  ;; 01:67bf ????
     dw   data_01_6e5c, data_01_6e7b, data_01_6e9a, data_01_6eb9 ;; 01:67c3 ????????
     dw   data_01_6e5c, data_01_6e7b, data_01_6e9a, data_01_6eb9 ;; 01:67cb ????????
     dw   data_01_6ed8, data_01_6ee7, data_01_6ef6, data_01_6f05 ;; 01:67d3 ????????
     dw   data_01_6ed8, data_01_6ee7, data_01_6ef6, data_01_6f05 ;; 01:67db ????????
 
+; Updated to use object ID $03 to match code expectations for secondary object destruction
+; in attackObjectFunction02.remove_attack_object. Now follows same pattern as Lit.
 attackSpearFrame2:
-    db   $04, $40, $03, $05, $ff, $00                  ;; 01:67e3 ??????
+    db   $04, $40, $03, $03, $ff, $00                  ;; 01:67e3 ??????
     dw   gfxAttackSpear, data_01_6993                  ;; 01:67e9 ????
     dw   data_01_69a1, data_01_69b0, data_01_69bf, data_01_69ce ;; 01:67ed ????????
     dw   data_01_69a1, data_01_69b0, data_01_69bf, data_01_69ce ;; 01:67f5 ????????
