@@ -5250,7 +5250,7 @@ data_01_678f:
     dw   data_01_6ce4, data_01_6d13, data_01_6d42, data_01_6d71 ;; 01:67a9 ????????
     dw   data_01_6ce4, data_01_6d13, data_01_6d42, data_01_6d71 ;; 01:67b1 ????????
 
-; Updated to use object ID $03 to match code expectations for secondary object destruction
+; Updated object ID to match code expectations for secondary object destruction
 ; in attackObjectFunction02.remove_attack_object. Now follows same pattern as Lit.
 attackSpearFrame1:
     db   $04, $48, $02, $05, $09, $00                  ;; 01:67b9 ??????
@@ -5260,7 +5260,7 @@ attackSpearFrame1:
     dw   data_01_6ed8, data_01_6ee7, data_01_6ef6, data_01_6f05 ;; 01:67d3 ????????
     dw   data_01_6ed8, data_01_6ee7, data_01_6ef6, data_01_6f05 ;; 01:67db ????????
 
-; Updated to use object ID $03 to match code expectations for secondary object destruction
+; Updated object ID to match code expectations for secondary object destruction
 ; in attackObjectFunction02.remove_attack_object. Now follows same pattern as Lit.
 attackSpearFrame2:
     db   $04, $40, $03, $03, $ff, $00                  ;; 01:67e3 ??????
