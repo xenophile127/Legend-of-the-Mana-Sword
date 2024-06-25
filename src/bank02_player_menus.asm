@@ -4,6 +4,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/oam_attributes.inc"
 
 SECTION "bank02", ROMX[$4000], BANK[$02]
 
@@ -5051,7 +5052,7 @@ windowShowSprite:
     ld   A, [BC]                                       ;; 02:6be0 $0a
     inc  BC                                            ;; 02:6be1 $03
     ld   [HL+], A                                      ;; 02:6be2 $22
-    ld   A, $00                                        ;; 02:6be3 $3e $00
+    ld   A, PAL_ATTACK                                 ;; 02:6be3 $3e $00
     ld   [HL+], A                                      ;; 02:6be5 $22
     pop  DE                                            ;; 02:6be6 $d1
     ret                                                ;; 02:6be7 $c9
