@@ -189,9 +189,9 @@
     COLOR_PALETTE_NPC blue             ; NPC_AMANDA_2 = $b5
     COLOR_PALETTE_NPC blue             ; NPC_LESTER_2 = $b6
     COLOR_PALETTE_NPC blue             ; NPC_MARCIE_2 = $b7
-    COLOR_PALETTE_NPC red              ; NPC_CHOCOBOT = $b8
-    COLOR_PALETTE_NPC blue             ; NPC_CHOCOBO_1 = $b9
-    COLOR_PALETTE_NPC red              ; NPC_CHOCOBO_2 = $ba
+    COLOR_PALETTE_NPC 008              ; NPC_CHOCOBOT = $b8
+    COLOR_PALETTE_NPC 185              ; NPC_CHOCOBO_1 = $b9
+    COLOR_PALETTE_NPC 009              ; NPC_CHOCOBO_2 = $ba
     COLOR_PALETTE_NPC blue             ; NPC_PRISION_BARS = $bb
     COLOR_PALETTE_NPC blue             ; NPC_MUSIC_NOTES = $bc
     COLOR_PALETTE_NPC blue             ; NPC_MAGIC_SALESMAN = $bd

@@ -9282,7 +9282,14 @@ script_0472:
         db "<10>Take your\nChocobo with you?<12><13><00>"
     sENDIF
     sIF_FLAG !wScriptFlags0F.7                         ;; 0e:5aa8 $08 $ff $00 $2c
-      sGIVE_FOLLOWER 9                                 ;; 0e:5aac $9c $09
+; Originally Chocobo was unconditionally loaded, but the correct graphics were loaded by the group.
+; The color code runs when an NPC is spawned, so if Chocobot had different colors
+; it still would use Chocobo's.
+      sIF_FLAG wScriptFlags04.1
+        sGIVE_FOLLOWER 8
+      sELSE
+        sGIVE_FOLLOWER 9
+      sENDIF
       sSET_FLAG wScriptFlags0B.0                       ;; 0e:5aae $da $58
       sCLEAR_FLAG wScriptFlags0B.3                     ;; 0e:5ab0 $db $5b
       sCLEAR_FLAG wScriptFlags0B.4                     ;; 0e:5ab2 $db $5c
