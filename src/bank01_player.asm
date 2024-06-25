@@ -386,7 +386,7 @@ minimapCopyBlankTiles:
 ; A = xy of current room
 minimapFlashingMarkerInit:
     push AF                                            ;; 01:42d1 $f5
-    ld   HL, .minimapFlashingMarkerMetaspriteTable     ;; 01:42d2 $21 $25 $43
+    ld   HL, minimapFlashingMarkerMetaspriteTable      ;; 01:42d2 $21 $25 $43
     ld   C, $00                                        ;; 01:42d5 $0e $00
     call setObjectMetaspritePointer                    ;; 01:42d7 $cd $ba $0c
     pop  AF                                            ;; 01:42da $f1
@@ -426,9 +426,9 @@ minimapFlashingMarkerInit:
     ld   A, BANK(tilesetGfxOutdoor) ;@=bank tilesetGfxOutdoor ;; 01:431f $3e $0c
     call addTileGraphicCopyRequest                     ;; 01:4321 $cd $f5 $2d
     ret                                                ;; 01:4324 $c9
-.minimapFlashingMarkerMetaspriteTable:
-    db   $00, $08, $0a, $00, $08, $0a, $00, $08        ;; 01:4325 ????????
-    db   $0a, $00, $08, $0a                            ;; 01:432d ?...
+
+; Contains the minimap's flashing marker.
+INCLUDE "data/metasprites_minimap.asm"
 
 minimapCopyMapNumberAndXY:
     ld a, [wMapNumber]
