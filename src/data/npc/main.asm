@@ -29,8 +29,8 @@ ENDC
 
     NPC_DATA $d9, $06, $20, $08, gfxNpcLester, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_01ff, $0000 ;; 03:5fea NPC_LESTER_FOLLOWING
     NPC_DATA $d9, $07, $20, $08, gfxNpcMarcie, tileorderNpc, metaspritesCompanion, $00, $01, $01, $01, $01, $00, $06, $06, $06, $06, script_0200, $0000 ;; 03:6002 NPC_MARCIE_FOLLOWING
-    NPC_DATA $d9, $08, $20, $08, gfxNpcChocobot, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:601a NPC_CHOCOBO_FOLLOWING
-    NPC_DATA $d9, $09, $20, $08, gfxNpcChocobo, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:6032 NPC_CHOCOBOT_FOLLOWING
+    NPC_DATA $d9, $08, $20, $08, gfxNpcChocobot, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:601a NPC_CHOCOBOT_FOLLOWING
+    NPC_DATA $d9, $09, $20, $08, gfxNpcChocobo, tileorderNpc, metaspritesCompanionRed, $00, $01, $01, $01, $00, $00, $05, $05, $05, $05, script_0470, $0000 ;; 03:6032 NPC_CHOCOBO_FOLLOWING
     NPC_DATA $91, $25, $50, $08, gfxEnemyWerewolf, tileorderNpc, metaspritesTabel50Normal, $00, $01, $00, $00, $01, $00, $0f, $05, $05, $05, script_003d, $0000 ;; 03:604a NPC_KETTS_BUTTLER_WEREWOLF
     NPC_DATA $81, $5e, $6e, $01, gfxBlankTiles09, tileorderNpc, metaspritesInvisible, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01f1, $0000 ;; 03:6062 NPC_INV_CURE
     NPC_DATA $87, $0c, $78, $02, gfxChest, tileorderNpc, chest1MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000b, $0000 ;; 03:607a NPC_CHEST_1
