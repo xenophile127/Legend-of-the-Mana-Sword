@@ -8129,7 +8129,9 @@ ENDC
     call getCurrentBankNrAndSwitch
     ret
 
-ds 39 ; Free space
+ds 27 ; Free space
+
+SECTION "bank00_align_2df5", ROM0[$2df5]
 
 ; Request the VBlank handler to copy 1 graphics tile (16 bytes) from ROM into VRAM.
 ; A: source bank
