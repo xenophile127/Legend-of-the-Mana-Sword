@@ -858,8 +858,9 @@ bossCollisionHandling:
     push BC                                            ;; 04:44ab $c5
     push DE                                            ;; 04:44ac $d5
     push HL                                            ;; 04:44ad $e5
-    call getEquippedWeaponMinusOne                     ;; 04:44ae $cd $05 $3f
-    cp   A, $08                                        ;; 04:44b1 $fe $08
+; Check whether the player is attacking with the Blood Sword and if so heal.
+    ld a, [wEquippedWeapon]
+    cp INV_SWORD_BLOOD - INV_SWORD_BROAD + 1
     jr   NZ, .finishedBloodSwordHeal                   ;; 04:44b3 $20 $0d
     pop  HL                                            ;; 04:44b5 $e1
     push HL                                            ;; 04:44b6 $e5

@@ -10995,10 +10995,7 @@ scriptOpCodeNOP:
     call getNextScriptInstruction                      ;; 00:3f01 $cd $27 $37
     ret                                                ;; 00:3f04 $c9
 
-getEquippedWeaponMinusOne:
-    ld   A, [wEquippedWeapon]                          ;; 00:3f05 $fa $e9 $d6
-    dec  A                                             ;; 00:3f08 $3d
-    ret                                                ;; 00:3f09 $c9
+ds 5 ; Free space
 
 ;@ffa_text
 yesNoTextLabels:
