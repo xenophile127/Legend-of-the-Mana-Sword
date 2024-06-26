@@ -10917,8 +10917,7 @@ startLevelUp:
     res  6, [HL]                                       ;; 00:3e8c $cb $b6
     ret                                                ;; 00:3e8e $c9
 
-    db   $00
-    db   $fa, $58, $d8, $c9                            ;; 00:3e93 ????
+ds 5 ; Free space
 
 setWillBarMax:
     ld   A, $40                                        ;; 00:3e97 $3e $40
