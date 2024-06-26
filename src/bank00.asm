@@ -394,13 +394,7 @@ playerObjectDestroy:
     call destroyObject                                 ;; 00:0287 $cd $e3 $0a
     ret                                                ;; 00:028a $c9
 
-; The only place this appears to be used it's always checking the player
-checkCollisionFlagsFollower:
-    and  A, $f0                                        ;; 00:028b $e6 $f0
-    cp   A, $d0                                        ;; 00:028d $fe $d0
-    ret  Z                                             ;; 00:028f $c8
-    ld   A, $00                                        ;; 00:0290 $3e $00
-    ret                                                ;; 00:0292 $c9
+ds 8 ; Free space
 
 getPlayerX:
     ld   C, $04                                        ;; 00:0293 $0e $04
@@ -8224,9 +8218,7 @@ playerOrFriendlyAttackCollisionHandling_trampoline:
 call_00_2f03:
     jp_to_bank 01, call_01_5db6                        ;; 00:2f03 $f5 $3e $26 $c3 $d7 $1e
 
-setAToZero:
-    ld   A, $00                                        ;; 00:2f09 $3e $00
-    ret                                                ;; 00:2f0b $c9
+ds 3 ; Free space
 
 getSelectedX:
     ld   A, [wSelectedObjectID]                        ;; 00:2f0c $fa $5a $cf

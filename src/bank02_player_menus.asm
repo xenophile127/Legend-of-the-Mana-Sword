@@ -157,6 +157,7 @@ checkNpcsForCollisions:
     ld   A, $00                                        ;; 02:42a2 $3e $00
     ret                                                ;; 02:42a4 $c9
 
+; Return: A = unmodified if a collision is found, otherwise set to 0.
 mainCollisionHandling:
     push AF                                            ;; 02:42a5 $f5
     push BC                                            ;; 02:42a6 $c5
@@ -188,15 +189,18 @@ mainCollisionHandling:
     cp   A, $20                                        ;; 02:42d7 $fe $20
     jr   Z, .boss                                      ;; 02:42d9 $28 $22
     pop  AF                                            ;; 02:42db $f1
-    ld   A, $00                                        ;; 02:42dc $3e $00
+    xor a
     ret                                                ;; 02:42de $c9
 .player:
     pop  AF                                            ;; 02:42df $f1
-    call checkCollisionFlagsFollower                   ;; 02:42e0 $cd $8b $02
+    and a, $f0
+    cp $d0
+    ret z
+    xor a
     ret                                                ;; 02:42e3 $c9
 .playerOrFollowerAttack:
     pop  AF                                            ;; 02:42e4 $f1
-    call setAToZero                                    ;; 02:42e5 $cd $09 $2f
+    xor a
     ret                                                ;; 02:42e8 $c9
 .npcScriptOnTouch:
     pop  AF                                            ;; 02:42e9 $f1
