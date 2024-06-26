@@ -10812,10 +10812,8 @@ getEquippedElementalResistances:
     or   A, B                                          ;; 00:3ddb $b0
     pop  BC                                            ;; 00:3ddc $c1
     ret                                                ;; 00:3ddd $c9
-    db   $cd, $f9, $30, $c5, $47, $fa, $b6, $d7        ;; 00:3dde ????????
-    db   $80, $c1, $c9                                 ;; 00:3de6 ???
 
-ds 4 ; Free space
+ds 15 ; Free space
 
 getHP:
     ld   A, [wHPHigh]                                  ;; 00:3ded $fa $b3 $d7
