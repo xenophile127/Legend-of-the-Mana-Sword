@@ -2356,6 +2356,7 @@ playerHit:
     call giveStatusEffect_trampoline                   ;; 01:50f5 $cd $2f $31
     ret                                                ;; 01:50f8 $c9
 
+; Used for dismounting chocobos.
 setPlayerNormalSprite:
     ld   A, [wPlayerSpecialFlags]                      ;; 01:50f9 $fa $d4 $c4
     and  A, $0f                                        ;; 01:50fc $e6 $0f
@@ -2364,18 +2365,11 @@ setPlayerNormalSprite:
     ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:5106 $0e $04
     call snapObjectToNearestTile8                      ;; 01:5108 $cd $ba $29
-    ld   C, $04                                        ;; 01:510b $0e $04
     ld   A, $01                                        ;; 01:510d $3e $01
-    call setObjectSpeed                                ;; 01:510f $cd $5d $0c
-    ld   C, $04                                        ;; 01:5112 $0e $04
+    call setPlayerSpeed
     ld   A, $c9                                        ;; 01:5114 $3e $c9
-    call setObjectCollisionFlags                       ;; 01:5116 $cd $86 $0c
-    call getPlayerY                                    ;; 01:5119 $cd $99 $02
-    ld   D, A                                          ;; 01:511c $57
-    push DE                                            ;; 01:511d $d5
-    call getPlayerX                                    ;; 01:511e $cd $93 $02
-    pop  DE                                            ;; 01:5121 $d1
-    ld   E, A                                          ;; 01:5122 $5f
+    call setPlayerCollisionFlags
+    call getPlayerXY
     push DE                                            ;; 01:5123 $d5
     call getPlayerDirection                            ;; 01:5124 $cd $ab $02
     call showFollower                                  ;; 01:5127 $cd $f0 $28
@@ -2387,53 +2381,55 @@ setPlayerNormalSprite:
     call updateObjectPosition_3_trampoline             ;; 01:5132 $cd $8f $28
     ret                                                ;; 01:5135 $c9
 
+ds 11 ; Free space
+
 setPlayerOnChocobo:
     ld   A, $0c                                        ;; 01:5136 $3e $0c
     ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:513b $0e $04
     call snapObjectToNearestTile8                      ;; 01:513d $cd $ba $29
-    ld   C, $04                                        ;; 01:5140 $0e $04
     ld   A, $02                                        ;; 01:5142 $3e $02
-    call setObjectSpeed                                ;; 01:5144 $cd $5d $0c
-    ld   C, $04                                        ;; 01:5147 $0e $04
+    call setPlayerSpeed
     ld   A, $e1                                        ;; 01:5149 $3e $e1
-    call setObjectCollisionFlags                       ;; 01:514b $cd $86 $0c
+    call setPlayerCollisionFlags
     xor  A, A                                          ;; 01:514e $af
     ld   [wPlayerDamagedTimer], A                      ;; 01:514f $ea $d2 $c4
     call hideFollower                                  ;; 01:5152 $cd $d5 $28
     ret                                                ;; 01:5155 $c9
+
+ds 4 ; Free space
 
 setPlayerOnChocobot:
     ld   A, $0d                                        ;; 01:5156 $3e $0d
     ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:515b $0e $04
     call snapObjectToNearestTile8                      ;; 01:515d $cd $ba $29
-    ld   C, $04                                        ;; 01:5160 $0e $04
     ld   A, $02                                        ;; 01:5162 $3e $02
-    call setObjectSpeed                                ;; 01:5164 $cd $5d $0c
-    ld   C, $04                                        ;; 01:5167 $0e $04
+    call setPlayerSpeed
     ld   A, $f1                                        ;; 01:5169 $3e $f1
-    call setObjectCollisionFlags                       ;; 01:516b $cd $86 $0c
+    call setPlayerCollisionFlags
     xor  A, A                                          ;; 01:516e $af
     ld   [wPlayerDamagedTimer], A                      ;; 01:516f $ea $d2 $c4
     call hideFollower                                  ;; 01:5172 $cd $d5 $28
     ret                                                ;; 01:5175 $c9
+
+ds 4 ; Free space
 
 setPlayerOnChocoboat:
     ld   A, $0e                                        ;; 01:5176 $3e $0e
     ld [wScriptMainGameStateBackup], a
     ld   C, $04                                        ;; 01:517b $0e $04
     call snapObjectToNearestTile8                      ;; 01:517d $cd $ba $29
-    ld   C, $04                                        ;; 01:5180 $0e $04
     ld   A, $02                                        ;; 01:5182 $3e $02
-    call setObjectSpeed                                ;; 01:5184 $cd $5d $0c
-    ld   C, $04                                        ;; 01:5187 $0e $04
+    call setPlayerSpeed
     ld   A, $f5                                        ;; 01:5189 $3e $f5
-    call setObjectCollisionFlags                       ;; 01:518b $cd $86 $0c
+    call setPlayerCollisionFlags
     xor  A, A                                          ;; 01:518e $af
     ld   [wPlayerDamagedTimer], A                      ;; 01:518f $ea $d2 $c4
     call hideFollower                                  ;; 01:5192 $cd $d5 $28
     ret                                                ;; 01:5195 $c9
+
+ds 4 ; Free space
 
 movePlayerDuringScript:
     call getPlayerDirection                            ;; 01:5196 $cd $ab $02
