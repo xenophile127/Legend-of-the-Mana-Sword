@@ -7447,6 +7447,23 @@ INCLUDE "code/rand.asm"
 
 ds 15 ; Free space
 
+; Loads a (four color) color object palette set
+; a = palette id
+; b = palette number (upper five bits may be dirty)
+loadSinglePalette:
+    push hl
+    push af
+;   Switch the bank.
+    ld a, BANK(ColorSinglePalettesROM)
+    call pushBankNrAndSwitch
+    pop af
+; Make the call.
+    call loadSinglePalette_expansion
+; Switch back to the correct bank.
+    call popBankNrAndSwitch
+    pop hl
+    ret
+
 ; Loads the (four color) color palette set for an NPC before continuing creation.
 ; The color palette set loaded is the number of the NPC id.
 ; It is loaded into the object palette number of the first entry in the metatile table.
@@ -7455,23 +7472,9 @@ ds 15 ; Free space
 loadNPCPalette_and_createObject:
 ; There are special NPCs for chests that inherit a palette. Make sure not to load palettes for them.
     cp a, NPC_CHEST_DROP_1
-    jr nc, .create
 ; Load the first byte of the metatile table. This is a sprite attribute with a palette number.
     ld b, [hl]
-    push af
-;   Switch the bank.
-    ld a, BANK(ColorSinglePalettesROM)
-    push hl
-    call pushBankNrAndSwitch
-    pop hl
-    pop af
-; Make the call.
-    call loadNPCPalette_and_createObject_expansion
-; Switch back to the correct bank.
-    push hl
-    call popBankNrAndSwitch
-    pop hl
-.create:
+    call c, loadSinglePalette
     call createObject_speed2
     ret
 

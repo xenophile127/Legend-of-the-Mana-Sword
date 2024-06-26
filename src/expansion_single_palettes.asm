@@ -11,10 +11,9 @@ INCLUDE "pal/npc/palette_list.inc"
 
 ; Loads the palette for an NPC.
 ; a = NPC id
-; hl = metatile table pointer
-loadNPCPalette_and_createObject_expansion:
+; b = palette number (upper five bits may be dirty)
+loadSinglePalette_expansion:
 ; Calculate the address of the palette.
-    push hl
     ld l, a
     ld h, $00
     add hl, hl
@@ -77,5 +76,4 @@ loadNPCPalette_and_createObject_expansion:
     call z, setPalettes
 ; And finish.
     pop de
-    pop hl
     ret
