@@ -394,17 +394,40 @@ playerObjectDestroy:
     call destroyObject                                 ;; 00:0287 $cd $e3 $0a
     ret                                                ;; 00:028a $c9
 
-ds 8 ; Free space
+; Add helper functions for getting both X and Y coordinates.
+; Variations on this pattern occur a lot in the original code:
+;    push BC
+;    call GetObjectY
+;    ld   D, A
+;    pop  BC
+;    push DE
+;    call GetObjectX
+;    pop  DE
+;    ld   E, A
+
+getPlayerXY:
+    ld c, $04
+    ; Fall through to getObjectXY
+
+; c = object number
+; Return: de = YX pixel coordinate of the object
+getObjectXY:
+    call GetObjectY
+    ld d, a
+; Take advantage of hl being left set by the get function.
+    inc hl
+    ld e, [hl]
+    ret
 
 getPlayerX:
     ld   C, $04                                        ;; 00:0293 $0e $04
-    call GetObjectX                                    ;; 00:0295 $cd $2d $0c
-    ret                                                ;; 00:0298 $c9
+    jp GetObjectX
 
 getPlayerY:
     ld   C, $04                                        ;; 00:0299 $0e $04
-    call GetObjectY                                    ;; 00:029b $cd $3e $0c
-    ret                                                ;; 00:029e $c9
+    jp GetObjectY
+
+ds 1 ; Free space
 
 setPlayerSliding:
     ld C, $04
