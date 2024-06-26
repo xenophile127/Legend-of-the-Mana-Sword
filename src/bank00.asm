@@ -821,7 +821,6 @@ storeAatBackgroundDrawPosition:
     pop  AF                                            ;; 00:0480 $f1
     call storeAatHLinVRAM                              ;; 00:0481 $cd $5e $1d
     ret                                                ;; 00:0484 $c9
-    db   $cd, $5d, $04, $cd, $8a, $1d, $c9             ;; 00:0485 ???????
 
 requestCopyTwoBytesToDrawAddress:
     push HL                                            ;; 00:048c $e5
@@ -9876,12 +9875,7 @@ storeTileAatScreenPositionDE:
     pop hl
     ret
 
-; Free space
-db $00, $00, $00, $00
-
-    db   $c5, $d5, $e5, $cd, $bb, $38, $38, $05        ;; 00:38a7 ????????
-    db   $cd, $85, $04, $18, $03, $cd, $8a, $1d        ;; 00:38af ????????
-    db   $e1, $d1, $c1, $c9                            ;; 00:38b7 ????
+ds 24 ; Free space
 
 ; Convert de (Y,X) screen tile position into VRAM memory location.
 ; Takes into account window position and the position of screen scrolling.
