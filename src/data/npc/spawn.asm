@@ -386,7 +386,7 @@ shadowKnight:
     db   $09, $08, $80, $80                            ;; 03:7608 ????
 
 shieldlessPC:
-    db   1, 1, NPC_LAST_GUY, NPC_LAST_GUY, NPC_LAST_GUY, NPC_LAST_GUY ;; 03:760c ??????
+    db   1, 1, NPC_HERO_SHIELDLESS, NPC_HERO_SHIELDLESS, NPC_HERO_SHIELDLESS, NPC_HERO_SHIELDLESS ;; 03:760c ??????
     db   $0a, $07, $80, $80                            ;; 03:7612 ????
 
 data_03_7616:
