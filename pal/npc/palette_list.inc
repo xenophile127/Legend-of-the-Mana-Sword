@@ -117,7 +117,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_CIBBA = $6d
     COLOR_PALETTE_NPC blue             ; NPC_GUY_WENDEL = $6e
     COLOR_PALETTE_NPC blue             ; NPC_WATTS = $6f
-    COLOR_PALETTE_NPC red              ; NPC_MINECART = $70
+    COLOR_PALETTE_NPC ../hero/good     ; NPC_MINECART = $70
     COLOR_PALETTE_NPC blue             ; NPC_CHOCOBO_EGG = $71
     COLOR_PALETTE_NPC blue             ; NPC_DAVIAS = $72
     COLOR_PALETTE_NPC blue             ; NPC_LESTER_1 = $73
