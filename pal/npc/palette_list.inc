@@ -195,5 +195,5 @@
     COLOR_PALETTE_NPC blue             ; NPC_PRISION_BARS = $bb
     COLOR_PALETTE_NPC blue             ; NPC_MUSIC_NOTES = $bc
     COLOR_PALETTE_NPC blue             ; NPC_MAGIC_SALESMAN = $bd
-    COLOR_PALETTE_NPC red              ; NPC_HERO_SHIELDLESS = $be
+    COLOR_PALETTE_NPC ../hero/good     ; NPC_HERO_SHIELDLESS = $be
     COLOR_PALETTE_NPC blue             ; NPC_SHADOW_KNIGHT_FAST = $bf

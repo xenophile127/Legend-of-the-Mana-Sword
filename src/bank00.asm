@@ -7461,7 +7461,28 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
-ds 15 ; Free space
+loadHeroPaletteForStatus:
+    push bc
+    rra
+    ld b, PALETTE_SET_HERO_POISON
+    jr c, .set
+    rra
+    ; Blind/Dark has its own handling.
+    rra
+    ld b, PALETTE_SET_HERO_STONE
+    jr c, .set
+    rra
+    ld b, PALETTE_SET_HERO_MOOGLE
+    jr c, .set
+    ld b, PALETTE_SET_HERO_GOOD
+.set:
+    ld a, b
+    pop bc
+    ; Fall through to loadHeroPalette
+
+loadHeroPalette:
+    ld b, PAL_PLAYER
+    ; Fall through to loadSinglePalette
 
 ; Loads a (four color) color object palette set
 ; a = palette id
@@ -7492,16 +7513,6 @@ loadNPCPalette_and_createObject:
     ld b, [hl]
     call c, loadSinglePalette
     call createObject_speed2
-    ret
-
-; sLOAD_PALETTE
-; A new script opcode for loading palettes.
-scriptOpCodeLoadColorPalette:
-    ld a, [hl+]
-IF DEF(COLOR)
-    call loadPalettes
-ENDC
-    call getNextScriptInstruction
     ret
 
 ; Load a set of palettes from ROM into RAM, and setup the transer to CRAM.
@@ -7722,11 +7733,19 @@ callJumptable:
     ld   L, A                                          ;; 00:2b6e $6f
     jp   HL                                            ;; 00:2b73 $e9
 
-; Free space
-db $00, $00, $00, $00
+; sLOAD_PALETTE
+; A new script opcode for loading palettes.
+scriptOpCodeLoadColorPalette:
+    ld a, [hl+]
+IF DEF(COLOR)
+    call loadPalettes
+ENDC
+    call getNextScriptInstruction
+    ret
 
-; Unused function to multiply hl by 10. Trashes de.
-    db   $29, $54, $5d, $29, $29, $19, $c9             ;; 00:2b74 ???????
+ds 3 ; Free space
+
+SECTION "bank00_align_2b7b", ROM0[$2b7b]
 
 ; Input HL and A
 ; Output:
@@ -11004,7 +11023,18 @@ scriptOpCodeNOP:
     call getNextScriptInstruction                      ;; 00:3f01 $cd $27 $37
     ret                                                ;; 00:3f04 $c9
 
-ds 5 ; Free space
+; Helper function to provide a place to hook in for color palette changes.
+; a = status effect value
+setStatusEffect:
+    ld [wStatusEffect], a
+IF DEF(COLOR)
+    jp loadHeroPaletteForStatus
+ELSE
+    ret
+    nop
+    nop
+ENDC
+
 
 ;@ffa_text
 yesNoTextLabels:

@@ -7093,6 +7093,7 @@ startStatusEffectAfterWindow:
     ld   B, A                                          ;; 02:7840 $47
     and  A, C                                          ;; 02:7841 $a1
     jr   Z, startStatusEffects                         ;; 02:7842 $28 $15
+; The player already has at least one status effect that is being requested.
     ld   A, C                                          ;; 02:7844 $79
     cpl                                                ;; 02:7845 $2f
     rrca                                               ;; 02:7846 $0f
@@ -7106,11 +7107,14 @@ startStatusEffectAfterWindow:
     rrca                                               ;; 02:7856 $0f
     jr   startFujiStatusEffect                         ;; 02:7857 $18 $17
 
-; B and C are both status effect bytes, one original and one new.
+; Start one or more status effect.
+; b = old status effect value
+; c = new status effect value
 startStatusEffects:
     ld   A, B                                          ;; 02:7859 $78
     or   A, C                                          ;; 02:785a $b1
-    ld   [wStatusEffect], A                            ;; 02:785b $ea $c0 $d7
+; Takes care of any palette change necessary for color.
+    call setStatusEffect
     ld   A, C                                          ;; 02:785e $79
     rrca                                               ;; 02:785f $0f
     call C, startPoisStatusEffect                      ;; 02:7860 $dc $a1 $78
@@ -7345,13 +7349,14 @@ endStatusEffectMusicIfGood:
     pop  BC                                            ;; 02:79db $c1
     ret                                                ;; 02:79dc $c9
 
+; Clear a status effects.
+; a = timer number
+; b = complement of the status bit to be cleared
 clearStatusEffects:
     call timerStop                                     ;; 02:79dd $cd $ea $2f
-    ld   HL, wStatusEffect                             ;; 02:79e0 $21 $c0 $d7
-    ld   A, B                                          ;; 02:79e3 $78
-    and  A, [HL]                                       ;; 02:79e4 $a6
-    ld   [HL], A                                       ;; 02:79e5 $77
-    ret                                                ;; 02:79e6 $c9
+    ld a, [wStatusEffect]
+    and b
+    jp setStatusEffect
 
 pauseTimers:
     ld   HL, wPoisStatusEffectTimerNumber              ;; 02:79e7 $21 $79 $d8

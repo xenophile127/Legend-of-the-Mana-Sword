@@ -1858,3 +1858,19 @@ color_palette_npc_{02x:COLOR_PALETTE_NPC_NUMBER}:
 .flash:
         INCBIN "pal/npc/\1/flash.pal",0,8
 ENDM
+
+MACRO COLOR_PALETTE_SET_SINGLE
+     REDEF LOWER EQUS STRRPL("\1", "/", "_")
+     REDEF UPPER EQUS STRUPR("{LOWER}")
+color_palette_set_{LOWER}:
+     DEF PALETTE_SET_{UPPER} = (color_palette_set_{LOWER} - $4000) / $20
+     EXPORT PALETTE_SET_{UPPER}
+.main:
+        INCBIN "pal/\1/main.pal",0,8
+.blind:
+        INCBIN "pal/\1/blind.pal",0,8
+.damage:
+        INCBIN "pal/\1/damage.pal",0,8
+.flash:
+        INCBIN "pal/\1/flash.pal",0,8
+ENDM
