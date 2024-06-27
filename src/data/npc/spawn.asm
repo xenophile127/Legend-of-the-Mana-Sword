@@ -36,10 +36,10 @@ NPCSpawnPointers:
     dw   data_03_7666, data_03_766e, data_03_7520      ;; 03:71ea ??????
     dw   data_03_7676, data_03_766e, data_03_7520      ;; 03:71f0 ??????
     dw   data_03_767e, data_03_7686, data_03_75ba      ;; 03:71f6 ??????
-    dw   data_03_768e, data_03_7696, data_03_769e      ;; 03:71fc ??????
+    dw   denden,       doppelMirror, gardian           ;; 03:71fc ??????
     dw   data_03_7504, data_03_76a6, data_03_76ae      ;; 03:7202 ??????
-    dw   data_03_76b6, data_03_76be, data_03_769e      ;; 03:7208 ??????
-    dw   data_03_76c6, data_03_76ce, data_03_769e      ;; 03:720e ??????
+    dw   garasha,      wonder,       gardian           ;; 03:7208 ??????
+    dw   mammoo,        ninja,       gardian           ;; 03:720e ??????
     dw   data_03_76e0, data_03_76e0, data_03_76d6      ;; 03:7214 ??????
     dw   data_03_7738, data_03_7738, data_03_76e8      ;; 03:721a ......
     dw   data_03_7892, shieldlessPC, data_03_7756      ;; 03:7220 ......
@@ -449,15 +449,15 @@ data_03_7686:
     db   1, 3, NPC_EARTH_DIGGER, NPC_EARTH_DIGGER, NPC_EARTH_DIGGER, NPC_EARTH_DIGGER ;; 03:7686 ??????
     db   $80, $80                                      ;; 03:768c ??
 
-data_03_768e:
+denden:
     db   1, 3, NPC_DENDEN_SNAIL, NPC_DENDEN_SNAIL, NPC_DENDEN_SNAIL, NPC_DENDEN_SNAIL ;; 03:768e ??????
     db   $80, $80                                      ;; 03:7694 ??
 
-data_03_7696:
+doppelMirror:
     db   1, 2, NPC_DOPPEL_MIRROR, NPC_DOPPEL_MIRROR, NPC_DOPPEL_MIRROR, NPC_DOPPEL_MIRROR ;; 03:7696 ??????
     db   $80, $80                                      ;; 03:769c ??
 
-data_03_769e:
+gardian:
     db   1, 3, NPC_GUARDIAN, NPC_GUARDIAN, NPC_GUARDIAN, NPC_GUARDIAN ;; 03:769e ??????
     db   $80, $80                                      ;; 03:76a4 ??
 
@@ -469,19 +469,19 @@ data_03_76ae:
     db   1, 2, NPC_GAUNTLET, NPC_GAUNTLET, NPC_GAUNTLET, NPC_GAUNTLET ;; 03:76ae ??????
     db   $80, $80                                      ;; 03:76b4 ??
 
-data_03_76b6:
+garasha:
     db   1, 2, NPC_GARASHA_DUCK, NPC_GARASHA_DUCK, NPC_GARASHA_DUCK, NPC_GARASHA_DUCK ;; 03:76b6 ??????
     db   $80, $80                                      ;; 03:76bc ??
 
-data_03_76be:
+wonder:
     db   1, 2, NPC_FUZZY_WONDER, NPC_FUZZY_WONDER, NPC_FUZZY_WONDER, NPC_FUZZY_WONDER ;; 03:76be ??????
     db   $80, $80                                      ;; 03:76c4 ??
 
-data_03_76c6:
+mammoo:
     db   1, 2, NPC_ELEPHANT, NPC_ELEPHANT, NPC_ELEPHANT, NPC_ELEPHANT ;; 03:76c6 ??????
     db   $80, $80                                      ;; 03:76cc ??
 
-data_03_76ce:
+ninja:
     db   1, 2, NPC_NINJA, NPC_NINJA, NPC_NINJA, NPC_NINJA ;; 03:76ce ??????
     db   $80, $80                                      ;; 03:76d4 ??
 
