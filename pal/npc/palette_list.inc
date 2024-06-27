@@ -35,8 +35,8 @@
     COLOR_PALETTE_NPC blue             ; NPC_FLYING_FISH = $1b
     COLOR_PALETTE_NPC blue             ; NPC_ZOMBIE = $1c
     COLOR_PALETTE_NPC blue             ; NPC_MOUSE = $1d
-    COLOR_PALETTE_NPC red              ; NPC_PUMPKIN = $1e
-    COLOR_PALETTE_NPC blue             ; NPC_OWL = $1f
+    COLOR_PALETTE_NPC 030              ; NPC_PUMPKIN = $1e
+    COLOR_PALETTE_NPC 031              ; NPC_OWL = $1f
     COLOR_PALETTE_NPC blue             ; NPC_BEE = $20
     COLOR_PALETTE_NPC blue             ; NPC_CLOUD = $21
     COLOR_PALETTE_NPC blue             ; NPC_PIG = $22
