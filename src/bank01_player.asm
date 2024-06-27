@@ -2379,10 +2379,12 @@ setPlayerNormalSprite:
     ld   C, $07                                        ;; 01:512e $0e $07
     ld   B, $00                                        ;; 01:5130 $06 $00
     call updateObjectPosition_3_trampoline             ;; 01:5132 $cd $8f $28
+; Set the correct colors for the Hero's status.
+; Although at this point when you ride LotMS clears Poison, Stone, and Moogle.
+    call loadHeroPaletteForStatus
     ret                                                ;; 01:5135 $c9
 
-ds 11 ; Free space
-
+; Used for riding the normal chocobo.
 setPlayerOnChocobo:
     ld   A, $0c                                        ;; 01:5136 $3e $0c
     ld [wScriptMainGameStateBackup], a
@@ -2395,10 +2397,12 @@ setPlayerOnChocobo:
     xor  A, A                                          ;; 01:514e $af
     ld   [wPlayerDamagedTimer], A                      ;; 01:514f $ea $d2 $c4
     call hideFollower                                  ;; 01:5152 $cd $d5 $28
+; Use the color palette of the chocobo companion NPC.
+    ld a, NPC_CHOCOBO_FOLLOWING
+    call loadHeroPalette
     ret                                                ;; 01:5155 $c9
 
-ds 4 ; Free space
-
+; Used for riding Chocobot.
 setPlayerOnChocobot:
     ld   A, $0d                                        ;; 01:5156 $3e $0d
     ld [wScriptMainGameStateBackup], a
@@ -2411,10 +2415,12 @@ setPlayerOnChocobot:
     xor  A, A                                          ;; 01:516e $af
     ld   [wPlayerDamagedTimer], A                      ;; 01:516f $ea $d2 $c4
     call hideFollower                                  ;; 01:5172 $cd $d5 $28
+; Use the color palette of the Chocobot companion NPC.
+    ld a, NPC_CHOCOBOT_FOLLOWING
+    call loadHeroPalette
     ret                                                ;; 01:5175 $c9
 
-ds 4 ; Free space
-
+; Used for riding Chocobot onto water.
 setPlayerOnChocoboat:
     ld   A, $0e                                        ;; 01:5176 $3e $0e
     ld [wScriptMainGameStateBackup], a
@@ -2427,9 +2433,13 @@ setPlayerOnChocoboat:
     xor  A, A                                          ;; 01:518e $af
     ld   [wPlayerDamagedTimer], A                      ;; 01:518f $ea $d2 $c4
     call hideFollower                                  ;; 01:5192 $cd $d5 $28
+; Use the color palette of the Chocobot companion NPC.
+; This means Chocoboat and Chocobo have the same palette.
+    ld a, NPC_CHOCOBOT_FOLLOWING
+    call loadHeroPalette
     ret                                                ;; 01:5195 $c9
 
-ds 4 ; Free space
+ds 5 ; Free space
 
 movePlayerDuringScript:
     call getPlayerDirection                            ;; 01:5196 $cd $ab $02
