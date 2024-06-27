@@ -45,13 +45,23 @@ Currently there are five directories within `pal`:
         * `obj4.pal` is used for enemies' attacks.
         * The last three sprite palettes are used for NPCs, enemies, and bosses. They are replaced with entries from the `pal/npc/` directory whenever NPCs are spawned. Bosses (except for Red Dragon) do not yet initialize palettes when they spawn so it may be possible for some bosses colors to be affected by recently encountered enemies.
 2. **`01` -** Identical to `00` except `blind/obj05.pal`, `damage/obj05.pal`, and `normal/obj05.pal` use red instead of blue. This is used for the Red Dragon boss. (Blind is unused so far.)
-3. **`line-effects` -** Contains a small number of palettes used for special effects:
+3. **`hero`-** Palettes for each of the negative status effects that Hero can get, except Blind which is handled very differently. It contains four directories:
+    - **`hero` -** Used when you have no negative status effect.
+    - **`moogle` -** Used when you have the Moogle status effect. This is the lowest priority of the three.
+    - **`poison` -** Poison is the highest priority of the three status effects. It will be used even if you have Stone or Moogle.
+    - **`stone` -** Used when you are petrified with Stone. Higher priority than Moogle but lower than Poison.
+  
+    Each of these directories contains four `.pal` files: `blind.pal`, `damage.pal`, `flash.pal`, and `main.pal`. They are covered in more detail by the section on the `npc` folder. To match the original behavior, all except `flash.pal` must be identical.
+    
+    The colors used when riding Chocobo or Chocobot use palettes from their companion NPCs in the `pal/npc` directory.
+    > 💡**Note:** There is no `.inc` list in this directory because these cannot be moved without editting assembly.
+5. **`line-effects` -** Contains a small number of palettes used for special effects:
     * New Game intro scroll "vignette" fade effect. These can be replaced to change the three steps of the fade. For instance, the fade can be disabled completely by copying `pal/init/normal/bgp0.pal` over all three of the `intro-scroll?.pal` files.
     * Ending credits "letterbox" effect. This serves to black out the top 16 pixels of the screen for the ending credits. Recommended to keep this as is.
     * Shutter effect. Used when selecting a save game to continue, to transition from one map to another, and when displaying the in-game maps. This can be used to change the effect from white to black, or any other color you may like.
       > 💡**Note:** All four colors in this palette should be the same as it uses the area of memory that contains the status bar.
     * Status bar effect. Used by the status bar at the bottom of the screen that shows HP, MP, Lucre, and the stamina gauge. At this point there are some visual glitches related to changing this.
-4. **`npc` -** The file `pal/npc/palette_list.inc` has an entry for every distinct NPC in the game, though some NPCs (like shop keepers) are internally identical. Each entry indicates which palette set directory inside of `pal/npc/` to load when that NPC is loaded. Palette sets can be reused for multiple NPCs but there is no space savings to doing so. Each line in this file is commented to indicate which NPC it affects, but when in doubt, test.
+6. **`npc` -** The file `pal/npc/palette_list.inc` has an entry for every distinct NPC in the game, though some NPCs (like shop keepers) are internally identical. Each entry indicates which palette set directory inside of `pal/npc/` to load when that NPC is loaded. Palette sets can be reused for multiple NPCs but there is no space savings to doing so. Each line in this file is commented to indicate which NPC it affects, but when in doubt, test.
 
    Each palette set directory within `pal/npc` contains four `.pal` files:
     * `main.pal` are the colors you will see most of the time.
@@ -61,7 +71,7 @@ Currently there are five directories within `pal`:
     > 💡**Note:** For enemies the color palette is also used for the explosion effect when defeated and for any chests dropped. Chest colors especially may be worth considering when choosing a palette for enemies.
     
     > 💡**Note:** Objects are restricted by hardware to three colors. The first color in each of these `.pal` files is unused (transparent).
-6. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
+7. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
     > 💡**Note:** Super Game Boy support is disabled when assembling with Game Boy Color/Advance support with `make color`.
 
 ## Changing palettes used
