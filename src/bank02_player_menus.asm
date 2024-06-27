@@ -5228,10 +5228,10 @@ menuSelectButtonBItemOrSpell:
     cp   A, WINDOW_EQUIP_TOP                           ;; 02:6cc8 $fe $03
     ret  NC                                            ;; 02:6cca $d0
 ; Only continue for ITEMS (1), MAGIC (2), or EQUIP (3).
-    ld   B, $00                                        ;; 02:6ccb $06 $00
-    cp   A, $01                                        ;; 02:6ccd $fe $01
+    ld   B, INV_MAGIC_CURE - 1                         ;; 02:6ccb $06 $00
+    cp   A, WINDOW_ITEMS                               ;; 02:6ccd $fe $01
     jr   NZ, .jr_02_6cd3                               ;; 02:6ccf $20 $02
-    ld   B, $08                                        ;; 02:6cd1 $06 $08
+    ld   B, INV_ITEM_POTION_CURE - 1                   ;; 02:6cd1 $06 $08
 .jr_02_6cd3:
     ld   A, [wSelectedMenuIndex2]                      ;; 02:6cd3 $fa $4c $d8
     inc  A                                             ;; 02:6cd6 $3c
