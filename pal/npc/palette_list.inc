@@ -31,8 +31,8 @@
     COLOR_PALETTE_NPC 023              ; NPC_FLOWER = $17
     COLOR_PALETTE_NPC 024              ; NPC_FACEORB = $18
     COLOR_PALETTE_NPC 025              ; NPC_SKELETON = $19
-    COLOR_PALETTE_NPC blue             ; NPC_EVIL_PLANT = $1a
-    COLOR_PALETTE_NPC blue             ; NPC_FLYING_FISH = $1b
+    COLOR_PALETTE_NPC 026              ; NPC_EVIL_PLANT = $1a
+    COLOR_PALETTE_NPC 027              ; NPC_FLYING_FISH = $1b
     COLOR_PALETTE_NPC blue             ; NPC_ZOMBIE = $1c
     COLOR_PALETTE_NPC blue             ; NPC_MOUSE = $1d
     COLOR_PALETTE_NPC 030              ; NPC_PUMPKIN = $1e
