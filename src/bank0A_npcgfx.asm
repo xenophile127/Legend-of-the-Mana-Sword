@@ -151,7 +151,11 @@ gfxEnemyRabite:
 
 ;@gfximg name=enemy/green_slime width=2 height=6
 gfxEnemyGreenSlime:
+IF DEF(COLOR)
+    INCBIN "enemy/green_slime_color.bin"
+ELSE
     INCBIN "enemy/green_slime.bin"                     ;; 0a:50c0
+ENDC
 
 ;@gfximg name=enemy/zombie width=2 height=6
 gfxEnemyZombie:

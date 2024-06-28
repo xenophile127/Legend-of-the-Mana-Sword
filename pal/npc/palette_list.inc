@@ -29,7 +29,7 @@
     COLOR_PALETTE_NPC 021              ; NPC_SWAMPMAN = $15
     COLOR_PALETTE_NPC 022              ; NPC_LIZARDMAN = $16
     COLOR_PALETTE_NPC 023              ; NPC_FLOWER = $17
-    COLOR_PALETTE_NPC blue             ; NPC_FACEORB = $18
+    COLOR_PALETTE_NPC 024              ; NPC_FACEORB = $18
     COLOR_PALETTE_NPC 025              ; NPC_SKELETON = $19
     COLOR_PALETTE_NPC blue             ; NPC_EVIL_PLANT = $1a
     COLOR_PALETTE_NPC blue             ; NPC_FLYING_FISH = $1b
