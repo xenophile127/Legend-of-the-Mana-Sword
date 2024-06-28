@@ -6,14 +6,14 @@
 
 ; Give Ice its own metasprite table using OBP1 so it is blue under boot rom auto colorization.
 playerAttackIceMetaspriteTable:
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_SNOW, $0a, $08
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $08, $0a
-    db   OAMF_YFLIP  | OAMF_PAL1 | PAL_SNOW, $08, $0a
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $08, $0a
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_SNOW, $0a, $08
-    db   OAMF_YFLIP  | OAMF_PAL1 | PAL_SNOW, $08, $0a
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $08, $0a
-    db   OAMF_XYFLIP | OAMF_PAL1 | PAL_SNOW, $0a, $08
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_ATTACK, $0a, $08
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_ATTACK, $08, $0a
+    db   OAMF_YFLIP  | OAMF_PAL1 | PAL_ATTACK, $08, $0a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_ATTACK, $08, $0a
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_ATTACK, $0a, $08
+    db   OAMF_YFLIP  | OAMF_PAL1 | PAL_ATTACK, $08, $0a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_ATTACK, $08, $0a
+    db   OAMF_XYFLIP | OAMF_PAL1 | PAL_ATTACK, $0a, $08
 
 playerMetaspriteTable:
     db   OAMF_XFLIP  | OAMF_PAL0 | PAL_PLAYER, $02, $00

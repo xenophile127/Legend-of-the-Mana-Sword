@@ -2,14 +2,14 @@
 ; The comments are taken from src/include/constants.inc and are here for quick reference.
 ; Unused items are included to align the table correctly to simplify the code.
 
-    COLOR_PALETTE_ATTACK gray             ; INV_MAGIC_CURE = $01
-    COLOR_PALETTE_ATTACK gray             ; INV_MAGIC_HEAL = $02
-    COLOR_PALETTE_ATTACK gray             ; INV_MAGIC_MUTE = $03
-    COLOR_PALETTE_ATTACK gray             ; INV_MAGIC_SLEP = $04
-    COLOR_PALETTE_ATTACK gray             ; INV_MAGIC_FIRE = $05
-    COLOR_PALETTE_ATTACK gray             ; INV_MAGIC_ICE = $06
-    COLOR_PALETTE_ATTACK gray             ; INV_MAGIC_LIT = $07
-    COLOR_PALETTE_ATTACK grea             ; INV_MAGIC_NUKE = $08
+    COLOR_PALETTE_ATTACK 001              ; INV_MAGIC_CURE = $01
+    COLOR_PALETTE_ATTACK 002              ; INV_MAGIC_HEAL = $02
+    COLOR_PALETTE_ATTACK 003              ; INV_MAGIC_MUTE = $03
+    COLOR_PALETTE_ATTACK 004              ; INV_MAGIC_SLEP = $04
+    COLOR_PALETTE_ATTACK 005              ; INV_MAGIC_FIRE = $05
+    COLOR_PALETTE_ATTACK 006              ; INV_MAGIC_ICE = $06
+    COLOR_PALETTE_ATTACK 007              ; INV_MAGIC_LIT = $07
+    COLOR_PALETTE_ATTACK 008              ; INV_MAGIC_NUKE = $08
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_POTION_CURE = $09
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_POTION_XCURE = $0a
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_POTION_ETHER = $0b
