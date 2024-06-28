@@ -1490,9 +1490,9 @@ call_02_4cc7:
     ld   A, [wMenuFlags]                               ;; 02:4cc7 $fa $49 $d8
     and  A, $40                                        ;; 02:4cca $e6 $40
     push AF                                            ;; 02:4ccc $f5
-    call NZ, call_02_6c0b                              ;; 02:4ccd $c4 $0b $6c
+    call NZ, showTrashcan                              ;; 02:4ccd $c4 $0b $6c
     pop  AF                                            ;; 02:4cd0 $f1
-    call Z, clearTrashcanMetasprite                    ;; 02:4cd1 $cc $74 $6b
+    call Z, hideTrashcan                               ;; 02:4cd1 $cc $74 $6b
     ld   A, [wMenuFlags]                               ;; 02:4cd4 $fa $49 $d8
     and  A, $bf                                        ;; 02:4cd7 $e6 $bf
     ld   [wMenuFlags], A                               ;; 02:4cd9 $ea $49 $d8
@@ -1695,7 +1695,7 @@ call_02_4e37:
     ld   A, [wMenuFlagsBackup]                         ;; 02:4e37 $fa $4e $d8
     ld   [wMenuFlags], A                               ;; 02:4e3a $ea $49 $d8
     rlca                                               ;; 02:4e3d $07
-    call C, call_02_6c0b                               ;; 02:4e3e $dc $0b $6c
+    call C, showTrashcan                               ;; 02:4e3e $dc $0b $6c
     call clearFirstMetasprite                          ;; 02:4e41 $cd $84 $6b
     call loadRegisterState1                            ;; 02:4e44 $cd $5b $6d
     ld   A, [wSelectedMenuIndex2]                      ;; 02:4e47 $fa $4c $d8
@@ -1929,7 +1929,7 @@ call_02_4fe8:
     call clearFirstMetasprite                          ;; 02:4fe8 $cd $84 $6b
     ld   A, [wMenuFlags]                               ;; 02:4feb $fa $49 $d8
     rlca                                               ;; 02:4fee $07
-    call C, call_02_6c0b                               ;; 02:4fef $dc $0b $6c
+    call C, showTrashcan                               ;; 02:4fef $dc $0b $6c
     ld   A, [wSelectedMenuIndex2]                      ;; 02:4ff2 $fa $4c $d8
     ld   H, A                                          ;; 02:4ff5 $67
     ld   A, [wD89F]                                    ;; 02:4ff6 $fa $9f $d8
@@ -3432,7 +3432,7 @@ call_02_5895:
 jp_02_5922:
     push HL                                            ;; 02:5922 $e5
     call saveRegisterState2                            ;; 02:5923 $cd $80 $6d
-    call NC, call_02_6c0b                              ;; 02:5926 $d4 $0b $6c
+    call NC, showTrashcan                              ;; 02:5926 $d4 $0b $6c
     ld   HL, titleScreenLicenseText                    ;; 02:5929 $21 $62 $7e
     ld   DE, $071a                                     ;; 02:592c $11 $1b $07
     ld   BC, $1f01                                     ;; 02:592f $01 $01 $1f
@@ -4810,7 +4810,7 @@ call_02_6a59:
     sub  A, L                                          ;; 02:6a8b $95
     ret  C                                             ;; 02:6a8c $d8
     push AF                                            ;; 02:6a8d $f5
-    call clearTrashcanMetasprite                       ;; 02:6a8e $cd $74 $6b
+    call hideTrashcan                                  ;; 02:6a8e $cd $74 $6b
     pop  AF                                            ;; 02:6a91 $f1
     ld   [wD848], A                                    ;; 02:6a92 $ea $48 $d8
     ld   [wD846], A                                    ;; 02:6a95 $ea $46 $d8
@@ -4951,7 +4951,7 @@ hideAndSaveMenuMetasprites:
 ; Then clear the first three sprites.
     call clearSecondMetasprite                         ;; 02:6b5f $cd $8c $6b
     call clearFirstMetasprite                          ;; 02:6b62 $cd $84 $6b
-    call clearTrashcanMetasprite                       ;; 02:6b65 $cd $74 $6b
+    call hideTrashcan                                  ;; 02:6b65 $cd $74 $6b
     pop  BC                                            ;; 02:6b68 $c1
     pop  DE                                            ;; 02:6b69 $d1
     pop  HL                                            ;; 02:6b6a $e1
@@ -4960,8 +4960,9 @@ hideAndSaveMenuMetasprites:
     ld   [wWindowSecondaryFlags], A                    ;; 02:6b70 $ea $72 $d8
     ret                                                ;; 02:6b73 $c9
 
-; Used for the trash can in ITEMS and EQUIP.
-clearTrashcanMetasprite:
+; Hides the trash can that is used in the ITEMS and EQUIP windows.
+; This is called unnecessarily a lot by window functions.
+hideTrashcan:
     ld   A, [wMenuFlags]                               ;; 02:6b74 $fa $49 $d8
     and  A, $7f                                        ;; 02:6b77 $e6 $7f
     ld   [wMenuFlags], A                               ;; 02:6b79 $ea $49 $d8
@@ -5085,7 +5086,8 @@ call_02_6be8:
     pop  HL                                            ;; 02:6c09 $e1
     ret                                                ;; 02:6c0a $c9
 
-call_02_6c0b:
+; Shows the trash can if the window has one (the ITEMS and EQUIP screens).
+showTrashcan:
     ld   A, [wMenuFlags]                               ;; 02:6c0b $fa $49 $d8
     and  A, $02                                        ;; 02:6c0e $e6 $02
     ret  Z                                             ;; 02:6c10 $c8
