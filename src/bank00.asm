@@ -8223,7 +8223,57 @@ addTileGraphicCopyRequest:
     dec  [HL]                                          ;; 00:2e30 $35
     ret                                                ;; 00:2e31 $c9
 
-ds 69 ; Free space
+; The menu sprites (pointer fingers and the trashcan) use the attack palette.
+loadMenuSpritePalette:
+    call windowGetOffsetXYPosition
+    push bc
+    push de
+    push hl
+    ld a, PALETTE_SET_MENU_OBJ
+    ld b, PAL_ATTACK
+    call loadSinglePaletteBank2
+    pop hl
+    pop de
+    pop bc
+    ret
+
+loadAttackPalette:
+    push af
+    ld a, [wJoypadInput]
+    bit 4, a
+    ld a, [wEquippedWeapon]
+    ld h, INV_SWORD_BROAD
+    jr nz, .set_palette
+    ld a, [wEquippedItem]
+    and $7f
+    ld h, $00
+.set_palette:
+    add a, h
+    ld b, PAL_ATTACK
+    call loadSinglePaletteBank2
+    pop af
+    ret
+
+; Loads a (four color) color object palette set from the second bank of palettes
+; a = palette id
+; b = palette number (upper five bits may be dirty)
+loadSinglePaletteBank2:
+    push hl
+    push af
+;   Switch the bank.
+    ld a, BANK(ColorSinglePalettesROM_2)
+    call pushBankNrAndSwitch
+    pop af
+; Make the call.
+    call loadSinglePaletteBank2_expansion
+; Switch back to the correct bank.
+    call popBankNrAndSwitch
+    pop hl
+    ret
+
+ds 8 ; Free space
+
+SECTION "bank00_align_2e75", ROM0[$2e75]
 
 INCLUDE "data/metasprites_player.asm"
 

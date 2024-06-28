@@ -5049,7 +5049,13 @@ showMenuFinger:
 ; This is the only place I know of that does not use the normal metasprite abstraction
 windowShowSprite:
     push DE                                            ;; 02:6bd8 $d5
+IF DEF(COLOR)
+; Loads the palette for menu sprites, including the pointer hands and the trashcan.
+; Also calls windowGetOffsetXYPosition before returning.
+    call loadMenuSpritePalette
+ELSE
     call windowGetOffsetXYPosition                     ;; 02:6bd9 $cd $5d $6c
+ENDC
     ld   [HL], D                                       ;; 02:6bdc $72
     inc  HL                                            ;; 02:6bdd $23
     ld   [HL], E                                       ;; 02:6bde $73

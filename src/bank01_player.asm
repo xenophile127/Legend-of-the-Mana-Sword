@@ -4195,6 +4195,10 @@ useWeaponItemOrSpecial:
     call playerUseWeaponOrItem                         ;; 01:5b30 $cd $6d $5b
 ; Zero flag indicates an item with no animation, such as a key.
     jr z, .after_write
+IF DEF(COLOR)
+; Takes care of loading the color palette for the spell/item/weapon.
+    call loadAttackPalette
+ENDC
     ld   HL, wAttackFrameFunctions                     ;; 01:5b33 $21 $f0 $ce
     add  HL, BC                                        ;; 01:5b36 $09
     ld   [HL], $01                                     ;; 01:5b37 $36 $01
@@ -4210,7 +4214,7 @@ useWeaponItemOrSpecial:
     xor  A, A                                          ;; 01:5b44 $af
     ret                                                ;; 01:5b45 $c9
 
-ds 3 ; Free space
+SECTION "bank01_align_5b46", ROMX[$5b46], BANK[$01]
 
 call_01_5b46:
     ld   A, [wPlayerAttackAnimationFrame]              ;; 01:5b46 $fa $5f $cf

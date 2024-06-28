@@ -1874,3 +1874,17 @@ color_palette_set_{LOWER}:
 .flash:
         INCBIN "pal/\1/flash.pal",0,8
 ENDM
+
+DEF COLOR_PALETTE_ATTACK_NUMBER = $00
+MACRO COLOR_PALETTE_ATTACK
+color_palette_bank_2_{02x:COLOR_PALETTE_ATTACK_NUMBER}:
+        DEF COLOR_PALETTE_ATTACK_NUMBER = COLOR_PALETTE_ATTACK_NUMBER + 1
+.main:
+        INCBIN "pal/attack/\1/main.pal",0,8
+.blind:
+        INCBIN "pal/attack/\1/blind.pal",0,8
+.damage:
+        INCBIN "pal/attack/\1/damage.pal",0,8
+.flash:
+        INCBIN "pal/attack/\1/flash.pal",0,8
+ENDM
