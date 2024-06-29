@@ -244,7 +244,11 @@ gfxEnemyGalFish:
 
 ;@gfximg name=enemy/lizardman width=2 height=8
 gfxEnemyLizardman:
+IF DEF(COLOR)
+    INCBIN "enemy/lizardman_color.bin"
+ELSE
     INCBIN "enemy/lizardman.bin"                       ;; 0a:6000
+ENDC
 
 ;@gfximg name=enemy/tarantula width=2 height=8
 gfxEnemyTarantula:
