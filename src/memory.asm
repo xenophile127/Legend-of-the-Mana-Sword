@@ -322,8 +322,14 @@ wSoundsMusicRestorePitchChannel1:
     ds 54                                              ;; c1ca
 
 ; 16 bytes per object, or potentially 16x16 sprite?
-; 00: Lower nibble, orientation. bit7=not aligned to 8x8 grid, other bits unknown ($ff indicates unused)
-;  *  bit0: East, bit1: West, bit2: North, bit3: South
+; 00: Facing and movement.
+;   * bit0: East.
+;   * bit1: West.
+;   * bit2: North.
+;   * bit3: South.
+;   * bit5: Unknown. Possibly unused.
+;   * bit6: Unknown. Used by moveObject.
+;   * bit7: Moving. Unaligned to the 8x8 grid.
 ; 01: Movement speed
 ; 02: Collision flags:
 ; bit 0: blocked by walls
