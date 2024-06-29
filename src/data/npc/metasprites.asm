@@ -103,15 +103,17 @@ metaspritesCompanionRed:
     db   OAMF_XFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $26, $24
     db   OAMF_XFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $22, $20
 
+; Zombie had walking frames with the eye on the correct side so mirroring was unneeded,
+; but they were unused.
 metaspritesZombie:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $42, $40
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $42, $40
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4a, $48
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $42, $40
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
 
 metaspritesPumpkin:
     db   OAMF_XFLIP  | OAMF_PAL0 | PAL_NPC1, $46, $44
