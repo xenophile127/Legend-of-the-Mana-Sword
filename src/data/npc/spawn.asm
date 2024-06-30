@@ -15,7 +15,7 @@ NPCSpawnPointers:
     dw   data_03_74b8, data_03_74c0, data_03_74f0      ;; 03:716c ??????
     dw   data_03_74c8, data_03_74d0, data_03_7518      ;; 03:7172 ??????
     dw   data_03_74d8, data_03_74e0, data_03_74e0      ;; 03:7178 ??????
-    dw   data_03_74e8, data_03_7542, data_03_753a      ;; 03:717e ??????
+    dw   tarantula,    ruster,       mimic             ;; 03:717e ??????      number 10 $0a
     dw   data_03_7552, data_03_7552, data_03_754a      ;; 03:7184 ??????
     dw   data_03_755a, data_03_7562, data_03_756a      ;; 03:718a ??????
     dw   data_03_7572, data_03_757a, data_03_7582      ;; 03:7190 ??????
@@ -29,7 +29,7 @@ NPCSpawnPointers:
     dw   phantasm,     phantasm,     data_03_750e      ;; 03:71c0 ??????
     dw   data_03_74f0, data_03_75f2, data_03_75fa      ;; 03:71c6 ??????
     dw   shadowKnight, data_03_75fa, data_03_75fa      ;; 03:71cc ??????
-    dw   data_03_7616, data_03_761e, data_03_7626      ;; 03:71d2 ??????
+    dw   megaXorn,     dragonfly,    bulette           ;; 03:71d2 ??????      number 24 $18
     dw   data_03_762e, data_03_7636, data_03_763e      ;; 03:71d8 ??????
     dw   data_03_7646, data_03_764e, data_03_763e      ;; 03:71de ??????
     dw   data_03_7656, data_03_765e, data_03_763e      ;; 03:71e4 ??????
@@ -245,7 +245,7 @@ data_03_74e0:
     db   1, 2, NPC_CRAB, NPC_CRAB, NPC_CRAB, NPC_CRAB  ;; 03:74e0 ??????
     db   $80, $80                                      ;; 03:74e6 ??
 
-data_03_74e8:
+tarantula:
     db   2, 3, NPC_SPIDER, NPC_SPIDER, NPC_SPIDER, NPC_SPIDER ;; 03:74e8 ??????
     db   $80, $80                                      ;; 03:74ee ??
 
@@ -281,11 +281,11 @@ data_03_7530:
     db   1, 1, NPC_INV_DESSERT_CAVE_STONE, NPC_INV_DESSERT_CAVE_STONE, NPC_INV_DESSERT_CAVE_STONE, NPC_INV_DESSERT_CAVE_STONE ;; 03:7530 ??????
     db   $0e, $0a, $80, $80                            ;; 03:7536 ????
 
-data_03_753a:
+mimic:
     db   1, 1, NPC_MIMIC_CHEST, NPC_MIMIC_CHEST, NPC_MIMIC_CHEST, NPC_MIMIC_CHEST ;; 03:753a ??????
     db   $80, $80                                      ;; 03:7540 ??
 
-data_03_7542:
+ruster:
     db   1, 2, NPC_HOPPING_BUG, NPC_HOPPING_BUG, NPC_HOPPING_BUG, NPC_HOPPING_BUG ;; 03:7542 ??????
     db   $80, $80                                      ;; 03:7548 ??
 
@@ -389,15 +389,15 @@ shieldlessPC:
     db   1, 1, NPC_HERO_SHIELDLESS, NPC_HERO_SHIELDLESS, NPC_HERO_SHIELDLESS, NPC_HERO_SHIELDLESS ;; 03:760c ??????
     db   $0a, $07, $80, $80                            ;; 03:7612 ????
 
-data_03_7616:
+megaXorn:
     db   1, 2, NPC_MEGA_FLYTRAP, NPC_MEGA_FLYTRAP, NPC_MEGA_FLYTRAP, NPC_MEGA_FLYTRAP ;; 03:7616 ??????
     db   $80, $80                                      ;; 03:761c ??
 
-data_03_761e:
+dragonfly:
     db   1, 1, NPC_DRAGONFLY, NPC_DRAGONFLY, NPC_DRAGONFLY, NPC_DRAGONFLY ;; 03:761e ??????
     db   $80, $80                                      ;; 03:7624 ??
 
-data_03_7626:
+bulette:
     db   1, 3, NPC_ARMADILLO, NPC_ARMADILLO, NPC_ARMADILLO, NPC_ARMADILLO ;; 03:7626 ??????
     db   $80, $80                                      ;; 03:762c ??
 
