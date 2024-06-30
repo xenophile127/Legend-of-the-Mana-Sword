@@ -6,7 +6,7 @@
 ; 1. Companions, who use their own palette for their projectiles.
 ; 2. Bosses, which are not handled here.
 
-    COLOR_PALETTE_PROJECTILE red              ; Short Sword    $00 NPC_GOBLIN
+    COLOR_PALETTE_PROJECTILE 000              ; Short Sword    $00 NPC_GOBLIN
     COLOR_PALETTE_PROJECTILE red              ; Voice          $01 NPC_CARROT
     COLOR_PALETTE_PROJECTILE red              ; Needle         $02 NPC_PORCUPINE
     COLOR_PALETTE_PROJECTILE red              ; Harpoon        $03 NPC_CHIBIDEVIL, NPC_TORTOISE, NPC_WATER_DEMON
@@ -20,10 +20,10 @@
     COLOR_PALETTE_PROJECTILE red              ; Beam           $0b NPC_PHANTASM, NPC_GLAIVE_MAGE
 
 ; ; Note: Fire does fire damage, and can be blocked by Ice Shield, or reduced by Flame Armor..
-    COLOR_PALETTE_PROJECTILE red              ; Fire           $0c NPC_DRAGONFLY, NPC_FIRE_MOTH, NPC_SEA_DRAGON
+    COLOR_PALETTE_PROJECTILE 012              ; Fire           $0c NPC_DRAGONFLY, NPC_FIRE_MOTH, NPC_SEA_DRAGON
 
 ; Note: Ice does ice damage, and can be blocked by Flame Shield, or reduced by Ice Armor.
-    COLOR_PALETTE_PROJECTILE red              ; Ice            $0d NPC_WALRUS
+    COLOR_PALETTE_PROJECTILE 013              ; Ice            $0d NPC_WALRUS
 
     COLOR_PALETTE_PROJECTILE red              ; Lightning Bolt $0e NPC_CLOUD
     COLOR_PALETTE_PROJECTILE red              ; Poison Thread  $0f NPC_SPIDER, NPC_MEGA_FLYTRAP
