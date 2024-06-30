@@ -10,10 +10,10 @@ metasprites30FourDirections:
     db   OAMF_YFLIP  | OAMF_PAL0 | PAL_PROJECTILE, $34, $36
 
 projectileIceMetatileTable:
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_SNOW, $32, $30
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $30, $32
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_SNOW, $34, $36
-    db   OAMF_YFLIP  | OAMF_PAL1 | PAL_SNOW, $34, $36
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_PROJECTILE, $32, $30
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_PROJECTILE, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_PROJECTILE, $34, $36
+    db   OAMF_YFLIP  | OAMF_PAL1 | PAL_PROJECTILE, $34, $36
 
 ; Two graphics are used and flipped so east/west and north/south are mirror images of each other.
 metasprites38FourDirections:
@@ -34,10 +34,13 @@ metasprites68FourDirections:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $68, $6a
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $6c, $6e
     db   OAMF_YFLIP  | OAMF_PAL0 | PAL_PROJECTILE, $6c, $6e
-    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_PROJECTILE, $6a, $68
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $68, $6a
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $6c, $6e
-    db   OAMF_YFLIP  | OAMF_PAL0 | PAL_PROJECTILE, $6c, $6e
+
+; Modified so that the Mega Xorn can use Poison Threads while Dragonfly uses Fire.
+metasprites30FourDirections_npc_pal3:
+    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_NPC3, $32, $30
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $34, $36
+    db   OAMF_YFLIP  | OAMF_PAL0 | PAL_NPC3, $34, $36
 
 ; One frame, no flipping.
 metasprites30Static:
@@ -139,10 +142,8 @@ metaspritesCompanionFourDirections:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $18, $1a
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $1c, $1e
     db   OAMF_YFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $1c, $1e
-    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $1a, $18
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $18, $1a
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $1c, $1e
-    db   OAMF_YFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $1c, $1e
+
+ds 12 ; Free space
 
 ; Used by Watts' axe attack.
 ; One graphic drawn with diagonal symetry allows rotation for the four directions.
@@ -151,7 +152,5 @@ metaspritesCompanionBiasRotate:
     db   OAMF_YFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $18, $1a
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $18, $1a
     db   OAMF_XYFLIP | OAMF_PAL0 | PAL_FOLLOWER, $1a, $18
-    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $1a, $18
-    db   OAMF_YFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $18, $1a
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $18, $1a
-    db   OAMF_XYFLIP | OAMF_PAL0 | PAL_FOLLOWER, $1a, $18
+
+ds 12 ; Free space
