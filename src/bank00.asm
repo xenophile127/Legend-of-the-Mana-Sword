@@ -1942,7 +1942,7 @@ createObject_speed2:
 ; C  = object type ("collision flags")
 ; DE = position in tiles
 ; HL = metatile pointer
-; Return: C = object id
+; Return: a, c = object id (or $ff on failure).
 createObject:
     push DE                                            ;; 00:0a74 $d5
     push HL                                            ;; 00:0a75 $e5
@@ -1958,12 +1958,11 @@ createObject:
     add  HL, DE                                        ;; 00:0a84 $19
     dec  B                                             ;; 00:0a85 $05
     jr   NZ, .loop                                     ;; 00:0a86 $20 $f9
-; No space. Return c = $ff.
-    ld c, a
+; No space.
     pop  AF                                            ;; 00:0a88 $f1
     pop  HL                                            ;; 00:0a89 $e1
     pop  DE                                            ;; 00:0a8a $d1
-    ret                                                ;; 00:0a8d $c9
+    jr .failed
 .create:
     pop  AF                                            ;; 00:0a8e $f1
     pop  DE                                            ;; 00:0a8f $d1
@@ -2033,11 +2032,11 @@ createObject:
     call destroyObject                                 ;; 00:0ad8 $cd $e3 $0a
     pop  AF                                            ;; 00:0adb $f1
     ld   [wMainGameStateFlags], A                      ;; 00:0adc $ea $a1 $c0
+.failed:
+    DBG_MSG_LABEL debugMsgCreateObjectFail
     ld   A, $ff                                        ;; 00:0adf $3e $ff
     ld   C, A                                          ;; 00:0ae1 $4f
     ret                                                ;; 00:0ae2 $c9
-
-ds 7 ; Free space
 
 ; c = Object ID
 destroyObject:

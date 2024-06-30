@@ -34,3 +34,6 @@ debugMsgDoubleSpeed:
 
 debugMsgLoadPalette:
     DBG_STR "[DEBUG] Switched to palette %a%"
+
+debugMsgCreateObjectFail:
+    DBG_STR "[WARN] Failed to create object with collision flags %C%"
