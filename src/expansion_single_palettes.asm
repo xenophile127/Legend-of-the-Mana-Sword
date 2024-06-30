@@ -9,6 +9,8 @@ ColorSinglePalettesROM:
 
 INCLUDE "pal/npc/palette_list.inc"
 
+INCLUDE "pal/projectile/palette_map.inc"
+
 ; Hero color palettes.
 ; The macro for these creates a constant based on the argument, so renaming the directory won't work.
     COLOR_PALETTE_SET_SINGLE hero/good

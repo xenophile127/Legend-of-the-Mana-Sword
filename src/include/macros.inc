@@ -1845,10 +1845,10 @@ color_palette_\1:
     ENDR
 ENDM
 
-DEF COLOR_PALETTE_NPC_NUMBER = $00
+DEF COLOR_PALETTE_BANK1_NUMBER = $00
 MACRO COLOR_PALETTE_NPC
-color_palette_npc_{02x:COLOR_PALETTE_NPC_NUMBER}:
-        DEF COLOR_PALETTE_NPC_NUMBER = COLOR_PALETTE_NPC_NUMBER + 1
+color_palette_npc_{02x:COLOR_PALETTE_BANK1_NUMBER}:
+        DEF COLOR_PALETTE_BANK1_NUMBER = COLOR_PALETTE_BANK1_NUMBER + 1
 .main:
         INCBIN "pal/npc/\1/main.pal",0,8
 .blind:
@@ -1857,6 +1857,19 @@ color_palette_npc_{02x:COLOR_PALETTE_NPC_NUMBER}:
         INCBIN "pal/npc/\1/damage.pal",0,8
 .flash:
         INCBIN "pal/npc/\1/flash.pal",0,8
+ENDM
+
+MACRO COLOR_PALETTE_PROJECTILE
+color_palette_projectile_{02x:COLOR_PALETTE_BANK1_NUMBER}:
+        DEF COLOR_PALETTE_BANK1_NUMBER = COLOR_PALETTE_BANK1_NUMBER + 1
+.main:
+        INCBIN "pal/projectile/\1/main.pal",0,8
+.blind:
+        INCBIN "pal/projectile/\1/blind.pal",0,8
+.damage:
+        INCBIN "pal/projectile/\1/damage.pal",0,8
+.flash:
+        INCBIN "pal/projectile/\1/flash.pal",0,8
 ENDM
 
 MACRO COLOR_PALETTE_SET_SINGLE

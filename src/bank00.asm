@@ -7859,15 +7859,16 @@ initProjectileRuntimeData:
     ld   HL, wProjectileRuntimeData                    ;; 00:2bf2 $21 $c0 $c5
     ld   B, $03                                        ;; 00:2bf5 $06 $03
     ld   DE, $0a                                       ;; 00:2bf7 $11 $0a $00
-    ld   A, $ff                                        ;; 00:2bfa $3e $ff
 .loop:
-    ld   [HL], A                                       ;; 00:2bfc $77
+    ld [hl], $ff
     add  HL, DE                                        ;; 00:2bfd $19
     dec  B                                             ;; 00:2bfe $05
     jr   NZ, .loop                                     ;; 00:2bff $20 $fb
     ret                                                ;; 00:2c01 $c9
 
-ds 1 ; Free space
+; Added to load a color palette for the color target.
+projectileLoadColorPalette_trampoline:
+    jp_to_bank 09, projectileLoadColorPalette
 
 projectileCollisionHandling_trampoline:
     jp_to_bank 09, projectileCollisionHandling         ;; 00:2c03 $f5 $3e $08 $c3 $93 $1f
@@ -8183,7 +8184,7 @@ ENDC
     call getCurrentBankNrAndSwitch
     ret
 
-ds 27 ; Free space
+ds 23 ; Free space
 
 SECTION "bank00_align_2df5", ROM0[$2df5]
 

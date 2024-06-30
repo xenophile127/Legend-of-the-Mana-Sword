@@ -550,24 +550,23 @@ getNpcStatsEntry:
     ret                                                ;; 03:42bc $c9
 
 ; Create an NPC object.
+; Also takes care of loading palettes for both the NPC and its projectile for the color target.
 ; C=NPC id
 ; DE = yx tile coordinate
 spawnNPC:
 ; Multiply c by 24 to calculate the data offset.
-    push DE                                            ;; 03:42bd $d5
     ld   A, C                                          ;; 03:42be $79
     ld   L, A                                          ;; 03:42bf $6f
     ld   H, $00                                        ;; 03:42c0 $26 $00
-    ld   E, L                                          ;; 03:42c2 $5d
-    ld   D, H                                          ;; 03:42c3 $54
-    add  HL, DE                                        ;; 03:42c4 $19
-    add  HL, DE                                        ;; 03:42c5 $19
-    add  HL, HL                                        ;; 03:42c6 $29
-    add  HL, HL                                        ;; 03:42c7 $29
-    add  HL, HL                                        ;; 03:42c8 $29
-    ld   DE, npcDataTable                              ;; 03:42c9 $11 $5a $5f
-    add  HL, DE                                        ;; 03:42cc $19
-    pop  DE                                            ;; 03:42cd $d1
+    ld b, h
+    ld c, l
+    add hl, bc
+    add hl, bc
+    add hl, hl
+    add hl, hl
+    add hl, hl
+    ld bc, npcDataTable
+    add hl, bc
 ; Initialize an object with the NPC's collision flags, position, metatiles pointer, and speed=2.
     push HL                                            ;; 03:42ce $e5
     push af
@@ -585,31 +584,44 @@ IF DEF(COLOR)
 ELSE
     call createObject_speed2
 ENDC
+; If there are no free objects, return failure.
     cp   A, $ff                                        ;; 03:42dd $fe $ff
     jr   Z, .failed                                    ;; 03:42df $28 $7a
+; Get a free NPC memory slot.
     push BC                                            ;; 03:42e1 $c5
     ld   A, $ff                                        ;; 03:42e2 $3e $ff
     call getNpcRuntimeDataByID                         ;; 03:42e4 $cd $9b $42
     pop  BC                                            ;; 03:42e7 $c1
+; If there are no free NPC slots, return.
+; This looks like it would leak an object.
     jr   NZ, .failed                                   ;; 03:42e8 $20 $71
+; Start initializing the NPC runtime entry. 
+; First byte is the index of its object.
     ld   [HL], C                                       ;; 03:42ea $71
     ld   D, H                                          ;; 03:42eb $54
     ld   E, L                                          ;; 03:42ec $5d
-    pop  BC                                            ;; 03:42ed $c1
-    push BC                                            ;; 03:42ee $c5
-    ld   HL, $01                                       ;; 03:42ef $21 $01 $00
-    add  HL, BC                                        ;; 03:42f2 $09
+; Get a pointer to the NPC's stats entry.
+    pop hl
+    push hl
+    inc hl
     ld   A, [HL]                                       ;; 03:42f3 $7e
     call getNpcStatsEntry                              ;; 03:42f4 $cd $ac $42
     ld   B, H                                          ;; 03:42f7 $44
     ld   C, L                                          ;; 03:42f8 $4d
+IF DEF(COLOR)
+; Now that the stats table entry is available, use it to load the projectile color palette.
+    ld hl, $0009
+    add hl, bc
+    ld a, [hl]
+    call projectileLoadColorPalette_trampoline
+ENDC
     ld   HL, $10                                       ;; 03:42f9 $21 $10 $00
     add  HL, DE                                        ;; 03:42fc $19
     ld   [HL], C                                       ;; 03:42fd $71
     inc  HL                                            ;; 03:42fe $23
     ld   [HL], B                                       ;; 03:42ff $70
-    ld   HL, $00                                       ;; 03:4300 $21 $00 $00
-    add  HL, BC                                        ;; 03:4303 $09
+    ld h, b
+    ld l, c
     ld   A, [HL]                                       ;; 03:4304 $7e
     ld   HL, $02                                       ;; 03:4305 $21 $02 $00
     add  HL, DE                                        ;; 03:4308 $19
@@ -627,9 +639,8 @@ ENDC
     push DE                                            ;; 03:4317 $d5
     push BC                                            ;; 03:4318 $c5
     call getRandomByte                                 ;; 03:4319 $cd $1e $2b
-    pop  BC                                            ;; 03:431c $c1
-    ld   HL, $01                                       ;; 03:431d $21 $01 $00
-    add  HL, BC                                        ;; 03:4320 $09
+    pop hl
+    inc hl
     ld   L, [HL]                                       ;; 03:4321 $6e
     ld   H, $00                                        ;; 03:4322 $26 $00
     ld   C, L                                          ;; 03:4324 $4d
@@ -677,6 +688,10 @@ ENDC
     pop  DE                                            ;; 03:435b $d1
     ld   C, $ff                                        ;; 03:435c $0e $ff
     ret                                                ;; 03:435e $c9
+
+ds 2 ; Free space
+
+SECTION "bank03_align_435f", ROMX[$435f], BANK[$03]
 
 destroyNPC:
     ld   A, C                                          ;; 03:435f $79

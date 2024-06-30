@@ -19,6 +19,7 @@ entryPointTableBank09:
     call_to_bank_target getProjectileElement           ;; 09:400c ??
     call_to_bank_target getProjectilePower             ;; 09:400e ??
     call_to_bank_target projectileCollisionHandling    ;; 09:4010 pP
+    call_to_bank_target projectileLoadColorPalette
 
 processPhysicsForObject_9:
     call processPhysicsForObject                       ;; 09:4012 $cd $95 $06
@@ -26,24 +27,23 @@ processPhysicsForObject_9:
 
 projectileRunLogicForAll:
     ld   HL, wProjectileRuntimeData                    ;; 09:4016 $21 $c0 $c5
-    ld   B, $03                                        ;; 09:4019 $06 $03
-    ld   C, $0a                                        ;; 09:401b $0e $0a
-    push BC                                            ;; 09:401d $c5
-    jr   .jr_09_4024                                   ;; 09:401e $18 $04
+; Load loop counter into b and array stride into c.
+    ld bc, $030a
 .loop:
     push BC                                            ;; 09:4020 $c5
-    ld   B, $00                                        ;; 09:4021 $06 $00
-    add  HL, BC                                        ;; 09:4023 $09
-.jr_09_4024:
     push HL                                            ;; 09:4024 $e5
     ld   A, [HL]                                       ;; 09:4025 $7e
-    cp   A, $ff                                        ;; 09:4026 $fe $ff
+    inc a
     call NZ, projectileRunLogic                        ;; 09:4028 $c4 $31 $40
     pop  HL                                            ;; 09:402b $e1
+    ld b, $00
+    add hl, bc
     pop  BC                                            ;; 09:402c $c1
     dec  B                                             ;; 09:402d $05
     jr   NZ, .loop                                     ;; 09:402e $20 $f0
     ret                                                ;; 09:4030 $c9
+
+ds 3 ; Free space
 
 ; HL = projectile runtime data pointer
 projectileRunLogic:
@@ -865,13 +865,36 @@ INCLUDE "data/projectiles/metasprites.asm"
 
 INCLUDE "data/projectiles/patterns.asm"
 
-; Unused trash
-    db   $17, $31, $50, $56, $14, $40, $90, $12        ;; 09:48d0 ????????
-    db   $30, $50, $11, $32, $50, $10, $20, $8c        ;; 09:48d8 ????????
-    db   $60, $cc, $5c, $1d, $10, $ca, $15, $10        ;; 09:48e0 ????????
-    db   $ce, $15, $22, $0c, $62, $cc, $44, $05        ;; 09:48e8 ????????
-    db   $62, $4c, $53, $0f, $20, $18, $33, $67        ;; 09:48f0 ????????
-    db   $12, $33, $27, $11, $42, $e7, $53, $14        ;; 09:48f8 ????????
+; a = projectile id.
+projectileLoadColorPalette:
+; Return if the requested projectile is $ff.
+    inc a
+    ret z
+    dec a
+    push bc
+    push af
+; Get the obj palette number the projectile uses from its metatile table.
+    ld l, a
+    ld h, $00
+    add hl, hl
+    add hl, hl
+    add hl, hl
+    add hl, hl
+    ld bc, projectileDataTable + $000c
+    add hl, bc
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    ld b, [hl]
+; Calculate palette number to load: projectile number plus number of npc palettes.
+    pop af
+    add NPC_CHEST_DROP_1
+; Load the projectile palette.
+    call loadSinglePalette
+    pop bc
+    ret
+
+ds 20 ; Free space
 
 ;@gfximg name=boss/julius2 width=2 height=16
 bossGfxJulius2:
