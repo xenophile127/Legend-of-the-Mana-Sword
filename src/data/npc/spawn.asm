@@ -25,14 +25,14 @@ NPCSpawnPointers:
     dw   data_03_74a8, data_03_74a8, data_03_75aa      ;; 03:71a8 ??????
     dw   data_03_75c2, data_03_75ca, data_03_7528      ;; 03:71ae ??????
     dw   data_03_75d2, data_03_75da, data_03_7528      ;; 03:71b4 ??????
-    dw   phantasm,     minotaur_x1,  gargoyle          ;; 03:71ba ??????
+    dw   phantasm,     minotaur_x1,  gargoyle          ;; 03:71ba ??????      number 20 $14
     dw   phantasm,     phantasm,     data_03_750e      ;; 03:71c0 ??????
-    dw   data_03_74f0, data_03_75f2, data_03_75fa      ;; 03:71c6 ??????
-    dw   shadowKnight, data_03_75fa, data_03_75fa      ;; 03:71cc ??????
+    dw   data_03_74f0, wizard,       darkStalker       ;; 03:71c6 ??????      number 22 $16
+    dw   shadowKnight, darkStalker,  darkStalker       ;; 03:71cc ??????      number 23 $17
     dw   megaXorn,     dragonfly,    bulette           ;; 03:71d2 ??????      number 24 $18
-    dw   data_03_762e, data_03_7636, data_03_763e      ;; 03:71d8 ??????
-    dw   data_03_7646, data_03_764e, data_03_763e      ;; 03:71de ??????
-    dw   data_03_7656, data_03_765e, data_03_763e      ;; 03:71e4 ??????
+    dw   data_03_762e, data_03_7636, walrus            ;; 03:71d8 ??????      number 25 $19
+    dw   duckSoldier,  poto,         walrus            ;; 03:71de ??????      number 26 $1a
+    dw   data_03_7656, data_03_765e, walrus            ;; 03:71e4 ??????      number 27 $1b
     dw   data_03_7666, data_03_766e, data_03_7520      ;; 03:71ea ??????
     dw   data_03_7676, data_03_766e, data_03_7520      ;; 03:71f0 ??????
     dw   data_03_767e, data_03_7686, gargoyle          ;; 03:71f6 ??????
@@ -373,16 +373,16 @@ minotaur_x1:
     db   1, 1, NPC_MINOTAUR, NPC_MINOTAUR, NPC_MINOTAUR, NPC_MINOTAUR ;; 03:75ea ??????
     db   $80, $80                                      ;; 03:75f0 ??
 
-data_03_75f2:
+wizard:
     db   1, 2, NPC_GLAIVE_MAGE, NPC_GLAIVE_MAGE, NPC_GLAIVE_MAGE, NPC_GLAIVE_MAGE ;; 03:75f2 ??????
     db   $80, $80                                      ;; 03:75f8 ??
 
-data_03_75fa:
+darkStalker:
     db   2, 2, NPC_GLAIVE_KNIGHT, NPC_GLAIVE_KNIGHT, NPC_GLAIVE_KNIGHT, NPC_GLAIVE_KNIGHT ;; 03:75fa ??????
     db   $80, $80                                      ;; 03:7600 ??
 
 shadowKnight:
-    db   1, 1, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD ;; 03:7602 ??????
+    db   1, 1, NPC_SHADOW_KNIGHT, NPC_SHADOW_KNIGHT, NPC_SHADOW_KNIGHT, NPC_SHADOW_KNIGHT ;; 03:7602 ??????
     db   $09, $08, $80, $80                            ;; 03:7608 ????
 
 shieldlessPC:
@@ -409,15 +409,15 @@ data_03_7636:
     db   1, 2, NPC_SABER_CAT, NPC_SABER_CAT, NPC_SABER_CAT, NPC_SABER_CAT ;; 03:7636 ??????
     db   $80, $80                                      ;; 03:763c ??
 
-data_03_763e:
+walrus:
     db   1, 2, NPC_WALRUS, NPC_WALRUS, NPC_WALRUS, NPC_WALRUS ;; 03:763e ??????
     db   $80, $80                                      ;; 03:7644 ??
 
-data_03_7646:
+duckSoldier:
     db   1, 2, NPC_DUCK_SOLDIER, NPC_DUCK_SOLDIER, NPC_DUCK_SOLDIER, NPC_DUCK_SOLDIER ;; 03:7646 ??????
     db   $80, $80                                      ;; 03:764c ??
 
-data_03_764e:
+poto:
     db   1, 2, NPC_POTO_RABBIT, NPC_POTO_RABBIT, NPC_POTO_RABBIT, NPC_POTO_RABBIT ;; 03:764e ??????
     db   $80, $80                                      ;; 03:7654 ??
 
@@ -526,11 +526,11 @@ data_03_772e:
     db   $09, $06, $80, $80                            ;; 03:7734 ????
 
 data_03_7738:
-    db   1, 1, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD ;; 03:7738 ?????.
+    db   1, 1, NPC_SHADOW_KNIGHT, NPC_SHADOW_KNIGHT, NPC_SHADOW_KNIGHT, NPC_SHADOW_KNIGHT ;; 03:7738 ?????.
     db   $09, $00, $80, $80                            ;; 03:773e ????
 
 data_03_7742:
-    db   1, 1, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD, NPC_DARK_LORD ;; 03:7742 ...???
+    db   1, 1, NPC_SHADOW_KNIGHT, NPC_SHADOW_KNIGHT, NPC_SHADOW_KNIGHT, NPC_SHADOW_KNIGHT ;; 03:7742 ...???
     db   $0a, $0c, $80, $80                            ;; 03:7748 ..??
 
 ; Used to push Hero off the waterfall.

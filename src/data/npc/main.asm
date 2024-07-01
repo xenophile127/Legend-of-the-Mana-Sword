@@ -87,7 +87,7 @@ ENDC
     NPC_DATA $91, $3c, $50, $08, gfxEnemyMinotaur, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $03, $02, $03, $03, script_003d, script_043a ;; 03:6542 NPC_MINOTAUR
     NPC_DATA $91, $3d, $40, $0c, gfxEnemyWizard, tileorderNpc, metaspritesWizard, $00, $01, $01, $02, $02, $00, $13, $12, $14, $14, script_003d, script_0449 ;; 03:655a NPC_GLAIVE_MAGE
     NPC_DATA $91, $3e, $58, $0c, gfxEnemyDarkStalker, tileorderNpc, metaspritesDarkStalker, $00, $01, $01, $00, $00, $00, $03, $02, $03, $03, script_003d, script_043e ;; 03:6572 NPC_GLAIVE_KNIGHT
-    NPC_DATA $91, $3f, $40, $0c, gfxEnemyDarkLord, tileorderNpc, metaspritesShadowKnight, $00, $01, $01, $00, $00, $00, $06, $06, $07, $08, script_003d, $0000 ;; 03:658a NPC_DARK_LORD
+    NPC_DATA $91, $3f, $40, $0c, gfxEnemyDarkLord, tileorderNpc, metaspritesShadowKnight, $00, $01, $01, $00, $00, $00, $06, $06, $07, $08, script_003d, $0000 ;; 03:658a NPC_SHADOW_KNIGHT
     NPC_DATA $91, $40, $40, $04, gfxEnemyMegaXorn, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $01, $00, $00, $00, $03, $02, $01, $01, script_003d, script_0467 ;; 03:65a2 NPC_MEGA_FLYTRAP
     NPC_DATA $93, $41, $50, $04, gfxEnemyDragonfly, tileorderNpc, metaspritesTable50FrontFacing, $00, $01, $01, $00, $00, $00, $0c, $0b, $0b, $0b, script_003d, script_0457 ;; 03:65ba NPC_DRAGONFLY
     NPC_DATA $91, $42, $60, $04, gfxEnemyBulette, tileorderNpc, metaspritesTable60FrontFacing, $00, $01, $01, $00, $00, $00, $02, $02, $07, $08, script_003d, script_045a ;; 03:65d2 NPC_ARMADILLO

@@ -71,7 +71,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_MINOTAUR = $3f
     COLOR_PALETTE_NPC blue             ; NPC_GLAIVE_MAGE = $40
     COLOR_PALETTE_NPC blue             ; NPC_GLAIVE_KNIGHT = $41
-    COLOR_PALETTE_NPC blue             ; NPC_DARK_LORD = $42
+    COLOR_PALETTE_NPC blue             ; NPC_SHADOW_KNIGHT = $42
     COLOR_PALETTE_NPC blue             ; NPC_MEGA_FLYTRAP = $43
     COLOR_PALETTE_NPC blue             ; NPC_DRAGONFLY = $44
     COLOR_PALETTE_NPC blue             ; NPC_ARMADILLO = $45
