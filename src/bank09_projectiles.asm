@@ -27,8 +27,7 @@ processPhysicsForObject_9:
 
 projectileRunLogicForAll:
     ld   HL, wProjectileRuntimeData                    ;; 09:4016 $21 $c0 $c5
-; Load loop counter into b and array stride into c.
-    ld bc, $030a
+    ld b, $03
 .loop:
     push BC                                            ;; 09:4020 $c5
     push HL                                            ;; 09:4024 $e5
@@ -36,7 +35,7 @@ projectileRunLogicForAll:
     inc a
     call NZ, projectileRunLogic                        ;; 09:4028 $c4 $31 $40
     pop  HL                                            ;; 09:402b $e1
-    ld b, $00
+    ld bc, $000a
     add hl, bc
     pop  BC                                            ;; 09:402c $c1
     dec  B                                             ;; 09:402d $05
