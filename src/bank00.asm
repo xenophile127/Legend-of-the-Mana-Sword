@@ -7673,7 +7673,7 @@ setPalettes:
 ; Clear RAM up to the stack.
 clearRAM:
     xor a
-    ld hl, $0000 - _RAM
+    ld hl, $10000 - _RAM
     add hl, sp
     ld b, h
     ld c, l
