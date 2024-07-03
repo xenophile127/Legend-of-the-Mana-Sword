@@ -5,6 +5,7 @@ INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
 INCLUDE "include/oam_attributes.inc"
+INCLUDE "include/debug.inc"
 
 SECTION "bank09", ROMX[$4000], BANK[$09]
 
@@ -529,7 +530,7 @@ spawnProjectile:
     xor  A, A                                          ;; 09:42a8 $af
     ret                                                ;; 09:42a9 $c9
 
-ds 2 ; Free space
+ds 1 ; Free space
 
 ; A = projectile collision flags
 ; C = object id
@@ -870,6 +871,10 @@ projectileLoadColorPalette:
     inc a
     ret z
     dec a
+; Return if the requested projectile color palette is already loaded.
+    ld hl, wCurrentProjectilePalette
+    cp [hl]
+    ret z
     push bc
     push af
 ; Get the obj palette number the projectile uses from its metatile table.
@@ -885,15 +890,35 @@ projectileLoadColorPalette:
     ld h, [hl]
     ld l, a
     ld b, [hl]
-; Calculate palette number to load: projectile number plus number of npc palettes.
+; Check for a conflict where two palettes are trying to use PAL_PROJECTILE.
+; This is reserved for enemy projectiles, but if more than one projectile is used on a screen
+; then one of them must be changed to use a different hardware palette.
+; Otherwise the most recent one loaded wins.
     pop af
+    ld c, a
+; First check whether the shared projectile palette is the target. If not then no conflict.
+    ld a, b
+    and OAMF_PALMASK
+    cp PAL_PROJECTILE
+    jr nz, .load
+; Then check whether there is an active palette loaded there.
+    ld hl, wCurrentProjectilePalette
+    ld a, [hl]
+    inc a
+    jr z, .load
+; If so then log a debug message.
+    DBG_MSG_LABEL debugMsgProjectilePaletteConflict
+.load:
+; Calculate palette number to load: projectile number plus number of npc palettes.
+    ld [hl], c
+    ld a, c
     add NPC_CHEST_DROP_1
 ; Load the projectile palette.
     call loadSinglePalette
     pop bc
     ret
 
-ds 20 ; Free space
+SECTION "bank09_align_4900", ROMX[$4900], BANK[$09]
 
 ;@gfximg name=boss/julius2 width=2 height=16
 bossGfxJulius2:

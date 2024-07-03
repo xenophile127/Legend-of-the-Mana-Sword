@@ -152,5 +152,3 @@ metaspritesCompanionBiasRotate:
     db   OAMF_YFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $18, $1a
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $18, $1a
     db   OAMF_XYFLIP | OAMF_PAL0 | PAL_FOLLOWER, $1a, $18
-
-ds 12 ; Free space

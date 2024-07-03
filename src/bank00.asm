@@ -7062,17 +7062,20 @@ initNpcRuntimeData:
 
 scriptOpCodeSetNPCTypes:
     ld   A, [wScriptOpCounter]                         ;; 00:27f9 $fa $99 $d4
-    cp   A, $00                                        ;; 00:27fc $fe $00
+    or a
     call Z, setNpcSpawnTable_trampoline                ;; 00:27fe $cc $19 $28
     ld   A, $01                                        ;; 00:2801 $3e $01
     ld   [wScriptOpCounter], A                         ;; 00:2803 $ea $99 $d4
     ld   A, [wTileCopyRequestCount]                    ;; 00:2806 $fa $e0 $c8
-    cp   A, $00                                        ;; 00:2809 $fe $00
+    or a
     ret  NZ                                            ;; 00:280b $c0
     ld   A, [wBackgroundRenderRequestCount]            ;; 00:280c $fa $e8 $ce
-    cp   A, $00                                        ;; 00:280f $fe $00
+    or a
     ret  NZ                                            ;; 00:2811 $c0
     ld   [wScriptOpCounter], A                         ;; 00:2812 $ea $99 $d4
+; The current loaded projectile palette no longer matters so initialize it to $ff.
+    dec a
+    ld [wCurrentProjectilePalette], a
     call getNextScriptInstruction                      ;; 00:2815 $cd $27 $37
     ret                                                ;; 00:2818 $c9
 
@@ -7082,7 +7085,7 @@ setNpcSpawnTable_trampoline:
 
 scriptOpCodeSpawnNPC:
     ld   A, [wScriptOpCounter]                         ;; 00:2820 $fa $99 $d4
-    cp   A, $00                                        ;; 00:2823 $fe $00
+    or a
     call Z, spawnNpcsFromTable_trampoline              ;; 00:2825 $cc $40 $28
     ld   A, $01                                        ;; 00:2828 $3e $01
     ld   [wScriptOpCounter], A                         ;; 00:282a $ea $99 $d4

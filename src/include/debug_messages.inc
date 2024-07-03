@@ -37,3 +37,11 @@ debugMsgLoadPalette:
 
 debugMsgCreateObjectFail:
     DBG_STR "[WARN] Failed to create object with collision flags %C%"
+
+debugMsgProjectilePaletteConflict:
+; $dd99 == wCurrentProjectilePalette
+; $c5ae == wNPCSpawnTableIndex
+; $d8b7 == wScriptPointerHigh
+; $d8b6 == wScriptPointerLow
+; Script pointers are 16 bit and span up to four script banks.
+    DBG_STR "[ERROR] Projectile palette conflict old: %($dd99)% new: %C% in spawn table: %($c5ae)% at script pointer high: %($d8b7)% low: %($d8b6)%"

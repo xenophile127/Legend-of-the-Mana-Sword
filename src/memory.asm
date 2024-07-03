@@ -1679,9 +1679,12 @@ wPaletteBackground0LCDC:
 wLastFade:
     ds 1                                               ;; dd91
 
+wCurrentProjectilePalette:
+    ds 1                                               ;; dd99
+
 ; Free WRAM space.
 wFree:
-    ds 615                                             ;; dd99
+    ds 614                                             ;; dd9a
 
 hInitialSP:
     ds 0                                               ;; e000
