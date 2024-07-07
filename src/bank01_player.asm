@@ -709,15 +709,17 @@ scrollRoom:
     sla  B
 .check_room_override:
     ld   HL, wNextRoomOverride
+    push DE
     ld   A, [HL+]
-    and  A, [HL]
+    ld   E, A
+    ld   D, [HL]
+    and  A, D
     inc  A
     ld   A, B ; B=$01 (E), $02 (W), $04 (N), or $08 (S)
     jr   Z, .choose_next_room
     or   A, $80
 .choose_next_room:
     or   A, $10
-    push DE
     call call_00_2617 ; TODO LABEL
     pop  DE
     ld   A, $ff
@@ -733,13 +735,14 @@ scrollRoom:
     or   A, C ; on first pass we know we will not be moving the screen
     jr   NZ, scrollRoomSetup
     ld   A, [wTileCopyRequestCount]
-    cp   A, $00
+    and  A, A
     ret  NZ
     ld   A, [wBackgroundRenderRequestCount]
-    cp   A, $00
+    and  A, A
     ret  NZ
     jr   scrollRoomSetup
 .stop_scroll:
+    ; not sure if this branch is ever really called, may be able to remove
     ; error condition, no direction chosen, back out and return
     ld   A, [wMainGameStateFlags.nextFrame]            ;; 01:4520 $fa $a2 $c0
     res  0, A                                          ;; 01:4523 $cb $87
@@ -760,31 +763,31 @@ scrollRoomSetup:
     ld   HL, wScrollPixelCounter
     inc  C
     swap C
+    xor  A, A
     bit  1, E
     jr   NZ, .east
     bit  2, E
     jr   NZ, .south
     bit  3, E
-    jp   NZ, .north
+    jr   NZ, .north
 .west: ; by default if the others fell through
-    ld   A, D
+    ld   E, D
+    ld   D, A
+    ld   A, E
     cpl
     inc  A
     ld   E, A
-    ld   D, $00
     ld   A, $0f
     and  A, [HL]
-    ld   A, $b1
-    jp   NZ, .move_screen
+    jr   NZ, .west_done_graphics
     ld   A, [HL]
     add  A, C
-    cp   A, $A0
-    jr   Z, .west_done_graphics
-    push DE
     swap A
     and  A, $0f
     sub  A, $0a
+    jr   Z, .west_done_graphics
     cpl
+    push DE
     ld   E, A
     ld   D, $ff
     call drawRoomMetaTilesColumn
@@ -796,49 +799,49 @@ scrollRoomSetup:
     ld   [wBackgroundDrawPositionX], A
 .west_done_graphics:
     ld   A, $b1
-    jp   .move_screen
+    jr   .move_screen
 .east:
     ld   E, D
-    ld   D, $00
+    ld   D, A
+    push DE
     ld   A, $0f
     and  A, [HL]
-    ld   A, $b2
-    jr   NZ, .move_screen
+    jr   NZ, .east_done_graphics
     ld   A, [HL]
     add  A, C
-    cp   A, $A0
-    jr   Z, .east_done_graphics
-    push DE
     swap A
     and  A, $0f
-    ld   E, A
     ld   D, $0a
+    cp   A, D
+    jr   Z, .east_done_graphics
+    ld   E, A
     call drawRoomMetaTilesColumn
-    pop  DE
     ld   A, [wBackgroundDrawPositionX]
     inc  A
     inc  A
     and  A, $1f
     ld   [wBackgroundDrawPositionX], A
 .east_done_graphics:
+    pop  DE
     ld   A, $b2
     jr   .move_screen
 .south:
-    ld   E, $00
+    ld   E, A
     ld   A, $0f
     and  A, [HL]
-    ld   A, $b4
-    jr   NZ, .move_screen
-    ld   A, [HL]
-    add  A, C
-    cp   A, $80
-    jr   Z, .south_done_graphics
-    push DE
-    swap A
-    and  A, $0f
-    ld   E, A
+    jr   NZ, .south_done_graphics
     ld   A, [wRoomHeightInTiles]
     srl  A
+    ld   B, A
+    ld   A, [HL]
+    add  A, C
+    swap A
+    and  A, $0f
+    cp   A, B
+    jr   Z, .south_done_graphics
+    push DE
+    ld   E, A
+    ld   A, B
     ld   D, A
     call drawRoomMetatilesRow
     pop  DE
@@ -851,24 +854,25 @@ scrollRoomSetup:
     ld   A, $b4
     jr   .move_screen
 .north:
+    ld   E, A
     ld   A, D
     cpl
     inc  A
     ld   D, A
-    ld   E, $00
     ld   A, $0f
     and  A, [HL]
-    ld   A, $b8
-    jr   NZ, .move_screen
+    jr   NZ, .north_done_graphics
+    ld   A, [wRoomHeightInTiles]
+    srl  A
+    ld   B, A
     ld   A, [HL]
     add  A, C
-    cp   A, $80
-    jr   Z, .north_done_graphics
-    push DE
     swap A
     and  A, $0f
-    sub  A, $08
+    sub  A, B
+    jr   Z, .north_done_graphics
     cpl
+    push DE
     ld   E, A
     ld   D, $ff
     call drawRoomMetatilesRow ; new metatile requests added here
