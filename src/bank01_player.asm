@@ -720,7 +720,7 @@ scrollRoom:
     or   A, $80
 .choose_next_room:
     or   A, $10
-    call call_00_2617 ; TODO LABEL
+    call call_00_2617
     pop  DE
     ld   A, $ff
     ld   [wNextRoomOverride], A
@@ -733,14 +733,14 @@ scrollRoom:
     ld   A, [wScrollPixelCounter]
     and  A, $0f
     or   A, C ; on first pass we know we will not be moving the screen
-    jr   NZ, scrollRoomSetup
+    jr   NZ, scrollRoomMove
     ld   A, [wTileCopyRequestCount]
     and  A, A
     ret  NZ
     ld   A, [wBackgroundRenderRequestCount]
     and  A, A
     ret  NZ
-    jr   scrollRoomSetup
+    jr   scrollRoomMove
 .stop_scroll:
     ; not sure if this branch is ever really called, may be able to remove
     ; error condition, no direction chosen, back out and return
@@ -759,7 +759,7 @@ scrollRoom:
     ld   [wScrollDirection], A                         ;; 01:453d $ea $41 $c3
     ret                                                ;; 01:4540 $c9
     
-scrollRoomSetup:
+scrollRoomMove:
     ld   HL, wScrollPixelCounter
     inc  C
     swap C
@@ -875,7 +875,7 @@ scrollRoomSetup:
     push DE
     ld   E, A
     ld   D, $ff
-    call drawRoomMetatilesRow ; new metatile requests added here
+    call drawRoomMetatilesRow
     pop  DE
     ld   A, [wBackgroundDrawPositionY]
     dec  A
@@ -890,7 +890,9 @@ scrollRoomSetup:
     push DE
     call scrollMoveSprites_trampoline
     pop  DE
-    jr   scrollRoomScroll ; room scrolls before making sure metatile requests are processed
+    jp   scrollRoomMoveScreen
+
+ds 90 ; Free space
 
 drawRoomMetaTilesColumn:
     ld   B, $00                                        ;; 01:4690 $06 $00
@@ -937,7 +939,7 @@ drawRoomMetatilesRow:
     ret                                                ;; 01:46c3 $c9
 
 ; DE = yx scroll distances
-scrollRoomScroll:
+scrollRoomMoveScreen:
     ld   A, [wVideoSCX]                                ;; 01:46c4 $fa $a6 $c0
     add  A, E                                          ;; 01:46c7 $83
     ld   [wVideoSCX], A                                ;; 01:46c8 $ea $a6 $c0
