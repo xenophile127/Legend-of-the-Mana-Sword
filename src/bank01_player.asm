@@ -675,12 +675,12 @@ showPlayerAtTile:
 ; D = scroll speed
 scrollRoom:
     ld   E, A
+    ld   C, $00 ; used as a flag for subsequent pass through function
     ld   A, [wScrollDirection]
-    cp   A, $00
-    ld   C, $10 ; used as a flag for subsequent pass through function
+    and  A, A
     jr   NZ, .scroll_started
-    ld   A, E                                          ;; 01:44ec $7b
-    cp   A, $00                                        ;; 01:44ed $fe $00
+    ld   A, E
+    and  A, A
     ret  Z                                             ;; 01:44ef $c8
     ld   [wScrollDirection], A                         ;; 01:44f0 $ea $41 $c3
     xor  A, A                                          ;; 01:44f3 $af
@@ -708,10 +708,9 @@ scrollRoom:
     jr   NZ, .check_room_override
     sla  B
 .check_room_override:
-    ld   A, [wNextRoomOverride]
-    ld   C, A
-    ld   A, [wNextRoomOverride.x]
-    and  A, C
+    ld   HL, wNextRoomOverride
+    ld   A, [HL+]
+    and  A, [HL]
     inc  A
     ld   A, B ; B=$01 (E), $02 (W), $04 (N), or $08 (S)
     jr   Z, .choose_next_room
@@ -724,18 +723,15 @@ scrollRoom:
     ld   A, $ff
     ld   [wNextRoomOverride], A
     ld   [wNextRoomOverride.x], A
-    ld   C, $00 ; indicates first pass through scrollRoom function
+    ld   C, A ; indicates first pass through scrollRoom function
 .scroll_started:
     ld   A, E
     and  A, $0f
     jr   Z, .stop_scroll
     ld   A, [wScrollPixelCounter]
     and  A, $0f
-    ;and  A, C ; on first pass we know we will not be moving the screen
+    or   A, C ; on first pass we know we will not be moving the screen
     jr   NZ, scrollRoomSetup
-    ld   A, C
-    and  A, A
-    jr   Z, scrollRoomSetup
     ld   A, [wTileCopyRequestCount]
     cp   A, $00
     ret  NZ
@@ -762,6 +758,8 @@ scrollRoom:
     
 scrollRoomSetup:
     ld   HL, wScrollPixelCounter
+    inc  C
+    swap C
     bit  1, E
     jr   NZ, .east
     bit  2, E
