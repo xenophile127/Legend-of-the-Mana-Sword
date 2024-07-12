@@ -69,8 +69,8 @@ for map_nr in range(16):
     for n in range(256):
         d = rom.getByte(metatile_bank, metatile_data_addr + n * 6 + 5)
         r[d] = r.get(d, 0) + 1
-    for k, v in sorted(r.items()):
-        print("%02x: %d" % (k, v))
+    # for k, v in sorted(r.items()):
+    #     print("%02x: %d" % (k, v))
 
     map_bank = rom.getByte(0x08, addr + 6)
     map_data_addr = rom.getWord(0x08, addr + 7) - 0x4000
