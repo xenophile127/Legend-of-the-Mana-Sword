@@ -101,13 +101,23 @@ for map_nr in range(16):
             if indoor_map:
                 addr = template_addr
             
+# The map RLE compression has been changed for LotMS to allow more metatiles.
+# One or more bytes of literal metatile ids may be followed by a repeat value.
+# Repeat values must either be followed by a literal or end at a ten byte boundary.
+# Repeat values are any byte following a literal which is greater than $f7.
+# They repeat the previous literal two to nine times (creating a run from three to ten bytes total).
+# The value $f8 repeats the previously output literal two times (for a run of three bytes total).
+# The value $ff repeats the previously output literal nine times (for a run of ten bytes total).
             tiles = []
+            data = rom.getByte(map_bank, addr)
+            tiles.append(data)
             while len(tiles) < 10 * 8:
-                data = rom.getByte(map_bank, addr)
                 addr += 1
-                
-                if data & 0x80:
-                    tiles += [data & 0x7F] * rle
+                last = data
+                data = rom.getByte(map_bank, addr)
+
+                if data > 0xf7:
+                    tiles += [last] * (data - 0xf6)
                 else:
                     tiles.append(data)
 
