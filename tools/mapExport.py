@@ -5,6 +5,8 @@ import sys
 metatile_bank = 0x10
 gfx_bank = 0x1c
 
+show_scripts = False
+
 class ROM:
     def __init__(self, filename):
         self.data = open(filename, "rb").read()
@@ -145,7 +147,7 @@ for map_nr in range(16):
 
             enter_map_script_index = rom.getWord(map_bank, map_script_addr)
             map_script_addr += 2
-            while True:
+            while show_scripts:
                 xy = rom.getByte(map_bank, map_script_addr)
                 if xy == 0xff:
                     break
