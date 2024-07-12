@@ -2,6 +2,8 @@ import PIL.Image, PIL.ImageDraw
 import struct
 import sys
 
+metatile_bank = 0x10
+gfx_bank = 0x1c
 
 class ROM:
     def __init__(self, filename):
@@ -46,11 +48,11 @@ def drawText(img, x, y, str):
 def drawMetaTile(img, x, y, metatile_data_addr, gfx_offset, meta_tile):
     for ty in range(2):
         for tx in range(2):
-            tile_nr = rom.getByte(0x08, metatile_data_addr + meta_tile * 6 + tx + ty * 2)
-            drawTile(img, x * 32 + tx * 16, y * 32 + ty * 16, 0x0C, gfx_offset + tile_nr * 16)
+            tile_nr = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * 6 + tx + ty * 2)
+            drawTile(img, x * 32 + tx * 16, y * 32 + ty * 16, gfx_bank, gfx_offset + tile_nr * 16)
 
-    metatile_type_info1 = rom.getByte(0x08, metatile_data_addr + meta_tile * 6 + 4)
-    metatile_type_info2 = rom.getByte(0x08, metatile_data_addr + meta_tile * 6 + 5)
+    metatile_type_info1 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * 6 + 4)
+    metatile_type_info2 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * 6 + 5)
     # Draw metatile type info
     #if metatile_type_info2 not in {0x04, 0x05}:
     #    drawText(img, x * 32, y * 32 + 8, "%02x %02x" % (metatile_type_info1, metatile_type_info2))
@@ -65,7 +67,7 @@ for map_nr in range(16):
     print("Map %02x" % (map_nr))
     r = {}
     for n in range(256):
-        d = rom.getByte(0x08, metatile_data_addr + n * 6 + 5)
+        d = rom.getByte(metatile_bank, metatile_data_addr + n * 6 + 5)
         r[d] = r.get(d, 0) + 1
     for k, v in sorted(r.items()):
         print("%02x: %d" % (k, v))
