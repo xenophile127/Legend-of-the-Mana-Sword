@@ -806,7 +806,7 @@ scrollRoom:
     and  A, $1f
     ld   [wBackgroundDrawPositionX], A
 .west_done_graphics:
-    ld   A, $b0 && DIRECTIONF_EAST
+    ld   A, $b0 | DIRECTIONF_EAST
     jr   .move_screen
 .east:
     ld   E, D
@@ -831,7 +831,7 @@ scrollRoom:
     ld   [wBackgroundDrawPositionX], A
 .east_done_graphics:
     pop  DE
-    ld   A, $b0 && DIRECTIONF_WEST
+    ld   A, $b0 | DIRECTIONF_WEST
     jr   .move_screen
 .south:
     ld   E, A
@@ -859,7 +859,7 @@ scrollRoom:
     and  A, $1f
     ld   [wBackgroundDrawPositionY], A
 .south_done_graphics:
-    ld   A, $b0 && DIRECTIONF_NORTH
+    ld   A, $b0 | DIRECTIONF_NORTH
     jr   .move_screen
 .north:
     ld   E, A
@@ -891,7 +891,7 @@ scrollRoom:
     and  A, $1f
     ld   [wBackgroundDrawPositionY], A
 .north_done_graphics:
-    ld   A, $b0 && DIRECTIONF_SOUTH
+    ld   A, $b0 | DIRECTIONF_SOUTH
 .move_screen:
     bit  4, C
     ret  Z ; exit early if this is the first call (finished queueing up graphics loads)

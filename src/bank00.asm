@@ -1968,7 +1968,7 @@ createObject:
     pop  DE                                            ;; 00:0a8f $d1
     push HL                                            ;; 00:0a90 $e5
 ; Orientation (objects are always created facing south).
-    ld   [HL], DIRECTION_SOUTH                         ;; 00:0a91 $36 $08
+    ld   [HL], DIRECTIONF_SOUTH                        ;; 00:0a91 $36 $08
     inc  HL                                            ;; 00:0a93 $23
 ; Movement speed (delay until action).
     ld   [HL], A                                       ;; 00:0a94 $77
