@@ -671,11 +671,11 @@ showPlayerAtTile:
     pop  HL                                            ;; 01:44d6 $e1
     ret                                                ;; 01:44d7 $c9
 
-; A = direction: 1=west, 2=east, 4=south, 8=north
+; A = direction: 1=west, 2=east, 4=south, 8=north (flip of traditional directions)
 ; D = scroll speed
 scrollRoom:
     ld   E, A
-    ld   C, $00 ; used as a flag for subsequent pass through function
+    ld   C, $00 ; used as a flag to represent whether this is the first or subsequent call to this function per screen transition.
     ld   A, [wScrollDirection]
     and  A, A
     jr   NZ, .scroll_started
@@ -696,54 +696,62 @@ scrollRoom:
     ld   A, D
     ld   [wSpriteScrollSpeed], A
 
-    ; Set B to be the 'flip' of the direction in E
-    ld   B, $01
-    bit  1, E ; east
+    ; Set B to be the flip of the direction in E
+    ld   B, DIRECTIONF_EAST
+    bit  DIRECTIONB_WEST, E
     jr   NZ, .check_room_override
-    sla  B
-    bit  0, E ; west
+    sla  B ; B holds DIRECTIONF_WEST
+    bit  DIRECTIONB_EAST, E
     jr   NZ, .check_room_override
-    sla  B
-    bit  3, E ; north
+    sla  B ; B holds DIRECTIONF_NORTH
+    bit  DIRECTIONB_SOUTH, E
     jr   NZ, .check_room_override
-    sla  B
+    sla  B ; B holds DIRECTIONF_SOUTH
 .check_room_override:
     ld   HL, wNextRoomOverride
     push DE
     ld   A, [HL+]
     ld   E, A
     ld   D, [HL]
+
+    ; If a room override is not set, DE=$ffff
     and  A, D
     inc  A
-    ld   A, B ; B=$01 (E), $02 (W), $04 (N), or $08 (S)
+
+    ld   A, B ; sets which direction to move
     jr   Z, .choose_next_room
-    or   A, $80
+    or   A, $80 ; sets flag to use override
 .choose_next_room:
-    or   A, $10
+    or   A, $10 ; sets flag to choose next room
     call call_00_2617
     pop  DE
     ld   A, $ff
-    ld   [wNextRoomOverride], A
-    ld   [wNextRoomOverride.x], A
-    ld   C, A ; indicates first pass through scrollRoom function
+    ld   HL, wNextRoomOverride
+    ld   [HL+], A
+    ld   [HL], A
+    ld   C, A ; indicates this is the first pass through scrollRoom function for this transition
 .scroll_started:
     ld   A, E
     and  A, $0f
     jr   Z, .stop_scroll
+
+    ; Check if the scroll state is about to use a new row/column of metatiles
     ld   A, [wScrollPixelCounter]
-    and  A, $0f
-    or   A, C ; on first pass we know we will not be moving the screen
-    jr   NZ, scrollRoomMove
+    and  A, $0f ; metatiles are sized 16 pixels
+    or   A, C ; on first pass we know we will not be moving the screen, so ignore check
+    jr   NZ, .scrollRoomMove
+
+    ; Verify that all graphics engine requests have been fulfilled before moving on
     ld   A, [wTileCopyRequestCount]
     and  A, A
     ret  NZ
     ld   A, [wBackgroundRenderRequestCount]
     and  A, A
     ret  NZ
-    jr   scrollRoomMove
+    jr   .scrollRoomMove
 .stop_scroll:
-    ; not sure if this branch is ever really called, may be able to remove
-    ; error condition, no direction chosen, back out and return
+    ; Error condition, no scroll direction provided, back out and return
+    ; We are not sure if this branch is ever really called, we may be able to remove it
     ld   A, [wMainGameStateFlags.nextFrame]            ;; 01:4520 $fa $a2 $c0
     res  0, A                                          ;; 01:4523 $cb $87
     res  1, A                                          ;; 01:4525 $cb $8f
@@ -758,17 +766,16 @@ scrollRoom:
     ld   A, $00                                        ;; 01:453b $3e $00
     ld   [wScrollDirection], A                         ;; 01:453d $ea $41 $c3
     ret                                                ;; 01:4540 $c9
-    
-scrollRoomMove:
+.scrollRoomMove:
     ld   HL, wScrollPixelCounter
-    inc  C
-    swap C
+    inc  C ; $00 for first call, $01 for subsequent call
+    swap C ; $00 for first call, $10 for subsequent call
     xor  A, A
-    bit  1, E
+    bit  DIRECTIONB_WEST, E
     jr   NZ, .east
-    bit  2, E
+    bit  DIRECTIONB_NORTH, E
     jr   NZ, .south
-    bit  3, E
+    bit  DIRECTIONB_SOUTH, E
     jr   NZ, .north
 .west: ; by default if the others fell through
     ld   E, D
@@ -780,12 +787,13 @@ scrollRoomMove:
     ld   A, $0f
     and  A, [HL]
     jr   NZ, .west_done_graphics
+    ; Queue up the next section of metatiles
     ld   A, [HL]
-    add  A, C
+    add  A, C ; adds $10 to queue the next section instead of the section actively being scrolled into
     swap A
     and  A, $0f
     sub  A, $0a
-    jr   Z, .west_done_graphics
+    jr   Z, .west_done_graphics ; exit early if all sections written
     cpl
     push DE
     ld   E, A
@@ -798,7 +806,7 @@ scrollRoomMove:
     and  A, $1f
     ld   [wBackgroundDrawPositionX], A
 .west_done_graphics:
-    ld   A, $b1
+    ld   A, $b0 && DIRECTIONF_EAST
     jr   .move_screen
 .east:
     ld   E, D
@@ -823,7 +831,7 @@ scrollRoomMove:
     ld   [wBackgroundDrawPositionX], A
 .east_done_graphics:
     pop  DE
-    ld   A, $b2
+    ld   A, $b0 && DIRECTIONF_WEST
     jr   .move_screen
 .south:
     ld   E, A
@@ -851,7 +859,7 @@ scrollRoomMove:
     and  A, $1f
     ld   [wBackgroundDrawPositionY], A
 .south_done_graphics:
-    ld   A, $b4
+    ld   A, $b0 && DIRECTIONF_NORTH
     jr   .move_screen
 .north:
     ld   E, A
@@ -883,16 +891,16 @@ scrollRoomMove:
     and  A, $1f
     ld   [wBackgroundDrawPositionY], A
 .north_done_graphics:
-    ld   A, $b8
+    ld   A, $b0 && DIRECTIONF_SOUTH
 .move_screen:
     bit  4, C
-    ret  Z ; exit early if this is the first call (queue up graphics loads)
+    ret  Z ; exit early if this is the first call (finished queueing up graphics loads)
     push DE
     call scrollMoveSprites_trampoline
     pop  DE
     jp   scrollRoomMoveScreen
 
-ds 90 ; Free space
+ds 91 ; Free space
 
 drawRoomMetaTilesColumn:
     ld   B, $00                                        ;; 01:4690 $06 $00
