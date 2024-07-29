@@ -735,17 +735,22 @@ scrollRoom:
     and  A, $0f
     jr   Z, .stop_scroll
 
-    ; Check if the scroll state is about to use a new row/column of metatiles
-    ld   A, [wScrollPixelCounter]
-    and  A, $0f ; metatiles are sized 16 pixels
-    or   A, C ; on first pass we know we will not be moving the screen, so ignore check
+    ; On the first pass we know we will not be moving the screen, so ignore other checks
+    and  A, C
     jr   NZ, .scrollRoomMove
 
-    ; Verify that all graphics engine requests have been fulfilled before moving on
-    ld   A, [wTileCopyRequestCount]
+    ; If VBlankDone is over 1, then let it catch up before continuing to scroll
+    ld   A, [wVBlankDone]
+    cp   A, $02
+    ret  NC
+
+    ; If we've started scrolling, ignore the wTileCopyRequestCount check
+    ld   A, [wScrollPixelCounter]
     and  A, A
-    ret  NZ
-    ld   A, [wBackgroundRenderRequestCount]
+    jr   NZ, .scrollRoomMove
+
+    ; Verify that all tiles on new map are written before beginning scroll
+    ld   A, [wTileCopyRequestCount]
     and  A, A
     ret  NZ
     jr   .scrollRoomMove
@@ -900,7 +905,7 @@ scrollRoom:
     pop  DE
     jp   scrollRoomMoveScreen
 
-ds 91 ; Free space
+ds 89 ; Free space
 
 drawRoomMetaTilesColumn:
     ld   B, $00                                        ;; 01:4690 $06 $00
