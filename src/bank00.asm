@@ -1036,7 +1036,30 @@ drawMetaTile_immediate:
     call popBankNrAndSwitch                            ;; 00:05b7 $cd $0a $2a
     ret                                                ;; 00:05ba $c9
 
-ds 18 ; Free space
+; Store BCDE at metatile with upper left corner at HL.
+; Waits until PPU mode 0 (HBlank) or 1 (VBlank).
+; Return: a = d, bc = $001f, de = de, hl = hl + 4
+storeBCDEinBGM:
+    ldh a, [rLCDC]
+    and LCDCF_ON
+    jr z, .write
+.loop:
+    ldh a, [rSTAT]
+    and STATF_BUSY
+    jr nz, .loop
+.write:
+    ld a, b
+    ld [hl+], a
+    ld [hl], c
+    ld bc, $001f
+    add hl, bc
+    ld a, d
+    ld [hl+], a
+    ld [hl], e
+    inc hl
+    ret
+
+ds 8 ; Free space
 
 hideMinimapFlashingMarker:
     ld   L, C                                          ;; 00:05cd $69
@@ -5313,29 +5336,6 @@ storeDEinVRAM:
     and STATF_BUSY
     jr nz, .loop
 .write:
-    ld a, d
-    ld [hl+], a
-    ld [hl], e
-    inc hl
-    ret
-
-; Store BCDE at metatile with upper left corner at HL.
-; Waits until PPU mode 0 (HBlank) or 1 (VBlank).
-; Return: a = d, bc = $001f, de = de, hl = hl + 4
-storeBCDEinBGM:
-    ldh a, [rLCDC]
-    and LCDCF_ON
-    jr z, .write
-.loop:
-    ldh a, [rSTAT]
-    and STATF_BUSY
-    jr nz, .loop
-.write:
-    ld a, b
-    ld [hl+], a
-    ld [hl], c
-    ld bc, $001f
-    add hl, bc
     ld a, d
     ld [hl+], a
     ld [hl], e

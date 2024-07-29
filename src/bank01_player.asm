@@ -915,7 +915,7 @@ drawRoomMetaTilesColumn:
     push DE                                            ;; 01:469b $d5
     ld   E, D                                          ;; 01:469c $5a
     ld   D, B                                          ;; 01:469d $50
-    call drawMetaTile                                  ;; 01:469e $cd $1d $05
+    call drawMetaTile_immediate
     pop  DE                                            ;; 01:46a1 $d1
     pop  BC                                            ;; 01:46a2 $c1
     inc  B                                             ;; 01:46a3 $04
@@ -937,7 +937,7 @@ drawRoomMetatilesRow:
     push BC                                            ;; 01:46b5 $c5
     push DE                                            ;; 01:46b6 $d5
     ld   E, B                                          ;; 01:46b7 $58
-    call drawMetaTile                                  ;; 01:46b8 $cd $1d $05
+    call drawMetaTile_immediate
     pop  DE                                            ;; 01:46bb $d1
     pop  BC                                            ;; 01:46bc $c1
     inc  B                                             ;; 01:46bd $04
@@ -1018,7 +1018,7 @@ drawRoom:
     call getRoomMetaTile                               ;; 01:473c $cd $26 $24
     pop  DE                                            ;; 01:473f $d1
     push DE                                            ;; 01:4740 $d5
-    call drawMetaTile                                  ;; 01:4741 $cd $1d $05
+    call drawMetaTile_immediate
     pop  DE                                            ;; 01:4744 $d1
     pop  BC                                            ;; 01:4745 $c1
     inc  E                                             ;; 01:4746 $1c
