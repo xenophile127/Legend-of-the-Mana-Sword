@@ -1032,14 +1032,18 @@ drawMetaTile_immediate:
     ld   B, [HL]
     pop  DE
     pop  HL
-    call storeBCDEinBGM
+    call storeMetatileInVRAM
     call popBankNrAndSwitch                            ;; 00:05b7 $cd $0a $2a
     ret                                                ;; 00:05ba $c9
 
 ; Store BCDE at metatile with upper left corner at HL.
 ; Waits until PPU mode 0 (HBlank) or 1 (VBlank).
-; Return: a = d, bc = $001f, de = de, hl = hl + 4
-storeBCDEinBGM:
+; The writing to VRAM will worst case occur right during
+; the transition from mode 0 (HBlank) to mode 2 (OAM). In
+; that case, this code will take at most 19 cycles or 76 dots.
+; This will always be under the 80 dot period of mode 2 (OAM).
+; Return: a = e, bc = bc, de = de, hl = hl + $20
+storeMetatileInVRAM:
     ldh a, [rLCDC]
     and LCDCF_ON
     jr z, .write
@@ -1051,15 +1055,13 @@ storeBCDEinBGM:
     ld a, b
     ld [hl+], a
     ld [hl], c
-    ld bc, $001f
-    add hl, bc
-    ld a, d
-    ld [hl+], a
-    ld [hl], e
-    inc hl
+    set 5, l ; adds $20, this works with metatiles since L will always start a multiple of $40
+    ld a, e
+    ld [hl-], a
+    ld [hl], d
     ret
 
-ds 8 ; Free space
+ds 11 ; Free space
 
 hideMinimapFlashingMarker:
     ld   L, C                                          ;; 00:05cd $69
