@@ -671,11 +671,18 @@ showPlayerAtTile:
     pop  HL                                            ;; 01:44d6 $e1
     ret                                                ;; 01:44d7 $c9
 
+; This function is responsible for determining how to move the screen, making the graphics
+; calls to load the tiles set metatiles, move sprites, and move the rSCX rSCY registers.
+; It will be called multiple times in succession between frames until the scroll is complete.
 ; A = direction: 1=west, 2=east, 4=south, 8=north (flip of traditional directions)
 ; D = scroll speed
 scrollRoom:
-    ld   E, A
-    ld   C, $00 ; used as a flag to represent whether this is the first or subsequent call to this function per screen transition.
+    ld   E, A                                          ;; 01:44d8 $5f
+
+    ; C is used as a flag to represent whether this is the first or a subsequent call
+    ; to this function for a given screen transition.
+    ld   C, $00 ; represents subsequent call, will be overwritten if its the first call
+
     ld   A, [wScrollDirection]
     and  A, A
     jr   NZ, .scroll_started
@@ -697,27 +704,20 @@ scrollRoom:
     ld   [wSpriteScrollSpeed], A
 
     ; Set B to be the flip of the direction in E
-    ld   B, DIRECTIONF_EAST
-    bit  DIRECTIONB_WEST, E
-    jr   NZ, .check_room_override
-    sla  B ; B holds DIRECTIONF_WEST
-    bit  DIRECTIONB_EAST, E
-    jr   NZ, .check_room_override
-    sla  B ; B holds DIRECTIONF_NORTH
-    bit  DIRECTIONB_SOUTH, E
-    jr   NZ, .check_room_override
-    sla  B ; B holds DIRECTIONF_SOUTH
-.check_room_override:
+    ld   A, E
+    call objectReverseDirection
+    ld   B, A
+
+    ; Load room override settings
     ld   HL, wNextRoomOverride
     push DE
     ld   A, [HL+]
     ld   E, A
     ld   D, [HL]
 
-    ; If a room override is not set, DE=$ffff
+    ; Determine next room to load
     and  A, D
-    inc  A
-
+    inc  A ; if a room override is not set this will be zero
     ld   A, B ; sets which direction to move
     jr   Z, .choose_next_room
     or   A, $80 ; sets flag to use override
@@ -730,11 +730,8 @@ scrollRoom:
     ld   [HL+], A
     ld   [HL], A
     ld   C, A ; indicates this is the first pass through scrollRoom function for this transition
-.scroll_started:
-    ld   A, E
-    and  A, $0f
-    jr   Z, .stop_scroll
 
+.scroll_started:
     ; On the first pass we know we will not be moving the screen, so ignore other checks
     and  A, C
     jr   NZ, .scrollRoomMove
@@ -753,25 +750,9 @@ scrollRoom:
     ld   A, [wTileCopyRequestCount]
     and  A, A
     ret  NZ
-    jr   .scrollRoomMove
-.stop_scroll:
-    ; Error condition, no scroll direction provided, back out and return
-    ; We are not sure if this branch is ever really called, we may be able to remove it
-    ld   A, [wMainGameStateFlags.nextFrame]            ;; 01:4520 $fa $a2 $c0
-    res  0, A                                          ;; 01:4523 $cb $87
-    res  1, A                                          ;; 01:4525 $cb $8f
-    res  3, A                                          ;; 01:4527 $cb $9f
-    res  2, A                                          ;; 01:4529 $cb $97
-    swap A                                             ;; 01:452b $cb $37
-    ld   [wMainGameStateFlags.nextFrame], A            ;; 01:452d $ea $a2 $c0
-    ld   [wMainGameStateFlags], A                      ;; 01:4530 $ea $a1 $c0
-    call initEnemiesCounterAndMoveFolower_trampoline   ;; 01:4533 $cd $26 $29
-    ld   A, $ff                                        ;; 01:4536 $3e $ff
-    ld   [wPlayerAnimation], A                         ;; 01:4538 $ea $94 $d3
-    ld   A, $00                                        ;; 01:453b $3e $00
-    ld   [wScrollDirection], A                         ;; 01:453d $ea $41 $c3
-    ret                                                ;; 01:4540 $c9
+
 .scrollRoomMove:
+    ; Based on direction, draw a new row or column of metatiles
     ld   HL, wScrollPixelCounter
     inc  C ; $00 for first call, $01 for subsequent call
     swap C ; $00 for first call, $10 for subsequent call
@@ -782,22 +763,27 @@ scrollRoom:
     jr   NZ, .south
     bit  DIRECTIONB_SOUTH, E
     jr   NZ, .north
-.west: ; by default if the others fell through
+
+.west:
+    ; Set D (y direction) to 0 and E (x direction) to -speed
     ld   E, D
     ld   D, A
     ld   A, E
     cpl
     inc  A
     ld   E, A
+    ; Check if the pixel counter is a multiple of 16 (metatile boundary)
     ld   A, $0f
     and  A, [HL]
     jr   NZ, .west_done_graphics
     ; Queue up the next section of metatiles
     ld   A, [HL]
-    add  A, C ; adds $10 to queue the next section instead of the section actively being scrolled into
+    ; This will add $10 to the pixel counter if this is not the first call,
+    ; bringing in the next section of metatiles ahead of the one being scrolled into
+    add  A, C
     swap A
     and  A, $0f
-    sub  A, $0a
+    sub  A, SCRN_X_B / 2
     jr   Z, .west_done_graphics ; exit early if all sections written
     cpl
     push DE
@@ -813,49 +799,61 @@ scrollRoom:
 .west_done_graphics:
     ld   A, $b0 | DIRECTIONF_EAST
     jr   .move_screen
+
 .east:
+    ; Set D (y direction) to 0 and E (x direction) to speed
     ld   E, D
     ld   D, A
-    push DE
+    ; Check if the pixel counter is a multiple of 16 (metatile boundary)
     ld   A, $0f
     and  A, [HL]
     jr   NZ, .east_done_graphics
+    ; Queue up the next section of metatiles
     ld   A, [HL]
+    ; This will add $10 to the pixel counter if this is not the first call,
+    ; bringing in the next section of metatiles ahead of the one being scrolled into
     add  A, C
     swap A
     and  A, $0f
-    ld   D, $0a
-    cp   A, D
-    jr   Z, .east_done_graphics
+    cp   A, SCRN_X_B / 2
+    jr   Z, .east_done_graphics ; exit early if all sections written
+    push DE
+    ld   D, SCRN_X_B / 2
     ld   E, A
     call drawRoomMetaTilesColumn
+    pop  DE
     ld   A, [wBackgroundDrawPositionX]
     inc  A
     inc  A
     and  A, $1f
     ld   [wBackgroundDrawPositionX], A
 .east_done_graphics:
-    pop  DE
     ld   A, $b0 | DIRECTIONF_WEST
     jr   .move_screen
+
 .south:
+    ; Set D (y direction) to speed (already done) and E (x direction) to 0
     ld   E, A
+    ; Check if the pixel counter is a multiple of 16 (metatile boundary)
     ld   A, $0f
     and  A, [HL]
     jr   NZ, .south_done_graphics
+    ; Get height of screen in metatiles in B (safety for window height changes)
     ld   A, [wRoomHeightInTiles]
     srl  A
     ld   B, A
+    ; Queue up the next section of metatiles
     ld   A, [HL]
+    ; This will add $10 to the pixel counter if this is not the first call,
+    ; bringing in the next section of metatiles ahead of the one being scrolled into
     add  A, C
     swap A
     and  A, $0f
     cp   A, B
-    jr   Z, .south_done_graphics
+    jr   Z, .south_done_graphics ; exit early if all sections written
     push DE
     ld   E, A
-    ld   A, B
-    ld   D, A
+    ld   D, B
     call drawRoomMetatilesRow
     pop  DE
     ld   A, [wBackgroundDrawPositionY]
@@ -866,24 +864,31 @@ scrollRoom:
 .south_done_graphics:
     ld   A, $b0 | DIRECTIONF_NORTH
     jr   .move_screen
+
 .north:
+    ; Set D (y direction) to -speed and E (x direction) to 0
     ld   E, A
     ld   A, D
     cpl
     inc  A
     ld   D, A
+    ; Check if the pixel counter is a multiple of 16 (metatile boundary)
     ld   A, $0f
     and  A, [HL]
     jr   NZ, .north_done_graphics
+    ; Get height of screen in metatiles in B (safety for window height changes)
     ld   A, [wRoomHeightInTiles]
     srl  A
     ld   B, A
+    ; Queue up the next section of metatiles
     ld   A, [HL]
+    ; This will add $10 to the pixel counter if this is not the first call,
+    ; bringing in the next section of metatiles ahead of the one being scrolled into
     add  A, C
     swap A
     and  A, $0f
     sub  A, B
-    jr   Z, .north_done_graphics
+    jr   Z, .north_done_graphics ; exit early if all sections written
     cpl
     push DE
     ld   E, A
@@ -897,15 +902,22 @@ scrollRoom:
     ld   [wBackgroundDrawPositionY], A
 .north_done_graphics:
     ld   A, $b0 | DIRECTIONF_SOUTH
+
 .move_screen:
+    ; Exit early if this is the first call (only queues up graphics)
     bit  4, C
-    ret  Z ; exit early if this is the first call (finished queueing up graphics loads)
+    ret  Z
+
+    ; Move the sprites along with the screen
     push DE
     call scrollMoveSprites_trampoline
     pop  DE
-    jp   scrollRoomMoveScreen
 
-ds 89 ; Free space
+    ; Move the screen itself
+    call scrollRoomMoveScreen
+    ret
+
+ds 143 ; Free space
 
 drawRoomMetaTilesColumn:
     ld   B, $00                                        ;; 01:4690 $06 $00

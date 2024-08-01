@@ -846,7 +846,13 @@ requestCopyTwoBytesToDrawAddress:
     call requestCopyTwoBytesToVRAM                     ;; 00:0491 $cd $9f $1e
     ret                                                ;; 00:0494 $c9
 
-ds 9 ; Free space
+ds 1 ; Free space
+
+drawRoomWithGuardOnTileTransfer:
+    ld   A, [wTileCopyRequestCount]
+    and  A, A
+    jr   NZ, drawRoomWithWait
+    jr   drawRoom_trampoline
 
 scrollRoom_trampoline:
     jp_to_bank 01, scrollRoom                          ;; 00:049e $f5 $3e $18 $c3 $d7 $1e
