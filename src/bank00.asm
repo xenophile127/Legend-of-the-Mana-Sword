@@ -851,7 +851,7 @@ ds 1 ; Free space
 drawRoomWithGuardOnTileTransfer:
     ld   A, [wTileCopyRequestCount]
     and  A, A
-    jr   NZ, drawRoomWithWait
+    jr   NZ, drawRoomWithGuardOnTileTransfer
     jr   drawRoom_trampoline
 
 scrollRoom_trampoline:
