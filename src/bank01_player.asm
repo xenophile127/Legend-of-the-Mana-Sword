@@ -671,20 +671,23 @@ showPlayerAtTile:
     pop  HL                                            ;; 01:44d6 $e1
     ret                                                ;; 01:44d7 $c9
 
-; A = direction: 1=west, 2=east, 4=south, 8=north
+; This function is responsible for determining how to move the screen, making the graphics
+; calls to load the tiles set metatiles, move sprites, and move the rSCX rSCY registers.
+; It will be called multiple times in succession between frames until the scroll is complete.
+; A = direction: 1=west, 2=east, 4=south, 8=north (flip of traditional directions)
+; D = scroll speed
 scrollRoom:
     ld   E, A                                          ;; 01:44d8 $5f
-    ld   A, [wTileCopyRequestCount]                    ;; 01:44d9 $fa $e0 $c8
-    cp   A, $00                                        ;; 01:44dc $fe $00
-    ret  NZ                                            ;; 01:44de $c0
-    ld   A, [wBackgroundRenderRequestCount]            ;; 01:44df $fa $e8 $ce
-    cp   A, $00                                        ;; 01:44e2 $fe $00
-    ret  NZ                                            ;; 01:44e4 $c0
-    ld   A, [wScrollDirection]                         ;; 01:44e5 $fa $41 $c3
-    cp   A, $00                                        ;; 01:44e8 $fe $00
-    jr   NZ, .jr_01_450a                               ;; 01:44ea $20 $1e
-    ld   A, E                                          ;; 01:44ec $7b
-    cp   A, $00                                        ;; 01:44ed $fe $00
+
+    ; C is used as a flag to represent whether this is the first or a subsequent call
+    ; to this function for a given screen transition.
+    ld   C, $00 ; represents subsequent call, will be overwritten if its the first call
+
+    ld   A, [wScrollDirection]
+    and  A, A
+    jr   NZ, .scroll_started
+    ld   A, E
+    and  A, A
     ret  Z                                             ;; 01:44ef $c8
     ld   [wScrollDirection], A                         ;; 01:44f0 $ea $41 $c3
     xor  A, A                                          ;; 01:44f3 $af
@@ -697,215 +700,224 @@ scrollRoom:
     set  2, A                                          ;; 01:4502 $cb $d7
     ld   [wMainGameStateFlags.nextFrame], A            ;; 01:4504 $ea $a2 $c0
     ld   [wMainGameStateFlags], A                      ;; 01:4507 $ea $a1 $c0
-.jr_01_450a:
-    ld   A, E                                          ;; 01:450a $7b
-    push DE                                            ;; 01:450b $d5
-    bit  0, A                                          ;; 01:450c $cb $47
-    jr   NZ, .west                                     ;; 01:450e $20 $31
-    bit  1, A                                          ;; 01:4510 $cb $4f
-    jp   NZ, .east                                     ;; 01:4512 $c2 $97 $45
-    bit  2, A                                          ;; 01:4515 $cb $57
-    jp   NZ, .south                                    ;; 01:4517 $c2 $e7 $45
-    bit  3, A                                          ;; 01:451a $cb $5f
-    jp   NZ, .north                                    ;; 01:451c $c2 $3a $46
-    pop  DE                                            ;; 01:451f $d1
-    ld   A, [wMainGameStateFlags.nextFrame]            ;; 01:4520 $fa $a2 $c0
-    res  0, A                                          ;; 01:4523 $cb $87
-    res  1, A                                          ;; 01:4525 $cb $8f
-    res  3, A                                          ;; 01:4527 $cb $9f
-    res  2, A                                          ;; 01:4529 $cb $97
-    swap A                                             ;; 01:452b $cb $37
-    ld   [wMainGameStateFlags.nextFrame], A            ;; 01:452d $ea $a2 $c0
-    ld   [wMainGameStateFlags], A                      ;; 01:4530 $ea $a1 $c0
-    call initEnemiesCounterAndMoveFolower_trampoline   ;; 01:4533 $cd $26 $29
-    ld   A, $ff                                        ;; 01:4536 $3e $ff
-    ld   [wPlayerAnimation], A                         ;; 01:4538 $ea $94 $d3
-    ld   A, $00                                        ;; 01:453b $3e $00
-    ld   [wScrollDirection], A                         ;; 01:453d $ea $41 $c3
-    ret                                                ;; 01:4540 $c9
+    ld   A, D
+    ld   [wSpriteScrollSpeed], A
+
+    ; Set B to be the flip of the direction in E
+    ld   A, E
+    call objectReverseDirection
+    ld   B, A
+
+    ; Load room override settings
+    ld   HL, wNextRoomOverride
+    push DE
+    ld   A, [HL+]
+    ld   E, A
+    ld   D, [HL]
+
+    ; Determine next room to load
+    and  A, D
+    inc  A ; if a room override is not set this will be zero
+    ld   A, B ; sets which direction to move
+    jr   Z, .choose_next_room
+    or   A, $80 ; sets flag to use override
+.choose_next_room:
+    or   A, $10 ; sets flag to choose next room
+    call call_00_2617
+    pop  DE
+    ld   A, $ff
+    ld   HL, wNextRoomOverride
+    ld   [HL+], A
+    ld   [HL], A
+    ld   C, A ; indicates this is the first pass through scrollRoom function for this transition
+
+.scroll_started:
+    ; On the first pass we know we will not be moving the screen, so ignore other checks
+    and  A, C
+    jr   NZ, .scrollRoomMove
+
+    ; If VBlankDone is over 1, then let it catch up before continuing to scroll
+    ld   A, [wVBlankDone]
+    cp   A, $02
+    ret  NC
+
+    ; If we've started scrolling, ignore the wTileCopyRequestCount check
+    ld   A, [wScrollPixelCounter]
+    and  A, A
+    jr   NZ, .scrollRoomMove
+
+    ; Verify that all tiles on new map are written before beginning scroll
+    ld   A, [wTileCopyRequestCount]
+    and  A, A
+    ret  NZ
+
+.scrollRoomMove:
+    ; Based on direction, draw a new row or column of metatiles
+    ld   HL, wScrollPixelCounter
+    inc  C ; $00 for first call, $01 for subsequent call
+    swap C ; $00 for first call, $10 for subsequent call
+    xor  A, A
+    bit  DIRECTIONB_WEST, E
+    jr   NZ, .east
+    bit  DIRECTIONB_NORTH, E
+    jr   NZ, .south
+    bit  DIRECTIONB_SOUTH, E
+    jr   NZ, .north
+
 .west:
-    ld   A, [wScrollPixelCounter]                      ;; 01:4541 $fa $48 $c3
-    cp   A, $00                                        ;; 01:4544 $fe $00
-    jr   NZ, .jr_01_4569                               ;; 01:4546 $20 $21
-    ld   A, D                                          ;; 01:4548 $7a
-    ld [wSpriteScrollSpeed], a
-    ld   A, [wNextRoomOverride]                        ;; 01:454c $fa $44 $c3
-    ld   E, A                                          ;; 01:454f $5f
-    ld   A, [wNextRoomOverride.x]                      ;; 01:4550 $fa $45 $c3
-    ld   D, A                                          ;; 01:4553 $57
-    and  A, E                                          ;; 01:4554 $a3
-    inc  A                                             ;; 01:4555 $3c
-    ld   A, $12                                        ;; 01:4556 $3e $12
-    jr   Z, .jr_01_455c                                ;; 01:4558 $28 $02
-    or   A, $80                                        ;; 01:455a $f6 $80
-.jr_01_455c:
-    call call_00_2617                                  ;; 01:455c $cd $17 $26
-    ld   A, $ff                                        ;; 01:455f $3e $ff
-    ld   [wNextRoomOverride], A                        ;; 01:4561 $ea $44 $c3
-    ld   [wNextRoomOverride.x], A                      ;; 01:4564 $ea $45 $c3
-    ld   A, $00                                        ;; 01:4567 $3e $00
-.jr_01_4569:
-    and  A, $0f                                        ;; 01:4569 $e6 $0f
-    jr   NZ, .jr_01_4587                               ;; 01:456b $20 $1a
-    ld   A, [wScrollPixelCounter]                      ;; 01:456d $fa $48 $c3
-    swap A                                             ;; 01:4570 $cb $37
-    and  A, $0f                                        ;; 01:4572 $e6 $0f
-    sub  A, $0a                                        ;; 01:4574 $d6 $0a
-    cpl                                                ;; 01:4576 $2f
-    ld   E, A                                          ;; 01:4577 $5f
-    ld   D, $ff                                        ;; 01:4578 $16 $ff
-    call drawRoomMetaTilesColumn                       ;; 01:457a $cd $90 $46
-    ld   A, [wBackgroundDrawPositionX]                 ;; 01:457d $fa $42 $c3
-    dec  A                                             ;; 01:4580 $3d
-    dec  A                                             ;; 01:4581 $3d
-    and  A, $1f                                        ;; 01:4582 $e6 $1f
-    ld   [wBackgroundDrawPositionX], A                 ;; 01:4584 $ea $42 $c3
-.jr_01_4587:
-    ld   A, $b1                                        ;; 01:4587 $3e $b1
-    call scrollMoveSprites_trampoline                  ;; 01:4589 $cd $29 $04
-    pop  DE                                            ;; 01:458c $d1
-    ld   A, D                                          ;; 01:458d $7a
-    cpl                                                ;; 01:458e $2f
-    inc  A                                             ;; 01:458f $3c
-    ld   E, A                                          ;; 01:4590 $5f
-    ld   D, $00                                        ;; 01:4591 $16 $00
-    call scrollRoomScroll                              ;; 01:4593 $cd $c4 $46
-    ret                                                ;; 01:4596 $c9
+    ; Set D (y direction) to 0 and E (x direction) to -speed
+    ld   E, D
+    ld   D, A
+    ld   A, E
+    cpl
+    inc  A
+    ld   E, A
+    ; Check if the pixel counter is a multiple of 16 (metatile boundary)
+    ld   A, $0f
+    and  A, [HL]
+    jr   NZ, .west_done_graphics
+    ; Queue up the next section of metatiles
+    ld   A, [HL]
+    ; This will add $10 to the pixel counter if this is not the first call,
+    ; bringing in the next section of metatiles ahead of the one being scrolled into
+    add  A, C
+    swap A
+    and  A, $0f
+    sub  A, SCRN_X_B / 2
+    jr   Z, .west_done_graphics ; exit early if all sections written
+    cpl
+    push DE
+    ld   E, A
+    ld   D, $ff
+    call drawRoomMetaTilesColumn
+    pop  DE
+    ld   A, [wBackgroundDrawPositionX]
+    dec  A
+    dec  A
+    and  A, $1f
+    ld   [wBackgroundDrawPositionX], A
+.west_done_graphics:
+    ld   A, $b0 | DIRECTIONF_EAST
+    jr   .move_screen
+
 .east:
-    ld   A, [wScrollPixelCounter]                      ;; 01:4597 $fa $48 $c3
-    cp   A, $00                                        ;; 01:459a $fe $00
-    jr   NZ, .jr_01_45bf                               ;; 01:459c $20 $21
-    ld   A, D                                          ;; 01:459e $7a
-    ld [wSpriteScrollSpeed], a
-    ld   A, [wNextRoomOverride]                        ;; 01:45a2 $fa $44 $c3
-    ld   E, A                                          ;; 01:45a5 $5f
-    ld   A, [wNextRoomOverride.x]                      ;; 01:45a6 $fa $45 $c3
-    ld   D, A                                          ;; 01:45a9 $57
-    and  A, E                                          ;; 01:45aa $a3
-    inc  A                                             ;; 01:45ab $3c
-    ld   A, $11                                        ;; 01:45ac $3e $11
-    jr   Z, .jr_01_45b2                                ;; 01:45ae $28 $02
-    or   A, $80                                        ;; 01:45b0 $f6 $80
-.jr_01_45b2:
-    call call_00_2617                                  ;; 01:45b2 $cd $17 $26
-    ld   A, $ff                                        ;; 01:45b5 $3e $ff
-    ld   [wNextRoomOverride], A                        ;; 01:45b7 $ea $44 $c3
-    ld   [wNextRoomOverride.x], A                      ;; 01:45ba $ea $45 $c3
-    ld   A, $00                                        ;; 01:45bd $3e $00
-.jr_01_45bf:
-    and  A, $0f                                        ;; 01:45bf $e6 $0f
-    jr   NZ, .jr_01_45da                               ;; 01:45c1 $20 $17
-    ld   A, [wScrollPixelCounter]                      ;; 01:45c3 $fa $48 $c3
-    swap A                                             ;; 01:45c6 $cb $37
-    and  A, $0f                                        ;; 01:45c8 $e6 $0f
-    ld   E, A                                          ;; 01:45ca $5f
-    ld   D, $0a                                        ;; 01:45cb $16 $0a
-    call drawRoomMetaTilesColumn                       ;; 01:45cd $cd $90 $46
-    ld   A, [wBackgroundDrawPositionX]                 ;; 01:45d0 $fa $42 $c3
-    inc  A                                             ;; 01:45d3 $3c
-    inc  A                                             ;; 01:45d4 $3c
-    and  A, $1f                                        ;; 01:45d5 $e6 $1f
-    ld   [wBackgroundDrawPositionX], A                 ;; 01:45d7 $ea $42 $c3
-.jr_01_45da:
-    ld   A, $b2                                        ;; 01:45da $3e $b2
-    call scrollMoveSprites_trampoline                  ;; 01:45dc $cd $29 $04
-    pop  DE                                            ;; 01:45df $d1
-    ld   E, D                                          ;; 01:45e0 $5a
-    ld   D, $00                                        ;; 01:45e1 $16 $00
-    call scrollRoomScroll                              ;; 01:45e3 $cd $c4 $46
-    ret                                                ;; 01:45e6 $c9
+    ; Set D (y direction) to 0 and E (x direction) to speed
+    ld   E, D
+    ld   D, A
+    ; Check if the pixel counter is a multiple of 16 (metatile boundary)
+    ld   A, $0f
+    and  A, [HL]
+    jr   NZ, .east_done_graphics
+    ; Queue up the next section of metatiles
+    ld   A, [HL]
+    ; This will add $10 to the pixel counter if this is not the first call,
+    ; bringing in the next section of metatiles ahead of the one being scrolled into
+    add  A, C
+    swap A
+    and  A, $0f
+    cp   A, SCRN_X_B / 2
+    jr   Z, .east_done_graphics ; exit early if all sections written
+    push DE
+    ld   D, SCRN_X_B / 2
+    ld   E, A
+    call drawRoomMetaTilesColumn
+    pop  DE
+    ld   A, [wBackgroundDrawPositionX]
+    inc  A
+    inc  A
+    and  A, $1f
+    ld   [wBackgroundDrawPositionX], A
+.east_done_graphics:
+    ld   A, $b0 | DIRECTIONF_WEST
+    jr   .move_screen
+
 .south:
-    ld   A, [wScrollPixelCounter]                      ;; 01:45e7 $fa $48 $c3
-    cp   A, $00                                        ;; 01:45ea $fe $00
-    jr   NZ, .jr_01_460f                               ;; 01:45ec $20 $21
-    ld   A, D                                          ;; 01:45ee $7a
-    ld [wSpriteScrollSpeed], a
-    ld   A, [wNextRoomOverride]                        ;; 01:45f2 $fa $44 $c3
-    ld   E, A                                          ;; 01:45f5 $5f
-    ld   A, [wNextRoomOverride.x]                      ;; 01:45f6 $fa $45 $c3
-    ld   D, A                                          ;; 01:45f9 $57
-    and  A, E                                          ;; 01:45fa $a3
-    inc  A                                             ;; 01:45fb $3c
-    ld   A, $18                                        ;; 01:45fc $3e $18
-    jr   Z, .jr_01_4602                                ;; 01:45fe $28 $02
-    or   A, $80                                        ;; 01:4600 $f6 $80
-.jr_01_4602:
-    call call_00_2617                                  ;; 01:4602 $cd $17 $26
-    ld   A, $ff                                        ;; 01:4605 $3e $ff
-    ld   [wNextRoomOverride], A                        ;; 01:4607 $ea $44 $c3
-    ld   [wNextRoomOverride.x], A                      ;; 01:460a $ea $45 $c3
-    ld   A, $00                                        ;; 01:460d $3e $00
-.jr_01_460f:
-    and  A, $0f                                        ;; 01:460f $e6 $0f
-    jr   NZ, .jr_01_462e                               ;; 01:4611 $20 $1b
-    ld   A, [wScrollPixelCounter]                      ;; 01:4613 $fa $48 $c3
-    swap A                                             ;; 01:4616 $cb $37
-    and  A, $0f                                        ;; 01:4618 $e6 $0f
-    ld   E, A                                          ;; 01:461a $5f
-    ld   A, [wRoomHeightInTiles]                       ;; 01:461b $fa $40 $c3
-    srl  A                                             ;; 01:461e $cb $3f
-    ld   D, A                                          ;; 01:4620 $57
-    call drawRoomMetatilesRow                          ;; 01:4621 $cd $aa $46
-    ld   A, [wBackgroundDrawPositionY]                 ;; 01:4624 $fa $43 $c3
-    inc  A                                             ;; 01:4627 $3c
-    inc  A                                             ;; 01:4628 $3c
-    and  A, $1f                                        ;; 01:4629 $e6 $1f
-    ld   [wBackgroundDrawPositionY], A                 ;; 01:462b $ea $43 $c3
-.jr_01_462e:
-    ld   A, $b4                                        ;; 01:462e $3e $b4
-    call scrollMoveSprites_trampoline                  ;; 01:4630 $cd $29 $04
-    pop  DE                                            ;; 01:4633 $d1
-    ld   E, $00                                        ;; 01:4634 $1e $00
-    call scrollRoomScroll                              ;; 01:4636 $cd $c4 $46
-    ret                                                ;; 01:4639 $c9
+    ; Set D (y direction) to speed (already done) and E (x direction) to 0
+    ld   E, A
+    ; Check if the pixel counter is a multiple of 16 (metatile boundary)
+    ld   A, $0f
+    and  A, [HL]
+    jr   NZ, .south_done_graphics
+    ; Get height of screen in metatiles in B (safety for window height changes)
+    ld   A, [wRoomHeightInTiles]
+    srl  A
+    ld   B, A
+    ; Queue up the next section of metatiles
+    ld   A, [HL]
+    ; This will add $10 to the pixel counter if this is not the first call,
+    ; bringing in the next section of metatiles ahead of the one being scrolled into
+    add  A, C
+    swap A
+    and  A, $0f
+    cp   A, B
+    jr   Z, .south_done_graphics ; exit early if all sections written
+    push DE
+    ld   E, A
+    ld   D, B
+    call drawRoomMetatilesRow
+    pop  DE
+    ld   A, [wBackgroundDrawPositionY]
+    inc  A
+    inc  A
+    and  A, $1f
+    ld   [wBackgroundDrawPositionY], A
+.south_done_graphics:
+    ld   A, $b0 | DIRECTIONF_NORTH
+    jr   .move_screen
+
 .north:
-    ld   A, [wScrollPixelCounter]                      ;; 01:463a $fa $48 $c3
-    cp   A, $00                                        ;; 01:463d $fe $00
-    jr   NZ, .jr_01_4662                               ;; 01:463f $20 $21
-    ld   A, D                                          ;; 01:4641 $7a
-    ld [wSpriteScrollSpeed], a
-    ld   A, [wNextRoomOverride]                        ;; 01:4645 $fa $44 $c3
-    ld   E, A                                          ;; 01:4648 $5f
-    ld   A, [wNextRoomOverride.x]                      ;; 01:4649 $fa $45 $c3
-    ld   D, A                                          ;; 01:464c $57
-    and  A, E                                          ;; 01:464d $a3
-    inc  A                                             ;; 01:464e $3c
-    ld   A, $14                                        ;; 01:464f $3e $14
-    jr   Z, .jr_01_4655                                ;; 01:4651 $28 $02
-    or   A, $80                                        ;; 01:4653 $f6 $80
-.jr_01_4655:
-    call call_00_2617                                  ;; 01:4655 $cd $17 $26
-    ld   A, $ff                                        ;; 01:4658 $3e $ff
-    ld   [wNextRoomOverride], A                        ;; 01:465a $ea $44 $c3
-    ld   [wNextRoomOverride.x], A                      ;; 01:465d $ea $45 $c3
-    ld   A, $00                                        ;; 01:4660 $3e $00
-.jr_01_4662:
-    and  A, $0f                                        ;; 01:4662 $e6 $0f
-    jr   NZ, .jr_01_4680                               ;; 01:4664 $20 $1a
-    ld   A, [wScrollPixelCounter]                      ;; 01:4666 $fa $48 $c3
-    swap A                                             ;; 01:4669 $cb $37
-    and  A, $0f                                        ;; 01:466b $e6 $0f
-    sub  A, $08                                        ;; 01:466d $d6 $08
-    cpl                                                ;; 01:466f $2f
-    ld   E, A                                          ;; 01:4670 $5f
-    ld   D, $ff                                        ;; 01:4671 $16 $ff
-    call drawRoomMetatilesRow                          ;; 01:4673 $cd $aa $46
-    ld   A, [wBackgroundDrawPositionY]                 ;; 01:4676 $fa $43 $c3
-    dec  A                                             ;; 01:4679 $3d
-    dec  A                                             ;; 01:467a $3d
-    and  A, $1f                                        ;; 01:467b $e6 $1f
-    ld   [wBackgroundDrawPositionY], A                 ;; 01:467d $ea $43 $c3
-.jr_01_4680:
-    ld   A, $b8                                        ;; 01:4680 $3e $b8
-    call scrollMoveSprites_trampoline                  ;; 01:4682 $cd $29 $04
-    pop  DE                                            ;; 01:4685 $d1
-    ld   A, D                                          ;; 01:4686 $7a
-    cpl                                                ;; 01:4687 $2f
-    inc  A                                             ;; 01:4688 $3c
-    ld   D, A                                          ;; 01:4689 $57
-    ld   E, $00                                        ;; 01:468a $1e $00
-    call scrollRoomScroll                              ;; 01:468c $cd $c4 $46
-    ret                                                ;; 01:468f $c9
+    ; Set D (y direction) to -speed and E (x direction) to 0
+    ld   E, A
+    ld   A, D
+    cpl
+    inc  A
+    ld   D, A
+    ; Check if the pixel counter is a multiple of 16 (metatile boundary)
+    ld   A, $0f
+    and  A, [HL]
+    jr   NZ, .north_done_graphics
+    ; Get height of screen in metatiles in B (safety for window height changes)
+    ld   A, [wRoomHeightInTiles]
+    srl  A
+    ld   B, A
+    ; Queue up the next section of metatiles
+    ld   A, [HL]
+    ; This will add $10 to the pixel counter if this is not the first call,
+    ; bringing in the next section of metatiles ahead of the one being scrolled into
+    add  A, C
+    swap A
+    and  A, $0f
+    sub  A, B
+    jr   Z, .north_done_graphics ; exit early if all sections written
+    cpl
+    push DE
+    ld   E, A
+    ld   D, $ff
+    call drawRoomMetatilesRow
+    pop  DE
+    ld   A, [wBackgroundDrawPositionY]
+    dec  A
+    dec  A
+    and  A, $1f
+    ld   [wBackgroundDrawPositionY], A
+.north_done_graphics:
+    ld   A, $b0 | DIRECTIONF_SOUTH
+
+.move_screen:
+    ; Exit early if this is the first call (only queues up graphics)
+    bit  4, C
+    ret  Z
+
+    ; Move the sprites along with the screen
+    push DE
+    call scrollMoveSprites_trampoline
+    pop  DE
+
+    ; Move the screen itself
+    call scrollRoomMoveScreen
+    ret
+
+ds 143 ; Free space
 
 drawRoomMetaTilesColumn:
     ld   B, $00                                        ;; 01:4690 $06 $00
@@ -920,7 +932,7 @@ drawRoomMetaTilesColumn:
     push DE                                            ;; 01:469b $d5
     ld   E, D                                          ;; 01:469c $5a
     ld   D, B                                          ;; 01:469d $50
-    call drawMetaTile                                  ;; 01:469e $cd $1d $05
+    call drawMetaTile_immediate
     pop  DE                                            ;; 01:46a1 $d1
     pop  BC                                            ;; 01:46a2 $c1
     inc  B                                             ;; 01:46a3 $04
@@ -942,7 +954,7 @@ drawRoomMetatilesRow:
     push BC                                            ;; 01:46b5 $c5
     push DE                                            ;; 01:46b6 $d5
     ld   E, B                                          ;; 01:46b7 $58
-    call drawMetaTile                                  ;; 01:46b8 $cd $1d $05
+    call drawMetaTile_immediate
     pop  DE                                            ;; 01:46bb $d1
     pop  BC                                            ;; 01:46bc $c1
     inc  B                                             ;; 01:46bd $04
@@ -952,7 +964,7 @@ drawRoomMetatilesRow:
     ret                                                ;; 01:46c3 $c9
 
 ; DE = yx scroll distances
-scrollRoomScroll:
+scrollRoomMoveScreen:
     ld   A, [wVideoSCX]                                ;; 01:46c4 $fa $a6 $c0
     add  A, E                                          ;; 01:46c7 $83
     ld   [wVideoSCX], A                                ;; 01:46c8 $ea $a6 $c0
@@ -1023,7 +1035,7 @@ drawRoom:
     call getRoomMetaTile                               ;; 01:473c $cd $26 $24
     pop  DE                                            ;; 01:473f $d1
     push DE                                            ;; 01:4740 $d5
-    call drawMetaTile                                  ;; 01:4741 $cd $1d $05
+    call drawMetaTile_immediate
     pop  DE                                            ;; 01:4744 $d1
     pop  BC                                            ;; 01:4745 $c1
     inc  E                                             ;; 01:4746 $1c

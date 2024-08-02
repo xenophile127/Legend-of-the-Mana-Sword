@@ -846,12 +846,13 @@ requestCopyTwoBytesToDrawAddress:
     call requestCopyTwoBytesToVRAM                     ;; 00:0491 $cd $9f $1e
     ret                                                ;; 00:0494 $c9
 
-storeDEatBackgroundDrawPosition:
-    push HL                                            ;; 00:0495 $e5
-    call getBackgroundDrawAddress                      ;; 00:0496 $cd $5d $04
-    pop  DE                                            ;; 00:0499 $d1
-    call storeDEinVRAM                                 ;; 00:049a $cd $74 $1d
-    ret                                                ;; 00:049d $c9
+ds 1 ; Free space
+
+drawRoomWithGuardOnTileTransfer:
+    ld   A, [wTileCopyRequestCount]
+    and  A, A
+    jr   NZ, drawRoomWithGuardOnTileTransfer
+    jr   drawRoom_trampoline
 
 scrollRoom_trampoline:
     jp_to_bank 01, scrollRoom                          ;; 00:049e $f5 $3e $18 $c3 $d7 $1e
@@ -939,7 +940,7 @@ processPhysicsForObject_4_trampoline:
 ; Uses background requests to copy the bytes into VRAM
 drawMetaTile:
     push DE                                            ;; 00:051d $d5
-    call getTileInfoPointer2                           ;; 00:051e $cd $bb $05
+    call getTileInfoPointer
     push HL                                            ;; 00:0521 $e5
     ld   A, BANK(metatilesOutdoor) ;@=bank metatilesOutdoor ;; 00:0522 $3e $08
     call pushBankNrAndSwitch                           ;; 00:0524 $cd $fb $29
@@ -998,78 +999,75 @@ drawMetaTile:
 ; Draw the meta tile A (metatile index) at DE (YX tile number)
 ; Transfers the bytes during HBlank
 drawMetaTile_immediate:
-    push DE                                            ;; 00:056c $d5
-    call getTileInfoPointer2                           ;; 00:056d $cd $bb $05
-    push HL                                            ;; 00:0570 $e5
+    sla  D
+    sla  E
+    push AF
+    call getBackgroundDrawAddress
+    pop  AF
+    push HL
+    call getTileInfoPointer
+    push HL
     ld   A, BANK(metatilesOutdoor) ;@=bank metatilesOutdoor ;; 00:0571 $3e $08
     call pushBankNrAndSwitch                           ;; 00:0573 $cd $fb $29
     pop  HL                                            ;; 00:0576 $e1
-    pop  DE                                            ;; 00:0577 $d1
-    ld   A, E                                          ;; 00:0578 $7b
-    add  A, A                                          ;; 00:0579 $87
-    ld   E, A                                          ;; 00:057a $5f
-    ld   A, D                                          ;; 00:057b $7a
-    add  A, A                                          ;; 00:057c $87
-    ld   D, A                                          ;; 00:057d $57
-    ld   A, [HL+]                                      ;; 00:057e $2a
-    push HL                                            ;; 00:057f $e5
-    ld   HL, wBackgroundGraphicsTileMapping            ;; 00:0580 $21 $70 $d0
-    ld   C, A                                          ;; 00:0583 $4f
-    ld   B, $00                                        ;; 00:0584 $06 $00
-    add  HL, BC                                        ;; 00:0586 $09
-    ld   C, [HL]                                       ;; 00:0587 $4e
-    pop  HL                                            ;; 00:0588 $e1
-    ld   A, [HL+]                                      ;; 00:0589 $2a
-    push HL                                            ;; 00:058a $e5
-    push DE                                            ;; 00:058b $d5
-    push BC                                            ;; 00:058c $c5
-    ld   HL, wBackgroundGraphicsTileMapping            ;; 00:058d $21 $70 $d0
-    ld   C, A                                          ;; 00:0590 $4f
-    ld   B, $00                                        ;; 00:0591 $06 $00
-    add  HL, BC                                        ;; 00:0593 $09
-    ld   L, [HL]                                       ;; 00:0594 $6e
-    pop  BC                                            ;; 00:0595 $c1
-    ld   H, C                                          ;; 00:0596 $61
-    call storeDEatBackgroundDrawPosition               ;; 00:0597 $cd $95 $04
-    pop  DE                                            ;; 00:059a $d1
-    pop  HL                                            ;; 00:059b $e1
-    inc  D                                             ;; 00:059c $14
-    ld   A, [HL+]                                      ;; 00:059d $2a
-    push HL                                            ;; 00:059e $e5
-    ld   HL, wBackgroundGraphicsTileMapping            ;; 00:059f $21 $70 $d0
-    ld   C, A                                          ;; 00:05a2 $4f
-    ld   B, $00                                        ;; 00:05a3 $06 $00
-    add  HL, BC                                        ;; 00:05a5 $09
-    ld   C, [HL]                                       ;; 00:05a6 $4e
-    pop  HL                                            ;; 00:05a7 $e1
-    push BC                                            ;; 00:05a8 $c5
-    ld   A, [HL+]                                      ;; 00:05a9 $2a
-    ld   HL, wBackgroundGraphicsTileMapping            ;; 00:05aa $21 $70 $d0
-    ld   C, A                                          ;; 00:05ad $4f
-    ld   B, $00                                        ;; 00:05ae $06 $00
-    add  HL, BC                                        ;; 00:05b0 $09
-    ld   L, [HL]                                       ;; 00:05b1 $6e
-    pop  BC                                            ;; 00:05b2 $c1
-    ld   H, C                                          ;; 00:05b3 $61
-    call storeDEatBackgroundDrawPosition               ;; 00:05b4 $cd $95 $04
+    ld   A, [HL+]
+    ld   B, A
+    ld   A, [HL+]
+    ld   C, A
+    ld   A, [HL+]
+    ld   D, $00
+    ld   E, [HL]
+    push BC
+    ld   HL, wBackgroundGraphicsTileMapping
+    add  HL, DE
+    ld   C, [HL]
+    ld   HL, wBackgroundGraphicsTileMapping
+    ld   E, A
+    add  HL, DE
+    ld   B, [HL]
+    pop  DE
+    push BC
+    ld   A, D
+    ld   D, $00
+    ld   HL, wBackgroundGraphicsTileMapping
+    add  HL, DE
+    ld   C, [HL]
+    ld   HL, wBackgroundGraphicsTileMapping
+    ld   E, A
+    add  HL, DE
+    ld   B, [HL]
+    pop  DE
+    pop  HL
+    call storeMetatileInVRAM
     call popBankNrAndSwitch                            ;; 00:05b7 $cd $0a $2a
     ret                                                ;; 00:05ba $c9
 
-; Exactly the same as getTileInfoPointer
-getTileInfoPointer2:
-    ld   L, A                                          ;; 00:05bb $6f
-    ld   H, $00                                        ;; 00:05bc $26 $00
-    ld   D, H                                          ;; 00:05be $54
-    ld   E, L                                          ;; 00:05bf $5d
-    add  HL, HL                                        ;; 00:05c0 $29
-    add  HL, DE                                        ;; 00:05c1 $19
-    add  HL, HL                                        ;; 00:05c2 $29
-    ld   A, [wTileDataTablePointer.High]               ;; 00:05c3 $fa $93 $d3
-    ld   D, A                                          ;; 00:05c6 $57
-    ld   A, [wTileDataTablePointer]                    ;; 00:05c7 $fa $92 $d3
-    ld   E, A                                          ;; 00:05ca $5f
-    add  HL, DE                                        ;; 00:05cb $19
-    ret                                                ;; 00:05cc $c9
+; Store BCDE at metatile with upper left corner at HL.
+; Waits until PPU mode 0 (HBlank) or 1 (VBlank).
+; The writing to VRAM will worst case occur right during
+; the transition from mode 0 (HBlank) to mode 2 (OAM). In
+; that case, this code will take at most 19 cycles or 76 dots.
+; This will always be under the 80 dot period of mode 2 (OAM).
+; Return: a = e, bc = bc, de = de, hl = hl + $20
+storeMetatileInVRAM:
+    ldh a, [rLCDC]
+    and LCDCF_ON
+    jr z, .write
+.loop:
+    ldh a, [rSTAT]
+    and STATF_BUSY
+    jr nz, .loop
+.write:
+    ld a, b
+    ld [hl+], a
+    ld [hl], c
+    set 5, l ; adds $20, this works with metatiles since L will always start a multiple of $40
+    ld a, e
+    ld [hl-], a
+    ld [hl], d
+    ret
+
+ds 11 ; Free space
 
 hideMinimapFlashingMarker:
     ld   L, C                                          ;; 00:05cd $69
@@ -1968,7 +1966,7 @@ createObject:
     pop  DE                                            ;; 00:0a8f $d1
     push HL                                            ;; 00:0a90 $e5
 ; Orientation (objects are always created facing south).
-    ld   [HL], DIRECTION_SOUTH                         ;; 00:0a91 $36 $08
+    ld   [HL], DIRECTIONF_SOUTH                        ;; 00:0a91 $36 $08
     inc  HL                                            ;; 00:0a93 $23
 ; Movement speed (delay until action).
     ld   [HL], A                                       ;; 00:0a94 $77
