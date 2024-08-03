@@ -4851,17 +4851,19 @@ initMapGraphicsState:
 getTileInfoPointer:
     ld   L, A                                          ;; 00:1b19 $6f
     ld   H, $00                                        ;; 00:1b1a $26 $00
-    ld   D, H                                          ;; 00:1b1c $54
-    ld   E, L                                          ;; 00:1b1d $5d
-    add  HL, HL                                        ;; 00:1b1e $29
-    add  HL, DE                                        ;; 00:1b1f $19
-    add  HL, HL                                        ;; 00:1b20 $29
-    ld   A, [wTileDataTablePointer.High]               ;; 00:1b21 $fa $93 $d3
-    ld   D, A                                          ;; 00:1b24 $57
-    ld   A, [wTileDataTablePointer]                    ;; 00:1b25 $fa $92 $d3
-    ld   E, A                                          ;; 00:1b28 $5f
+    add hl, hl
+    ld d, h
+    ld e, l
+    ld hl, wTileDataTablePointer
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    add hl, de
+    add hl, de
     add  HL, DE                                        ;; 00:1b29 $19
     ret                                                ;; 00:1b2a $c9
+
+ds 2 ; Free space
 
 mapGraphicsStateRefreshTiles:
     ld   B, $50                                        ;; 00:1b2b $06 $50
