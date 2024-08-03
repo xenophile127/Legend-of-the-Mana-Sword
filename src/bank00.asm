@@ -4906,7 +4906,7 @@ mapGraphicsStateUpdateCache:
     or a
     jr   Z, .next                                      ;; 00:1b56 $28 $17
     dec  A                                             ;; 00:1b58 $3d
-    jr   NZ, .write                                    ;; 00:1b59 $20 $14
+    jr   NZ, .next                                     ;; 00:1b59 $20 $14
 ; The tile has just aged out of the cache.
     push HL                                            ;; 00:1b5b $e5
 ; This load is $ff00, which could be considered -256.
@@ -4924,9 +4924,8 @@ mapGraphicsStateUpdateCache:
 ; a is $00.
     ld [hl], a
     pop  HL                                            ;; 00:1b6c $e1
-.write:
-    ld   [HL+], A                                      ;; 00:1b6f $22
 .next:
+    ld   [HL+], A                                      ;; 00:1b6f $22
     dec  B                                             ;; 00:1b70 $05
     jr   NZ, .loop                                     ;; 00:1b71 $20 $e0
     ret                                                ;; 00:1b73 $c9
