@@ -610,16 +610,15 @@ SECTION "bank01_align_4477", ROMX[$4477], BANK[$01]
 advanceScriptOpWhenVRAMCopiesDone:
     push DE                                            ;; 01:4477 $d5
     ld   A, [wTileCopyRequestCount]                    ;; 01:4478 $fa $e0 $c8
-    cp   A, $00                                        ;; 01:447b $fe $00
-    jr   NZ, .notDone                                  ;; 01:447d $20 $0b
-    ld   A, [wBackgroundRenderRequestCount]            ;; 01:447f $fa $e8 $ce
-    cp   A, $00                                        ;; 01:4482 $fe $00
+    or a
     jr   NZ, .notDone                                  ;; 01:4484 $20 $04
     ld   HL, wScriptOpCounter                          ;; 01:4486 $21 $99 $d4
     inc  [HL]                                          ;; 01:4489 $34
 .notDone:
     pop  HL                                            ;; 01:448a $e1
     ret                                                ;; 01:448b $c9
+
+ds 8 ; Free space
 
 LoadMapEnd:
     push DE                                            ;; 01:448c $d5

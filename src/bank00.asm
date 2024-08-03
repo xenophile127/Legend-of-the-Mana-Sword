@@ -839,15 +839,6 @@ storeAatBackgroundDrawPosition:
     call storeAatHLinVRAM                              ;; 00:0481 $cd $5e $1d
     ret                                                ;; 00:0484 $c9
 
-requestCopyTwoBytesToDrawAddress:
-    push HL                                            ;; 00:048c $e5
-    call getBackgroundDrawAddress                      ;; 00:048d $cd $5d $04
-    pop  DE                                            ;; 00:0490 $d1
-    call requestCopyTwoBytesToVRAM                     ;; 00:0491 $cd $9f $1e
-    ret                                                ;; 00:0494 $c9
-
-ds 1 ; Free space
-
 drawRoomWithGuardOnTileTransfer:
     ld   A, [wTileCopyRequestCount]
     and  A, A
@@ -936,65 +927,9 @@ bossCollisionHandling_trampoline:
 processPhysicsForObject_4_trampoline:
     jp_to_bank 04, processPhysicsForObject_4           ;; 00:0517 $f5 $3e $04 $c3 $64 $1f
 
-; Draw the meta tile A (metatile index) at DE (YX tile number)
-; Uses background requests to copy the bytes into VRAM
-drawMetaTile:
-    push DE                                            ;; 00:051d $d5
-    call getTileInfoPointer
-    push HL                                            ;; 00:0521 $e5
-    ld   A, BANK(metatilesOutdoor) ;@=bank metatilesOutdoor ;; 00:0522 $3e $08
-    call pushBankNrAndSwitch                           ;; 00:0524 $cd $fb $29
-    pop  HL                                            ;; 00:0527 $e1
-    pop  DE                                            ;; 00:0528 $d1
-    ld   A, E                                          ;; 00:0529 $7b
-    add  A, A                                          ;; 00:052a $87
-    ld   E, A                                          ;; 00:052b $5f
-    ld   A, D                                          ;; 00:052c $7a
-    add  A, A                                          ;; 00:052d $87
-    ld   D, A                                          ;; 00:052e $57
-    ld   A, [HL+]                                      ;; 00:052f $2a
-    push HL                                            ;; 00:0530 $e5
-    ld   HL, wBackgroundGraphicsTileMapping            ;; 00:0531 $21 $70 $d0
-    ld   C, A                                          ;; 00:0534 $4f
-    ld   B, $00                                        ;; 00:0535 $06 $00
-    add  HL, BC                                        ;; 00:0537 $09
-    ld   C, [HL]                                       ;; 00:0538 $4e
-    pop  HL                                            ;; 00:0539 $e1
-    ld   A, [HL+]                                      ;; 00:053a $2a
-    push HL                                            ;; 00:053b $e5
-    push DE                                            ;; 00:053c $d5
-    push BC                                            ;; 00:053d $c5
-    ld   HL, wBackgroundGraphicsTileMapping            ;; 00:053e $21 $70 $d0
-    ld   C, A                                          ;; 00:0541 $4f
-    ld   B, $00                                        ;; 00:0542 $06 $00
-    add  HL, BC                                        ;; 00:0544 $09
-    ld   L, [HL]                                       ;; 00:0545 $6e
-    pop  BC                                            ;; 00:0546 $c1
-    ld   H, C                                          ;; 00:0547 $61
-    call requestCopyTwoBytesToDrawAddress              ;; 00:0548 $cd $8c $04
-    pop  DE                                            ;; 00:054b $d1
-    pop  HL                                            ;; 00:054c $e1
-    inc  D                                             ;; 00:054d $14
-    ld   A, [HL+]                                      ;; 00:054e $2a
-    push HL                                            ;; 00:054f $e5
-    ld   HL, wBackgroundGraphicsTileMapping            ;; 00:0550 $21 $70 $d0
-    ld   C, A                                          ;; 00:0553 $4f
-    ld   B, $00                                        ;; 00:0554 $06 $00
-    add  HL, BC                                        ;; 00:0556 $09
-    ld   C, [HL]                                       ;; 00:0557 $4e
-    pop  HL                                            ;; 00:0558 $e1
-    push BC                                            ;; 00:0559 $c5
-    ld   A, [HL+]                                      ;; 00:055a $2a
-    ld   HL, wBackgroundGraphicsTileMapping            ;; 00:055b $21 $70 $d0
-    ld   C, A                                          ;; 00:055e $4f
-    ld   B, $00                                        ;; 00:055f $06 $00
-    add  HL, BC                                        ;; 00:0561 $09
-    ld   L, [HL]                                       ;; 00:0562 $6e
-    pop  BC                                            ;; 00:0563 $c1
-    ld   H, C                                          ;; 00:0564 $61
-    call requestCopyTwoBytesToDrawAddress              ;; 00:0565 $cd $8c $04
-    call popBankNrAndSwitch                            ;; 00:0568 $cd $0a $2a
-    ret                                                ;; 00:056b $c9
+ds 26 ; Free space
+
+SECTION "bank00_align_056c", ROM0[$056c]
 
 ; Draw the meta tile A (metatile index) at DE (YX tile number)
 ; Transfers the bytes during HBlank
@@ -5394,184 +5329,7 @@ callFunctionInBank11:
     ld   A, [wScratchBankCallA]                        ;; 00:1db5 $fa $b3 $c0
     ret                                                ;; 00:1db8 $c9
 
-ds 17 ; Free space
-
-getNextBackgroundRequestSlot:
-    ld   A, [wBackgroundRenderRequestCount]            ;; 00:1dca $fa $e8 $ce
-    ld   L, A                                          ;; 00:1dcd $6f
-    ld   H, $00                                        ;; 00:1dce $26 $00
-    ld   E, L                                          ;; 00:1dd0 $5d
-    ld   D, H                                          ;; 00:1dd1 $54
-    add  HL, HL                                        ;; 00:1dd2 $29
-    add  HL, DE                                        ;; 00:1dd3 $19
-    add  HL, HL                                        ;; 00:1dd4 $29
-    ld   DE, wBackgroundRenderRequests                 ;; 00:1dd5 $11 $e8 $c8
-    add  HL, DE                                        ;; 00:1dd8 $19
-    ret                                                ;; 00:1dd9 $c9
-
-; This queue is actually only used by the metatile drawing code.
-processBackgroundRenderRequests:
-    ld   A, [wBackgroundRenderRequestCount]            ;; 00:1dda $fa $e8 $ce
-    cp   A, $00                                        ;; 00:1ddd $fe $00
-    ret  Z                                             ;; 00:1ddf $c8
-; Don't run if the engine is lagging behind the framerate.
-    ld   A, [wVBlankDone]                              ;; 00:1de0 $fa $ad $c0
-    dec a
-    ret  NZ                                            ;; 00:1de5 $c0
-    ldh  A, [rLY]                                      ;; 00:1de6 $f0 $44
-    cp   A, $8c                                        ;; 00:1de8 $fe $8c
-    ret  NC                                            ;; 00:1dea $d0
-    ld   A, $01                                        ;; 00:1deb $3e $01
-    call pushBankNrAndSwitch                           ;; 00:1ded $cd $fb $29
-    ld   A, [wBackgroundRenderRequestCount]            ;; 00:1df0 $fa $e8 $ce
-    ld   B, A                                          ;; 00:1df3 $47
-    ld   HL, wBackgroundRenderRequests                 ;; 00:1df4 $21 $e8 $c8
-.loop_outer:
-    push BC                                            ;; 00:1df7 $c5
-    push HL                                            ;; 00:1df8 $e5
-    ld   C, [HL]                                       ;; 00:1df9 $4e
-    inc  HL                                            ;; 00:1dfa $23
-    ld   B, [HL]                                       ;; 00:1dfb $46
-    inc  HL                                            ;; 00:1dfc $23
-    ld   E, [HL]                                       ;; 00:1dfd $5e
-    inc  HL                                            ;; 00:1dfe $23
-    ld   D, [HL]                                       ;; 00:1dff $56
-    inc  HL                                            ;; 00:1e00 $23
-    ld   A, [HL+]                                      ;; 00:1e01 $2a
-    ld   H, [HL]                                       ;; 00:1e02 $66
-    ld   L, A                                          ;; 00:1e03 $6f
-    ld   A, C                                          ;; 00:1e04 $79
-    cp   A, $10                                        ;; 00:1e05 $fe $10
-    jr   NC, .jr_00_1e3a                               ;; 00:1e07 $30 $31
-    ld   [rROMB0], A                                   ;; 00:1e09 $ea $00 $20
-    ld   C, $44                                        ;; 00:1e0c $0e $44
-; check rLY
-.loop_inner:
-    ldh  A, [C]                                        ;; 00:1e0e $f2
-    cp   A, $8c                                        ;; 00:1e0f $fe $8c
-    jr   NC, .jr_00_1e49                               ;; 00:1e11 $30 $36
-    ld   A, [DE]                                       ;; 00:1e13 $1a
-    dec  B                                             ;; 00:1e14 $05
-    jr   Z, .jr_00_1e44                                ;; 00:1e15 $28 $2d
-    inc  DE                                            ;; 00:1e17 $13
-    push BC                                            ;; 00:1e18 $c5
-    ld   C, A                                          ;; 00:1e19 $4f
-    ld   A, [DE]                                       ;; 00:1e1a $1a
-    inc  DE                                            ;; 00:1e1b $13
-    push DE                                            ;; 00:1e1c $d5
-    ld   D, C                                          ;; 00:1e1d $51
-    ld   E, A                                          ;; 00:1e1e $5f
-    call storeDEinVRAM                                 ;; 00:1e1f $cd $74 $1d
-    pop  DE                                            ;; 00:1e23 $d1
-    pop  BC                                            ;; 00:1e24 $c1
-    dec  B                                             ;; 00:1e25 $05
-    jr   NZ, .loop_inner                               ;; 00:1e26 $20 $e6
-.jr_00_1e28:
-    pop  HL                                            ;; 00:1e28 $e1
-    pop  BC                                            ;; 00:1e29 $c1
-    ld   DE, $06                                       ;; 00:1e2a $11 $06 $00
-    add  HL, DE                                        ;; 00:1e2d $19
-    dec  B                                             ;; 00:1e2e $05
-    jr   NZ, .loop_outer                               ;; 00:1e2f $20 $c6
-    ld   A, $00                                        ;; 00:1e31 $3e $00
-    ld   [wBackgroundRenderRequestCount], A            ;; 00:1e33 $ea $e8 $ce
-    call popBankNrAndSwitch                            ;; 00:1e36 $cd $0a $2a
-    ret                                                ;; 00:1e39 $c9
-.jr_00_1e3a:
-    cp   A, $10                                        ;; 00:1e3a $fe $10
-    ld   A, D                                          ;; 00:1e3c $7a
-    jr   Z, .jr_00_1e44                                ;; 00:1e3d $28 $05
-    call storeDEinVRAM                                 ;; 00:1e3f $cd $74 $1d
-    jr   .jr_00_1e28                                   ;; 00:1e42 $18 $e4
-.jr_00_1e44:
-; Dead code.
-    call storeAatHLinVRAM                              ;; 00:1e44 $cd $5e $1d
-    jr   .jr_00_1e28                                   ;; 00:1e47 $18 $df
-.jr_00_1e49:
-    pop  HL                                            ;; 00:1e49 $e1
-    inc  HL                                            ;; 00:1e4a $23
-    ld   [HL], B                                       ;; 00:1e4b $70
-    dec  HL                                            ;; 00:1e4c $2b
-    pop  BC                                            ;; 00:1e4d $c1
-    ld   A, B                                          ;; 00:1e4e $78
-    ld   [wBackgroundRenderRequestCount], A            ;; 00:1e4f $ea $e8 $ce
-    push HL                                            ;; 00:1e52 $e5
-    push AF                                            ;; 00:1e53 $f5
-    call popBankNrAndSwitch                            ;; 00:1e54 $cd $0a $2a
-    pop  AF                                            ;; 00:1e57 $f1
-    pop  HL                                            ;; 00:1e58 $e1
-    cp   A, $00                                        ;; 00:1e59 $fe $00
-    ret  Z                                             ;; 00:1e5b $c8
-    push HL                                            ;; 00:1e5c $e5
-    ld   L, A                                          ;; 00:1e5d $6f
-    ld   H, $00                                        ;; 00:1e5e $26 $00
-    ld   C, L                                          ;; 00:1e60 $4d
-    ld   B, H                                          ;; 00:1e61 $44
-    add  HL, HL                                        ;; 00:1e62 $29
-    add  HL, BC                                        ;; 00:1e63 $09
-    add  HL, HL                                        ;; 00:1e64 $29
-    ld   C, L                                          ;; 00:1e65 $4d
-    ld   B, H                                          ;; 00:1e66 $44
-    ld   DE, wBackgroundRenderRequests                 ;; 00:1e67 $11 $e8 $c8
-    pop  HL                                            ;; 00:1e6a $e1
-    call CopyHL_to_DE_size_BC                          ;; 00:1e6b $cd $40 $2b
-    ret                                                ;; 00:1e6e $c9
-
-ds 2 ; Free space
-
-; Unused. Dead code.
-; Request to copy B bytes from bank A address HL to DE
-requestCopyToVRAM:
-    push DE                                            ;; 00:1e6f $d5
-    push HL                                            ;; 00:1e70 $e5
-    ld   C, A                                          ;; 00:1e71 $4f
-    call getNextBackgroundRequestSlot                  ;; 00:1e72 $cd $ca $1d
-    ld   A, C                                          ;; 00:1e75 $79
-    ld   [HL+], A                                      ;; 00:1e76 $22
-    ld   A, B                                          ;; 00:1e77 $78
-    ld   [HL+], A                                      ;; 00:1e78 $22
-    pop  DE                                            ;; 00:1e79 $d1
-    ld   A, E                                          ;; 00:1e7a $7b
-    ld   [HL+], A                                      ;; 00:1e7b $22
-    ld   A, D                                          ;; 00:1e7c $7a
-    ld   [HL+], A                                      ;; 00:1e7d $22
-    pop  DE                                            ;; 00:1e7e $d1
-    ld   A, E                                          ;; 00:1e7f $7b
-    ld   [HL+], A                                      ;; 00:1e80 $22
-    ld   [HL], D                                       ;; 00:1e81 $72
-    ld   HL, wBackgroundRenderRequestCount             ;; 00:1e82 $21 $e8 $ce
-    inc  [HL]                                          ;; 00:1e85 $34
-    ret                                                ;; 00:1e86 $c9
-    db   $e5, $47, $cd, $ca, $1d, $3e, $10, $22        ;; 00:1e87 ????????
-    db   $3e, $01, $22, $78, $22, $78, $22, $d1        ;; 00:1e8f ????????
-    db   $7b, $22, $72, $21, $e8, $ce, $34, $c9        ;; 00:1e97 ????????
-
-; Put in a request to copy 2 bytes from DE to HL
-; Only used to draw room metatiles.
-requestCopyTwoBytesToVRAM:
-    push HL                                            ;; 00:1e9f $e5
-    push DE                                            ;; 00:1ea0 $d5
-    call getNextBackgroundRequestSlot                  ;; 00:1ea1 $cd $ca $1d
-    ld   A, $20                                        ;; 00:1ea4 $3e $20
-    ld   [HL+], A                                      ;; 00:1ea6 $22
-    ld   A, $02                                        ;; 00:1ea7 $3e $02
-    ld   [HL+], A                                      ;; 00:1ea9 $22
-    pop  DE                                            ;; 00:1eaa $d1
-    ld   A, E                                          ;; 00:1eab $7b
-    ld   [HL+], A                                      ;; 00:1eac $22
-    ld   A, D                                          ;; 00:1ead $7a
-    ld   [HL+], A                                      ;; 00:1eae $22
-    pop  DE                                            ;; 00:1eaf $d1
-    ld   A, E                                          ;; 00:1eb0 $7b
-    ld   [HL+], A                                      ;; 00:1eb1 $22
-    ld   [HL], D                                       ;; 00:1eb2 $72
-    ld   HL, wBackgroundRenderRequestCount             ;; 00:1eb3 $21 $e8 $ce
-    inc  [HL]                                          ;; 00:1eb6 $34
-    ret                                                ;; 00:1eb7 $c9
-    db   $e5, $d5, $cd, $ca, $1d, $3e, $20, $22        ;; 00:1eb8 ????????
-    db   $3e, $02, $22, $d1, $7a, $22, $7b, $22        ;; 00:1ec0 ????????
-    db   $d1, $7b, $22, $72, $21, $e8, $ce, $34        ;; 00:1ec8 ????????
-    db   $c9                                           ;; 00:1ed0 ?
+ds 279 ; Free space
 
 ; This returns the currently hold joypad inputs in A and the newly pressed inputs in B
 updateJoypadInput_trampoline:
@@ -5738,10 +5496,6 @@ MainLoop:
     call runMainInputHandler_trampoline                ;; 00:1fe1 $cd $2c $02
     call speedUpScripts
     call mainLoopPostInput                             ;; 00:1fe4 $cd $90 $21
-; To prevent glitches on the title screen stop processBackgroundRenderRequests from running with a tile backlog.
-    ld a, [wTileCopyRequestCount]
-    cp $08
-    call c, processBackgroundRenderRequests
     call HaltLoop
     jr MainLoop
 
@@ -5831,6 +5585,8 @@ initPalettes:
     call popBankNrAndSwitch
     ret
 ENDC
+
+ds 31 ; Free space
 
 SECTION "bank00_align_2092", ROM0[$2092]
 
@@ -7080,9 +6836,6 @@ scriptOpCodeSetNPCTypes:
     ld   [wScriptOpCounter], A                         ;; 00:2803 $ea $99 $d4
     ld   A, [wTileCopyRequestCount]                    ;; 00:2806 $fa $e0 $c8
     or a
-    ret  NZ                                            ;; 00:280b $c0
-    ld   A, [wBackgroundRenderRequestCount]            ;; 00:280c $fa $e8 $ce
-    or a
     ret  NZ                                            ;; 00:2811 $c0
     ld   [wScriptOpCounter], A                         ;; 00:2812 $ea $99 $d4
 ; The current loaded projectile palette no longer matters so initialize it to $ff.
@@ -7090,6 +6843,10 @@ scriptOpCodeSetNPCTypes:
     ld [wCurrentProjectilePalette], a
     call getNextScriptInstruction                      ;; 00:2815 $cd $27 $37
     ret                                                ;; 00:2818 $c9
+
+ ds 5 ; Free space
+
+SECTION "bank00_align_2819", ROM0[$2819]
 
 setNpcSpawnTable_trampoline:
     ld   A, [HL+]                                      ;; 00:2819 $2a
@@ -7102,22 +6859,19 @@ scriptOpCodeSpawnNPC:
     ld   A, $01                                        ;; 00:2828 $3e $01
     ld   [wScriptOpCounter], A                         ;; 00:282a $ea $99 $d4
     ld   A, [wTileCopyRequestCount]                    ;; 00:282d $fa $e0 $c8
-    cp   A, $00                                        ;; 00:2830 $fe $00
-    ret  NZ                                            ;; 00:2832 $c0
-    ld   A, [wBackgroundRenderRequestCount]            ;; 00:2833 $fa $e8 $ce
-    cp   A, $00                                        ;; 00:2836 $fe $00
+    or a
     ret  NZ                                            ;; 00:2838 $c0
     ld   [wScriptOpCounter], A                         ;; 00:2839 $ea $99 $d4
     call getNextScriptInstruction                      ;; 00:283c $cd $27 $37
     ret                                                ;; 00:283f $c9
+
+ds 8 ; Free space
 
 spawnNpcsFromTable_trampoline:
     ld   A, [HL+]                                      ;; 00:2840 $2a
     jp_to_bank 03, spawnNpcsFromTable                  ;; 00:2841 $f5 $3e $04 $c3 $35 $1f
 
 ds 6 ; Free space
-; setHLToZero_3_trampoline:
-;     jp_to_bank 03, setHLToZero_3                       ;; 00:2847 $f5 $3e $06 $c3 $35 $1f
 
 friendlyCollisionHandling_trampoline:
     jp_to_bank 03, friendlyCollisionHandling           ;; 00:284d $f5 $3e $08 $c3 $35 $1f
@@ -7464,8 +7218,6 @@ pushBankNrAndSwitch:
     ld   [HL], A                                       ;; 00:2a05 $77
     ld   [rROMB0], A                                   ;; 00:2a06 $ea $00 $20
     ret                                                ;; 00:2a09 $c9
-
-ds 1 ; Free space
 
 ; Pop A from the top of the bank stack and switch to that bank.
 popBankNrAndSwitch:

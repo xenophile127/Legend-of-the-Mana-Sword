@@ -560,7 +560,7 @@ wUnused:
 wBackgroundRenderRequests:
     ds 1536                                            ;; c8e8
 
-; Amount of entries in wBackgroundRenderRequests
+; Unused. Free space.
 wBackgroundRenderRequestCount:
     ds 8                                               ;; cee8
 
