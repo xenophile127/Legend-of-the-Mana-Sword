@@ -4897,32 +4897,38 @@ mapGraphicsStateRefreshTiles:
 
 ds 3 ; Free space
 
+; Decrement each active tile cache timer.
 mapGraphicsStateUpdateCache:
     ld   HL, wBackgroundGraphicsTileState              ;; 00:1b4e $21 $70 $d1
     ld   B, $00                                        ;; 00:1b51 $06 $00
 .loop:
     ld   A, [HL]                                       ;; 00:1b53 $7e
-    cp   A, $00                                        ;; 00:1b54 $fe $00
+    or a
     jr   Z, .next                                      ;; 00:1b56 $28 $17
     dec  A                                             ;; 00:1b58 $3d
-    jr   NZ, .next                                     ;; 00:1b59 $20 $14
+    jr   NZ, .write                                    ;; 00:1b59 $20 $14
+; The tile has just aged out of the cache.
     push HL                                            ;; 00:1b5b $e5
     ld   DE, -256 ;@=value signed=True                 ;; 00:1b5c $11 $00 $ff
     add  HL, DE                                        ;; 00:1b5f $19
     ld   A, $80                                        ;; 00:1b60 $3e $80
     add  A, [HL]                                       ;; 00:1b62 $86
     ld   E, A                                          ;; 00:1b63 $5f
-    ld   D, $00                                        ;; 00:1b64 $16 $00
+    xor a
+    ld d, a
     ld   HL, wBackgroundGraphicsTileUsed               ;; 00:1b66 $21 $70 $d2
     add  HL, DE                                        ;; 00:1b69 $19
-    ld   [HL], $00                                     ;; 00:1b6a $36 $00
+; a is $00.
+    ld [hl], a
     pop  HL                                            ;; 00:1b6c $e1
-    ld   A, $00                                        ;; 00:1b6d $3e $00
-.next:
+.write:
     ld   [HL+], A                                      ;; 00:1b6f $22
+.next:
     dec  B                                             ;; 00:1b70 $05
     jr   NZ, .loop                                     ;; 00:1b71 $20 $e0
     ret                                                ;; 00:1b73 $c9
+
+ds 4 ; Free space
 
 ; Ensures all needed tiles are loaded for the room's metatiles
 loadRoomTiles:
