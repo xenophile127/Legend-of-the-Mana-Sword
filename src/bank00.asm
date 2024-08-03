@@ -4865,8 +4865,11 @@ getTileInfoPointer:
 
 ds 2 ; Free space
 
+; Any tile that are already cached have their timer refreshed.
+; HL = wRoomTiles
 mapGraphicsStateRefreshTiles:
     ld   B, $50                                        ;; 00:1b2b $06 $50
+    ld de, wBackgroundGraphicsTileState
 .loop_outer:
     ld   A, [HL+]                                      ;; 00:1b2d $2a
     push HL                                            ;; 00:1b2e $e5
@@ -4875,15 +4878,14 @@ mapGraphicsStateRefreshTiles:
 .loop_inner:
     ld   A, [HL+]                                      ;; 00:1b34 $2a
     push HL                                            ;; 00:1b35 $e5
-    ld   E, A                                          ;; 00:1b36 $5f
-    ld   D, $00                                        ;; 00:1b37 $16 $00
-    ld   HL, wBackgroundGraphicsTileState              ;; 00:1b39 $21 $70 $d1
+    ld l, a
+; Set a to $00 so it can be used with an or [hl].
+    xor a
+    ld h, a
     add  HL, DE                                        ;; 00:1b3c $19
-    ld   A, [HL]                                       ;; 00:1b3d $7e
-    cp   A, $00                                        ;; 00:1b3e $fe $00
+    or [hl]
     jr   Z, .next                                      ;; 00:1b40 $28 $03
-    ld   A, $10                                        ;; 00:1b42 $3e $10
-    ld   [HL], A                                       ;; 00:1b44 $77
+    ld [hl], $10
 .next:
     pop  HL                                            ;; 00:1b45 $e1
     dec  C                                             ;; 00:1b46 $0d
@@ -4892,6 +4894,8 @@ mapGraphicsStateRefreshTiles:
     dec  B                                             ;; 00:1b4a $05
     jr   NZ, .loop_outer                               ;; 00:1b4b $20 $e0
     ret                                                ;; 00:1b4d $c9
+
+ds 3 ; Free space
 
 mapGraphicsStateUpdateCache:
     ld   HL, wBackgroundGraphicsTileState              ;; 00:1b4e $21 $70 $d1
