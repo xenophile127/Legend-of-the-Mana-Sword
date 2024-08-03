@@ -4909,7 +4909,10 @@ mapGraphicsStateUpdateCache:
     jr   NZ, .write                                    ;; 00:1b59 $20 $14
 ; The tile has just aged out of the cache.
     push HL                                            ;; 00:1b5b $e5
-    ld   DE, -256 ;@=value signed=True                 ;; 00:1b5c $11 $00 $ff
+; This load is $ff00, which could be considered -256.
+; In reality it's using its offset in one table to find the entry in the previous table.
+; Another alternative would be to reverse its use of B and use that as an index, but it isn't important.
+    ld de, (wBackgroundGraphicsTileMapping - wBackgroundGraphicsTileState)
     add  HL, DE                                        ;; 00:1b5f $19
     ld   A, $80                                        ;; 00:1b60 $3e $80
     add  A, [HL]                                       ;; 00:1b62 $86
