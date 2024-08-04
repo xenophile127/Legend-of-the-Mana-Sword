@@ -59,9 +59,15 @@ ELIF DEF(GLADIATOR_AMANDA)
     sSET_FLAG wScriptFlags0A.0
 ENDC
 
+    sPLAYER_CURE_STATUS 16          ; For the color target this initializes the player's palette.
     sSET_NPC_TYPES $2a
-    sSET_PLAYER_POSITION 16, 01
+    sSET_PLAYER_POSITION 16, 01     ; Draw the player on the naming screen.
     sENTER_PLAYER_AND_GIRL_NAME
+    sSET_PLAYER_POSITION 00, 18     ; Hide the player offscreen.
+    sSPAWN_NPC 0                    ; Show Fuji instead
+    sSET_NPC_1_POSITION 16, 01
+    sENTER_PLAYER_AND_GIRL_NAME     ; This second call will prompt to name Fuji.
+    sSET_NPC_1_POSITION 00, 18      ; Hide Fuji offscreen.
     sSET_PLAYER_POSITION 20, 01
     sLOAD_ROOM 1, $47, 19, 10
     sCALL script_00e6

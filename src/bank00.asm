@@ -9962,8 +9962,6 @@ scriptOpCodeStartNameEntry:
     ld   [wDialogType], A                              ;; 00:39e0 $ea $4a $d8
     ld   A, $0f                                        ;; 00:39e3 $3e $0f
     ld   [wMainGameState], A                           ;; 00:39e5 $ea $a0 $c0
-    ld   HL, wWindowFlags                              ;; 00:39e8 $21 $74 $d8
-    res  5, [HL]                                       ;; 00:39eb $cb $ae
     xor  A, A                                          ;; 00:39ed $af
     ld   [wNameEntryNameLength], A                     ;; 00:39ee $ea $85 $d8
     ld   HL, wSRAMSaveHeader                           ;; 00:39f1 $21 $a7 $d7
@@ -9976,6 +9974,8 @@ scriptOpCodeStartNameEntry:
     call runVirualScriptOpCodeFFIfMenuStateCurrentFuctionBit7 ;; 00:39fc $cd $05 $3d
     pop  HL                                            ;; 00:39ff $e1
     ret                                                ;; 00:3a00 $c9
+
+ds 5 ; Free space
 
 scriptOpCodeAltNOP:
     call getNextScriptInstruction                      ;; 00:3a01 $cd $27 $37

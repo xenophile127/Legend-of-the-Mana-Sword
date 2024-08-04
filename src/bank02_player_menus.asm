@@ -4637,21 +4637,9 @@ processWindowInput:
     pop  BC                                            ;; 02:6976 $c1
     pop  DE                                            ;; 02:6977 $d1
     pop  HL                                            ;; 02:6978 $e1
-    bit  5, A                                          ;; 02:6979 $cb $6f
-    jr   NZ, .dismiss_naming_screen                    ;; 02:697b $20 $11
-    or a, $60
+; Modified to be run twice for the two names instead of prompting for both.
+    set 5, a
     ld   [wWindowFlags], A                             ;; 02:6981 $ea $74 $d8
-    xor  A, A                                          ;; 02:6984 $af
-    ld   [wDrawWindowStep], A                          ;; 02:6985 $ea $54 $d8
-    ld   [wNameEntryNameLength], A                     ;; 02:6988 $ea $85 $d8
-; Ugly hack to directly edit the OAM, but it works.
-    ld hl, wOAMBuffer+$22
-    ld [hl], $20
-    ld l, $26
-    ld [hl], $22
-    nop
-    jp   .button                                       ;; 02:698b $c3 $c4 $68
-.dismiss_naming_screen:
     xor  A, A                                          ;; 02:698e $af
     ld   [wDrawWindowStep], A                          ;; 02:698f $ea $54 $d8
     ld   [wMenuStateCurrentFunction], A                ;; 02:6992 $ea $53 $d8
@@ -4666,6 +4654,8 @@ processWindowInput:
     ld   A, L                                          ;; 02:69a3 $7d
     ld   [wScriptPointerLow], A                        ;; 02:69a4 $ea $b6 $d8
     jp   windowReturnToScript                          ;; 02:69a7 $c3 $38 $56
+
+ds 23 ; Free space
 
 call_02_69aa:
     ld   A, [wDialogType]                              ;; 02:69aa $fa $4a $d8
