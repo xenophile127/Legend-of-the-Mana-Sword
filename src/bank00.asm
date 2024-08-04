@@ -5586,7 +5586,7 @@ initPalettes:
     ret
 ENDC
 
-ds 31 ; Free space
+ds 27 ; Free space
 
 SECTION "bank00_align_2092", ROM0[$2092]
 
