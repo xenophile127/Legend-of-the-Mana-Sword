@@ -164,7 +164,7 @@ Header:
 ; This title matches the GBC hash to select the red and blue sprite palettes and a white, green, blue, black background palette.
     db   "FFA-->LOTMS", $00, $00, $00, $00             ;; 00:0134
 IF DEF(COLOR)
-    db   CART_COMPATIBLE_GBC                           ;; 00:0143
+    db   CART_COMPATIBLE_DMG_GBC                       ;; 00:0143
 ELSE
     db   CART_COMPATIBLE_DMG                           ;; 00:0143
 ENDC
