@@ -3,7 +3,7 @@ Improving and bug fixing Final Fantasy Adventure, the first game in the Mana ser
 
 ## Building
 1. Install [RGBDS](https://rgbds.gbdev.io/).
-2. Look in the `Makefile` for any commented out options you may want to enable.
+2. Look in the [`Makefile`](Makefile) for any commented out options you may want to enable.
 3. Run `make`.
 
 ## Documentation
