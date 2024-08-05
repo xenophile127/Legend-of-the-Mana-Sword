@@ -1252,7 +1252,7 @@ processPhysicsForPlayer:
     ret                                                ;; 01:499d $c9
 
 runMainInputHandler:
-    call updateJoypadInput_trampoline                  ;; 01:499e $cd $d1 $1e
+    call updateJoypadInput
     ld   D, A                                          ;; 01:49a1 $57
     ld   E, B                                          ;; 01:49a2 $58
     ld   HL, .gameStatesJumptable                      ;; 01:49a3 $21 $ad $49

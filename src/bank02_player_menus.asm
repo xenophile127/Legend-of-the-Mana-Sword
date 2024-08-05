@@ -11,7 +11,7 @@ SECTION "bank02", ROMX[$4000], BANK[$02]
 ;@call_to_bank_jumptable amount=58
 entryPointTableBank02:
 ds 2 ; Unused trampoline target
-    call_to_bank_target updateJoypadInput              ;; 02:4002 pP
+ds 2 ; Unused trampoline target
     call_to_bank_target spriteShuffleDoFlash           ;; 02:4004 pP
     call_to_bank_target spriteShuffleShowHidden        ;; 02:4006 pP
     call_to_bank_target hideSpritesBehindWindow        ;; 02:4008 pP
@@ -69,11 +69,7 @@ ds 2 ; Unused trampoline target
     call_to_bank_target endFujiStatusEffect            ;; 02:4070 ??
     call_to_bank_target getEquippedArmorElementalResistances ;; 02:4072 pP
 
-ds 420 ; Free space
-
-INCLUDE "code/joypad.asm"
-
-ds 2 ; Free space
+ds 464 ; Free space
 
 ; Given an object, check if it overlaps any of the Npc objects (objects 7 and up).
 ; Technically, this includes followers, non-player projectiles, and bosses as well.

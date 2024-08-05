@@ -5331,11 +5331,12 @@ callFunctionInBank11:
     ld   A, [wScratchBankCallA]                        ;; 00:1db5 $fa $b3 $c0
     ret                                                ;; 00:1db8 $c9
 
-ds 279 ; Free space
+ds 243 ; Free space
 
 ; This returns the currently hold joypad inputs in A and the newly pressed inputs in B
-updateJoypadInput_trampoline:
-    jp_to_bank 02, updateJoypadInput                   ;; 00:1ed1 $f5 $3e $01 $c3 $06 $1f
+; Moved here from bank 02 to save at least one bank swap each frame.
+; updateJoypadInput:
+INCLUDE "code/joypad.asm"
 
 ;@call_to_bank bank=01
 callFunctionInBank01:
@@ -9115,7 +9116,7 @@ textCtrlCodeCloseDialogWindow:
     ret                                                ;; 00:3501 $c9
 
 textCtrlCodeWaitInput:
-    call updateJoypadInput_trampoline                  ;; 00:3502 $cd $d1 $1e
+    call updateJoypadInput
     pop  HL                                            ;; 00:3505 $e1
     ld   A, C                                          ;; 00:3506 $79
     or   A, A                                          ;; 00:3507 $b7
@@ -9125,7 +9126,7 @@ textCtrlCodeWaitInput:
     ret                                                ;; 00:350e $c9
 
 opCodeFFWaitInput:
-    call updateJoypadInput_trampoline                  ;; 00:350f $cd $d1 $1e
+    call updateJoypadInput
     pop  HL                                            ;; 00:3512 $e1
     ld   A, C                                          ;; 00:3513 $79
     and  A, A                                          ;; 00:3514 $a7
@@ -9590,7 +9591,7 @@ drawText:
     push HL                                            ;; 00:37ab $e5
     push DE                                            ;; 00:37ac $d5
     push BC                                            ;; 00:37ad $c5
-    call updateJoypadInput_trampoline                  ;; 00:37ae $cd $d1 $1e
+    call updateJoypadInput
     ld   A, B                                          ;; 00:37b1 $78
     or   A, C                                          ;; 00:37b2 $b1
     pop  BC                                            ;; 00:37b3 $c1
