@@ -8456,8 +8456,7 @@ attackWithWeaponUseWill_trampoline:
 giveStatusEffect_trampoline:
     jp_to_bank 02, giveStatusEffect                    ;; 00:312f $f5 $3e $2a $c3 $06 $1f
 
-setAToZero_trampoline:
-    jp_to_bank 02, setAToZero_2                        ;; 00:3135 $f5 $3e $2b $c3 $06 $1f
+ds 6 ; Free space
 
 updateStatusEffects_trampoline:
     jp_to_bank 02, updateStatusEffects                 ;; 00:313b $f5 $3e $2c $c3 $06 $1f
@@ -10715,6 +10714,7 @@ addHP:
     call drawHPOnStatusBar_trampoline                  ;; 00:3e21 $cd $0b $31
     ret                                                ;; 00:3e24 $c9
 
+; Subtract hl from current HP and update the status bar display.
 subHP:
     push DE                                            ;; 00:3e25 $d5
     ld   A, [wHPHigh]                                  ;; 00:3e26 $fa $b3 $d7

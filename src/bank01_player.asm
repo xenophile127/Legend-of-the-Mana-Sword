@@ -2313,23 +2313,26 @@ createPlayerObject:
     ld   [wPlayerAnimation], A                         ;; 01:50a8 $ea $94 $d3
     ret                                                ;; 01:50ab $c9
 
+; Calculate damage, adjust player HP,  play a sound effect, and if necessary handle status effects.
 ; B = power
 ; C = status effect
 playerHit:
     push BC                                            ;; 01:50ac $c5
+; Subtract player's DP from the enemy's AP.
     call getTotalDP                                    ;; 01:50ad $cd $12 $3d
     ld   E, A                                          ;; 01:50b0 $5f
     ld   D, $00                                        ;; 01:50b1 $16 $00
-    pop  BC                                            ;; 01:50b3 $c1
-    push BC                                            ;; 01:50b4 $c5
     ld   L, B                                          ;; 01:50b5 $68
     ld   H, $00                                        ;; 01:50b6 $26 $00
     call sub_HL_DE                                     ;; 01:50b8 $cd $ab $2b
-    jr   NC, .jr_01_50c0                               ;; 01:50bb $30 $03
+    jr   NC, .increment                                ;; 01:50bb $30 $03
+; If enemy's AP is less than player's DP then set the damage value to zero so it isn't negative.
     ld   HL, $00                                       ;; 01:50bd $21 $00 $00
-.jr_01_50c0:
+.increment:
+; Always do a minimum of one damage.
     inc  HL                                            ;; 01:50c0 $23
     push HL                                            ;; 01:50c1 $e5
+; Scale damage by a random factor from 100% to 125%.
     call getRandomByte                                 ;; 01:50c2 $cd $1e $2b
     pop  HL                                            ;; 01:50c5 $e1
     push HL                                            ;; 01:50c6 $e5
@@ -2341,20 +2344,29 @@ playerHit:
     pop  DE                                            ;; 01:50d1 $d1
     add  HL, DE                                        ;; 01:50d2 $19
     pop  BC                                            ;; 01:50d3 $c1
+; Return if damage is zero.
+; This should be impossible as minimum damage is one.
     ld   A, H                                          ;; 01:50d4 $7c
     or   A, L                                          ;; 01:50d5 $b5
     ret  Z                                             ;; 01:50d6 $c8
     push BC                                            ;; 01:50d7 $c5
     call subHP                                         ;; 01:50d8 $cd $25 $3e
+    pop bc
+; Return immediately if the player is reduced to zero HP.
+; This is to prevent the possibility of a status effect notification followed by immediate game over.
+; The sound effect that would be played is replaced in that case anyway.
+    ld hl, wHPLow
+    ld a, [hl+]
+    or [hl]
+    ret z
+; Play the "hit" sound effect.
     ld   A, $0d                                        ;; 01:50db $3e $0d
     call playSFX                                       ;; 01:50dd $cd $7d $29
-    call setAToZero_trampoline                         ;; 01:50e0 $cd $35 $31
-    pop  BC                                            ;; 01:50e3 $c1
-    cpl                                                ;; 01:50e4 $2f
-    and  A, C                                          ;; 01:50e5 $a1
+; Return if the enemy cannot inflict status effects.
+    ld a, c
+    or a
     ret  Z                                             ;; 01:50e6 $c8
 ; This is calculating a 25% chance of giving any status effect an enemy is capable of by anding two random bits.
-    ld   C, A                                          ;; 01:50e7 $4f
     push BC                                            ;; 01:50e8 $c5
     call getRandomByte                                 ;; 01:50e9 $cd $1e $2b
     pop  BC                                            ;; 01:50ec $c1

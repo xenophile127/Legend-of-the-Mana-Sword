@@ -53,7 +53,7 @@ ds 2 ; Unused trampoline target
 ds 2 ; Unused trampoline target
     call_to_bank_target attackWithWeaponUseWill        ;; 02:4052 pP
     call_to_bank_target giveStatusEffect               ;; 02:4054 pP
-    call_to_bank_target setAToZero_2                   ;; 02:4056 pP
+ds 2 ; Unused trampoline target
     call_to_bank_target updateStatusEffects            ;; 02:4058 pP
     call_to_bank_target getSpellOffset0band0cinHL      ;; 02:405a ??
     call_to_bank_target drawWillBarCharge              ;; 02:405c pP
@@ -6044,9 +6044,7 @@ useItemOrSpell:
     pop  AF                                            ;; 02:71d9 $f1
     ret                                                ;; 02:71da $c9
 
-setAToZero_2:
-    xor  A, A                                          ;; 02:71db $af
-    ret                                                ;; 02:71dc $c9
+ds 2 ; Free space
 
 openLoadScreen:
     ld   HL, wWindowFlags                              ;; 02:71dd $21 $74 $d8
