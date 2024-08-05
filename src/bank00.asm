@@ -546,12 +546,12 @@ LCDCInterrupt:
     inc  HL                                            ;; 00:0343 $23
     ld   A, [HL]                                       ;; 00:0344 $7e
     cp   A, $ff                                        ;; 00:0345 $fe $ff
+    ld hl, wLCDCEffectIndex
     jr   NZ, .set_next_interrupt                       ;; 00:0347 $20 $06
-    ld   [wLCDCEffectIndex], A                         ;; 00:0349 $ea $e2 $d3
+    ld [hl], a
     ld   A, [wLCDCEffectBuffer]                        ;; 00:034c $fa $a0 $d3
 .set_next_interrupt:
     ldh  [rLYC], A                                     ;; 00:034f $e0 $45
-    ld   HL, wLCDCEffectIndex                          ;; 00:0351 $21 $e2 $d3
     inc  [HL]                                          ;; 00:0354 $34
 IF DEF(COLOR)
 ; For color use the DMG BGP value as a key to look up the address of the real color palette.
@@ -568,6 +568,8 @@ IF DEF(COLOR)
 ; Reset the address and set autoinc before waiting for time to write.
     ld a, BCPSF_AUTOINC
     ldh [rBCPS], a
+; Save one cycle in mode 0 by pre-loading this address.
+    ld b, LOW(rBCPD)
 ENDC
 ; Nothing should ever turn off the LCD/PPU with this interrupt on, but guard against it anyway.
     ldh  A, [rLCDC]                                    ;; 00:0358 $f0 $40
@@ -589,7 +591,7 @@ ENDC
     ldh [rLCDC], a
 IF DEF(COLOR)
 ; Write the first background palette.
-    ld c, LOW(rBCPD)
+    ld c, b
     ld a, [hl+]
     ldh [c], a
     ld a, [hl+]
@@ -927,7 +929,7 @@ bossCollisionHandling_trampoline:
 processPhysicsForObject_4_trampoline:
     jp_to_bank 04, processPhysicsForObject_4           ;; 00:0517 $f5 $3e $04 $c3 $64 $1f
 
-ds 26 ; Free space
+ds 27 ; Free space
 
 SECTION "bank00_align_056c", ROM0[$056c]
 
