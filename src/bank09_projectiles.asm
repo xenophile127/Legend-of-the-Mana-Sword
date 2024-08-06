@@ -829,9 +829,7 @@ projectileCollisionHandling:
 
 getProjectileDataTableEntry:
     call getProjectileRuntimeEntryByIndexA             ;; 09:4451 $cd $7a $43
-    ld   D, H                                          ;; 09:4454 $54
-    ld   E, L                                          ;; 09:4455 $5d
-    ld   HL, $08                                       ;; 09:4456 $21 $08 $00
+    ld de, $0008
     add  HL, DE                                        ;; 09:4459 $19
     ld   E, [HL]                                       ;; 09:445a $5e
     inc  HL                                            ;; 09:445b $23
@@ -840,8 +838,8 @@ getProjectileDataTableEntry:
 
 getProjectileSize:
     call getProjectileDataTableEntry                   ;; 09:445e $cd $51 $44
-    ld   HL, $02                                       ;; 09:4461 $21 $02 $00
-    add  HL, DE                                        ;; 09:4464 $19
+    inc hl
+    inc hl
     ld   A, [HL]                                       ;; 09:4465 $7e
     ret                                                ;; 09:4466 $c9
 
@@ -896,9 +894,12 @@ projectileLoadColorPalette:
 ; Otherwise the most recent one loaded wins.
     pop af
     ld c, a
-; First check whether the shared projectile palette is the target. If not then no conflict.
     ld a, b
     and OAMF_PALMASK
+; Return if this is a companion's projectile. They use the companion's color palette.
+    cp PAL_FOLLOWER
+    jr z, .return
+; Check whether the shared projectile palette is the target. If not then no conflict.
     cp PAL_PROJECTILE
     jr nz, .load
 ; Then check whether there is an active palette loaded there.
@@ -915,6 +916,7 @@ projectileLoadColorPalette:
     add NPC_CHEST_DROP_1
 ; Load the projectile palette.
     call loadSinglePalette
+.return:
     pop bc
     ret
 
