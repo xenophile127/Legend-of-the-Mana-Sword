@@ -4078,7 +4078,7 @@ getRoomMetatileAttributes:
 ; Output: HL pointer to first byte in metatile attributes
 ;         BC, DE unchanged, A=L, F varies
 getMetatileAttributeCacheIndex:
-    ; Index into the wMetaTileAttributeCache with 2*(10*D+E)
+    ; Index into the wMetatileAttributeCache with 2*(10*D+E)
     ld HL, wMetatileAttributeCache
     ld A, D
     add A, A
