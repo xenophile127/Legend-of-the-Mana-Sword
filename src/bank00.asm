@@ -942,7 +942,7 @@ SECTION "bank00_align_056c", ROM0[$056c]
 
 ; Draw the meta tile A (metatile index) at DE (YX tile number)
 ; Transfers the bytes during HBlank
-drawMetaTile_immediate:
+drawMetatile:
     sla  D
     sla  E
     push AF
@@ -5066,7 +5066,7 @@ MultiplyDE_by_C_24bit:
     ret
 
 ; This function updates a specific metatile in the attribute cache
-; before calling drawMetaTile_immediate
+; before calling drawMetatile
 ; A = metatile index
 ; DE = YX metatile position
 updateMetatileAttributeCacheAndDrawImmediate:
@@ -5104,7 +5104,7 @@ updateMetatileAttributeCacheAndDrawImmediate:
 
 .draw_metatile:
     ld HL, wRoomTiles
-    jp drawMetaTile_immediate
+    jp drawMetatile
 
 ; This function caches the metatile attributes for the
 ; entire room before loading the tiles used in drawing.
