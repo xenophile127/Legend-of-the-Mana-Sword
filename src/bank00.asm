@@ -1457,7 +1457,7 @@ setFrameForObject:
     srl  A                                             ;; 00:084a $cb $3f
     srl  A                                             ;; 00:084c $cb $3f
     ld   E, A                                          ;; 00:084e $5f
-    call getRoomMetaTileAttributes                     ;; 00:084f $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:084f $cd $af $16
     ld   DE, $800                                      ;; 00:0852 $11 $00 $08
     call HLandDE                                       ;; 00:0855 $cd $b2 $29
     pop  DE                                            ;; 00:0858 $d1
@@ -4032,28 +4032,32 @@ scriptOpWaitWhileMovement:
     db   $4f, $2a, $b9, $c8, $fe, $ff, $20, $f9        ;; 00:16a3 ????????
     db   $79, $fe, $ff, $c9                            ;; 00:16ab ????
 
+; Get the attributes for the metatile at a location.
+; If the requested location is not on screen then use the closest on-screen location's metatile.
 ; D = object y tile coordinate
 ; E = object x tile coordinate
 ; Return: HL = tile attributes
-getRoomMetaTileAttributes:
+getRoomMetatileAttributes:
     ; Account for requests outside the current screen
     ; This can happen for projectiles in particular
     ld   A, E                                          ;; 00:16b6 $7b
-    cp   A, $14                                        ;; 00:16b7 $fe $14
+    cp   A, SCRN_X_B                                   ;; 00:16b7 $fe $14
     jr   C, .x_pos_on_screen                           ;; 00:16b9 $38 $0a
     bit  7, E                                          ;; 00:16bb $cb $7b
     jr   NZ, .tile_left_of_screen                      ;; 00:16bd $20 $04
-    ld   E, $13 ; use the right-most tile position     ;; 00:16bf $1e $13
+; use the right-most tile position
+    ld   E, SCRN_X_B - 1                               ;; 00:16bf $1e $13
     jr   .x_pos_on_screen                              ;; 00:16c1 $18 $02
 .tile_left_of_screen:
     ld   E, $00 ; use the left-most tile position      ;; 00:16c3 $1e $00
 .x_pos_on_screen:
     ld   A, D                                          ;; 00:16c5 $7a
-    cp   A, $10                                        ;; 00:16c6 $fe $10
+    cp   A, SCRN_Y_B - 2                               ;; 00:16c6 $fe $10
     jr   C, .y_pos_on_screen                           ;; 00:16c8 $38 $0a
     bit  7, D                                          ;; 00:16ca $cb $7a
     jr   NZ, .tile_above_screen                        ;; 00:16cc $20 $04
-    ld   D, $0f ; use the bottom-most tile position    ;; 00:16ce $16 $0f
+; use the bottom-most tile position
+    ld   D, SCRN_Y_B - 3                               ;; 00:16ce $16 $0f
     jr   .y_pos_on_screen                              ;; 00:16d0 $18 $02
 .tile_above_screen:
     ld   D, $00 ; use the top-most tile position       ;; 00:16d2 $16 $00
@@ -4100,7 +4104,7 @@ getMetatileAttributeCacheIndex:
 tileScriptOrSpikeDamage:
     push BC                                            ;; 00:1700 $c5
     push DE                                            ;; 00:1701 $d5
-    call getRoomMetaTileAttributes                     ;; 00:1702 $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:1702 $cd $af $16
     pop  DE                                            ;; 00:1705 $d1
     pop  BC                                            ;; 00:1706 $c1
     bit  7, H                                          ;; 00:1707 $cb $7c
@@ -4220,7 +4224,7 @@ call_00_177e:
     ld   B, L                                          ;; 00:17b5 $45
     push BC                                            ;; 00:17b6 $c5
     push DE                                            ;; 00:17b7 $d5
-    call getRoomMetaTileAttributes                     ;; 00:17b8 $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:17b8 $cd $af $16
     pop  DE                                            ;; 00:17bb $d1
     pop  BC                                            ;; 00:17bc $c1
     bit  6, H                                          ;; 00:17bd $cb $74
@@ -4228,7 +4232,7 @@ call_00_177e:
     inc  E                                             ;; 00:17c1 $1c
     push BC                                            ;; 00:17c2 $c5
     push HL                                            ;; 00:17c3 $e5
-    call getRoomMetaTileAttributes                     ;; 00:17c4 $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:17c4 $cd $af $16
     pop  DE                                            ;; 00:17c7 $d1
     pop  BC                                            ;; 00:17c8 $c1
     bit  6, H                                          ;; 00:17c9 $cb $74
@@ -4398,14 +4402,14 @@ checkObjectTileCollisions:
     and  A, $07                                        ;; 00:18c2 $e6 $07
     jr   Z, noCollision                                ;; 00:18c4 $28 $43
     push DE                                            ;; 00:18c6 $d5
-    call getRoomMetaTileAttributes                     ;; 00:18c7 $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:18c7 $cd $af $16
     pop  DE                                            ;; 00:18ca $d1
     pop  AF                                            ;; 00:18cb $f1
     push DE                                            ;; 00:18cc $d5
     push AF                                            ;; 00:18cd $f5
     push HL                                            ;; 00:18ce $e5
     inc  E                                             ;; 00:18cf $1c
-    call getRoomMetaTileAttributes                     ;; 00:18d0 $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:18d0 $cd $af $16
     pop  DE                                            ;; 00:18d3 $d1
     call HLandDE                                       ;; 00:18d4 $cd $b2 $29
     pop  AF                                            ;; 00:18d7 $f1
@@ -4428,7 +4432,7 @@ checkProjectileTileCollisions:
     and  A, $07                                        ;; 00:18e6 $e6 $07
     jr   Z, noCollision                                ;; 00:18e8 $28 $1f
     push DE                                            ;; 00:18ea $d5
-    call getRoomMetaTileAttributes                     ;; 00:18eb $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:18eb $cd $af $16
     pop  DE                                            ;; 00:18ee $d1
     pop  AF                                            ;; 00:18ef $f1
     call checkTileCollision                            ;; 00:18f0 $cd $0f $19
@@ -4436,7 +4440,7 @@ checkProjectileTileCollisions:
     ret                                                ;; 00:18f5 $c9
 .jr_00_18f6:
     push DE                                            ;; 00:18f6 $d5
-    call getRoomMetaTileAttributes                     ;; 00:18f7 $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:18f7 $cd $af $16
     pop  DE                                            ;; 00:18fa $d1
     ld   A, L                                          ;; 00:18fb $7d
     and  A, $07                                        ;; 00:18fc $e6 $07
@@ -4553,7 +4557,7 @@ checkTileCollision:
     pop  DE                                            ;; 00:1999 $d1
     jr   Z, .jr_00_19d8                                ;; 00:199a $28 $3c
     push DE                                            ;; 00:199c $d5
-    call getRoomMetaTileAttributes                     ;; 00:199d $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:199d $cd $af $16
     pop  DE                                            ;; 00:19a0 $d1
     push DE                                            ;; 00:19a1 $d5
     call call_00_1a0b                                  ;; 00:19a2 $cd $0b $1a
@@ -4584,7 +4588,7 @@ checkTileCollision:
     dec  E                                             ;; 00:19cb $1d
     dec  E                                             ;; 00:19cc $1d
 .jr_00_19cd:
-    call getRoomMetaTileAttributes                     ;; 00:19cd $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:19cd $cd $af $16
     ld   DE, $08                                       ;; 00:19d0 $11 $08 $00
     call HLandDE                                       ;; 00:19d3 $cd $b2 $29
     pop  BC                                            ;; 00:19d6 $c1
@@ -4616,7 +4620,7 @@ checkTileCollision:
     jr   NZ, .jr_00_19ee                               ;; 00:19fb $20 $f1
     res  7, C                                          ;; 00:19fd $cb $b9
     push BC                                            ;; 00:19ff $c5
-    call getRoomMetaTileAttributes                     ;; 00:1a00 $cd $af $16
+    call getRoomMetatileAttributes                     ;; 00:1a00 $cd $af $16
     ld   DE, $08                                       ;; 00:1a03 $11 $08 $00
     call HLandDE                                       ;; 00:1a06 $cd $b2 $29
     pop  BC                                            ;; 00:1a09 $c1

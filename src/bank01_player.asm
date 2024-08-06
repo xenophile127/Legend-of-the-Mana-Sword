@@ -1129,7 +1129,7 @@ playerSpritesLoadPlayerSpriteTiles:
     call getPlayerNearestTilePosition                  ;; 01:48ea $cd $69 $01
     inc  D                                             ;; 01:48ed $14
     inc  E                                             ;; 01:48ee $1c
-    call getRoomMetaTileAttributes                     ;; 01:48ef $cd $af $16
+    call getRoomMetatileAttributes                     ;; 01:48ef $cd $af $16
     ld   DE, $800                                      ;; 01:48f2 $11 $00 $08
     call HLandDE                                       ;; 01:48f5 $cd $b2 $29
     pop  BC                                            ;; 01:48f8 $c1
