@@ -4576,6 +4576,9 @@ script_0249:
     sSET_ROOM_TILE $32, 7, 5                           ;; 0d:7410 $b0 $32 $07 $05
     sSET_ROOM_TILE $51, 7, 6                           ;; 0d:7414 $b0 $51 $07 $06
     sSET_ROOM_TILE $43, 7, 7                           ;; 0d:7418 $b0 $43 $07 $07
+; These parapet pieces are no longer shaded.
+    sSET_ROOM_TILE $84, 8, 3
+    sSET_ROOM_TILE $86, 8, 5
     sDELAY 5                                           ;; 0d:741c $f0 $05
     sFLASH_SCREEN                                      ;; 0d:741e $bf
     sSFX 20                                            ;; 0d:741f $f9 $14
@@ -4623,9 +4626,9 @@ script_0249:
     sFLASH_SCREEN                                      ;; 0d:7556 $bf
     sSET_ROOM_TILE $64, 8, 3                           ;; 0d:7557 $b0 $64 $08 $03
     sSET_ROOM_TILE $64, 8, 4                           ;; 0d:755b $b0 $64 $08 $04
-    sSET_ROOM_TILE $41, 8, 5                           ;; 0d:755f $b0 $41 $08 $05
+    sSET_ROOM_TILE $84, 8, 5
     sSET_ROOM_TILE $43, 8, 6                           ;; 0d:7563 $b0 $43 $08 $06
-    sSET_ROOM_TILE $31, 8, 7                           ;; 0d:7567 $b0 $31 $08 $07
+    sSET_ROOM_TILE $86, 8, 7
     sFOLLOWER_SET_POSITION 17, 12                      ;; 0d:756b $99 $11 $0c
     sSET_ROOM_TILE $64, 9, 2                           ;; 0d:756e $b0 $64 $09 $02
     sSET_ROOM_TILE $64, 9, 3                           ;; 0d:7572 $b0 $64 $09 $03
@@ -4639,7 +4642,7 @@ script_0249:
     sFLASH_SCREEN                                      ;; 0d:758b $bf
     sSET_ROOM_TILE $64, 8, 5                           ;; 0d:758c $b0 $64 $08 $05
     sSET_ROOM_TILE $64, 8, 6                           ;; 0d:7590 $b0 $64 $08 $06
-    sSET_ROOM_TILE $41, 8, 7                           ;; 0d:7594 $b0 $41 $08 $07
+    sSET_ROOM_TILE $84, 8, 7
     sFOLLOWER_DELETE                                   ;; 0d:7598 $98
     sSET_ROOM_TILE $64, 9, 4                           ;; 0d:7599 $b0 $64 $09 $04
     sSET_ROOM_TILE $64, 9, 5                           ;; 0d:759d $b0 $64 $09 $05
