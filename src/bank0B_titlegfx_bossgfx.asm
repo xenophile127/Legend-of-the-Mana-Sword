@@ -12,9 +12,10 @@ SECTION "bank0b", ROMX[$4000], BANK[$0b]
 ;    INCBIN "title_end.bin"                             ;; 0b:4000
     ds $0c00, $ff
 
-;@gfximg name=trashbin width=2 height=8
-trashbinGfx:
-    INCBIN "trashbin.bin"                              ;; 0b:4c00
+trashcanGfx:
+    INCBIN "trashcan.bin"                              ;; 0b:4c00
+
+ds 192 ; Free space
 
 ;@gfximg name=boss/vampire width=2 height=12
 bossGfxVampire:

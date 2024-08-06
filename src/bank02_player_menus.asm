@@ -706,7 +706,7 @@ menuTrashCanLoadTiles:
     push HL                                            ;; 02:4781 $e5
     ld   HL, menuTrashCanTileLoads                     ;; 02:4782 $21 $b8 $47
     ld   B, $04                                        ;; 02:4785 $06 $04
-    ld   A, BANK(trashbinGfx)                          ;; 02:4787 $3e $0b
+    ld   A, BANK(trashcanGfx)                          ;; 02:4787 $3e $0b
     call menuLoadTiles                                 ;; 02:4789 $cd $8e $47
     pop  HL                                            ;; 02:478c $e1
     ret                                                ;; 02:478d $c9
@@ -757,10 +757,10 @@ menuFingerCurledTiles:
 
 ;@data format=pp amount=4
 menuTrashCanTileLoads:
-    dw   _VRAM8000+$c0, trashbinGfx
-    dw   _VRAM8000+$d0, trashbinGfx+$20
-    dw   _VRAM8000+$e0, trashbinGfx+$10
-    dw   _VRAM8000+$f0, trashbinGfx+$30
+    dw   _VRAM8000+$c0, trashcanGfx
+    dw   _VRAM8000+$d0, trashcanGfx+$20
+    dw   _VRAM8000+$e0, trashcanGfx+$10
+    dw   _VRAM8000+$f0, trashcanGfx+$30
 
 ;@jumptable amount=59
 gameStateMenuJumptable:
