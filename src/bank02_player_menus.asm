@@ -6944,7 +6944,7 @@ getGraphicsAndMusicState:
     push DE                                            ;; 02:775b $d5
     srl  E                                             ;; 02:775c $cb $3b
     srl  D                                             ;; 02:775e $cb $3a
-    call getRoomMetaTile                               ;; 02:7760 $cd $26 $24
+    call getRoomMetatile                               ;; 02:7760 $cd $26 $24
     pop  DE                                            ;; 02:7763 $d1
     pop  HL                                            ;; 02:7764 $e1
     ld   [HL+], A                                      ;; 02:7765 $22
@@ -6952,7 +6952,7 @@ getGraphicsAndMusicState:
     inc  E                                             ;; 02:7767 $1c
     srl  E                                             ;; 02:7768 $cb $3b
     srl  D                                             ;; 02:776a $cb $3a
-    call getRoomMetaTile                               ;; 02:776c $cd $26 $24
+    call getRoomMetatile                               ;; 02:776c $cd $26 $24
     pop  HL                                            ;; 02:776f $e1
     ld   [HL], A                                       ;; 02:7770 $77
     ret                                                ;; 02:7771 $c9
@@ -7493,12 +7493,12 @@ loadSRAMCreateInitScript:
     ld   [HL+], A                                      ;; 02:7a93 $22
     ld   [HL], B                                       ;; 02:7a94 $70
     inc  HL                                            ;; 02:7a95 $23
-    call loadSRAMInitScriptDisplayMetaTile             ;; 02:7a96 $cd $a8 $7a
+    call loadSRAMInitScriptDisplayMetatile             ;; 02:7a96 $cd $a8 $7a
     ld   A, B                                          ;; 02:7a99 $78
     srl  A                                             ;; 02:7a9a $cb $3f
     ld   [HL+], A                                      ;; 02:7a9c $22
     inc  HL                                            ;; 02:7a9d $23
-    call loadSRAMInitScriptDisplayMetaTile             ;; 02:7a9e $cd $a8 $7a
+    call loadSRAMInitScriptDisplayMetatile             ;; 02:7a9e $cd $a8 $7a
     ld   A, B                                          ;; 02:7aa1 $78
     inc  A                                             ;; 02:7aa2 $3c
     srl  A                                             ;; 02:7aa3 $cb $3f
@@ -7510,7 +7510,7 @@ loadSRAMCreateInitScript:
 ; Then adds the tile number and the y coordinate (but not the x).
 ; Return: B = x coordinate
 ; $b0 = scriptOpCodeSetRoomTile
-loadSRAMInitScriptDisplayMetaTile:
+loadSRAMInitScriptDisplayMetatile:
     ld   A, $b0                                        ;; 02:7aa8 $3e $b0
     ld   [HL+], A                                      ;; 02:7aaa $22
     ld   A, [DE]                                       ;; 02:7aab $1a

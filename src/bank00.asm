@@ -5853,7 +5853,7 @@ getDoorLocationPointers:
 ; Draws a door open or closed
 ; DE = pointer to offsets into wRoomTiles for door metatiles
 ; HL = offset into the map's door metatile data
-drawDoorMetaTiles:
+drawDoorMetatiles:
     push DE                                            ;; 00:2281 $d5
     ld   A, [wMapTablePointer.high]                    ;; 00:2282 $fa $f3 $c3
     ld   D, A                                          ;; 00:2285 $57
@@ -5984,7 +5984,7 @@ closeDoor:
     add  HL, BC                                        ;; 00:2331 $09
     add  HL, BC                                        ;; 00:2332 $09
     pop  DE                                            ;; 00:2333 $d1
-    call drawDoorMetaTiles                             ;; 00:2334 $cd $81 $22
+    call drawDoorMetatiles                             ;; 00:2334 $cd $81 $22
     pop  AF                                            ;; 00:2337 $f1
     call objectReverseDirection                        ;; 00:2338 $cd $e4 $29
     ld   B, A                                          ;; 00:233b $47
@@ -6026,7 +6026,7 @@ openDoor:
     ld   L, C                                          ;; 00:2378 $69
     ld   H, $00                                        ;; 00:2379 $26 $00
     add  HL, HL                                        ;; 00:237b $29
-    call drawDoorMetaTiles                             ;; 00:237c $cd $81 $22
+    call drawDoorMetatiles                             ;; 00:237c $cd $81 $22
     call popBankNrAndSwitch                            ;; 00:237f $cd $0a $2a
     ret                                                ;; 00:2382 $c9
 .unsupported:
@@ -6125,7 +6125,7 @@ getDoorStatus:
 
 ; Param: DE = XY position
 ; Return: HL = pointer to metatile
-getRoomMetaTilePointer:
+getRoomMetatilePointer:
     ld   HL, wRoomTiles                                ;; 00:23f1 $21 $50 $c3
     ld   A, D                                          ;; 00:23f4 $7a
     add  A, A                                          ;; 00:23f5 $87
@@ -6149,7 +6149,7 @@ setRoomTile:
     call pushBankNrAndSwitch                           ;; 00:2405 $cd $fb $29
     pop  DE                                            ;; 00:2408 $d1
     push DE                                            ;; 00:2409 $d5
-    call getRoomMetaTilePointer                        ;; 00:240a $cd $f1 $23
+    call getRoomMetatilePointer                        ;; 00:240a $cd $f1 $23
     pop  DE                                            ;; 00:240d $d1
     pop  AF                                            ;; 00:240e $f1
     ld   [HL], A                                       ;; 00:240f $77
@@ -6168,15 +6168,15 @@ setRoomTile:
 
 ; Param: DE = XY position
 ; Return: A = meta tile number
-getRoomMetaTile:
-    call getRoomMetaTilePointer                        ;; 00:2426 $cd $f1 $23
+getRoomMetatile:
+    call getRoomMetatilePointer                        ;; 00:2426 $cd $f1 $23
     ld   A, [HL]                                       ;; 00:2429 $7e
     ret                                                ;; 00:242a $c9
 
 ; Load the metatiles from run-length encoding (RLE) data at HL into wRoomTiles.
 ; hl = address of the RLE compressed room metatiles
 ; Return: hl = address of the room tile array
-loadRoomMetaTilesRLE:
+loadRoomMetatilesRLE:
     push HL                                            ;; 00:242b $e5
     ld   A, $07                                        ;; 00:242c $3e $07
     call clearScriptFlag                               ;; 00:242e $cd $ee $3b
@@ -6363,7 +6363,7 @@ runRoomAllKilledScript:
 
 ; A = YX tile location (Y in top nibble, X in bottom nibble)
 ; Return: HL pointer to the metatile in wRoomTiles
-getRoomMetaTilePointerYXinA:
+getRoomMetatilePointerYXinA:
     ld   D, A                                          ;; 00:2546 $57
     and  A, $0f                                        ;; 00:2547 $e6 $0f
     ld   E, A                                          ;; 00:2549 $5f
@@ -6382,7 +6382,7 @@ getRoomMetaTilePointerYXinA:
     add  HL, DE                                        ;; 00:255b $19
     ret                                                ;; 00:255c $c9
 
-loadRoomMetaTilesTemplated:
+loadRoomMetatilesTemplated:
     push DE                                            ;; 00:255d $d5
     push HL                                            ;; 00:255e $e5
     call objectReverseDirection                        ;; 00:255f $cd $e4 $29
@@ -6390,7 +6390,7 @@ loadRoomMetaTilesTemplated:
     ld   A, [HL+]                                      ;; 00:2563 $2a
     ld   H, [HL]                                       ;; 00:2564 $66
     ld   L, A                                          ;; 00:2565 $6f
-    call loadRoomMetaTilesRLE                          ;; 00:2566 $cd $2b $24
+    call loadRoomMetatilesRLE                          ;; 00:2566 $cd $2b $24
     pop  AF                                            ;; 00:2569 $f1
     ld   C, A                                          ;; 00:256a $4f
     pop  DE                                            ;; 00:256b $d1
@@ -6464,7 +6464,7 @@ loadRoomMetaTilesTemplated:
     ld   C, A                                          ;; 00:25c3 $4f
     ld   A, [HL+]                                      ;; 00:25c4 $2a
     push HL                                            ;; 00:25c5 $e5
-    call getRoomMetaTilePointerYXinA                   ;; 00:25c6 $cd $46 $25
+    call getRoomMetatilePointerYXinA                   ;; 00:25c6 $cd $46 $25
     ld   [HL], C                                       ;; 00:25c9 $71
     pop  HL                                            ;; 00:25ca $e1
     jr   .tileOverrideLoop                             ;; 00:25cb $18 $f1
@@ -6612,7 +6612,7 @@ call_00_2617:
     ld   [wRoomScriptTableLow], A                      ;; 00:268d $ea $fe $c3
     push HL                                            ;; 00:2690 $e5
     push DE                                            ;; 00:2691 $d5
-    call loadRoomMetaTilesRLE                          ;; 00:2692 $cd $2b $24
+    call loadRoomMetatilesRLE                          ;; 00:2692 $cd $2b $24
     jr   .jr_00_26bc                                   ;; 00:2695 $18 $25
 .jr_00_2697:
     push BC                                            ;; 00:2697 $c5
@@ -6635,7 +6635,7 @@ call_00_2617:
     ld   A, [wMapTablePointer]                         ;; 00:26b4 $fa $f2 $c3
     ld   L, A                                          ;; 00:26b7 $6f
     ld   A, C                                          ;; 00:26b8 $79
-    call loadRoomMetaTilesTemplated                    ;; 00:26b9 $cd $5d $25
+    call loadRoomMetatilesTemplated                    ;; 00:26b9 $cd $5d $25
 .jr_00_26bc:
     call cacheMetatileAttributesAndLoadRoomTiles
     call popBankNrAndSwitch                            ;; 00:26bf $cd $0a $2a
@@ -6725,7 +6725,7 @@ loadMapPreamble:
     ld   [wRoomScriptTableHigh], A                     ;; 00:274e $ea $ff $c3
     ld   A, E                                          ;; 00:2751 $7b
     ld   [wRoomScriptTableLow], A                      ;; 00:2752 $ea $fe $c3
-    jp loadRoomMetaTilesRLE
+    jp loadRoomMetatilesRLE
 .templatedRoom:
     push HL                                            ;; 00:275f $e5
     call getRoomPointerTemplatedRoom                   ;; 00:2760 $cd $d1 $25
@@ -6741,7 +6741,7 @@ loadMapPreamble:
     ld   E, L                                          ;; 00:2774 $5d
     pop  HL                                            ;; 00:2775 $e1
     xor A, A
-    jp loadRoomMetaTilesTemplated
+    jp loadRoomMetatilesTemplated
 
 ; Used for loading graphics and metatile attribute cache for interactive maps
 ; A=Map number

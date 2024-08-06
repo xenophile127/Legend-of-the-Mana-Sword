@@ -788,7 +788,7 @@ scrollRoom:
     push DE
     ld   E, A
     ld   D, $ff
-    call drawRoomMetaTilesColumn
+    call drawRoomMetatilesColumn
     pop  DE
     ld   A, [wBackgroundDrawPositionX]
     dec  A
@@ -819,7 +819,7 @@ scrollRoom:
     push DE
     ld   D, SCRN_X_B / 2
     ld   E, A
-    call drawRoomMetaTilesColumn
+    call drawRoomMetatilesColumn
     pop  DE
     ld   A, [wBackgroundDrawPositionX]
     inc  A
@@ -918,13 +918,13 @@ scrollRoom:
 
 ds 143 ; Free space
 
-drawRoomMetaTilesColumn:
+drawRoomMetatilesColumn:
     ld   B, $00                                        ;; 01:4690 $06 $00
 .loop:
     push BC                                            ;; 01:4692 $c5
     push DE                                            ;; 01:4693 $d5
     ld   D, B                                          ;; 01:4694 $50
-    call getRoomMetaTile                               ;; 01:4695 $cd $26 $24
+    call getRoomMetatile                               ;; 01:4695 $cd $26 $24
     pop  DE                                            ;; 01:4698 $d1
     pop  BC                                            ;; 01:4699 $c1
     push BC                                            ;; 01:469a $c5
@@ -947,7 +947,7 @@ drawRoomMetatilesRow:
     push DE                                            ;; 01:46ad $d5
     ld   D, E                                          ;; 01:46ae $53
     ld   E, B                                          ;; 01:46af $58
-    call getRoomMetaTile                               ;; 01:46b0 $cd $26 $24
+    call getRoomMetatile                               ;; 01:46b0 $cd $26 $24
     pop  DE                                            ;; 01:46b3 $d1
     pop  BC                                            ;; 01:46b4 $c1
     push BC                                            ;; 01:46b5 $c5
@@ -1031,7 +1031,7 @@ drawRoom:
 .loop_inner:
     push BC                                            ;; 01:473a $c5
     push DE                                            ;; 01:473b $d5
-    call getRoomMetaTile                               ;; 01:473c $cd $26 $24
+    call getRoomMetatile                               ;; 01:473c $cd $26 $24
     pop  DE                                            ;; 01:473f $d1
     push DE                                            ;; 01:4740 $d5
     call drawMetatile
