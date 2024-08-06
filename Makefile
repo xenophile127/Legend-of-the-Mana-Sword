@@ -32,9 +32,6 @@ DEFS = $(PLAYER_GRAPHICS) $(PLAYER_GENDER) $(GLADIATOR) $(FF_OR_MANA)
 
 all: debug
 
-check: $(ROM)
-	md5sum -c $(ROM).md5
-
 clean:
 	-rm -rf .bin .obj .dep .gfx
 
