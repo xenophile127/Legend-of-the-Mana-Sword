@@ -2,6 +2,7 @@
 Improving and bug fixing Final Fantasy Adventure, the first game in the Mana series. Releases available on [Romhacking.net](https://www.romhacking.net/hacks/6550/).
 
 ## Building
+Legend of the Mana Sword is built on top of [FFA-Disassembly](https://github.com/daid/FFA-Disassembly) which has made many larger changes possible. Building consists of assembling the source.
 1. Install [RGBDS](https://rgbds.gbdev.io/).
 2. Look in the [`Makefile`](Makefile) for any commented out options you may want to enable.
 3. Run `make`.
