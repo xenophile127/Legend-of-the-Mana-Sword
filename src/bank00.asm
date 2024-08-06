@@ -572,9 +572,11 @@ IF DEF(COLOR)
     ld b, LOW(rBCPD)
 ENDC
 ; Nothing should ever turn off the LCD/PPU with this interrupt on, but guard against it anyway.
+; This condition will now trigger a debug message.
+; If it is not seen in testing this check will be removed.
     ldh  A, [rLCDC]                                    ;; 00:0358 $f0 $40
     and LCDCF_ON
-    jr   Z, .ready_to_write                            ;; 00:035c $28 $0c
+    jr z, .debug
 ; The LYC values used are two before the target scanline, so wait a bit.
     ld   C, LOW(rSTAT)                                 ;; 00:035e $0e $41
 .loop_while_mode_0:
@@ -618,6 +620,11 @@ ENDC
     pop bc
     pop af
     reti
+
+; Almost certainly dead code but this will be tested before being removed.
+.debug:
+    DBG_MSG_LABEL debugMsgInteruptWithScreenOff
+    jr .ready_to_write
 
 ; Lookup table for line effect palettes. BGP values are used as keys.
 .lookup_table:
@@ -929,7 +936,7 @@ bossCollisionHandling_trampoline:
 processPhysicsForObject_4_trampoline:
     jp_to_bank 04, processPhysicsForObject_4           ;; 00:0517 $f5 $3e $04 $c3 $64 $1f
 
-ds 27 ; Free space
+ds 14 ; Free space
 
 SECTION "bank00_align_056c", ROM0[$056c]
 
