@@ -174,6 +174,7 @@ script_0005:
       sMSG                                             ;; 0d:413a $04
         db "<10> Locked.<12>"
         db "<11>", $00   ;; 0d:413b
+      sDELAY 5 ; Due to script speedups it's easy to trigger this twice.
     sENDIF                                             ;; 0d:4145
     sEND                                               ;; 0d:4145 $00
 
@@ -5068,6 +5069,7 @@ script_0270:
         sMSG                                           ;; 0d:7bad $04
           db "<10> Locked.<12>"
           db "<11>", $00 ;; 0d:7bae
+        sDELAY 5 ; Due to script speedups it's easy to trigger this twice.
       sENDIF                                           ;; 0d:7bb8
     sENDIF                                             ;; 0d:7bb8
     sEND                                               ;; 0d:7bb8 $00
@@ -5136,6 +5138,7 @@ script_0275:
         sMSG
           db "<10> Locked.<12>"
           db "<11>", $00
+        sDELAY 5 ; Due to script speedups it's easy to trigger this twice.
       sELSE
         sIF_FLAG wScriptFlags0B.0                      ;; 0d:7c1f $08 $58 $00 $05
           sCALL script_0473                            ;; 0d:7c23 $02 $5a $e2
