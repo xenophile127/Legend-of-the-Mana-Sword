@@ -10752,12 +10752,11 @@ subHP:
     call drawHPOnStatusBar_trampoline                  ;; 00:3e42 $cd $0b $31
     ret                                                ;; 00:3e45 $c9
 
+; Checks whether Hero's HP is zero.
 checkForPlayerDeath:
-    ld   A, [wHPHigh]                                  ;; 00:3e46 $fa $b3 $d7
-    ld   D, A                                          ;; 00:3e49 $57
-    ld   A, [wHPLow]                                   ;; 00:3e4a $fa $b2 $d7
-    ld   E, A                                          ;; 00:3e4d $5f
-    or   A, D                                          ;; 00:3e4e $b2
+    ld hl, wHPLow
+    ld a, [hl+]
+    or [hl]
     ret  NZ                                            ;; 00:3e4f $c0
     ld   A, [wMainGameStateFlags]                      ;; 00:3e50 $fa $a1 $c0
     bit  1, A                                          ;; 00:3e53 $cb $4f
@@ -10771,6 +10770,8 @@ checkForPlayerDeath:
     ld   HL, $07                                       ;; 00:3e64 $21 $07 $00
     call runScriptByIndex                              ;; 00:3e67 $cd $ad $31
     ret                                                ;; 00:3e6a $c9
+
+ds 4 ; Free space
 
 startLevelUp:
     ld   A, [wNectarStaminaTimerNumber]                ;; 00:3e6b $fa $7e $d8
