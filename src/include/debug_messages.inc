@@ -45,3 +45,9 @@ debugMsgProjectilePaletteConflict:
 ; $d8b6 == wScriptPointerLow
 ; Script pointers are 16 bit and span up to four script banks.
     DBG_STR "[ERROR] Projectile palette conflict old: %($dd99)% new: %C% in spawn table: %($c5ae)% at script pointer high: %($d8b7)% low: %($d8b6)%"
+
+debugMsgInteruptWithScreenOff:
+    DBG_STR "[WARN] LCDC Interrupt triggered with the LCD off."
+
+debugMsgSGBBorderInjector:
+    DBG_STR "[DEBUG] Loading Super Game Boy border."

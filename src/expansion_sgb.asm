@@ -1,4 +1,6 @@
 INCLUDE "include/hardware.inc"
+INCLUDE "include/debug.inc"
+
 
 SGB_CODE_BANK EQU $16
 
@@ -13,6 +15,10 @@ sgb_init:
     ld a, c
     cp a, $14
     ret nz
+
+    ; Log a message before calling the injector because emulators in GBC+border mode may
+    ; abort the moment the border transfer finishes.
+    DBG_MSG_LABEL debugMsgSGBBorderInjector
 
     ; Call border injector
     call SuperGameBoyBorderInjector
