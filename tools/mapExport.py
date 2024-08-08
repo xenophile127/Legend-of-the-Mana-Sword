@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+
+# Given an argument of the path to a Legend of the Mana Sword build this exports the raw maps.
+
 import PIL.Image, PIL.ImageDraw
 import struct
 import sys
@@ -38,7 +42,6 @@ def drawTile(img, tx, ty, bank, addr):
                     v |= 2
                 buffer[x+y*8] = v
         tile = PIL.Image.frombytes('P', (8, 8), bytes(buffer))
-        tile = tile.resize((16, 16))
         tile_cache[addr] = tile
     else:
         tile = tile_cache[addr]
@@ -51,7 +54,7 @@ def drawMetaTile(img, x, y, metatile_data_addr, gfx_offset, meta_tile):
     for ty in range(2):
         for tx in range(2):
             tile_nr = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * 6 + tx + ty * 2)
-            drawTile(img, x * 32 + tx * 16, y * 32 + ty * 16, gfx_bank, gfx_offset + tile_nr * 16)
+            drawTile(img, x * 16 + tx * 8, y * 16 + ty * 8, gfx_bank, gfx_offset + tile_nr * 16)
 
     metatile_type_info1 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * 6 + 4)
     metatile_type_info2 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * 6 + 5)
@@ -89,7 +92,7 @@ for map_nr in range(16):
         door_data_addr = map_data_addr
         map_data_addr += 3 * 4 * 2
 
-    img = PIL.Image.new("P", (32 * 10 * w, 32 * 8 * h))
+    img = PIL.Image.new("P", (16 * 10 * w, 16 * 8 * h))
     img.draw = PIL.ImageDraw.Draw(img)
     
     for ry in range(h):
