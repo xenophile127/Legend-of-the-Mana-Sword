@@ -9,3 +9,9 @@ Legend of the Mana Sword has many graphical enhancements while staying true to t
 * Choose your hero. Play as either Duke (given this name in a Japanese novel) or Amanda, a fellow gladiator.
 * The Status Bar is reformatted.
 * Currency is changed from Gold to Lucre to match more recent Mana games.
+
+| Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
+| ---------------------------------- | -------------- | ------------ |
+| ![FFA: Rabite](images/gallery/rabite_ffa.png) | ![LotMS Amanda: Rabite](images/gallery/rabite_amanda.png) | ![LotMS Duke: Rabite](images/gallery/rabite_duke.png) |
+
+* Graphics tweaks and "Lazy DX" color enhancements when run with a proper GBC BIOS.
