@@ -1,6 +1,6 @@
 # Gallery
 
-Legend of the Mana Sword has many graphical enhancements while staying true to the original graphics.
+Legend of the Mana Sword has many visual enhancements while staying true to the original graphics.
 
 | Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
 | ---------------------------------- | -------------- | ------------ |
@@ -15,3 +15,10 @@ Legend of the Mana Sword has many graphical enhancements while staying true to t
 | ![FFA: Rabite](images/gallery/rabite_ffa.png) | ![LotMS Amanda: Rabite](images/gallery/rabite_amanda.png) | ![LotMS Duke: Rabite](images/gallery/rabite_duke.png) |
 
 * Graphics tweaks and "Lazy DX" color enhancements when run with a proper GBC BIOS.
+
+| Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
+| ---------------------------------- | -------------- | ------------ |
+| ![FFA: Salamander](images/gallery/salamander_ffa.png) | ![LotMS Amanda: Salamander](images/gallery/salamander_amanda.png) | ![LotMS Duke: Salamander](images/gallery/salamander_duke.png) |
+
+* References added to the Mana Spirits, which were not introduced until the second Mana game (Secret of Mana).
+* Logic changed so that text windows display at the bottom when possible so less of the playfield is hidden.
