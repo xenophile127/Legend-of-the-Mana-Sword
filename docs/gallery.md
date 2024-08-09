@@ -18,6 +18,14 @@ Legend of the Mana Sword has many visual enhancements while staying true to the 
 
 | Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
 | ---------------------------------- | -------------- | ------------ |
+| ![FFA: Poison](images/gallery/poison_ffa.png) | ![LotMS Amanda: Poison](images/gallery/poison_amanda.png) | ![LotMS Duke: Poison](images/gallery/poison_duke.png) |
+
+* Up to six letter status names.
+* More "Lazy DX" color improvements.
+* Background tile touchups.
+
+| Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
+| ---------------------------------- | -------------- | ------------ |
 | ![FFA: Salamander](images/gallery/salamander_ffa.png) | ![LotMS Amanda: Salamander](images/gallery/salamander_amanda.png) | ![LotMS Duke: Salamander](images/gallery/salamander_duke.png) |
 
 * References added to the Mana Spirits, which were not introduced until the second Mana game (Secret of Mana).
