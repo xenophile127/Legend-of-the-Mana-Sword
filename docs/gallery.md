@@ -14,7 +14,8 @@ Legend of the Mana Sword has many visual enhancements while staying true to the 
 | ---------------------------------- | -------------- | ------------ |
 | ![FFA: Rabite](images/gallery/rabite_ffa.png) | ![LotMS Amanda: Rabite](images/gallery/rabite_amanda.png) | ![LotMS Duke: Rabite](images/gallery/rabite_duke.png) |
 
-* Graphics tweaks and "Lazy DX" color enhancements when run with a proper GBC BIOS.
+* Tweaks to sprites, like the tails of rabites.
+* Map improvements like grass next to diagonal sections of cliffs and mountains.
 
 | Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
 | ---------------------------------- | -------------- | ------------ |
