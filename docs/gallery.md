@@ -1,4 +1,4 @@
-# Gallery
+# [Legend of the Mana Sword](./) Gallery
 
 Legend of the Mana Sword has many visual enhancements while staying true to the original graphics.
 
