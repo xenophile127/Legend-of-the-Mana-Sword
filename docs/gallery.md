@@ -38,3 +38,10 @@ Legend of the Mana Sword has many visual enhancements while staying true to the 
 * Map improvements. (Actually, this level of change is not common, but this screen is meant to match another screen but originally could not.)
 * With "Lazy DX" color improvements the sky is now blue.
 * Max money changed from 65535 to 99999.
+
+| Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
+| ---------------------------------- | -------------- | ------------ |
+| ![FFA: Sword](images/gallery/sword_ffa.png) | ![LotMS Amanda: Sword](images/gallery/sword_amanda.png) | ![LotMS Duke: Sword](images/gallery/sword_duke.png) |
+
+* Spell names can now be five letters long. Slep renamed Sleep.
+* Excalibur (also Excalbur and XCalibr) renamed Mana Sword.
