@@ -30,3 +30,11 @@ Legend of the Mana Sword has many visual enhancements while staying true to the 
 
 * References added to the Mana Spirits, which were not introduced until the second Mana game (Secret of Mana).
 * Logic changed so that text windows display at the bottom when possible so less of the playfield is hidden.
+
+| Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
+| ---------------------------------- | -------------- | ------------ |
+| ![FFA: Cutscene](images/gallery/cutscene_ffa.png) | ![LotMS Amanda: Cutscene](images/gallery/cutscene_amanda.png) | ![LotMS Duke: Cutscene](images/gallery/cutscene_duke.png) |
+
+* Map improvements. (Actually, this level of change is not common, but this screen is meant to match another screen but originally could not.)
+* With "Lazy DX" color improvements the sky is now blue.
+* Max money changed from 65535 to 99999.
