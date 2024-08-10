@@ -4,6 +4,8 @@
 
 By far the most notable Super Game Boy enhancement added for Legend of the Mana Sword is a border based on [Orioto](https://www.deviantart.com/orioto)’s magnificent piece, [Vision of a Tree](https://www.deviantart.com/orioto/art/Vision-Of-A-Tree-1010165610).
 
+Creating this border from the original HD art was possible by [Super Game Boy Border Converter](https://www.marcrobledo.com/super-game-boy-border-converter/) and Legend of the Mana Sword uses code from [Super Game Boy Border Injector](https://www.marcrobledo.com/super-game-boy-border-injector/), both by [Marc Robledo](https://www.marcrobledo.com/).
+
 Super Game Boy development turns out to be difficult to get right on all platforms. During development bugs were found that were unique  to the Japanese only Super Game Boy 2, the European PAL Super Game Boy, various emulators (including a high-precision SNES emulator), and modern FPGA hardware implementations. Fixing a bug in one often resulted in bugs cropping up in more than one other.
 
 Some features were planned, coded, tested, and then abandoned due to limitations and quirks. Others (such as sound improvements) were decided against due to high complexity combined with lack of support in most emulators. Over and over promising Super Game Boy features turned into dead ends.
