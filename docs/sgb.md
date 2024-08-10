@@ -10,4 +10,4 @@ Some features were planned, coded, tested, and then abandoned due to limitations
 
 Most officially licensed games seem to have dealt with this by ignoring Super Game Boy or sticking with a few common enhancements, such as a border.
 
-Despite the many setbacks, in addition to the beautiful border Legend of the Mana Sword has some small Super Game Boy enhancements just for the ending. Future work will mostly go into Game Boy Color improvements as that is a technically much more powerful and robust platform that allows many more colors to be used simultaniously.
+Despite the many setbacks, in addition to the beautiful border Legend of the Mana Sword has some small Super Game Boy enhancements just for the ending. Future work will mostly go into Game Boy Color improvements as that is a technically much more powerful and robust platform that allows many more colors to be used simultaneously.
