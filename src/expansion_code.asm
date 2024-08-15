@@ -6,7 +6,7 @@ INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
 INCLUDE "include/debug.inc"
 
-EXPANSION_CODE_BANK_1 EQU $11
+DEF EXPANSION_CODE_BANK_1 EQU $11
 
 SECTION "bank11", ROMX[$4000], BANK[EXPANSION_CODE_BANK_1]
 

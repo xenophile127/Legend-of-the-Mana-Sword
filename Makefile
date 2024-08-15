@@ -61,7 +61,7 @@ $(ROM): $(patsubst src/%.asm,.obj/%.o,$(SRCS))
 
 .obj/%.o $(DEPDIR)/%.mk: src/%.asm $(patsubst gfx/%.png,.gfx/%.bin,$(GFXS))
 	@mkdir -p $(dir .obj/$* .dep/$*)
-	rgbasm $(DEFS) -Wall -Wextra --export-all -isrc -i.gfx -M .dep/$*.mk -MP -MQ .obj/$*.o -MQ .dep/$*.mk -o .obj/$*.o $<
+	rgbasm $(DEFS) -Wall -Wextra --export-all --include src --include .gfx -M .dep/$*.mk -MP -MQ .obj/$*.o -MQ .dep/$*.mk -o .obj/$*.o $<
 
 .gfx/%.bin: gfx/%.png
 	@mkdir -p $(dir .gfx/$*)

@@ -26,12 +26,12 @@
 
 ; For more information, please refer to <http://unlicense.org>
 
-SGB_OUT_ADDRESS EQU $FF00
+DEF SGB_OUT_ADDRESS EQU $FF00
 
-SGB_SEND_ZERO   EQU %00100000
-SGB_SEND_ONE    EQU %00010000
-SGB_SEND_RESET  EQU %00000000
-SGB_SEND_NULL   EQU %00110000
+DEF SGB_SEND_ZERO   EQU %00100000
+DEF SGB_SEND_ONE    EQU %00010000
+DEF SGB_SEND_RESET  EQU %00000000
+DEF SGB_SEND_NULL   EQU %00110000
 
 ; bc = address of the packet
 ; This uses hl instead of c for writes which is a cycle faster and allows using a for the working byte.

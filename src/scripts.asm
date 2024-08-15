@@ -5,7 +5,7 @@ INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
 
-SCRIPT_BANK_1 EQU $12
+DEF SCRIPT_BANK_1 EQU $12
 
 ; Start of the first script bank.
 SECTION "script bank 1", ROMX[$4000], BANK[SCRIPT_BANK_1]

@@ -1,7 +1,7 @@
 INCLUDE "include/macros.inc"
 INCLUDE "include/constants.inc"
 
-COLOR_SINGLE_PALETTES_BANK_2 EQU $1a
+DEF COLOR_SINGLE_PALETTES_BANK_2 EQU $1a
 
 SECTION "Game Boy Color Bank - Single Palettes 2", ROMX[$4000], BANK[COLOR_SINGLE_PALETTES_BANK_2]
 

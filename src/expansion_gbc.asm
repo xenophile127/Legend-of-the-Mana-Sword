@@ -1,6 +1,6 @@
 INCLUDE "include/hardware.inc"
 
-SGB_CODE_BANK EQU $17
+DEF SGB_CODE_BANK EQU $17
 
 SECTION "Game Boy Color Bank - Code", ROMX[$4000], BANK[SGB_CODE_BANK]
 

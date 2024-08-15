@@ -2,7 +2,7 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/debug.inc"
 
 
-SGB_CODE_BANK EQU $16
+DEF SGB_CODE_BANK EQU $16
 
 SECTION "SGB Bank - Code", ROMX[$4000], BANK[SGB_CODE_BANK]
 
