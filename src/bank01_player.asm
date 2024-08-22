@@ -62,10 +62,10 @@ prepareDefaultEffect:
 ; Used after the intro scroll and shutter effects to restore the original palette.
 setDefaultLCDEffectAndBGP:
 setDefaultLCDCEffectAndPalette:
-IF DEF(COLOR)
-    ld hl, wColorPalettes.normal_bgp0
     ld a, [wPlayerSpecialFlags]
     bit 1, a
+IF DEF(COLOR)
+    ld hl, wColorPalettes.normal_bgp0
     jr z, .copy
     ld hl, wColorPalettes.blind_bgp0
 .copy:
@@ -74,6 +74,9 @@ IF DEF(COLOR)
     call copyHLtoDE
 ELSE
     ld a, $e4
+    jr z, .write_bgb
+    ld a, $3f
+.write_bgb:
     ld [wVideoBGP], a
 ENDC
     call setDefaultLCDCEffect
@@ -203,6 +206,9 @@ IF DEF(COLOR)
     call loadLCDCEffectBufferAndPalette
 ELSE
     call loadLCDCEffectBuffer                          ;; 01:41b5 $cd $f3 $02
+; If the Dark effect is active then BGB needs to be set.
+    ld hl, wVideoBGP
+    ld [hl], $e4
 ENDC
 ; Set the new LCDC value for the start of the frame and back up the old one.
     ld hl, wVideoLCDC
