@@ -10550,7 +10550,13 @@ script_0535:
     sPLAYER_STEP_FORWARD                               ;; 0e:641c $80
     sPLAYER_STEP_FORWARD                               ;; 0e:641d $80
     sSCROLL_ROOM_RIGHT                                 ;; 0e:641e $eb
+; Somehow the timing has changed in the normal version but not the color version.
+; Likely related to the script speedup changes.
+IF DEF(COLOR)
     sLOOP 7, 2                                         ;; 0e:641f $03 $07 $02
+ELSE
+    sLOOP 6, 2
+ENDC
       sPLAYER_STEP_FORWARD                             ;; 0e:6422 $80
     sEND                                               ;; 0e:6423 $00
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:6424 $85
