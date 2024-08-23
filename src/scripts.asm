@@ -2685,6 +2685,13 @@ script_01ae:
         db "<11>", $00 ;; 0d:4fe4
       sFADE_TO_BLACK                                   ;; 0d:500b $bd
       sDELAY 30                                        ;; 0d:500c $f0 $1e
+; Duke/Amanda can be left mid-step at the end of the battle.
+; This can cause a weird little positinioning issue.
+; Re-initializing the follower prevents it.
+      sFOLLOWER_DELETE
+      sSET_NPC_TYPES 81
+      sSPAWN_NPC 0
+      sGIVE_FOLLOWER 5
       sLOAD_ROOM_INSTANT 1, $30, 12, 8                 ;; 0d:500e $f3 $01 $30 $0c $08
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:5013 $84
       sFOLLOWER_SET_POSITION 10, 8                     ;; 0d:5014 $99 $0a $08
@@ -2692,6 +2699,9 @@ script_01ae:
       sDELAY 60                                        ;; 0d:5018 $f0 $3c
       sFOLLOWER_DIRECTION_LEFT                         ;; 0d:501a $97
       sDELAY 60                                        ;; 0d:501b $f0 $3c
+; Look all directions.
+      sFOLLOWER_DIRECTION_UP
+      sDELAY 60
       sFOLLOWER_DIRECTION_RIGHT                        ;; 0d:501d $96
       sDELAY 60                                        ;; 0d:501e $f0 $3c
       sSET_PLAYER_DIRECTION_LEFT                       ;; 0d:5020 $87
