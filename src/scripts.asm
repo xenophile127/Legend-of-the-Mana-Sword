@@ -8583,6 +8583,9 @@ script_0434:
     sEND                                               ;; 0e:5427 $00
 
 script_0435:
+; This direction change is mostly to allow Watts to finish a step if he's in motion.
+; Otherwise it'll happen outside the cave.
+    sFOLLOWER_DIRECTION_DOWN
     sDELAY 60
     sMSG                                               ;; 0e:542b $04
       db "<10>Watts:There's\n plenty of mithril\n down here!<12>"
@@ -8590,7 +8593,12 @@ script_0435:
     sSET_FLAG wScriptFlags02.4                         ;; 0e:5438 $da $14
     sDELAY 60                                          ;; 0e:543a $f0 $3c
     sLOAD_ROOM 0, $9b, 4, 5                            ;; 0e:543c $f4 $00 $9b $04 $05
+; Walk Watts out from under you instead of teleporting.
+    sFOLLOWER_DIRECTION_RIGHT
+    sFOLLOWER_STEP_FORWARD
+    sFOLLOWER_STEP_FORWARD
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:5441 $86
+    sFOLLOWER_STEP_FORWARD
     sFOLLOWER_DIRECTION_LEFT                           ;; 0e:5442 $97
     sFOLLOWER_SET_POSITION 7, 5                        ;; 0e:5443 $99 $07 $05
     sDELAY 80                                          ;; 0e:5446 $f0 $50
