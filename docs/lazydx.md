@@ -27,6 +27,6 @@ Two special effects change one of these palettes: The Dark (Blind) effect and bo
 ## Backgrounds
 
 | Black & White Original | Color Original | Black & White Modified | Color Modified |
-| ![B&W Original 2](images/lazydx/demo2a.png) | !Color Original 2](images/lazydx/demo2b.png) | ![B&W Modified 2](images/lazydx/demo2c.png) | ![Color Modified 2](images/lazydx/demo2d.png) 
+| ![B&W Original 2](images/lazydx/demo2a.png) | ![Color Original 2](images/lazydx/demo2b.png) | ![B&W Modified 2](images/lazydx/demo2c.png) | ![Color Modified 2](images/lazydx/demo2d.png) 
 
 The GB only has one background palette, but on GBC this palette has green and blue. That allows some nice improvements. For instance, there are some screens that show the sky. Originally on GBC that sky would have been shown as green, but by changing the graphics it can be blue instead.
