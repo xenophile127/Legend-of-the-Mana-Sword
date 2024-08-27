@@ -8,9 +8,7 @@ INCLUDE "include/constants.inc"
 SECTION "wram0", WRAM0[$c000]
 
 wOAMBuffer:
-    ds 1                                               ;; c000
-._01:
-    ds 7                                               ;; c001
+    ds 8                                               ;; c000
 ._08:
     ds 8                                               ;; c008
 ._10:
