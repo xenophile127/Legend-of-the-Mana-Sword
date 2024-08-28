@@ -22,7 +22,7 @@ Legend of the Mana Sword has many visual enhancements while staying true to the 
 | ![FFA: Poison](images/gallery/poison_ffa.png) | ![LotMS Amanda: Poison](images/gallery/poison_amanda.png) | ![LotMS Duke: Poison](images/gallery/poison_duke.png) |
 
 * Up to six letter status names.
-* More "Lazy DX" color improvements.
+* ["Lazy DX"](lazydx.html) color improvements.
 * Background tile touchups.
 
 | Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
@@ -37,7 +37,7 @@ Legend of the Mana Sword has many visual enhancements while staying true to the 
 | ![FFA: Cutscene](images/gallery/cutscene_ffa.png) | ![LotMS Amanda: Cutscene](images/gallery/cutscene_amanda.png) | ![LotMS Duke: Cutscene](images/gallery/cutscene_duke.png) |
 
 * Map improvements. (Actually, this level of change is not common, but this screen is meant to match another screen but originally could not.)
-* With "Lazy DX" color improvements the sky is now blue.
+* With ["Lazy DX"](lazydx.html#backgrounds) color improvements the sky is now blue.
 * Max money changed from 65535 to 99999.
 
 | Unmodified Final Fantasy Adventure | LotMS (Amanda) | LotMS (Duke) |
