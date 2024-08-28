@@ -19,11 +19,20 @@
 				RomPatcherWeb.initialize({
 					language: 'en', //default: en
 					requireValidation: false
-				}, {
 					file: 'https://xenophile127.github.io/Legend-of-the-Mana-Sword/releases/LotMS-2024-03-29.zip', //zip containing patches
-					name: 'Legend of the Mana Sword',
-					description: 'A hack of Final Fantasy Adventure',
-					outputName: 'lotms', //patched ROM name
+					patches: [
+						{
+							file: 'LotMS-Amanda-2024-03-29.ips',
+							name: 'LotMS Amanda'
+							description: 'Legend of the Mana Sword Amanda version. Play as Amanada.'
+							outputName: 'lotms-amanda-2024-03-29'
+						}, {
+							file: 'LotMS-Duke-2024-03-29.ips',
+							name: 'LotMS Duke'
+							description: 'Legend of the Mana Sword Duke version. Play as the original character, Duke.'
+							outputName: 'lotms-duke-2024-03-29'
+						}
+					]
 				});
 			} catch (err) {
 				document.getElementById('rom-patcher-container').innerHTML = err.message;
@@ -35,13 +44,9 @@
 
 <body style="font: 15px 'Open Sans', sans-serif; background-color: #31343a; color: #e4e4e6;">
 	<header style="text-align: center">
-		<h1>Rom Patcher JS</h1>
+		<h1>Get Legend of the Mana Sword</h1>
 		<p>
-			This is a template that shows off Rom Patcher JS embeding capabilities. You can use this template to embed
-			Rom Patcher JS in your website.<br />
-			Take a look at the <a
-				href="https://github.com/marcrobledo/RomPatcher.js/blob/master/custom_patcher_template.html"
-				target="_blank">sourcecode</a> to see how it's done.
+			Legend of the Mana Sword is distributed as a patch to Final Fantasy Adventure. Choose a ROM file of Final Fantasy Adventure to patch, then choose either the Amanda or Duke version to patch.
 		</p>
 	</header>
 
