@@ -16,9 +16,12 @@
 	<script type="text/javascript">
 		window.addEventListener('load', function (evt) {
 			try {
-				RomPatcherWeb.initialize({
-					language: 'en', //default: en
+				const myPatcherSettings = {
+					language: 'en',
 					requireValidation: false,
+					allowDropFiles: true,
+				};
+				RomPatcherWeb.initialize(myPatcherSettings, {
 					file: 'https://xenophile127.github.io/Legend-of-the-Mana-Sword/releases/LotMS-2024-03-29.zip', //zip containing patches
 					patches: [
 						{
