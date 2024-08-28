@@ -1,5 +1,7 @@
 # Legend of the Mana Sword
 
+![Title from title screen](images/title.png)
+
 Legend of the Mana Sword is a rom hack aimed at being the ultimate version of *Final Fantasy Adventure*, the first game in the Mana series. This revitalized version fixes bugs, polishes graphics, updates the script, and includes numerous quality-of-life improvements.
 
 It also has [enhancements for Super Game Boy](sgb.md) with a custom border, and many ["Lazy DX" graphics modifications](lazydx.md) for Game Boy Color (and Game Boy Advance).
