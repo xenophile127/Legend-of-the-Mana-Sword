@@ -4138,10 +4138,7 @@ useWeaponItemOrSpecial:
     jr c, .playerFacingWest
     rra
     jr c, .playerFacingNorth
-    rra
-    jr c, .playerFacingSouth
-    pop  DE                                            ;; 01:5aa9 $d1
-    ret                                                ;; 01:5aaa $c9
+    jr .playerFacingSouth
 .playerFacingEast:
     pop  DE                                            ;; 01:5aab $d1
     ld   A, D                                          ;; 01:5aac $7a
@@ -4210,7 +4207,11 @@ useWeaponItemOrSpecial:
     bit  4, E                                          ;; 01:5b12 $cb $63
     jr   NZ, .weapon                                   ;; 01:5b14 $20 $10
     call castEquippedSpellIfSufficientMana_trampoline  ;; 01:5b16 $cd $5f $31
-    jr   C, .insuficientMana                           ;; 01:5b19 $38 $28
+    jr nc, .suficient_mana
+    pop bc
+    xor a
+    ret
+.suficient_mana
     call doSpellOrItemEffect_trampoline                ;; 01:5b1b $cd $1d $31
     ld   [wCurrentPlayerAttackWillCharge], A           ;; 01:5b1e $ea $63 $cf
     ld   A, [wEquippedItemAnimationType]               ;; 01:5b21 $fa $59 $cf
@@ -4233,15 +4234,18 @@ ENDC
     ld   [HL], $01                                     ;; 01:5b37 $36 $01
 .after_write:
     ld   B, A                                          ;; 01:5b39 $47
+
+SECTION "bank01_align_5b37", ROMX[$5b37], BANK[$01]
+; Hack to ensure consistent patching results on both original and the Switch re-release.
+    nop
+    nop
+    nop
+
     ld   C, $00                                        ;; 01:5b3a $0e $00
     call attackObjectFunctionNormal                    ;; 01:5b3c $cd $d5 $54
     ld   A, C                                          ;; 01:5b3f $79
     or   A, $00                                        ;; 01:5b40 $f6 $00
     ret                                                ;; 01:5b42 $c9
-.insuficientMana:
-    pop  BC                                            ;; 01:5b43 $c1
-    xor  A, A                                          ;; 01:5b44 $af
-    ret                                                ;; 01:5b45 $c9
 
 SECTION "bank01_align_5b46", ROMX[$5b46], BANK[$01]
 
