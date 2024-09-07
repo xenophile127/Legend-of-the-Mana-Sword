@@ -830,7 +830,7 @@ map01_room02_06_tiles:
     RLE  $37, $37, $37, $16, $17, $07, $08, $37, $37, $37 ;; 06:4e05 ..........
 
 map01_room03_06_script:
-    SCRIPT_IDX script_003d                             ;; 06:4e0f $3d $00
+    SCRIPT_IDX script_054a                             ;; 06:4e0f $3d $00
     db   $ff                                           ;; 06:4e11 $ff
 
 map01_room03_06_tiles:
@@ -860,7 +860,7 @@ map01_room04_06_tiles:
     RLE  $64, $64, $64, $64, $64, $64, $64, $64, $64, $64 ;; 06:4e90 ....
 
 map01_room05_06_script:
-    SCRIPT_IDX script_003d                             ;; 06:4e94 $3d $00
+    SCRIPT_IDX script_054d                             ;; 06:4e94 $3d $00
     db   $ff                                           ;; 06:4e96 $ff
 
 ; This room has been changed because it is used in a cutscene as a match for map0f_room01_04,
@@ -875,12 +875,20 @@ map01_room05_06_tiles:
     RLE  $00, $00, $00, $00, $00, $00, $35, $77, $77, $77 ;; 06:4ec7 ....
     RLE  $64, $64, $64, $64, $64, $64, $42, $77, $77, $77 ;; 06:4ecb ....
 
+; Special closed Castle Granz gate for the prolog so it doesn't visibly slam shut.
 map01_room06_06_script:
-    dw   $ffff                                         ;; 06:4ecf $ff $ff
+    SCRIPT_IDX script_0550                             ;; 06:4ecf $ff $ff
     db   $ff                                           ;; 06:4ed1 $ff
 
 map01_room06_06_tiles:
-    db   $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff        ;; 06:4ed2 ????????
+    RLE  $55, $0a, $55, $55, $55, $55, $09, $55, $0a, $55
+    RLE  $55, $0a, $55, $54, $54, $55, $09, $55, $0a, $55
+    RLE  $55, $0a, $55, $0f, $0f, $55, $09, $55, $0a, $55
+    RLE  $55, $0a, $54, $1f, $1f, $54, $09, $55, $0a, $54
+    RLE  $54, $1a, $00, $00, $00, $00, $19, $54, $1a, $00
+    RLE  $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    RLE  $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    RLE  $64, $64, $64, $64, $64, $64, $64, $64, $64, $64
 
 map01_room07_06_script:
     SCRIPT_IDX script_0097                             ;; 06:4eda $97 $00

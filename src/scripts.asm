@@ -12104,3 +12104,46 @@ script_0549:
       db "<1b> How about\n some items?<12>"
       db "<11>", $00 ;; 0e:7b28
     sEND                                               ;; 0e:7b3b $00
+
+; Added scripts.
+
+; To the left of Castle Granz gate. Used as part of a hack to keep the gate from visably slamming shut.
+script_054a:
+    sEND
+
+script_054b:
+    sIF_FLAG !wScriptFlags01.3, wScriptFlags.1
+        sSET_NEXT_ROOM 6, 6
+    sENDIF
+    sEND
+
+script_054c:
+    sEND
+
+; To the right of Castle Granz gate. Used as part of a hack to keep the gate from visably slamming shut.
+script_054d:
+    sEND
+
+script_054e:
+    sIF_FLAG !wScriptFlags01.3
+        sSET_NEXT_ROOM 6, 6
+    sENDIF
+    sEND
+
+script_054f:
+    sEND
+
+; Special Castle Granz gate. Used as part of a hack to keep the gate from visably slamming shut.
+script_0550:
+    sEND
+
+script_0551:
+    sIF_FLAG wScriptFlags.1
+        sSET_NEXT_ROOM 5, 6
+    sELSE
+        sSET_NEXT_ROOM 3, 6
+    sENDIF
+    sEND
+
+script_0552:
+    sEND

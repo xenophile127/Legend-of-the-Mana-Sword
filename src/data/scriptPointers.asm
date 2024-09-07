@@ -1359,3 +1359,13 @@ scriptPointersTable:
     SCRIPT_POINTER script_0547                         ;; 08:5993 $86 $79
     SCRIPT_POINTER script_0548                         ;; 08:5995 $c3 $79
     SCRIPT_POINTER script_0549                         ;; 08:5997 $c2 $7a
+; Added scripts.
+    SCRIPT_POINTER script_054a
+    SCRIPT_POINTER script_054b
+    SCRIPT_POINTER script_054c
+    SCRIPT_POINTER script_054d
+    SCRIPT_POINTER script_054e
+    SCRIPT_POINTER script_054f
+    SCRIPT_POINTER script_0550
+    SCRIPT_POINTER script_0551
+    SCRIPT_POINTER script_0552
