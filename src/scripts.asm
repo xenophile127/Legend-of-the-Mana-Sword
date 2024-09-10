@@ -8617,6 +8617,7 @@ script_0435:
     sFOLLOWER_DIRECTION_RIGHT                          ;; 0e:54ae $96
     sFOLLOWER_STEP_FORWARD                             ;; 0e:54af $90
     sFOLLOWER_STEP_FORWARD                             ;; 0e:54b0 $90
+    ;sFOLLOWER_STEP_FORWARD
     sUNK_9B                                            ;; 0e:54b1 $9b
     sFOLLOWER_DELETE                                   ;; 0e:54b2 $98
     sCLEAR_FLAG wScriptFlags0A.3                       ;; 0e:54b3 $db $53
