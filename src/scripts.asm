@@ -4184,12 +4184,13 @@ script_0227:
       db "<1b> Please do away\n with me and take\n my tears, <BOY>.<12>"
       db "<1b><BOY>:No, I can't!\n", $00
     sCALL script_0433
+; Pre-load the graphics so there isn't as much flicker when the switch happens.
+    sSET_NPC_TYPES 66
     sMSG
       db ":I'm gonna\n be a monster__<12>"
       db "<1b> I might lose my\n mind and hurt\n people__<12>"
       db "<1b>", $00 ;; 0d:68e2
     sFOLLOWER_DELETE                                   ;; 0d:6986 $98
-    sSET_NPC_TYPES 66                                  ;; 0d:6987 $fc $42
     sSPAWN_NPC 0                                       ;; 0d:6989 $fd $00
     sDELAY 30                                          ;; 0d:698b $f0 $1e
     sMSG                                               ;; 0d:698d $04
