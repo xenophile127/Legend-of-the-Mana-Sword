@@ -18,7 +18,7 @@ INCLUDE "data/xptable.asm"
 
 INCLUDE "data/scriptPointers.asm"
 
-ds 85 ; Free space
+ds 83 ; Free space
 
 SECTION "bank08_gfx", ROMX[$5a00], BANK[$08]
 

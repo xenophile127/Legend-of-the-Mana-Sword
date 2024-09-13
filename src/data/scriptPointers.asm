@@ -1369,3 +1369,4 @@ scriptPointersTable:
     SCRIPT_POINTER script_0550
     SCRIPT_POINTER script_0551
     SCRIPT_POINTER script_0552
+    SCRIPT_POINTER script_0553

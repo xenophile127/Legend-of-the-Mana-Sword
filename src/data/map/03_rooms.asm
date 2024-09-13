@@ -580,7 +580,7 @@ map03_room03_03_tiles:
 map03_room04_03_script:
     SCRIPT_IDX script_0223                             ;; 07:446e $23 $02
     SCRIPT_AT_POS 6, 8, script_030f                    ;; 07:4470 $68 $0f $03
-    SCRIPT_AT_POS 1, 1, script_04e8                    ;; 07:4473 $11 $e8 $04
+    SCRIPT_AT_POS 1, 1, script_0553
     SCRIPT_AT_POS 1, 8, script_04e7                    ;; 07:4476 $18 $e7 $04
     db   $ff                                           ;; 07:4479 $ff
 

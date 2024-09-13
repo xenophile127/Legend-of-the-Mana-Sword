@@ -9878,7 +9878,6 @@ script_04e8:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:5dea $0b $c9 $00 $06
       sSFX 24                                          ;; 0e:5dee $f9 $18
       sSET_ROOM_TILE $02, 8, 6                         ;; 0e:5df0 $b0 $02 $08 $06
-      sSET_ROOM_TILE $00, 2, 1 ; Airship werewolf room. Open an escape route to prevent softlock on save.
     sENDIF                                             ;; 0e:5df4
     sEND                                               ;; 0e:5df4 $00
 
@@ -12149,3 +12148,13 @@ script_0551:
 
 script_0552:
     sEND
+
+
+; Used for the airship switch room with werewolfs to prevent a softlock.
+script_0553:
+    sIF_TRIGGERED_ON_BY $c9
+      sSFX 24
+      sSET_ROOM_TILE $02, 8, 6
+      sSET_ROOM_TILE $00, 2, 1 ; Open an escape route to prevent softlock on save.
+    sENDIF
+    sEND                                               ;; 0e:5df4 $00
