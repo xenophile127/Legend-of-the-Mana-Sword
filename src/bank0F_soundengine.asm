@@ -12224,21 +12224,48 @@ song1d_Channel3:
 ; First byte is duration. If this is 00 then restart at the address in the next two bytes.
 ; Second byte is a signed offset applied to the frequency to create vibrato
 frequencyDeltaData:
-    db   $0a, $00, $01, $01, $01, $02, $01, $01        ;; 0f:7a4f ........
-    db   $01, $00, $00, $51, $7a                       ;; 0f:7a57 .....
+    db $0a, $00
+.first_loop:
+    db $01, $01
+    db $01, $02
+    db $01, $01
+    db $01, $00
+    db $00
+    dw .first_loop
+
 ; (Unused)
 .second:
-    db   $02, $00, $02, $0a, $00, $5c, $7a             ;; 0f:7a5c ???????
+    db $02, $00
+    db $02, $0a
+    db $00
+    dw .second
+
 .third:
-    db   $04, $00, $01, $02, $01, $ff, $00, $65        ;; 0f:7a63 ........
-    db   $7a                                           ;; 0f:7a6b .
+    db $04, $00
+.third_loop:
+    db $01, $02
+    db $01, $ff
+    db $00
+    dw .third_loop
+
 ; (Unused)
 .fourth:
-    db   $05, $00, $02, $01, $02, $00, $00, $6e        ;; 0f:7a6c ????????
-    db   $7a                                           ;; 0f:7a74 ?
+    db $05, $00
+.fourth_loop:
+    db $02, $01
+    db $02, $00
+    db $00
+    dw .fourth_loop
+
 .fifth:
-    db   $0a, $00, $01, $02, $01, $04, $01, $02        ;; 0f:7a75 ........
-    db   $01, $00, $00, $77, $7a                       ;; 0f:7a7d .....
+    db $0a, $00
+.fifth_loop:
+    db $01, $02
+    db $01, $04
+    db $01, $02
+    db $01, $00
+    db $00
+    dw .fifth_loop
 
 ; First byte is duration, second byte is fed into NR12/NR22 volume envelope register
 ; If this is 00 then the code would restart at the address in the next two bytes, but this is not used.
