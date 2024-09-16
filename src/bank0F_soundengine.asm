@@ -426,7 +426,7 @@ musicTempoPlayNotes:
     and  A, $07                                        ;; 0f:4337 $e6 $07
     ld   E, A                                          ;; 0f:4339 $5f
     ld   D, $00                                        ;; 0f:433a $16 $00
-    ld   HL, musicOctaveRelatvieOffsets                ;; 0f:433c $21 $d1 $47
+    ld   HL, musicOctaveRelativeOffsets                ;; 0f:433c $21 $d1 $47
     add  HL, DE                                        ;; 0f:433f $19
     ld   E, [HL]                                       ;; 0f:4340 $5e
     ld   A, [wMusicOctaveChannel2]                     ;; 0f:4341 $fa $0b $c1
@@ -817,7 +817,7 @@ musicTempoPlayNotes_Channel1:
     and  A, $07                                        ;; 0f:459d $e6 $07
     ld   E, A                                          ;; 0f:459f $5f
     ld   D, $00                                        ;; 0f:45a0 $16 $00
-    ld   HL, musicOctaveRelatvieOffsets                ;; 0f:45a2 $21 $d1 $47
+    ld   HL, musicOctaveRelativeOffsets                ;; 0f:45a2 $21 $d1 $47
     add  HL, DE                                        ;; 0f:45a5 $19
     ld   E, [HL]                                       ;; 0f:45a6 $5e
     ld   A, [wMusicOctaveChannel1]                     ;; 0f:45a7 $fa $23 $c1
@@ -1031,7 +1031,7 @@ musicTempoPlayNotes_Channel3:
     and  A, $07                                        ;; 0f:46f8 $e6 $07
     ld   E, A                                          ;; 0f:46fa $5f
     ld   D, $00                                        ;; 0f:46fb $16 $00
-    ld   HL, musicOctaveRelatvieOffsets                ;; 0f:46fd $21 $d1 $47
+    ld   HL, musicOctaveRelativeOffsets                ;; 0f:46fd $21 $d1 $47
     add  HL, DE                                        ;; 0f:4700 $19
     ld   E, [HL]                                       ;; 0f:4701 $5e
     ld   A, [wMusicOctaveChannel3]                     ;; 0f:4702 $fa $3b $c1
@@ -1187,7 +1187,7 @@ musicStartEnvelope:
     ret                                                ;; 0f:47d0 $c9
 
 ;         +1,  +2,  +3,  +4,  -1,  -2,  -3,  -4
-musicOctaveRelatvieOffsets:
+musicOctaveRelativeOffsets:
     db   $18, $30, $48, $60, $e8, $d0, $b8, $a0        ;; 0f:47d1 .???..??
 
 getNextMusicInstructionChannel2:
