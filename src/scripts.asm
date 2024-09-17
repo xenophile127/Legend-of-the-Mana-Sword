@@ -10996,7 +10996,7 @@ script_053a:
     sNPC_2_STEP_FORWARD                                ;; 0e:6a76 $20
     sMSG                                               ;; 0e:6a77 $04
       db "<10>Traveler:Granz is\n attacking by air!\nCibba:What?!<12>"
-      db "<1b>Traveler:Fuji,\n come with me to\n a safe place!<12>"
+      db "<1b>Traveler:<GIRL>,\n come with me to\n a safe place!<12>"
       db "<1b><GIRL>:Thank you.<12>"
       db "<11>", $00 ;; 0e:6a78
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:6abe $25
