@@ -1266,10 +1266,13 @@ script_00db:
     sEND                                               ;; 0d:46a5 $00
 
 script_00dc:
-    sCLOSE_WEST_DOOR                                   ;; 0d:46a6 $e7
     sSET_NPC_TYPES 10                                  ;; 0d:46a7 $fc $0a
     sSPAWN_NPC 1                                       ;; 0d:46a9 $fd $01
     sSPAWN_NPC 1                                       ;; 0d:46ab $fd $01
+; Don't spring the trap if the player already has the Were Axe.
+    sIF_FLAG !wScriptFlags07.7
+      sCLOSE_WEST_DOOR
+    sENDIF
     sEND                                               ;; 0d:46ad $00
 
 script_00dd:
