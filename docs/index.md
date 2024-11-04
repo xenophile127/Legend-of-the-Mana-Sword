@@ -16,3 +16,5 @@ Patch your game with Legend of the Mana Sword.
 
 ## [World Map](worldmap.png)
 Looking at a world map isn't cheating--a fold-out map came in the box with Final Fantasy Adventure. Although changes are minor that in-box map is now outdated. This is an up-to-date world map for Legend of the Mana Sword.
+
+## [Read Me](readme.txt)
