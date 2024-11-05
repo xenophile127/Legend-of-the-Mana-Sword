@@ -3120,6 +3120,8 @@ script_01c9:
       db "<10>Defeated Kraken!<12>"
       db "<11>", $00 ;; 0d:54ec
     sSET_FLAG wScriptFlags05.6                         ;; 0d:54fc $da $2e
+    ; Jackal's flag was reused for Bone Key logic. Set it back to its usual state.
+    sSET_FLAG wScriptFlags01.0
     sCREATE_EFFECT $10, $10, $04                       ;; 0d:54fe $ba $10 $10 $04
     sSET_ROOM_TILE $4c, 8, 2                           ;; 0d:5502 $b0 $4c $08 $02
     sDELAY 30                                          ;; 0d:5506 $f0 $1e
@@ -3347,28 +3349,45 @@ script_01ee:
       db "<11>", $00                   ;; 0d:5926
     sEND                                               ;; 0d:5929 $00
 
+; Talk to Cibba in Lorimar.
+; The Bone Key has been changed to be single use so some of this logic has been changed.
 script_01ef:
     sIF_INVENTORY INV_SWORD_RUSTY                      ;; 0d:592a $0a $4f $00 $05
       sCALL script_01f0                                ;; 0d:592e $02 $19 $f5
     sELSE                                              ;; 0d:5931 $01 $c1
-      sIF_INVENTORY INV_ITEM_BONE_KEY
-        sMSG
-          db "<10>", $00
-      sELSE
-        sGIVE_ITEM INV_ITEM_BONE_KEY
-        sIF_FLAG !wScriptFlags.5
+      ; Clear the "Can't carry!" flag to help with logic.
+      sCLEAR_FLAG wScriptFlags.5
+      ; If Jackal is dead and Kraken is not dead.
+      sIF_FLAG wScriptFlags01.0, !wScriptFlags05.6
+        sIF_INVENTORY INV_ITEM_BONE_KEY
           sMSG
-            db "<10>", $00
-          sSFX 15
-          sMSG
-            db "Received <KEY>Bone.<12><1b>", $00
+            db "<10><00>"
+        sELSE
+          sGIVE_ITEM INV_ITEM_BONE_KEY
+          ; If "Can't carry!" is shown then do not open a text window.
+          sIF_FLAG !wScriptFlags.5
+            sMSG
+              db "<10><00>"
+            sSFX 15
+            sMSG
+              db "Received <KEY>Bone.<12><1b><00>"
+          sENDIF
         sENDIF
+      sELSE
+         sMSG
+           db "<10><00>"
       sENDIF
-      sIF_INVENTORY INV_ITEM_BONE_KEY
+      sIF_FLAG !wScriptFlags.5
         sMSG
           db "Cibba:Go up the\n wide river by the\n Ammonite Coast.<12>"
-          db "<1b> Go beyond the\n Ammonite Coast\n to Floatrocks.<12>"
-          db "<1b> Use the key at\n the cave in the\n Floatrocks!<12>"
+          db "<1b> Go beyond the\n Ammonite Coast\n to Floatrocks.<12><00>"
+        ; Don't mention the key if it has already been used.
+        ; How does Cibba know you've already been in the Cave in Floatrocks? Who knows?
+        sIF_INVENTORY INV_ITEM_BONE_KEY
+          sMSG
+            db "<1b> Use the key at\n the cave in the\n Floatrocks!<12><00>"
+        sENDIF
+        sMSG
           db "<1b> The legendary\n sword is guarded\n by Ifrit.<12>"
           db "<1b> I'll tell you the\n rest when you\n return with it!<12>"
           db "<11>", $00 ;; 0d:593f
@@ -5073,17 +5092,21 @@ script_026d:
 script_0270:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7b93 $0b $c9 $00 $21
       sIF_EQUIPED INV_ITEM_BONE_KEY                    ;; 0d:7b97 $09 $20 $00 $12
+        ; Change Bone Key to single use like the Bronze Key.
+        sCLEAR_FLAG wScriptFlags01.0
+        sTAKE_EQUIPED_ITEM
+      sENDIF
+      sIF_FLAG wScriptFlags01.0, !wScriptFlags05.6
+        sMSG
+          db "<10> Locked.<12><11><00>"
+        sDELAY 5 ; Due to script speedups it's easy to trigger this twice.
+      sELSE
         sIF_FLAG wScriptFlags0B.0                      ;; 0d:7b9b $08 $58 $00 $05
           sCALL script_0473                            ;; 0d:7b9f $02 $5a $e2
           sSET_FLAG wScriptFlags0D.2                   ;; 0d:7ba2 $da $6a
         sENDIF                                         ;; 0d:7ba4
         sLOAD_ROOM 11, $07, 16, 12                     ;; 0d:7ba4 $f4 $0b $07 $10 $0c
         sSET_MUSIC 7                                   ;; 0d:7ba9 $f8 $07
-      sELSE                                            ;; 0d:7bab $01 $0b
-        sMSG                                           ;; 0d:7bad $04
-          db "<10> Locked.<12>"
-          db "<11>", $00 ;; 0d:7bae
-        sDELAY 5 ; Due to script speedups it's easy to trigger this twice.
       sENDIF                                           ;; 0d:7bb8
     sENDIF                                             ;; 0d:7bb8
     sEND                                               ;; 0d:7bb8 $00
@@ -5129,6 +5152,9 @@ script_0273:
     sENDIF                                             ;; 0d:7c03
     sEND                                               ;; 0d:7c03 $00
 
+; Start of the second script bank.
+SECTION "script bank 2", ROMX[$4000], BANK[SCRIPT_BANK_1 + 1]
+
 script_0274:
     sIF_TRIGGERED_ON_BY $c9, $c1                       ;; 0d:7c04 $0b $c9 $c1 $00 $0d
       sSFX 12                                          ;; 0d:7c09 $f9 $0c
@@ -5138,9 +5164,6 @@ script_0274:
       sRUN_ROOM_SCRIPT                                 ;; 0d:7c15 $ec
     sENDIF                                             ;; 0d:7c16
     sEND                                               ;; 0d:7c16 $00
-
-; Start of the second script bank.
-SECTION "script bank 2", ROMX[$4000], BANK[SCRIPT_BANK_1 + 1]
 
 script_0275:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0d:7c17 $0b $c9 $00 $29
