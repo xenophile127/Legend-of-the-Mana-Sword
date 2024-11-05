@@ -79,7 +79,7 @@ NPCSpawnPointers:
     dw   data_03_7a4a, data_03_7a38, data_03_7a38      ;; 03:72ec ??????
     dw   data_03_79b8, data_03_79c0, data_03_7530      ;; 03:72f2 ??????
     dw   data_03_79c8, data_03_79d0, data_03_7530      ;; 03:72f8 ??????
-    dw   data_03_7530, data_03_7ae4, data_03_786c      ;; 03:72fe ??????
+    dw   data_03_7530, npcChocobotIsh, npcProfIsh        ;; 03:72fe ??????      number 74 $16
     dw   data_03_79d8, data_03_79e0, data_03_7530      ;; 03:7304 ??????
     dw   data_03_77c2, data_03_7876, shieldlessPC      ;; 03:730a ??????
     dw   data_03_772e, data_03_7aee, data_03_7aee      ;; 03:7310 ??????
@@ -105,7 +105,7 @@ NPCSpawnPointers:
     dw   data_03_7ac0, data_03_7ac0, data_03_7ac0      ;; 03:7388 ??????
     dw   data_03_779a, data_03_77a4, data_03_77a4      ;; 03:738e ??????
     dw   data_03_7416, data_03_7416, data_03_7416      ;; 03:7394 ??????
-    dw   data_03_73f8, data_03_7402, data_03_740c      ;; 03:739a ??????
+    dw   npcProfEnd,   data_03_7402, data_03_740c      ;; 03:739a ??????      number 100 $64
     dw   data_03_7aca, data_03_7aca, data_03_7ad2      ;; 03:73a0 ??????
     dw   data_03_73ee, data_03_73ee, data_03_73ee      ;; 03:73a6 ??????
     dw   data_03_73e4, data_03_7844, data_03_7844      ;; 03:73ac ??????
@@ -127,15 +127,15 @@ data_03_73da:
 
 data_03_73e4:
     db   1, 1, NPC_WOMAN_MENOS_2, NPC_WOMAN_MENOS_2, NPC_WOMAN_MENOS_2, NPC_WOMAN_MENOS_2 ;; 03:73e4 ??????
-    db   $12, $04, $80, $80                            ;; 03:73ea ????
+    db   $14, $04, $80, $80                            ;; 03:73ea ????
 
 data_03_73ee:
     db   1, 1, NPC_WATTS, NPC_WATTS, NPC_WATTS, NPC_WATTS ;; 03:73ee ??????
     db   $0c, $04, $80, $80                            ;; 03:73f4 ????
 
-data_03_73f8:
+npcProfEnd:
     db   1, 1, NPC_BOWOW, NPC_BOWOW, NPC_BOWOW, NPC_BOWOW ;; 03:73f8 ??????
-    db   $00, $07, $80, $80                            ;; 03:73fe ????
+    db   $fe, $07, $80, $80                            ;; 03:73fe ????
 
 data_03_7402:
     db   1, 1, NPC_SARAH, NPC_SARAH, NPC_SARAH, NPC_SARAH ;; 03:7402 ??????
@@ -651,7 +651,7 @@ data_03_7862:
     db   1, 1, NPC_LESTER_2, NPC_LESTER_2, NPC_LESTER_2, NPC_LESTER_2 ;; 03:7862 ??????
     db   $0e, $04, $80, $80                            ;; 03:7868 ????
 
-data_03_786c:
+npcProfIsh:
     db   1, 1, NPC_BOWOW, NPC_BOWOW, NPC_BOWOW, NPC_BOWOW ;; 03:786c ??????
     db   $04, $02, $80, $80                            ;; 03:7872 ????
 
@@ -939,7 +939,7 @@ data_03_7adc:
     db   1, 1, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2, NPC_CHOCOBO_2 ;; 03:7adc ??????
     db   $80, $80                                      ;; 03:7ae2 ??
 
-data_03_7ae4:
+npcChocobotIsh:
     db   1, 1, NPC_CHOCOBOT, NPC_CHOCOBOT, NPC_CHOCOBOT, NPC_CHOCOBOT ;; 03:7ae4 ??????
     db   $04, $04, $80, $80                            ;; 03:7aea ????
 

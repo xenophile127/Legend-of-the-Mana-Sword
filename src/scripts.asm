@@ -11552,7 +11552,7 @@ script_0541:
     sMSG                                               ;; 0e:7491 $04
       db "<11>", $00                                   ;; 0e:7492
     sFADE_TO_BLACK                                     ;; 0e:7494 $bd
-    sLOAD_ROOM_INSTANT 15, $06, 20, 0                  ;; 0e:7495 $f3 $0f $06 $14 $00
+    sLOAD_ROOM_INSTANT 15, $06, 30, 7
     sSET_NPC_TYPES 100                                 ;; 0e:749a $fc $64
     sSPAWN_NPC 1                                       ;; 0e:749c $fd $01
     sSPAWN_NPC 2                                       ;; 0e:749e $fd $02
@@ -11562,8 +11562,7 @@ script_0541:
     sFADE_TO_NORMAL                                    ;; 0e:74a4 $bc
     sDELAY 100                                         ;; 0e:74a5 $f0 $64
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:74a7 $86
-    sSET_PLAYER_POSITION 0, 7                          ;; 0e:74a8 $8a $00 $07
-    sLOOP 8
+    sLOOP 10
       sPLAYER_STEP_FORWARD                             ;; 0e:74ae $80
     sEND                                               ;; 0e:74af $00
     sDELAY 110                                         ;; 0e:74b0 $f0 $6e
@@ -11576,7 +11575,7 @@ script_0541:
     sDELAY 90                                          ;; 0e:74d6 $f0 $5a
     sSPAWN_NPC 0                                       ;; 0e:74d8 $fd $00
     sSET_NPC_3_DIRECTION_RIGHT                         ;; 0e:74da $36
-    sLOOP 6
+    sLOOP 8
       sNPC_3_STEP_FORWARD                              ;; 0e:74de $30
     sEND                                               ;; 0e:74df $00
     sDELAY 60                                          ;; 0e:74e0 $f0 $3c
@@ -11599,7 +11598,7 @@ script_0541:
       db "<11>", $00                                   ;; 0e:752e
     sDELAY 70                                          ;; 0e:7530 $f0 $46
     sFADE_TO_BLACK                                     ;; 0e:7532 $bd
-    sLOAD_ROOM_INSTANT 10, $26, 20, 0                  ;; 0e:7533 $f3 $0a $26 $14 $00
+    sLOAD_ROOM_INSTANT 10, $26, 30, 6
 ; The letterbox effect covers the back wall which makes this room look weird, so load a new one.
     sSET_ROOM_TILE $16, 0, 1
     sSET_ROOM_TILE $04, 1, 1
@@ -11622,8 +11621,7 @@ script_0541:
       sNPC_1_STEP_FORWARD                              ;; 0e:7545 $10
     sEND                                               ;; 0e:7546 $00
     sDELAY 30                                          ;; 0e:7547 $f0 $1e
-    sSET_PLAYER_POSITION 0, 6                          ;; 0e:7549 $8a $00 $06
-    sLOOP 8
+    sLOOP 10
       sPLAYER_STEP_FORWARD                             ;; 0e:754f $80
     sEND                                               ;; 0e:7550 $00
     sNPC_1_STEP_BACKWARDS                              ;; 0e:7551 $11
@@ -11633,7 +11631,7 @@ script_0541:
       sPLAYER_STEP_FORWARD                             ;; 0e:755d $80
     sEND                                               ;; 0e:755e $00
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:755f $85
-    sLOOP 8
+    sLOOP 10
       sPLAYER_STEP_FORWARD                             ;; 0e:7563 $80
     sEND                                               ;; 0e:7564 $00
     sSET_PLAYER_POSITION 20, 0                         ;; 0e:7565 $8a $14 $00
@@ -11678,7 +11676,7 @@ script_0541:
       db "<11>", $00                                   ;; 0e:75f5
     sDELAY 70                                          ;; 0e:75f7 $f0 $46
     sFADE_TO_BLACK                                     ;; 0e:75f9 $bd
-    sLOAD_ROOM_INSTANT 14, $04, 20, 0                  ;; 0e:75fa $f3 $0e $04 $14 $00
+    sLOAD_ROOM_INSTANT 14, $04, 12, 16
     sSET_NPC_TYPES 103                                 ;; 0e:75ff $fc $67
     sSPAWN_NPC 1                                       ;; 0e:7601 $fd $01
     sSET_NPC_1_POSITION 12, 5                          ;; 0e:7603 $19 $0c $05
@@ -11686,8 +11684,7 @@ script_0541:
     sFADE_TO_NORMAL                                    ;; 0e:7608 $bc
     sDELAY 60                                          ;; 0e:7609 $f0 $3c
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:760b $84
-    sSET_PLAYER_POSITION 12, 14                        ;; 0e:760c $8a $0c $0e
-    sLOOP 7
+    sLOOP 9
       sPLAYER_STEP_FORWARD                             ;; 0e:7612 $80
     sEND                                               ;; 0e:7613 $00
     sDELAY 90                                          ;; 0e:7614 $f0 $5a
@@ -11707,7 +11704,7 @@ script_0541:
     sDELAY 90                                          ;; 0e:765c $f0 $5a
     sSPAWN_NPC 0                                       ;; 0e:765e $fd $00
     sSET_NPC_2_DIRECTION_LEFT                          ;; 0e:7660 $27
-    sLOOP 4
+    sLOOP 6
       sNPC_2_STEP_FORWARD                              ;; 0e:7664 $20
     sEND                                               ;; 0e:7665 $00
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:7666 $25
