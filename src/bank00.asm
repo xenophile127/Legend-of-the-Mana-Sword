@@ -43,7 +43,7 @@ VBlankInterruptHandler:
     push BC                                            ;; 00:0065 $c5
     push DE                                            ;; 00:0066 $d5
     push HL                                            ;; 00:0067 $e5
-    ld   A, [wOAM_MemoryHighAddress]                   ;; 00:0068 $fa $a4 $c0
+    ld a, HIGH(wOAMBuffer)
     call hOAM_DMA_Routine                              ;; 00:006b $cd $80 $ff
 ; Update video registers
     ld hl, wVideoLCDC
@@ -5552,8 +5552,6 @@ InitPreIntEnable:
     ld   HL, _OAMRAM ;@=ptr _OAMRAM                    ;; 00:203a $21 $00 $fe
     ld   B, $a0                                        ;; 00:203d $06 $a0
     call fillMemory                                    ;; 00:203f $cd $5d $2b
-    ld   A, $c0                                        ;; 00:2042 $3e $c0
-    ld   [wOAM_MemoryHighAddress], A                   ;; 00:2044 $ea $a4 $c0
     ld   HL, OAM_DMA_Routine                           ;; 00:2047 $21 $60 $21
     ld   DE, hOAM_DMA_Routine                          ;; 00:204a $11 $80 $ff
     ld   B, $08                                        ;; 00:204d $06 $08

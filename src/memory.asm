@@ -29,7 +29,7 @@ wMainGameStateFlags:
 wJoypadInput:
     ds 1                                               ;; c0a3
 
-wOAM_MemoryHighAddress:
+; Free space
     ds 1                                               ;; c0a4
 
 wVideoLCDC:
