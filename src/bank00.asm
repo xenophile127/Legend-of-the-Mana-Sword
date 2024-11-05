@@ -23,20 +23,17 @@ isrLCDC:
 SECTION "isrTimer", ROM0[$0050]
 
 isrTimer:
-    call DummyInterruptHandler                         ;; 00:0050 $cd $87 $00
-    reti                                               ;; 00:0053 $d9
+    reti
 
 SECTION "isrSerial", ROM0[$0058]
 
 isrSerial:
-    call DummyInterruptHandler                         ;; 00:0058 $cd $87 $00
-    reti                                               ;; 00:005b $d9
+    reti
 
 SECTION "isrJoypad", ROM0[$0060]
 
 isrJoypad:
-    call DummyInterruptHandler                         ;; 00:0060 $cd $87 $00
-    reti                                               ;; 00:0063 $d9
+    reti
 
 VBlankInterruptHandler:
     push AF                                            ;; 00:0064 $f5
@@ -114,21 +111,6 @@ ENDC
 .return
     pop af
     reti
-
-DummyInterruptHandler:
-    push AF                                            ;; 00:0087 $f5
-    push BC                                            ;; 00:0088 $c5
-    push DE                                            ;; 00:0089 $d5
-    push HL                                            ;; 00:008a $e5
-    ld   HL, wInterruptFiredFlags                      ;; 00:008b $21 $ae $c0
-    ldh  A, [rIF]                                      ;; 00:008e $f0 $0f
-    or   A, [HL]                                       ;; 00:0090 $b6
-    ld   [HL], A                                       ;; 00:0091 $77
-    pop  HL                                            ;; 00:0092 $e1
-    pop  DE                                            ;; 00:0093 $d1
-    pop  BC                                            ;; 00:0094 $c1
-    pop  AF                                            ;; 00:0095 $f1
-    ret                                                ;; 00:0096 $c9
 
 lotmsInit:
 ; If debugging is turned on print the assembly date.

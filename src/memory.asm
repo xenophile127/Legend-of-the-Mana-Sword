@@ -59,7 +59,7 @@ wVideoOBP1:
 wVBlankDone:
     ds 1                                               ;; c0ad
 
-wInterruptFiredFlags:
+; Free space
     ds 1                                               ;; c0ae
 
 ; Moved to make room for an additional byte of RNG state for the LCG.
