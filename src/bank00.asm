@@ -151,10 +151,6 @@ ELSE
     jp FullReset
 ENDC
 
-SECTION "bank00_hack_00d3", ROM0[$00d3]
-; Hack to make the Switch re-release patch identical to the original.
-ds 42, $ff
-
 SECTION "entry", ROM0[$0100]
 
 entry:

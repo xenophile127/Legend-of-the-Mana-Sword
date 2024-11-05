@@ -4234,13 +4234,6 @@ ENDC
     ld   [HL], $01                                     ;; 01:5b37 $36 $01
 .after_write:
     ld   B, A                                          ;; 01:5b39 $47
-
-SECTION "bank01_align_5b37", ROMX[$5b37], BANK[$01]
-; Hack to ensure consistent patching results on both original and the Switch re-release.
-    nop
-    nop
-    nop
-
     ld   C, $00                                        ;; 01:5b3a $0e $00
     call attackObjectFunctionNormal                    ;; 01:5b3c $cd $d5 $54
     ld   A, C                                          ;; 01:5b3f $79
