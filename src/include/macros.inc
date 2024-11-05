@@ -1030,6 +1030,12 @@ db $01
 ENDM
 MACRO sEND
 db $00
+  IF DEF(IF_LABELS)
+    IF STRLEN("{IF_LABELS}")
+      .{IF_LABELS}:
+      REDEF IF_LABELS equs STRSUB("{IF_LABELS}", 1, STRRIN("{IF_LABELS}", "X") - 1)
+    ENDC
+  ENDC
 ENDM
 MACRO sENDIF
 
@@ -1256,7 +1262,8 @@ db $dc
 ENDM
 MACRO sLOOP
 db $03
-db \1, \2
+db \1
+    sIF_JMP
 ENDM
 MACRO sMSG
 db $04

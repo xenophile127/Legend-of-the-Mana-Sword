@@ -183,7 +183,7 @@ script_0006:
 
 script_0007:
     sSET_MUSIC 0                                       ;; 0d:4147 $f8 $00
-    sLOOP 4, 13                                        ;; 0d:4149 $03 $04 $0d
+    sLOOP 4
       sSET_PLAYER_DIRECTION_RIGHT                      ;; 0d:414c $86
       sDELAY 5                                         ;; 0d:414d $f0 $05
       sSET_PLAYER_DIRECTION_DOWN                       ;; 0d:414f $85
@@ -1314,7 +1314,7 @@ script_00e6:
     sSET_MUSIC 0                                       ;; 0d:46cc $f8 $00
     sSET_PLAYER_POSITION 19, 10                        ;; 0d:46ce $8a $13 $0a
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0d:46d1 $87
-    sLOOP 10, 2                                        ;; 0d:46d2 $03 $0a $02
+    sLOOP 10
       sPLAYER_STEP_FORWARD                             ;; 0d:46d5 $80
     sEND                                               ;; 0d:46d6 $00
     sSFX 16                                            ;; 0d:46d7 $f9 $10
@@ -1618,14 +1618,14 @@ script_010f:
       sPLAYER_STEP_FORWARD                             ;; 0d:486d $80
       sPLAYER_STEP_FORWARD                             ;; 0d:486e $80
       sSET_PLAYER_DIRECTION_LEFT                       ;; 0d:486f $87
-      sLOOP 3, 2                                       ;; 0d:4870 $03 $03 $02
+      sLOOP 3
         sPLAYER_STEP_FORWARD                           ;; 0d:4873 $80
       sEND                                             ;; 0d:4874 $00
       sSET_PLAYER_DIRECTION_RIGHT                      ;; 0d:4875 $86
       sSET_NPC_1_DIRECTION_LEFT                        ;; 0d:4876 $17
       sNPC_1_STEP_FORWARD                              ;; 0d:4877 $10
       sSET_NPC_1_DIRECTION_DOWN                        ;; 0d:4878 $15
-      sLOOP 6, 2                                       ;; 0d:4879 $03 $06 $02
+      sLOOP 6
         sNPC_1_STEP_FORWARD                            ;; 0d:487c $10
       sEND                                             ;; 0d:487d $00
       sMSG                                             ;; 0d:487e $04
@@ -1634,10 +1634,10 @@ script_010f:
         db "<1b> Step forward.\n It will show you\n your quest.<12>"
         db "<11>", $00 ;; 0d:487f
       sSET_NPC_1_DIRECTION_LEFT                        ;; 0d:48e1 $17
-      sLOOP 3, 2                                       ;; 0d:48e2 $03 $03 $02
+      sLOOP 3
         sNPC_1_STEP_BACKWARDS                          ;; 0d:48e5 $11
       sEND                                             ;; 0d:48e6 $00
-      sLOOP 4, 2                                       ;; 0d:48e7 $03 $04 $02
+      sLOOP 4
         sFOLLOWER_STEP_FORWARD                         ;; 0d:48ea $90
       sEND                                             ;; 0d:48eb $00
       sDELAY 20                                        ;; 0d:48ec $f0 $14
@@ -1654,7 +1654,7 @@ script_010f:
       sNPC_1_STEP_FORWARD                              ;; 0d:48fa $10
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:48fb $84
       sSET_NPC_1_DIRECTION_UP                          ;; 0d:48fc $14
-      sLOOP 6, 3                                       ;; 0d:48fd $03 $06 $03
+      sLOOP 6
         sPLAYER_STEP_FORWARD                           ;; 0d:4900 $80
         sNPC_1_STEP_FORWARD                            ;; 0d:4901 $10
       sEND                                             ;; 0d:4902 $00
@@ -1665,7 +1665,7 @@ script_010f:
       sFLASH_SCREEN                                    ;; 0d:490a $bf
       sDELAY 20                                        ;; 0d:490b $f0 $14
       sSFX 37                                          ;; 0d:490d $f9 $25
-      sLOOP 5, 2                                       ;; 0d:490f $03 $05 $02
+      sLOOP 5
         sFLASH_SCREEN                                  ;; 0d:4912 $bf
       sEND                                             ;; 0d:4913 $00
       sFADE_TO_BLACK                                   ;; 0d:4914 $bd
@@ -1736,13 +1736,13 @@ script_011e:
     sIF_FLAG !wScriptFlags03.0                         ;; 0d:4948 $08 $98 $00 $0f
       sSET_MUSIC 15                                    ;; 0d:494c $f8 $0f
       sSET_NPC_TYPES 108                               ;; 0d:494e $fc $6c
-      sLOOP 5, 4                                       ;; 0d:4950 $03 $05 $04
+      sLOOP 5
         sSFX 20                                        ;; 0d:4953 $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4955 $bf
       sEND                                             ;; 0d:4956 $00
       sSPAWN_NPC 0                                     ;; 0d:4957 $fd $00
     sELSE                                              ;; 0d:4959 $01 $32
-      sLOOP 3, 4                                       ;; 0d:495b $03 $03 $04
+      sLOOP 3
         sSFX 20                                        ;; 0d:495e $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4960 $bf
       sEND                                             ;; 0d:4961 $00
@@ -1750,7 +1750,7 @@ script_011e:
         db "<10>Julius:Now see\n the true power\n of Mana!<12>"
         db "<11>", $00 ;; 0d:4963
       sSPAWN_BOSS 14
-      sLOOP 5, 4                                       ;; 0d:4982 $03 $05 $04
+      sLOOP 5
         sSFX 20                                        ;; 0d:4985 $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4987 $bf
       sEND                                             ;; 0d:4988 $00
@@ -1801,7 +1801,7 @@ script_0120:
         db "<11>", $00 ;; 0d:4a1a
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:4a33 $84
       sSET_NPC_1_DIRECTION_UP                          ;; 0d:4a34 $14
-      sLOOP 5, 4                                       ;; 0d:4a35 $03 $05 $04
+      sLOOP 5
         sSFX 20                                        ;; 0d:4a38 $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4a3a $bf
       sEND                                             ;; 0d:4a3b $00
@@ -2409,7 +2409,7 @@ script_019d:
       sSFX 16                                          ;; 0d:4d2d $f9 $10
       sDELAY 10                                        ;; 0d:4d2f $f0 $0a
       sSPAWN_BOSS 17
-      sLOOP 10, 4                                      ;; 0d:4d31 $03 $0a $04
+      sLOOP 10
         sSFX 20                                        ;; 0d:4d34 $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4d36 $bf
       sEND                                             ;; 0d:4d37 $00
@@ -2938,7 +2938,7 @@ script_01bb:
       sFOLLOWER_DIRECTION_UP                           ;; 0d:530d $94
       sSET_PLAYER_POSITION 16, 12                      ;; 0d:530e $8a $10 $0c
       sFOLLOWER_SET_POSITION 16, 12                    ;; 0d:5311 $99 $10 $0c
-      sLOOP 7, 2
+      sLOOP 7
         sPLAYER_STEP_FORWARD                           ;; 0d:5317 $80
       sEND                                             ;; 0d:5318 $00
       sSET_PLAYER_DIRECTION_UP                         ;; 0d:5319 $84
@@ -3537,7 +3537,7 @@ script_01fe:
         db "You have proven\nyourself a true\nGemma Knight.<12>"
         db "<1b>I shall give you\nthe Mana Sword.\nNow defeat Julius!<12>"
         db "<11>", $00 ;; 0d:5d9a
-      sLOOP 8, 4                                       ;; 0d:5ddd $03 $08 $04
+      sLOOP 8
         sFLASH_SCREEN                                  ;; 0d:5de0 $bf
         sSFX 20                                        ;; 0d:5de1 $f9 $14
       sEND                                             ;; 0d:5de3 $00
@@ -3656,13 +3656,13 @@ script_0207:
     sSET_PLAYER_HURT_SPRITE                            ;; 0d:5fa4 $a5
     sSET_FAST_MOVEMENT                                 ;; 0d:5fa5 $88
     sSFX 12                                            ;; 0d:5fa6 $f9 $0c
-    sLOOP 6, 2                                         ;; 0d:5fa8 $03 $06 $02
+    sLOOP 6
       sPLAYER_STEP_FORWARD                             ;; 0d:5fab $80
     sEND                                               ;; 0d:5fac $00
     sSCROLL_ROOM_DOWN                                  ;; 0d:5fad $e8
     sSET_PLAYER_POSITION 10, 0                         ;; 0d:5fae $8a $0a $00
     sSFX 12                                            ;; 0d:5fb1 $f9 $0c
-    sLOOP 14, 2                                        ;; 0d:5fb3 $03 $0e $02
+    sLOOP 14
       sPLAYER_STEP_FORWARD                             ;; 0d:5fb6 $80
     sEND                                               ;; 0d:5fb7 $00
     sLOAD_ROOM 14, $53, 20, 0                          ;; 0d:5fb8 $f4 $0e $53 $14 $00
@@ -3670,7 +3670,7 @@ script_0207:
     sSET_PLAYER_POSITION 14, 0                         ;; 0d:5fbf $8a $0e $00
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0d:5fc2 $85
     sSFX 12                                            ;; 0d:5fc3 $f9 $0c
-    sLOOP 5, 2                                         ;; 0d:5fc5 $03 $05 $02
+    sLOOP 5
       sPLAYER_STEP_FORWARD                             ;; 0d:5fc8 $80
     sEND                                               ;; 0d:5fc9 $00
     sSET_PLAYER_POSITION 20, 0                         ;; 0d:5fca $8a $14 $00
@@ -3816,7 +3816,7 @@ script_020e:
 script_020f:
     sSET_NPC_1_DIRECTION_UP                            ;; 0d:619f $14
     sUNK_1A                                            ;; 0d:61a0 $1a
-    sLOOP 4, 2                                         ;; 0d:61a1 $03 $04 $02
+    sLOOP 4
       sNPC_1_STEP_FORWARD                              ;; 0d:61a4 $10
     sEND                                               ;; 0d:61a5 $00
     sMSG                                               ;; 0d:61a6 $04
@@ -3831,12 +3831,12 @@ script_020f:
         db "<1b>Bogard:How about\n the window?<12>"
         db "<11>", $00 ;; 0d:61b7
       sSET_NPC_1_DIRECTION_DOWN                        ;; 0d:61f8 $15
-      sLOOP 4, 2                                       ;; 0d:61f9 $03 $04 $02
+      sLOOP 4
         sNPC_1_STEP_FORWARD                            ;; 0d:61fc $10
       sEND                                             ;; 0d:61fd $00
       sDELAY 20                                        ;; 0d:61fe $f0 $14
       sSET_NPC_1_DIRECTION_UP                          ;; 0d:6200 $14
-      sLOOP 4, 2                                       ;; 0d:6201 $03 $04 $02
+      sLOOP 4
         sNPC_1_STEP_FORWARD                            ;; 0d:6204 $10
       sEND                                             ;; 0d:6205 $00
       sMSG                                             ;; 0d:6206 $04
@@ -3846,7 +3846,7 @@ script_020f:
     sMSG                                               ;; 0d:622a $04
       db "<GIRL>:Be careful!<12>"
       db "<11>", $00 ;; 0d:622b
-    sLOOP 4, 2                                         ;; 0d:6237 $03 $04 $02
+    sLOOP 4
       sNPC_1_STEP_BACKWARDS                            ;; 0d:623a $11
     sEND                                               ;; 0d:623b $00
     sUNK_1B                                            ;; 0d:623c $1b
@@ -4721,7 +4721,7 @@ script_024e:
     sEND                                               ;; 0d:7611 $00
 
 script_024f:
-    sLOOP 8, 4                                         ;; 0d:7612 $03 $08 $04
+    sLOOP 8
       sSFX 20                                          ;; 0d:7615 $f9 $14
       sFLASH_SCREEN                                    ;; 0d:7617 $bf
     sEND                                               ;; 0d:7618 $00
@@ -5252,7 +5252,7 @@ script_027a:
                 db "<11>", $00                         ;; 0d:7d3b
               sSFX 12                                  ;; 0d:7d3d $f9 $0c
               sSET_PLAYER_POSITION 12, 3               ;; 0d:7d3f $8a $0c $03
-              sLOOP 2, 2                               ;; 0d:7d42 $03 $02 $02
+              sLOOP 2
                 sPLAYER_STEP_BACKWARD                  ;; 0d:7d45 $81
               sEND                                     ;; 0d:7d46 $00
             sENDIF                                     ;; 0d:7d47
@@ -5341,11 +5341,11 @@ script_0281:
         sSET_NPC_1_DIRECTION_RIGHT
         sSET_PLAYER_DIRECTION_DOWN
         sSET_PLAYER_POSITION 16, 3
-        sLOOP 4, 2
+        sLOOP 4
           sPLAYER_STEP_FORWARD
         sEND
         sSET_PLAYER_DIRECTION_LEFT
-        sLOOP 5, 2
+        sLOOP 5
           sPLAYER_STEP_FORWARD
         sEND
         sMSG
@@ -5616,7 +5616,7 @@ script_029a:
       sIF_FLAG !wScriptFlags0A.4, !wScriptFlags02.6    ;; 0e:4086 $08 $d4 $96 $00 $2a
         sSET_NPC_TYPES 79                              ;; 0e:408b $fc $4f
         sSET_PLAYER_DIRECTION_DOWN                     ;; 0e:408d $85
-        sLOOP 4, 2                                     ;; 0e:408e $03 $04 $02
+        sLOOP 4
           sPLAYER_STEP_FORWARD                         ;; 0e:4091 $80
         sEND                                           ;; 0e:4092 $00
         sMSG                                           ;; 0e:4093 $04
@@ -6016,7 +6016,7 @@ script_02c4:
       sSET_PLAYER_HURT_SPRITE                          ;; 0e:43a9 $a5
       sSET_FAST_MOVEMENT                               ;; 0e:43aa $88
       sSFX 12                                          ;; 0e:43ab $f9 $0c
-      sLOOP 6, 2                                       ;; 0e:43ad $03 $06 $02
+      sLOOP 6
         sPLAYER_STEP_FORWARD                           ;; 0e:43b0 $80
       sEND                                             ;; 0e:43b1 $00
       sSET_PLAYER_NORMAL_SPRITE                        ;; 0e:43b2 $a4
@@ -7666,7 +7666,7 @@ script_03c6:
       sLOAD_ROOM 4, $10, 16, 2                         ;; 0e:4e27 $f4 $04 $10 $10 $02
       sIF_FLAG wScriptFlags05.4, !wScriptFlags03.7     ;; 0e:4e2c $08 $2c $9f $00 $8b
         sSET_PLAYER_DIRECTION_DOWN                     ;; 0e:4e31 $85
-        sLOOP 4, 2                                     ;; 0e:4e32 $03 $04 $02
+        sLOOP 4
           sPLAYER_STEP_FORWARD                         ;; 0e:4e35 $80
         sEND                                           ;; 0e:4e36 $00
         sDELAY 60                                      ;; 0e:4e37 $f0 $3c
@@ -7687,7 +7687,7 @@ script_03c6:
         sSET_NPC_TYPES 40                              ;; 0e:4e93 $fc $28
         sSPAWN_NPC 0                                   ;; 0e:4e95 $fd $00
         sSET_NPC_1_DIRECTION_LEFT                      ;; 0e:4e97 $17
-        sLOOP 4, 2                                     ;; 0e:4e98 $03 $04 $02
+        sLOOP 4
           sNPC_1_STEP_FORWARD                          ;; 0e:4e9b $10
         sEND                                           ;; 0e:4e9c $00
         sMSG                                           ;; 0e:4e9d $04
@@ -7696,7 +7696,7 @@ script_03c6:
         sSET_NPC_1_DIRECTION_UP                        ;; 0e:4ea7 $14
         sDELAY 60                                      ;; 0e:4ea8 $f0 $3c
         sSET_NPC_1_DIRECTION_LEFT                      ;; 0e:4eaa $17
-        sLOOP 6, 2                                     ;; 0e:4eab $03 $06 $02
+        sLOOP 6
           sNPC_1_STEP_FORWARD                          ;; 0e:4eae $10
         sEND                                           ;; 0e:4eaf $00
         sDEL_NPC_1                                     ;; 0e:4eb0 $18
@@ -8117,7 +8117,7 @@ script_0401:
       sPLAYER_JUMP 112                                 ;; 0e:513b $8b $70
       sCLEAR_FAST_MOVEMENT                             ;; 0e:513d $89
       sSFX 9                                           ;; 0e:513e $f9 $09
-      sLOOP 6, 5                                       ;; 0e:5140 $03 $06 $05
+      sLOOP 6
         sSET_PLAYER_DIRECTION_UP                       ;; 0e:5143 $84
         sSET_PLAYER_DIRECTION_RIGHT                    ;; 0e:5144 $86
         sSET_PLAYER_DIRECTION_DOWN                     ;; 0e:5145 $85
@@ -8140,7 +8140,7 @@ script_0401:
         sNPC_1_STEP_FORWARD                            ;; 0e:5189 $10
         sNPC_1_STEP_FORWARD                            ;; 0e:518a $10
         sSET_NPC_1_DIRECTION_LEFT                      ;; 0e:518b $17
-        sLOOP 4, 2                                     ;; 0e:518c $03 $04 $02
+        sLOOP 4
           sNPC_1_STEP_FORWARD                          ;; 0e:518f $10
         sEND                                           ;; 0e:5190 $00
         sDELAY 30                                      ;; 0e:5191 $f0 $1e
@@ -8613,7 +8613,7 @@ script_0435:
       db "<11>", $00 ;; 0e:5449
     sFOLLOWER_DIRECTION_RIGHT                          ;; 0e:54a5 $96
     sUNK_9A                                            ;; 0e:54a6 $9a
-    sLOOP 9, 2                                         ;; 0e:54a7 $03 $09 $02
+    sLOOP 9
       sFOLLOWER_STEP_FORWARD                           ;; 0e:54aa $90
     sEND                                               ;; 0e:54ab $00
     sFOLLOWER_DIRECTION_UP                             ;; 0e:54ac $94
@@ -9648,7 +9648,7 @@ script_04b0:
           db "<10>It's too cold for\nyou ahead.\nWait for me here.<12>"
           db "<11>", $00 ;; 0e:5c10
         sFOLLOWER_DIRECTION_DOWN                       ;; 0e:5c32 $95
-        sLOOP 4, 2                                     ;; 0e:5c33 $03 $04 $02
+        sLOOP 4
           sFOLLOWER_STEP_FORWARD                       ;; 0e:5c36 $90
         sEND                                           ;; 0e:5c37 $00
         sFOLLOWER_DELETE                               ;; 0e:5c38 $98
@@ -9721,7 +9721,7 @@ script_04d9:
         sSPAWN_NPC 1                                   ;; 0e:5ca7 $fd $01
         sSET_PLAYER_DIRECTION_DOWN                     ;; 0e:5ca9 $85
         sSET_NPC_1_DIRECTION_UP                        ;; 0e:5caa $14
-        sLOOP 4, 3                                     ;; 0e:5cab $03 $04 $03
+        sLOOP 4
           sPLAYER_STEP_FORWARD                         ;; 0e:5cae $80
           sNPC_1_STEP_FORWARD                          ;; 0e:5caf $10
         sEND                                           ;; 0e:5cb0 $00
@@ -10200,7 +10200,7 @@ script_050c:
 
 script_050d:
     sSET_NPC_TYPES 14                                  ;; 0e:5fd1 $fc $0e
-    sLOOP 4, 3                                         ;; 0e:5fd3 $03 $04 $03
+    sLOOP 4
       sSPAWN_NPC 2                                     ;; 0e:5fd6 $fd $02
     sEND                                               ;; 0e:5fd8 $00
     sEND                                               ;; 0e:5fd9 $00
@@ -10550,7 +10550,7 @@ script_0535:
       db "<12>"
       db "<11>", $00                   ;; 0e:63df
     sDELAY 60                                          ;; 0e:63e2 $f0 $3c
-    sLOOP 8, 5                                         ;; 0e:63e4 $03 $08 $05
+    sLOOP 8
       sSET_NPC_2_DIRECTION_RIGHT                       ;; 0e:63e7 $26
       sSET_NPC_2_DIRECTION_DOWN                        ;; 0e:63e8 $25
       sSET_NPC_2_DIRECTION_LEFT                        ;; 0e:63e9 $27
@@ -10576,22 +10576,22 @@ script_0535:
 ; Somehow the timing has changed in the normal version but not the color version.
 ; Likely related to the script speedup changes.
 IF DEF(COLOR)
-    sLOOP 7, 2                                         ;; 0e:641f $03 $07 $02
+    sLOOP 7
 ELSE
-    sLOOP 6, 2
+    sLOOP 6
 ENDC
       sPLAYER_STEP_FORWARD                             ;; 0e:6422 $80
     sEND                                               ;; 0e:6423 $00
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:6424 $85
-    sLOOP 4, 2                                         ;; 0e:6425 $03 $04 $02
+    sLOOP 4
       sPLAYER_STEP_FORWARD                             ;; 0e:6428 $80
     sEND                                               ;; 0e:6429 $00
     sSCROLL_ROOM_DOWN                                  ;; 0e:642a $e8
-    sLOOP 7, 2                                         ;; 0e:642b $03 $07 $02
+    sLOOP 7
       sPLAYER_STEP_FORWARD                             ;; 0e:642e $80
     sEND                                               ;; 0e:642f $00
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:6430 $87
-    sLOOP 7, 2                                         ;; 0e:6431 $03 $07 $02
+    sLOOP 7
       sPLAYER_STEP_FORWARD                             ;; 0e:6434 $80
     sEND                                               ;; 0e:6435 $00
     sSCROLL_ROOM_LEFT                                  ;; 0e:6436 $ea
@@ -10600,7 +10600,7 @@ ENDC
 
 script_0536:
     sSET_NPC_TYPES 41                                  ;; 0e:643a $fc $29
-    sLOOP 7, 2                                         ;; 0e:643c $03 $07 $02
+    sLOOP 7
       sPLAYER_STEP_FORWARD                             ;; 0e:643f $80
     sEND                                               ;; 0e:6440 $00
     sDELAY 30                                          ;; 0e:6441 $f0 $1e
@@ -10618,11 +10618,11 @@ script_0536:
     sMSG                                               ;; 0e:644b $04
       db "<10>Shadow Knight:I\n won't let you\n leave alive!<12>"
       db "<11>", $00 ;; 0e:644c
-    sLOOP 5, 2                                         ;; 0e:646d $03 $05 $02
+    sLOOP 5
       sNPC_1_STEP_FORWARD                              ;; 0e:6470 $10
     sEND                                               ;; 0e:6471 $00
     sSFX 20                                            ;; 0e:6472 $f9 $14
-    sLOOP 2, 2                                         ;; 0e:6474 $03 $02 $02
+    sLOOP 2
       sFLASH_SCREEN                                    ;; 0e:6477 $bf
     sEND                                               ;; 0e:6478 $00
     sPLAYER_STEP_BACKWARD                              ;; 0e:6479 $81
@@ -10631,17 +10631,17 @@ script_0536:
     sSET_PLAYER_HURT_SPRITE                            ;; 0e:647c $a5
     sSET_FAST_MOVEMENT                                 ;; 0e:647d $88
     sSFX 12                                            ;; 0e:647e $f9 $0c
-    sLOOP 11, 2                                        ;; 0e:6480 $03 $0b $02
+    sLOOP 11
       sPLAYER_STEP_FORWARD                             ;; 0e:6483 $80
     sEND                                               ;; 0e:6484 $00
     sLOAD_ROOM 14, $72, 9, 0                           ;; 0e:6485 $f4 $0e $72 $09 $00
-    sLOOP 15, 2                                        ;; 0e:648a $03 $0f $02
+    sLOOP 15
       sPLAYER_STEP_FORWARD                             ;; 0e:648d $80
     sEND                                               ;; 0e:648e $00
-    sLOOP 3, 10                                        ;; 0e:648f $03 $03 $0a
+    sLOOP 3
       sSET_NEXT_ROOM $07, $02                          ;; 0e:6492 $ef $07 $02
       sSCROLL_ROOM_DOWN                                ;; 0e:6495 $e8
-      sLOOP 16, 2                                      ;; 0e:6496 $03 $10 $02
+      sLOOP 16
         sPLAYER_STEP_FORWARD                           ;; 0e:6499 $80
       sEND                                             ;; 0e:649a $00
     sEND                                               ;; 0e:649b $00
@@ -10742,7 +10742,7 @@ script_0537:
     sSFX 37                                            ;; 0e:662d $f9 $25
     sSHAKE_SCREEN                                      ;; 0e:662f $fb
     sSHAKE_SCREEN                                      ;; 0e:6630 $fb
-    sLOOP 8, 4                                         ;; 0e:6631 $03 $08 $04
+    sLOOP 8
       sFLASH_SCREEN                                    ;; 0e:6634 $bf
       sSFX 20                                          ;; 0e:6635 $f9 $14
     sEND                                               ;; 0e:6637 $00
@@ -10750,11 +10750,11 @@ script_0537:
     sCALL script_0543                                  ;; 0e:663a $02 $77 $4e
     sDELAY 20                                          ;; 0e:663d $f0 $14
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:663f $25
-    sLOOP 6, 3                                         ;; 0e:6640 $03 $06 $03
+    sLOOP 6
       sNPC_1_STEP_BACKWARDS                            ;; 0e:6643 $11
       sNPC_2_STEP_BACKWARDS                            ;; 0e:6644 $21
     sEND                                               ;; 0e:6645 $00
-    sLOOP 6, 2                                         ;; 0e:6646 $03 $06 $02
+    sLOOP 6
       sPLAYER_STEP_FORWARD                             ;; 0e:6649 $80
     sEND                                               ;; 0e:664a $00
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:664b $84
@@ -10762,17 +10762,17 @@ script_0537:
       db "<10><BOY>:Wait!\nJulius:Fall!<12>"
       db "<11>", $00 ;; 0e:664d
     sDELAY 20                                          ;; 0e:6661 $f0 $14
-    sLOOP 3, 4                                         ;; 0e:6663 $03 $03 $04
+    sLOOP 3
       sSFX 20                                          ;; 0e:6666 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:6668 $bf
     sEND                                               ;; 0e:6669 $00
     sCREATE_EFFECT $10, $0c, $0c                       ;; 0e:666a $ba $10 $0c $0c
     sSET_PLAYER_HURT_SPRITE                            ;; 0e:666e $a5
-    sLOOP 5, 2                                         ;; 0e:666f $03 $05 $02
+    sLOOP 5
       sPLAYER_STEP_BACKWARD                            ;; 0e:6672 $81
     sEND                                               ;; 0e:6673 $00
     sDELAY 60                                          ;; 0e:6674 $f0 $3c
-    sLOOP 6, 3                                         ;; 0e:6676 $03 $06 $03
+    sLOOP 6
       sNPC_1_STEP_BACKWARDS                            ;; 0e:6679 $11
       sNPC_2_STEP_BACKWARDS                            ;; 0e:667a $21
     sEND                                               ;; 0e:667b $00
@@ -10814,7 +10814,7 @@ script_0538:
     sSET_NPC_1_POSITION 18, 7
     sDELAY 30                                          ;; 0e:66cf $f0 $1e
     sUNK_1A                                            ;; 0e:66d1 $1a
-    sLOOP 7, 2                                         ;; 0e:66d2 $03 $07 $02
+    sLOOP 7
       sNPC_1_STEP_FORWARD                              ;; 0e:66d5 $10
     sEND                                               ;; 0e:66d6 $00
     sDELAY 100                                         ;; 0e:66d7 $f0 $64
@@ -10826,7 +10826,7 @@ script_0538:
     sSET_PLAYER_POSITION 20, 16                        ;; 0e:66e1 $8a $14 $10
     sDELAY 20                                          ;; 0e:66e4 $f0 $14
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0e:66e6 $16
-    sLOOP 11, 2                                        ;; 0e:66e7 $03 $0b $02
+    sLOOP 11
       sNPC_1_STEP_FORWARD                              ;; 0e:66ea $10
     sEND                                               ;; 0e:66eb $00
     sSCROLL_ROOM_RIGHT                                 ;; 0e:66ec $eb
@@ -10836,7 +10836,7 @@ script_0538:
 ; This NPC is changed to spawn offscreen so it can walk in from offscreen.
     sSET_NPC_1_POSITION -2, 7
     sUNK_1A                                            ;; 0e:66f2 $1a
-    sLOOP 12, 2                                        ;; 0e:66f3 $03 $0a $02
+    sLOOP 12
       sNPC_1_STEP_FORWARD                              ;; 0e:66f6 $10
     sEND                                               ;; 0e:66f7 $00
     sSET_NPC_1_DIRECTION_UP                            ;; 0e:66f8 $14
@@ -10917,7 +10917,7 @@ script_0539:
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:68ce $87
     sPLAYER_STEP_FORWARD                               ;; 0e:68cf $80
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:68d0 $85
-    sLOOP 6, 2                                         ;; 0e:68d1 $03 $06 $02
+    sLOOP 6
       sPLAYER_STEP_FORWARD                             ;; 0e:68d4 $80
     sEND                                               ;; 0e:68d5 $00
     sLOAD_ROOM 15, $46, 4, 10                          ;; 0e:68d6 $f4 $0f $46 $04 $0a
@@ -10955,7 +10955,7 @@ script_053a:
     sMSG                                               ;; 0e:6a53 $04
       db "<10><GIRL>:Mom_<12>"
       db "<11>", $00    ;; 0e:6a54
-    sLOOP 8, 4                                         ;; 0e:6a5d $03 $08 $04
+    sLOOP 8
       sSFX 20                                          ;; 0e:6a60 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:6a62 $bf
     sEND                                               ;; 0e:6a63 $00
@@ -11003,12 +11003,12 @@ script_053a:
       db "<1b><GIRL>:Thank you.<12>"
       db "<11>", $00 ;; 0e:6a78
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:6abe $25
-    sLOOP 3, 3                                         ;; 0e:6abf $03 $03 $03
+    sLOOP 3
       sNPC_2_STEP_FORWARD                              ;; 0e:6ac2 $20
       sFOLLOWER_STEP_FORWARD                           ;; 0e:6ac3 $90
     sEND                                               ;; 0e:6ac4 $00
     sDEL_NPC_2                                         ;; 0e:6ac5 $28
-    sLOOP 2, 2                                         ;; 0e:6ac6 $03 $02 $02
+    sLOOP 2
       sFOLLOWER_STEP_FORWARD                           ;; 0e:6ac9 $90
     sEND                                               ;; 0e:6aca $00
     sFOLLOWER_DELETE                                   ;; 0e:6acb $98
@@ -11039,7 +11039,7 @@ script_053b:
       db "<11>", $00               ;; 0e:6b13
     sDELAY 20                                          ;; 0e:6b19 $f0 $14
     sFLASH_SCREEN                                      ;; 0e:6b1b $bf
-    sLOOP 3, 13                                        ;; 0e:6b1c $03 $03 $0d
+    sLOOP 3
       sSET_NPC_1_DIRECTION_RIGHT                       ;; 0e:6b1f $16
       sDELAY 3                                         ;; 0e:6b20 $f0 $03
       sSET_NPC_1_DIRECTION_DOWN                        ;; 0e:6b22 $15
@@ -11052,7 +11052,7 @@ script_053b:
     sDEL_NPC_1                                         ;; 0e:6b2c $18
     sSET_NPC_TYPES 92                                  ;; 0e:6b2d $fc $5c
     sSPAWN_NPC 0                                       ;; 0e:6b2f $fd $00
-    sLOOP 3, 13                                        ;; 0e:6b31 $03 $03 $0d
+    sLOOP 3
       sSET_NPC_1_DIRECTION_RIGHT                       ;; 0e:6b34 $16
       sDELAY 3                                         ;; 0e:6b35 $f0 $03
       sSET_NPC_1_DIRECTION_DOWN                        ;; 0e:6b37 $15
@@ -11111,12 +11111,12 @@ script_053b:
     sCREATE_EFFECT $10, $0a, $0a                       ;; 0e:6c05 $ba $10 $0a $0a
     sSET_FAST_MOVEMENT                                 ;; 0e:6c09 $88
     sSET_PLAYER_HURT_SPRITE                            ;; 0e:6c0a $a5
-    sLOOP 7, 2                                         ;; 0e:6c0b $03 $07 $02
+    sLOOP 7
       sPLAYER_STEP_BACKWARD                            ;; 0e:6c0e $81
     sEND                                               ;; 0e:6c0f $00
     sCREATE_EFFECT $10, $09, $03                       ;; 0e:6c10 $ba $10 $09 $03
     sSFX 12                                            ;; 0e:6c14 $f9 $0c
-    sLOOP 7, 2                                         ;; 0e:6c16 $03 $07 $02
+    sLOOP 7
       sPLAYER_STEP_FORWARD                             ;; 0e:6c19 $80
     sEND                                               ;; 0e:6c1a $00
     sCLEAR_FAST_MOVEMENT                               ;; 0e:6c1b $89
@@ -11247,7 +11247,7 @@ script_053e:
     sCREATE_EFFECT $10, $05, $04                       ;; 0e:6ecd $ba $10 $05 $04
     sCREATE_EFFECT $10, $04, $03                       ;; 0e:6ed1 $ba $10 $04 $03
     sDELAY 40                                          ;; 0e:6ed5 $f0 $28
-    sLOOP 6, 2                                         ;; 0e:6ed7 $03 $06 $02
+    sLOOP 6
       sPLAYER_STEP_FORWARD                             ;; 0e:6eda $80
     sEND                                               ;; 0e:6edb $00
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:6edc $87
@@ -11264,7 +11264,7 @@ script_053e:
     sNPC_1_STEP_FORWARD                                ;; 0e:6f4a $10
     sNPC_1_STEP_FORWARD                                ;; 0e:6f4b $10
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0e:6f4c $16
-    sLOOP 3, 2                                         ;; 0e:6f4d $03 $03 $02
+    sLOOP 3
       sNPC_1_STEP_FORWARD                              ;; 0e:6f50 $10
     sEND                                               ;; 0e:6f51 $00
     sSFX 7                                             ;; 0e:6f52 $f9 $07
@@ -11275,7 +11275,7 @@ script_053e:
       db "<10><BOY>:Oh_ You_\nBon Voyage:We all\n rely on you, kid!<12>"
       db "<11>", $00 ;; 0e:6f5b
     sSET_NPC_2_DIRECTION_RIGHT                         ;; 0e:6f7e $26
-    sLOOP 4, 2                                         ;; 0e:6f7f $03 $04 $02
+    sLOOP 4
       sNPC_2_STEP_FORWARD                              ;; 0e:6f82 $20
     sEND                                               ;; 0e:6f83 $00
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:6f84 $25
@@ -11298,7 +11298,7 @@ script_053f:
     sCREATE_EFFECT $10, $0a, $08                       ;; 0e:6fc0 $ba $10 $0a $08
     sCREATE_EFFECT $10, $07, $03                       ;; 0e:6fc4 $ba $10 $07 $03
     sCREATE_EFFECT $10, $0d, $02                       ;; 0e:6fc8 $ba $10 $0d $02
-    sLOOP 10, 4                                        ;; 0e:6fcc $03 $0a $04
+    sLOOP 10
       sFLASH_SCREEN                                    ;; 0e:6fcf $bf
       sSFX 20                                          ;; 0e:6fd0 $f9 $14
     sEND                                               ;; 0e:6fd2 $00
@@ -11440,7 +11440,7 @@ script_0540:
     sDELAY 120                                         ;; 0e:735e $f0 $78
     sMSG                                               ;; 0e:7360 $04
       db "<11>", $00                                   ;; 0e:7361
-    sLOOP 6, 4                                         ;; 0e:7363 $03 $06 $04
+    sLOOP 6
       sSFX 20                                          ;; 0e:7366 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:7368 $bf
     sEND                                               ;; 0e:7369 $00
@@ -11466,7 +11466,7 @@ script_0540:
     sSET_NPC_1_DIRECTION_UP                            ;; 0e:739d $14
     sSET_NPC_2_DIRECTION_LEFT                          ;; 0e:739e $27
     sNPC_2_STEP_FORWARD                                ;; 0e:739f $20
-    sLOOP 4, 2                                         ;; 0e:73a0 $03 $04 $02
+    sLOOP 4
       sNPC_1_STEP_FORWARD                              ;; 0e:73a3 $10
     sEND                                               ;; 0e:73a4 $00
     sDELAY 50                                          ;; 0e:73a5 $f0 $32
@@ -11484,7 +11484,7 @@ script_0540:
     sDELAY 120                                         ;; 0e:73ce $f0 $78
     sMSG                                               ;; 0e:73d0 $04
       db "<11>", $00                                   ;; 0e:73d1
-    sLOOP 5, 2                                         ;; 0e:73d3 $03 $05 $02
+    sLOOP 5
       sFLASH_SCREEN                                    ;; 0e:73d6 $bf
     sEND                                               ;; 0e:73d7 $00
     sFADE_TO_BLACK                                     ;; 0e:73d8 $bd
@@ -11540,7 +11540,7 @@ script_0541:
     sDELAY 100                                         ;; 0e:74a5 $f0 $64
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:74a7 $86
     sSET_PLAYER_POSITION 0, 7                          ;; 0e:74a8 $8a $00 $07
-    sLOOP 8, 2                                         ;; 0e:74ab $03 $08 $02
+    sLOOP 8
       sPLAYER_STEP_FORWARD                             ;; 0e:74ae $80
     sEND                                               ;; 0e:74af $00
     sDELAY 110                                         ;; 0e:74b0 $f0 $6e
@@ -11553,7 +11553,7 @@ script_0541:
     sDELAY 90                                          ;; 0e:74d6 $f0 $5a
     sSPAWN_NPC 0                                       ;; 0e:74d8 $fd $00
     sSET_NPC_3_DIRECTION_RIGHT                         ;; 0e:74da $36
-    sLOOP 6, 2                                         ;; 0e:74db $03 $06 $02
+    sLOOP 6
       sNPC_3_STEP_FORWARD                              ;; 0e:74de $30
     sEND                                               ;; 0e:74df $00
     sDELAY 60                                          ;; 0e:74e0 $f0 $3c
@@ -11595,22 +11595,22 @@ script_0541:
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0e:753e $17
     sDELAY 100                                         ;; 0e:753f $f0 $64
     sFADE_TO_NORMAL                                    ;; 0e:7541 $bc
-    sLOOP 5, 2                                         ;; 0e:7542 $03 $05 $02
+    sLOOP 5
       sNPC_1_STEP_FORWARD                              ;; 0e:7545 $10
     sEND                                               ;; 0e:7546 $00
     sDELAY 30                                          ;; 0e:7547 $f0 $1e
     sSET_PLAYER_POSITION 0, 6                          ;; 0e:7549 $8a $00 $06
-    sLOOP 8, 2                                         ;; 0e:754c $03 $08 $02
+    sLOOP 8
       sPLAYER_STEP_FORWARD                             ;; 0e:754f $80
     sEND                                               ;; 0e:7550 $00
     sNPC_1_STEP_BACKWARDS                              ;; 0e:7551 $11
     sSET_ROOM_TILE $73, 3, 2                           ;; 0e:7552 $b0 $73 $03 $02
     sSET_ROOM_TILE $4d, 6, 3                           ;; 0e:7556 $b0 $4d $06 $03
-    sLOOP 4, 2                                         ;; 0e:755a $03 $04 $02
+    sLOOP 4
       sPLAYER_STEP_FORWARD                             ;; 0e:755d $80
     sEND                                               ;; 0e:755e $00
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:755f $85
-    sLOOP 8, 2                                         ;; 0e:7560 $03 $08 $02
+    sLOOP 8
       sPLAYER_STEP_FORWARD                             ;; 0e:7563 $80
     sEND                                               ;; 0e:7564 $00
     sSET_PLAYER_POSITION 20, 0                         ;; 0e:7565 $8a $14 $00
@@ -11633,10 +11633,10 @@ script_0541:
     sDELAY 90                                          ;; 0e:759f $f0 $5a
     sFADE_TO_NORMAL                                    ;; 0e:75a1 $bc
     sDELAY 60                                          ;; 0e:75a2 $f0 $3c
-    sLOOP 3, 2                                         ;; 0e:75a4 $03 $03 $02
+    sLOOP 3
       sNPC_1_STEP_FORWARD                              ;; 0e:75a7 $10
     sEND                                               ;; 0e:75a8 $00
-    sLOOP 5, 2                                         ;; 0e:75a9 $03 $05 $02
+    sLOOP 5
       sPLAYER_STEP_FORWARD                             ;; 0e:75ac $80
     sEND                                               ;; 0e:75ad $00
     sDELAY 100                                         ;; 0e:75ae $f0 $64
@@ -11664,7 +11664,7 @@ script_0541:
     sDELAY 60                                          ;; 0e:7609 $f0 $3c
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:760b $84
     sSET_PLAYER_POSITION 12, 14                        ;; 0e:760c $8a $0c $0e
-    sLOOP 7, 2                                         ;; 0e:760f $03 $07 $02
+    sLOOP 7
       sPLAYER_STEP_FORWARD                             ;; 0e:7612 $80
     sEND                                               ;; 0e:7613 $00
     sDELAY 90                                          ;; 0e:7614 $f0 $5a
@@ -11684,7 +11684,7 @@ script_0541:
     sDELAY 90                                          ;; 0e:765c $f0 $5a
     sSPAWN_NPC 0                                       ;; 0e:765e $fd $00
     sSET_NPC_2_DIRECTION_LEFT                          ;; 0e:7660 $27
-    sLOOP 4, 2                                         ;; 0e:7661 $03 $04 $02
+    sLOOP 4
       sNPC_2_STEP_FORWARD                              ;; 0e:7664 $20
     sEND                                               ;; 0e:7665 $00
     sSET_NPC_2_DIRECTION_DOWN                          ;; 0e:7666 $25
@@ -11710,19 +11710,19 @@ script_0541:
     sDELAY 90                                          ;; 0e:76a1 $f0 $5a
     sFADE_TO_NORMAL                                    ;; 0e:76a3 $bc
     sDELAY 90                                          ;; 0e:76a4 $f0 $5a
-    sLOOP 4, 2                                         ;; 0e:76a6 $03 $04 $02
+    sLOOP 4
       sNPC_1_STEP_FORWARD                              ;; 0e:76a9 $10
     sEND                                               ;; 0e:76aa $00
     sSET_NPC_2_DIRECTION_LEFT                          ;; 0e:76ab $27
     sDELAY 140                                         ;; 0e:76ac $f0 $8c
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0e:76ae $17
     sDELAY 80                                          ;; 0e:76af $f0 $50
-    sLOOP 4, 2                                         ;; 0e:76b1 $03 $04 $02
+    sLOOP 4
       sPLAYER_STEP_FORWARD                             ;; 0e:76b4 $80
     sEND                                               ;; 0e:76b5 $00
     sDELAY 90                                          ;; 0e:76b6 $f0 $5a
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0e:76b8 $16
-    sLOOP 4, 2                                         ;; 0e:76b9 $03 $04 $02
+    sLOOP 4
       sNPC_1_STEP_FORWARD                              ;; 0e:76bc $10
     sEND                                               ;; 0e:76bd $00
     sDELAY 100                                         ;; 0e:76be $f0 $64
@@ -11747,7 +11747,7 @@ script_0541:
     sDELAY 90                                          ;; 0e:76e2 $f0 $5a
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:76e4 $87
     sDELAY 10                                          ;; 0e:76e5 $f0 $0a
-    sLOOP 4, 2                                         ;; 0e:76e7 $03 $04 $02
+    sLOOP 4
       sPLAYER_STEP_FORWARD                             ;; 0e:76ea $80
     sEND                                               ;; 0e:76eb $00
     sFADE_TO_BLACK                                     ;; 0e:76ec $bd
@@ -11773,7 +11773,7 @@ script_0542:
     sPLAYER_STEP_FORWARD                               ;; 0e:7719 $80
     sPLAYER_STEP_FORWARD                               ;; 0e:771a $80
     sSET_PLAYER_DIRECTION_UP                           ;; 0e:771b $84
-    sLOOP 8, 2                                         ;; 0e:771c $03 $08 $02
+    sLOOP 8
       sPLAYER_STEP_FORWARD                             ;; 0e:771f $80
     sEND                                               ;; 0e:7720 $00
     sSET_PLAYER_DIRECTION_LEFT                         ;; 0e:7721 $87
@@ -11796,7 +11796,7 @@ script_0542:
     sSHAKE_SCREEN                                      ;; 0e:772c $fb
     sDELAY 20                                          ;; 0e:772d $f0 $14
     sSFX 9                                             ;; 0e:772f $f9 $09
-    sLOOP 10, 8                                        ;; 0e:7731 $03 $0a $08
+    sLOOP 10
       sSET_NEXT_ROOM $06, $04                          ;; 0e:7734 $ef $06 $04
       sSCROLL_ROOM_UP                                  ;; 0e:7737 $e9
       sSET_PLAYER_POSITION 20, 0                       ;; 0e:7738 $8a $14 $00
@@ -11898,7 +11898,7 @@ script_0544:
 SECTION "script bank 3", ROMX[$4000], BANK[SCRIPT_BANK_1 + 2]
 
 script_0545:
-    sLOOP 4, 189
+    sLOOP 4
       sSET_ROOM_TILE $09, 3, 0                         ;; 0e:7842 $b0 $09 $03 $00
       sSET_ROOM_TILE $55, 4, 0                         ;; 0e:7846 $b0 $55 $04 $00
       sSET_ROOM_TILE $55, 5, 0                         ;; 0e:784a $b0 $55 $05 $00
