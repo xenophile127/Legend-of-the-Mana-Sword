@@ -524,26 +524,28 @@ bossNextPatternStep:
     ret                                                ;; 04:42c4 $c9
 
 initBossMovement:
-    ld   A, [wCurrentBossDataPointer.high]             ;; 04:42c5 $fa $39 $d4
-    ld   D, A                                          ;; 04:42c8 $57
-    ld   A, [wCurrentBossDataPointer]                  ;; 04:42c9 $fa $38 $d4
-    ld   E, A                                          ;; 04:42cc $5f
+    ld hl, wCurrentBossDataPointer
+    ld a, [hl+]
+    ld e, a
+    ld d, [hl]
     ld   HL, $12                                       ;; 04:42cd $21 $12 $00
     add  HL, DE                                        ;; 04:42d0 $19
     ld   A, [HL+]                                      ;; 04:42d1 $2a
     ld   H, [HL]                                       ;; 04:42d2 $66
     ld   L, A                                          ;; 04:42d3 $6f
-    call setBossMovement                               ;; 04:42d4 $cd $d8 $42
-    ret                                                ;; 04:42d7 $c9
+; Fall through to setBossMovement
 
+; hl = pattern pointer
 setBossMovement:
     ld   A, H                                          ;; 04:42d8 $7c
     ld   [wCurrentBossPatternPointer.high], A          ;; 04:42d9 $ea $3b $d4
     ld   A, L                                          ;; 04:42dc $7d
     ld   [wCurrentBossPatternPointer], A               ;; 04:42dd $ea $3a $d4
-    ld   A, $00                                        ;; 04:42e0 $3e $00
+    xor a
     ld   [wBossCurrentPatternStep], A                  ;; 04:42e2 $ea $ec $d3
     ret                                                ;; 04:42e5 $c9
+
+ds 7 ; Free space
 
 ; A = object number
 ; Return: HL = Stats Runtime Data pointer
