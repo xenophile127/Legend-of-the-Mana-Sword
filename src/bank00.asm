@@ -123,6 +123,8 @@ lotmsInit:
     ldh [hBootup.c], a
 ; Log the initial state of the registers.
     DBG_MSG_LABEL bootupRegisterStates
+; Set the stack pointer to its final location before any calls.
+    ld sp, STARTOF(WRAM0) + SIZEOF(WRAM0)
 ; Load the SGB border.
     cp $14
     call z, sgbInit
@@ -5481,7 +5483,7 @@ returnFromBankCall:
 
 Init:
     di                                                 ;; 00:1fca $f3
-    ld   SP, hInitialSP                                ;; 00:1fcb $31 $fe $ff
+    ld sp, STARTOF(WRAM0) + SIZEOF(WRAM0)
     call DisableLCD
     call InitPreIntEnable                              ;; 00:1fce $cd $f0 $1f
     ei                                                 ;; 00:1fd1 $fb
