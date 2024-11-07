@@ -122,7 +122,7 @@ lotmsInit:
     ld a, c
     ldh [hBootup.c], a
 ; Do some cold boot initialization.
-    jp early_init
+    jp earlyInit
 
 SECTION "entry", ROM0[$0100]
 
