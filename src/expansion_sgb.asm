@@ -7,8 +7,15 @@ DEF SGB_CODE_BANK EQU $16
 SECTION "SGB Bank - Code", ROMX[$4000], BANK[SGB_CODE_BANK]
 
 early_init:
+    ; Log the initial state of the registers.
+    DBG_MSG_LABEL bootupRegisterStates
+
+    ; If debugging is turned on print the assembly date.
+    DBG_MSG_LABEL introDebugMsg
+
     ; Init Super Game Boy if necessary
     call sgb_init
+
     ; Continue with the normal reset.
     jp FullReset
 

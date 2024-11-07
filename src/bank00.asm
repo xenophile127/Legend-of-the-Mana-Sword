@@ -113,18 +113,14 @@ ENDC
     reti
 
 lotmsInit:
-; If debugging is turned on print the assembly date.
-    DBG_MSG_LABEL introDebugMsg
+; Set the stack pointer to its final location before any calls.
+    ld sp, STARTOF(WRAM0) + SIZEOF(WRAM0)
 ; Capture the state of registers that can be used to detect the model of Game Boy.
     ldh [hBootup.a], a
     ld a, b
     ldh [hBootup.b], a
     ld a, c
     ldh [hBootup.c], a
-; Log the initial state of the registers.
-    DBG_MSG_LABEL bootupRegisterStates
-; Set the stack pointer to its final location before any calls.
-    ld sp, STARTOF(WRAM0) + SIZEOF(WRAM0)
 ; Do some cold boot initialization.
     jp early_init
 
