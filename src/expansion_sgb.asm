@@ -6,6 +6,12 @@ DEF SGB_CODE_BANK EQU $16
 
 SECTION "SGB Bank - Code", ROMX[$4000], BANK[SGB_CODE_BANK]
 
+early_init:
+    ; Init Super Game Boy if necessary
+    call sgb_init
+    ; Continue with the normal reset.
+    jp FullReset
+
 ; Super Game Boy border injector
 ; by Marc Robledo 2024
 INCLUDE "code/super-game-boy-border-injector.asm"

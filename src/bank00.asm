@@ -125,11 +125,8 @@ lotmsInit:
     DBG_MSG_LABEL bootupRegisterStates
 ; Set the stack pointer to its final location before any calls.
     ld sp, STARTOF(WRAM0) + SIZEOF(WRAM0)
-; Load the SGB border.
-    cp $14
-    call z, sgbInit
-; Continue with the normal reset.
-    jp FullReset
+; Do some cold boot initialization.
+    jp early_init
 
 SECTION "entry", ROM0[$0100]
 
@@ -7320,13 +7317,11 @@ loadPalettes:
     DBG_MSG_LABEL debugMsgLoadPalette
     ret
 
-; Init the Super Game Boy border before anything else.
-sgbInit:
-    ld a, BANK(sgb_init)
+; Does some cold boot initialization including Super Game Boy border.
+earlyInit:
+    ld a, BANK(early_init)
     ld [rROMB0], a
-; This detects SGB by testing c=$14.
-    call sgb_init
-    ret
+    jp early_init
 
 colorInit:
 ; Refuse to run unless color capable hardware is found.
