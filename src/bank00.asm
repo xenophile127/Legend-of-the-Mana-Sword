@@ -128,20 +128,14 @@ lotmsInit:
 ; Load the SGB border.
     cp $14
     call z, sgbInit
-IF DEF(COLOR)
-    jp colorInit
-ELSE
 ; Continue with the normal reset.
     jp FullReset
-ENDC
 
 SECTION "entry", ROM0[$0100]
 
 entry:
     nop                                                ;; 00:0100 $00
-    jr lotmsInit
-
-ds 1 ; Free space
+    jp lotmsInit
 
 Header:
     ds   $30                                           ;; 00:0104
@@ -164,7 +158,11 @@ ENDC
 SECTION "bank00_0150", ROM0[$0150]
 
 FullReset:
+IF DEF(COLOR)
+    jp colorInit
+ELSE
     jp   Init                                          ;; 00:0150 $c3 $ca $1f
+ENDC
 
 scriptOpCodeSetFastMovement:
     push HL                                            ;; 00:0153 $e5
@@ -7351,7 +7349,7 @@ IF DEF(DOUBLE_SPEED)
     DBG_MSG_LABEL debugMsgDoubleSpeed
 .done: 
 ENDC
-    jp FullReset
+    jp Init
 .fatal:
     DBG_MSG_LABEL debugMsgColorIncompatible
 .loop:
