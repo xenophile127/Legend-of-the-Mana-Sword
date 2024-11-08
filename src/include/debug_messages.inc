@@ -51,3 +51,6 @@ debugMsgInteruptWithScreenOff:
 
 debugMsgSGBBorderInjector:
     DBG_STR "[DEBUG] Loading Super Game Boy border."
+
+debugMsgSpawnBoss:
+    DBG_STR "[INFO] Spawn boss %a%"

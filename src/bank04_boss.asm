@@ -5,6 +5,7 @@ INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/oam_attributes.inc"
 INCLUDE "include/constants.inc"
+INCLUDE "include/debug.inc"
 
 SECTION "bank04", ROMX[$4000], BANK[$04]
 
@@ -545,7 +546,7 @@ setBossMovement:
     ld   [wBossCurrentPatternStep], A                  ;; 04:42e2 $ea $ec $d3
     ret                                                ;; 04:42e5 $c9
 
-ds 7 ; Free space
+ds 1 ; Free space
 
 ; A = object number
 ; Return: HL = Stats Runtime Data pointer
@@ -564,7 +565,10 @@ getBossStatsRuntimeDataByObjectID:
     inc  A                                             ;; 04:42f5 $3c
     ret                                                ;; 04:42f6 $c9
 
+; a = boss number to spawn
 spawnBoss:
+    ld hl, debugMsgSpawnBoss
+    call logger.hl
     ld   L, A                                          ;; 04:42f7 $6f
     ld   H, $00                                        ;; 04:42f8 $26 $00
     ld   E, L                                          ;; 04:42fa $5d
