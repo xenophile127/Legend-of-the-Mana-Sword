@@ -1680,12 +1680,8 @@ wLastFade:
 wCurrentProjectilePalette:
     ds 1                                               ;; dd99
 
-; Free WRAM space.
-wFree:
-    ds 614                                             ;; dd9a
-
-hInitialSP:
-    ds 0                                               ;; e000
+; After this is RAM code--currently the logging code--and the stack.
+; The stack is placed at the end of wram. It is unknown how far down it can grow.
 
 SECTION "hram", HRAM[$ff80]
 

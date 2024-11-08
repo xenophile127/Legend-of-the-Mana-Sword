@@ -12,6 +12,7 @@ SECTION "bank11", ROMX[$4000], BANK[EXPANSION_CODE_BANK_1]
 
 ;@call_to_bank_jumptable
 entryPointTableBankExpansion:
+    call_to_bank_target loggerInit
     call_to_bank_target drawHPOnStatusBar
     call_to_bank_target drawManaOnStatusBar
     call_to_bank_target drawMoneyOnStatusBar_new
@@ -20,6 +21,17 @@ entryPointTableBankExpansion:
     call_to_bank_target enhancedFade
     call_to_bank_target enhancedWarmBoot
     call_to_bank_target animateTiles
+
+INCLUDE "code/logger.asm"
+
+; Load the debug logging code into RAM.
+; It uses a self modifying trick so that adding logging messages can take less space.
+loggerInit:
+    call copy_ram_code
+    ; Print the build date.
+    ld hl, debugMsgBuildDate
+    call logger.hl
+    ret
 
 drawHPOnStatusBar:
     ld   C, $13 ; Mode/Max-digits to write

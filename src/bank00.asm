@@ -5508,10 +5508,13 @@ InitPreIntEnable:
     call clearRAM
 ; Clear HRAM, except for the portion currently used to save the values of registers at boot.
     call clearHRAM
+; Initialize the bank stack used by trampoline calls.
     ld   HL, wBankStack                                ;; 00:2011 $21 $c0 $c0
     ld   [HL], $01                                     ;; 00:2014 $36 $01
     ld   A, L                                          ;; 00:2016 $7d
     ldh  [hBankStackPointer], A                        ;; 00:2017 $e0 $8a
+; Initialize the debug logger.
+    call loggerInit_trampoline
     ld   A, BANK(gfxStatusBar) ;@=bank gfxStatusBar    ;; 00:2019 $3e $08
     ld   [rROMB0], A                                   ;; 00:201b $ea $00 $20
     ld   HL, gfxStatusBar                              ;; 00:201e $21 $00 $67
@@ -5573,7 +5576,7 @@ initPalettes:
     ret
 ENDC
 
-ds 26 ; Free space
+ds 33 ; Free space
 
 SECTION "bank00_align_2092", ROM0[$2092]
 
@@ -6858,7 +6861,8 @@ spawnNpcsFromTable_trampoline:
     ld   A, [HL+]                                      ;; 00:2840 $2a
     jp_to_bank 03, spawnNpcsFromTable                  ;; 00:2841 $f5 $3e $04 $c3 $35 $1f
 
-ds 6 ; Free space
+loggerInit_trampoline:
+    jp_to_bank 11, loggerInit
 
 friendlyCollisionHandling_trampoline:
     jp_to_bank 03, friendlyCollisionHandling           ;; 00:284d $f5 $3e $08 $c3 $35 $1f

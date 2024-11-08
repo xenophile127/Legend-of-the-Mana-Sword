@@ -9,10 +9,10 @@
 ; FATAL: Detected an invalid state that makes it undesirable to continue execution.
 ;        FATAL level messages SHOULD be followed with an infinite loop to preserve state.
 
-introDebugMsg:
+debugMsgBuildDate:
     DBG_STR STRFMT("[INFO] LotMS Build  %u-%02u-%02u", __UTC_YEAR__, __UTC_MONTH__, __UTC_DAY__)
 
-bootupRegisterStates:
+debugMsgBootRegisterStates:
 ; $fffc == hBootup.a, $fffd == hBootup.b, $fffe == hBootupc
     DBG_STR "[DEBUG] Initial register values: a=%($fffc)% b=%($fffd)% c=%($fffe)%"
 
