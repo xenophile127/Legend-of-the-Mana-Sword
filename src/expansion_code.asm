@@ -27,7 +27,7 @@ INCLUDE "code/logger.asm"
 ; Load the debug logging code into RAM.
 ; It uses a self modifying trick so that adding logging messages can take less space.
 loggerInit:
-    call copy_ram_code
+    call copy_logger_to_ram
     ; Print the build date.
     ld hl, debugMsgBuildDate
     call logger.hl
