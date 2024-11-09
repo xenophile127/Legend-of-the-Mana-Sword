@@ -2986,7 +2986,7 @@ script_01bd:
     sSET_ROOM_TILE $6b, 8, 7                           ;; 0d:53c9 $b0 $6b $08 $07
     sMSG                                               ;; 0d:53cd $04
       db "<10>Defeated\n   Shadow Knight!<12>"
-      db "<1b>Received <7b>Pendant_", $00
+      db "<1b>Received <PENDANT>Pendant_", $00
     sDELAY 100                                         ;; 0d:53eb $f0 $64
     sMSG                                               ;; 0d:53ed $04
       db "<1b><BOY>:_", $00                            ;; 0d:53ee
@@ -3646,7 +3646,7 @@ script_0207:
       db "<10><BOY>:Let's go!\n<GIRL>:Take the\n Pendant, <BOY>!<12><1b>", $00
     sSFX 15
     sMSG
-      db "Received <7b>Pendant!<12>"
+      db "Received <PENDANT>Pendant!<12>"
       db "<1b>Julius:Give me\n that Pendant!<12>"
       db "<11>", $00 ;; 0d:5f2d
     sSET_MUSIC 9                                       ;; 0d:5f61 $f8 $09
@@ -9032,7 +9032,7 @@ script_0451:
     sIF_FLAG !wScriptFlags.5                           ;; 0e:57d1 $08 $85 $00 $62
       sCHANGE_INTO_EMPTY_CHEST                         ;; 0e:57d5 $af
       sMSG                                             ;; 0e:57d6 $04
-        db "<10>Found <7c>Mirror!<12>"
+        db "<10>Found <MIRROR>Mirror!<12>"
         db "<11>", $00 ;; 0e:57d7
       sSET_FLAG wScriptFlags09.0                       ;; 0e:57e5 $da $48
       sIF_FLAG wScriptFlags0A.2                        ;; 0e:57e7 $08 $52 $00 $42
