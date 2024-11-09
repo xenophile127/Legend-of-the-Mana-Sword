@@ -1,4 +1,5 @@
 ; Use DBG_STR to define the message. Refer to debug.inc for further instructions.
+INCLUDE "include/debug.inc"
 
 ; Messages SHOULD use one of these log levels:
 ; TRACE: Temporary messages, not to be checked in.

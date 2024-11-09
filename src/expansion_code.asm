@@ -4,7 +4,6 @@ INCLUDE "include/hardware.inc"
 INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
-INCLUDE "include/debug.inc"
 
 DEF EXPANSION_CODE_BANK_1 EQU $11
 
