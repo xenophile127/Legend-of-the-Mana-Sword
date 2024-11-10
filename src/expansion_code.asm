@@ -10,7 +10,7 @@ DEF EXPANSION_CODE_BANK_1 EQU $11
 SECTION "bank11", ROMX[$4000], BANK[EXPANSION_CODE_BANK_1]
 
 ;@call_to_bank_jumptable
-entryPointTableBankExpansion:
+entryPointTableBank11:
     call_to_bank_target loggerInit
     call_to_bank_target drawHPOnStatusBar
     call_to_bank_target drawManaOnStatusBar

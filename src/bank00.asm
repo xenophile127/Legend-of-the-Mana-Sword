@@ -5289,33 +5289,8 @@ storeDEinVRAM:
 
 ds 5 ; Free space
 
-;@call_to_bank bank=11
-callFunctionInBank11:
-    ld   [wScratchBankCallFunctionNumber], A           ;; 00:1d8a $ea $b2 $c0
-    pop  AF                                            ;; 00:1d8d $f1
-    ld   [wScratchBankCallA], A                        ;; 00:1d8e $ea $b3 $c0
-    ld   A, H                                          ;; 00:1d91 $7c
-    ld   [wScratchBankCallH], A                        ;; 00:1d92 $ea $b5 $c0
-    ld   A, L                                          ;; 00:1d95 $7d
-    ld   [wScratchBankCallL], A                        ;; 00:1d96 $ea $b4 $c0
-    ld   HL, returnFromBankCall                        ;; 00:1d99 $21 $c2 $1f
-    push HL                                            ;; 00:1d9c $e5
-    ld   A, BANK(entryPointTableBankExpansion) ;@=bank entryPointTableBankExpansion ;; 00:1d9d $3e $01
-    call pushBankNrAndSwitch                           ;; 00:1d9f $cd $fb $29
-    ld   A, [wScratchBankCallFunctionNumber]           ;; 00:1da2 $fa $b2 $c0
-    add  A, A                                          ;; 00:1da5 $87
-    ld   L, A                                          ;; 00:1da6 $6f
-    ld   H, $40                                        ;; 00:1da7 $26 $40
-    ld   A, [HL+]                                      ;; 00:1da9 $2a
-    ld   H, [HL]                                       ;; 00:1daa $66
-    ld   L, A                                          ;; 00:1dab $6f
-    push HL                                            ;; 00:1dac $e5
-    ld   A, [wScratchBankCallH]                        ;; 00:1dad $fa $b5 $c0
-    ld   H, A                                          ;; 00:1db0 $67
-    ld   A, [wScratchBankCallL]                        ;; 00:1db1 $fa $b4 $c0
-    ld   L, A                                          ;; 00:1db4 $6f
-    ld   A, [wScratchBankCallA]                        ;; 00:1db5 $fa $b3 $c0
-    ret                                                ;; 00:1db8 $c9
+; Enables trampoline calls in the expansion code bank.
+    CALL_FUNCTION_IN_BANK 11
 
 ds 243 ; Free space
 
@@ -5324,145 +5299,13 @@ ds 243 ; Free space
 ; updateJoypadInput:
 INCLUDE "code/joypad.asm"
 
-;@call_to_bank bank=01
-callFunctionInBank01:
-    ld   [wScratchBankCallFunctionNumber], A           ;; 00:1ed7 $ea $b2 $c0
-    pop  AF                                            ;; 00:1eda $f1
-    ld   [wScratchBankCallA], A                        ;; 00:1edb $ea $b3 $c0
-    ld   A, H                                          ;; 00:1ede $7c
-    ld   [wScratchBankCallH], A                        ;; 00:1edf $ea $b5 $c0
-    ld   A, L                                          ;; 00:1ee2 $7d
-    ld   [wScratchBankCallL], A                        ;; 00:1ee3 $ea $b4 $c0
-    ld   HL, returnFromBankCall                        ;; 00:1ee6 $21 $c2 $1f
-    push HL                                            ;; 00:1ee9 $e5
-    ld   A, BANK(entryPointTableBank01) ;@=bank entryPointTableBank01 ;; 00:1eea $3e $01
-    call pushBankNrAndSwitch                           ;; 00:1eec $cd $fb $29
-    ld   A, [wScratchBankCallFunctionNumber]           ;; 00:1eef $fa $b2 $c0
-    add  A, A                                          ;; 00:1ef2 $87
-    ld   L, A                                          ;; 00:1ef3 $6f
-    ld   H, $40                                        ;; 00:1ef4 $26 $40
-    ld   A, [HL+]                                      ;; 00:1ef6 $2a
-    ld   H, [HL]                                       ;; 00:1ef7 $66
-    ld   L, A                                          ;; 00:1ef8 $6f
-    push HL                                            ;; 00:1ef9 $e5
-    ld   A, [wScratchBankCallH]                        ;; 00:1efa $fa $b5 $c0
-    ld   H, A                                          ;; 00:1efd $67
-    ld   A, [wScratchBankCallL]                        ;; 00:1efe $fa $b4 $c0
-    ld   L, A                                          ;; 00:1f01 $6f
-    ld   A, [wScratchBankCallA]                        ;; 00:1f02 $fa $b3 $c0
-    ret                                                ;; 00:1f05 $c9
+; Enable trampoline calls in the expansion code banks.
+    CALL_FUNCTION_IN_BANK 01
+    CALL_FUNCTION_IN_BANK 02
+    CALL_FUNCTION_IN_BANK 03
+    CALL_FUNCTION_IN_BANK 04
+    CALL_FUNCTION_IN_BANK 09
 
-;@call_to_bank bank=02
-callFunctionInBank02:
-    ld   [wScratchBankCallFunctionNumber], A           ;; 00:1f06 $ea $b2 $c0
-    pop  AF                                            ;; 00:1f09 $f1
-    ld   [wScratchBankCallA], A                        ;; 00:1f0a $ea $b3 $c0
-    ld   A, H                                          ;; 00:1f0d $7c
-    ld   [wScratchBankCallH], A                        ;; 00:1f0e $ea $b5 $c0
-    ld   A, L                                          ;; 00:1f11 $7d
-    ld   [wScratchBankCallL], A                        ;; 00:1f12 $ea $b4 $c0
-    ld   HL, returnFromBankCall                        ;; 00:1f15 $21 $c2 $1f
-    push HL                                            ;; 00:1f18 $e5
-    ld   A, BANK(entryPointTableBank02) ;@=bank entryPointTableBank02 ;; 00:1f19 $3e $02
-    call pushBankNrAndSwitch                           ;; 00:1f1b $cd $fb $29
-    ld   A, [wScratchBankCallFunctionNumber]           ;; 00:1f1e $fa $b2 $c0
-    add  A, A                                          ;; 00:1f21 $87
-    ld   L, A                                          ;; 00:1f22 $6f
-    ld   H, $40                                        ;; 00:1f23 $26 $40
-    ld   A, [HL+]                                      ;; 00:1f25 $2a
-    ld   H, [HL]                                       ;; 00:1f26 $66
-    ld   L, A                                          ;; 00:1f27 $6f
-    push HL                                            ;; 00:1f28 $e5
-    ld   A, [wScratchBankCallH]                        ;; 00:1f29 $fa $b5 $c0
-    ld   H, A                                          ;; 00:1f2c $67
-    ld   A, [wScratchBankCallL]                        ;; 00:1f2d $fa $b4 $c0
-    ld   L, A                                          ;; 00:1f30 $6f
-    ld   A, [wScratchBankCallA]                        ;; 00:1f31 $fa $b3 $c0
-    ret                                                ;; 00:1f34 $c9
-
-;@call_to_bank bank=03
-callFunctionInBank03:
-    ld   [wScratchBankCallFunctionNumber], A           ;; 00:1f35 $ea $b2 $c0
-    pop  AF                                            ;; 00:1f38 $f1
-    ld   [wScratchBankCallA], A                        ;; 00:1f39 $ea $b3 $c0
-    ld   A, H                                          ;; 00:1f3c $7c
-    ld   [wScratchBankCallH], A                        ;; 00:1f3d $ea $b5 $c0
-    ld   A, L                                          ;; 00:1f40 $7d
-    ld   [wScratchBankCallL], A                        ;; 00:1f41 $ea $b4 $c0
-    ld   HL, returnFromBankCall                        ;; 00:1f44 $21 $c2 $1f
-    push HL                                            ;; 00:1f47 $e5
-    ld   A, BANK(entryPointTableBank03) ;@=bank entryPointTableBank03 ;; 00:1f48 $3e $03
-    call pushBankNrAndSwitch                           ;; 00:1f4a $cd $fb $29
-    ld   A, [wScratchBankCallFunctionNumber]           ;; 00:1f4d $fa $b2 $c0
-    add  A, A                                          ;; 00:1f50 $87
-    ld   L, A                                          ;; 00:1f51 $6f
-    ld   H, $40                                        ;; 00:1f52 $26 $40
-    ld   A, [HL+]                                      ;; 00:1f54 $2a
-    ld   H, [HL]                                       ;; 00:1f55 $66
-    ld   L, A                                          ;; 00:1f56 $6f
-    push HL                                            ;; 00:1f57 $e5
-    ld   A, [wScratchBankCallH]                        ;; 00:1f58 $fa $b5 $c0
-    ld   H, A                                          ;; 00:1f5b $67
-    ld   A, [wScratchBankCallL]                        ;; 00:1f5c $fa $b4 $c0
-    ld   L, A                                          ;; 00:1f5f $6f
-    ld   A, [wScratchBankCallA]                        ;; 00:1f60 $fa $b3 $c0
-    ret                                                ;; 00:1f63 $c9
-
-;@call_to_bank bank=04
-callFunctionInBank04:
-    ld   [wScratchBankCallFunctionNumber], A           ;; 00:1f64 $ea $b2 $c0
-    pop  AF                                            ;; 00:1f67 $f1
-    ld   [wScratchBankCallA], A                        ;; 00:1f68 $ea $b3 $c0
-    ld   A, H                                          ;; 00:1f6b $7c
-    ld   [wScratchBankCallH], A                        ;; 00:1f6c $ea $b5 $c0
-    ld   A, L                                          ;; 00:1f6f $7d
-    ld   [wScratchBankCallL], A                        ;; 00:1f70 $ea $b4 $c0
-    ld   HL, returnFromBankCall                        ;; 00:1f73 $21 $c2 $1f
-    push HL                                            ;; 00:1f76 $e5
-    ld   A, BANK(entryPointTableBank04) ;@=bank entryPointTableBank04 ;; 00:1f77 $3e $04
-    call pushBankNrAndSwitch                           ;; 00:1f79 $cd $fb $29
-    ld   A, [wScratchBankCallFunctionNumber]           ;; 00:1f7c $fa $b2 $c0
-    add  A, A                                          ;; 00:1f7f $87
-    ld   L, A                                          ;; 00:1f80 $6f
-    ld   H, $40                                        ;; 00:1f81 $26 $40
-    ld   A, [HL+]                                      ;; 00:1f83 $2a
-    ld   H, [HL]                                       ;; 00:1f84 $66
-    ld   L, A                                          ;; 00:1f85 $6f
-    push HL                                            ;; 00:1f86 $e5
-    ld   A, [wScratchBankCallH]                        ;; 00:1f87 $fa $b5 $c0
-    ld   H, A                                          ;; 00:1f8a $67
-    ld   A, [wScratchBankCallL]                        ;; 00:1f8b $fa $b4 $c0
-    ld   L, A                                          ;; 00:1f8e $6f
-    ld   A, [wScratchBankCallA]                        ;; 00:1f8f $fa $b3 $c0
-    ret                                                ;; 00:1f92 $c9
-
-;@call_to_bank bank=09
-callFunctionInBank09:
-    ld   [wScratchBankCallFunctionNumber], A           ;; 00:1f93 $ea $b2 $c0
-    pop  AF                                            ;; 00:1f96 $f1
-    ld   [wScratchBankCallA], A                        ;; 00:1f97 $ea $b3 $c0
-    ld   A, H                                          ;; 00:1f9a $7c
-    ld   [wScratchBankCallH], A                        ;; 00:1f9b $ea $b5 $c0
-    ld   A, L                                          ;; 00:1f9e $7d
-    ld   [wScratchBankCallL], A                        ;; 00:1f9f $ea $b4 $c0
-    ld   HL, returnFromBankCall                        ;; 00:1fa2 $21 $c2 $1f
-    push HL                                            ;; 00:1fa5 $e5
-    ld   A, BANK(entryPointTableBank09) ;@=bank entryPointTableBank09 ;; 00:1fa6 $3e $09
-    call pushBankNrAndSwitch                           ;; 00:1fa8 $cd $fb $29
-    ld   A, [wScratchBankCallFunctionNumber]           ;; 00:1fab $fa $b2 $c0
-    add  A, A                                          ;; 00:1fae $87
-    ld   L, A                                          ;; 00:1faf $6f
-    ld   H, $40                                        ;; 00:1fb0 $26 $40
-    ld   A, [HL+]                                      ;; 00:1fb2 $2a
-    ld   H, [HL]                                       ;; 00:1fb3 $66
-    ld   L, A                                          ;; 00:1fb4 $6f
-    push HL                                            ;; 00:1fb5 $e5
-    ld   A, [wScratchBankCallH]                        ;; 00:1fb6 $fa $b5 $c0
-    ld   H, A                                          ;; 00:1fb9 $67
-    ld   A, [wScratchBankCallL]                        ;; 00:1fba $fa $b4 $c0
-    ld   L, A                                          ;; 00:1fbd $6f
-    ld   A, [wScratchBankCallA]                        ;; 00:1fbe $fa $b3 $c0
-    ret                                                ;; 00:1fc1 $c9
 
 returnFromBankCall:
     push AF                                            ;; 00:1fc2 $f5

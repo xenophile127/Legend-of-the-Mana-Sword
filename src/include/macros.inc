@@ -1908,3 +1908,37 @@ color_palette_bank_2_{02x:COLOR_PALETTE_ATTACK_NUMBER}:
 .flash:
         INCBIN "pal/attack/\1/flash.pal",0,8
 ENDM
+
+MACRO TEST
+    PRINTLN \1
+ENDM
+
+; Code to enable trampoline calls.
+MACRO CALL_FUNCTION_IN_BANK
+callFunctionInBank\1:
+    ld   [wScratchBankCallFunctionNumber], A
+    pop  AF
+    ld   [wScratchBankCallA], A
+    ld   A, H
+    ld   [wScratchBankCallH], A
+    ld   A, L
+    ld   [wScratchBankCallL], A
+    ld   HL, returnFromBankCall
+    push HL
+    ld   A, $\1
+    call pushBankNrAndSwitch
+    ld   A, [wScratchBankCallFunctionNumber]
+    add  A, A
+    ld   L, A
+    ld   H, $40
+    ld   A, [HL+]
+    ld   H, [HL]
+    ld   L, A
+    push HL
+    ld   A, [wScratchBankCallH]
+    ld   H, A
+    ld   A, [wScratchBankCallL]
+    ld   L, A
+    ld   A, [wScratchBankCallA]
+    ret
+ENDM
