@@ -208,7 +208,7 @@ ENDM
 MACRO jp_to_bank
 
             push af
-            ld   a, (_call_to_bank_target_\2 - $4000) / 2
+            ld   a, (_call_to_bank_target_\2 - $4000)
             jp callFunctionInBank\1
 ENDM
 MACRO ld_long_load
@@ -1928,17 +1928,17 @@ callFunctionInBank\1:
     ld   A, $\1
     call pushBankNrAndSwitch
     ld   A, [wScratchBankCallFunctionNumber]
-    add  A, A
     ld   L, A
     ld   H, $40
     ld   A, [HL+]
     ld   H, [HL]
     ld   L, A
     push HL
-    ld   A, [wScratchBankCallH]
-    ld   H, A
-    ld   A, [wScratchBankCallL]
-    ld   L, A
+    ld hl, wScratchBankCallL
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
     ld   A, [wScratchBankCallA]
     ret
+ds 3 ; Free space
 ENDM
