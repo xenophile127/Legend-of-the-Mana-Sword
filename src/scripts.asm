@@ -3834,7 +3834,7 @@ script_020e:
 
 script_020f:
     sSET_NPC_1_DIRECTION_UP                            ;; 0d:619f $14
-    sUNK_1A                                            ;; 0d:61a0 $1a
+    sNPC_1_WALK_SPEED_4                                            ;; 0d:61a0 $1a
     sLOOP 4
       sNPC_1_STEP_FORWARD                              ;; 0d:61a4 $10
     sEND                                               ;; 0d:61a5 $00
@@ -3868,7 +3868,7 @@ script_020f:
     sLOOP 4
       sNPC_1_STEP_BACKWARDS                            ;; 0d:623a $11
     sEND                                               ;; 0d:623b $00
-    sUNK_1B                                            ;; 0d:623c $1b
+    sNPC_1_WALK_SPEED_DEFAULT                                            ;; 0d:623c $1b
     sEND                                               ;; 0d:623d $00
 
 script_0210:
@@ -8635,7 +8635,7 @@ script_0435:
       db "<1b> Come see me at\n the Dwarf Cave!<12>"
       db "<11>", $00 ;; 0e:5449
     sFOLLOWER_DIRECTION_RIGHT                          ;; 0e:54a5 $96
-    sUNK_9A                                            ;; 0e:54a6 $9a
+    sFOLLOWER_WALK_SPEED_4
     sLOOP 9
       sFOLLOWER_STEP_FORWARD                           ;; 0e:54aa $90
     sEND                                               ;; 0e:54ab $00
@@ -8645,7 +8645,7 @@ script_0435:
     sFOLLOWER_STEP_FORWARD                             ;; 0e:54af $90
     sFOLLOWER_STEP_FORWARD                             ;; 0e:54b0 $90
     ;sFOLLOWER_STEP_FORWARD
-    sUNK_9B                                            ;; 0e:54b1 $9b
+    sFOLLOWER_WALK_SPEED_DEFAULT
     sFOLLOWER_DELETE                                   ;; 0e:54b2 $98
     sCLEAR_FLAG wScriptFlags0A.3                       ;; 0e:54b3 $db $53
     sSET_MUSIC 20                                      ;; 0e:54b5 $f8 $14
@@ -10631,10 +10631,10 @@ script_0536:
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0e:6445 $17
 ; This version of Shadow Knight has been modified to move faster and spawn just offscreen.
 ; Slow him down for his initial walk onto the screen, then speed him up for the charge.
-    sUNK_1A
+    sNPC_1_WALK_SPEED_4
     sNPC_1_STEP_FORWARD
     sNPC_1_STEP_FORWARD
-    sUNK_1B
+    sNPC_1_WALK_SPEED_DEFAULT
     sDELAY 30                                          ;; 0e:6446 $f0 $1e
     sSET_PLAYER_DIRECTION_RIGHT                        ;; 0e:6448 $86
     sDELAY 30                                          ;; 0e:6449 $f0 $1e
@@ -10836,7 +10836,7 @@ script_0538:
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0e:66ce $17
     sSET_NPC_1_POSITION 18, 7
     sDELAY 30                                          ;; 0e:66cf $f0 $1e
-    sUNK_1A                                            ;; 0e:66d1 $1a
+    sNPC_1_WALK_SPEED_4                                            ;; 0e:66d1 $1a
     sLOOP 7
       sNPC_1_STEP_FORWARD                              ;; 0e:66d5 $10
     sEND                                               ;; 0e:66d6 $00
@@ -10858,7 +10858,7 @@ script_0538:
     sSET_NPC_1_DIRECTION_RIGHT                         ;; 0e:66f1 $16
 ; This NPC is changed to spawn offscreen so it can walk in from offscreen.
     sSET_NPC_1_POSITION -2, 7
-    sUNK_1A                                            ;; 0e:66f2 $1a
+    sNPC_1_WALK_SPEED_4                                            ;; 0e:66f2 $1a
     sLOOP 12
       sNPC_1_STEP_FORWARD                              ;; 0e:66f6 $10
     sEND                                               ;; 0e:66f7 $00
@@ -11003,7 +11003,7 @@ script_053a:
     sSHAKE_SCREEN                                      ;; 0e:6a66 $fb
     sSET_MUSIC 9                                       ;; 0e:6a67 $f8 $09
 ; Speed up Cibba so he can move out from under the text windo.
-    sUNK_1A
+    sNPC_1_WALK_SPEED_4
     sSET_PLAYER_DIRECTION_DOWN                         ;; 0e:6a69 $85
     sSET_NPC_1_DIRECTION_DOWN
     sFOLLOWER_DIRECTION_DOWN                           ;; 0e:6a6a $95
@@ -11017,7 +11017,7 @@ script_053a:
     sFOLLOWER_STEP_FORWARD                             ;; 0e:6a70 $90
     sPLAYER_STEP_FORWARD                               ;; 0e:6a71 $80
     sSPAWN_NPC 0                                       ;; 0e:6a72 $fd $00
-    sUNK_2A                                            ;; 0e:6a74 $2a
+    sNPC_2_WALK_SPEED_4                                            ;; 0e:6a74 $2a
     sSET_NPC_2_DIRECTION_UP                            ;; 0e:6a75 $24
     sNPC_2_STEP_FORWARD                                ;; 0e:6a76 $20
     sMSG                                               ;; 0e:6a77 $04
