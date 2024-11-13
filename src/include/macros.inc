@@ -993,6 +993,9 @@ MACRO sCREATE_EFFECT
 db $ba
 db \1, \2, \3
 ENDM
+MACRO sDEFAULT_EFFECT
+db $b7
+ENDM
 MACRO sDELAY
 db $f0
 db \1
@@ -1181,6 +1184,10 @@ ENDM
 MACRO sGIVE_MAGIC
 db $d6
 db \1 - $01
+ENDM
+MACRO sGIVE_MONEY
+db $d0
+dw \1
 ENDM
 MACRO sGIVE_XP
 db $d2
@@ -1514,6 +1521,9 @@ ENDM
 MACRO sRUN_ROOM_ALL_KILLED_SCRIPT
 db $ee
 ENDM
+MACRO sRUN_ROOM_EXIT_SCRIPT
+db $ed
+ENDM
 MACRO sRUN_ROOM_SCRIPT
 db $ec
 ENDM
@@ -1535,6 +1545,10 @@ db $c9
 ENDM
 MACRO sSET_CHEST_OPEN_SCRIPT2
 db $ca
+ db HIGH((__script_pointer_\1 - scriptPointersTable) / 2), LOW((__script_pointer_\1 - scriptPointersTable) / 2)
+ENDM
+MACRO sSET_CHEST_OPEN_SCRIPT3
+db $cb
  db HIGH((__script_pointer_\1 - scriptPointersTable) / 2), LOW((__script_pointer_\1 - scriptPointersTable) / 2)
 ENDM
 MACRO sSET_FAST_MOVEMENT
@@ -1792,6 +1806,9 @@ db $dd
 ENDM
 MACRO sWAIT_MAP_CLOSE
 db $ad
+ENDM
+MACRO sWAIT_WHILE_MOVEMENT
+db $8f
 ENDM
 MACRO short_halt
 db $76
