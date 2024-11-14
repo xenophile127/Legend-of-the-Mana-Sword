@@ -20,10 +20,10 @@ Used to end each script and to end loops.
 ### 01 - sELSE
 Used in if else logic.
 
-### 02 - sCALL <script>
+### 02 - sCALL script
 Run another script before continuing.
 
-### 03 - sLOOP <times>
+### 03 - sLOOP times
 Repeat the code that follows (until the next sEND command) some number of times.
 
 ### 04 - sMSG
@@ -42,7 +42,7 @@ Starts the dialog system. Dialog windows are 18 characters wide with no auto-wra
 - `<1e>` move insertion point one line up. This can be used to print lines single-spaced.
 - `<1f>` move insertion point one line down.
 
-### 05 - sLOAD_PALETTE <number>
+### 05 - sLOAD_PALETTE number
 Added for colorization. Usage is not finalized.
 
 ### 08 - sIF_FLAG
@@ -89,7 +89,7 @@ Turn the character to face West without moving.
 ### ?8 - sDEL_NPC_1 to sDEL_NPC_7
 Remove the character. Its numbered slot is reused for the next character added.
 
-### ?9 - sSET_NPC_1_POSITION <x>, <y> to sSET_NPC_7_POSITION <x>, <y>
+### ?9 - sSET_NPC_1_POSITION x, y to sSET_NPC_7_POSITION x, y
 Instantly move the character. Usually used to position characters while the screen is faded to black. The coordinate system used is an eight pixel grid, 20 wide by 16 tall. Characters can be positioned offscreen to walk on smoothly (instead of suddenly appearing) by using negative positions -2 for North or West, 22 East, or 18 West.
 
 ### ?a - sNPC_1_WALK_SPEED_4 to sNPC_7_WALK_SPEED_4
@@ -127,12 +127,12 @@ NPCs and companions have a delete command instead. There is no way to remove the
 ### 89 - sCLEAR_FAST_MOVEMENT
 Sets the PC's movement speed to one pixel per frame.
 
-### 8a - sSET_PLAYER_POSITION <x>, <y>
+### 8a - sSET_PLAYER_POSITION x, y
 See the NPC command.
 
 Since the PC cannot be removed this is commonly used to hide offscreen.
 
-### 8b - sPLAYER_JUMP <argument>
+### 8b - sPLAYER_JUMP argument
 Used to animate the player jumping in an arc. The argument controls what table values are used for the movement. Values from $20 to $e0 have valid table entries. There is some sort of pattern every $20 values.
 
 Only two argument values are actually used: 104 ($68) and 112 (0x70).
@@ -161,7 +161,7 @@ See the NPC command.
 ### 98 - sFOLLOWER_DELETE
 Removes the companion not just from the current screen, but as a partner as well.
 
-### 99 - sFOLLOWER_SET_POSITION <x>, <y>
+### 99 - sFOLLOWER_SET_POSITION x, y
 See the NPC command.
 
 ### 9a - sFOLLOWER_WALK_SPEED_4
@@ -170,7 +170,7 @@ See the NPC command.
 ### 9b - sFOLLOWER_WALK_SPEED_DEFAULT
 See the NPC command.
 
-### 9c - sGIVE_FOLLOWER <number>
+### 9c - sGIVE_FOLLOWER number
 A companion NPC joins you. It removes the first NPC (equivalent to sDEL_NPC_1) and spawns the follower specified. The followers are:
 - 1 - Fuji
 - 2 - Traveler (Mysterious Man)
@@ -204,7 +204,7 @@ Shows the PC with a surprised/falling sprite. This is only one forward facing fr
 Shows the PC lying on the ground with an injured sprite. This is only one forward facing frame, not animated.
 
 ### a9 - sCHECK_ALLOWED_TO_OPEN_MAP
-Sets script flag wScriptFlags0F.7 as long as the current map is not 1, 14, or 15. See sOPEN_MAP.
+Sets script flag `wScriptFlags0F.7` as long as the current map is not 1, 14, or 15. See sOPEN_MAP.
 
 ### aa - sCLEAR_PLAYER_ATTACK
 Stops any in-progress attack from the PC and sets the PC to the normal standing frame. This was originally unused but has now been used as part of a fix for confusing animation states at the end of the Jackal battle.
@@ -222,9 +222,9 @@ Waits until the player dismisses the in-game map. See sOPEN_MAP.
 Closes the in-game map. See sOPEN_MAP.
 
 ### af - sCHANGE_INTO_EMPTY_CHEST
-Treasure chests are implemented as NPCs that run a script when they are touched. The scripts typically attempt to give the player an item and then check wScriptFlags.5 to see if the player had enough inventory space. If so they run this command before doing anything else.
+Treasure chests are implemented as NPCs that run a script when they are touched. The scripts typically attempt to give the player an item and then check `wScriptFlags.5` to see if the player had enough inventory space. If so they run this command before doing anything else.
 
-### b0 - sSET_ROOM_TILE <tile>, <y>, <x>
+### b0 - sSET_ROOM_TILE tile, y, x
 Replaces a metatile (16x16 pixel area of background graphics)  on the current screen with the new tile. The coordinate system is a 16x16 pixel gird with 0,0 as the upper left and 9,7 as the lower right. This has also been used successfully to fill in offscreen tiles before sSHAKE_SCREEN commands by using y=10 for the right side and y=15 for the left side.
 
 ### b6 - sLETTER_BOX_EFFECT
@@ -235,7 +235,7 @@ There is some Super Game Boy code added to run when this command is executed. It
 ### b7 - sDEFAULT_EFFECT
 This was an unused script command that had most of the code to remove the letterbox effect (see sLETTER_BOX_EFFECT) and return to normal. For Embers of Mana it has been hacked to do just that. Currently not changed in Legend of the Mana Sword.
 
-### ba - sCREATE_EFFECT <effect>, <x>, <y>
+### ba - sCREATE_EFFECT effect, x, y
 Creates a special effect. Known effects are: $08 for the healing pond effect, $2c for a fire effect, and $10 for an explosion effect.
 
 Internally this uses the same data as the player's attacks. As these animate they progress through the table in jumps of 16. $08 is the beginning of the Cure spell. $2c is the third part of the Fire spell. $10 is the second part of an attack animation that normally has one step that does nothing.
@@ -260,7 +260,7 @@ Completely fill the players HP.
 ### c1 - sFULL_MANA
 Completely fill the players MP.
 
-### c2 - sPLAYER_CURE_STATUS <bits>
+### c2 - sPLAYER_CURE_STATUS bits
 Remove one or more status effects specified by bits. The status effects are:
  - 1 - Poison
  - 2 - Blind (Dark)
@@ -270,53 +270,53 @@ Remove one or more status effects specified by bits. The status effects are:
 
 To remove more than one status effect at a time add one or more values together.
 
-### c4 - sPLAYER_GIVE_STATUS <bits>
+### c4 - sPLAYER_GIVE_STATUS bits
 Inflict one or more status effects specified by bits. See sPLAYER_CURE_STATUS.
 
-### c5 - sUNK_C5 <value>
-Not named yet. Sets a group of six bits (wScriptFlags0E.2 to wScriptFlags0E.7) to a value from 0 to 63, essentially treating them as a small integer. This is used extensively for shops and houses so a map screen can be reused as different rooms.
+### c5 - sUNK_C5 value
+Not named yet. Sets a group of six bits (1wScriptFlags0E.2` to `wScriptFlags0E.7`) to a value from 0 to 63, essentially treating them as a small integer. This is used extensively for shops and houses so a map screen can be reused as different rooms.
 
 ### c6 - sENTER_PLAYER_AND_GIRL_NAME
 This was originally called once to prompt for both names. Now it is called once for Hero's name and then again for Fuji's name, which allows moving sprites to switch between showing the two of them.
 
 ### c7 - sRNG
-Sets wScriptFlags0F.6 and wScriptFlags0F.7 to random values. Used mostly for monsters that drop two possible types of treasure.
+Sets `wScriptFlags0F.6` and `wScriptFlags0F.7` to random values. Used mostly for monsters that drop two possible types of treasure.
 
 Originally the code they used for multiple possible item drops was exploitable by having either your ITEMS or EQUIP inventories full to force a re-randomization until you got the other drop. All cases have been changed so that one sRNG call is made and the value is saved.
 
 ### c8 - sRESET_GAME
 Reset back to the title screen. Used by the script that runs when you reach zero HP.
 
-### c9 - sSET_CHEST_OPEN_SCRIPT1 <script>
+### c9 - sSET_CHEST_OPEN_SCRIPT1 script
 Set the script to run when opening a chest that is spawned from a script (instead of dropped randomly when defeating an enemy).
 
-### ca - sSET_CHEST_OPEN_SCRIPT2 <script>
+### ca - sSET_CHEST_OPEN_SCRIPT2 script
 See sSET_CHEST_OPEN_SCRIPT1.
 
-### cb - sSET_CHEST_OPEN_SCRIPT3 <script>
+### cb - sSET_CHEST_OPEN_SCRIPT3 script
 See sSET_CHEST_OPEN_SCRIPT1.
 
 ### cc - sHALT_GAME
 Puts the script code into an infinite loop. Used on the final End screen.
 
-### d0 - sGIVE_MONEY <amount>
+### d0 - sGIVE_MONEY amount
 Give money in the specified amount. Amount can be zero to 65535. Originally the maximum amount of money you could have was 65535 but in Legend of the Mana Sword that has been increased to 99999.
 
 This command is unused.
 
-### d1 - sTAKE_MONEY <amount>
-Attempt to take the specified amount. Amount can be zero to 65535. If you have less than the amount then wScriptFlags.6 is set, else it is cleared.
+### d1 - sTAKE_MONEY amount
+Attempt to take the specified amount. Amount can be zero to 65535. If you have less than the amount then `wScriptFlags.6` is set, else it is cleared.
 
-### d2 - sGIVE_XP <amount>
+### d2 - sGIVE_XP amount
 Give the specified amount from zero to 65535 XP. Unused.
 
-### d3 - sTAKE_XP <amount>
+### d3 - sTAKE_XP amount
 Take the specified amount from zero 65535 XP. Unused.
 
-### d4 - sGIVE_ITEM <item>
-Give an item that goes into the ITEMS inventory. Sets wScriptFlags.5 on failure (ITEMS inventory is full) and clears it on success.
+### d4 - sGIVE_ITEM item
+Give an item that goes into the ITEMS inventory. Sets `wScriptFlags.5` on failure (ITEMS inventory is full) and clears it on success.
 
-### d5 - sTAKE_ITEM <item>
+### d5 - sTAKE_ITEM item
 Take an item from the ITEMS inventory (if present). This will not work for items that are currently set to the B button.
 
 ### d6 - sGIVE_MAGIC
@@ -325,16 +325,16 @@ Give a spell.
 ### d7 - sTAKE_MAGIC
 Take a spell. This is unused.
 
-### d8 - sGIVE_EQUIPMENT <equipment>
-Give a piece of equipement that goes into the EQUIP inventory. Sets wScriptFlags.5 on failure (EQUIP inventory is full) and clears it on success.
+### d8 - sGIVE_EQUIPMENT equipment
+Give a piece of equipement that goes into the EQUIP inventory. Sets `wScriptFlags.5` on failure (EQUIP inventory is full) and clears it on success.
 
-### d9 - sTAKE_EQUIPMENT <equipment>
+### d9 - sTAKE_EQUIPMENT equipment
 Take a piece of equipement from the EQUIP inventory. This can not take equipped equipment.
 
-### da - sSET_FLAG <flag>
+### da - sSET_FLAG flag
 Set a flag (boolean variable). See sIF_FLAG for more information.
 
-### db - sCLEAR_FLAG <flag>
+### db - sCLEAR_FLAG flag
 Clear a flag (boolean variable). See sIF_FLAG for more information.
 
 ### dc - sLOCK_TEXT_SPEED
@@ -391,13 +391,13 @@ Runs the exit script for the current screen.
 ### ee - sRUN_ROOM_ALL_KILLED_SCRIPT
 Runs the the all enemies defeated script for the current screen.
 
-### ef - sSET_NEXT_ROOM <x>, <y>
+### ef - sSET_NEXT_ROOM x, y
 Override the normal map layout so regardless of which direction you exit the current screen you will scroll to screen x, y. This is restricted to screens in the current map. See sLOAD_ROOM_INSTANT.
 
-### f0 - sDELAY <frames>
+### f0 - sDELAY frames
 Wait for a specified number of frames. The Game Boy runs at exactly 60 frames a second (Super Game Boy runs slightly slower).
 
-### f3 - sLOAD_ROOM_INSTANT <map>, <screen>, <x>, <y>
+### f3 - sLOAD_ROOM_INSTANT map, screen, x, y
 Changes to the specified screen of the specified map number. This should only be used when the screen is faded with sFADE_TO_BLACK or sFADE_TO_WHITE as the load can take multiple frames.
 
 There are sixteen numbered maps. Map zero is the overworld. Maps two through six are interrior temple-like rooms. Maps eight through 13 are interrior cave-like rooms. Maps 1, 14, and 15 contain all the other playable screens while map seven contains the title screen, final End screen, and specialized screens used by the in-game map screen.
@@ -406,26 +406,26 @@ Which screen in the map is specified by x and y coordinates with the x coordinat
 
 The player is shown at the location specified by x,y on the eight pixel grid.
 
-### f4 - sLOAD_ROOM <map>, <screen>, <x>, <y>
+### f4 - sLOAD_ROOM map, screen, x, y
 See sLOAD_ROOM_INSTANT. The difference is that this command triggers a "shutter" effect so that it can hide the load process.
 
-### f6 - sOPEN_SHOP <number>
+### f6 - sOPEN_SHOP number
 Open the shop interface for the shop number.
 
-### f8 - sSET_MUSIC <number>
+### f8 - sSET_MUSIC number
 Start the music number. Songs are numbered from 1 to 31. To stop music specify song zero.
 
-### f9 - sSFX <number>
+### f9 - sSFX number
 Play the sound effect number. There are 36 sound effects number from 1 to 37. Sound number zero should stop the currently playing sound effect but this is unused.
 
 ### fb - sSHAKE_SCREEN
 Shake the screen to the left and right two pixels. This exposes whatever is offscreen which depends on what screens you have previously been to. Offscreen areas can be explicitly set with sSET_ROOM_TILE to avoid glitches.
 
-### fc - sSET_NPC_TYPES <number>
+### fc - sSET_NPC_TYPES number
 Choose NPC group number. These are used for enemies, towns folk, and companions. Each group has (up to) three NPC types. Running this command results in loading the graphics for all of its NPCs and their projectiles into fixed locations. This usually replaces the graphics of any other group.
 
-### fd - sSPAWN_NPC <number>
+### fd - sSPAWN_NPC number
 Spawn one or more NPCs from the currently set group. The NPC number is specific to the group and can be zero, one, or two.
 
-### fe - sSPAWN_BOSS <nummber>
+### fe - sSPAWN_BOSS nummber
 Spawn a boss. There are 20 bosses numbered one to 20. Bosses do not actually appear until the script is finished, however, loading them earlier in the script will prevent glitches by allowing time for their graphics to be transferred into VRAM before they appear.
