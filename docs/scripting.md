@@ -28,15 +28,15 @@ Repeat the code that follows (until the next sEND command) some number of times.
 
 ### 04 - sMSG
 Starts the dialog system. Dialog windows are 18 characters wide with no auto-wrap. They are double-spaced and used for up to three lines of text at a time (six lines high total). In addition to upper and lower case letters, numbers, punctuation, and symbols used for items and equipment, sMSG lines can contain control codes:
-- `<00>` ends the sMSG command. You will also frequently see them ended with a `$00` outside of the quoteation marks.
-- `<10>` opens the dialog window. It is not opened automatically at the beginning of the sMSG command. Instad you have full control over it.
+- `<00>` ends the sMSG command. You will also frequently see them ended with a `$00` outside of the quotation marks.
+- `<10>` opens the dialog window. It is not opened automatically at the beginning of the sMSG command. Instead you have full control over it.
 - `<11>` closes the dialog window. The window can be left open after the sMSG command finishes to be closed by a future sMSG command. This is commonly used for delays, sound effects, and character movement in cutscenes.
 - `<12>` pauses and waits until the player pushes any button.
 - `<13>` asks the player a yes/no question. See for instance the Battle Axe shop.
 - `<BOY>` prints the Hero's name. This can be from one to four characters long.
 - `<GIRL>` prints the Heroine's name. One to four characters long.
 - `\n` move the insertion point to the beginning of the next (double-spaced) line down.
-- `<1b>` clear the diaglog window and reset the insertion point back to the top left.
+- `<1b>` clear the dialog window and reset the insertion point back to the top left.
 - `<1c>` move insertion point one character to the right.
 - `<1d>` move insertion point one character to the left.
 - `<1e>` move insertion point one line up. This can be used to print lines single-spaced.
@@ -49,19 +49,19 @@ Added for colorization. Usage is not finalized.
 Test one or more true/false flags--the game has 128 boolean variables. If all conditions are matched then the following code--up to the next sENDIF or sELSE--is executed. If not then if there is an sELSE then that is executed. Variables span from `wScriptFlags.0` to `wScriptFlags0F.7`. Their condition can be inverted by prepending an exclamation point (`!`). Multiple variables can be tested by comma (`,`) separating them.
 
 ### 09 - sIF_EQUIPED
-Check whether one or more items, spells, or equipement are currently selected. This checks weapons equipped to the A button, items and spells selected for B button use, and the Armor, Helmet, and Shield currently equipped.
+Check whether one or more items, spells, or equipment are currently selected. This checks weapons equipped to the A button, items and spells selected for B button use, and the Armor, Helmet, and Shield currently equipped.
 
 ### 0a - sIF_INVENTORY
-Check whether one or more items, spells, or equipement are possessed by the player.
+Check whether one or more items, spells, or equipment are possessed by the player.
 
 ### 0b - sIF_TRIGGERED_ON_BY
-Used by scripts for doors, stairs, switch plates and similar. These are called with the "collison flags" for the player, NPC, or enemy (but not projectiles) when they are entered.
+Used by scripts for doors, stairs, switch plates and similar. These are called with the "collision flags" for the player, NPC, or enemy (but not projectiles) when they are entered.
 
-These values have a type in the high nibble and the low nibble controls more fine-grained interacitons. The types currently in use are:
+These values have a type in the high nibble and the low nibble controls more fine-grained interactions. The types currently in use are:
 - 8 - Used for the player traveling between rooms (`$81`) and empty chests dropped by enemies (`$87`). This is also for any NPCs that run a script (rather than enemies which damage the player) when touched.
 - 9 - This is for enemies. There are two unused scripts that use this.
 - a - Inanimate snowmen and open chests are `$a9`. These are commonly used in pushing puzzles.
-- c - The player. Normal state is `$c9` but during damage knockback/invulnerablity it changes to `$c1`. There were bugs in the original releases due to not matching `$c1`.
+- c - The player. Normal state is `$c9` but during damage knock-back/invulnerability it changes to `$c1`. There were bugs in the original releases due to not matching `$c1`.
 - e - Chocobo is `$e1`.
 - f - Chocobot is `$f1` and Chocoboat (Chocobot on water) is `$f5`.
 
@@ -69,7 +69,7 @@ These values have a type in the high nibble and the low nibble controls more fin
 See sIF_TRIGGERED_ON_BY.
 
 ### ?0 - sNPC_1_STEP_FORWARD to sNPC_7_STEP_FORWARD
-The character takes a step in the direction they are facing. Their final position is eight pixels forward from their starting position. The engine has a limitted ability to continue the script while the animation takes place.
+The character takes a step in the direction they are facing. Their final position is eight pixels forward from their starting position. The engine has a limited ability to continue the script while the animation takes place.
 
 ### ?1 - sNPC_1_STEP_BACKWARDS to sNPC_7_STEP_BACKWARDS
 The character takes a step away from the direction they are facing. Otherwise similar to the STEP_FORWARD commands.
@@ -326,10 +326,10 @@ Give a spell.
 Take a spell. This is unused.
 
 ### d8 - sGIVE_EQUIPMENT equipment
-Give a piece of equipement that goes into the EQUIP inventory. Sets `wScriptFlags.5` on failure (EQUIP inventory is full) and clears it on success.
+Give a piece of equipment that goes into the EQUIP inventory. Sets `wScriptFlags.5` on failure (EQUIP inventory is full) and clears it on success.
 
 ### d9 - sTAKE_EQUIPMENT equipment
-Take a piece of equipement from the EQUIP inventory. This can not take equipped equipment.
+Take a piece of equipment from the EQUIP inventory. This cannot take equipped equipment.
 
 ### da - sSET_FLAG flag
 Set a flag (boolean variable). See sIF_FLAG for more information.
@@ -389,7 +389,7 @@ Runs the entry script for the current screen.
 Runs the exit script for the current screen.
 
 ### ee - sRUN_ROOM_ALL_KILLED_SCRIPT
-Runs the the all enemies defeated script for the current screen.
+Runs the all enemies defeated script for the current screen.
 
 ### ef - sSET_NEXT_ROOM x, y
 Override the normal map layout so regardless of which direction you exit the current screen you will scroll to screen x, y. This is restricted to screens in the current map. See sLOAD_ROOM_INSTANT.
@@ -400,7 +400,7 @@ Wait for a specified number of frames. The Game Boy runs at exactly 60 frames a 
 ### f3 - sLOAD_ROOM_INSTANT map, screen, x, y
 Changes to the specified screen of the specified map number. This should only be used when the screen is faded with sFADE_TO_BLACK or sFADE_TO_WHITE as the load can take multiple frames.
 
-There are sixteen numbered maps. Map zero is the overworld. Maps two through six are interrior temple-like rooms. Maps eight through 13 are interrior cave-like rooms. Maps 1, 14, and 15 contain all the other playable screens while map seven contains the title screen, final End screen, and specialized screens used by the in-game map screen.
+There are sixteen numbered maps. Map zero is the overworld. Maps two through six are interior temple-like rooms. Maps eight through 13 are interior cave-like rooms. Maps 1, 14, and 15 contain all the other playable screens while map seven contains the title screen, final End screen, and specialized screens used by the in-game map screen.
 
 Which screen in the map is specified by x and y coordinates with the x coordinate in the high nibble of screen and the y coordinate in the low nibble.
 
@@ -427,5 +427,5 @@ Choose NPC group number. These are used for enemies, towns folk, and companions.
 ### fd - sSPAWN_NPC number
 Spawn one or more NPCs from the currently set group. The NPC number is specific to the group and can be zero, one, or two.
 
-### fe - sSPAWN_BOSS nummber
+### fe - sSPAWN_BOSS number
 Spawn a boss. There are 20 bosses numbered one to 20. Bosses do not actually appear until the script is finished, however, loading them earlier in the script will prevent glitches by allowing time for their graphics to be transferred into VRAM before they appear.
