@@ -1,10 +1,10 @@
 # Scripting
 
-The scripting system is a simple but powerful method of coding things that is used for everything from cutscenes, dialog, doors, stairs, teleporters, switches, and spawning NPCs, enemies, and bosses. Legend of the Mana Sword makes very few changes to the scripting system its self, but many of the changes and bug fixes in LotMS are implemented wholely or partially by modifying scripts.
+The scripting system is a simple but powerful method of coding things that is used for everything from cutscenes, dialog, doors, stairs, teleporters, switches, and spawning NPCs, enemies, and bosses. Legend of the Mana Sword makes very few changes to the scripting system its self, but many of the changes and bug fixes in LotMS are implemented wholly or partially by modifying scripts.
 
-All scripts are contained in `src/scripts.asm`. Although script commands are implemented with [RGBDS](https://rgbds.gbdev.io/) macros no actual assembly knowledge is required to make changes. However, you will need `RGBDS` and `make`. The main details you should know are that everything after a semicolon (`;`) on a line is a comment, and hexidecimal values start with a dollar sign (`$`).
+All scripts are contained in `src/scripts.asm`. Although script commands are implemented with [RGBDS](https://rgbds.gbdev.io/) macros no actual assembly knowledge is required to make changes. However, you will need `RGBDS` and `make`. The main details you should know are that everything after a semicolon (`;`) on a line is a comment, and hexadecimal values start with a dollar sign (`$`).
 
-Many of the script commands are for controlling NPCs, the PC, and companion characters. Most of these have essentially identical commands for each. For NPCs there can be up to seven controlable NPCs in a scene. In practice there is only one scene that uses three NPCs and none that use more than that. NPCs are numbered in the order they are spawned.
+Many of the script commands are for controlling NPCs, the PC, and companion characters. Most of these have essentially identical commands for each. For NPCs there can be up to seven controllable NPCs in a scene. In practice there is only one scene that uses three NPCs and none that use more than that. NPCs are numbered in the order they are spawned.
 
 Originally LotMS used [Mystic Editor](https://github.com/arathron123/mystic-editor) for script editing. Due to other changes--especially related to maps--LotMS is no longer compatible with `ME`.
 
