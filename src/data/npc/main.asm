@@ -55,7 +55,7 @@ ENDC
     NPC_DATA $91, $1f, $50, $06, gfxEnemyBloodOwl, tileorderNpc, metaspritesTable50FrontFacing, $01, $02, $00, $00, $00, $00, $0b, $0b, $0d, $0d, script_003d, script_0447 ;; 03:6242 NPC_OWL
     NPC_DATA $93, $20, $40, $04, gfxEnemyKillerBee, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $01, $00, $00, $00, $0b, $0b, $0b, $0b, script_003d, $0000 ;; 03:625a NPC_BEE
     NPC_DATA $93, $21, $50, $06, gfxEnemyGasCloud, tileorderNpc, metaspritesTable50FrontFacing, $00, $01, $01, $00, $02, $00, $01, $03, $12, $12, script_003d, script_0440 ;; 03:6272 NPC_CLOUD
-    NPC_DATA $91, $22, $40, $08, gfxEnemyOrc, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $02, $03, $03, $03, script_003d, script_0445 ;; 03:628a NPC_PIG
+    NPC_DATA $91, $22, $40, $08, gfxEnemyOrc, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $02, $03, $03, $03, script_003d, script_0445 ;; 03:628a NPC_ORC
     NPC_DATA $91, $23, $50, $06, gfxEnemyDeathCrab, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $01, $00, $02, $00, $0e, $0d, $0e, $0e, script_003d, script_0459 ;; 03:62a2 NPC_CRAB
     NPC_DATA $91, $24, $40, $08, gfxEnemyTarantula, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $02, $00, $03, $02, $03, $03, script_003d, $0000 ;; 03:62ba NPC_SPIDER
     NPC_DATA $81, $0a, $6e, $01, gfxBlankTiles09, tileorderNpc, metaspritesInvisible, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01fa, $0000 ;; 03:62d2 NPC_INV_OPEN_NORTH

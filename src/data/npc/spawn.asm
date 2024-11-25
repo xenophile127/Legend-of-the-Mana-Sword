@@ -13,8 +13,8 @@ NPCSpawnPointers:
     dw   data_03_7498, data_03_74a0, data_03_74fa      ;; 03:7160 ??????
     dw   data_03_74a8, data_03_74b0, data_03_7504      ;; 03:7166 ??????
     dw   data_03_74b8, data_03_74c0, data_03_74f0      ;; 03:716c ??????
-    dw   data_03_74c8, data_03_74d0, data_03_7518      ;; 03:7172 ??????
-    dw   data_03_74d8, data_03_74e0, data_03_74e0      ;; 03:7178 ??????
+    dw   killerBee,    gasCloud,     data_03_7518      ;; 03:7172 ??????      number 08 $08
+    dw   orc,          deathCrab,    deathCrab         ;; 03:7178 ??????      number 09 $09
     dw   tarantula,    ruster,       mimic             ;; 03:717e ??????      number 10 $0a
     dw   data_03_7552, data_03_7552, data_03_754a      ;; 03:7184 ??????
     dw   data_03_755a, data_03_7562, data_03_756a      ;; 03:718a ??????
@@ -229,19 +229,19 @@ data_03_74c0:
     db   1, 1, NPC_OWL, NPC_OWL, NPC_OWL, NPC_OWL      ;; 03:74c0 ??????
     db   $80, $80                                      ;; 03:74c6 ??
 
-data_03_74c8:
+killerBee:
     db   2, 3, NPC_BEE, NPC_BEE, NPC_BEE, NPC_BEE      ;; 03:74c8 ??????
     db   $80, $80                                      ;; 03:74ce ??
 
-data_03_74d0:
+gasCloud:
     db   0, 2, NPC_CLOUD, NPC_CLOUD, NPC_CLOUD, NPC_CLOUD ;; 03:74d0 ??????
     db   $80, $80                                      ;; 03:74d6 ??
 
-data_03_74d8:
-    db   1, 2, NPC_PIG, NPC_PIG, NPC_PIG, NPC_PIG      ;; 03:74d8 ??????
+orc:
+    db   1, 2, NPC_ORC, NPC_ORC, NPC_ORC, NPC_ORC      ;; 03:74d8 ??????
     db   $80, $80                                      ;; 03:74de ??
 
-data_03_74e0:
+deathCrab:
     db   1, 2, NPC_CRAB, NPC_CRAB, NPC_CRAB, NPC_CRAB  ;; 03:74e0 ??????
     db   $80, $80                                      ;; 03:74e6 ??
 

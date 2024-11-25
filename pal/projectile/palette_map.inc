@@ -9,11 +9,11 @@
     COLOR_PALETTE_PROJECTILE 000              ; Short Sword    $00 NPC_GOBLIN
     COLOR_PALETTE_PROJECTILE red              ; Voice          $01 NPC_CARROT
     COLOR_PALETTE_PROJECTILE red              ; Needle         $02 NPC_PORCUPINE
-    COLOR_PALETTE_PROJECTILE red              ; Harpoon        $03 NPC_CHIBIDEVIL, NPC_TORTOISE, NPC_WATER_DEMON
+    COLOR_PALETTE_PROJECTILE 003              ; Harpoon        $03 NPC_CHIBIDEVIL, NPC_ORC, NPC_TORTOISE, NPC_WATER_DEMON
     COLOR_PALETTE_PROJECTILE red              ; Reflection     $04 NPC_DOPPEL_MIRROR
     COLOR_PALETTE_PROJECTILE red              ; Laser          $05 NPC_GUARDIAN
     COLOR_PALETTE_PROJECTILE red              ; Axe            $06 NPC_MINOTAUR
-    COLOR_PALETTE_PROJECTILE red              ; Scissors       $07 NPC_CRAB
+    COLOR_PALETTE_PROJECTILE 007              ; Scissors       $07 NPC_CRAB
     COLOR_PALETTE_PROJECTILE red              ; Ring Beam      $08 NPC_EYE_SPY, NPC_FUZZY_WONDER
     COLOR_PALETTE_PROJECTILE red              ; Rock           $09 NPC_OGRE, NPC_EARTH_DIGGER, NPC_ELEPHANT
     COLOR_PALETTE_PROJECTILE red              ; Shuriken       $0a NPC_NINJA
