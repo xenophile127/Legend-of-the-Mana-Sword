@@ -1,0 +1,11 @@
+Mimicks the BIOS auto-colorization ("lazy DX") of non-colorized Legend of the Mana Sword.
+
+Background colors are white, green, blue, and black.
+
+Only the first background palette is populated, the rest are monochrome and unused.
+
+Sprite palettes for the boss reserved palettes are blue.
+
+The projectile palette is red.
+
+The boss damage flash effect is the same as in lazy DX.
