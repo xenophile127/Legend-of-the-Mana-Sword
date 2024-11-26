@@ -20,8 +20,8 @@ metaspritesVampire:
 
 metaspritesHydraDragonZombie:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $58, $5a                                 ;; 04:7bd1 ??? $00
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a                                 ;; 04:7bd4 ??? $01
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42                                 ;; 04:7bd7 ??? $02
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $48, $4a                                 ;; 04:7bd4 ??? $01
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $40, $42                                 ;; 04:7bd7 ??? $02
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46                                 ;; 04:7bda ??? $03
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e                                 ;; 04:7bdd ??? $04
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $60, $62                                 ;; 04:7be0 ??? $05
