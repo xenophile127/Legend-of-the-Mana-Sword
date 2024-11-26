@@ -2526,7 +2526,6 @@ script_01a5:
         db "<10>Defeated\n    Red Dragon!<12>"
         db "<11>", $00 ;; 0d:4e15
       sSET_FLAG wScriptFlags02.7                       ;; 0d:4e2b $da $17
-      sLOAD_PALETTE 0
       sSET_ROOM_TILE $59, 8, 1                         ;; 0d:4e2d $b0 $59 $08 $01
     sENDIF                                             ;; 0d:4e31
     sIF_FLAG wScriptFlags0E.2, wScriptFlags0E.3, !wScriptFlags0E.4, wScriptFlags0E.5, wScriptFlags0E.6, wScriptFlags0E.7, !wScriptFlags06.2
