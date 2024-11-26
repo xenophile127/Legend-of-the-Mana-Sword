@@ -14,7 +14,7 @@ You can use Game Boy Color Picker anywhere Legend of the Mana Sword's color port
 
 > 💡**Note:** Most emulators and flash cartridges will create `.sav` files that are much larger than necessary. Only the first eight bytes are used, but it is safe to add `.pal` files of any size--everything after the first eight bytes will be ignored.
 
-You may also be able to use the (unsuported) Windows utility [url=https://www.romhacking.net/utilities/1743/]GBC Palette Editor[/url] to view and edit `.pal` files, however GBC Palette Editor seems to expect `.pal` files to contain at least 32 colors and will give an error if any of the LotMS's included `.pal` files are opened, but `.pal` files created by GBC Palette Editor should work correctly with LotMS.
+You may also be able to use the (unsuported) Windows utility [GBC Palette Editor](https://www.romhacking.net/utilities/1743/) to view and edit `.pal` files, however GBC Palette Editor seems to expect `.pal` files to contain at least 32 colors and will give an error if any of the LotMS's included `.pal` files are opened, but `.pal` files created by GBC Palette Editor should work correctly with LotMS.
 
 After changing `.pal` files you will need to run `make color` to build a file named `rom.gb` which can be run on any Game Boy Color or Game Boy Advance emulator, or on real hardware using a Game Boy flash cartridge.
 
@@ -23,7 +23,7 @@ After changing `.pal` files you will need to run `make color` to build a file na
 ## Organization of the `pal` directory
 
 Currently there are five directories within `pal`:
-1. **`00` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files (only `bgp0.pal` is currently used) and eight sprite (`obj`) `.pal` files.:
+1. **`00` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files (only `bgp0.pal` is currently used) and eight sprite (`obj`) `.pal` files. Most palette loading is now done dynamically so currently the only portions of this that should have any effect are the `bgp0.pal` files. The organization is:
     - **`blind` -** Used when inflicted with the status effect Blind (shortened to "Dark" in the original Final Fantasy Adventure and Mystic Quest localizations).
       
         These palettes mimic the effect as rendered on GBC's BIOS compatibility colorization, with Legend of the Mana Sword's chosen palette. That means backgrounds are all black except normally black areas are white, and sprites are either unmodified (such as the player) or all black except normally black areas are replaced with either dark red or dark blue (depending on the usually used palette).
@@ -46,6 +46,7 @@ Currently there are five directories within `pal`:
         * The last three sprite palettes are used for NPCs, enemies, and bosses. They are replaced with entries from the `pal/npc/` directory whenever NPCs are spawned. Bosses (except for Red Dragon) do not yet initialize palettes when they spawn so it may be possible for some bosses colors to be affected by recently encountered enemies.
 2. **`01` -** Identical to `00` except `blind/obj05.pal`, `damage/obj05.pal`, and `normal/obj05.pal` use red instead of blue. This is used for the Red Dragon boss. (Blind is unused so far.)
 3. **`attack`-** Contains palettes for each spell, item, and weapon that Hero can have. The file `pal/attack/palette_map.inc` needs to have an entry for each. Each entry specifies the directory that contains the palettes needed: `blind.pal`, `damage.pal`, `flash.pal`, and `main.pal`.
+4. **`boss`-** Complete palette sets for each boss, including both sprites and backgrounds. Currently the `obj0.pal` files are not loaded.
 4. **`hero`-** Palettes for each of the negative status effects that Hero can get, except Blind which is handled very differently. It contains four directories:
     - **`hero` -** Used when you have no negative status effect.
     - **`moogle` -** Used when you have the Moogle status effect. This is the lowest priority of the three.

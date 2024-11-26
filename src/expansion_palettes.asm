@@ -7,3 +7,5 @@ SECTION "Game Boy Color Bank - Palettes 1", ROMX[$4000], BANK[COLOR_PALETTES_BAN
 ColorPalettesROM:
 
 INCLUDE "pal/palette_list.inc"
+
+INCLUDE "pal/boss/palette_map.inc"

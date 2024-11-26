@@ -2483,7 +2483,6 @@ script_01a3:
     sENDIF                                             ;; 0d:4d9f
     sIF_FLAG wScriptFlags0E.2, wScriptFlags0E.3, !wScriptFlags0E.4, wScriptFlags0E.5, wScriptFlags0E.6, !wScriptFlags0E.7 ;; 0d:4d9f $08 $72 $73 $f4 $75 $76 $f7 $00 $13
       sIF_FLAG !wScriptFlags02.7                       ;; 0d:4da8 $08 $97 $00 $0b
-      sLOAD_PALETTE 1
         sSFX 20                                        ;; 0d:4dac $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4dae $bf
         sSPAWN_BOSS 20
@@ -2507,7 +2506,6 @@ script_01a3:
     sEND                                               ;; 0d:4dd7 $00
 
 script_01a4:
-    sLOAD_PALETTE 0
     sSET_MUSIC 22                                      ;; 0d:4dd8 $f8 $16
     sEND                                               ;; 0d:4dda $00
 
