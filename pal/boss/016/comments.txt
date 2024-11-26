@@ -1,0 +1,11 @@
+Palette for Jackal. 
+
+Background colors are white, green, blue, and black.
+
+Only the first background palette is populated, the rest are monochrome and unused.
+
+Two boss palettes are loaded--obj5 and obj6.
+
+The boss damage flash effect is is a washed-out version of the colors. Close to but not quite white.
+
+The explosion effect--obj4--is currently set to some of the same colors Jackal uses.

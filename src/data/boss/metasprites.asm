@@ -80,13 +80,13 @@ metaspritesDavias:
 metaspritesGolemJackal:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42                                 ;; 04:7c70 ... $00
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46                                 ;; 04:7c73 ... $01
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a                                 ;; 04:7c76 ... $02
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $48, $4a                                 ;; 04:7c76 ... $02
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4e, $4c                                 ;; 04:7c79 ... $03
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4a, $48                                 ;; 04:7c7c ... $04
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $4a, $48                                 ;; 04:7c7c ... $04
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $42, $40                                 ;; 04:7c7f ... $05
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e                                 ;; 04:7c82 ... $06
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $46, $44                                 ;; 04:7c85 ... $07
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $50, $52                                 ;; 04:7c88 ... $08
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52                                 ;; 04:7c88 ... $08
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $54, $56                                 ;; 04:7c8b ... $09
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $5c, $5e                                 ;; 04:7c8e ... $0a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $58, $5a                                 ;; 04:7c91 ... $0b
