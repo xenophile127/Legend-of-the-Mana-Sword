@@ -202,13 +202,13 @@ metaspritesIflyteMetalCrab:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $6a, $68                                 ;; 04:7db7 ??? $15
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $54, $56                                 ;; 04:7dba ??? $16
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $58, $5a                                 ;; 04:7dbd ??? $17
-metaspritesGaruda_new:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $56, $54                                 ;; 04:7dc0 ??? $18
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $5a, $58                                 ;; 04:7dc3 ??? $19
 
 ; Garuda is changed to add two entries so that the death explosion uses the feather projectiles instead of random bits.
-; This is done by using the last two entries from the previous metasprite table instead of duplicate entries in this one.
 metaspritesGaruda:
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $56, $54                                 ;; 04:7dc0 ??? $18
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $5a, $58                                 ;; 04:7dc3 ??? $19
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42                                 ;; 04:7dc6 ??? $00
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $34, $36                                 ;; 04:7dc9 ??? $01
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $5c, $5e                                 ;; 04:7dcc ??? $02

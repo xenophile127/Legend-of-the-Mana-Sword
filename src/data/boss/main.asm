@@ -60,7 +60,7 @@ bossDataTable:
       BOSS_HEADER_GFX $38, $1c, bossGfxLich, tileorderLich, metaspritesLich ;; 04:4849 ????????
       dw data_04_4c39, data_04_5171, data_04_5171, data_04_5435 ;; 04:4851 ????????
     BOSS_HEADER $04, $bb, $d2, $fa, $08, $21, script_0247 ;; 04:4859 ????????
-      BOSS_HEADER_GFX $34, $1e, bossGfxGaruda, tileorderGaruda, metaspritesGaruda_new ;; 04:4861 ????????
+      BOSS_HEADER_GFX $34, $1e, bossGfxGaruda, tileorderGaruda, metaspritesGaruda ;; 04:4861 ????????
       dw data_04_4bb1, data_04_5127, data_04_5127, data_04_5435 ;; 04:4869 ????????
     BOSS_HEADER $08, $6a, $00, $fa, $09, $14, script_024f ;; 04:4871 ????????
       BOSS_HEADER_GFX $38, $1c, bossGfxDragon, tileorderDragon, metaspritesDragon ;; 04:4879 ????????
