@@ -4248,9 +4248,15 @@ data_04_766f:
     db   $f0, $0c, $0c, $e9, $0d, $ec, $0c, $0c        ;; 04:7677 ????????
     db   $11, $04, $0d, $f6, $00, $ff                  ;; 04:767f ??????
 
+; The first frame of the Jackal/Golem death animation.
+; There was a chunk missing at the bottom right that was possible to easily restore.
 data_04_7685:
-    db   $80, $f0, $f0, $02, $00, $f0, $01, $f0        ;; 04:7685 ........
-    db   $00, $01, $f0, $00, $01, $f0, $00, $ff        ;; 04:768d .......?
+    db   $80, $f0, $f0
+    db   $02, $00, $f0
+    db   $01, $f0, $00
+    db   $06, $00, $00
+    db   $01, $f0, $00
+    db   $ff
 
 data_04_7695:
     db   $00, $f0, $f0, $02, $00, $f0, $01, $f0        ;; 04:7695 ........
