@@ -2874,7 +2874,13 @@ scriptOpCodeFlashScreen:
 IF DEF(COLOR)
     ; Use the normal palettes.
     push hl
-    ld hl, wColorPalettes.normal
+; Check whether the Blind/Dark effect is active.
+    ld hl, wPlayerSpecialFlags
+    bit 1, [hl]
+    ld hl, wColorPalettes.main
+    jr z, .activate
+    ld hl, wColorPalettes.blind
+.activate:
     call setPalettes
     pop hl
 ELSE

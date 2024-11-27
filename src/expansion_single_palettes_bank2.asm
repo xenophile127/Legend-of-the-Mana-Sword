@@ -42,7 +42,7 @@ loadSinglePaletteBank2_expansion:
 ; Copy one palette.
     ld b, $08
     call copyHLtoDE
-; That leaves hl ready for the next palette but de needs to 15 palettes (120 bytes).
+; That leaves hl ready for the next palette but de needs to advance 15 palettes (120 bytes).
     ld a, $78
     add e
     ld e, a
@@ -52,7 +52,7 @@ loadSinglePaletteBank2_expansion:
 ; Copy the blind palette.
     ld b, $08
     call copyHLtoDE
-; That leaves hl ready for the next palette but de needs to 15 palettes (120 bytes).
+; That leaves hl ready for the next palette but de needs to advance 15 palettes (120 bytes).
     ld a, $78
     add e
     ld e, a
@@ -62,7 +62,7 @@ loadSinglePaletteBank2_expansion:
 ; Copy the damage palette.
     ld b, $08
     call copyHLtoDE
-; That leaves hl ready for the next palette but de needs to 15 palettes (120 bytes).
+; That leaves hl ready for the next palette but de needs to advance 15 palettes (120 bytes).
     ld a, $78
     add e
     ld e, a
@@ -72,8 +72,14 @@ loadSinglePaletteBank2_expansion:
 ; Copy the flash palette.
     ld b, $08
     call copyHLtoDE
-; Activate the palette if the screen isn't currently faded to black or white.
+; Check whether the Blind/Dark effect is active.
+    ld hl, wPlayerSpecialFlags
+    bit 1, [hl]
     ld hl, wColorPalettes.main
+    jr z, .activate
+    ld hl, wColorPalettes.blind
+; Activate the palette if the screen isn't currently faded to black or white.
+.activate:
     ld a, [wLastFade]
     or a
     call z, setPalettes
