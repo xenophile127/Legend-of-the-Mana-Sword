@@ -2558,11 +2558,11 @@ script_01a6:
         sMSG                                           ;; 0d:4e7c $04
           db "<10>Lee:That's my\n victim!<12>"
           db "<11>", $00 ;; 0d:4e7d
+        sSPAWN_BOSS 0
         sSFX 20                                        ;; 0d:4e92 $f9 $14
         sFLASH_SCREEN                                  ;; 0d:4e94 $bf
         sFLASH_SCREEN                                  ;; 0d:4e95 $bf
         sFLASH_SCREEN                                  ;; 0d:4e96 $bf
-        sSPAWN_BOSS 0
         sDELAY 10                                      ;; 0d:4e97 $f0 $0a
         sSET_MUSIC 15                                  ;; 0d:4e99 $f8 $0f
       sENDIF                                           ;; 0d:4e9d
@@ -7757,6 +7757,9 @@ script_03ca:
 script_03cb:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:4eee $0b $c9 $00 $05
       sLOAD_ROOM 13, $40, 16, 2                        ;; 0e:4ef2 $f4 $0d $40 $10 $02
+; Show the stairs back to Ifrit's lair if you're backtracking.
+; It isn't perfect since if you backtrack further you'll need to re-solve the puzzle, but it's an improvement.
+      sSET_ROOM_TILE $02, 8, 1
     sENDIF                                             ;; 0e:4ef7
     sEND                                               ;; 0e:4ef7 $00
 
