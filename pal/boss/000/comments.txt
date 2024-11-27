@@ -1,0 +1,17 @@
+Palettes for Vampire.
+
+Background colors are white, green, blue, and black.
+
+Only the first background palette is populated, the rest are monochrome and unused.
+
+Vampire uses the first two reserved palettes--obj5 and obj6, plus the third (obj7) is used for its explosion effect.
+
+The projectile palette is for its bats, dark purple with yellow eyes.
+
+The boss damage flash effect is a washed-out version of the colors, but with the red less desaturated.
+
+Fuji is expected to be present for this battle so obj3 is given her palette.
+
+The script flash effect is changed to a red effect. This is used at the beginning and end of the fight.
+
+It is possible to reach Vampire with the Blind effect active so the boss reserved palettes are set with a red outline. This is sort of an easter-egg as the timing window for seeing this is pretty narrow..

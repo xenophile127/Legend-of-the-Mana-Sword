@@ -3,8 +3,8 @@
 ; These are full palette sets allowing maximum flexability.
 ; For instance, the background could flash when a boss is damaged.
 
-    COLOR_PALETTE_BOSS blue             ; Vampire        $00
-    COLOR_PALETTE_BOSS blue             ; Hydra          $01
+    COLOR_PALETTE_BOSS 000              ; Vampire        $00
+    COLOR_PALETTE_BOSS 001              ; Hydra          $01
     COLOR_PALETTE_BOSS blue             ; Medusa         $02
     COLOR_PALETTE_BOSS blue             ; Megapede       $03
     COLOR_PALETTE_BOSS blue             ; Davias         $04

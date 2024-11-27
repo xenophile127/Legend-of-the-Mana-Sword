@@ -5,18 +5,18 @@
 metaspritesVampire:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42                                 ;; 04:7ba7 ??? $00
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $42, $40                                 ;; 04:7baa ??? $01
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46                                 ;; 04:7bad ??? $02
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $44, $46                                 ;; 04:7bad ??? $02
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4e, $4c                                 ;; 04:7bb0 ??? $03
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4a, $48                                 ;; 04:7bb3 ??? $04
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a                                 ;; 04:7bb6 ??? $05
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $46, $44                                 ;; 04:7bb9 ??? $06
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $46, $44                                 ;; 04:7bb9 ??? $06
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e                                 ;; 04:7bbc ??? $07
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $50, $52                                 ;; 04:7bbf ??? $08
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $52, $50                                 ;; 04:7bc2 ??? $09
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $56, $54                                 ;; 04:7bc5 ??? $0a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $54, $56                                 ;; 04:7bc8 ??? $0b
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $38, $3a                                 ;; 04:7bcb ??? $0c
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $3c, $3e                                 ;; 04:7bce ??? $0d
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $38, $3a                                 ;; 04:7bcb ??? $0c
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $3c, $3e                                 ;; 04:7bce ??? $0d
 
 metaspritesHydraDragonZombie:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $58, $5a                                 ;; 04:7bd1 ??? $00

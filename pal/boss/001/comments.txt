@@ -9,3 +9,7 @@ Two boss palettes are loaded--obj5 and obj6.
 The boss damage flash effect is is a washed-out version of the colors. Close to but not quite white.
 
 The fireballs and explosion effect--obj4--are currently set the same as obj5.
+
+The Traveler may be present for this battle so obj3 is given his palette.
+
+The boss script flash effect has been changed to not quite blacken the background colors of bgp0 and to use a slightly greenish white for the bgp0 black. The boss' flash its self isn't actually changed.
