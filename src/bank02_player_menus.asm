@@ -6331,25 +6331,25 @@ nop
     inc  DE                                            ;; 02:73d5 $13
     inc  DE                                            ;; 02:73d6 $13
     inc  DE                                            ;; 02:73d7 $13
-; $fc = scriptOpCodeSetNPCTypes
 .jr_02_73d8:
+; $fc = sSET_NPC_TYPES
     ld   A, $fc                                        ;; 02:73d8 $3e $fc
     ld   [HL+], A                                      ;; 02:73da $22
     ld   A, [DE]                                       ;; 02:73db $1a
     ld   [HL+], A                                      ;; 02:73dc $22
     inc  DE                                            ;; 02:73dd $13
-; $fd = scriptOpCodeSpawnNPC
+; $fd = sSPAWN_NPC
     ld   A, $fd                                        ;; 02:73de $3e $fd
     ld   [HL+], A                                      ;; 02:73e0 $22
     ld   A, [DE]                                       ;; 02:73e1 $1a
     ld   [HL+], A                                      ;; 02:73e2 $22
     inc  DE                                            ;; 02:73e3 $13
-; $9c = scriptOpCodeGiveFollower
+; $9c = sGIVE_FOLLOWER
     ld   A, $9c                                        ;; 02:73e4 $3e $9c
     ld   [HL+], A                                      ;; 02:73e6 $22
     ld   A, [DE]                                       ;; 02:73e7 $1a
     ld   [HL+], A                                      ;; 02:73e8 $22
-; $99 = scriptOpCodeFollowerSetPosition
+; $99 = sFOLLOWER_SET_POSITION
     ld   A, $99                                        ;; 02:73e9 $3e $99
     ld   [HL+], A                                      ;; 02:73eb $22
     pop  DE                                            ;; 02:73ec $d1
@@ -6361,14 +6361,14 @@ nop
     ld   A, [wOpenChestScript3._4]                     ;; 02:73f1 $fa $37 $d6
     and  A, A                                          ;; 02:73f4 $a7
     jr   Z, .jr_02_73fa                                ;; 02:73f5 $28 $03
-; $9f + 1 = scriptOpCodePlayerOnChocobo, and other forms follow from there.
+; $9f + 1 = sPLAYER_ON_CHOCOBO, and other forms follow from there.
     add  A, $9f                                        ;; 02:73f7 $c6 $9f
     ld   [HL+], A                                      ;; 02:73f9 $22
-; $ec = scriptOpCodeRunRoomScript
+; $ec = sRUN_ROOM_SCRIPT
 .jr_02_73fa:
     ld   A, $ec                                        ;; 02:73fa $3e $ec
     ld   [HL+], A                                      ;; 02:73fc $22
-; $00 = scriptOpCodeEND
+; $00 = sEND
     xor  A, A                                          ;; 02:73fd $af
     ld   [HL], A                                       ;; 02:73fe $77
     ld   HL, $0b                                       ;; 02:73ff $21 $0b $00
@@ -7474,7 +7474,7 @@ setWindowDimensions:
 ; This copies it and adds opcodes to turn it into a real script.
 loadSRAMCreateInitScript:
     ld   DE, wOpenChestScript3                         ;; 02:7a7f $11 $33 $d6
-; $f4 = scriptOpCodeLoadRoom
+; $f4 = sLOAD_ROOM
     ld   A, $f4                                        ;; 02:7a82 $3e $f4
     ld   [HL+], A                                      ;; 02:7a84 $22
     ld   B, $04                                        ;; 02:7a85 $06 $04
@@ -7488,7 +7488,7 @@ loadSRAMCreateInitScript:
     ld   A, [DE]                                       ;; 02:7a8e $1a
     inc  DE                                            ;; 02:7a8f $13
     ld   B, A                                          ;; 02:7a90 $47
-; $f8 = scriptOpCodeSetMusic
+; $f8 = sSET_MUSIC
     ld   A, $f8                                        ;; 02:7a91 $3e $f8
     ld   [HL+], A                                      ;; 02:7a93 $22
     ld   [HL], B                                       ;; 02:7a94 $70
@@ -7509,8 +7509,8 @@ loadSRAMCreateInitScript:
 ; Adds a script opcode to display a metatile
 ; Then adds the tile number and the y coordinate (but not the x).
 ; Return: B = x coordinate
-; $b0 = scriptOpCodeSetRoomTile
 loadSRAMInitScriptDisplayMetatile:
+; $b0 = sSET_ROOM_TILE
     ld   A, $b0                                        ;; 02:7aa8 $3e $b0
     ld   [HL+], A                                      ;; 02:7aaa $22
     ld   A, [DE]                                       ;; 02:7aab $1a
@@ -7538,7 +7538,7 @@ loadSRAMInitScriptOpenDoorIfInDoorway:
     ld   D, A                                          ;; 02:7ac3 $57
     ld   A, [wOpenChestScript1._3]                     ;; 02:7ac4 $fa $16 $d6
     ld   E, A                                          ;; 02:7ac7 $5f
-; $e0 = scriptOpCodeOpenNorthDoor
+; $e0 = sOPEN_NORTH_DOOR
     ld   C, $e0                                        ;; 02:7ac8 $0e $e0
     ld   B, $04                                        ;; 02:7aca $06 $04
     ld   HL, .doorTileLocations                        ;; 02:7acc $21 $ed $7a
@@ -7659,10 +7659,9 @@ titleScreenShowMenu:
     ret                                                ;; 02:7b9b $c9
 
 ; This is a short script used to start the music on the title screen
-;    sSET_MUSIC 1
-;    sEND
 startTitleScreenMusicScript:
-    db   $f8, $01, $00                                 ;; 02:7b9c ...
+    sSET_MUSIC 1
+    sEND
 
 menuSelectionTitleScreen:
     call hideAndSaveMenuMetasprites                    ;; 02:7b9f $cd $51 $6b
