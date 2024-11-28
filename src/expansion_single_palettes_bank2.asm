@@ -12,6 +12,9 @@ ColorSinglePalettesROM_2:
 
 INCLUDE "pal/attack/palette_map.inc"
 
+; Used for the flashing marker in maps.
+    COLOR_PALETTE_SET_SINGLE map/obj
+
 ; Loads the palette for an NPC.
 ; a = NPC id
 ; b = palette number (upper five bits may be dirty)

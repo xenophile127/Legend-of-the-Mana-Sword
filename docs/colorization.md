@@ -63,7 +63,8 @@ Currently there are five directories within `pal`:
     * Shutter effect. Used when selecting a save game to continue, to transition from one map to another, and when displaying the in-game maps. This can be used to change the effect from white to black, or any other color you may like.
       > 💡**Note:** All four colors in this palette should be the same as it uses the area of memory that contains the status bar.
     * Status bar effect. Used by the status bar at the bottom of the screen that shows HP, MP, Lucre, and the stamina gauge. At this point there are some visual glitches related to changing this.
-5. **`menu/obj` -** Contains palettes applied to both the menu hand pointers, and to the trashcan used in the `ITEM` and `EQUIP` menus.
+6. **`map/obj` -** Contains palettes for the flashing marker in the in-game map.
+7. **`menu/obj` -** Contains palettes shared by both the menu hand pointers, and to the trashcan used in the `ITEM` and `EQUIP` menus.
 6. **`npc` -** The file `pal/npc/palette_list.inc` has an entry for every distinct NPC in the game, though some NPCs (like shop keepers) are internally identical. Each entry indicates which palette set directory to load when that NPC is loaded. Palette sets can be reused for multiple NPCs but there is no space savings to doing so. Each line in this file is commented to indicate which NPC it affects, but when in doubt, test.
 
    Each palette set directory within `pal/npc` contains four `.pal` files:

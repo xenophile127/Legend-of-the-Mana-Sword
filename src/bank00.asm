@@ -2492,15 +2492,21 @@ scriptOpCodeWaitMapClose:
     ld a, d
     or a
     jr   NZ, .button_pressed                           ;; 00:0dc2 $20 $1d
-    ld   A, [wScriptOpCounter2]                        ;; 00:0dc4 $fa $9a $d4
-    inc  A                                             ;; 00:0dc7 $3c
-    ld   [wScriptOpCounter2], A                        ;; 00:0dc8 $ea $9a $d4
-    bit  5, A                                          ;; 00:0dcb $cb $6f
+; Each blink cycle lasts 64 frames.
+    ld hl, wScriptOpCounter2
+    inc [hl]
+    bit 5, [hl]
     jr   NZ, .hide_marker                              ;; 00:0dcd $20 $0b
-    ld   C, $00                                        ;; 00:0dcf $0e $00
-    ld   B, $00                                        ;; 00:0dd1 $06 $00
-    ld   A, $00                                        ;; 00:0dd3 $3e $00
+    xor a
+    ld b, a
+    ld c, a
+IF DEF(COLOR)
+; Set a color palette.
     call processPhysicsForObject                       ;; 00:0dd5 $cd $95 $06
+    ld a, PALETTE_SET_MAP_OBJ
+    ld b, PAL_ATTACK
+    call loadSinglePaletteBank2
+ENDC
     pop  HL                                            ;; 00:0dd8 $e1
     ret                                                ;; 00:0dd9 $c9
 .hide_marker:
@@ -7797,6 +7803,7 @@ SECTION "bank00_align_2df5", ROM0[$2df5]
 ; A: source bank
 ; DE: target VRAM address
 ; HL: source ROM address
+; Return: DE unmodified
 addTileGraphicCopyRequest:
     push de
     push hl
