@@ -5,15 +5,15 @@
 ; NPC spawn data, selected a row with sSET_NPC_TYPES, and spawn actual NPCs with sSPAWN_NPC to select the column to spawn.
 ; Controls which NPCs to spawn, and how many to spawn, as well as on which positions (or random position)
 NPCSpawnPointers:
-    dw   chibiDevil,   rabbite,      data_03_7518      ;; 03:7142 ......
-    dw   goblin,       myconid,      myconid           ;; 03:7148 ......
-    dw   data_03_7460, data_03_7468, data_03_7470      ;; 03:714e ......
-    dw   data_03_7460, data_03_7480, data_03_7478      ;; 03:7154 ......
+    dw   chibiDevil,   rabbite,      sahagin           ;; 03:7142 ......      number 00 $00
+    dw   goblin,       myconid,      myconid           ;; 03:7148 ......      number 01 $01
+    dw   grell,        mudman,       lizardman_x1      ;; 03:714e ......      number 02 $02
+    dw   grell,        deathFlower,  lizardman_mult    ;; 03:7154 ......      number 03 $03
     dw   data_03_7488, data_03_7490, data_03_750e      ;; 03:715a ??????
     dw   data_03_7498, data_03_74a0, data_03_74fa      ;; 03:7160 ??????
     dw   data_03_74a8, data_03_74b0, data_03_7504      ;; 03:7166 ??????
     dw   data_03_74b8, data_03_74c0, data_03_74f0      ;; 03:716c ??????
-    dw   killerBee,    gasCloud,     data_03_7518      ;; 03:7172 ??????      number 08 $08
+    dw   killerBee,    gasCloud,     sahagin           ;; 03:7172 ??????      number 08 $08
     dw   orc,          deathCrab,    deathCrab         ;; 03:7178 ??????      number 09 $09
     dw   tarantula,    ruster,       mimic             ;; 03:717e ??????      number 10 $0a
     dw   data_03_7552, data_03_7552, data_03_754a      ;; 03:7184 ??????
@@ -177,23 +177,23 @@ myconid:
     db   1, 3, NPC_MUSHROOM, NPC_MUSHROOM, NPC_MUSHROOM, NPC_MUSHROOM ;; 03:7458 ......
     db   $80, $80                                      ;; 03:745e ..
 
-data_03_7460:
+grell:
     db   0, 2, NPC_JELLYFISH, NPC_JELLYFISH, NPC_JELLYFISH, NPC_JELLYFISH ;; 03:7460 ....?.
     db   $80, $80                                      ;; 03:7466 ..
 
-data_03_7468:
+mudman:
     db   1, 2, NPC_SWAMPMAN, NPC_SWAMPMAN, NPC_SWAMPMAN, NPC_SWAMPMAN ;; 03:7468 ...?.?
     db   $80, $80                                      ;; 03:746e ..
 
-data_03_7470:
+lizardman_x1:
     db   1, 1, NPC_LIZARDMAN, NPC_LIZARDMAN, NPC_LIZARDMAN, NPC_LIZARDMAN ;; 03:7470 ???.?.
     db   $80, $80                                      ;; 03:7476 ??
 
-data_03_7478:
+lizardman_mult:
     db   2, 3, NPC_LIZARDMAN, NPC_LIZARDMAN, NPC_LIZARDMAN, NPC_LIZARDMAN ;; 03:7478 ??..??
     db   $80, $80                                      ;; 03:747e ??
 
-data_03_7480:
+deathFlower:
     db   1, 2, NPC_FLOWER, NPC_FLOWER, NPC_FLOWER, NPC_FLOWER ;; 03:7480 ......
     db   $80, $80                                      ;; 03:7486 ..
 
@@ -265,8 +265,8 @@ data_03_750e:
     db   1, 1, NPC_INV_OPEN_WEST, NPC_INV_OPEN_WEST, NPC_INV_OPEN_WEST, NPC_INV_OPEN_WEST ;; 03:750e ??????
     db   $00, $07, $80, $80                            ;; 03:7514 ????
 
-data_03_7518:
-    db   1, 2, NPC_WATER_DEMON, NPC_WATER_DEMON, NPC_WATER_DEMON, NPC_WATER_DEMON ;; 03:7518 ??....
+sahagin:
+    db   1, 2, NPC_SAHAGIN, NPC_SAHAGIN, NPC_SAHAGIN, NPC_SAHAGIN ;; 03:7518 ??....
     db   $80, $80                                      ;; 03:751e ??
 
 data_03_7520:

@@ -115,7 +115,7 @@ ENDC
     NPC_DATA $91, $58, $58, $0c, gfxEnemyJulius, tileorderNpc, metaspritesJulius, $00, $01, $01, $00, $02, $00, $0c, $13, $15, $15, script_003d, $0000 ;; 03:67e2 NPC_JULIUS
     NPC_DATA $91, $59, $40, $04, gfxEnemyDemon, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $01, $00, $00, $00, $14, $14, $14, $14, script_003d, script_044f ;; 03:67fa NPC_DEMON_HEAD
     NPC_DATA $91, $5a, $6e, $01, gfxBlankTiles09, tileorderNpc, metaspritesInvisible, $00, $01, $01, $00, $00, $00, $00, $00, $00, $00, script_01e5, $0000 ;; 03:6812 NPC_INV_DESSERT_CAVE_STONE
-    NPC_DATA $95, $5b, $60, $08, gfxEnemySahagin, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $06, $13, $06, $06, script_003d, $0000 ;; 03:682a NPC_WATER_DEMON
+    NPC_DATA $95, $5b, $60, $08, gfxEnemySahagin, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $06, $13, $06, $06, script_003d, $0000 ;; 03:682a NPC_SAHAGIN
     NPC_DATA $95, $5c, $60, $06, gfxEnemySeaDragon, tileorderNpc, metaspritesTable60FrontFacing, $00, $01, $01, $02, $02, $02, $01, $16, $17, $17, script_003d, $0000 ;; 03:6842 NPC_SEA_DRAGON
     NPC_DATA $93, $5d, $60, $08, gfxEnemyGalFish, tileorderNpc, metaspritesTabel60Normal, $00, $01, $00, $00, $00, $00, $05, $05, $07, $08, script_003d, $0000 ;; 03:685a NPC_GALL_FISH
     NPC_DATA $81, $5e, $60, $02, gfxNpcWilly, tileorderNpc, metaspritesWilly, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0256, $0000 ;; 03:6872 NPC_WILLY
