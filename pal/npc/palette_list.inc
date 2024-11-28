@@ -108,7 +108,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_AMANDA_ILL = $64
     COLOR_PALETTE_NPC blue             ; NPC_AMANDA_DEAD = $65
     COLOR_PALETTE_NPC 001              ; NPC_FUJI_1 = $66
-    COLOR_PALETTE_NPC 001              ; NPC_FUJI_WINDOW = $67
+    COLOR_PALETTE_NPC 103              ; NPC_FUJI_WINDOW = $67
     COLOR_PALETTE_NPC blue             ; NPC_MOTHER = $68
     COLOR_PALETTE_NPC 004              ; NPC_BOGARD_1 = $69
     COLOR_PALETTE_NPC 004              ; NPC_BOGARD_2 = $6a

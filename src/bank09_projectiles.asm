@@ -2078,9 +2078,13 @@ gfxNpcEgg:
     db   $9f, $f1, $f5, $fb, $d2, $ee, $24, $fc        ;; 09:6e30 ????????
     db   $3e, $fe, $9f, $7f, $3c, $fc, $e0, $e0        ;; 09:6e38 ????????
 
-;@gfximg name=npc/girl_window width=2 height=2
 gfxNpcGirlWindow:
+IF DEF(COLOR)
+; By taking advantage of the black background a third color can be used.
+    INCBIN "npc/girl_window_color.bin"                 ;; 09:6e40
+ELSE
     INCBIN "npc/girl_window.bin"                       ;; 09:6e40
+ENDC
 
 ;@gfximg name=npc/mother width=2 height=2
 gfxNpcMother:
