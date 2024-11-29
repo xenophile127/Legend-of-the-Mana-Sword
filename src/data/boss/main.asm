@@ -15,9 +15,14 @@
 ; offset c-d: graphics related, points to data of which tile offsets to load from the previous pointer into VRAM
 ; offset e-f: metatile info (list of [attr, tile1, tile2])
 ; offset 10-11: pointer to stats for each of the 16x16 "objects" used for this boss. Eight bytes per object:
+; * offset 0: collision flags (unused--$20 is always used regardless of the value in the table)
 ; * offset 1: elemental immunities
 ; * offset 2: weaknesses (see npc/stats.asm)
-; * offset 6: Status Effect on touch
+; * offset 3: attack power
+; * offset 4: defense power
+; * offset 5: unknown
+; * offset 6: tatus Effect on touch
+; * offset 7: unknown
 ; offset 12-13: attack movement pattern
 ; offset 14-15: spawn movement pattern
 ; offset 16-17: death animation pattern
@@ -25,70 +30,70 @@
 bossDataTable:
     BOSS_HEADER $08, $19, $14, $0a, $08, $1e, script_0246 ;; 04:4739 ????????
       BOSS_HEADER_GFX $40, $0d, bossGfxVampire, tileorderVampire, metaspritesVampire ;; 04:4741 ????????
-      dw data_04_4931, data_04_4e21, data_04_4df1, data_04_5435 ;; 04:4749 ????????
+      dw statsVampire, data_04_4e21, data_04_4df1, data_04_5435 ;; 04:4749 ????????
     BOSS_HEADER $0a, $14, $0a, $5a, $07, $1f, script_0246 ;; 04:4751 ????????
       BOSS_HEADER_GFX $40, $18, gfxBossHydra, tileorderHydraDragonZombie, metaspritesHydraDragonZombie ;; 04:4759 ????????
-      dw data_04_4971, data_04_4e37, data_04_4e37, data_04_54bb ;; 04:4761 ????????
+      dw statsHydra, data_04_4e37, data_04_4e37, data_04_54bb ;; 04:4761 ????????
     BOSS_HEADER $06, $3b, $55, $46, $04, $20, script_0246 ;; 04:4769 ????????
       BOSS_HEADER_GFX $40, $18, bossGfxMedusa, tileorderCommon, metaspritesMedusa ;; 04:4771 ????????
-      dw data_04_49e1, data_04_4e75, data_04_4e75, data_04_5503 ;; 04:4779 ????????
+      dw statsMedusa, data_04_4e75, data_04_4e75, data_04_5503 ;; 04:4779 ????????
     BOSS_HEADER $0a, $1c, $2c, $96, $0b, $16, script_0246 ;; 04:4781 ????????
       BOSS_HEADER_GFX $40, $10, bossGfxMegapede, tileorderCommon, metaspritesMegapede ;; 04:4789 ????????
-      dw data_04_4cc1, data_04_525b, data_04_4e09, data_04_5541 ;; 04:4791 ????????
+      dw statsMegapede, data_04_525b, data_04_4e09, data_04_5541 ;; 04:4791 ????????
     BOSS_HEADER $08, $4b, $5a, $64, $08, $26, script_0246 ;; 04:4799 ????????
       BOSS_HEADER_GFX $40, $14, bossGfxDavias, tileorderDavias, metaspritesDavias ;; 04:47a1 ????????
-      dw data_04_4a01, data_04_4edb, data_04_4edb, data_04_5575 ;; 04:47a9 ????????
+      dw statsDavias, data_04_4edb, data_04_4edb, data_04_5575 ;; 04:47a9 ????????
     BOSS_HEADER $04, $8f, $60, $a0, $06, $16, script_0246 ;; 04:47b1 ????????
       BOSS_HEADER_GFX $40, $10, bossGfxGolem, tileorderCommon, metaspritesGolemJackal ;; 04:47b9 ????????
-      dw data_04_4a41, data_04_4ee7, data_04_4ee7, data_04_5473 ;; 04:47c1 ????????
+      dw statsGolem, data_04_4ee7, data_04_4ee7, data_04_5473 ;; 04:47c1 ????????
     BOSS_HEADER $06, $6f, $46, $3c, $07, $ff, script_0247 ;; 04:47c9 ????????
       BOSS_HEADER_GFX $30, $1d, bossGfxCyclops, tileorderCyclops, metaspritesCyclops ;; 04:47d1 ????????
-      dw data_04_4ac9, data_04_4fdd, data_04_4fdd, data_04_5435 ;; 04:47d9 ????????
+      dw statsCyclops, data_04_4fdd, data_04_4fdd, data_04_5435 ;; 04:47d9 ????????
     BOSS_HEADER $04, $70, $14, $58, $06, $23, script_0246 ;; 04:47e1 ????????
       BOSS_HEADER_GFX $40, $18, bossGfxChimera, tileorderCommon, metaspritesChimeraMantisAnt ;; 04:47e9 ????????
-      dw data_04_4b01, data_04_504d, data_04_504d, data_04_55b3 ;; 04:47f1 ????????
+      dw statsChimera, data_04_504d, data_04_504d, data_04_55b3 ;; 04:47f1 ????????
     BOSS_HEADER $08, $79, $a6, $78, $09, $0d, script_024f ;; 04:47f9 ????????
       BOSS_HEADER_GFX $3c, $1a, bossGfxKary, tileorderKary, metaspritesKary ;; 04:4801 ????????
-      dw data_04_4b31, data_04_509f, data_04_509f, data_04_56b2 ;; 04:4809 ????????
+      dw statsKary, data_04_509f, data_04_509f, data_04_56b2 ;; 04:4809 ????????
     BOSS_HEADER $0c, $7d, $be, $78, $0a, $14, script_0247 ;; 04:4811 ????????
       BOSS_HEADER_GFX $3a, $1b, bossGfxKraken, tileorderKraken, metaspritesKraken ;; 04:4819 ????????
-      dw data_04_4c71, data_04_5231, data_04_4dfd, data_04_56b9 ;; 04:4821 ????????
+      dw statsKraken, data_04_5231, data_04_4dfd, data_04_56b9 ;; 04:4821 ????????
     BOSS_HEADER $06, $92, $c8, $fa, $07, $16, script_0247 ;; 04:4829 ????????
       BOSS_HEADER_GFX $40, $18, bossGfxIflyte, tileorderIflyteMetalCrab, metaspritesIflyteMetalCrab ;; 04:4831 ????????
-      dw data_04_4b79, data_04_50f1, data_04_50f1, data_04_566d ;; 04:4839 ????????
+      dw statsIflyte, data_04_50f1, data_04_50f1, data_04_566d ;; 04:4839 ????????
     BOSS_HEADER $0a, $76, $b2, $c8, $07, $22, script_0247 ;; 04:4841 ????????
       BOSS_HEADER_GFX $38, $1c, bossGfxLich, tileorderLich, metaspritesLich ;; 04:4849 ????????
-      dw data_04_4c39, data_04_5171, data_04_5171, data_04_5435 ;; 04:4851 ????????
+      dw statsLich, data_04_5171, data_04_5171, data_04_5435 ;; 04:4851 ????????
     BOSS_HEADER $04, $bb, $d2, $fa, $08, $21, script_0247 ;; 04:4859 ????????
       BOSS_HEADER_GFX $34, $1e, bossGfxGaruda, tileorderGaruda, metaspritesGaruda ;; 04:4861 ????????
-      dw data_04_4bb1, data_04_5127, data_04_5127, data_04_5435 ;; 04:4869 ????????
+      dw statsGaruda, data_04_5127, data_04_5127, data_04_5435 ;; 04:4869 ????????
     BOSS_HEADER $08, $6a, $00, $fa, $09, $14, script_024f ;; 04:4871 ????????
       BOSS_HEADER_GFX $38, $1c, bossGfxDragon, tileorderDragon, metaspritesDragon ;; 04:4879 ????????
-      dw data_04_4bf1, data_04_5165, data_04_5165, data_04_56ab ;; 04:4881 ????????
+      dw statsDragon, data_04_5165, data_04_5165, data_04_56ab ;; 04:4881 ????????
     BOSS_HEADER $05, $da, $00, $a0, $0b, $24, script_0246 ;; 04:4889 ????????
       BOSS_HEADER_GFX $40, $12, bossGfxJulius2, tileorderJulius2, metaspritesJulius2 ;; 04:4891 ????????
-      dw data_04_4a71, data_04_4f77, data_04_4f77, data_04_55f1 ;; 04:4899 ????????
+      dw statsJulius2, data_04_4f77, data_04_4f77, data_04_55f1 ;; 04:4899 ????????
     BOSS_HEADER $08, $ce, $00, $fa, $07, $27, script_0247 ;; 04:48a1 ????????
       BOSS_HEADER_GFX $40, $18, bossGfxDragonZombie, tileorderHydraDragonZombie, metaspritesHydraDragonZombie ;; 04:48a9 ????????
-      dw data_04_49a9, data_04_4e37, data_04_4e37, data_04_54bb ;; 04:48b1 ????????
+      dw statsDragonZombie, data_04_4e37, data_04_4e37, data_04_54bb ;; 04:48b1 ????????
 ; Give Jackal a bit of money to drop.
     BOSS_HEADER $05, $02, $00, $18, $06, $16, script_0246 ;; 04:48b9 ........
       BOSS_HEADER_GFX $40, $10, bossGfxJackal, tileorderCommon, metaspritesGolemJackal ;; 04:48c1 ........
-      dw data_04_4d19, data_04_4f4d, data_04_4e15, data_04_5473 ;; 04:48c9 ........
+      dw statsJackal, data_04_4f4d, data_04_4e15, data_04_5473 ;; 04:48c9 ........
     BOSS_HEADER $04, $ff, $00, $a0, $08, $25, script_0246 ;; 04:48d1 ????????
       BOSS_HEADER_GFX $40, $10, bossGfxJulius3, tileorderJulius3, metaspritesJulius3 ;; 04:48d9 ????????
-      dw data_04_4d49, data_04_531b, data_04_531b, data_04_562f ;; 04:48e1 ????????
+      dw statsJulius3, data_04_531b, data_04_531b, data_04_562f ;; 04:48e1 ????????
     BOSS_HEADER $0a, $51, $64, $64, $07, $16, script_0247 ;; 04:48e9 ????????
       BOSS_HEADER_GFX $40, $18, bossGfxMetalCrab, tileorderIflyteMetalCrab, metaspritesIflyteMetalCrab ;; 04:48f1 ????????
-      dw data_04_4d89, data_04_50fd, data_04_50fd, data_04_566d ;; 04:48f9 ????????
+      dw statsMetalCrab, data_04_50fd, data_04_50fd, data_04_566d ;; 04:48f9 ????????
     BOSS_HEADER $08, $af, $c7, $dc, $06, $ff, script_0246 ;; 04:4901 ????????
       BOSS_HEADER_GFX $40, $18, bossGfxMantisAnt, tileorderCommon, metaspritesChimeraMantisAnt ;; 04:4909 ????????
-      dw data_04_4dc1, data_04_504d, data_04_504d, data_04_55b3 ;; 04:4911 ????????
+      dw statsMantisAnt, data_04_504d, data_04_504d, data_04_55b3 ;; 04:4911 ????????
     BOSS_HEADER $08, $bb, $00, $fa, $09, $14, script_024f ;; 04:4919 ????????
       BOSS_HEADER_GFX $38, $1c, bossGfxDragon, tileorderDragon, metaspritesDragon ;; 04:4921 ????????
-      dw data_04_4bf1, data_04_5165, data_04_5165, data_04_56ab ;; 04:4929 ????????
+      dw statsDragon, data_04_5165, data_04_5165, data_04_56ab ;; 04:4929 ????????
 
-data_04_4931:
+statsVampire:
     db   $20, $90, $01, $1a, $08, $11, $00, $01        ;; 04:4931 ????????
     db   $20, $90, $01, $1a, $08, $11, $00, $01        ;; 04:4939 ????????
     db   $20, $90, $01, $1a, $08, $11, $00, $01        ;; 04:4941 ????????
@@ -98,7 +103,7 @@ data_04_4931:
     db   $20, $90, $01, $1c, $1a, $0a, $00, $01        ;; 04:4961 ????????
     db   $20, $90, $01, $1c, $1a, $0a, $00, $01        ;; 04:4969 ????????
 
-data_04_4971:
+statsHydra:
     db   $20, $ff, $00, $16, $19, $10, $00, $00        ;; 04:4971 ????????
     db   $20, $90, $00, $16, $01, $10, $00, $00        ;; 04:4979 ????????
     db   $20, $98, $00, $16, $17, $10, $00, $00        ;; 04:4981 ????????
@@ -107,7 +112,7 @@ data_04_4971:
     db   $20, $98, $00, $16, $17, $10, $00, $00        ;; 04:4999 ????????
     db   $20, $98, $00, $16, $17, $10, $00, $00        ;; 04:49a1 ????????
 
-data_04_49a9:
+statsDragonZombie:
     db   $20, $ff, $00, $be, $08, $08, $00, $00        ;; 04:49a9 ????????
     db   $20, $90, $01, $c8, $1c, $3f, $00, $00        ;; 04:49b1 ????????
     db   $20, $90, $01, $c8, $1c, $3f, $00, $00        ;; 04:49b9 ????????
@@ -116,13 +121,13 @@ data_04_49a9:
     db   $20, $ff, $00, $be, $08, $08, $00, $00        ;; 04:49d1 ????????
     db   $20, $ff, $00, $be, $08, $08, $00, $00        ;; 04:49d9 ????????
 
-data_04_49e1:
+statsMedusa:
     db   $20, $f0, $00, $4e, $32, $32, $00, $04        ;; 04:49e1 ????????
     db   $20, $f0, $00, $4e, $08, $12, $00, $04        ;; 04:49e9 ????????
     db   $20, $f0, $00, $4e, $08, $12, $00, $04        ;; 04:49f1 ????????
     db   $20, $f0, $00, $4e, $32, $32, $00, $04        ;; 04:49f9 ????????
 
-data_04_4a01:
+statsDavias:
     db   $20, $10, $00, $5d, $0a, $01, $00, $00        ;; 04:4a01 ????????
     db   $20, $10, $00, $5d, $01, $16, $00, $00        ;; 04:4a09 ????????
     db   $20, $10, $00, $5d, $01, $16, $00, $00        ;; 04:4a11 ????????
@@ -132,7 +137,7 @@ data_04_4a01:
     db   $20, $ff, $00, $49, $1c, $1f, $00, $00        ;; 04:4a31 ????????
     db   $20, $ff, $00, $49, $1c, $1f, $00, $00        ;; 04:4a39 ????????
 
-data_04_4a41:
+statsGolem:
     db   $20, $fb, $00, $5c, $04, $02, $00, $00        ;; 04:4a41 ????????
     db   $20, $fb, $00, $5c, $04, $02, $00, $00        ;; 04:4a49 ????????
     db   $20, $fb, $00, $5c, $04, $02, $00, $00        ;; 04:4a51 ????????
@@ -140,7 +145,7 @@ data_04_4a41:
     db   $20, $fb, $00, $00, $04, $02, $00, $00        ;; 04:4a61 ????????
     db   $20, $fb, $00, $00, $04, $02, $00, $00        ;; 04:4a69 ????????
 
-data_04_4a71:
+statsJulius2:
     db   $20, $90, $00, $a0, $45, $3a, $00, $00        ;; 04:4a71 ????????
     db   $20, $90, $00, $a0, $45, $3a, $00, $00        ;; 04:4a79 ????????
     db   $20, $90, $00, $a0, $45, $3a, $00, $00        ;; 04:4a81 ????????
@@ -153,7 +158,7 @@ data_04_4a71:
     db   $20, $90, $00, $a0, $45, $3a, $00, $00        ;; 04:4ab9 ????????
     db   $20, $90, $00, $a0, $45, $3a, $00, $00        ;; 04:4ac1 ????????
 
-data_04_4ac9:
+statsCyclops:
     db   $20, $f0, $00, $69, $08, $0e, $00, $00        ;; 04:4ac9 ????????
     db   $20, $f0, $00, $69, $08, $0e, $00, $00        ;; 04:4ad1 ????????
     db   $20, $f0, $00, $69, $08, $0e, $00, $00        ;; 04:4ad9 ????????
@@ -162,7 +167,7 @@ data_04_4ac9:
     db   $20, $ff, $00, $9b, $20, $1f, $00, $00        ;; 04:4af1 ????????
     db   $20, $ff, $00, $9b, $20, $1f, $00, $00        ;; 04:4af9 ????????
 
-data_04_4b01:
+statsChimera:
     db   $20, $f0, $00, $5c, $04, $23, $00, $00        ;; 04:4b01 ????????
     db   $20, $f0, $00, $5c, $04, $23, $00, $00        ;; 04:4b09 ????????
     db   $20, $f0, $00, $5c, $04, $23, $00, $00        ;; 04:4b11 ????????
@@ -170,7 +175,7 @@ data_04_4b01:
     db   $20, $f0, $00, $5c, $04, $23, $00, $00        ;; 04:4b21 ????????
     db   $20, $f0, $00, $5c, $04, $23, $00, $00        ;; 04:4b29 ????????
 
-data_04_4b31:
+statsKary:
     db   $20, $d0, $80, $64, $10, $23, $00, $00        ;; 04:4b31 ????????
     db   $20, $ff, $80, $64, $43, $30, $00, $00        ;; 04:4b39 ????????
     db   $20, $ff, $80, $64, $43, $30, $00, $00        ;; 04:4b41 ????????
@@ -181,7 +186,7 @@ data_04_4b31:
     db   $20, $ff, $80, $64, $43, $30, $00, $00        ;; 04:4b69 ????????
     db   $20, $ff, $80, $64, $43, $30, $00, $00        ;; 04:4b71 ????????
 
-data_04_4b79:
+statsIflyte:
     db   $20, $8a, $40, $81, $10, $10, $00, $00        ;; 04:4b79 ????????
     db   $20, $ff, $40, $81, $08, $08, $00, $00        ;; 04:4b81 ????????
     db   $20, $ff, $40, $81, $08, $08, $00, $00        ;; 04:4b89 ????????
@@ -190,7 +195,7 @@ data_04_4b79:
     db   $20, $ff, $40, $81, $08, $08, $00, $00        ;; 04:4ba1 ????????
     db   $20, $ff, $40, $81, $08, $08, $00, $00        ;; 04:4ba9 ????????
 
-data_04_4bb1:
+statsGaruda:
     db   $20, $90, $00, $96, $12, $3f, $00, $00        ;; 04:4bb1 ????????
     db   $20, $90, $00, $96, $12, $3f, $00, $00        ;; 04:4bb9 ????????
     db   $20, $90, $00, $96, $12, $3f, $00, $00        ;; 04:4bc1 ????????
@@ -200,7 +205,7 @@ data_04_4bb1:
     db   $20, $90, $00, $96, $12, $3f, $00, $00        ;; 04:4be1 ????????
     db   $20, $90, $00, $96, $12, $3f, $00, $00        ;; 04:4be9 ????????
 
-data_04_4bf1:
+statsDragon:
     db   $20, $ff, $00, $90, $14, $33, $00, $00        ;; 04:4bf1 ????????
     db   $20, $ff, $00, $90, $14, $33, $00, $00        ;; 04:4bf9 ????????
     db   $20, $ff, $00, $90, $14, $33, $00, $00        ;; 04:4c01 ????????
@@ -211,7 +216,7 @@ data_04_4bf1:
     db   $20, $ff, $00, $90, $14, $33, $00, $00        ;; 04:4c29 ????????
     db   $20, $90, $02, $ae, $14, $33, $00, $00        ;; 04:4c31 ????????
 
-data_04_4c39:
+statsLich:
     db   $20, $90, $01, $9c, $1d, $21, $00, $00        ;; 04:4c39 ????????
     db   $20, $90, $01, $9c, $1d, $21, $00, $00        ;; 04:4c41 ????????
     db   $20, $90, $01, $9c, $1d, $21, $00, $00        ;; 04:4c49 ????????
@@ -220,7 +225,7 @@ data_04_4c39:
     db   $20, $90, $01, $9c, $1d, $21, $00, $00        ;; 04:4c61 ????????
     db   $20, $90, $01, $9c, $1d, $21, $00, $00        ;; 04:4c69 ????????
 
-data_04_4c71:
+statsKraken:
     db   $20, $90, $00, $8c, $02, $02, $00, $00        ;; 04:4c71 ????????
     db   $20, $90, $00, $8c, $02, $02, $00, $00        ;; 04:4c79 ????????
     db   $20, $90, $00, $8c, $02, $02, $00, $00        ;; 04:4c81 ????????
@@ -232,7 +237,7 @@ data_04_4c71:
     db   $20, $ff, $00, $8c, $41, $32, $00, $00        ;; 04:4cb1 ????????
     db   $20, $ff, $00, $8c, $41, $32, $00, $00        ;; 04:4cb9 ????????
 
-data_04_4cc1:
+statsMegapede:
     db   $20, $90, $00, $21, $0a, $14, $00, $00        ;; 04:4cc1 ????????
     db   $20, $ff, $00, $21, $0c, $1e, $00, $00        ;; 04:4cc9 ????????
     db   $20, $ff, $00, $21, $0c, $1e, $00, $00        ;; 04:4cd1 ????????
@@ -245,7 +250,7 @@ data_04_4cc1:
     db   $20, $ff, $00, $21, $0c, $1e, $00, $00        ;; 04:4d09 ????????
     db   $20, $ff, $00, $21, $0c, $1e, $00, $00        ;; 04:4d11 ????????
 
-data_04_4d19:
+statsJackal:
     db   $20, $00, $00, $08, $02, $02, $00, $00        ;; 04:4d19 ?..?.???
     db   $20, $00, $00, $08, $02, $02, $00, $00        ;; 04:4d21 ????????
     db   $20, $00, $00, $08, $02, $02, $00, $00        ;; 04:4d29 ????????
@@ -253,7 +258,7 @@ data_04_4d19:
     db   $20, $00, $00, $00, $03, $02, $00, $00        ;; 04:4d39 ???.??.?
     db   $20, $00, $00, $00, $03, $02, $00, $00        ;; 04:4d41 ????????
 
-data_04_4d49:
+statsJulius3:
     db   $20, $92, $00, $bc, $45, $3a, $00, $00        ;; 04:4d49 ????????
     db   $20, $92, $00, $bc, $45, $3a, $00, $00        ;; 04:4d51 ????????
     db   $20, $92, $00, $bc, $45, $3a, $00, $00        ;; 04:4d59 ????????
@@ -263,7 +268,7 @@ data_04_4d49:
     db   $20, $ff, $00, $bc, $45, $3a, $00, $00        ;; 04:4d79 ????????
     db   $20, $ff, $00, $bc, $45, $3a, $00, $00        ;; 04:4d81 ????????
 
-data_04_4d89:
+statsMetalCrab:
     db   $20, $90, $00, $4d, $04, $08, $00, $00        ;; 04:4d89 ????????
     db   $20, $ff, $00, $4d, $01, $01, $00, $00        ;; 04:4d91 ????????
     db   $20, $ff, $00, $4d, $01, $01, $00, $00        ;; 04:4d99 ????????
@@ -272,7 +277,7 @@ data_04_4d89:
     db   $20, $ff, $00, $4d, $01, $01, $00, $00        ;; 04:4db1 ????????
     db   $20, $ff, $00, $4d, $01, $01, $00, $00        ;; 04:4db9 ????????
 
-data_04_4dc1:
+statsMantisAnt:
     db   $20, $f0, $00, $79, $28, $35, $00, $00        ;; 04:4dc1 ????????
     db   $20, $f0, $00, $79, $28, $35, $00, $00        ;; 04:4dc9 ????????
     db   $20, $f0, $00, $79, $28, $35, $00, $00        ;; 04:4dd1 ????????
