@@ -160,7 +160,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_GIRL_JADD_2 = $98
     COLOR_PALETTE_NPC blue             ; NPC_GUY_JADD = $99
     COLOR_PALETTE_NPC blue             ; NPC_DWARF_JADD = $9a
-    COLOR_PALETTE_NPC blue             ; NPC_SALESMAN_JADD = $9b
+    COLOR_PALETTE_NPC 155              ; NPC_SALESMAN_JADD = $9b
     COLOR_PALETTE_NPC blue             ; NPC_GIRL_JADD_3 = $9c
     COLOR_PALETTE_NPC blue             ; NPC_BOY_JADD = $9d
     COLOR_PALETTE_NPC blue             ; NPC_OLDMAN_ISH = $9e
@@ -180,7 +180,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_GUY_LORIM_FROZEN = $ac
     COLOR_PALETTE_NPC blue             ; NPC_GUY_LORIM_1 = $ad
     COLOR_PALETTE_NPC blue             ; NPC_GUY_LORIM_2 = $ae
-    COLOR_PALETTE_NPC blue             ; NPC_SALESMAN = $af
+    COLOR_PALETTE_NPC 175              ; NPC_SALESMAN = $af
     COLOR_PALETTE_NPC blue             ; NPC_INV_SALESMAN_1 = $b0
     COLOR_PALETTE_NPC 001              ; NPC_FUJI_2 = $b1
     COLOR_PALETTE_NPC blue             ; NPC_INV_SALESMAN_2 = $b2
