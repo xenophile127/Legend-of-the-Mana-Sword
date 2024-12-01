@@ -36,7 +36,7 @@ ENDC
     NPC_DATA $87, $0c, $78, $02, gfxChest, tileorderNpc, chest1MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000b, $0000 ;; 03:607a NPC_CHEST_1
     NPC_DATA $87, $0d, $78, $02, gfxChest, tileorderNpc, chest2MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000f, $0000 ;; 03:6092 NPC_CHEST_2
     NPC_DATA $87, $0e, $78, $02, gfxChest, tileorderNpc, chest3MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0013, $0000 ;; 03:60aa NPC_CHEST_3
-    NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmpty1MetaspriteTable, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_003d, $0000 ;; 03:60c2 NPC_CHEST_4
+    NPC_DATA $a9, $00, $7c, $02, gfxChest, tileorderOpenChest, chestEmpty1MetaspriteTable, $00, $00, $00, $00, $00, $00, $19, $19, $19, $19, script_003d, $0000 ;; 03:60c2 NPC_CHEST_EMPTY
     NPC_DATA $91, $10, $40, $04, gfxEnemyChibidevil, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $00, $00, $00, $00, $0d, $0e, $0d, $0d, script_003d, script_0438 ;; 03:60da NPC_CHIBIDEVIL
     NPC_DATA $91, $11, $50, $06, gfxEnemyRabite, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $02, $00, $00, $00, $0f, $10, $10, $10, script_003d, $0000 ;; 03:60f2 NPC_RABBITE
     NPC_DATA $91, $12, $40, $08, gfxEnemyGoblin, tileorderNpc, metaspritesTabel40Normal, $00, $01, $00, $00, $00, $00, $02, $02, $03, $03, script_003d, script_0438 ;; 03:610a NPC_GOBLIN

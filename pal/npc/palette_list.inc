@@ -19,7 +19,7 @@
     COLOR_PALETTE_NPC 012              ; NPC_CHEST_1 = $0c
     COLOR_PALETTE_NPC 012              ; NPC_CHEST_2 = $0d
     COLOR_PALETTE_NPC 012              ; NPC_CHEST_3 = $0e
-    COLOR_PALETTE_NPC 012              ; NPC_CHEST_4 = $0f
+    COLOR_PALETTE_NPC 012              ; NPC_CHEST_EMPTY = $0f
 
     COLOR_PALETTE_NPC 016              ; NPC_CHIBIDEVIL = $10
     COLOR_PALETTE_NPC 017              ; NPC_RABBITE = $11

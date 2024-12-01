@@ -154,7 +154,7 @@ minotaur_x2:
     db   $0c, $0c, $06, $0c, $80, $80                  ;; 03:7426 ??????
 
 data_03_742c:
-    db   1, 1, NPC_CHEST_4, NPC_CHEST_4, NPC_CHEST_4, NPC_CHEST_4 ;; 03:742c ??????
+    db   1, 1, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY ;; 03:742c ??????
     db   $0a, $08, $80, $80                            ;; 03:7432 ????
 
 data_03_7436:
@@ -977,6 +977,6 @@ data_03_7b3c:
     db   $0c, $08, $80, $80                            ;; 03:7b42 ????
 
 data_03_7b46:
-    db   4, 4, NPC_CHEST_4, NPC_CHEST_4, NPC_CHEST_4, NPC_CHEST_4 ;; 03:7b46 ??????
+    db   4, 4, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY ;; 03:7b46 ??????
     db   $06, $04, $06, $0a, $0c, $0a, $0c, $04        ;; 03:7b4c ????????
     db   $80, $80                                      ;; 03:7b54 ??
