@@ -1,5 +1,5 @@
 ; Each enemy projectile needs an entry in this file.
-; Comments are best-effor to describe the projectile and which enemies use it.
+; Comments are best-effort to describe the projectile and which enemies use it.
 ; Some enemies load a projectile that they do not use and obvious cases have been filtered out.
 
 ; Projectiles higher than this are either for:

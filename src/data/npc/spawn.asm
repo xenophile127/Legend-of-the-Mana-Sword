@@ -41,19 +41,19 @@ NPCSpawnPointers:
     dw   garasha,      wonder,       guardian          ;; 03:7208 ??????
     dw   mammoo,       ninja,        guardian          ;; 03:720e ??????
     dw   data_03_76e0, data_03_76e0, data_03_76d6      ;; 03:7214 ??????
-    dw   data_03_7738, data_03_7738, data_03_76e8      ;; 03:721a ......
-    dw   data_03_7892, shieldlessPC, data_03_7756      ;; 03:7220 ......
+    dw   data_03_7738, data_03_7738, willy             ;; 03:721a ......      number 36 $24
+    dw   gladiator,    shieldlessPC, data_03_7756      ;; 03:7220 ......      number 37 $25
     dw   data_03_779a, data_03_771a, data_03_771a      ;; 03:7226 ??????
     dw   data_03_7742, data_03_76f2, data_03_76f2      ;; 03:722c ......
     dw   data_03_777c, data_03_76f2, data_03_7b02      ;; 03:7232 ??????
     dw   shadowKnightFast, shadowKnightFast, shadowKnightFast      ;; 03:7238 ......
-    dw   fuji_by_hasim, myconid,     data_03_76e8      ;; 03:723e ......
+    dw   fuji_by_hasim, myconid,     willy             ;; 03:723e ......      number 42 $2a
     dw   data_03_78a2, data_03_789a, data_03_78ba      ;; 03:7244 ......
     dw   data_03_78aa, data_03_78b2, data_03_77b8      ;; 03:724a ......
     dw   data_03_7908, data_03_7910, data_03_7910      ;; 03:7250 ??????
     dw   data_03_7900, data_03_7900, data_03_7900      ;; 03:7256 ??????
     dw   data_03_7918, data_03_7920, data_03_7920      ;; 03:725c ??????
-    dw   data_03_7808, data_03_7826, data_03_76e8      ;; 03:7262 ??????
+    dw   data_03_7808, minecart,     willy             ;; 03:7262 ??????      number 48 $30
     dw   data_03_77d6, data_03_78c2, data_03_78ca      ;; 03:7268 ??????
     dw   data_03_77ea, data_03_7a8e, data_03_7a8e      ;; 03:726e ??????
     dw   data_03_78d2, data_03_78ee, data_03_78f8      ;; 03:7274 ??????
@@ -79,7 +79,7 @@ NPCSpawnPointers:
     dw   data_03_7a4a, data_03_7a38, data_03_7a38      ;; 03:72ec ??????
     dw   data_03_79b8, data_03_79c0, data_03_7530      ;; 03:72f2 ??????
     dw   data_03_79c8, data_03_79d0, data_03_7530      ;; 03:72f8 ??????
-    dw   data_03_7530, npcChocobotIsh, npcProfIsh        ;; 03:72fe ??????      number 74 $16
+    dw   data_03_7530, npcChocobotIsh, npcProfIsh        ;; 03:72fe ??????      number 74 $4a
     dw   data_03_79d8, data_03_79e0, data_03_7530      ;; 03:7304 ??????
     dw   data_03_77c2, data_03_7876, shieldlessPC      ;; 03:730a ??????
     dw   data_03_772e, data_03_7aee, data_03_7aee      ;; 03:7310 ??????
@@ -88,7 +88,7 @@ NPCSpawnPointers:
     dw   data_03_7830, data_03_7ab6, data_03_7adc      ;; 03:7322 ??????
     dw   data_03_775e, data_03_775e, data_03_775e      ;; 03:7328 ??????
     dw   data_03_7af8, data_03_7af8, data_03_7af8      ;; 03:732e ??????
-    dw   data_03_7aa2, npcChocobo2Offscreen, data_03_76e8      ;; 03:7334 ??????
+    dw   data_03_7aa2, npcChocobo2Offscreen, willy      ;; 03:7334 ??????       number 83 $53
     dw   data_03_7a52, data_03_7a7a, data_03_7a7a      ;; 03:733a ......
     dw   data_03_7a66, data_03_7a70, data_03_7a70      ;; 03:7340 ......
     dw   data_03_7880, data_03_7530, data_03_7530      ;; 03:7346 ??????
@@ -493,7 +493,7 @@ data_03_76e0:
     db   1, 3, NPC_DEMON_HEAD, NPC_DEMON_HEAD, NPC_DEMON_HEAD, NPC_DEMON_HEAD ;; 03:76e0 ??????
     db   $80, $80                                      ;; 03:76e6 ??
 
-data_03_76e8:
+willy:
     db   1, 1, NPC_WILLY, NPC_WILLY, NPC_WILLY, NPC_WILLY ;; 03:76e8 ..?..?
     db   $08, $08, $80, $80                            ;; 03:76ee ..??
 
@@ -623,7 +623,7 @@ data_03_781c:
     db   1, 1, NPC_WATTS, NPC_WATTS, NPC_WATTS, NPC_WATTS ;; 03:781c ??????
     db   $0a, $0a, $80, $80                            ;; 03:7822 ????
 
-data_03_7826:
+minecart:
     db   1, 1, NPC_MINECART, NPC_MINECART, NPC_MINECART, NPC_MINECART ;; 03:7826 ??????
     db   $00, $06, $80, $80                            ;; 03:782c ????
 
@@ -667,7 +667,7 @@ data_03_7888:
     db   1, 1, NPC_KING_OF_LORIM, NPC_KING_OF_LORIM, NPC_KING_OF_LORIM, NPC_KING_OF_LORIM ;; 03:7888 ??????
     db   $09, $04, $80, $80                            ;; 03:788e ????
 
-data_03_7892:
+gladiator:
     db   1, 1, NPC_GLADIATOR_FRIEND, NPC_GLADIATOR_FRIEND, NPC_GLADIATOR_FRIEND, NPC_GLADIATOR_FRIEND ;; 03:7892 ..?.??
     db   $80, $80                                      ;; 03:7898 ..
 
