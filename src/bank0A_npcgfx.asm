@@ -23,17 +23,25 @@ gfxEnemyGrell:
 gfxEnemyMudman:
     INCBIN "enemy/mudman.bin"                          ;; 0a:4180
 
-;@gfximg name=enemy/death_flower width=2 height=4
 gfxEnemyDeathFlower:
+IF DEF(COLOR)
+    ; Inverted so the color palette works better for chests.
+    INCBIN "enemy/death_flower_color.bin"
+ELSE
     INCBIN "enemy/death_flower.bin"                    ;; 0a:4200
+ENDC
 
 ;@gfximg name=enemy/roper width=2 height=4
 gfxEnemyRoper:
     INCBIN "enemy/roper.bin"                           ;; 0a:4280
 
-;@gfximg name=enemy/land_leech width=2 height=4
 gfxEnemyLandLeech:
+IF DEF(COLOR)
+    ; Inverted so the color palette works better for chests.
+    INCBIN "enemy/land_leech_color.bin"
+ELSE
     INCBIN "enemy/land_leech.bin"                      ;; 0a:4300
+ENDC
 
 ;@gfximg name=enemy/killer_bee width=2 height=4
 gfxEnemyKillerBee:
