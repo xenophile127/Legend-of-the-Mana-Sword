@@ -45,12 +45,12 @@ ENDC
     NPC_DATA $91, $15, $50, $04, gfxEnemyMudman, tileorderNpc, metaspritesTable50FrontFacing, $01, $01, $00, $00, $00, $00, $16, $16, $16, $16, script_003d, script_044b ;; 03:6152 NPC_SWAMPMAN
     NPC_DATA $91, $16, $60, $08, gfxEnemyLizardman, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $02, $02, $03, $03, script_003d, script_043a ;; 03:616a NPC_LIZARDMAN
     NPC_DATA $91, $17, $50, $04, gfxEnemyDeathFlower, tileorderNpc, metaspritesRabiteFlowerFlameRed, $00, $01, $01, $00, $01, $00, $0d, $00, $0d, $0d, script_003d, script_043c ;; 03:6182 NPC_FLOWER
-    NPC_DATA $91, $18, $40, $06, gfxEnemyGreenSlime, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $00, $00, $02, $00, $0f, $0d, $10, $10, script_003d, script_0443 ;; 03:619a NPC_FACEORB
+    NPC_DATA $91, $18, $40, $06, gfxEnemyGreenSlime, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $00, $00, $02, $00, $0f, $0d, $10, $10, script_003d, script_0443 ;; 03:619a NPC_GREEN_SLIME
     NPC_DATA $91, $19, $50, $08, gfxEnemySkeleton, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $03, $02, $03, $03, script_003d, script_0442 ;; 03:61b2 NPC_SKELETON
-    NPC_DATA $91, $1a, $40, $04, gfxEnemyRoper, tileorderNpc, metaspritesRoper, $01, $02, $00, $00, $00, $00, $16, $16, $16, $16, script_003d, $0000 ;; 03:61ca NPC_EVIL_PLANT
-    NPC_DATA $91, $1b, $50, $04, gfxEnemyLandLeech, tileorderNpc, metaspritesTable50FrontFacing, $00, $01, $01, $00, $00, $00, $0d, $0d, $07, $08, script_003d, script_0443 ;; 03:61e2 NPC_FLYING_FISH
+    NPC_DATA $91, $1a, $40, $04, gfxEnemyRoper, tileorderNpc, metaspritesRoper, $01, $02, $00, $00, $00, $00, $16, $16, $16, $16, script_003d, $0000 ;; 03:61ca NPC_ROPER
+    NPC_DATA $91, $1b, $50, $04, gfxEnemyLandLeech, tileorderNpc, metaspritesTable50FrontFacing, $00, $01, $01, $00, $00, $00, $0d, $0d, $07, $08, script_003d, script_0443 ;; 03:61e2 NPC_LAND_LEECH
     NPC_DATA $91, $1c, $40, $06, gfxEnemyZombie, tileorderNpc, metaspritesZombie, $00, $01, $01, $00, $00, $00, $05, $02, $05, $05, script_003d, script_0439 ;; 03:61fa NPC_ZOMBIE
-    NPC_DATA $91, $1d, $50, $08, gfxEnemyWarerat, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $02, $02, $07, $08, script_003d, script_043a ;; 03:6212 NPC_MOUSE
+    NPC_DATA $91, $1d, $50, $08, gfxEnemyWarerat, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $02, $02, $07, $08, script_003d, script_043a ;; 03:6212 NPC_WERERAT
     NPC_DATA $91, $1e, $40, $06, gfxEnemyPumpkinBomb, tileorderNpc, metaspritesPumpkin, $00, $01, $02, $02, $00, $00, $18, $18, $18, $18, script_003d, script_0453 ;; 03:622a NPC_PUMPKIN
     NPC_DATA $91, $1f, $50, $06, gfxEnemyBloodOwl, tileorderNpc, metaspritesTable50FrontFacing, $01, $02, $00, $00, $00, $00, $0b, $0b, $0d, $0d, script_003d, script_0447 ;; 03:6242 NPC_OWL
     NPC_DATA $93, $20, $40, $04, gfxEnemyKillerBee, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $01, $00, $00, $00, $0b, $0b, $0b, $0b, script_003d, $0000 ;; 03:625a NPC_BEE

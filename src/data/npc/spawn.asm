@@ -9,10 +9,10 @@ NPCSpawnPointers:
     dw   goblin,       myconid,      myconid           ;; 03:7148 ......      number 01 $01
     dw   grell,        mudman,       lizardman_x1      ;; 03:714e ......      number 02 $02
     dw   grell,        deathFlower,  lizardman_mult    ;; 03:7154 ......      number 03 $03
-    dw   data_03_7488, data_03_7490, data_03_750e      ;; 03:715a ??????
-    dw   data_03_7498, data_03_74a0, data_03_74fa      ;; 03:7160 ??????
-    dw   data_03_74a8, data_03_74b0, data_03_7504      ;; 03:7166 ??????
-    dw   data_03_74b8, data_03_74c0, data_03_74f0      ;; 03:716c ??????
+    dw   greenSlime,   skeleton,     mattockWest       ;; 03:715a ??????      number 04 $04
+    dw   roper,        landLeech,    mattockSouth      ;; 03:7160 ??????      number 05 $05
+    dw   zombie,       wererat,      mattockEast       ;; 03:7166 ??????      number 06 $06
+    dw   pumpkinBomb,  bloodOwl,     mattockNorth      ;; 03:716c ??????      number 07 $07
     dw   killerBee,    gasCloud,     sahagin           ;; 03:7172 ??????      number 08 $08
     dw   orc,          deathCrab,    deathCrab         ;; 03:7178 ??????      number 09 $09
     dw   tarantula,    ruster,       mimic             ;; 03:717e ??????      number 10 $0a
@@ -22,12 +22,12 @@ NPCSpawnPointers:
     dw   data_03_758a, data_03_758a, data_03_7592      ;; 03:7196 ??????
     dw   data_03_758a, data_03_759a, data_03_75a2      ;; 03:719c ??????
     dw   data_03_758a, data_03_75b2, gargoyle          ;; 03:71a2 ??????
-    dw   data_03_74a8, data_03_74a8, data_03_75aa      ;; 03:71a8 ??????
+    dw   zombie,       zombie,       data_03_75aa      ;; 03:71a8 ??????
     dw   data_03_75c2, data_03_75ca, data_03_7528      ;; 03:71ae ??????
     dw   data_03_75d2, data_03_75da, data_03_7528      ;; 03:71b4 ??????
     dw   phantasm,     minotaur_x1,  gargoyle          ;; 03:71ba ??????      number 20 $14
-    dw   phantasm,     phantasm,     data_03_750e      ;; 03:71c0 ??????
-    dw   data_03_74f0, wizard,       darkStalker       ;; 03:71c6 ??????      number 22 $16
+    dw   phantasm,     phantasm,     mattockWest       ;; 03:71c0 ??????      number 21 $15
+    dw   mattockNorth, wizard,       darkStalker       ;; 03:71c6 ??????      number 22 $16
     dw   shadowKnight, darkStalker,  darkStalker       ;; 03:71cc ??????      number 23 $17
     dw   megaXorn,     dragonfly,    bulette           ;; 03:71d2 ??????      number 24 $18
     dw   data_03_762e, data_03_7636, walrus            ;; 03:71d8 ??????      number 25 $19
@@ -37,7 +37,7 @@ NPCSpawnPointers:
     dw   data_03_7676, data_03_766e, data_03_7520      ;; 03:71f0 ??????
     dw   data_03_767e, data_03_7686, gargoyle          ;; 03:71f6 ??????
     dw   denden,       doppelMirror, guardian          ;; 03:71fc ??????
-    dw   data_03_7504, data_03_76a6, data_03_76ae      ;; 03:7202 ??????
+    dw   mattockEast,  data_03_76a6, data_03_76ae      ;; 03:7202 ??????      number 32 $20
     dw   garasha,      wonder,       guardian          ;; 03:7208 ??????
     dw   mammoo,       ninja,        guardian          ;; 03:720e ??????
     dw   data_03_76e0, data_03_76e0, data_03_76d6      ;; 03:7214 ??????
@@ -100,7 +100,7 @@ NPCSpawnPointers:
     dw   data_03_7710, data_03_7786, data_03_7786      ;; 03:736a ??????
     dw   data_03_7706, data_03_7786, data_03_7786      ;; 03:7370 ??????
     dw   data_03_7b18, data_03_7b46, data_03_7b46      ;; 03:7376 ??????
-    dw   data_03_742c, data_03_74b0, data_03_7436      ;; 03:737c ??????
+    dw   data_03_742c, wererat,      data_03_7436      ;; 03:737c ??????      number 95 $5f
     dw   data_03_7790, data_03_7530, data_03_76fc      ;; 03:7382 ??????
     dw   data_03_7ac0, data_03_7ac0, data_03_7ac0      ;; 03:7388 ??????
     dw   data_03_779a, data_03_77a4, data_03_77a4      ;; 03:738e ??????
@@ -197,35 +197,35 @@ deathFlower:
     db   1, 2, NPC_FLOWER, NPC_FLOWER, NPC_FLOWER, NPC_FLOWER ;; 03:7480 ......
     db   $80, $80                                      ;; 03:7486 ..
 
-data_03_7488:
-    db   1, 3, NPC_FACEORB, NPC_FACEORB, NPC_FACEORB, NPC_FACEORB ;; 03:7488 ??????
+greenSlime:
+    db   1, 3, NPC_GREEN_SLIME, NPC_GREEN_SLIME, NPC_GREEN_SLIME, NPC_GREEN_SLIME ;; 03:7488 ??????
     db   $80, $80                                      ;; 03:748e ??
 
-data_03_7490:
+skeleton:
     db   1, 2, NPC_SKELETON, NPC_SKELETON, NPC_SKELETON, NPC_SKELETON ;; 03:7490 ??????
     db   $80, $80                                      ;; 03:7496 ??
 
-data_03_7498:
-    db   1, 2, NPC_EVIL_PLANT, NPC_EVIL_PLANT, NPC_EVIL_PLANT, NPC_EVIL_PLANT ;; 03:7498 ??????
+roper:
+    db   1, 2, NPC_ROPER, NPC_ROPER, NPC_ROPER, NPC_ROPER ;; 03:7498 ??????
     db   $80, $80                                      ;; 03:749e ??
 
-data_03_74a0:
-    db   1, 1, NPC_FLYING_FISH, NPC_FLYING_FISH, NPC_FLYING_FISH, NPC_FLYING_FISH ;; 03:74a0 ??????
+landLeech:
+    db   1, 1, NPC_LAND_LEECH, NPC_LAND_LEECH, NPC_LAND_LEECH, NPC_LAND_LEECH ;; 03:74a0 ??????
     db   $80, $80                                      ;; 03:74a6 ??
 
-data_03_74a8:
+zombie:
     db   1, 3, NPC_ZOMBIE, NPC_ZOMBIE, NPC_ZOMBIE, NPC_ZOMBIE ;; 03:74a8 ??????
     db   $80, $80                                      ;; 03:74ae ??
 
-data_03_74b0:
-    db   1, 2, NPC_MOUSE, NPC_MOUSE, NPC_MOUSE, NPC_MOUSE ;; 03:74b0 ??????
+wererat:
+    db   1, 2, NPC_WERERAT, NPC_WERERAT, NPC_WERERAT, NPC_WERERAT ;; 03:74b0 ??????
     db   $80, $80                                      ;; 03:74b6 ??
 
-data_03_74b8:
+pumpkinBomb:
     db   1, 2, NPC_PUMPKIN, NPC_PUMPKIN, NPC_PUMPKIN, NPC_PUMPKIN ;; 03:74b8 ??????
     db   $80, $80                                      ;; 03:74be ??
 
-data_03_74c0:
+bloodOwl:
     db   1, 1, NPC_OWL, NPC_OWL, NPC_OWL, NPC_OWL      ;; 03:74c0 ??????
     db   $80, $80                                      ;; 03:74c6 ??
 
@@ -249,19 +249,19 @@ tarantula:
     db   2, 3, NPC_SPIDER, NPC_SPIDER, NPC_SPIDER, NPC_SPIDER ;; 03:74e8 ??????
     db   $80, $80                                      ;; 03:74ee ??
 
-data_03_74f0:
+mattockNorth:
     db   1, 1, NPC_INV_OPEN_NORTH, NPC_INV_OPEN_NORTH, NPC_INV_OPEN_NORTH, NPC_INV_OPEN_NORTH ;; 03:74f0 ??????
     db   $09, $ff, $80, $80                            ;; 03:74f6 ????
 
-data_03_74fa:
+mattockSouth:
     db   1, 1, NPC_INV_OPEN_SOUTH, NPC_INV_OPEN_SOUTH, NPC_INV_OPEN_SOUTH, NPC_INV_OPEN_SOUTH ;; 03:74fa ??????
     db   $09, $0e, $80, $80                            ;; 03:7500 ????
 
-data_03_7504:
+mattockEast:
     db   1, 1, NPC_INV_OPEN_EAST, NPC_INV_OPEN_EAST, NPC_INV_OPEN_EAST, NPC_INV_OPEN_EAST ;; 03:7504 ??????
     db   $12, $07, $80, $80                            ;; 03:750a ????
 
-data_03_750e:
+mattockWest:
     db   1, 1, NPC_INV_OPEN_WEST, NPC_INV_OPEN_WEST, NPC_INV_OPEN_WEST, NPC_INV_OPEN_WEST ;; 03:750e ??????
     db   $00, $07, $80, $80                            ;; 03:7514 ????
 

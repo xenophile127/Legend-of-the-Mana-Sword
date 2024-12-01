@@ -29,12 +29,12 @@
     COLOR_PALETTE_NPC 021              ; NPC_SWAMPMAN = $15
     COLOR_PALETTE_NPC 022              ; NPC_LIZARDMAN = $16
     COLOR_PALETTE_NPC 023              ; NPC_FLOWER = $17
-    COLOR_PALETTE_NPC 024              ; NPC_FACEORB = $18
+    COLOR_PALETTE_NPC 024              ; NPC_GREEN_SLIME = $18
     COLOR_PALETTE_NPC 025              ; NPC_SKELETON = $19
-    COLOR_PALETTE_NPC 026              ; NPC_EVIL_PLANT = $1a
-    COLOR_PALETTE_NPC 027              ; NPC_FLYING_FISH = $1b
+    COLOR_PALETTE_NPC 026              ; NPC_ROPER = $1a
+    COLOR_PALETTE_NPC 027              ; NPC_LAND_LEECH = $1b
     COLOR_PALETTE_NPC 028              ; NPC_ZOMBIE = $1c
-    COLOR_PALETTE_NPC 029              ; NPC_MOUSE = $1d
+    COLOR_PALETTE_NPC 029              ; NPC_WERERAT = $1d
     COLOR_PALETTE_NPC 030              ; NPC_PUMPKIN = $1e
     COLOR_PALETTE_NPC 031              ; NPC_OWL = $1f
     COLOR_PALETTE_NPC 032              ; NPC_BEE = $20
