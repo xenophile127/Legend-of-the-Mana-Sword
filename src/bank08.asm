@@ -47,9 +47,12 @@ ELIF DEF(PLAYER_GRAPHICS_ORIGINAL)
     INCBIN "player.bin"                                ;; 08:5a40
 ENDC
 
-;@gfximg name=chest width=2 height=3
 gfxChest:
+IF DEF(COLOR)
+    INCBIN "chest_color.bin"
+ELSE
     INCBIN "chest.bin"                                 ;; 08:5f00
+ENDC
 
 ;@gfximg name=hand_spark width=2 height=5
 gfxHand:
