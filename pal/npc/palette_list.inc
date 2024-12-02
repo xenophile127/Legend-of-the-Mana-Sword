@@ -126,7 +126,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_SARAH = $76
     COLOR_PALETTE_NPC 007              ; NPC_MARCIE_1 = $77
     COLOR_PALETTE_NPC blue             ; NPC_KING_OF_LORIM = $78
-    COLOR_PALETTE_NPC blue             ; NPC_GLADIATOR_FRIEND = $79
+    COLOR_PALETTE_NPC 121              ; NPC_GLADIATOR_FRIEND = $79
     COLOR_PALETTE_NPC blue             ; NPC_INV_INN = $7a
     COLOR_PALETTE_NPC blue             ; NPC_GIRL_TOPPLE = $7b
     COLOR_PALETTE_NPC blue             ; NPC_GUY_TOPPLE = $7c
