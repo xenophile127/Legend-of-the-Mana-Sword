@@ -102,7 +102,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_WATER_DEMON = $5e
     COLOR_PALETTE_NPC blue             ; NPC_SEA_DRAGON = $5f
     COLOR_PALETTE_NPC blue             ; NPC_GALL_FISH = $60
-    COLOR_PALETTE_NPC blue             ; NPC_WILLY = $61
+    COLOR_PALETTE_NPC 097              ; NPC_WILLY = $61
     COLOR_PALETTE_NPC 002              ; NPC_MYSTERYMAN_1 = $62
     COLOR_PALETTE_NPC 005              ; NPC_AMANDA_1 = $63
     COLOR_PALETTE_NPC blue             ; NPC_AMANDA_ILL = $64
@@ -196,4 +196,6 @@
     COLOR_PALETTE_NPC blue             ; NPC_MUSIC_NOTES = $bc
     COLOR_PALETTE_NPC blue             ; NPC_MAGIC_SALESMAN = $bd
     COLOR_PALETTE_NPC ../hero/good     ; NPC_HERO_SHIELDLESS = $be
-    COLOR_PALETTE_NPC 066             ; NPC_SHADOW_KNIGHT_FAST = $bf
+    COLOR_PALETTE_NPC 066              ; NPC_SHADOW_KNIGHT_FAST = $bf
+    COLOR_PALETTE_NPC 192              ; NPC_HASIM = $c0
+    COLOR_PALETTE_NPC blue             ; NPC_INJURED = $c1

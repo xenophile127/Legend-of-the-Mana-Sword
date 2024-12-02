@@ -47,19 +47,19 @@ NPCSpawnPointers:
     dw   data_03_7742, data_03_76f2, data_03_76f2      ;; 03:722c ......
     dw   data_03_777c, data_03_76f2, data_03_7b02      ;; 03:7232 ??????
     dw   shadowKnightFast, shadowKnightFast, shadowKnightFast      ;; 03:7238 ......
-    dw   fuji_by_hasim, myconid,     willy             ;; 03:723e ......      number 42 $2a
+    dw   fuji_by_hasim, myconid,     hasim             ;; 03:723e ......      number 42 $2a
     dw   data_03_78a2, data_03_789a, data_03_78ba      ;; 03:7244 ......
     dw   data_03_78aa, data_03_78b2, data_03_77b8      ;; 03:724a ......
     dw   data_03_7908, data_03_7910, data_03_7910      ;; 03:7250 ??????
     dw   data_03_7900, data_03_7900, data_03_7900      ;; 03:7256 ??????
     dw   data_03_7918, data_03_7920, data_03_7920      ;; 03:725c ??????
-    dw   data_03_7808, minecart,     willy             ;; 03:7262 ??????      number 48 $30
+    dw   data_03_7808, minecart,     injured           ;; 03:7262 ??????      number 48 $30
     dw   data_03_77d6, data_03_78c2, data_03_78ca      ;; 03:7268 ??????
     dw   data_03_77ea, data_03_7a8e, data_03_7a8e      ;; 03:726e ??????
     dw   data_03_78d2, data_03_78ee, data_03_78f8      ;; 03:7274 ??????
     dw   data_03_78dc, data_03_78e6, data_03_7530      ;; 03:727a ??????
     dw   data_03_77fe, data_03_7530, data_03_7530      ;; 03:7280 ??????
-    dw   data_03_7530, data_03_7530, data_03_7530      ;; 03:7286 ??????
+    dw   data_03_7530, data_03_7530, data_03_7530      ;; 03:7286 ??????      number 54 $36 (unused)
     dw   data_03_7706, data_03_77a4, data_03_77f4      ;; 03:728c ??????
     dw   data_03_7948, data_03_7950, data_03_7530      ;; 03:7292 ??????
     dw   data_03_7958, data_03_7960, data_03_7530      ;; 03:7298 ??????
@@ -80,7 +80,7 @@ NPCSpawnPointers:
     dw   data_03_79b8, data_03_79c0, data_03_7530      ;; 03:72f2 ??????
     dw   data_03_79c8, data_03_79d0, data_03_7530      ;; 03:72f8 ??????
     dw   data_03_7530, npcChocobotIsh, npcProfIsh        ;; 03:72fe ??????      number 74 $4a
-    dw   data_03_79d8, data_03_79e0, data_03_7530      ;; 03:7304 ??????
+    dw   data_03_79d8, data_03_79e0, data_03_7530      ;; 03:7304 ??????      number 75 $4b (unused)
     dw   data_03_77c2, data_03_7876, shieldlessPC      ;; 03:730a ??????
     dw   data_03_772e, data_03_7aee, data_03_7aee      ;; 03:7310 ??????
     dw   data_03_781c, data_03_7b02, data_03_7812      ;; 03:7316 ??????
@@ -91,18 +91,18 @@ NPCSpawnPointers:
     dw   data_03_7aa2, npcChocobo2Offscreen, willy      ;; 03:7334 ??????       number 83 $53
     dw   data_03_7a52, data_03_7a7a, data_03_7a7a      ;; 03:733a ......
     dw   data_03_7a66, data_03_7a70, data_03_7a70      ;; 03:7340 ......
-    dw   data_03_7880, data_03_7530, data_03_7530      ;; 03:7346 ??????
+    dw   data_03_7880, data_03_7530, data_03_7530      ;; 03:7346 ??????      number 86 $56 (unused)
     dw   data_03_7530, data_03_7530, data_03_77f4      ;; 03:734c ??????
     dw   data_03_777c, data_03_7b0c, data_03_77b8      ;; 03:7352 ??????
     dw   data_03_7b28, data_03_7b32, data_03_7b3c      ;; 03:7358 ......
     dw   data_03_7530, data_03_77d6, data_03_77e0      ;; 03:735e ??????
     dw   data_03_7a5c, data_03_7a84, data_03_7a84      ;; 03:7364 ......
     dw   data_03_7710, data_03_7786, data_03_7786      ;; 03:736a ??????
-    dw   data_03_7706, data_03_7786, data_03_7786      ;; 03:7370 ??????
+    dw   data_03_7706, data_03_7786, data_03_7786      ;; 03:7370 ??????      number 93 $5d (unused)
     dw   data_03_7b18, data_03_7b46, data_03_7b46      ;; 03:7376 ??????
     dw   data_03_742c, wererat,      data_03_7436      ;; 03:737c ??????      number 95 $5f
     dw   data_03_7790, data_03_7530, data_03_76fc      ;; 03:7382 ??????
-    dw   data_03_7ac0, data_03_7ac0, data_03_7ac0      ;; 03:7388 ??????
+    dw   data_03_7ac0, data_03_7ac0, data_03_7ac0      ;; 03:7388 ??????      number 97 $61 (unused)
     dw   data_03_779a, data_03_77a4, data_03_77a4      ;; 03:738e ??????
     dw   data_03_7416, data_03_7416, data_03_7416      ;; 03:7394 ??????
     dw   npcProfEnd,   data_03_7402, data_03_740c      ;; 03:739a ??????      number 100 $64
@@ -659,6 +659,7 @@ data_03_7876:
     db   1, 1, NPC_SARAH, NPC_SARAH, NPC_SARAH, NPC_SARAH ;; 03:7876 ??????
     db   $02, $0c, $80, $80                            ;; 03:787c ????
 
+; Unused
 data_03_7880:
     db   1, 1, NPC_MARCIE_1, NPC_MARCIE_1, NPC_MARCIE_1, NPC_MARCIE_1 ;; 03:7880 ??????
     db   $80, $80                                      ;; 03:7886 ??
@@ -980,3 +981,11 @@ data_03_7b46:
     db   4, 4, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY ;; 03:7b46 ??????
     db   $06, $04, $06, $0a, $0c, $0a, $0c, $04        ;; 03:7b4c ????????
     db   $80, $80                                      ;; 03:7b54 ??
+
+hasim:
+    db   1, 1, NPC_HASIM, NPC_HASIM, NPC_HASIM, NPC_HASIM
+    db   $08, $08, $80, $80
+
+injured:
+    db   1, 1, NPC_INJURED, NPC_INJURED, NPC_INJURED, NPC_INJURED
+    db   $08, $08, $80, $80

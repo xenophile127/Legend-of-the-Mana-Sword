@@ -750,8 +750,6 @@ destroyNPC:
     call fillMemory                                    ;; 03:43b1 $cd $5d $2b
     ret                                                ;; 03:43b4 $c9
 
-ds 16 ; Free space
-
 giveFollower:
     ld   C, A                                          ;; 03:43c5 $4f
     push BC                                            ;; 03:43c6 $c5
@@ -764,8 +762,6 @@ giveFollower:
     pop  BC                                            ;; 03:43d7 $c1
     call spawnNPC                                      ;; 03:43d8 $cd $bd $42
     ret                                                ;; 03:43db $c9
-
-ds 4 ; Free space
 
 npcLoadTiles:
     ld   L, A                                          ;; 03:43dc $6f
@@ -940,8 +936,6 @@ prepareNpcPlacementOptions:
     add HL, DE
     ld A, [HL]
     jp scanRoomForNpcPlacementOptions_trampoline
-
-ds 25 ; Free space
 
 ; Moved here to make room for an added NPC.
 tileorderNpc:
@@ -1586,8 +1580,6 @@ processNpcDeath:
     pop  BC                                            ;; 03:48b7 $c1
     call destroyNPC                                    ;; 03:48b8 $cd $5f $43
     ret                                                ;; 03:48bb $c9
-
-ds 31 ; Free space
 
 ; HL = A + ((A * RND()) >> 11)
 ; Add 12.5% randomness to A and store in HL
@@ -4197,6 +4189,8 @@ INCLUDE "data/npc/metasprites.asm"
 
 ; For the explosion when an enemy is defeated.
 INCLUDE "data/npc/metasprites_defeated.asm"
+
+ds 8 ; Free space
 
 ; Same intent as npcBehaviorProcessDelayAction, but prevent
 ; delay timer hitting 0 while the object is moving. This is done by

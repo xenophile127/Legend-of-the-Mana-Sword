@@ -60,7 +60,7 @@ ELIF DEF(GLADIATOR_AMANDA)
 ENDC
 
     sPLAYER_CURE_STATUS 16          ; For the color target this initializes the player's palette.
-    sSET_NPC_TYPES $2a
+    sSET_NPC_TYPES 42
     sSET_PLAYER_POSITION 16, 01     ; Draw the player on the naming screen.
     sENTER_PLAYER_AND_GIRL_NAME
     sSET_PLAYER_POSITION 00, 18     ; Hide the player offscreen.
@@ -1593,7 +1593,7 @@ script_010b:
 
 script_010c:
     sIF_FLAG wScriptFlags02.0, !wScriptFlags02.1       ;; 0d:484a $08 $10 $91 $00 $04
-      sSET_NPC_TYPES 36                                ;; 0d:484f $fc $24
+      sSET_NPC_TYPES 48
       sSPAWN_NPC 2                                     ;; 0d:4851 $fd $02
     sENDIF                                             ;; 0d:4853
     sEND                                               ;; 0d:4853 $00
@@ -4787,16 +4787,12 @@ script_0254:
 script_0255:
     sEND                                               ;; 0d:7708 $00
 
+; Hasim's script.
+; More complicated than it needs to be because it was originally shared by Willy and the injured guy.
 script_0256:
-    sIF_FLAG wScriptFlags01.3, !wScriptFlags02.1       ;; 0d:7709 $08 $0b $91 $00 $03
-      sCALL script_01e7                                ;; 0d:770e $02 $17 $98
-    sENDIF                                             ;; 0d:7711
     sIF_FLAG wScriptFlags01.1, !wScriptFlags01.3       ;; 0d:7711 $08 $09 $8b $00 $03
       sCALL script_026c                                ;; 0d:7716 $02 $3a $70
     sENDIF                                             ;; 0d:7719
-    sIF_FLAG !wScriptFlags01.1                         ;; 0d:7719 $08 $89 $00 $03
-      sCALL script_0264                                ;; 0d:771d $02 $38 $f9
-    sENDIF                                             ;; 0d:7720
     sEND                                               ;; 0d:7720 $00
 
 script_0257:
@@ -11042,7 +11038,7 @@ script_053a:
     sSFX 20                                            ;; 0e:6af7 $f9 $14
     sFLASH_SCREEN                                      ;; 0e:6af9 $bf
     sFLASH_SCREEN                                      ;; 0e:6afa $bf
-    sSET_NPC_TYPES 36                                  ;; 0e:6afb $fc $24
+    sSET_NPC_TYPES 48
     sSPAWN_NPC 2                                       ;; 0e:6afd $fd $02
     sCLEAR_FLAG wScriptFlags0A.1                       ;; 0e:6aff $db $51
     sSET_FLAG wScriptFlags02.0                         ;; 0e:6b01 $da $10

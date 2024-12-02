@@ -118,7 +118,7 @@ ENDC
     NPC_DATA $95, $5b, $60, $08, gfxEnemySahagin, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $06, $13, $06, $06, script_003d, $0000 ;; 03:682a NPC_SAHAGIN
     NPC_DATA $95, $5c, $60, $06, gfxEnemySeaDragon, tileorderNpc, metaspritesTable60FrontFacing, $00, $01, $01, $02, $02, $02, $01, $16, $17, $17, script_003d, $0000 ;; 03:6842 NPC_SEA_DRAGON
     NPC_DATA $93, $5d, $60, $08, gfxEnemyGalFish, tileorderNpc, metaspritesTabel60Normal, $00, $01, $00, $00, $00, $00, $05, $05, $07, $08, script_003d, $0000 ;; 03:685a NPC_GALL_FISH
-    NPC_DATA $81, $5e, $60, $02, gfxNpcWilly, tileorderNpc, metaspritesWilly, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0256, $0000 ;; 03:6872 NPC_WILLY
+    NPC_DATA $81, $5e, $60, $02, gfxNpcWilly, tileorderNpc, metaspritesWilly, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0264, $0000 ;; 03:6872 NPC_WILLY
     NPC_DATA $81, $5e, $40, $08, gfxNpcMysteryMan, tileorderNpc, metaspritesTable40Red, $00, $01, $01, $00, $02, $00, $04, $04, $04, $04, script_0259, $0000 ;; 03:688a NPC_MYSTERYMAN_1
 
 IF DEF(GLADIATOR_DUKE)
@@ -234,6 +234,10 @@ ELIF DEF(PLAYER_GRAPHICS_ORIGINAL)
 ENDC
 ; New faster Shadow Knight to push you off the waterfall.
     NPC_DATA $91, $0e, $40, $0c, gfxEnemyDarkLord, tileorderNpc, metaspritesShadowKnight, $00, $01, $01, $00, $00, $00, $06, $06, $07, $08, script_003d, $0000 ;; 03:501a NPC_SHADOW_KNIGHT_FAST
+
+; Added so they can have different color palettes than Willy.
+    NPC_DATA $81, $5e, $60, $02, gfxNpcWilly, tileorderNpc, metaspritesWilly, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_0256, $0000 ;; 03:6872 NPC_HASIM
+    NPC_DATA $81, $5e, $60, $02, gfxNpcWilly, tileorderNpc, metaspritesWilly, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_01e7, $0000 ;; 03:6872 NPC_HURT_WENDEL
 
 ; Chests for use by enemy drops to allow use of the dropping enemy's color palette.
     NPC_DATA $87, $0c, $78, $02, gfxChest, tileorderNpc, chest1MetaspriteTable, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, script_000b, $0000 ;; 03:607a NPC_CHEST_DROP_1
