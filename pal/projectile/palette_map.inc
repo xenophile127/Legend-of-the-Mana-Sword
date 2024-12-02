@@ -14,6 +14,7 @@
     COLOR_PALETTE_PROJECTILE red              ; Laser          $05 NPC_GUARDIAN
     COLOR_PALETTE_PROJECTILE red              ; Axe            $06 NPC_MINOTAUR
     COLOR_PALETTE_PROJECTILE 007              ; Scissors       $07 NPC_CRAB
+; Ring Beam and Rapier are used together. It may be safe to move Ring Beam to PAL_NPC3.
     COLOR_PALETTE_PROJECTILE red              ; Ring Beam      $08 NPC_EYE_SPY, NPC_FUZZY_WONDER
     COLOR_PALETTE_PROJECTILE red              ; Rock           $09 NPC_OGRE, NPC_EARTH_DIGGER, NPC_ELEPHANT
     COLOR_PALETTE_PROJECTILE red              ; Shuriken       $0a NPC_NINJA
@@ -29,7 +30,7 @@
     COLOR_PALETTE_PROJECTILE red              ; Poison Thread  $0f NPC_SPIDER, NPC_MEGA_FLYTRAP
     COLOR_PALETTE_PROJECTILE ../npc/022       ; Spear          $10 NPC_LIZARDMAN
     COLOR_PALETTE_PROJECTILE red              ; Sword          $11 NPC_GLAIVE_KNIGHT, NPC_SHADOWKNIGHT, NPC_DUCK_SOLDIER
-    COLOR_PALETTE_PROJECTILE red              ; Rapier         $12 NPC_SKELETON, NPC_GARASHA_DUCK
+    COLOR_PALETTE_PROJECTILE 018              ; Rapier         $12 NPC_SKELETON, NPC_GARASHA_DUCK
     COLOR_PALETTE_PROJECTILE red              ; Scorpion Tail  $13 NPC_SCORPION
     COLOR_PALETTE_PROJECTILE red              ; Unused         $14 Only used by bosses. Included as a spacer.
     COLOR_PALETTE_PROJECTILE red              ; Claw           $15 NPC_MOLEBEAR, NPC_KETTS_BUTTLER_WEREWOLF, NPC_WEREWOLF_2
