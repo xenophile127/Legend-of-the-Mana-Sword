@@ -2695,7 +2695,7 @@ specialEffectInit:
     push AF                                            ;; 00:0ed6 $f5
     ld   HL, specialEffectMetaspriteTable              ;; 00:0ed7 $21 $be $0e
     ld   C, $07                                        ;; 00:0eda $0e $07
-    ld   A, $00                                        ;; 00:0edc $3e $00
+    xor a
     call createObject                                  ;; 00:0ede $cd $74 $0a
     ld   [wScriptOpCounter2], A                        ;; 00:0ee1 $ea $9a $d4
     ld   C, A                                          ;; 00:0ee4 $4f
@@ -7866,12 +7866,13 @@ loadMenuSpritePalette:
     pop bc
     ret
 
+; Loads a palette whenever you use a weapon, item, or spell.
 loadAttackPalette:
     push af
     ld a, [wJoypadInput]
     bit 4, a
     ld a, [wEquippedWeapon]
-    ld h, INV_SWORD_BROAD
+    ld h, (INV_SWORD_BROAD - 1)
     jr nz, .set_palette
     ld a, [wEquippedItem]
     and $7f
