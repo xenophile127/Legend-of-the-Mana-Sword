@@ -17,7 +17,7 @@ NPCSpawnPointers:
     dw   orc,          deathCrab,    deathCrab         ;; 03:7178 ??????      number 09 $09
     dw   tarantula,    ruster,       mimic             ;; 03:717e ??????      number 10 $0a
     dw   data_03_7552, data_03_7552, data_03_754a      ;; 03:7184 ??????
-    dw   data_03_755a, data_03_7562, data_03_756a      ;; 03:718a ??????
+    dw   eyeSpy,       data_03_7562, ghost             ;; 03:718a ??????      number 12 $0c
     dw   data_03_7572, data_03_757a, data_03_7582      ;; 03:7190 ??????
     dw   data_03_758a, data_03_758a, data_03_7592      ;; 03:7196 ??????
     dw   data_03_758a, data_03_759a, data_03_75a2      ;; 03:719c ??????
@@ -38,7 +38,7 @@ NPCSpawnPointers:
     dw   data_03_767e, data_03_7686, gargoyle          ;; 03:71f6 ??????
     dw   denden,       doppelMirror, guardian          ;; 03:71fc ??????
     dw   mattockEast,  data_03_76a6, data_03_76ae      ;; 03:7202 ??????      number 32 $20
-    dw   garasha,      wonder,       guardian          ;; 03:7208 ??????
+    dw   garasha,      wonder,       guardian          ;; 03:7208 ??????      number 33 $21
     dw   mammoo,       ninja,        guardian          ;; 03:720e ??????
     dw   data_03_76e0, data_03_76e0, data_03_76d6      ;; 03:7214 ??????
     dw   data_03_7738, data_03_7738, willy             ;; 03:721a ......      number 36 $24
@@ -79,7 +79,7 @@ NPCSpawnPointers:
     dw   data_03_7a4a, data_03_7a38, data_03_7a38      ;; 03:72ec ??????
     dw   data_03_79b8, data_03_79c0, data_03_7530      ;; 03:72f2 ??????
     dw   data_03_79c8, data_03_79d0, data_03_7530      ;; 03:72f8 ??????
-    dw   data_03_7530, npcChocobotIsh, npcProfIsh        ;; 03:72fe ??????      number 74 $4a
+    dw   data_03_7530, npcChocobotIsh, npcProfIsh      ;; 03:72fe ??????      number 74 $4a
     dw   data_03_79d8, data_03_79e0, data_03_7530      ;; 03:7304 ??????      number 75 $4b (unused)
     dw   data_03_77c2, data_03_7876, shieldlessPC      ;; 03:730a ??????
     dw   data_03_772e, data_03_7aee, data_03_7aee      ;; 03:7310 ??????
@@ -88,7 +88,7 @@ NPCSpawnPointers:
     dw   data_03_7830, data_03_7ab6, data_03_7adc      ;; 03:7322 ??????
     dw   data_03_775e, data_03_775e, data_03_775e      ;; 03:7328 ??????
     dw   data_03_7af8, data_03_7af8, data_03_7af8      ;; 03:732e ??????
-    dw   data_03_7aa2, npcChocobo2Offscreen, willy      ;; 03:7334 ??????       number 83 $53
+    dw   data_03_7aa2, npcChocobo2Offscreen, willy     ;; 03:7334 ??????       number 83 $53
     dw   data_03_7a52, data_03_7a7a, data_03_7a7a      ;; 03:733a ......
     dw   data_03_7a66, data_03_7a70, data_03_7a70      ;; 03:7340 ......
     dw   data_03_7880, data_03_7530, data_03_7530      ;; 03:7346 ??????      number 86 $56 (unused)
@@ -297,7 +297,7 @@ data_03_7552:
     db   1, 1, NPC_CARROT, NPC_CARROT, NPC_CARROT, NPC_CARROT ;; 03:7552 ??????
     db   $80, $80                                      ;; 03:7558 ??
 
-data_03_755a:
+eyeSpy:
     db   1, 3, NPC_EYE_SPY, NPC_EYE_SPY, NPC_EYE_SPY, NPC_EYE_SPY ;; 03:755a ??????
     db   $80, $80                                      ;; 03:7560 ??
 
@@ -305,7 +305,7 @@ data_03_7562:
     db   1, 2, NPC_WEREWOLF_2, NPC_WEREWOLF_2, NPC_WEREWOLF_2, NPC_WEREWOLF_2 ;; 03:7562 ??????
     db   $80, $80                                      ;; 03:7568 ??
 
-data_03_756a:
+ghost:
     db   1, 2, NPC_GHOST, NPC_GHOST, NPC_GHOST, NPC_GHOST ;; 03:756a ??????
     db   $80, $80                                      ;; 03:7570 ??
 
