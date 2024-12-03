@@ -69,7 +69,7 @@
     COLOR_PALETTE_ATTACK gray             ; INV_RESERVE = $41 ; Unused
     COLOR_PALETTE_ATTACK 066              ; INV_SWORD_BROAD = $42
     COLOR_PALETTE_ATTACK 067              ; INV_AXE_BATTLE = $43
-    COLOR_PALETTE_ATTACK gray             ; INV_SICKLE_SICKLE = $44
+    COLOR_PALETTE_ATTACK 068              ; INV_SICKLE_SICKLE = $44
     COLOR_PALETTE_ATTACK gray             ; INV_WHIP_CHAIN = $45
     COLOR_PALETTE_ATTACK gray             ; INV_SWORD_SILVER = $46
     COLOR_PALETTE_ATTACK gray             ; INV_SPEAR_WIND = $47
