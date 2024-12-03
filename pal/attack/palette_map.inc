@@ -63,7 +63,7 @@
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_BAG_FANG = $3b
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_EARTH_DRUM = $3c ; Unused
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_MOOGLE_FLUTE = $3d ; Unused
-    COLOR_PALETTE_ATTACK gray             ; INV_ITEM_MATTOK = $3e
+    COLOR_PALETTE_ATTACK 062              ; INV_ITEM_MATTOK = $3e
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_RUBY = $3f
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_OPAL = $40
     COLOR_PALETTE_ATTACK gray             ; INV_RESERVE = $41 ; Unused
