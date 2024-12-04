@@ -994,9 +994,12 @@ gfxBossHydra:
     db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 09:4ff0 ????????
     db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 09:4ff8 ????????
 
-;@gfximg name=npc/follower/girl width=2 height=8
 gfxNpcGirl:
+IF DEF(COLOR)
+    INCBIN "npc/follower/girl_color.bin"
+ELSE
     INCBIN "npc/follower/girl.bin"                     ;; 09:5000
+ENDC
 
 ;@gfximg name=npc/gladiator_friend width=2 height=8
 gfxGladiatorFriend:
