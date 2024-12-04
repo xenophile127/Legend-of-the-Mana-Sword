@@ -1823,13 +1823,13 @@ color_palette_\1:
 .bgp:
     DEF n = 0
     REPT 8
-        INCBIN "pal/\1/normal/bgp{u:n}.pal",0,8
+        INCBIN "pal/\1/main/bgp{u:n}.pal",0,8
         DEF n = n + 1
     ENDR
 .obj:
     DEF n = 0
     REPT 8
-        INCBIN "pal/\1/normal/obj{u:n}.pal",0,8
+        INCBIN "pal/\1/main/obj{u:n}.pal",0,8
         DEF n = n + 1
     ENDR
 .bgp_blind:
