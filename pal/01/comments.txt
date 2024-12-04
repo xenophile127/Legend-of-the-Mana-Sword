@@ -1,3 +1,0 @@
-Identical to palette set 00 except for the obj5.pal files for blind, flash, and normal which use red instead of blue.
-
-This is used for the boss Red Dragon to make it red instead of blue.
