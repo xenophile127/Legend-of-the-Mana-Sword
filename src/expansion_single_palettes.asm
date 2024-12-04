@@ -7,7 +7,7 @@ SECTION "Game Boy Color Bank - Single Palettes 1", ROMX[$4000], BANK[COLOR_SINGL
 
 ColorSinglePalettesROM:
 
-INCLUDE "pal/npc/palette_list.inc"
+INCLUDE "pal/npc/palette_map.inc"
 
 INCLUDE "pal/projectile/palette_map.inc"
 
