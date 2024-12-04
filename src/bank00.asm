@@ -2668,6 +2668,7 @@ scriptOpCodeShakeScreen:
 ; 08 = Recovery effect used at the ponds
 ; 10 = Explosion effect
 ; 2c = Fire effect used by Julius at the airship
+; These use the player's attacks with $08 being Cure and $2c being the Fire spell after targeting.
 scriptOpCodeCreateEffect:
     ld   D, H                                          ;; 00:0eb2 $54
     ld   E, L                                          ;; 00:0eb3 $5d
@@ -2683,6 +2684,7 @@ specialEffectJumptable:
     dw   specialEffectInit                             ;; 00:0eca ?? $00
     dw   specialEffectAnimate                          ;; 00:0ecc ?? $01
 
+; For the color target this also loads a palette.
 specialEffectInit:
     ld   H, D                                          ;; 00:0ece $62
     ld   L, E                                          ;; 00:0ecf $6b
@@ -2691,8 +2693,17 @@ specialEffectInit:
     inc  HL                                            ;; 00:0ed2 $23
     ld   D, [HL]                                       ;; 00:0ed3 $56
     inc  HL                                            ;; 00:0ed4 $23
+; A palette id has been added to these script commands.
+    inc hl
     push HL                                            ;; 00:0ed5 $e5
     push AF                                            ;; 00:0ed6 $f5
+IF DEF(COLOR)
+; Load a palette to the player's attack palette.
+    dec hl
+    ld a, [hl]
+    ld b, PAL_ATTACK
+    call loadSinglePaletteBank2
+ENDC
     ld   HL, specialEffectMetaspriteTable              ;; 00:0ed7 $21 $be $0e
     ld   C, $07                                        ;; 00:0eda $0e $07
     xor a

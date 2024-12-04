@@ -3119,7 +3119,7 @@ script_01c9:
     sSET_FLAG wScriptFlags05.6                         ;; 0d:54fc $da $2e
     ; Jackal's flag was reused for Bone Key logic. Set it back to its usual state.
     sSET_FLAG wScriptFlags01.0
-    sCREATE_EFFECT $10, $10, $04                       ;; 0d:54fe $ba $10 $10 $04
+    sCREATE_EFFECT $10, $10, $04, $00
     sSET_ROOM_TILE $4c, 8, 2                           ;; 0d:5502 $b0 $4c $08 $02
     sDELAY 30                                          ;; 0d:5506 $f0 $1e
     sSET_MUSIC 7                                       ;; 0d:5508 $f8 $07
@@ -3259,7 +3259,7 @@ script_01e4:
     sEND                                               ;; 0d:576f $00
 
 script_01e5:
-    sCREATE_EFFECT $10, $0e, $0a                       ;; 0d:5770 $ba $10 $0e $0a
+    sCREATE_EFFECT $10, $0e, $0a, $00
     sSET_ROOM_TILE $4b, 7, 5                           ;; 0d:5774 $b0 $4b $07 $05
     sSET_FLAG wScriptFlags06.6                         ;; 0d:5778 $da $36
     sEND                                               ;; 0d:577a $00
@@ -3413,7 +3413,7 @@ script_01f0:
     sEND                                               ;; 0d:5b6d $00
 
 script_01f1:
-    sCREATE_EFFECT $08, $09, $0b                       ;; 0d:5b6e $ba $08 $09 $0b
+    sCREATE_EFFECT $08, $09, $0b, $00
     sFULL_HP                                           ;; 0d:5b72 $c0
     sFULL_MANA                                         ;; 0d:5b73 $c1
     sEND                                               ;; 0d:5b74 $00
@@ -3510,7 +3510,7 @@ script_01fa:
     sIF_TRIGGERED_ON_BY $81                            ;; 0d:5d3d $0b $81 $00 $03
       sDEL_NPC_1                                       ;; 0d:5d41 $18
     sELSE                                              ;; 0d:5d42 $01 $05
-      sCREATE_EFFECT $10, $09, $01                     ;; 0d:5d44 $ba $10 $09 $01
+      sCREATE_EFFECT $10, $09, $01, INV_ITEM_MATTOK
       sOPEN_NORTH_DOOR                                 ;; 0d:5d48 $e0
     sENDIF                                             ;; 0d:5d49
     sEND                                               ;; 0d:5d49 $00
@@ -3519,7 +3519,7 @@ script_01fb:
     sIF_TRIGGERED_ON_BY $81                            ;; 0d:5d4a $0b $81 $00 $03
       sDEL_NPC_1                                       ;; 0d:5d4e $18
     sELSE                                              ;; 0d:5d4f $01 $05
-      sCREATE_EFFECT $10, $09, $0d                     ;; 0d:5d51 $ba $10 $09 $0d
+      sCREATE_EFFECT $10, $09, $0d, INV_ITEM_MATTOK
       sOPEN_SOUTH_DOOR                                 ;; 0d:5d55 $e2
     sENDIF                                             ;; 0d:5d56
     sEND                                               ;; 0d:5d56 $00
@@ -3528,7 +3528,7 @@ script_01fc:
     sIF_TRIGGERED_ON_BY $81                            ;; 0d:5d57 $0b $81 $00 $03
       sDEL_NPC_1                                       ;; 0d:5d5b $18
     sELSE                                              ;; 0d:5d5c $01 $05
-      sCREATE_EFFECT $10, $11, $07                     ;; 0d:5d5e $ba $10 $11 $07
+      sCREATE_EFFECT $10, $11, $07, INV_ITEM_MATTOK
       sOPEN_EAST_DOOR                                  ;; 0d:5d62 $e4
     sENDIF                                             ;; 0d:5d63
     sEND                                               ;; 0d:5d63 $00
@@ -3537,7 +3537,7 @@ script_01fd:
     sIF_TRIGGERED_ON_BY $81                            ;; 0d:5d64 $0b $81 $00 $03
       sDEL_NPC_1                                       ;; 0d:5d68 $18
     sELSE                                              ;; 0d:5d69 $01 $05
-      sCREATE_EFFECT $10, $01, $07                     ;; 0d:5d6b $ba $10 $01 $07
+      sCREATE_EFFECT $10, $01, $07, INV_ITEM_MATTOK
       sOPEN_WEST_DOOR                                  ;; 0d:5d6f $e6
     sENDIF                                             ;; 0d:5d70
     sEND                                               ;; 0d:5d70 $00
@@ -3655,11 +3655,11 @@ script_0207:
     sSFX 20                                            ;; 0d:5f6b $f9 $14
     sFLASH_SCREEN                                      ;; 0d:5f6d $bf
     sFLASH_SCREEN                                      ;; 0d:5f6e $bf
-    sCREATE_EFFECT $2c, $02, $08                       ;; 0d:5f6f $ba $2c $02 $08
-    sCREATE_EFFECT $2c, $04, $08                       ;; 0d:5f73 $ba $2c $04 $08
-    sCREATE_EFFECT $2c, $06, $08                       ;; 0d:5f77 $ba $2c $06 $08
-    sCREATE_EFFECT $2c, $08, $08                       ;; 0d:5f7b $ba $2c $08 $08
-    sCREATE_EFFECT $10, $0a, $08                       ;; 0d:5f7f $ba $10 $0a $08
+    sCREATE_EFFECT $2c, $02, $08, $00
+    sCREATE_EFFECT $2c, $04, $08, $00
+    sCREATE_EFFECT $2c, $06, $08, $00
+    sCREATE_EFFECT $2c, $08, $08, $00
+    sCREATE_EFFECT $10, $0a, $08, $00
     sFLASH_SCREEN                                      ;; 0d:5f83 $bf
     sSET_PLAYER_POSITION 10, 9                         ;; 0d:5f84 $8a $0a $09
     sSET_PLAYER_DIRECTION_UP                           ;; 0d:5f87 $84
@@ -3690,7 +3690,7 @@ script_0207:
       sPLAYER_STEP_FORWARD                             ;; 0d:5fc8 $80
     sEND                                               ;; 0d:5fc9 $00
     sSET_PLAYER_POSITION 20, 0                         ;; 0d:5fca $8a $14 $00
-    sCREATE_EFFECT $10, $0e, $05                       ;; 0d:5fcd $ba $10 $0e $05
+    sCREATE_EFFECT $10, $0e, $05, $00
 ; Fill tiles just outside the screen before the shake effect.
     sSET_ROOM_TILE $21, 10, 0
     sSET_ROOM_TILE $73, 10, 1
@@ -7936,10 +7936,10 @@ script_03e8:
         sSFX 37                                        ;; 0e:4fc5 $f9 $25
         sFLASH_SCREEN                                  ;; 0e:4fc7 $bf
         sFLASH_SCREEN                                  ;; 0e:4fc8 $bf
-        sCREATE_EFFECT $10, $06, $04                   ;; 0e:4fc9 $ba $10 $06 $04
-        sCREATE_EFFECT $10, $0a, $03                   ;; 0e:4fcd $ba $10 $0a $03
-        sCREATE_EFFECT $10, $08, $05                   ;; 0e:4fd1 $ba $10 $08 $05
-        sCREATE_EFFECT $10, $0c, $04                   ;; 0e:4fd5 $ba $10 $0c $04
+        sCREATE_EFFECT $10, $06, $04, $00
+        sCREATE_EFFECT $10, $0a, $03, $00
+        sCREATE_EFFECT $10, $08, $05, $00
+        sCREATE_EFFECT $10, $0c, $04, $00
         sSFX 37                                        ;; 0e:4fd9 $f9 $25
         sSET_ROOM_TILE $6c, 3, 2                       ;; 0e:4fdb $b0 $6c $03 $02
         sSET_ROOM_TILE $66, 4, 2                       ;; 0e:4fdf $b0 $66 $04 $02
@@ -8339,7 +8339,7 @@ script_040b:
 script_040c:
     sIF_TRIGGERED_ON_BY $c9, $c1, $e1, $f1
       sIF_FLAG wScriptFlags0F.0, wScriptFlags0F.1, wScriptFlags0F.2, !wScriptFlags0F.3 ;; 0e:52a4 $08 $78 $79 $7a $fb $00 $0a
-        sCREATE_EFFECT $10, $0e, $02                   ;; 0e:52ab $ba $10 $0e $02
+        sCREATE_EFFECT $10, $0e, $02, $00
         sSET_ROOM_TILE $4c, 7, 1                       ;; 0e:52af $b0 $4c $07 $01
       sELSE                                            ;; 0e:52b3 $01 $08
         sCLEAR_FLAG wScriptFlags0F.0                   ;; 0e:52b5 $db $78
@@ -10783,7 +10783,7 @@ script_0537:
       sSFX 20                                          ;; 0e:6666 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:6668 $bf
     sEND                                               ;; 0e:6669 $00
-    sCREATE_EFFECT $10, $0c, $0c                       ;; 0e:666a $ba $10 $0c $0c
+    sCREATE_EFFECT $10, $0c, $0c, $00
     sSET_PLAYER_HURT_SPRITE                            ;; 0e:666e $a5
     sLOOP 5
       sPLAYER_STEP_BACKWARD                            ;; 0e:6672 $81
@@ -11124,14 +11124,14 @@ script_053b:
     sSFX 20                                            ;; 0e:6bfc $f9 $14
     sFLASH_SCREEN                                      ;; 0e:6bfe $bf
     sSFX 20                                            ;; 0e:6bff $f9 $14
-    sCREATE_EFFECT $10, $08, $0c                       ;; 0e:6c01 $ba $10 $08 $0c
-    sCREATE_EFFECT $10, $0a, $0a                       ;; 0e:6c05 $ba $10 $0a $0a
+    sCREATE_EFFECT $10, $08, $0c, $00
+    sCREATE_EFFECT $10, $0a, $0a, $00
     sSET_FAST_MOVEMENT                                 ;; 0e:6c09 $88
     sSET_PLAYER_HURT_SPRITE                            ;; 0e:6c0a $a5
     sLOOP 7
       sPLAYER_STEP_BACKWARD                            ;; 0e:6c0e $81
     sEND                                               ;; 0e:6c0f $00
-    sCREATE_EFFECT $10, $09, $03                       ;; 0e:6c10 $ba $10 $09 $03
+    sCREATE_EFFECT $10, $09, $03, $00
     sSFX 12                                            ;; 0e:6c14 $f9 $0c
     sLOOP 7
       sPLAYER_STEP_FORWARD                             ;; 0e:6c19 $80
@@ -11260,9 +11260,9 @@ script_053d:
 script_053e:
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0e:6ec6 $17
     sSET_MUSIC 0                                       ;; 0e:6ec7 $f8 $00
-    sCREATE_EFFECT $10, $03, $02                       ;; 0e:6ec9 $ba $10 $03 $02
-    sCREATE_EFFECT $10, $05, $04                       ;; 0e:6ecd $ba $10 $05 $04
-    sCREATE_EFFECT $10, $04, $03                       ;; 0e:6ed1 $ba $10 $04 $03
+    sCREATE_EFFECT $10, $03, $02, $00
+    sCREATE_EFFECT $10, $05, $04, $00
+    sCREATE_EFFECT $10, $04, $03, $00
     sDELAY 40                                          ;; 0e:6ed5 $f0 $28
     sLOOP 6
       sPLAYER_STEP_FORWARD                             ;; 0e:6eda $80
@@ -11311,10 +11311,10 @@ script_053e:
 
 script_053f:
     sSET_MUSIC 0                                       ;; 0e:6fba $f8 $00
-    sCREATE_EFFECT $10, $04, $04                       ;; 0e:6fbc $ba $10 $04 $04
-    sCREATE_EFFECT $10, $0a, $08                       ;; 0e:6fc0 $ba $10 $0a $08
-    sCREATE_EFFECT $10, $07, $03                       ;; 0e:6fc4 $ba $10 $07 $03
-    sCREATE_EFFECT $10, $0d, $02                       ;; 0e:6fc8 $ba $10 $0d $02
+    sCREATE_EFFECT $10, $04, $04, $00
+    sCREATE_EFFECT $10, $0a, $08, $00
+    sCREATE_EFFECT $10, $07, $03, $00
+    sCREATE_EFFECT $10, $0d, $02, $00
     sLOOP 10
       sFLASH_SCREEN                                    ;; 0e:6fcf $bf
       sSFX 20                                          ;; 0e:6fd0 $f9 $14

@@ -2,6 +2,8 @@
 ; The comments are taken from src/include/constants.inc and are here for quick reference.
 ; Unused items are included to align the table correctly to simplify the code.
 
+; These are also used by the sCREATE_EFFECT script command.
+
     COLOR_PALETTE_ATTACK 001              ; INV_MAGIC_CURE = $01
     COLOR_PALETTE_ATTACK 002              ; INV_MAGIC_HEAL = $02
     COLOR_PALETTE_ATTACK 003              ; INV_MAGIC_MUTE = $03

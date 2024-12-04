@@ -235,10 +235,12 @@ There is some Super Game Boy code added to run when this command is executed. It
 ### b7 - sDEFAULT_EFFECT
 This was an unused script command that had most of the code to remove the letterbox effect (see sLETTER_BOX_EFFECT) and return to normal. For Embers of Mana it has been hacked to do just that. Currently not changed in Legend of the Mana Sword.
 
-### ba - sCREATE_EFFECT effect, x, y
+### ba - sCREATE_EFFECT effect, x, y, palette
 Creates a special effect. Known effects are: $08 for the healing pond effect, $2c for a fire effect, and $10 for an explosion effect.
 
 Internally this uses the same data as the player's attacks. As these animate they progress through the table in jumps of 16. $08 is the beginning of the Cure spell. $2c is the third part of the Fire spell. $10 is the second part of an attack animation that normally has one step that does nothing.
+
+ > 💡**Note:** This has an added palette id to load for the color target. Any palette id in `pal/attack/palette_map.inc` can be used.
 
 ### bc - sFADE_TO_NORMAL
 Fades back in from a sFADE_TO_BLACK or a sFADE_TO_WHITE.
@@ -274,7 +276,7 @@ To remove more than one status effect at a time add one or more values together.
 Inflict one or more status effects specified by bits. See sPLAYER_CURE_STATUS.
 
 ### c5 - sUNK_C5 value
-Not named yet. Sets a group of six bits (1wScriptFlags0E.2` to `wScriptFlags0E.7`) to a value from 0 to 63, essentially treating them as a small integer. This is used extensively for shops and houses so a map screen can be reused as different rooms.
+Not named yet. Sets a group of six bits (`wScriptFlags0E.2` to `wScriptFlags0E.7`) to a value from 0 to 63, essentially treating them as a small integer. This is used extensively for shops and houses so a map screen can be reused as different rooms.
 
 ### c6 - sENTER_PLAYER_AND_GIRL_NAME
 This was originally called once to prompt for both names. Now it is called once for Hero's name and then again for Fuji's name, which allows moving sprites to switch between showing the two of them.

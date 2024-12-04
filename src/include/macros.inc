@@ -990,8 +990,9 @@ MACRO sCLOSE_WEST_DOOR
 db $e7
 ENDM
 MACRO sCREATE_EFFECT
+; Modified to include a palette number.
 db $ba
-db \1, \2, \3
+db \1, \2, \3, \4
 ENDM
 MACRO sDEFAULT_EFFECT
 db $b7
