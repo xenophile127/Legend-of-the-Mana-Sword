@@ -55,3 +55,9 @@ debugMsgSGBBorderInjector:
 
 debugMsgSpawnBoss:
     DBG_STR "[INFO] Spawn boss %a%"
+
+debugMsgWarmBoot:
+    DBG_STR "[INFO] Restarting due to A+B+Start+Select."
+
+debugMsgGameOver:
+    DBG_STR "[INFO] Restarting due to game over."

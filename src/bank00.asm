@@ -10123,7 +10123,10 @@ scriptOpCodeTakeEquipedItem:
     call getNextScriptInstruction                      ;; 00:3b9a $cd $27 $37
     ret                                                ;; 00:3b9d $c9
 
+; Used when you die.
 scriptOpCodeResetGame:
+    ld hl, debugMsgGameOver
+    call logger.hl
     jp   FullReset                                     ;; 00:3b9e $c3 $50 $01
 
 ;@jumptable amount=11
@@ -10145,16 +10148,10 @@ clearNamesAndScriptFlags:
     ld   HL, wBoyName                                  ;; 00:3bb7 $21 $9d $d7
     ld   B, $0a                                        ;; 00:3bba $06 $0a
     xor  A, A                                          ;; 00:3bbc $af
-.loop_names:
-    ld   [HL+], A                                      ;; 00:3bbd $22
-    dec  B                                             ;; 00:3bbe $05
-    jr   NZ, .loop_names                               ;; 00:3bbf $20 $fc
+    call fillMemory
     ld   HL, wScriptFlags                              ;; 00:3bc1 $21 $c6 $d7
     ld   B, $10                                        ;; 00:3bc4 $06 $10
-.loop_flags:
-    ld   [HL+], A                                      ;; 00:3bc6 $22
-    dec  B                                             ;; 00:3bc7 $05
-    jr   NZ, .loop_flags                               ;; 00:3bc8 $20 $fc
+    call fillMemory
     ret                                                ;; 00:3bca $c9
 
 opCodeFFPrintMenuText:
@@ -10163,13 +10160,13 @@ opCodeFFPrintMenuText:
     ret                                                ;; 00:3bcf $c9
 
 scriptOpCodeSetFlag:
-    call getNextScriptInstruction                      ;; 00:3bd0 $cd $27 $37
+    ld a, [hl+]
     call setScriptFlag                                 ;; 00:3bd3 $cd $e4 $3b
     call getNextScriptInstruction                      ;; 00:3bd6 $cd $27 $37
     ret                                                ;; 00:3bd9 $c9
 
 scriptOpCodeClearFlag:
-    call getNextScriptInstruction                      ;; 00:3bda $cd $27 $37
+    ld a, [hl+]
     call clearScriptFlag                               ;; 00:3bdd $cd $ee $3b
     call getNextScriptInstruction                      ;; 00:3be0 $cd $27 $37
     ret                                                ;; 00:3be3 $c9

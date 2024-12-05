@@ -603,9 +603,13 @@ ENDC
 ; Routines for calculating color fades.
 INCLUDE "code/color_fade.asm"
 
-; In the case that someone presses A+B+Start+Select during the ending
-; make sure to clear color attributes from the sprout.
+; In the case that someone presses A+B+Start+Select during the ending.
 enhancedWarmBoot:
+; Log the event.
+    ld hl,  debugMsgWarmBoot
+    call logger.hl
+
+; Make sure to clear color attributes from the sprout.
     ld a, [wSGBEndingCounter]
     or a
     call nz, sgbClearAttributes
