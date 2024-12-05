@@ -705,8 +705,6 @@ scrollRoom:
     set  2, A                                          ;; 01:4502 $cb $d7
     ld   [wMainGameStateFlags.nextFrame], A            ;; 01:4504 $ea $a2 $c0
     ld   [wMainGameStateFlags], A                      ;; 01:4507 $ea $a1 $c0
-    ld   A, D
-    ld   [wSpriteScrollSpeed], A
 
     ; Set B to be the flip of the direction in E
     ld   A, E
@@ -922,7 +920,7 @@ scrollRoom:
     call scrollRoomMoveScreen
     ret
 
-ds 143 ; Free space
+ds 147 ; Free space
 
 drawRoomMetatilesColumn:
     ld   B, $00                                        ;; 01:4690 $06 $00
@@ -1000,8 +998,6 @@ scrollRoomMoveScreen:
     ld   A, [wScrollPixelCounter]                      ;; 01:46ef $fa $48 $c3
     cp   A, C                                          ;; 01:46f2 $b9
     ret  C                                             ;; 01:46f3 $d8
-    ld   A, $00                                        ;; 01:46f4 $3e $00
-    ld [wSpriteScrollSpeed], a
     call ensureReservedObjectsExist
 
     ; Call remove any enemies that may be lingering. This can happen with jumpers.
@@ -1019,6 +1015,8 @@ scrollRoomMoveScreen:
     ld   A, $00                                        ;; 01:4717 $3e $00
     ld   [wScrollDirection], A                         ;; 01:4719 $ea $41 $c3
     ret                                                ;; 01:471c $c9
+
+ds 5 ; Free space
 
 drawRoom:
     ld   A, $00                                        ;; 01:471d $3e $00

@@ -364,15 +364,14 @@ scrollMoveObject:
     call updateObjectPosition                          ;; 02:43d7 $cd $11 $06
     jr .move
 
+ds 4 ; Free space
+
 ; Manages objects during the screen scroll transition.
 ; Enemies and NPCs are meant to be left behind but jumpers can survive the scroll, which is a bug.
 ; A = top: $b, bottom: scrolling direction
 scrollMoveSprites:
-    push AF                                            ;; 02:43dd $f5
-    ld   A, [wSpriteScrollSpeed]                       ;; 02:43de $fa $a1 $c4
-    ld   B, A                                          ;; 02:43e1 $47
+    ld b, ROOM_SCROLL_SPEED
     ld   C, $04                                        ;; 02:43e2 $0e $04
-    pop  AF                                            ;; 02:43e4 $f1
     call scrollMoveObject                              ;; 02:43e5 $cd $5e $43
     push AF                                            ;; 02:43e8 $f5
     ld   C, $07                                        ;; 02:43e9 $0e $07

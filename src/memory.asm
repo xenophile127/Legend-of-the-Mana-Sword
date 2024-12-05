@@ -454,9 +454,7 @@ wSpriteShuffleScratch:
 wSpriteShuffleHiddenSpriteAddressLow:
     ds 1                                               ;; c4a0
 
-; "It takes all the running you can do, to keep in the same place.
-;  If you want to get somewhere else, you must run at least twice as fast as that!"
-; The rate sprites are moved during a screen scroll in order to keep their position relative to the background.
+; Unused. Free space.
 wSpriteScrollSpeed:
     ds 1                                               ;; c4a1
 
