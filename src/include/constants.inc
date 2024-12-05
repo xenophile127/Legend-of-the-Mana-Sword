@@ -352,3 +352,6 @@ DEF DIRECTIONB_SOUTH EQU 3
 DEF DIRECTIONB_NORTH EQU 2
 DEF DIRECTIONB_WEST  EQU 1
 DEF DIRECTIONB_EAST  EQU 0
+; Speed at which the screen scrolls to the next room.
+; Graphic corruption occurs if it is not a power of two.
+DEF ROOM_SCROLL_SPEED EQU $04

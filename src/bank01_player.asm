@@ -2058,8 +2058,8 @@ gameStateScrollLeft:
     call getChocoFormTileOffset                        ;; 01:4ee2 $cd $65 $4f
     ld   A, $82                                        ;; 01:4ee5 $3e $82
     call playerSpritesLoadPlayerSpriteTiles            ;; 01:4ee7 $cd $be $48
-    ld   D, $04                                        ;; 01:4eea $16 $04
-    ld   A, $01                                        ;; 01:4eec $3e $01
+    ld   D, ROOM_SCROLL_SPEED                          ;; 01:4eea $16 $04
+    ld   A, DIRECTIONF_EAST                            ;; 01:4eec $3e $01
     call scrollRoom                                    ;; 01:4eee $cd $d8 $44
     cp   A, $00                                        ;; 01:4ef1 $fe $00
     ret  NZ                                            ;; 01:4ef3 $c0
@@ -2071,8 +2071,8 @@ gameStateScrollRight:
     call getChocoFormTileOffset                        ;; 01:4efb $cd $65 $4f
     ld   A, $81                                        ;; 01:4efe $3e $81
     call playerSpritesLoadPlayerSpriteTiles            ;; 01:4f00 $cd $be $48
-    ld   D, $04                                        ;; 01:4f03 $16 $04
-    ld   A, $02                                        ;; 01:4f05 $3e $02
+    ld   D, ROOM_SCROLL_SPEED                          ;; 01:4f03 $16 $04
+    ld   A, DIRECTIONF_WEST                            ;; 01:4f05 $3e $02
     call scrollRoom                                    ;; 01:4f07 $cd $d8 $44
     cp   A, $00                                        ;; 01:4f0a $fe $00
     ret  NZ                                            ;; 01:4f0c $c0
@@ -2081,8 +2081,8 @@ gameStateScrollRight:
     ret                                                ;; 01:4f13 $c9
 
 gameStateScrollDown:
-    ld   D, $04                                        ;; 01:4f14 $16 $04
-    ld   A, $04                                        ;; 01:4f16 $3e $04
+    ld   D, ROOM_SCROLL_SPEED                          ;; 01:4f14 $16 $04
+    ld   A, DIRECTIONF_NORTH                           ;; 01:4f16 $3e $04
     call scrollRoom                                    ;; 01:4f18 $cd $d8 $44
     push AF                                            ;; 01:4f1b $f5
     call getChocoFormTileOffset                        ;; 01:4f1c $cd $65 $4f
@@ -2099,8 +2099,8 @@ gameStateScrollUp:
     call getChocoFormTileOffset                        ;; 01:4f2f $cd $65 $4f
     ld   A, $84                                        ;; 01:4f32 $3e $84
     call playerSpritesLoadPlayerSpriteTiles            ;; 01:4f34 $cd $be $48
-    ld   D, $04                                        ;; 01:4f37 $16 $04
-    ld   A, $08                                        ;; 01:4f39 $3e $08
+    ld   D, ROOM_SCROLL_SPEED                          ;; 01:4f37 $16 $04
+    ld   A, DIRECTIONF_SOUTH                           ;; 01:4f39 $3e $08
     call scrollRoom                                    ;; 01:4f3b $cd $d8 $44
     cp   A, $00                                        ;; 01:4f3e $fe $00
     ret  NZ                                            ;; 01:4f40 $c0
