@@ -6,4 +6,4 @@ Background colors are white, green, blue, and black.
 
 Only the first background palette is populated, the rest are monochrome and unused.
 
-Sprite palettes are either red or blue.
+Sprite palettes are unused at this point. While they are loaded, all sprites should be dynamically loading their own palettes as they are needed.
