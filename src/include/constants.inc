@@ -355,3 +355,6 @@ DEF DIRECTIONB_EAST  EQU 0
 ; Speed at which the screen scrolls to the next room.
 ; Graphic corruption occurs if it is not a power of two.
 DEF ROOM_SCROLL_SPEED EQU $04
+; Controls the number of frames of delay between each dialog character when no button is held..
+; Originally set to five but changed to two for faster text display.
+DEF TEXT_SPEED EQU $02

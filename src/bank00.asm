@@ -8398,7 +8398,7 @@ runScriptByIndex:
 ; Return: HL = script address
 runScriptFromScriptByIndex:
     ; Text speed 2 still allows pressing a button to further speed up text display.
-    ld   A, $02
+    ld a, TEXT_SPEED
     ld   [wTextSpeedTimer], A                          ;; 00:31c9 $ea $64 $d8
     ld   A, H                                          ;; 00:31cc $7c
     and  A, A                                          ;; 00:31cd $a7
@@ -9266,7 +9266,7 @@ textDelay:
     ld   [wTextSpeedTimer], A                          ;; 00:36c6 $ea $64 $d8
     ret  NZ                                            ;; 00:36c9 $c0
     ; Text speed 2 still allows pressing a button to further speed up text display.
-    ld   A, $02
+    ld a, TEXT_SPEED
     ld   [wTextSpeedTimer], A                          ;; 00:36cc $ea $64 $d8
     ret                                                ;; 00:36cf $c9
 
