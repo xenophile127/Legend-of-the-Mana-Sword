@@ -353,8 +353,16 @@ DEF DIRECTIONB_NORTH EQU 2
 DEF DIRECTIONB_WEST  EQU 1
 DEF DIRECTIONB_EAST  EQU 0
 ; Speed at which the screen scrolls to the next room.
-; Graphic corruption occurs if it is not a power of two.
+; Graphic corruption occurs if it is not a power of two or if greater than 16.
+IF DEF(COLOR)
+; Scroll faster in the color target.
+DEF ROOM_SCROLL_SPEED EQU $08
+ELSE
+; Scroll at the original speed in the original target.
+; Faster scrolling would work but seems like a good DX only enhancement.
+; Plus the DMG screen might be a blurry mess faster than this.
 DEF ROOM_SCROLL_SPEED EQU $04
+ENDC
 ; Controls the number of frames of delay between each dialog character when no button is held..
 ; Originally set to five but changed to two for faster text display.
 DEF TEXT_SPEED EQU $02
