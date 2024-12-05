@@ -35,7 +35,7 @@ NPCSpawnPointers:
     dw   data_03_7656, data_03_765e, walrus            ;; 03:71e4 ??????      number 27 $1b
     dw   data_03_7666, data_03_766e, data_03_7520      ;; 03:71ea ??????
     dw   data_03_7676, data_03_766e, data_03_7520      ;; 03:71f0 ??????
-    dw   data_03_767e, data_03_7686, gargoyle          ;; 03:71f6 ??????
+    dw   fireMoth,     earthElement, gargoyle          ;; 03:71f6 ??????      number 30 $1e
     dw   denden,       doppelMirror, guardian          ;; 03:71fc ??????
     dw   mattockEast,  data_03_76a6, data_03_76ae      ;; 03:7202 ??????      number 32 $20
     dw   garasha,      wonder,       guardian          ;; 03:7208 ??????      number 33 $21
@@ -441,11 +441,11 @@ data_03_7676:
     db   1, 2, NPC_TORTOISE, NPC_TORTOISE, NPC_TORTOISE, NPC_TORTOISE ;; 03:7676 ??????
     db   $80, $80                                      ;; 03:767c ??
 
-data_03_767e:
+fireMoth:
     db   1, 2, NPC_FIRE_MOTH, NPC_FIRE_MOTH, NPC_FIRE_MOTH, NPC_FIRE_MOTH ;; 03:767e ??????
     db   $80, $80                                      ;; 03:7684 ??
 
-data_03_7686:
+earthElement:
     db   1, 3, NPC_EARTH_DIGGER, NPC_EARTH_DIGGER, NPC_EARTH_DIGGER, NPC_EARTH_DIGGER ;; 03:7686 ??????
     db   $80, $80                                      ;; 03:768c ??
 
