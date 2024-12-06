@@ -977,89 +977,89 @@ data_04_56b9:
 
 data_04_56f7:
     db   $10                                           ;; 04:56f7 ?
-    dw   data_04_6905, data_04_6b42                    ;; 04:56f8 ????
+    dw   data_04_6905, bodyVampireCapeClosed           ;; 04:56f8 ????
     db   $01                                           ;; 04:56fc ?
-    dw   data_04_6914, data_04_6b9a                    ;; 04:56fd ????
+    dw   data_04_6914, bodyVampireCopeOpenFull_fire    ;; 04:56fd ????
     db   $08                                           ;; 04:5701 ?
-    dw   data_04_6914, data_04_6b58                    ;; 04:5702 ????
+    dw   data_04_6914, bodyVampireCopeOpenFull         ;; 04:5702 ????
     db   $08                                           ;; 04:5706 ?
-    dw   data_04_6911, data_04_6b42                    ;; 04:5707 ????
+    dw   data_04_6911, bodyVampireCapeClosed           ;; 04:5707 ????
     db   $ff                                           ;; 04:570b ?
 
 data_04_570c:
     db   $01                                           ;; 04:570c ?
-    dw   data_04_691a, data_04_6bc6                    ;; 04:570d ????
+    dw   data_04_691a, bodyVampireCapeOpenRight_fire   ;; 04:570d ????
     db   $01                                           ;; 04:5711 ?
-    dw   data_04_691a, data_04_6bc6                    ;; 04:5712 ????
+    dw   data_04_691a, bodyVampireCapeOpenRight_fire   ;; 04:5712 ????
     db   $08                                           ;; 04:5716 ?
-    dw   data_04_691a, data_04_6b84                    ;; 04:5717 ????
+    dw   data_04_691a, bodyVampireCapeOpenRight        ;; 04:5717 ????
     db   $08                                           ;; 04:571b ?
-    dw   data_04_6908, data_04_6b42                    ;; 04:571c ????
+    dw   data_04_6908, bodyVampireCapeClosed           ;; 04:571c ????
     db   $01                                           ;; 04:5720 ?
-    dw   data_04_6914, data_04_6b9a                    ;; 04:5721 ????
+    dw   data_04_6914, bodyVampireCopeOpenFull_fire    ;; 04:5721 ????
     db   $01                                           ;; 04:5725 ?
-    dw   data_04_6914, data_04_6b9a                    ;; 04:5726 ????
+    dw   data_04_6914, bodyVampireCopeOpenFull_fire    ;; 04:5726 ????
     db   $08                                           ;; 04:572a ?
-    dw   data_04_6914, data_04_6b58                    ;; 04:572b ????
+    dw   data_04_6914, bodyVampireCopeOpenFull         ;; 04:572b ????
     db   $08                                           ;; 04:572f ?
-    dw   data_04_690b, data_04_6b42                    ;; 04:5730 ????
+    dw   data_04_690b, bodyVampireCapeClosed           ;; 04:5730 ????
     db   $ff                                           ;; 04:5734 ?
 
 data_04_5735:
     db   $01                                           ;; 04:5735 ?
-    dw   data_04_691a, data_04_6bc6                    ;; 04:5736 ????
+    dw   data_04_691a, bodyVampireCapeOpenRight_fire   ;; 04:5736 ????
     db   $01                                           ;; 04:573a ?
-    dw   data_04_691a, data_04_6bc6                    ;; 04:573b ????
+    dw   data_04_691a, bodyVampireCapeOpenRight_fire   ;; 04:573b ????
     db   $08                                           ;; 04:573f ?
-    dw   data_04_691a, data_04_6b84                    ;; 04:5740 ????
+    dw   data_04_691a, bodyVampireCapeOpenRight        ;; 04:5740 ????
     db   $08                                           ;; 04:5744 ?
-    dw   data_04_690b, data_04_6b42                    ;; 04:5745 ????
+    dw   data_04_690b, bodyVampireCapeClosed           ;; 04:5745 ????
     db   $01                                           ;; 04:5749 ?
-    dw   data_04_6914, data_04_6b9a                    ;; 04:574a ????
+    dw   data_04_6914, bodyVampireCopeOpenFull_fire    ;; 04:574a ????
     db   $01                                           ;; 04:574e ?
-    dw   data_04_6914, data_04_6b9a                    ;; 04:574f ????
+    dw   data_04_6914, bodyVampireCopeOpenFull_fire    ;; 04:574f ????
     db   $08                                           ;; 04:5753 ?
-    dw   data_04_6914, data_04_6b58                    ;; 04:5754 ????
+    dw   data_04_6914, bodyVampireCopeOpenFull         ;; 04:5754 ????
     db   $08                                           ;; 04:5758 ?
-    dw   data_04_6908, data_04_6b42                    ;; 04:5759 ????
+    dw   data_04_6908, bodyVampireCapeClosed           ;; 04:5759 ????
     db   $ff                                           ;; 04:575d ?
 
 data_04_575e:
     db   $01                                           ;; 04:575e ?
-    dw   data_04_6917, data_04_6bb0                    ;; 04:575f ????
+    dw   data_04_6917, bodyVampireCapeOpenLeft_fire    ;; 04:575f ????
     db   $01                                           ;; 04:5763 ?
-    dw   data_04_6917, data_04_6bb0                    ;; 04:5764 ????
+    dw   data_04_6917, bodyVampireCapeOpenLeft_fire    ;; 04:5764 ????
     db   $08                                           ;; 04:5768 ?
-    dw   data_04_6917, data_04_6b6e                    ;; 04:5769 ????
+    dw   data_04_6917, bodyVampireCapeOpenLeft         ;; 04:5769 ????
     db   $08                                           ;; 04:576d ?
-    dw   data_04_690e, data_04_6b42                    ;; 04:576e ????
+    dw   data_04_690e, bodyVampireCapeClosed           ;; 04:576e ????
     db   $01                                           ;; 04:5772 ?
-    dw   data_04_6914, data_04_6b9a                    ;; 04:5773 ????
+    dw   data_04_6914, bodyVampireCopeOpenFull_fire    ;; 04:5773 ????
     db   $01                                           ;; 04:5777 ?
-    dw   data_04_6914, data_04_6b9a                    ;; 04:5778 ????
+    dw   data_04_6914, bodyVampireCopeOpenFull_fire    ;; 04:5778 ????
     db   $08                                           ;; 04:577c ?
-    dw   data_04_6914, data_04_6b58                    ;; 04:577d ????
+    dw   data_04_6914, bodyVampireCopeOpenFull         ;; 04:577d ????
     db   $08                                           ;; 04:5781 ?
-    dw   data_04_6911, data_04_6b42                    ;; 04:5782 ????
+    dw   data_04_6911, bodyVampireCapeClosed           ;; 04:5782 ????
     db   $ff                                           ;; 04:5786 ?
 
 data_04_5787:
     db   $01                                           ;; 04:5787 ?
-    dw   data_04_6917, data_04_6bb0                    ;; 04:5788 ????
+    dw   data_04_6917, bodyVampireCapeOpenLeft_fire    ;; 04:5788 ????
     db   $01                                           ;; 04:578c ?
-    dw   data_04_6917, data_04_6bb0                    ;; 04:578d ????
+    dw   data_04_6917, bodyVampireCapeOpenLeft_fire    ;; 04:578d ????
     db   $08                                           ;; 04:5791 ?
-    dw   data_04_6917, data_04_6b6e                    ;; 04:5792 ????
+    dw   data_04_6917, bodyVampireCapeOpenLeft         ;; 04:5792 ????
     db   $08                                           ;; 04:5796 ?
-    dw   data_04_6911, data_04_6b42                    ;; 04:5797 ????
+    dw   data_04_6911, bodyVampireCapeClosed           ;; 04:5797 ????
     db   $01                                           ;; 04:579b ?
-    dw   data_04_6914, data_04_6b9a                    ;; 04:579c ????
+    dw   data_04_6914, bodyVampireCopeOpenFull_fire    ;; 04:579c ????
     db   $01                                           ;; 04:57a0 ?
-    dw   data_04_6914, data_04_6b9a                    ;; 04:57a1 ????
+    dw   data_04_6914, bodyVampireCopeOpenFull_fire    ;; 04:57a1 ????
     db   $08                                           ;; 04:57a5 ?
-    dw   data_04_6914, data_04_6b58                    ;; 04:57a6 ????
+    dw   data_04_6914, bodyVampireCopeOpenFull         ;; 04:57a6 ????
     db   $08                                           ;; 04:57aa ?
-    dw   data_04_690e, data_04_6b42                    ;; 04:57ab ????
+    dw   data_04_690e, bodyVampireCapeClosed           ;; 04:57ab ????
     db   $ff                                           ;; 04:57af ?
 
 data_04_57b0:
@@ -3600,40 +3600,75 @@ data_04_6b3c:
 data_04_6b3f:
     db   $0d, $00, $ff                                 ;; 04:6b3f ...
 
-data_04_6b42:
-    db   $01, $00, $f0, $02, $f0, $00, $00, $f0        ;; 04:6b42 ????????
-    db   $f0, $06, $00, $00, $01, $00, $f0, $02        ;; 04:6b4a ????????
-    db   $f0, $00, $00, $f0, $f0, $ff                  ;; 04:6b52 ??????
+bodyVampireCapeClosed:
+    db   $01, $00, $f0                                 ;; 04:6b42
+    db   $02, $f0, $00
+    db   $00, $f0, $f0
+    db   $06, $00, $00
+    db   $01, $00, $f0
+    db   $02, $f0, $00
+    db   $00, $f0, $f0
+    db   $ff
 
-data_04_6b58:
-    db   $05, $00, $f0, $03, $f0, $00, $04, $f0        ;; 04:6b58 ????????
-    db   $f0, $0b, $10, $00, $08, $10, $f0, $0a        ;; 04:6b60 ????????
-    db   $e0, $00, $09, $e0, $f0, $ff                  ;; 04:6b68 ??????
+bodyVampireCopeOpenFull:
+    db   $05, $00, $f0                                ;; 04:6b58
+    db   $03, $f0, $00
+    db   $04, $f0, $f0
+    db   $0b, $10, $00
+    db   $08, $10, $f0
+    db   $0a, $e0, $00
+    db   $09, $e0, $f0
+    db   $ff
 
-data_04_6b6e:
-    db   $01, $00, $f0, $03, $f0, $00, $04, $f0        ;; 04:6b6e ????????
-    db   $f0, $06, $00, $00, $01, $00, $f0, $0a        ;; 04:6b76 ????????
-    db   $e0, $00, $09, $e0, $f0, $ff                  ;; 04:6b7e ??????
+bodyVampireCapeOpenLeft:
+    db   $01, $00, $f0                                 ;; 04:6b6e
+    db   $03, $f0, $00
+    db   $04, $f0, $f0
+    db   $06, $00, $00
+    db   $01, $00, $f0
+    db   $0a, $e0, $00
+    db   $09, $e0, $f0
+    db   $ff
 
-data_04_6b84:
-    db   $05, $00, $f0, $02, $f0, $00, $00, $f0        ;; 04:6b84 ????????
-    db   $f0, $0b, $10, $00, $08, $10, $f0, $02        ;; 04:6b8c ????????
-    db   $f0, $00, $00, $f0, $f0, $ff                  ;; 04:6b94 ??????
+bodyVampireCapeOpenRight:
+    db   $05, $00, $f0                                 ;; 04:6b84
+    db   $02, $f0, $00
+    db   $00, $f0, $f0
+    db   $0b, $10, $00
+    db   $08, $10, $f0
+    db   $02, $f0, $00
+    db   $00, $f0, $f0
+    db   $ff
 
-data_04_6b9a:
-    db   $05, $00, $f0, $03, $f0, $00, $04, $f0        ;; 04:6b9a ????????
-    db   $f0, $0b, $10, $00, $48, $10, $f0, $0a        ;; 04:6ba2 ????????
-    db   $e0, $00, $49, $e0, $f0, $ff                  ;; 04:6baa ??????
+bodyVampireCopeOpenFull_fire:
+    db   $05, $00, $f0                                 ;; 04:6b9a
+    db   $03, $f0, $00
+    db   $04, $f0, $f0
+    db   $0b, $10, $00
+    db   $48, $10, $f0
+    db   $0a, $e0, $00
+    db   $49, $e0, $f0
+    db   $ff
 
-data_04_6bb0:
-    db   $01, $00, $f0, $03, $f0, $00, $04, $f0        ;; 04:6bb0 ????????
-    db   $f0, $06, $00, $00, $01, $00, $f0, $0a        ;; 04:6bb8 ????????
-    db   $e0, $00, $49, $e0, $f0, $ff                  ;; 04:6bc0 ??????
+bodyVampireCapeOpenLeft_fire:
+    db   $01, $00, $f0                                 ;; 04:6bb0
+    db   $03, $f0, $00
+    db   $04, $f0, $f0
+    db   $06, $00, $00
+    db   $01, $00, $f0
+    db   $0a, $e0, $00
+    db   $49, $e0, $f0
+    db   $ff
 
-data_04_6bc6:
-    db   $05, $00, $f0, $02, $f0, $00, $00, $f0        ;; 04:6bc6 ????????
-    db   $f0, $0b, $10, $00, $48, $10, $f0, $02        ;; 04:6bce ????????
-    db   $f0, $00, $00, $f0, $f0, $ff                  ;; 04:6bd6 ??????
+bodyVampireCapeOpenRight_fire:
+    db   $05, $00, $f0                                 ;; 04:6bc6
+    db   $02, $f0, $00
+    db   $00, $f0, $f0
+    db   $0b, $10, $00
+    db   $48, $10, $f0
+    db   $02, $f0, $00
+    db   $00, $f0, $f0
+    db   $ff
 
 data_04_6bdc:
     db   $01, $d0, $f0, $02, $e0, $e0, $03, $f0        ;; 04:6bdc ????????
