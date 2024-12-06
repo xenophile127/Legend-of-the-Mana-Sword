@@ -317,7 +317,7 @@ scrollMoveObject:
     ld   B, A                                          ;; 02:438f $47
     push BC                                            ;; 02:4390 $c5
     call GetObjectX                                    ;; 02:4391 $cd $2d $0c
-    cp   A, $a1                                        ;; 02:4394 $fe $a1
+    cp   A, SCRN_X + 1                                 ;; 02:4394 $fe $a1
     jr   NC, .offscreen                                ;; 02:4396 $30 $12
     pop  BC                                            ;; 02:4398 $c1
     push BC                                            ;; 02:4399 $c5
@@ -6125,7 +6125,7 @@ jp_02_71fb:
     ld   DE, wDialogX                                  ;; 02:727e $11 $a7 $d4
     ld   B, $08                                        ;; 02:7281 $06 $08
     call writeDEtimesBtoSRAM                           ;; 02:7283 $cd $48 $74
-    ld   A, (SAVE_MAGIC_NUMBER >>> 4) | (SAVE_MAGIC_NUMBER << 4) ;; 02:7286 $3e $c6
+    ld   A, LOW((SAVE_MAGIC_NUMBER >>> 4) | (SAVE_MAGIC_NUMBER << 4)) ;; 02:7286 $3e $c6
     call writeSRAMByte                                 ;; 02:7288 $cd $64 $74
     call disableSRAM                                   ;; 02:728b $cd $5e $74
     ld   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:728e $3e $1b

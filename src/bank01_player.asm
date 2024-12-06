@@ -977,15 +977,15 @@ scrollRoomMoveScreen:
     ld   A, E                                          ;; 01:46d2 $7b
     add  A, D                                          ;; 01:46d3 $82
     bit  7, A                                          ;; 01:46d4 $cb $7f
-    jr   Z, .jr_01_46da                                ;; 01:46d6 $28 $02
+    jr   Z, .load_x_or_y_limit                         ;; 01:46d6 $28 $02
     cpl                                                ;; 01:46d8 $2f
     inc  A                                             ;; 01:46d9 $3c
-.jr_01_46da:
+.load_x_or_y_limit:
     ld   C, A                                          ;; 01:46da $4f
     ld   A, [wScrollPixelCounter]                      ;; 01:46db $fa $48 $c3
     add  A, C                                          ;; 01:46de $81
     ld   [wScrollPixelCounter], A                      ;; 01:46df $ea $48 $c3
-    ld   C, $a0                                        ;; 01:46e2 $0e $a0
+    ld   C, SCRN_X                                     ;; 01:46e2 $0e $a0
     xor  A, A                                          ;; 01:46e4 $af
     cp   A, E                                          ;; 01:46e5 $bb
     jr   NZ, .check_finished                           ;; 01:46e6 $20 $07
@@ -2782,7 +2782,7 @@ attackObjectFunction08:
     push BC                                            ;; 01:5374 $c5
     call GetObjectX                                    ;; 01:5375 $cd $2d $0c
     pop  BC                                            ;; 01:5378 $c1
-    cp   A, $a1                                        ;; 01:5379 $fe $a1
+    cp   A, SCRN_X + 1                                 ;; 01:5379 $fe $a1
     jr   NC, .jp_01_538a                               ;; 01:537b $30 $0d
     pop  AF                                            ;; 01:537d $f1
     push BC                                            ;; 01:537e $c5
@@ -2955,7 +2955,7 @@ attackObjectFunction02:
     ld   A, [HL-]                                      ;; 01:5452 $3a
     add  A, E                                          ;; 01:5453 $83
     ld   E, A                                          ;; 01:5454 $5f
-    cp   A, $a1                                        ;; 01:5455 $fe $a1
+    cp   A, SCRN_X + 1                                 ;; 01:5455 $fe $a1
     jr   NC, .remove_attack_object
     ld   A, [wVideoWY]                                 ;; 01:5459 $fa $a9 $c0
     add  A, $08                                        ;; 01:545c $c6 $08
@@ -3947,7 +3947,7 @@ attackObjectFunction06:
     push BC                                            ;; 01:59ad $c5
     call GetObjectX                                    ;; 01:59ae $cd $2d $0c
     pop  BC                                            ;; 01:59b1 $c1
-    cp   A, $a1                                        ;; 01:59b2 $fe $a1
+    cp   A, SCRN_X + 1                                 ;; 01:59b2 $fe $a1
     jr   NC, .jr_01_59ca                               ;; 01:59b4 $30 $14
     pop  HL                                            ;; 01:59b6 $e1
     ld   E, [HL]                                       ;; 01:59b7 $5e

@@ -5455,7 +5455,7 @@ initMisc:
     ld   [wVideoWX], A                                 ;; 00:209f $ea $a8 $c0
     ld   A, $80                                        ;; 00:20a2 $3e $80
     ld   [wVideoWY], A                                 ;; 00:20a4 $ea $a9 $c0
-    ld   A, $10                                        ;; 00:20a7 $3e $10
+    ld   A, SCRN_Y_B - 2                               ;; 00:20a7 $3e $10
     ld   [wRoomHeightInTiles], A                       ;; 00:20a9 $ea $40 $c3
     call initTimerIDsNamesAndScriptFlags               ;; 00:20ac $cd $88 $2f
     call initObjects                                   ;; 00:20af $cd $d1 $0b
