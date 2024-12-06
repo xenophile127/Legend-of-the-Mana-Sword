@@ -1347,7 +1347,7 @@ windowNamingEntryRubLetter:
     xor  A, A                                          ;; 02:4bbc $af
     ld   [HL], A                                       ;; 02:4bbd $77
     ld   HL, windowData.namingScreenTop                ;; 02:4bbe $21 $cc $5c
-    ld   A, $1d                                        ;; 02:4bc1 $3e $1d
+    ld   A, WINDOW_NAMING_SCREEN_TOP                   ;; 02:4bc1 $3e $1d
     call setActiveWindow                               ;; 02:4bc3 $cd $c4 $57
     pop  AF                                            ;; 02:4bc6 $f1
     ld   DE, $108                                      ;; 02:4bc7 $11 $08 $01
@@ -1359,7 +1359,7 @@ windowNamingEntryRubLetter:
     ld   A, $7f                                        ;; 02:4bd2 $3e $7f
     call storeTileAatDialogPositionDE                  ;; 02:4bd4 $cd $44 $38
     ld   HL, windowData.namingScreenBottom             ;; 02:4bd7 $21 $d6 $5c
-    ld   A, $1e                                        ;; 02:4bda $3e $1e
+    ld   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:4bda $3e $1e
     call setActiveWindow                               ;; 02:4bdc $cd $c4 $57
 .finished:
     ld   A, [wSelectedMenuIndex2]                      ;; 02:4bdf $fa $4c $d8
@@ -1661,7 +1661,7 @@ swapActiveEquipment:
     ld   [wMenuFlagsBackup], A                         ;; 02:4df8 $ea $4e $d8
     ld   A, [wD848]                                    ;; 02:4dfb $fa $48 $d8
     ld   [wD84F], A                                    ;; 02:4dfe $ea $4f $d8
-    ld   A, $03                                        ;; 02:4e01 $3e $03
+    ld   A, WINDOW_EQUIP_TOP                           ;; 02:4e01 $3e $03
     ld   HL, windowData.equipmentScreenTop             ;; 02:4e03 $21 $c8 $5b
     call setActiveWindow                               ;; 02:4e06 $cd $c4 $57
     call windowInitContents                            ;; 02:4e09 $cd $93 $76
@@ -2270,13 +2270,13 @@ vendorRemoveSoldItem:
     ld   C, A                                          ;; 02:5240 $4f
     ld   HL, wItemInventory                            ;; 02:5241 $21 $c5 $d6
     ld   DE, wItemInventoryAmount                      ;; 02:5244 $11 $9b $d6
-    ld   B, $11                                        ;; 02:5247 $06 $11
+    ld   B, SAVE_ITEM_INVENTORY_SIZE + 1               ;; 02:5247 $06 $11
     call vendorFindAndRemoveSoldItem                   ;; 02:5249 $cd $5c $52
     and  A, A                                          ;; 02:524c $a7
     ret  Z                                             ;; 02:524d $c8
     ld   HL, wEquipmentInventory                       ;; 02:524e $21 $dd $d6
     ld   DE, wEquipmentInventoryPowers                 ;; 02:5251 $11 $b3 $d6
-    ld   B, $0d                                        ;; 02:5254 $06 $0d
+    ld   B, SAVE_EQUIP_INVENTORY_SIZE + 1              ;; 02:5254 $06 $0d
     set  7, C                                          ;; 02:5256 $cb $f9
     call vendorFindAndRemoveSoldItem                   ;; 02:5258 $cd $5c $52
     ret                                                ;; 02:525b $c9
@@ -2353,7 +2353,7 @@ windowNamingEntryAddLetter:
     add  HL, DE                                        ;; 02:52d1 $19
     ld   A, [HL]                                       ;; 02:52d2 $7e
     ld   C, A                                          ;; 02:52d3 $4f
-    ld   A, $1d                                        ;; 02:52d4 $3e $1d
+    ld   A, WINDOW_NAMING_SCREEN_TOP                   ;; 02:52d4 $3e $1d
     ld   HL, windowData.namingScreenTop                ;; 02:52d6 $21 $cc $5c
     call setActiveWindow                               ;; 02:52d9 $cd $c4 $57
     ld   DE, $208                                      ;; 02:52dc $11 $08 $02
@@ -2361,7 +2361,7 @@ windowNamingEntryAddLetter:
     ld   A, [HL]                                       ;; 02:52e2 $7e
     inc  A                                             ;; 02:52e3 $3c
 ; Check that the maximum length has not been reached before adding a letter.
-    cp   A, $05                                        ;; 02:52e4 $fe $05
+    cp   A, SAVE_MAX_NAME_LENGTH + 1                   ;; 02:52e4 $fe $05
     jr   NC, .finished                                 ;; 02:52e6 $30 $1e
     ld   [HL], A                                       ;; 02:52e8 $77
     dec  A                                             ;; 02:52e9 $3d
@@ -2382,7 +2382,7 @@ windowNamingEntryAddLetter:
     ld   DE, $208                                      ;; 02:5300 $11 $08 $02
     call drawText                                      ;; 02:5303 $cd $77 $37
 .finished:
-    ld   A, $1e                                        ;; 02:5306 $3e $1e
+    ld   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:5306 $3e $1e
     ld   HL, windowData.namingScreenBottom             ;; 02:5308 $21 $d6 $5c
     call setActiveWindow                               ;; 02:530b $cd $c4 $57
     pop  HL                                            ;; 02:530e $e1
@@ -2499,7 +2499,7 @@ capAtLevel100:
 removeItemFromInventory:
     ld   HL, wItemInventory                            ;; 02:53bb $21 $c5 $d6
     ld   DE, wItemInventoryAmount                      ;; 02:53be $11 $9b $d6
-    ld   B, $10                                        ;; 02:53c1 $06 $10
+    ld   B, SAVE_ITEM_INVENTORY_SIZE                   ;; 02:53c1 $06 $10
     ld   C, A                                          ;; 02:53c3 $4f
     call removeItemFromList                            ;; 02:53c4 $cd $e2 $53
     ret                                                ;; 02:53c7 $c9
@@ -2507,7 +2507,7 @@ removeItemFromInventory:
 removeEquipmentFromInventory:
     ld   HL, wEquipmentInventory                       ;; 02:53c8 $21 $dd $d6
     ld   DE, wEquipmentInventoryPowers                 ;; 02:53cb $11 $b3 $d6
-    ld   B, $0c                                        ;; 02:53ce $06 $0c
+    ld   B, SAVE_EQUIP_INVENTORY_SIZE                  ;; 02:53ce $06 $0c
     ld   C, A                                          ;; 02:53d0 $4f
     call removeItemFromList                            ;; 02:53d1 $cd $e2 $53
     ret                                                ;; 02:53d4 $c9
@@ -2515,7 +2515,7 @@ removeEquipmentFromInventory:
 removeMagicFromInventory:
     ld   HL, wMagicInventory                           ;; 02:53d5 $21 $d5 $d6
     ld   DE, wEquippedWeaponPower                      ;; 02:53d8 $11 $bf $d6
-    ld   B, $08                                        ;; 02:53db $06 $08
+    ld   B, SAVE_MAGIC_INVENTORY_SIZE                  ;; 02:53db $06 $08
     ld   C, A                                          ;; 02:53dd $4f
     call removeItemFromList                            ;; 02:53de $cd $e2 $53
     ret                                                ;; 02:53e1 $c9
@@ -2535,14 +2535,14 @@ removeItemFromList:
     ret                                                ;; 02:53ef $c9
 
 giveEquipmentAndStorePowers:
-    ld   B, $0c                                        ;; 02:53f0 $06 $0c
+    ld   B, SAVE_EQUIP_INVENTORY_SIZE                  ;; 02:53f0 $06 $0c
     ld   C, A                                          ;; 02:53f2 $4f
     ld   HL, wEquipmentInventory                       ;; 02:53f3 $21 $dd $d6
     push HL                                            ;; 02:53f6 $e5
     call giveEquipment                                 ;; 02:53f7 $cd $10 $54
     pop  HL                                            ;; 02:53fa $e1
     ld   DE, wEquipmentInventoryPowers                 ;; 02:53fb $11 $b3 $d6
-    ld   B, $0c                                        ;; 02:53fe $06 $0c
+    ld   B, SAVE_EQUIP_INVENTORY_SIZE                  ;; 02:53fe $06 $0c
 .loop:
     ld   A, [HL+]                                      ;; 02:5400 $2a
     push HL                                            ;; 02:5401 $e5
@@ -2563,7 +2563,7 @@ giveEquipment:
     jr   giveEquipmentItemMagic                        ;; 02:5417 $18 $1c
 
 giveItem:
-    ld   B, $10                                        ;; 02:5419 $06 $10
+    ld   B, SAVE_ITEM_INVENTORY_SIZE                   ;; 02:5419 $06 $10
     ld   C, A                                          ;; 02:541b $4f
     ld   HL, wItemInventory                            ;; 02:541c $21 $c5 $d6
     ld   DE, itemDataTable + $08                       ;; 02:541f $11 $62 $5e
@@ -2572,7 +2572,7 @@ giveItem:
     jr   giveEquipmentItemMagic                        ;; 02:5426 $18 $0d
 
 giveMagic:
-    ld   B, $08                                        ;; 02:5428 $06 $08
+    ld   B, SAVE_MAGIC_INVENTORY_SIZE                  ;; 02:5428 $06 $08
     ld   C, A                                          ;; 02:542a $4f
     ld   HL, wMagicInventory                           ;; 02:542b $21 $d5 $d6
     ld   DE, spellDataTable + $08                      ;; 02:542e $11 $e2 $5d
@@ -3183,7 +3183,7 @@ getSelectedMenuIndexes:
     ret                                                ;; 02:57b8 $c9
 
 call_02_57b9:
-    ld   A, $04                                        ;; 02:57b9 $3e $04
+    ld   A, WINDOW_EQUIP_BOTTOM                        ;; 02:57b9 $3e $04
     push AF                                            ;; 02:57bb $f5
     ld   HL, windowData.equipmentScreenBottom          ;; 02:57bc $21 $d2 $5b
     call setActiveWindow                               ;; 02:57bf $cd $c4 $57
@@ -4613,7 +4613,7 @@ processWindowInput:
     push BC                                            ;; 02:6950 $c5
     ld   HL, wSRAMSaveHeader                           ;; 02:6951 $21 $a7 $d7
     ld   DE, wBoyName                                  ;; 02:6954 $11 $9d $d7
-    ld   B, $04                                        ;; 02:6957 $06 $04
+    ld   B, SAVE_MAX_NAME_LENGTH                       ;; 02:6957 $06 $04
     ld   A, [wWindowFlags]                             ;; 02:6959 $fa $74 $d8
     bit  5, A                                          ;; 02:695c $cb $6f
     push AF                                            ;; 02:695e $f5
@@ -6101,10 +6101,10 @@ jp_02_71fb:
     push HL                                            ;; 02:7243 $e5
     ld   DE, wSRAMSaveHeader._3                        ;; 02:7244 $11 $aa $d7
     ld   HL, wBoyName                                  ;; 02:7247 $21 $9d $d7
-    ld   B, $04                                        ;; 02:724a $06 $04
+    ld   B, SAVE_MAX_NAME_LENGTH                       ;; 02:724a $06 $04
     call copyHLtoDEtimesB                              ;; 02:724c $cd $51 $74
     ld   HL, wGirlName                                 ;; 02:724f $21 $a2 $d7
-    ld   B, $04                                        ;; 02:7252 $06 $04
+    ld   B, SAVE_MAX_NAME_LENGTH                       ;; 02:7252 $06 $04
     call copyHLtoDEtimesB                              ;; 02:7254 $cd $51 $74
     call getGraphicsAndMusicState                      ;; 02:7257 $cd $35 $77
     ld   HL, wSRAMSaveHeader                           ;; 02:725a $21 $a7 $d7
@@ -6120,12 +6120,12 @@ jp_02_71fb:
     ld   B, $32                                        ;; 02:7271 $06 $32
     call writeDEtimesBtoSRAM                           ;; 02:7273 $cd $48 $74
     ld   DE, wItemInventoryAmount                      ;; 02:7276 $11 $9b $d6
-    ld   B, $10                                        ;; 02:7279 $06 $10
+    ld   B, SAVE_ITEM_INVENTORY_SIZE                   ;; 02:7279 $06 $10
     call writeDEtimesBtoSRAM                           ;; 02:727b $cd $48 $74
     ld   DE, wDialogX                                  ;; 02:727e $11 $a7 $d4
     ld   B, $08                                        ;; 02:7281 $06 $08
     call writeDEtimesBtoSRAM                           ;; 02:7283 $cd $48 $74
-    ld   A, $c6                                        ;; 02:7286 $3e $c6
+    ld   A, (SAVE_MAGIC_NUMBER >>> 4) | (SAVE_MAGIC_NUMBER << 4) ;; 02:7286 $3e $c6
     call writeSRAMByte                                 ;; 02:7288 $cd $64 $74
     call disableSRAM                                   ;; 02:728b $cd $5e $74
     ld   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:728e $3e $1b
@@ -6199,7 +6199,7 @@ jp_02_72be:
     ld   B, $32                                        ;; 02:72fd $06 $32
     call readDEtimesBtoSRAM                            ;; 02:72ff $cd $3f $74
     ld   DE, wItemInventoryAmount                      ;; 02:7302 $11 $9b $d6
-    ld   B, $10                                        ;; 02:7305 $06 $10
+    ld   B, SAVE_ITEM_INVENTORY_SIZE                   ;; 02:7305 $06 $10
     call readDEtimesBtoSRAM                            ;; 02:7307 $cd $3f $74
     ld   DE, wOpenChestScript3                         ;; 02:730a $11 $33 $d6
     ld   B, $08                                        ;; 02:730d $06 $08
@@ -6217,12 +6217,12 @@ loadSRAMInitGame:
     push HL                                            ;; 02:7325 $e5
     ld   HL, wSRAMSaveHeader._3                        ;; 02:7326 $21 $aa $d7
     ld   DE, wBoyName                                  ;; 02:7329 $11 $9d $d7
-    ld   B, $04                                        ;; 02:732c $06 $04
+    ld   B, SAVE_MAX_NAME_LENGTH                       ;; 02:732c $06 $04
     call copyHLtoDEtimesB                              ;; 02:732e $cd $51 $74
     xor  A, A                                          ;; 02:7331 $af
     ld   [DE], A                                       ;; 02:7332 $12
     inc  DE                                            ;; 02:7333 $13
-    ld   B, $04                                        ;; 02:7334 $06 $04
+    ld   B, SAVE_MAX_NAME_LENGTH                       ;; 02:7334 $06 $04
     call copyHLtoDEtimesB                              ;; 02:7336 $cd $51 $74
     xor  A, A                                          ;; 02:7339 $af
     ld   [DE], A                                       ;; 02:733a $12
@@ -6232,7 +6232,7 @@ loadSRAMInitGame:
 ; Init known magic spells from the magic inventory.
     ld   HL, wMagicInventory                           ;; 02:7340 $21 $d5 $d6
     ld   DE, wKnownMagicSpells                         ;; 02:7343 $11 $ab $d6
-    ld   B, $08                                        ;; 02:7346 $06 $08
+    ld   B, SAVE_MAGIC_INVENTORY_SIZE                  ;; 02:7346 $06 $08
 .loop_magic:
     xor  A, A                                          ;; 02:7348 $af
     ld   [DE], A                                       ;; 02:7349 $12
@@ -6250,7 +6250,7 @@ loadSRAMInitGame:
 ; It could also easily cause a major nerf for unsuspecting players.
     ld   HL, wEquipmentInventory                       ;; 02:7355 $21 $dd $d6
     ld   DE, wEquipmentInventoryPowers                 ;; 02:7358 $11 $b3 $d6
-    ld   B, $0c                                        ;; 02:735b $06 $0c
+    ld   B, SAVE_EQUIP_INVENTORY_SIZE                  ;; 02:735b $06 $0c
 .loop_equipment:
     push BC                                            ;; 02:735d $c5
     ld   A, [HL]                                       ;; 02:735e $7e
@@ -6475,7 +6475,7 @@ checkSaveGameIntegrity:
     push AF                                            ;; 02:747c $f5
     call enableSRAM                                    ;; 02:747d $cd $58 $74
     call readSRAMByte                                  ;; 02:7480 $cd $6f $74
-    cp   A, $6c                                        ;; 02:7483 $fe $6c
+    cp   A, SAVE_MAGIC_NUMBER                          ;; 02:7483 $fe $6c
     jr   NZ, .header_mismatch                          ;; 02:7485 $20 $1e
     call readSRAMByte                                  ;; 02:7487 $cd $6f $74
     ld   E, A                                          ;; 02:748a $5f
@@ -6957,7 +6957,7 @@ getGraphicsAndMusicState:
     ret                                                ;; 02:7771 $c9
 
 formatSaveHeader:
-    ld   A, $6c                                        ;; 02:7772 $3e $6c
+    ld   A, SAVE_MAGIC_NUMBER                          ;; 02:7772 $3e $6c
     ld   [HL+], A                                      ;; 02:7774 $22
     call calculateChecksum                             ;; 02:7775 $cd $7d $77
     ld   [HL], E                                       ;; 02:7778 $73

@@ -342,6 +342,13 @@ DEF WINDOW_TITLE_SCREEN = $1f
 DEF WINDOW_STATUS_BEGIN = $20
 DEF WINDOW_LEVELUP_FANFARE = $21
 DEF WINDOW_INTRO_SCROLL = $ff
+;;Constants: SAVE
+; These are included to make it easier to change them if desired, but there is still a long way to go.
+DEF SAVE_MAGIC_NUMBER EQU $6c
+DEF SAVE_MAX_NAME_LENGTH EQU $04
+DEF SAVE_ITEM_INVENTORY_SIZE EQU $10
+DEF SAVE_MAGIC_INVENTORY_SIZE EQU $08
+DEF SAVE_EQUIP_INVENTORY_SIZE EQU $0c
 ;;Constants: MISC
 ; These are the joypad values but are also used for character's facing direction and scrolling.
 DEF DIRECTIONF_SOUTH EQU $08

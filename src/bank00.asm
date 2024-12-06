@@ -8759,14 +8759,14 @@ findSpellItemOrEquipment:
     push HL                                            ;; 00:33cf $e5
     ld   HL, wEquippedWeapon                           ;; 00:33d0 $21 $e9 $d6
     ld   B, $06                                        ;; 00:33d3 $06 $06
-    ld   C, $41                                        ;; 00:33d5 $0e $41
+    ld   C, INV_SWORD_BROAD - 1                        ;; 00:33d5 $0e $41
     call addOffsetToItemIDs                            ;; 00:33d7 $cd $3f $34
     ld   HL, wEquipmentInventory                       ;; 00:33da $21 $dd $d6
-    ld   B, $0c                                        ;; 00:33dd $06 $0c
+    ld   B, SAVE_EQUIP_INVENTORY_SIZE                  ;; 00:33dd $06 $0c
     call addOffsetToItemIDs                            ;; 00:33df $cd $3f $34
     ld   HL, wItemInventory                            ;; 00:33e2 $21 $c5 $d6
-    ld   B, $10                                        ;; 00:33e5 $06 $10
-    ld   C, $08                                        ;; 00:33e7 $0e $08
+    ld   B, SAVE_ITEM_INVENTORY_SIZE                   ;; 00:33e5 $06 $10
+    ld   C, INV_ITEM_POTION_CURE - 1                   ;; 00:33e7 $0e $08
     call addOffsetToItemIDs                            ;; 00:33e9 $cd $3f $34
     pop  HL                                            ;; 00:33ec $e1
 .findItemsFromList:
@@ -8803,14 +8803,14 @@ revertItemIDs:
     push HL                                            ;; 00:3411 $e5
     ld   HL, wEquippedWeapon                           ;; 00:3412 $21 $e9 $d6
     ld   B, $06                                        ;; 00:3415 $06 $06
-    ld   C, $41                                        ;; 00:3417 $0e $41
+    ld   C, INV_SWORD_BROAD - 1                        ;; 00:3417 $0e $41
     call subtractOffsetFromItemIDs                     ;; 00:3419 $cd $30 $34
     ld   HL, wEquipmentInventory                       ;; 00:341c $21 $dd $d6
-    ld   B, $0c                                        ;; 00:341f $06 $0c
+    ld   B, SAVE_EQUIP_INVENTORY_SIZE                  ;; 00:341f $06 $0c
     call subtractOffsetFromItemIDs                     ;; 00:3421 $cd $30 $34
     ld   HL, wItemInventory                            ;; 00:3424 $21 $c5 $d6
-    ld   B, $10                                        ;; 00:3427 $06 $10
-    ld   C, $08                                        ;; 00:3429 $0e $08
+    ld   B, SAVE_ITEM_INVENTORY_SIZE                   ;; 00:3427 $06 $10
+    ld   C, INV_ITEM_POTION_CURE - 1                   ;; 00:3429 $0e $08
     call subtractOffsetFromItemIDs                     ;; 00:342b $cd $30 $34
     pop  HL                                            ;; 00:342e $e1
     ret                                                ;; 00:342f $c9
@@ -9821,7 +9821,7 @@ scriptOpCodeStartNameEntry:
     xor  A, A                                          ;; 00:39ed $af
     ld   [wNameEntryNameLength], A                     ;; 00:39ee $ea $85 $d8
     ld   HL, wSRAMSaveHeader                           ;; 00:39f1 $21 $a7 $d7
-    ld   B, $04                                        ;; 00:39f4 $06 $04
+    ld   B, SAVE_MAX_NAME_LENGTH                       ;; 00:39f4 $06 $04
 .loop:
     ld   [HL+], A                                      ;; 00:39f6 $22
     dec  B                                             ;; 00:39f7 $05
@@ -10107,7 +10107,7 @@ scriptOpCodeTakeEquipedItem:
     ld   [wEquippedItem], A                            ;; 00:3b83 $ea $ef $d6
     ld   [wEquippedItemAndWeaponCopy], A               ;; 00:3b86 $ea $f1 $d6
     ld   HL, wItemInventory                            ;; 00:3b89 $21 $c5 $d6
-    ld   B, $18                                        ;; 00:3b8c $06 $18
+    ld   B, SAVE_ITEM_INVENTORY_SIZE + SAVE_MAGIC_INVENTORY_SIZE ;; 00:3b8c $06 $18
 .loop:
     ld   A, [HL+]                                      ;; 00:3b8e $2a
     cp   A, $80                                        ;; 00:3b8f $fe $80

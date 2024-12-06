@@ -916,15 +916,15 @@ wOAMBufferBackup:
 ; START OF SRAM PART 3
 ; Amount of the same type of item in inventory. wItemInventory indicates the type, wItemInventoryAmount indicates the amount
 wItemInventoryAmount:
-    ds 16                                              ;; d69b
+    ds SAVE_ITEM_INVENTORY_SIZE                        ;; d69b
 
 ; END OF SRAM PART 3 (d6ab is not saved)
 ; Technically these are quantities, but since you can only ever have one of any spell, it's just whether you have it
 wKnownMagicSpells:
-    ds 8                                               ;; d6ab
+    ds SAVE_MAGIC_INVENTORY_SIZE                       ;; d6ab
 
 wEquipmentInventoryPowers:
-    ds 12                                              ;; d6b3
+    ds SAVE_EQUIP_INVENTORY_SIZE                       ;; d6b3
 
 ; START OF SRAM PART 2
 wEquippedWeaponPower:
@@ -944,15 +944,15 @@ wEquippedArmorDefense:
 wDupTotalDP:
     ds 2                                               ;; d6c3
 
-; List if item IDs in your current inventory. ItemID has $80 added to it if it has a usage counter.
+; List of item IDs in your current inventory. ItemID has $80 added to it if it has a usage counter.
 wItemInventory:
-    ds 16                                              ;; d6c5
+    ds SAVE_ITEM_INVENTORY_SIZE                        ;; d6c5
 
 wMagicInventory:
-    ds 8                                               ;; d6d5
+    ds SAVE_MAGIC_INVENTORY_SIZE                       ;; d6d5
 
 wEquipmentInventory:
-    ds 12                                              ;; d6dd
+    ds SAVE_EQUIP_INVENTORY_SIZE                       ;; d6dd
 
 wEquippedWeapon:
     ds 1                                               ;; d6e9
