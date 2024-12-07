@@ -693,7 +693,7 @@ data_04_5435:
 
 data_04_5473:
     db   $01                                           ;; 04:5473 .
-    dw   data_04_6b3c, data_04_7685                    ;; 04:5474 ....
+    dw   data_04_6b3c, bodyJackalGolemDeathFrame1      ;; 04:5474 ....
     db   $01                                           ;; 04:5478 .
     dw   data_04_6b3f, data_04_7695                    ;; 04:5479 ....
     db   $01                                           ;; 04:547d .
@@ -1064,524 +1064,524 @@ data_04_5787:
 
 data_04_57b0:
     db   $02                                           ;; 04:57b0 ?
-    dw   data_04_6920, data_04_6bdc                    ;; 04:57b1 ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontHighBackMid ;; 04:57b1 ????
     db   $01                                           ;; 04:57b5 ?
-    dw   data_04_6920, data_04_6bef                    ;; 04:57b6 ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontHighBackLow ;; 04:57b6 ????
     db   $01                                           ;; 04:57ba ?
-    dw   data_04_6920, data_04_6c02                    ;; 04:57bb ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontMidBackLow ;; 04:57bb ????
     db   $01                                           ;; 04:57bf ?
-    dw   data_04_6920, data_04_6c15                    ;; 04:57c0 ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontMidBackHigh ;; 04:57c0 ????
     db   $01                                           ;; 04:57c4 ?
-    dw   data_04_6920, data_04_6c28                    ;; 04:57c5 ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontLowBackHigh_fire ;; 04:57c5 ????
     db   $02                                           ;; 04:57c9 ?
-    dw   data_04_6920, data_04_6c3b                    ;; 04:57ca ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontMidBackLow_dup ;; 04:57ca ????
     db   $06                                           ;; 04:57ce ?
-    dw   data_04_692c, data_04_6bdc                    ;; 04:57cf ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontHighBackMid ;; 04:57cf ????
     db   $05                                           ;; 04:57d3 ?
-    dw   data_04_692c, data_04_6bef                    ;; 04:57d4 ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontHighBackLow ;; 04:57d4 ????
     db   $05                                           ;; 04:57d8 ?
-    dw   data_04_692c, data_04_6c02                    ;; 04:57d9 ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontMidBackLow ;; 04:57d9 ????
     db   $05                                           ;; 04:57dd ?
-    dw   data_04_6926, data_04_6c15                    ;; 04:57de ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontMidBackHigh ;; 04:57de ????
     db   $05                                           ;; 04:57e2 ?
-    dw   data_04_6926, data_04_6c28                    ;; 04:57e3 ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontLowBackHigh_fire ;; 04:57e3 ????
     db   $06                                           ;; 04:57e7 ?
-    dw   data_04_6926, data_04_6c3b                    ;; 04:57e8 ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontMidBackLow_dup ;; 04:57e8 ????
     db   $ff                                           ;; 04:57ec ?
 
 data_04_57ed:
     db   $02                                           ;; 04:57ed ?
-    dw   data_04_6920, data_04_6bdc                    ;; 04:57ee ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontHighBackMid ;; 04:57ee ????
     db   $01                                           ;; 04:57f2 ?
-    dw   data_04_6920, data_04_6bef                    ;; 04:57f3 ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontHighBackLow ;; 04:57f3 ????
     db   $01                                           ;; 04:57f7 ?
-    dw   data_04_6920, data_04_6c02                    ;; 04:57f8 ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontMidBackLow ;; 04:57f8 ????
     db   $01                                           ;; 04:57fc ?
-    dw   data_04_6920, data_04_6c15                    ;; 04:57fd ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontMidBackHigh ;; 04:57fd ????
     db   $01                                           ;; 04:5801 ?
-    dw   data_04_6920, data_04_6c28                    ;; 04:5802 ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontLowBackHigh_fire ;; 04:5802 ????
     db   $02                                           ;; 04:5806 ?
-    dw   data_04_6920, data_04_6c3b                    ;; 04:5807 ????
+    dw   data_04_6920, bodyHydraDragonZombieFrontMidBackLow_dup ;; 04:5807 ????
     db   $03                                           ;; 04:580b ?
-    dw   data_04_692c, data_04_6bdc                    ;; 04:580c ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontHighBackMid ;; 04:580c ????
     db   $03                                           ;; 04:5810 ?
-    dw   data_04_692c, data_04_6bef                    ;; 04:5811 ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontHighBackLow ;; 04:5811 ????
     db   $02                                           ;; 04:5815 ?
-    dw   data_04_692c, data_04_6c02                    ;; 04:5816 ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontMidBackLow ;; 04:5816 ????
     db   $02                                           ;; 04:581a ?
-    dw   data_04_6926, data_04_6c15                    ;; 04:581b ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontMidBackHigh ;; 04:581b ????
     db   $03                                           ;; 04:581f ?
-    dw   data_04_6926, data_04_6c28                    ;; 04:5820 ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontLowBackHigh_fire ;; 04:5820 ????
     db   $03                                           ;; 04:5824 ?
-    dw   data_04_6926, data_04_6c3b                    ;; 04:5825 ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontMidBackLow_dup ;; 04:5825 ????
     db   $ff                                           ;; 04:5829 ?
 
 data_04_582a:
     db   $02                                           ;; 04:582a ?
-    dw   data_04_6923, data_04_6bdc                    ;; 04:582b ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontHighBackMid ;; 04:582b ????
     db   $01                                           ;; 04:582f ?
-    dw   data_04_6923, data_04_6bef                    ;; 04:5830 ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontHighBackLow ;; 04:5830 ????
     db   $01                                           ;; 04:5834 ?
-    dw   data_04_6923, data_04_6c02                    ;; 04:5835 ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontMidBackLow ;; 04:5835 ????
     db   $01                                           ;; 04:5839 ?
-    dw   data_04_6923, data_04_6c15                    ;; 04:583a ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontMidBackHigh ;; 04:583a ????
     db   $01                                           ;; 04:583e ?
-    dw   data_04_6923, data_04_6c28                    ;; 04:583f ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontLowBackHigh_fire ;; 04:583f ????
     db   $02                                           ;; 04:5843 ?
-    dw   data_04_6923, data_04_6c3b                    ;; 04:5844 ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontMidBackLow_dup ;; 04:5844 ????
     db   $06                                           ;; 04:5848 ?
-    dw   data_04_692c, data_04_6bdc                    ;; 04:5849 ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontHighBackMid ;; 04:5849 ????
     db   $05                                           ;; 04:584d ?
-    dw   data_04_692c, data_04_6bef                    ;; 04:584e ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontHighBackLow ;; 04:584e ????
     db   $05                                           ;; 04:5852 ?
-    dw   data_04_692c, data_04_6c02                    ;; 04:5853 ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontMidBackLow ;; 04:5853 ????
     db   $05                                           ;; 04:5857 ?
-    dw   data_04_6926, data_04_6c15                    ;; 04:5858 ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontMidBackHigh ;; 04:5858 ????
     db   $05                                           ;; 04:585c ?
-    dw   data_04_6926, data_04_6c28                    ;; 04:585d ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontLowBackHigh_fire ;; 04:585d ????
     db   $06                                           ;; 04:5861 ?
-    dw   data_04_6926, data_04_6c3b                    ;; 04:5862 ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontMidBackLow_dup ;; 04:5862 ????
     db   $ff                                           ;; 04:5866 ?
 
 data_04_5867:
     db   $02                                           ;; 04:5867 ?
-    dw   data_04_6923, data_04_6bdc                    ;; 04:5868 ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontHighBackMid ;; 04:5868 ????
     db   $01                                           ;; 04:586c ?
-    dw   data_04_6923, data_04_6bef                    ;; 04:586d ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontHighBackLow ;; 04:586d ????
     db   $01                                           ;; 04:5871 ?
-    dw   data_04_6923, data_04_6c02                    ;; 04:5872 ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontMidBackLow ;; 04:5872 ????
     db   $01                                           ;; 04:5876 ?
-    dw   data_04_6923, data_04_6c15                    ;; 04:5877 ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontMidBackHigh ;; 04:5877 ????
     db   $01                                           ;; 04:587b ?
-    dw   data_04_6923, data_04_6c28                    ;; 04:587c ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontLowBackHigh_fire ;; 04:587c ????
     db   $02                                           ;; 04:5880 ?
-    dw   data_04_6923, data_04_6c3b                    ;; 04:5881 ????
+    dw   data_04_6923, bodyHydraDragonZombieFrontMidBackLow_dup ;; 04:5881 ????
     db   $03                                           ;; 04:5885 ?
-    dw   data_04_692c, data_04_6bdc                    ;; 04:5886 ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontHighBackMid ;; 04:5886 ????
     db   $03                                           ;; 04:588a ?
-    dw   data_04_692c, data_04_6bef                    ;; 04:588b ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontHighBackLow ;; 04:588b ????
     db   $02                                           ;; 04:588f ?
-    dw   data_04_692c, data_04_6c02                    ;; 04:5890 ????
+    dw   data_04_692c, bodyHydraDragonZombieFrontMidBackLow ;; 04:5890 ????
     db   $02                                           ;; 04:5894 ?
-    dw   data_04_6926, data_04_6c15                    ;; 04:5895 ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontMidBackHigh ;; 04:5895 ????
     db   $03                                           ;; 04:5899 ?
-    dw   data_04_6926, data_04_6c28                    ;; 04:589a ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontLowBackHigh_fire ;; 04:589a ????
     db   $03                                           ;; 04:589e ?
-    dw   data_04_6926, data_04_6c3b                    ;; 04:589f ????
+    dw   data_04_6926, bodyHydraDragonZombieFrontMidBackLow_dup ;; 04:589f ????
     db   $ff                                           ;; 04:58a3 ?
 
 data_04_58a4:
     db   $02                                           ;; 04:58a4 ?
-    dw   data_04_6926, data_04_6c4e                    ;; 04:58a5 ????
+    dw   data_04_6926, bodyMedusaEyesOpen              ;; 04:58a5 ????
     db   $02                                           ;; 04:58a9 ?
-    dw   data_04_6929, data_04_6c58                    ;; 04:58aa ????
+    dw   data_04_6929, bodyMedusaEyesClosed            ;; 04:58aa ????
     db   $02                                           ;; 04:58ae ?
-    dw   data_04_6926, data_04_6c4e                    ;; 04:58af ????
+    dw   data_04_6926, bodyMedusaEyesOpen              ;; 04:58af ????
     db   $02                                           ;; 04:58b3 ?
-    dw   data_04_6929, data_04_6c58                    ;; 04:58b4 ????
+    dw   data_04_6929, bodyMedusaEyesClosed            ;; 04:58b4 ????
     db   $ff                                           ;; 04:58b8 ?
 
 data_04_58b9:
     db   $02                                           ;; 04:58b9 ?
-    dw   data_04_692c, data_04_6c4e                    ;; 04:58ba ????
+    dw   data_04_692c, bodyMedusaEyesOpen              ;; 04:58ba ????
     db   $02                                           ;; 04:58be ?
-    dw   data_04_692f, data_04_6c58                    ;; 04:58bf ????
+    dw   data_04_692f, bodyMedusaEyesClosed            ;; 04:58bf ????
     db   $02                                           ;; 04:58c3 ?
-    dw   data_04_692c, data_04_6c4e                    ;; 04:58c4 ????
+    dw   data_04_692c, bodyMedusaEyesOpen              ;; 04:58c4 ????
     db   $02                                           ;; 04:58c8 ?
-    dw   data_04_692f, data_04_6c58                    ;; 04:58c9 ????
+    dw   data_04_692f, bodyMedusaEyesClosed            ;; 04:58c9 ????
     db   $ff                                           ;; 04:58cd ?
 
 data_04_58ce:
     db   $01                                           ;; 04:58ce ?
-    dw   data_04_6932, data_04_6c4e                    ;; 04:58cf ????
+    dw   data_04_6932, bodyMedusaEyesOpen              ;; 04:58cf ????
     db   $01                                           ;; 04:58d3 ?
-    dw   data_04_6935, data_04_6c4e                    ;; 04:58d4 ????
+    dw   data_04_6935, bodyMedusaEyesOpen              ;; 04:58d4 ????
     db   $01                                           ;; 04:58d8 ?
-    dw   data_04_6938, data_04_6c58                    ;; 04:58d9 ????
+    dw   data_04_6938, bodyMedusaEyesClosed            ;; 04:58d9 ????
     db   $01                                           ;; 04:58dd ?
-    dw   data_04_693b, data_04_6c58                    ;; 04:58de ????
+    dw   data_04_693b, bodyMedusaEyesClosed            ;; 04:58de ????
     db   $02                                           ;; 04:58e2 ?
-    dw   data_04_693e, data_04_6c4e                    ;; 04:58e3 ????
+    dw   data_04_693e, bodyMedusaEyesOpen              ;; 04:58e3 ????
     db   $01                                           ;; 04:58e7 ?
-    dw   data_04_6941, data_04_6c58                    ;; 04:58e8 ????
+    dw   data_04_6941, bodyMedusaEyesClosed            ;; 04:58e8 ????
     db   $01                                           ;; 04:58ec ?
-    dw   data_04_6944, data_04_6c58                    ;; 04:58ed ????
+    dw   data_04_6944, bodyMedusaEyesClosed            ;; 04:58ed ????
     db   $01                                           ;; 04:58f1 ?
-    dw   data_04_6947, data_04_6c4e                    ;; 04:58f2 ????
+    dw   data_04_6947, bodyMedusaEyesOpen              ;; 04:58f2 ????
     db   $01                                           ;; 04:58f6 ?
-    dw   data_04_691d, data_04_6c8a                    ;; 04:58f7 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing_fire      ;; 04:58f7 ????
     db   $01                                           ;; 04:58fb ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:58fc ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:58fc ????
     db   $01                                           ;; 04:5900 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5901 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5901 ????
     db   $01                                           ;; 04:5905 ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:5906 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:5906 ????
     db   $01                                           ;; 04:590a ?
-    dw   data_04_691d, data_04_6c62                    ;; 04:590b ????
+    dw   data_04_691d, bodyMedusaEyesGlowing           ;; 04:590b ????
     db   $01                                           ;; 04:590f ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:5910 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:5910 ????
     db   $01                                           ;; 04:5914 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5915 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5915 ????
     db   $01                                           ;; 04:5919 ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:591a ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:591a ????
     db   $01                                           ;; 04:591e ?
-    dw   data_04_691d, data_04_6c62                    ;; 04:591f ????
+    dw   data_04_691d, bodyMedusaEyesGlowing           ;; 04:591f ????
     db   $01                                           ;; 04:5923 ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:5924 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:5924 ????
     db   $01                                           ;; 04:5928 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5929 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5929 ????
     db   $01                                           ;; 04:592d ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:592e ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:592e ????
     db   $01                                           ;; 04:5932 ?
-    dw   data_04_694a, data_04_6c4e                    ;; 04:5933 ????
+    dw   data_04_694a, bodyMedusaEyesOpen              ;; 04:5933 ????
     db   $01                                           ;; 04:5937 ?
-    dw   data_04_694d, data_04_6c4e                    ;; 04:5938 ????
+    dw   data_04_694d, bodyMedusaEyesOpen              ;; 04:5938 ????
     db   $01                                           ;; 04:593c ?
-    dw   data_04_6950, data_04_6c58                    ;; 04:593d ????
+    dw   data_04_6950, bodyMedusaEyesClosed            ;; 04:593d ????
     db   $01                                           ;; 04:5941 ?
-    dw   data_04_6953, data_04_6c58                    ;; 04:5942 ????
+    dw   data_04_6953, bodyMedusaEyesClosed            ;; 04:5942 ????
     db   $02                                           ;; 04:5946 ?
-    dw   data_04_6956, data_04_6c4e                    ;; 04:5947 ????
+    dw   data_04_6956, bodyMedusaEyesOpen              ;; 04:5947 ????
     db   $01                                           ;; 04:594b ?
-    dw   data_04_6959, data_04_6c58                    ;; 04:594c ????
+    dw   data_04_6959, bodyMedusaEyesClosed            ;; 04:594c ????
     db   $01                                           ;; 04:5950 ?
-    dw   data_04_695c, data_04_6c58                    ;; 04:5951 ????
+    dw   data_04_695c, bodyMedusaEyesClosed            ;; 04:5951 ????
     db   $01                                           ;; 04:5955 ?
-    dw   data_04_695f, data_04_6c4e                    ;; 04:5956 ????
+    dw   data_04_695f, bodyMedusaEyesOpen              ;; 04:5956 ????
     db   $ff                                           ;; 04:595a ?
 
 data_04_595b:
     db   $01                                           ;; 04:595b ?
-    dw   data_04_695f, data_04_6c4e                    ;; 04:595c ????
+    dw   data_04_695f, bodyMedusaEyesOpen              ;; 04:595c ????
     db   $01                                           ;; 04:5960 ?
-    dw   data_04_6962, data_04_6c4e                    ;; 04:5961 ????
+    dw   data_04_6962, bodyMedusaEyesOpen              ;; 04:5961 ????
     db   $01                                           ;; 04:5965 ?
-    dw   data_04_6965, data_04_6c58                    ;; 04:5966 ????
+    dw   data_04_6965, bodyMedusaEyesClosed            ;; 04:5966 ????
     db   $01                                           ;; 04:596a ?
-    dw   data_04_6968, data_04_6c58                    ;; 04:596b ????
+    dw   data_04_6968, bodyMedusaEyesClosed            ;; 04:596b ????
     db   $02                                           ;; 04:596f ?
-    dw   data_04_696b, data_04_6c4e                    ;; 04:5970 ????
+    dw   data_04_696b, bodyMedusaEyesOpen              ;; 04:5970 ????
     db   $01                                           ;; 04:5974 ?
-    dw   data_04_696e, data_04_6c58                    ;; 04:5975 ????
+    dw   data_04_696e, bodyMedusaEyesClosed            ;; 04:5975 ????
     db   $01                                           ;; 04:5979 ?
-    dw   data_04_6971, data_04_6c58                    ;; 04:597a ????
+    dw   data_04_6971, bodyMedusaEyesClosed            ;; 04:597a ????
     db   $01                                           ;; 04:597e ?
-    dw   data_04_6947, data_04_6c4e                    ;; 04:597f ????
+    dw   data_04_6947, bodyMedusaEyesOpen              ;; 04:597f ????
     db   $03                                           ;; 04:5983 ?
-    dw   data_04_691d, data_04_6c4e                    ;; 04:5984 ????
+    dw   data_04_691d, bodyMedusaEyesOpen              ;; 04:5984 ????
     db   $01                                           ;; 04:5988 ?
-    dw   data_04_691d, data_04_6c8a                    ;; 04:5989 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing_fire      ;; 04:5989 ????
     db   $01                                           ;; 04:598d ?
-    dw   data_04_694a, data_04_6c4e                    ;; 04:598e ????
+    dw   data_04_694a, bodyMedusaEyesOpen              ;; 04:598e ????
     db   $01                                           ;; 04:5992 ?
-    dw   data_04_6974, data_04_6c4e                    ;; 04:5993 ????
+    dw   data_04_6974, bodyMedusaEyesOpen              ;; 04:5993 ????
     db   $01                                           ;; 04:5997 ?
-    dw   data_04_6977, data_04_6c58                    ;; 04:5998 ????
+    dw   data_04_6977, bodyMedusaEyesClosed            ;; 04:5998 ????
     db   $01                                           ;; 04:599c ?
-    dw   data_04_697a, data_04_6c58                    ;; 04:599d ????
+    dw   data_04_697a, bodyMedusaEyesClosed            ;; 04:599d ????
     db   $02                                           ;; 04:59a1 ?
-    dw   data_04_697d, data_04_6c4e                    ;; 04:59a2 ????
+    dw   data_04_697d, bodyMedusaEyesOpen              ;; 04:59a2 ????
     db   $01                                           ;; 04:59a6 ?
-    dw   data_04_6980, data_04_6c58                    ;; 04:59a7 ????
+    dw   data_04_6980, bodyMedusaEyesClosed            ;; 04:59a7 ????
     db   $01                                           ;; 04:59ab ?
-    dw   data_04_6983, data_04_6c58                    ;; 04:59ac ????
+    dw   data_04_6983, bodyMedusaEyesClosed            ;; 04:59ac ????
     db   $01                                           ;; 04:59b0 ?
-    dw   data_04_6932, data_04_6c4e                    ;; 04:59b1 ????
+    dw   data_04_6932, bodyMedusaEyesOpen              ;; 04:59b1 ????
     db   $ff                                           ;; 04:59b5 ?
 
 data_04_59b6:
     db   $01                                           ;; 04:59b6 ?
-    dw   data_04_6932, data_04_6c4e                    ;; 04:59b7 ????
+    dw   data_04_6932, bodyMedusaEyesOpen              ;; 04:59b7 ????
     db   $01                                           ;; 04:59bb ?
-    dw   data_04_6986, data_04_6c4e                    ;; 04:59bc ????
+    dw   data_04_6986, bodyMedusaEyesOpen              ;; 04:59bc ????
     db   $01                                           ;; 04:59c0 ?
-    dw   data_04_6980, data_04_6c58                    ;; 04:59c1 ????
+    dw   data_04_6980, bodyMedusaEyesClosed            ;; 04:59c1 ????
     db   $01                                           ;; 04:59c5 ?
-    dw   data_04_697a, data_04_6c58                    ;; 04:59c6 ????
+    dw   data_04_697a, bodyMedusaEyesClosed            ;; 04:59c6 ????
     db   $02                                           ;; 04:59ca ?
-    dw   data_04_697d, data_04_6c4e                    ;; 04:59cb ????
+    dw   data_04_697d, bodyMedusaEyesOpen              ;; 04:59cb ????
     db   $01                                           ;; 04:59cf ?
-    dw   data_04_6977, data_04_6c58                    ;; 04:59d0 ????
+    dw   data_04_6977, bodyMedusaEyesClosed            ;; 04:59d0 ????
     db   $01                                           ;; 04:59d4 ?
-    dw   data_04_6989, data_04_6c58                    ;; 04:59d5 ????
+    dw   data_04_6989, bodyMedusaEyesClosed            ;; 04:59d5 ????
     db   $01                                           ;; 04:59d9 ?
-    dw   data_04_694a, data_04_6c4e                    ;; 04:59da ????
+    dw   data_04_694a, bodyMedusaEyesOpen              ;; 04:59da ????
     db   $01                                           ;; 04:59de ?
-    dw   data_04_691d, data_04_6c8a                    ;; 04:59df ????
+    dw   data_04_691d, bodyMedusaEyesGlowing_fire      ;; 04:59df ????
     db   $01                                           ;; 04:59e3 ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:59e4 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:59e4 ????
     db   $01                                           ;; 04:59e8 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:59e9 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:59e9 ????
     db   $01                                           ;; 04:59ed ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:59ee ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:59ee ????
     db   $01                                           ;; 04:59f2 ?
-    dw   data_04_691d, data_04_6c62                    ;; 04:59f3 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing           ;; 04:59f3 ????
     db   $01                                           ;; 04:59f7 ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:59f8 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:59f8 ????
     db   $01                                           ;; 04:59fc ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:59fd ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:59fd ????
     db   $01                                           ;; 04:5a01 ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:5a02 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:5a02 ????
     db   $01                                           ;; 04:5a06 ?
-    dw   data_04_691d, data_04_6c62                    ;; 04:5a07 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing           ;; 04:5a07 ????
     db   $01                                           ;; 04:5a0b ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:5a0c ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:5a0c ????
     db   $01                                           ;; 04:5a10 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5a11 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5a11 ????
     db   $01                                           ;; 04:5a15 ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:5a16 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:5a16 ????
     db   $01                                           ;; 04:5a1a ?
-    dw   data_04_6947, data_04_6c4e                    ;; 04:5a1b ????
+    dw   data_04_6947, bodyMedusaEyesOpen              ;; 04:5a1b ????
     db   $01                                           ;; 04:5a1f ?
-    dw   data_04_698c, data_04_6c4e                    ;; 04:5a20 ????
+    dw   data_04_698c, bodyMedusaEyesOpen              ;; 04:5a20 ????
     db   $01                                           ;; 04:5a24 ?
-    dw   data_04_696e, data_04_6c58                    ;; 04:5a25 ????
+    dw   data_04_696e, bodyMedusaEyesClosed            ;; 04:5a25 ????
     db   $01                                           ;; 04:5a29 ?
-    dw   data_04_6968, data_04_6c58                    ;; 04:5a2a ????
+    dw   data_04_6968, bodyMedusaEyesClosed            ;; 04:5a2a ????
     db   $02                                           ;; 04:5a2e ?
-    dw   data_04_696b, data_04_6c4e                    ;; 04:5a2f ????
+    dw   data_04_696b, bodyMedusaEyesOpen              ;; 04:5a2f ????
     db   $01                                           ;; 04:5a33 ?
-    dw   data_04_6965, data_04_6c58                    ;; 04:5a34 ????
+    dw   data_04_6965, bodyMedusaEyesClosed            ;; 04:5a34 ????
     db   $01                                           ;; 04:5a38 ?
-    dw   data_04_698f, data_04_6c58                    ;; 04:5a39 ????
+    dw   data_04_698f, bodyMedusaEyesClosed            ;; 04:5a39 ????
     db   $01                                           ;; 04:5a3d ?
-    dw   data_04_695f, data_04_6c4e                    ;; 04:5a3e ????
+    dw   data_04_695f, bodyMedusaEyesOpen              ;; 04:5a3e ????
     db   $ff                                           ;; 04:5a42 ?
 
 data_04_5a43:
     db   $01                                           ;; 04:5a43 ?
-    dw   data_04_695f, data_04_6c4e                    ;; 04:5a44 ????
+    dw   data_04_695f, bodyMedusaEyesOpen              ;; 04:5a44 ????
     db   $01                                           ;; 04:5a48 ?
-    dw   data_04_6992, data_04_6c4e                    ;; 04:5a49 ????
+    dw   data_04_6992, bodyMedusaEyesOpen              ;; 04:5a49 ????
     db   $01                                           ;; 04:5a4d ?
-    dw   data_04_6959, data_04_6c58                    ;; 04:5a4e ????
+    dw   data_04_6959, bodyMedusaEyesClosed            ;; 04:5a4e ????
     db   $01                                           ;; 04:5a52 ?
-    dw   data_04_6953, data_04_6c58                    ;; 04:5a53 ????
+    dw   data_04_6953, bodyMedusaEyesClosed            ;; 04:5a53 ????
     db   $02                                           ;; 04:5a57 ?
-    dw   data_04_6956, data_04_6c4e                    ;; 04:5a58 ????
+    dw   data_04_6956, bodyMedusaEyesOpen              ;; 04:5a58 ????
     db   $01                                           ;; 04:5a5c ?
-    dw   data_04_6950, data_04_6c58                    ;; 04:5a5d ????
+    dw   data_04_6950, bodyMedusaEyesClosed            ;; 04:5a5d ????
     db   $01                                           ;; 04:5a61 ?
-    dw   data_04_6995, data_04_6c58                    ;; 04:5a62 ????
+    dw   data_04_6995, bodyMedusaEyesClosed            ;; 04:5a62 ????
     db   $01                                           ;; 04:5a66 ?
-    dw   data_04_694a, data_04_6c4e                    ;; 04:5a67 ????
+    dw   data_04_694a, bodyMedusaEyesOpen              ;; 04:5a67 ????
     db   $03                                           ;; 04:5a6b ?
-    dw   data_04_691d, data_04_6c4e                    ;; 04:5a6c ????
+    dw   data_04_691d, bodyMedusaEyesOpen              ;; 04:5a6c ????
     db   $01                                           ;; 04:5a70 ?
-    dw   data_04_691d, data_04_6c8a                    ;; 04:5a71 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing_fire      ;; 04:5a71 ????
     db   $01                                           ;; 04:5a75 ?
-    dw   data_04_6947, data_04_6c4e                    ;; 04:5a76 ????
+    dw   data_04_6947, bodyMedusaEyesOpen              ;; 04:5a76 ????
     db   $01                                           ;; 04:5a7a ?
-    dw   data_04_6998, data_04_6c4e                    ;; 04:5a7b ????
+    dw   data_04_6998, bodyMedusaEyesOpen              ;; 04:5a7b ????
     db   $01                                           ;; 04:5a7f ?
-    dw   data_04_6941, data_04_6c58                    ;; 04:5a80 ????
+    dw   data_04_6941, bodyMedusaEyesClosed            ;; 04:5a80 ????
     db   $01                                           ;; 04:5a84 ?
-    dw   data_04_693b, data_04_6c58                    ;; 04:5a85 ????
+    dw   data_04_693b, bodyMedusaEyesClosed            ;; 04:5a85 ????
     db   $02                                           ;; 04:5a89 ?
-    dw   data_04_693e, data_04_6c4e                    ;; 04:5a8a ????
+    dw   data_04_693e, bodyMedusaEyesOpen              ;; 04:5a8a ????
     db   $01                                           ;; 04:5a8e ?
-    dw   data_04_6938, data_04_6c58                    ;; 04:5a8f ????
+    dw   data_04_6938, bodyMedusaEyesClosed            ;; 04:5a8f ????
     db   $01                                           ;; 04:5a93 ?
-    dw   data_04_699b, data_04_6c58                    ;; 04:5a94 ????
+    dw   data_04_699b, bodyMedusaEyesClosed            ;; 04:5a94 ????
     db   $01                                           ;; 04:5a98 ?
-    dw   data_04_6932, data_04_6c4e                    ;; 04:5a99 ????
+    dw   data_04_6932, bodyMedusaEyesOpen              ;; 04:5a99 ????
     db   $ff                                           ;; 04:5a9d ?
 
 data_04_5a9e:
     db   $01                                           ;; 04:5a9e ?
-    dw   data_04_6947, data_04_6c4e                    ;; 04:5a9f ????
+    dw   data_04_6947, bodyMedusaEyesOpen              ;; 04:5a9f ????
     db   $01                                           ;; 04:5aa3 ?
-    dw   data_04_6998, data_04_6c4e                    ;; 04:5aa4 ????
+    dw   data_04_6998, bodyMedusaEyesOpen              ;; 04:5aa4 ????
     db   $01                                           ;; 04:5aa8 ?
-    dw   data_04_6941, data_04_6c58                    ;; 04:5aa9 ????
+    dw   data_04_6941, bodyMedusaEyesClosed            ;; 04:5aa9 ????
     db   $01                                           ;; 04:5aad ?
-    dw   data_04_693b, data_04_6c58                    ;; 04:5aae ????
+    dw   data_04_693b, bodyMedusaEyesClosed            ;; 04:5aae ????
     db   $02                                           ;; 04:5ab2 ?
-    dw   data_04_693e, data_04_6c4e                    ;; 04:5ab3 ????
+    dw   data_04_693e, bodyMedusaEyesOpen              ;; 04:5ab3 ????
     db   $01                                           ;; 04:5ab7 ?
-    dw   data_04_6938, data_04_6c58                    ;; 04:5ab8 ????
+    dw   data_04_6938, bodyMedusaEyesClosed            ;; 04:5ab8 ????
     db   $01                                           ;; 04:5abc ?
-    dw   data_04_699b, data_04_6c58                    ;; 04:5abd ????
+    dw   data_04_699b, bodyMedusaEyesClosed            ;; 04:5abd ????
     db   $01                                           ;; 04:5ac1 ?
-    dw   data_04_6932, data_04_6c4e                    ;; 04:5ac2 ????
+    dw   data_04_6932, bodyMedusaEyesOpen              ;; 04:5ac2 ????
     db   $01                                           ;; 04:5ac6 ?
-    dw   data_04_691d, data_04_6c8a                    ;; 04:5ac7 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing_fire      ;; 04:5ac7 ????
     db   $01                                           ;; 04:5acb ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:5acc ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:5acc ????
     db   $01                                           ;; 04:5ad0 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5ad1 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5ad1 ????
     db   $01                                           ;; 04:5ad5 ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:5ad6 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:5ad6 ????
     db   $01                                           ;; 04:5ada ?
-    dw   data_04_691d, data_04_6c62                    ;; 04:5adb ????
+    dw   data_04_691d, bodyMedusaEyesGlowing           ;; 04:5adb ????
     db   $01                                           ;; 04:5adf ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:5ae0 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:5ae0 ????
     db   $01                                           ;; 04:5ae4 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5ae5 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5ae5 ????
     db   $01                                           ;; 04:5ae9 ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:5aea ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:5aea ????
     db   $01                                           ;; 04:5aee ?
-    dw   data_04_691d, data_04_6c62                    ;; 04:5aef ????
+    dw   data_04_691d, bodyMedusaEyesGlowing           ;; 04:5aef ????
     db   $01                                           ;; 04:5af3 ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:5af4 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:5af4 ????
     db   $01                                           ;; 04:5af8 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5af9 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5af9 ????
     db   $01                                           ;; 04:5afd ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:5afe ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:5afe ????
     db   $01                                           ;; 04:5b02 ?
-    dw   data_04_695f, data_04_6c4e                    ;; 04:5b03 ????
+    dw   data_04_695f, bodyMedusaEyesOpen              ;; 04:5b03 ????
     db   $01                                           ;; 04:5b07 ?
-    dw   data_04_6962, data_04_6c4e                    ;; 04:5b08 ????
+    dw   data_04_6962, bodyMedusaEyesOpen              ;; 04:5b08 ????
     db   $01                                           ;; 04:5b0c ?
-    dw   data_04_6965, data_04_6c58                    ;; 04:5b0d ????
+    dw   data_04_6965, bodyMedusaEyesClosed            ;; 04:5b0d ????
     db   $01                                           ;; 04:5b11 ?
-    dw   data_04_6968, data_04_6c58                    ;; 04:5b12 ????
+    dw   data_04_6968, bodyMedusaEyesClosed            ;; 04:5b12 ????
     db   $02                                           ;; 04:5b16 ?
-    dw   data_04_696b, data_04_6c4e                    ;; 04:5b17 ????
+    dw   data_04_696b, bodyMedusaEyesOpen              ;; 04:5b17 ????
     db   $01                                           ;; 04:5b1b ?
-    dw   data_04_696e, data_04_6c58                    ;; 04:5b1c ????
+    dw   data_04_696e, bodyMedusaEyesClosed            ;; 04:5b1c ????
     db   $01                                           ;; 04:5b20 ?
-    dw   data_04_6971, data_04_6c58                    ;; 04:5b21 ????
+    dw   data_04_6971, bodyMedusaEyesClosed            ;; 04:5b21 ????
     db   $01                                           ;; 04:5b25 ?
-    dw   data_04_6947, data_04_6c4e                    ;; 04:5b26 ????
+    dw   data_04_6947, bodyMedusaEyesOpen              ;; 04:5b26 ????
     db   $ff                                           ;; 04:5b2a ?
 
 data_04_5b2b:
     db   $01                                           ;; 04:5b2b ?
-    dw   data_04_6947, data_04_6c4e                    ;; 04:5b2c ????
+    dw   data_04_6947, bodyMedusaEyesOpen              ;; 04:5b2c ????
     db   $01                                           ;; 04:5b30 ?
-    dw   data_04_698c, data_04_6c4e                    ;; 04:5b31 ????
+    dw   data_04_698c, bodyMedusaEyesOpen              ;; 04:5b31 ????
     db   $01                                           ;; 04:5b35 ?
-    dw   data_04_696e, data_04_6c58                    ;; 04:5b36 ????
+    dw   data_04_696e, bodyMedusaEyesClosed            ;; 04:5b36 ????
     db   $01                                           ;; 04:5b3a ?
-    dw   data_04_6968, data_04_6c58                    ;; 04:5b3b ????
+    dw   data_04_6968, bodyMedusaEyesClosed            ;; 04:5b3b ????
     db   $02                                           ;; 04:5b3f ?
-    dw   data_04_696b, data_04_6c4e                    ;; 04:5b40 ????
+    dw   data_04_696b, bodyMedusaEyesOpen              ;; 04:5b40 ????
     db   $01                                           ;; 04:5b44 ?
-    dw   data_04_6965, data_04_6c58                    ;; 04:5b45 ????
+    dw   data_04_6965, bodyMedusaEyesClosed            ;; 04:5b45 ????
     db   $01                                           ;; 04:5b49 ?
-    dw   data_04_698f, data_04_6c58                    ;; 04:5b4a ????
+    dw   data_04_698f, bodyMedusaEyesClosed            ;; 04:5b4a ????
     db   $01                                           ;; 04:5b4e ?
-    dw   data_04_695f, data_04_6c4e                    ;; 04:5b4f ????
+    dw   data_04_695f, bodyMedusaEyesOpen              ;; 04:5b4f ????
     db   $03                                           ;; 04:5b53 ?
-    dw   data_04_691d, data_04_6c4e                    ;; 04:5b54 ????
+    dw   data_04_691d, bodyMedusaEyesOpen              ;; 04:5b54 ????
     db   $01                                           ;; 04:5b58 ?
-    dw   data_04_691d, data_04_6c8a                    ;; 04:5b59 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing_fire      ;; 04:5b59 ????
     db   $01                                           ;; 04:5b5d ?
-    dw   data_04_6932, data_04_6c4e                    ;; 04:5b5e ????
+    dw   data_04_6932, bodyMedusaEyesOpen              ;; 04:5b5e ????
     db   $01                                           ;; 04:5b62 ?
-    dw   data_04_6935, data_04_6c4e                    ;; 04:5b63 ????
+    dw   data_04_6935, bodyMedusaEyesOpen              ;; 04:5b63 ????
     db   $01                                           ;; 04:5b67 ?
-    dw   data_04_6938, data_04_6c58                    ;; 04:5b68 ????
+    dw   data_04_6938, bodyMedusaEyesClosed            ;; 04:5b68 ????
     db   $01                                           ;; 04:5b6c ?
-    dw   data_04_693b, data_04_6c58                    ;; 04:5b6d ????
+    dw   data_04_693b, bodyMedusaEyesClosed            ;; 04:5b6d ????
     db   $02                                           ;; 04:5b71 ?
-    dw   data_04_693e, data_04_6c4e                    ;; 04:5b72 ????
+    dw   data_04_693e, bodyMedusaEyesOpen              ;; 04:5b72 ????
     db   $01                                           ;; 04:5b76 ?
-    dw   data_04_6941, data_04_6c58                    ;; 04:5b77 ????
+    dw   data_04_6941, bodyMedusaEyesClosed            ;; 04:5b77 ????
     db   $01                                           ;; 04:5b7b ?
-    dw   data_04_6944, data_04_6c58                    ;; 04:5b7c ????
+    dw   data_04_6944, bodyMedusaEyesClosed            ;; 04:5b7c ????
     db   $01                                           ;; 04:5b80 ?
-    dw   data_04_6947, data_04_6c4e                    ;; 04:5b81 ????
+    dw   data_04_6947, bodyMedusaEyesOpen              ;; 04:5b81 ????
     db   $ff                                           ;; 04:5b85 ?
 
 data_04_5b86:
     db   $01                                           ;; 04:5b86 ?
-    dw   data_04_694a, data_04_6c4e                    ;; 04:5b87 ????
+    dw   data_04_694a, bodyMedusaEyesOpen              ;; 04:5b87 ????
     db   $01                                           ;; 04:5b8b ?
-    dw   data_04_6974, data_04_6c4e                    ;; 04:5b8c ????
+    dw   data_04_6974, bodyMedusaEyesOpen              ;; 04:5b8c ????
     db   $01                                           ;; 04:5b90 ?
-    dw   data_04_6977, data_04_6c58                    ;; 04:5b91 ????
+    dw   data_04_6977, bodyMedusaEyesClosed            ;; 04:5b91 ????
     db   $01                                           ;; 04:5b95 ?
-    dw   data_04_697a, data_04_6c58                    ;; 04:5b96 ????
+    dw   data_04_697a, bodyMedusaEyesClosed            ;; 04:5b96 ????
     db   $02                                           ;; 04:5b9a ?
-    dw   data_04_697d, data_04_6c4e                    ;; 04:5b9b ????
+    dw   data_04_697d, bodyMedusaEyesOpen              ;; 04:5b9b ????
     db   $01                                           ;; 04:5b9f ?
-    dw   data_04_6980, data_04_6c58                    ;; 04:5ba0 ????
+    dw   data_04_6980, bodyMedusaEyesClosed            ;; 04:5ba0 ????
     db   $01                                           ;; 04:5ba4 ?
-    dw   data_04_6983, data_04_6c58                    ;; 04:5ba5 ????
+    dw   data_04_6983, bodyMedusaEyesClosed            ;; 04:5ba5 ????
     db   $01                                           ;; 04:5ba9 ?
-    dw   data_04_6932, data_04_6c4e                    ;; 04:5baa ????
+    dw   data_04_6932, bodyMedusaEyesOpen              ;; 04:5baa ????
     db   $01                                           ;; 04:5bae ?
-    dw   data_04_691d, data_04_6c8a                    ;; 04:5baf ????
+    dw   data_04_691d, bodyMedusaEyesGlowing_fire      ;; 04:5baf ????
     db   $01                                           ;; 04:5bb3 ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:5bb4 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:5bb4 ????
     db   $01                                           ;; 04:5bb8 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5bb9 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5bb9 ????
     db   $01                                           ;; 04:5bbd ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:5bbe ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:5bbe ????
     db   $01                                           ;; 04:5bc2 ?
-    dw   data_04_691d, data_04_6c62                    ;; 04:5bc3 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing           ;; 04:5bc3 ????
     db   $01                                           ;; 04:5bc7 ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:5bc8 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:5bc8 ????
     db   $01                                           ;; 04:5bcc ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5bcd ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5bcd ????
     db   $01                                           ;; 04:5bd1 ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:5bd2 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:5bd2 ????
     db   $01                                           ;; 04:5bd6 ?
-    dw   data_04_691d, data_04_6c62                    ;; 04:5bd7 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing           ;; 04:5bd7 ????
     db   $01                                           ;; 04:5bdb ?
-    dw   data_04_691d, data_04_6c6c                    ;; 04:5bdc ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingLeft_fire ;; 04:5bdc ????
     db   $01                                           ;; 04:5be0 ?
-    dw   data_04_691d, data_04_6c76                    ;; 04:5be1 ????
+    dw   data_04_691d, bodyMedusaEyesCoveredWithSnakes ;; 04:5be1 ????
     db   $01                                           ;; 04:5be5 ?
-    dw   data_04_691d, data_04_6c80                    ;; 04:5be6 ????
+    dw   data_04_691d, bodyMedusaEyesGlowingFacingRight ;; 04:5be6 ????
     db   $01                                           ;; 04:5bea ?
-    dw   data_04_695f, data_04_6c4e                    ;; 04:5beb ????
+    dw   data_04_695f, bodyMedusaEyesOpen              ;; 04:5beb ????
     db   $01                                           ;; 04:5bef ?
-    dw   data_04_6992, data_04_6c4e                    ;; 04:5bf0 ????
+    dw   data_04_6992, bodyMedusaEyesOpen              ;; 04:5bf0 ????
     db   $01                                           ;; 04:5bf4 ?
-    dw   data_04_6959, data_04_6c58                    ;; 04:5bf5 ????
+    dw   data_04_6959, bodyMedusaEyesClosed            ;; 04:5bf5 ????
     db   $01                                           ;; 04:5bf9 ?
-    dw   data_04_6953, data_04_6c58                    ;; 04:5bfa ????
+    dw   data_04_6953, bodyMedusaEyesClosed            ;; 04:5bfa ????
     db   $02                                           ;; 04:5bfe ?
-    dw   data_04_6956, data_04_6c4e                    ;; 04:5bff ????
+    dw   data_04_6956, bodyMedusaEyesOpen              ;; 04:5bff ????
     db   $01                                           ;; 04:5c03 ?
-    dw   data_04_6950, data_04_6c58                    ;; 04:5c04 ????
+    dw   data_04_6950, bodyMedusaEyesClosed            ;; 04:5c04 ????
     db   $01                                           ;; 04:5c08 ?
-    dw   data_04_6995, data_04_6c58                    ;; 04:5c09 ????
+    dw   data_04_6995, bodyMedusaEyesClosed            ;; 04:5c09 ????
     db   $01                                           ;; 04:5c0d ?
-    dw   data_04_694a, data_04_6c4e                    ;; 04:5c0e ????
+    dw   data_04_694a, bodyMedusaEyesOpen              ;; 04:5c0e ????
     db   $ff                                           ;; 04:5c12 ?
 
 data_04_5c13:
     db   $01                                           ;; 04:5c13 ?
-    dw   data_04_694a, data_04_6c4e                    ;; 04:5c14 ????
+    dw   data_04_694a, bodyMedusaEyesOpen              ;; 04:5c14 ????
     db   $01                                           ;; 04:5c18 ?
-    dw   data_04_694d, data_04_6c4e                    ;; 04:5c19 ????
+    dw   data_04_694d, bodyMedusaEyesOpen              ;; 04:5c19 ????
     db   $01                                           ;; 04:5c1d ?
-    dw   data_04_6950, data_04_6c58                    ;; 04:5c1e ????
+    dw   data_04_6950, bodyMedusaEyesClosed            ;; 04:5c1e ????
     db   $01                                           ;; 04:5c22 ?
-    dw   data_04_6953, data_04_6c58                    ;; 04:5c23 ????
+    dw   data_04_6953, bodyMedusaEyesClosed            ;; 04:5c23 ????
     db   $02                                           ;; 04:5c27 ?
-    dw   data_04_6956, data_04_6c4e                    ;; 04:5c28 ????
+    dw   data_04_6956, bodyMedusaEyesOpen              ;; 04:5c28 ????
     db   $01                                           ;; 04:5c2c ?
-    dw   data_04_6959, data_04_6c58                    ;; 04:5c2d ????
+    dw   data_04_6959, bodyMedusaEyesClosed            ;; 04:5c2d ????
     db   $01                                           ;; 04:5c31 ?
-    dw   data_04_695c, data_04_6c58                    ;; 04:5c32 ????
+    dw   data_04_695c, bodyMedusaEyesClosed            ;; 04:5c32 ????
     db   $01                                           ;; 04:5c36 ?
-    dw   data_04_695f, data_04_6c4e                    ;; 04:5c37 ????
+    dw   data_04_695f, bodyMedusaEyesOpen              ;; 04:5c37 ????
     db   $03                                           ;; 04:5c3b ?
-    dw   data_04_691d, data_04_6c4e                    ;; 04:5c3c ????
+    dw   data_04_691d, bodyMedusaEyesOpen              ;; 04:5c3c ????
     db   $01                                           ;; 04:5c40 ?
-    dw   data_04_691d, data_04_6c8a                    ;; 04:5c41 ????
+    dw   data_04_691d, bodyMedusaEyesGlowing_fire      ;; 04:5c41 ????
     db   $01                                           ;; 04:5c45 ?
-    dw   data_04_6932, data_04_6c4e                    ;; 04:5c46 ????
+    dw   data_04_6932, bodyMedusaEyesOpen              ;; 04:5c46 ????
     db   $01                                           ;; 04:5c4a ?
-    dw   data_04_6986, data_04_6c4e                    ;; 04:5c4b ????
+    dw   data_04_6986, bodyMedusaEyesOpen              ;; 04:5c4b ????
     db   $01                                           ;; 04:5c4f ?
-    dw   data_04_6980, data_04_6c58                    ;; 04:5c50 ????
+    dw   data_04_6980, bodyMedusaEyesClosed            ;; 04:5c50 ????
     db   $01                                           ;; 04:5c54 ?
-    dw   data_04_697a, data_04_6c58                    ;; 04:5c55 ????
+    dw   data_04_697a, bodyMedusaEyesClosed            ;; 04:5c55 ????
     db   $02                                           ;; 04:5c59 ?
-    dw   data_04_697d, data_04_6c4e                    ;; 04:5c5a ????
+    dw   data_04_697d, bodyMedusaEyesOpen              ;; 04:5c5a ????
     db   $01                                           ;; 04:5c5e ?
-    dw   data_04_6977, data_04_6c58                    ;; 04:5c5f ????
+    dw   data_04_6977, bodyMedusaEyesClosed            ;; 04:5c5f ????
     db   $01                                           ;; 04:5c63 ?
-    dw   data_04_6989, data_04_6c58                    ;; 04:5c64 ????
+    dw   data_04_6989, bodyMedusaEyesClosed            ;; 04:5c64 ????
     db   $01                                           ;; 04:5c68 ?
-    dw   data_04_694a, data_04_6c4e                    ;; 04:5c69 ????
+    dw   data_04_694a, bodyMedusaEyesOpen              ;; 04:5c69 ????
     db   $ff                                           ;; 04:5c6d ?
 
 data_04_5c6e:
@@ -1640,107 +1640,107 @@ data_04_5cab:
 
 data_04_5ce8:
     db   $01                                           ;; 04:5ce8 .
-    dw   data_04_69a7, data_04_6dac                    ;; 04:5ce9 ....
+    dw   data_04_69a7, bodyJackalGolemLeftFootForward  ;; 04:5ce9 ....
     db   $04                                           ;; 04:5ced .
-    dw   data_04_6914, data_04_6dac                    ;; 04:5cee ....
+    dw   data_04_6914, bodyJackalGolemLeftFootForward  ;; 04:5cee ....
     db   $01                                           ;; 04:5cf2 .
-    dw   data_04_69aa, data_04_6d9c                    ;; 04:5cf3 ....
+    dw   data_04_69aa, bodyJackalGolemRightFootForward ;; 04:5cf3 ....
     db   $04                                           ;; 04:5cf7 .
-    dw   data_04_6917, data_04_6d9c                    ;; 04:5cf8 ....
+    dw   data_04_6917, bodyJackalGolemRightFootForward ;; 04:5cf8 ....
     db   $01                                           ;; 04:5cfc .
-    dw   data_04_69ad, data_04_6dac                    ;; 04:5cfd ....
+    dw   data_04_69ad, bodyJackalGolemLeftFootForward  ;; 04:5cfd ....
     db   $04                                           ;; 04:5d01 .
-    dw   data_04_6914, data_04_6dac                    ;; 04:5d02 ....
+    dw   data_04_6914, bodyJackalGolemLeftFootForward  ;; 04:5d02 ....
     db   $01                                           ;; 04:5d06 .
-    dw   data_04_69b0, data_04_6d9c                    ;; 04:5d07 ....
+    dw   data_04_69b0, bodyJackalGolemRightFootForward ;; 04:5d07 ....
     db   $04                                           ;; 04:5d0b .
-    dw   data_04_6917, data_04_6d9c                    ;; 04:5d0c ....
+    dw   data_04_6917, bodyJackalGolemRightFootForward ;; 04:5d0c ....
     db   $01                                           ;; 04:5d10 .
-    dw   data_04_69b3, data_04_6dac                    ;; 04:5d11 ....
+    dw   data_04_69b3, bodyJackalGolemLeftFootForward  ;; 04:5d11 ....
     db   $04                                           ;; 04:5d15 .
-    dw   data_04_6914, data_04_6dac                    ;; 04:5d16 ....
+    dw   data_04_6914, bodyJackalGolemLeftFootForward  ;; 04:5d16 ....
     db   $01                                           ;; 04:5d1a .
-    dw   data_04_69b6, data_04_6d9c                    ;; 04:5d1b ....
+    dw   data_04_69b6, bodyJackalGolemRightFootForward ;; 04:5d1b ....
     db   $04                                           ;; 04:5d1f .
-    dw   data_04_6917, data_04_6d9c                    ;; 04:5d20 ....
+    dw   data_04_6917, bodyJackalGolemRightFootForward ;; 04:5d20 ....
     db   $01                                           ;; 04:5d24 .
-    dw   data_04_69b9, data_04_6dac                    ;; 04:5d25 ....
+    dw   data_04_69b9, bodyJackalGolemLeftFootForward  ;; 04:5d25 ....
     db   $04                                           ;; 04:5d29 .
-    dw   data_04_6914, data_04_6dac                    ;; 04:5d2a ....
+    dw   data_04_6914, bodyJackalGolemLeftFootForward  ;; 04:5d2a ....
     db   $01                                           ;; 04:5d2e .
-    dw   data_04_69bc, data_04_6d9c                    ;; 04:5d2f ....
+    dw   data_04_69bc, bodyJackalGolemRightFootForward ;; 04:5d2f ....
     db   $04                                           ;; 04:5d33 .
-    dw   data_04_6917, data_04_6d9c                    ;; 04:5d34 ....
+    dw   data_04_6917, bodyJackalGolemRightFootForward ;; 04:5d34 ....
     db   $01                                           ;; 04:5d38 .
-    dw   data_04_69bf, data_04_6dac                    ;; 04:5d39 ....
+    dw   data_04_69bf, bodyJackalGolemLeftFootForward  ;; 04:5d39 ....
     db   $ff                                           ;; 04:5d3d .
 
 data_04_5d3e:
     db   $01                                           ;; 04:5d3e .
-    dw   data_04_69c2, data_04_6d9c                    ;; 04:5d3f ....
+    dw   data_04_69c2, bodyJackalGolemRightFootForward ;; 04:5d3f ....
     db   $04                                           ;; 04:5d43 .
-    dw   data_04_6917, data_04_6d9c                    ;; 04:5d44 ....
+    dw   data_04_6917, bodyJackalGolemRightFootForward ;; 04:5d44 ....
     db   $01                                           ;; 04:5d48 .
-    dw   data_04_69c5, data_04_6dac                    ;; 04:5d49 ....
+    dw   data_04_69c5, bodyJackalGolemLeftFootForward  ;; 04:5d49 ....
     db   $04                                           ;; 04:5d4d .
-    dw   data_04_6914, data_04_6dac                    ;; 04:5d4e ....
+    dw   data_04_6914, bodyJackalGolemLeftFootForward  ;; 04:5d4e ....
     db   $01                                           ;; 04:5d52 .
-    dw   data_04_69c8, data_04_6d9c                    ;; 04:5d53 ....
+    dw   data_04_69c8, bodyJackalGolemRightFootForward ;; 04:5d53 ....
     db   $04                                           ;; 04:5d57 .
-    dw   data_04_6917, data_04_6d9c                    ;; 04:5d58 ....
+    dw   data_04_6917, bodyJackalGolemRightFootForward ;; 04:5d58 ....
     db   $01                                           ;; 04:5d5c .
-    dw   data_04_69cb, data_04_6dac                    ;; 04:5d5d ....
+    dw   data_04_69cb, bodyJackalGolemLeftFootForward  ;; 04:5d5d ....
     db   $04                                           ;; 04:5d61 .
-    dw   data_04_6914, data_04_6dac                    ;; 04:5d62 ....
+    dw   data_04_6914, bodyJackalGolemLeftFootForward  ;; 04:5d62 ....
     db   $01                                           ;; 04:5d66 .
-    dw   data_04_69ce, data_04_6d9c                    ;; 04:5d67 ....
+    dw   data_04_69ce, bodyJackalGolemRightFootForward ;; 04:5d67 ....
     db   $04                                           ;; 04:5d6b .
-    dw   data_04_6917, data_04_6d9c                    ;; 04:5d6c ....
+    dw   data_04_6917, bodyJackalGolemRightFootForward ;; 04:5d6c ....
     db   $01                                           ;; 04:5d70 .
-    dw   data_04_69d1, data_04_6dac                    ;; 04:5d71 ....
+    dw   data_04_69d1, bodyJackalGolemLeftFootForward  ;; 04:5d71 ....
     db   $04                                           ;; 04:5d75 .
-    dw   data_04_6914, data_04_6dac                    ;; 04:5d76 ....
+    dw   data_04_6914, bodyJackalGolemLeftFootForward  ;; 04:5d76 ....
     db   $01                                           ;; 04:5d7a .
-    dw   data_04_69d4, data_04_6d9c                    ;; 04:5d7b ....
+    dw   data_04_69d4, bodyJackalGolemRightFootForward ;; 04:5d7b ....
     db   $04                                           ;; 04:5d7f .
-    dw   data_04_6917, data_04_6d9c                    ;; 04:5d80 ....
+    dw   data_04_6917, bodyJackalGolemRightFootForward ;; 04:5d80 ....
     db   $01                                           ;; 04:5d84 .
-    dw   data_04_69d7, data_04_6dac                    ;; 04:5d85 ....
+    dw   data_04_69d7, bodyJackalGolemLeftFootForward  ;; 04:5d85 ....
     db   $04                                           ;; 04:5d89 .
-    dw   data_04_6914, data_04_6dac                    ;; 04:5d8a ....
+    dw   data_04_6914, bodyJackalGolemLeftFootForward  ;; 04:5d8a ....
     db   $01                                           ;; 04:5d8e .
-    dw   data_04_69da, data_04_6d9c                    ;; 04:5d8f ....
+    dw   data_04_69da, bodyJackalGolemRightFootForward ;; 04:5d8f ....
     db   $ff                                           ;; 04:5d93 .
 
 data_04_5d94:
     db   $0c                                           ;; 04:5d94 ?
-    dw   data_04_69e3, data_04_6dbc                    ;; 04:5d95 ????
+    dw   data_04_69e3, bodyJackalGolemCharge           ;; 04:5d95 ????
     db   $0c                                           ;; 04:5d99 ?
-    dw   data_04_69e0, data_04_6dbc                    ;; 04:5d9a ????
+    dw   data_04_69e0, bodyJackalGolemCharge           ;; 04:5d9a ????
     db   $ff                                           ;; 04:5d9e ?
 
 data_04_5d9f:
     db   $0c                                           ;; 04:5d9f ?
-    dw   data_04_69e6, data_04_6dbc                    ;; 04:5da0 ????
+    dw   data_04_69e6, bodyJackalGolemCharge           ;; 04:5da0 ????
     db   $0c                                           ;; 04:5da4 ?
-    dw   data_04_69e0, data_04_6dbc                    ;; 04:5da5 ????
+    dw   data_04_69e0, bodyJackalGolemCharge           ;; 04:5da5 ????
     db   $ff                                           ;; 04:5da9 ?
 
 data_04_5daa:
     db   $0c                                           ;; 04:5daa ?
-    dw   data_04_69dd, data_04_6dbc                    ;; 04:5dab ????
+    dw   data_04_69dd, bodyJackalGolemCharge           ;; 04:5dab ????
     db   $0c                                           ;; 04:5daf ?
-    dw   data_04_69e0, data_04_6dbc                    ;; 04:5db0 ????
+    dw   data_04_69e0, bodyJackalGolemCharge           ;; 04:5db0 ????
     db   $ff                                           ;; 04:5db4 ?
 
 data_04_5db5:
     db   $02                                           ;; 04:5db5 ?
-    dw   data_04_6914, data_04_6dac                    ;; 04:5db6 ????
+    dw   data_04_6914, bodyJackalGolemLeftFootForward  ;; 04:5db6 ????
     db   $ff, $02, $17, $69, $9c, $6d, $ff             ;; 04:5dba ???????
 
 data_04_5dc1:
     db   $04                                           ;; 04:5dc1 .
-    dw   data_04_69dd, data_04_6dbc                    ;; 04:5dc2 ....
+    dw   data_04_69dd, bodyJackalGolemCharge           ;; 04:5dc2 ....
     db   $ff                                           ;; 04:5dc6 .
 
 data_04_5dc7:
@@ -1856,132 +1856,132 @@ data_04_5ea4:
 
 data_04_5eaf:
     db   $01                                           ;; 04:5eaf ?
-    dw   data_04_693e, data_04_6ede                    ;; 04:5eb0 ????
+    dw   data_04_693e, bodyCyclopsStarFarForward       ;; 04:5eb0 ????
     db   $01                                           ;; 04:5eb4 ?
-    dw   data_04_693e, data_04_6ecb                    ;; 04:5eb5 ????
+    dw   data_04_693e, bodyCyclopsStarForward          ;; 04:5eb5 ????
     db   $01                                           ;; 04:5eb9 ?
-    dw   data_04_693e, data_04_6eb8                    ;; 04:5eba ????
+    dw   data_04_693e, bodyCyclopsStarBack             ;; 04:5eba ????
     db   $02                                           ;; 04:5ebe ?
-    dw   data_04_693e, data_04_6ea5                    ;; 04:5ebf ????
+    dw   data_04_693e, bodyCyclopsStarFarBack          ;; 04:5ebf ????
     db   $01                                           ;; 04:5ec3 ?
-    dw   data_04_693e, data_04_6eb8                    ;; 04:5ec4 ????
+    dw   data_04_693e, bodyCyclopsStarBack             ;; 04:5ec4 ????
     db   $01                                           ;; 04:5ec8 ?
-    dw   data_04_693e, data_04_6ecb                    ;; 04:5ec9 ????
+    dw   data_04_693e, bodyCyclopsStarForward          ;; 04:5ec9 ????
     db   $02                                           ;; 04:5ecd ?
-    dw   data_04_693e, data_04_6ede                    ;; 04:5ece ????
+    dw   data_04_693e, bodyCyclopsStarFarForward       ;; 04:5ece ????
     db   $01                                           ;; 04:5ed2 ?
-    dw   data_04_693e, data_04_6ecb                    ;; 04:5ed3 ????
+    dw   data_04_693e, bodyCyclopsStarForward          ;; 04:5ed3 ????
     db   $01                                           ;; 04:5ed7 ?
-    dw   data_04_697d, data_04_6eb8                    ;; 04:5ed8 ????
+    dw   data_04_697d, bodyCyclopsStarBack             ;; 04:5ed8 ????
     db   $02                                           ;; 04:5edc ?
-    dw   data_04_697d, data_04_6ea5                    ;; 04:5edd ????
+    dw   data_04_697d, bodyCyclopsStarFarBack          ;; 04:5edd ????
     db   $01                                           ;; 04:5ee1 ?
-    dw   data_04_697d, data_04_6eb8                    ;; 04:5ee2 ????
+    dw   data_04_697d, bodyCyclopsStarBack             ;; 04:5ee2 ????
     db   $01                                           ;; 04:5ee6 ?
-    dw   data_04_697d, data_04_6ecb                    ;; 04:5ee7 ????
+    dw   data_04_697d, bodyCyclopsStarForward          ;; 04:5ee7 ????
     db   $01                                           ;; 04:5eeb ?
-    dw   data_04_697d, data_04_6ede                    ;; 04:5eec ????
+    dw   data_04_697d, bodyCyclopsStarFarForward       ;; 04:5eec ????
     db   $ff                                           ;; 04:5ef0 ?
 
 data_04_5ef1:
     db   $01                                           ;; 04:5ef1 ?
-    dw   data_04_696b, data_04_6ede                    ;; 04:5ef2 ????
+    dw   data_04_696b, bodyCyclopsStarFarForward       ;; 04:5ef2 ????
     db   $01                                           ;; 04:5ef6 ?
-    dw   data_04_696b, data_04_6ecb                    ;; 04:5ef7 ????
+    dw   data_04_696b, bodyCyclopsStarForward          ;; 04:5ef7 ????
     db   $01                                           ;; 04:5efb ?
-    dw   data_04_696b, data_04_6eb8                    ;; 04:5efc ????
+    dw   data_04_696b, bodyCyclopsStarBack             ;; 04:5efc ????
     db   $02                                           ;; 04:5f00 ?
-    dw   data_04_696b, data_04_6ea5                    ;; 04:5f01 ????
+    dw   data_04_696b, bodyCyclopsStarFarBack          ;; 04:5f01 ????
     db   $01                                           ;; 04:5f05 ?
-    dw   data_04_696b, data_04_6eb8                    ;; 04:5f06 ????
+    dw   data_04_696b, bodyCyclopsStarBack             ;; 04:5f06 ????
     db   $01                                           ;; 04:5f0a ?
-    dw   data_04_696b, data_04_6ecb                    ;; 04:5f0b ????
+    dw   data_04_696b, bodyCyclopsStarForward          ;; 04:5f0b ????
     db   $02                                           ;; 04:5f0f ?
-    dw   data_04_696b, data_04_6ede                    ;; 04:5f10 ????
+    dw   data_04_696b, bodyCyclopsStarFarForward       ;; 04:5f10 ????
     db   $01                                           ;; 04:5f14 ?
-    dw   data_04_696b, data_04_6ecb                    ;; 04:5f15 ????
+    dw   data_04_696b, bodyCyclopsStarForward          ;; 04:5f15 ????
     db   $01                                           ;; 04:5f19 ?
-    dw   data_04_6956, data_04_6eb8                    ;; 04:5f1a ????
+    dw   data_04_6956, bodyCyclopsStarBack             ;; 04:5f1a ????
     db   $02                                           ;; 04:5f1e ?
-    dw   data_04_6956, data_04_6ea5                    ;; 04:5f1f ????
+    dw   data_04_6956, bodyCyclopsStarFarBack          ;; 04:5f1f ????
     db   $01                                           ;; 04:5f23 ?
-    dw   data_04_6956, data_04_6eb8                    ;; 04:5f24 ????
+    dw   data_04_6956, bodyCyclopsStarBack             ;; 04:5f24 ????
     db   $01                                           ;; 04:5f28 ?
-    dw   data_04_6956, data_04_6ecb                    ;; 04:5f29 ????
+    dw   data_04_6956, bodyCyclopsStarForward          ;; 04:5f29 ????
     db   $01                                           ;; 04:5f2d ?
-    dw   data_04_6956, data_04_6ede                    ;; 04:5f2e ????
+    dw   data_04_6956, bodyCyclopsStarFarForward       ;; 04:5f2e ????
     db   $ff                                           ;; 04:5f32 ?
 
 data_04_5f33:
     db   $01                                           ;; 04:5f33 ?
-    dw   data_04_691d, data_04_6ede                    ;; 04:5f34 ????
+    dw   data_04_691d, bodyCyclopsStarFarForward       ;; 04:5f34 ????
     db   $01                                           ;; 04:5f38 ?
-    dw   data_04_691d, data_04_6ecb                    ;; 04:5f39 ????
+    dw   data_04_691d, bodyCyclopsStarForward          ;; 04:5f39 ????
     db   $01                                           ;; 04:5f3d ?
-    dw   data_04_691d, data_04_6eb8                    ;; 04:5f3e ????
+    dw   data_04_691d, bodyCyclopsStarBack             ;; 04:5f3e ????
     db   $01                                           ;; 04:5f42 ?
-    dw   data_04_691d, data_04_6ea5                    ;; 04:5f43 ????
+    dw   data_04_691d, bodyCyclopsStarFarBack          ;; 04:5f43 ????
     db   $01                                           ;; 04:5f47 ?
-    dw   data_04_691d, data_04_6eb8                    ;; 04:5f48 ????
+    dw   data_04_691d, bodyCyclopsStarBack             ;; 04:5f48 ????
     db   $01                                           ;; 04:5f4c ?
-    dw   data_04_691d, data_04_6ecb                    ;; 04:5f4d ????
+    dw   data_04_691d, bodyCyclopsStarForward          ;; 04:5f4d ????
     db   $01                                           ;; 04:5f51 ?
-    dw   data_04_691d, data_04_6ede                    ;; 04:5f52 ????
+    dw   data_04_691d, bodyCyclopsStarFarForward       ;; 04:5f52 ????
     db   $01                                           ;; 04:5f56 ?
-    dw   data_04_691d, data_04_6ecb                    ;; 04:5f57 ????
+    dw   data_04_691d, bodyCyclopsStarForward          ;; 04:5f57 ????
     db   $01                                           ;; 04:5f5b ?
-    dw   data_04_691d, data_04_6eb8                    ;; 04:5f5c ????
+    dw   data_04_691d, bodyCyclopsStarBack             ;; 04:5f5c ????
     db   $01                                           ;; 04:5f60 ?
-    dw   data_04_691d, data_04_6ea5                    ;; 04:5f61 ????
+    dw   data_04_691d, bodyCyclopsStarFarBack          ;; 04:5f61 ????
     db   $01                                           ;; 04:5f65 ?
-    dw   data_04_691d, data_04_6eb8                    ;; 04:5f66 ????
+    dw   data_04_691d, bodyCyclopsStarBack             ;; 04:5f66 ????
     db   $01                                           ;; 04:5f6a ?
-    dw   data_04_691d, data_04_6ecb                    ;; 04:5f6b ????
+    dw   data_04_691d, bodyCyclopsStarForward          ;; 04:5f6b ????
     db   $ff                                           ;; 04:5f6f ?
 
 data_04_5f70:
     db   $01                                           ;; 04:5f70 ?
-    dw   data_04_69e9, data_04_6ede                    ;; 04:5f71 ????
+    dw   data_04_69e9, bodyCyclopsStarFarForward       ;; 04:5f71 ????
     db   $01                                           ;; 04:5f75 ?
-    dw   data_04_69ec, data_04_6ecb                    ;; 04:5f76 ????
+    dw   data_04_69ec, bodyCyclopsStarForward          ;; 04:5f76 ????
     db   $01                                           ;; 04:5f7a ?
-    dw   data_04_69ef, data_04_6eb8                    ;; 04:5f7b ????
+    dw   data_04_69ef, bodyCyclopsStarBack             ;; 04:5f7b ????
     db   $01                                           ;; 04:5f7f ?
-    dw   data_04_69f2, data_04_6ea5                    ;; 04:5f80 ????
+    dw   data_04_69f2, bodyCyclopsStarFarBack          ;; 04:5f80 ????
     db   $01                                           ;; 04:5f84 ?
-    dw   data_04_69f5, data_04_6ea5                    ;; 04:5f85 ????
+    dw   data_04_69f5, bodyCyclopsStarFarBack          ;; 04:5f85 ????
     db   $01                                           ;; 04:5f89 ?
-    dw   data_04_69f5, data_04_6eb8                    ;; 04:5f8a ????
+    dw   data_04_69f5, bodyCyclopsStarBack             ;; 04:5f8a ????
     db   $01                                           ;; 04:5f8e ?
-    dw   data_04_69f5, data_04_6ecb                    ;; 04:5f8f ????
+    dw   data_04_69f5, bodyCyclopsStarForward          ;; 04:5f8f ????
     db   $01                                           ;; 04:5f93 ?
-    dw   data_04_69f5, data_04_6ede                    ;; 04:5f94 ????
+    dw   data_04_69f5, bodyCyclopsStarFarForward       ;; 04:5f94 ????
     db   $01                                           ;; 04:5f98 ?
-    dw   data_04_69f5, data_04_6ecb                    ;; 04:5f99 ????
+    dw   data_04_69f5, bodyCyclopsStarForward          ;; 04:5f99 ????
     db   $01                                           ;; 04:5f9d ?
-    dw   data_04_69f5, data_04_6eb8                    ;; 04:5f9e ????
+    dw   data_04_69f5, bodyCyclopsStarBack             ;; 04:5f9e ????
     db   $01                                           ;; 04:5fa2 ?
-    dw   data_04_69f5, data_04_6ea5                    ;; 04:5fa3 ????
+    dw   data_04_69f5, bodyCyclopsStarFarBack          ;; 04:5fa3 ????
     db   $01                                           ;; 04:5fa7 ?
-    dw   data_04_69f5, data_04_6eb8                    ;; 04:5fa8 ????
+    dw   data_04_69f5, bodyCyclopsStarBack             ;; 04:5fa8 ????
     db   $01                                           ;; 04:5fac ?
-    dw   data_04_6914, data_04_6ef1                    ;; 04:5fad ????
+    dw   data_04_6914, bodyCyclopsStrikeShort          ;; 04:5fad ????
     db   $03                                           ;; 04:5fb1 ?
-    dw   data_04_6914, data_04_6f04                    ;; 04:5fb2 ????
+    dw   data_04_6914, bodyCyclopsStrikeLong           ;; 04:5fb2 ????
     db   $01                                           ;; 04:5fb6 ?
-    dw   data_04_6914, data_04_6ef1                    ;; 04:5fb7 ????
+    dw   data_04_6914, bodyCyclopsStrikeShort          ;; 04:5fb7 ????
     db   $01                                           ;; 04:5fbb ?
-    dw   data_04_69e9, data_04_6ecb                    ;; 04:5fbc ????
+    dw   data_04_69e9, bodyCyclopsStarForward          ;; 04:5fbc ????
     db   $01                                           ;; 04:5fc0 ?
-    dw   data_04_69e9, data_04_6eb8                    ;; 04:5fc1 ????
+    dw   data_04_69e9, bodyCyclopsStarBack             ;; 04:5fc1 ????
     db   $01                                           ;; 04:5fc5 ?
-    dw   data_04_69e9, data_04_6ea5                    ;; 04:5fc6 ????
+    dw   data_04_69e9, bodyCyclopsStarFarBack          ;; 04:5fc6 ????
     db   $01                                           ;; 04:5fca ?
-    dw   data_04_69e9, data_04_6eb8                    ;; 04:5fcb ????
+    dw   data_04_69e9, bodyCyclopsStarBack             ;; 04:5fcb ????
     db   $01                                           ;; 04:5fcf ?
-    dw   data_04_69e9, data_04_6ecb                    ;; 04:5fd0 ????
+    dw   data_04_69e9, bodyCyclopsStarForward          ;; 04:5fd0 ????
     db   $01                                           ;; 04:5fd4 ?
-    dw   data_04_69e9, data_04_6ede                    ;; 04:5fd5 ????
+    dw   data_04_69e9, bodyCyclopsStarFarForward       ;; 04:5fd5 ????
     db   $ff                                           ;; 04:5fd9 ?
 
 data_04_5fda:
@@ -2405,132 +2405,132 @@ data_04_6367:
 
 data_04_6390:
     db   $0a                                           ;; 04:6390 ?
-    dw   data_04_6a3a, data_04_7069                    ;; 04:6391 ????
+    dw   data_04_6a3a, bodyGarudaFaceRightWingsUp      ;; 04:6391 ????
     db   $02                                           ;; 04:6395 ?
-    dw   data_04_6a43, data_04_7095                    ;; 04:6396 ????
+    dw   data_04_6a43, bodyGarudaFaceRightWingsDown    ;; 04:6396 ????
     db   $02                                           ;; 04:639a ?
-    dw   data_04_6a40, data_04_7069                    ;; 04:639b ????
+    dw   data_04_6a40, bodyGarudaFaceRightWingsUp      ;; 04:639b ????
     db   $02                                           ;; 04:639f ?
-    dw   data_04_6a49, data_04_7095                    ;; 04:63a0 ????
+    dw   data_04_6a49, bodyGarudaFaceRightWingsDown    ;; 04:63a0 ????
     db   $02                                           ;; 04:63a4 ?
-    dw   data_04_6a46, data_04_7069                    ;; 04:63a5 ????
+    dw   data_04_6a46, bodyGarudaFaceRightWingsUp      ;; 04:63a5 ????
     db   $02                                           ;; 04:63a9 ?
-    dw   data_04_6a49, data_04_7095                    ;; 04:63aa ????
+    dw   data_04_6a49, bodyGarudaFaceRightWingsDown    ;; 04:63aa ????
     db   $02                                           ;; 04:63ae ?
-    dw   data_04_6a46, data_04_7069                    ;; 04:63af ????
+    dw   data_04_6a46, bodyGarudaFaceRightWingsUp      ;; 04:63af ????
     db   $02                                           ;; 04:63b3 ?
-    dw   data_04_6a49, data_04_7095                    ;; 04:63b4 ????
+    dw   data_04_6a49, bodyGarudaFaceRightWingsDown    ;; 04:63b4 ????
     db   $04                                           ;; 04:63b8 ?
-    dw   data_04_6a4c, data_04_7069                    ;; 04:63b9 ????
+    dw   data_04_6a4c, bodyGarudaFaceRightWingsUp      ;; 04:63b9 ????
     db   $04                                           ;; 04:63bd ?
-    dw   data_04_6a4f, data_04_7095                    ;; 04:63be ????
+    dw   data_04_6a4f, bodyGarudaFaceRightWingsDown    ;; 04:63be ????
     db   $04                                           ;; 04:63c2 ?
-    dw   data_04_6a4c, data_04_7069                    ;; 04:63c3 ????
+    dw   data_04_6a4c, bodyGarudaFaceRightWingsUp      ;; 04:63c3 ????
     db   $04                                           ;; 04:63c7 ?
-    dw   data_04_6a4f, data_04_7095                    ;; 04:63c8 ????
+    dw   data_04_6a4f, bodyGarudaFaceRightWingsDown    ;; 04:63c8 ????
     db   $04                                           ;; 04:63cc ?
-    dw   data_04_6a4c, data_04_7069                    ;; 04:63cd ????
+    dw   data_04_6a4c, bodyGarudaFaceRightWingsUp      ;; 04:63cd ????
     db   $04                                           ;; 04:63d1 ?
-    dw   data_04_6a4f, data_04_7095                    ;; 04:63d2 ????
+    dw   data_04_6a4f, bodyGarudaFaceRightWingsDown    ;; 04:63d2 ????
     db   $ff                                           ;; 04:63d6 ?
 
 data_04_63d7:
     db   $0a                                           ;; 04:63d7 ?
-    dw   data_04_6a1c, data_04_707f                    ;; 04:63d8 ????
+    dw   data_04_6a1c, bodyGarudaFaceLeftWingsUp       ;; 04:63d8 ????
     db   $02                                           ;; 04:63dc ?
-    dw   data_04_6a25, data_04_70ab                    ;; 04:63dd ????
+    dw   data_04_6a25, bodyGarudaFaceLeftWingsDown     ;; 04:63dd ????
     db   $02                                           ;; 04:63e1 ?
-    dw   data_04_6a22, data_04_707f                    ;; 04:63e2 ????
+    dw   data_04_6a22, bodyGarudaFaceLeftWingsUp       ;; 04:63e2 ????
     db   $02                                           ;; 04:63e6 ?
-    dw   data_04_6a2b, data_04_70ab                    ;; 04:63e7 ????
+    dw   data_04_6a2b, bodyGarudaFaceLeftWingsDown     ;; 04:63e7 ????
     db   $02                                           ;; 04:63eb ?
-    dw   data_04_6a28, data_04_707f                    ;; 04:63ec ????
+    dw   data_04_6a28, bodyGarudaFaceLeftWingsUp       ;; 04:63ec ????
     db   $02                                           ;; 04:63f0 ?
-    dw   data_04_6a2b, data_04_70ab                    ;; 04:63f1 ????
+    dw   data_04_6a2b, bodyGarudaFaceLeftWingsDown     ;; 04:63f1 ????
     db   $02                                           ;; 04:63f5 ?
-    dw   data_04_6a28, data_04_707f                    ;; 04:63f6 ????
+    dw   data_04_6a28, bodyGarudaFaceLeftWingsUp       ;; 04:63f6 ????
     db   $02                                           ;; 04:63fa ?
-    dw   data_04_6a2b, data_04_70ab                    ;; 04:63fb ????
+    dw   data_04_6a2b, bodyGarudaFaceLeftWingsDown     ;; 04:63fb ????
     db   $04                                           ;; 04:63ff ?
-    dw   data_04_6a2e, data_04_707f                    ;; 04:6400 ????
+    dw   data_04_6a2e, bodyGarudaFaceLeftWingsUp       ;; 04:6400 ????
     db   $04                                           ;; 04:6404 ?
-    dw   data_04_6a31, data_04_70ab                    ;; 04:6405 ????
+    dw   data_04_6a31, bodyGarudaFaceLeftWingsDown     ;; 04:6405 ????
     db   $04                                           ;; 04:6409 ?
-    dw   data_04_6a2e, data_04_707f                    ;; 04:640a ????
+    dw   data_04_6a2e, bodyGarudaFaceLeftWingsUp       ;; 04:640a ????
     db   $04                                           ;; 04:640e ?
-    dw   data_04_6a31, data_04_70ab                    ;; 04:640f ????
+    dw   data_04_6a31, bodyGarudaFaceLeftWingsDown     ;; 04:640f ????
     db   $04                                           ;; 04:6413 ?
-    dw   data_04_6a2e, data_04_707f                    ;; 04:6414 ????
+    dw   data_04_6a2e, bodyGarudaFaceLeftWingsUp       ;; 04:6414 ????
     db   $04                                           ;; 04:6418 ?
-    dw   data_04_6a31, data_04_70ab                    ;; 04:6419 ????
+    dw   data_04_6a31, bodyGarudaFaceLeftWingsDown     ;; 04:6419 ????
     db   $ff                                           ;; 04:641d ?
 
 data_04_641e:
     db   $04                                           ;; 04:641e ?
-    dw   data_04_6a52, data_04_7069                    ;; 04:641f ????
+    dw   data_04_6a52, bodyGarudaFaceRightWingsUp      ;; 04:641f ????
     db   $04                                           ;; 04:6423 ?
-    dw   data_04_6a55, data_04_7095                    ;; 04:6424 ????
+    dw   data_04_6a55, bodyGarudaFaceRightWingsDown    ;; 04:6424 ????
     db   $04                                           ;; 04:6428 ?
-    dw   data_04_6a52, data_04_7069                    ;; 04:6429 ????
+    dw   data_04_6a52, bodyGarudaFaceRightWingsUp      ;; 04:6429 ????
     db   $04                                           ;; 04:642d ?
-    dw   data_04_6a55, data_04_7095                    ;; 04:642e ????
+    dw   data_04_6a55, bodyGarudaFaceRightWingsDown    ;; 04:642e ????
     db   $ff                                           ;; 04:6432 ?
 
 data_04_6433:
     db   $04                                           ;; 04:6433 ?
-    dw   data_04_6a34, data_04_707f                    ;; 04:6434 ????
+    dw   data_04_6a34, bodyGarudaFaceLeftWingsUp       ;; 04:6434 ????
     db   $04                                           ;; 04:6438 ?
-    dw   data_04_6a37, data_04_70ab                    ;; 04:6439 ????
+    dw   data_04_6a37, bodyGarudaFaceLeftWingsDown     ;; 04:6439 ????
     db   $04                                           ;; 04:643d ?
-    dw   data_04_6a34, data_04_707f                    ;; 04:643e ????
+    dw   data_04_6a34, bodyGarudaFaceLeftWingsUp       ;; 04:643e ????
     db   $04                                           ;; 04:6442 ?
-    dw   data_04_6a37, data_04_70ab                    ;; 04:6443 ????
+    dw   data_04_6a37, bodyGarudaFaceLeftWingsDown     ;; 04:6443 ????
     db   $ff                                           ;; 04:6447 ?
 
 data_04_6448:
     db   $04                                           ;; 04:6448 ?
-    dw   data_04_6a52, data_04_7069                    ;; 04:6449 ????
+    dw   data_04_6a52, bodyGarudaFaceRightWingsUp      ;; 04:6449 ????
     db   $01                                           ;; 04:644d ?
-    dw   data_04_6a55, data_04_70c1                    ;; 04:644e ????
+    dw   data_04_6a55, bodyGarudaFaceRightWingsDown_fire ;; 04:644e ????
     db   $02                                           ;; 04:6452 ?
-    dw   data_04_6a55, data_04_7095                    ;; 04:6453 ????
+    dw   data_04_6a55, bodyGarudaFaceRightWingsDown    ;; 04:6453 ????
     db   $01                                           ;; 04:6457 ?
-    dw   data_04_6a55, data_04_70c1                    ;; 04:6458 ????
+    dw   data_04_6a55, bodyGarudaFaceRightWingsDown_fire ;; 04:6458 ????
     db   $04                                           ;; 04:645c ?
-    dw   data_04_6a52, data_04_7069                    ;; 04:645d ????
+    dw   data_04_6a52, bodyGarudaFaceRightWingsUp      ;; 04:645d ????
     db   $04                                           ;; 04:6461 ?
-    dw   data_04_6a55, data_04_7095                    ;; 04:6462 ????
+    dw   data_04_6a55, bodyGarudaFaceRightWingsDown    ;; 04:6462 ????
     db   $04                                           ;; 04:6466 ?
-    dw   data_04_6a52, data_04_7069                    ;; 04:6467 ????
+    dw   data_04_6a52, bodyGarudaFaceRightWingsUp      ;; 04:6467 ????
     db   $04                                           ;; 04:646b ?
-    dw   data_04_6a55, data_04_7095                    ;; 04:646c ????
+    dw   data_04_6a55, bodyGarudaFaceRightWingsDown    ;; 04:646c ????
     db   $04                                           ;; 04:6470 ?
-    dw   data_04_6a52, data_04_7069                    ;; 04:6471 ????
+    dw   data_04_6a52, bodyGarudaFaceRightWingsUp      ;; 04:6471 ????
     db   $04                                           ;; 04:6475 ?
-    dw   data_04_6a55, data_04_7095                    ;; 04:6476 ????
+    dw   data_04_6a55, bodyGarudaFaceRightWingsDown    ;; 04:6476 ????
     db   $ff                                           ;; 04:647a ?
 
 data_04_647b:
     db   $04                                           ;; 04:647b ?
-    dw   data_04_6a34, data_04_707f                    ;; 04:647c ????
+    dw   data_04_6a34, bodyGarudaFaceLeftWingsUp       ;; 04:647c ????
     db   $01                                           ;; 04:6480 ?
-    dw   data_04_6a37, data_04_70d7                    ;; 04:6481 ????
+    dw   data_04_6a37, bodyGarudaFaceLeftWingsDown_fire ;; 04:6481 ????
     db   $02                                           ;; 04:6485 ?
-    dw   data_04_6a37, data_04_70ab                    ;; 04:6486 ????
+    dw   data_04_6a37, bodyGarudaFaceLeftWingsDown     ;; 04:6486 ????
     db   $01                                           ;; 04:648a ?
-    dw   data_04_6a37, data_04_70d7                    ;; 04:648b ????
+    dw   data_04_6a37, bodyGarudaFaceLeftWingsDown_fire ;; 04:648b ????
     db   $04                                           ;; 04:648f ?
-    dw   data_04_6a34, data_04_707f                    ;; 04:6490 ????
+    dw   data_04_6a34, bodyGarudaFaceLeftWingsUp       ;; 04:6490 ????
     db   $04                                           ;; 04:6494 ?
-    dw   data_04_6a37, data_04_70ab                    ;; 04:6495 ????
+    dw   data_04_6a37, bodyGarudaFaceLeftWingsDown     ;; 04:6495 ????
     db   $04                                           ;; 04:6499 ?
-    dw   data_04_6a34, data_04_707f                    ;; 04:649a ????
+    dw   data_04_6a34, bodyGarudaFaceLeftWingsUp       ;; 04:649a ????
     db   $04                                           ;; 04:649e ?
-    dw   data_04_6a37, data_04_70ab                    ;; 04:649f ????
+    dw   data_04_6a37, bodyGarudaFaceLeftWingsDown     ;; 04:649f ????
     db   $04                                           ;; 04:64a3 ?
-    dw   data_04_6a34, data_04_707f                    ;; 04:64a4 ????
+    dw   data_04_6a34, bodyGarudaFaceLeftWingsUp       ;; 04:64a4 ????
     db   $04                                           ;; 04:64a8 ?
-    dw   data_04_6a37, data_04_70ab                    ;; 04:64a9 ????
+    dw   data_04_6a37, bodyGarudaFaceLeftWingsDown     ;; 04:64a9 ????
     db   $ff                                           ;; 04:64ad ?
 
 data_04_64ae:
@@ -3670,63 +3670,102 @@ bodyVampireCapeOpenRight_fire:
     db   $00, $f0, $f0
     db   $ff
 
-data_04_6bdc:
-    db   $01, $d0, $f0, $02, $e0, $e0, $03, $f0        ;; 04:6bdc ????????
-    db   $e0, $04, $e0, $f0, $06, $f0, $f0, $08        ;; 04:6be4 ????????
-    db   $f0, $00, $ff                                 ;; 04:6bec ???
+bodyHydraDragonZombieFrontHighBackMid:
+    db   $01, $d0, $f0                                 ;; 04:6bdc
+    db   $02, $e0, $e0
+    db   $03, $f0, $e0
+    db   $04, $e0, $f0
+    db   $06, $f0, $f0
+    db   $08, $f0, $00
+    db   $ff
 
-data_04_6bef:
-    db   $01, $e0, $e0, $02, $d0, $00, $03, $f0        ;; 04:6bef ????????
-    db   $e0, $0a, $f0, $f0, $05, $e0, $00, $08        ;; 04:6bf7 ????????
-    db   $f0, $00, $ff                                 ;; 04:6bff ???
+bodyHydraDragonZombieFrontHighBackLow:
+    db   $01, $e0, $e0                                 ;; 04:6bef
+    db   $02, $d0, $00
+    db   $03, $f0, $e0
+    db   $0a, $f0, $f0
+    db   $05, $e0, $00
+    db   $08, $f0, $00
+    db   $ff
 
-data_04_6c02:
-    db   $01, $d0, $00, $02, $d0, $f0, $04, $e0        ;; 04:6c02 ????????
-    db   $f0, $0b, $f0, $f0, $05, $e0, $00, $08        ;; 04:6c0a ????????
-    db   $f0, $00, $ff                                 ;; 04:6c12 ???
+bodyHydraDragonZombieFrontMidBackLow:
+    db   $01, $d0, $00                                 ;; 04:6c02
+    db   $02, $d0, $f0
+    db   $04, $e0, $f0
+    db   $0b, $f0, $f0
+    db   $05, $e0, $00
+    db   $08, $f0, $00
+    db   $ff
 
-data_04_6c15:
-    db   $01, $d0, $f0, $02, $e0, $e0, $03, $f0        ;; 04:6c15 ????????
-    db   $e0, $04, $e0, $f0, $07, $f0, $f0, $08        ;; 04:6c1d ????????
-    db   $f0, $00, $ff                                 ;; 04:6c25 ???
+bodyHydraDragonZombieFrontMidBackHigh:
+    db   $01, $d0, $f0                                ;; 04:6c15
+    db   $02, $e0, $e0
+    db   $03, $f0, $e0
+    db   $04, $e0, $f0
+    db   $07, $f0, $f0
+    db   $08, $f0, $00
+    db   $ff
 
-data_04_6c28:
-    db   $41, $e0, $e0, $02, $d0, $00, $03, $f0        ;; 04:6c28 ????????
-    db   $e0, $0a, $f0, $f0, $05, $e0, $00, $09        ;; 04:6c30 ????????
-    db   $f0, $00, $ff                                 ;; 04:6c38 ???
+bodyHydraDragonZombieFrontLowBackHigh_fire:
+    db   $41, $e0, $e0                                 ;; 04:6c28
+    db   $02, $d0, $00
+    db   $03, $f0, $e0
+    db   $0a, $f0, $f0
+    db   $05, $e0, $00
+    db   $09, $f0, $00
+    db   $ff
 
-data_04_6c3b:
-    db   $01, $d0, $00, $02, $d0, $f0, $04, $e0        ;; 04:6c3b ????????
-    db   $f0, $0b, $f0, $f0, $05, $e0, $00, $08        ;; 04:6c43 ????????
-    db   $f0, $00, $ff                                 ;; 04:6c4b ???
+bodyHydraDragonZombieFrontMidBackLow_dup:
+    db   $01, $d0, $00                                 ;; 04:6c3b
+    db   $02, $d0, $f0
+    db   $04, $e0, $f0
+    db   $0b, $f0, $f0
+    db   $05, $e0, $00
+    db   $08, $f0, $00
+    db   $ff
 
-data_04_6c4e:
-    db   $12, $f0, $f0, $13, $00, $f0, $01, $f0        ;; 04:6c4e ????????
-    db   $00, $ff                                      ;; 04:6c56 ??
+bodyMedusaEyesOpen:
+    db   $12, $f0, $f0                                 ;; 04:6c4e
+    db   $13, $00, $f0
+    db   $01, $f0, $00
+    db   $ff
 
-data_04_6c58:
-    db   $06, $f0, $f0, $10, $00, $f0, $11, $f0        ;; 04:6c58 ????????
-    db   $00, $ff                                      ;; 04:6c60 ??
+bodyMedusaEyesClosed:
+    db   $06, $f0, $f0                                 ;; 04:6c58
+    db   $10, $00, $f0
+    db   $11, $f0, $00
+    db   $ff
 
-data_04_6c62:
-    db   $0f, $f0, $f0, $0a, $00, $f0, $01, $f0        ;; 04:6c62 ????????
-    db   $00, $ff                                      ;; 04:6c6a ??
+bodyMedusaEyesGlowing:
+    db   $0f, $f0, $f0                                 ;; 04:6c62
+    db   $0a, $00, $f0
+    db   $01, $f0, $00
+    db   $ff
 
-data_04_6c6c:
-    db   $49, $f0, $f0, $04, $00, $f0, $01, $f0        ;; 04:6c6c ????????
-    db   $00, $ff                                      ;; 04:6c74 ??
+bodyMedusaEyesGlowingFacingLeft_fire:
+    db   $49, $f0, $f0                                 ;; 04:6c6c
+    db   $04, $00, $f0
+    db   $01, $f0, $00
+    db   $ff
 
-data_04_6c76:
-    db   $0e, $f0, $f0, $03, $00, $f0, $01, $f0        ;; 04:6c76 ????????
-    db   $00, $ff                                      ;; 04:6c7e ??
+bodyMedusaEyesCoveredWithSnakes:
+    db   $0e, $f0, $f0                                 ;; 04:6c76
+    db   $03, $00, $f0
+    db   $01, $f0, $00
+    db   $ff
 
-data_04_6c80:
-    db   $05, $f0, $f0, $48, $00, $f0, $01, $f0        ;; 04:6c80 ????????
-    db   $00, $ff                                      ;; 04:6c88 ??
+bodyMedusaEyesGlowingFacingRight:
+    db   $05, $f0, $f0                                 ;; 04:6c80
+    db   $48, $00, $f0
+    db   $01, $f0, $00
+    db   $ff
 
-data_04_6c8a:
-    db   $47, $f0, $f0, $4b, $00, $f0, $01, $f0        ;; 04:6c8a ????????
-    db   $00, $ff                                      ;; 04:6c92 ??
+; $07 ($47) is a duplicate of $0f and $0b ($4b) is a duplicate of $0a.
+bodyMedusaEyesGlowing_fire:
+    db   $47, $f0, $f0                                 ;; 04:6c8a
+    db   $4b, $00, $f0
+    db   $01, $f0, $00
+    db   $ff
 
 data_04_6c94:
     db   $03, $f0, $f0, $04, $00, $f0, $01, $f0        ;; 04:6c94 ????????
@@ -3786,17 +3825,29 @@ data_04_6d86:
     db   $00, $0d, $e0, $ef, $0c, $f3, $0e, $0d        ;; 04:6d8e ????????
     db   $e0, $f3, $0c, $f4, $11, $ff                  ;; 04:6d96 ??????
 
-data_04_6d9c:
-    db   $00, $f0, $f0, $02, $00, $f0, $01, $f0        ;; 04:6d9c ........
-    db   $00, $01, $f0, $00, $01, $f0, $00, $ff        ;; 04:6da4 .......?
+bodyJackalGolemRightFootForward:
+    db   $00, $f0, $f0                                 ;; 04:6d9c
+    db   $02, $00, $f0
+    db   $01, $f0, $00
+    db   $01, $f0, $00
+    db   $01, $f0, $00
+    db   $ff
 
-data_04_6dac:
-    db   $04, $f0, $f0, $05, $00, $f0, $03, $f0        ;; 04:6dac ........
-    db   $00, $03, $f0, $00, $03, $f0, $00, $ff        ;; 04:6db4 .......?
+bodyJackalGolemLeftFootForward :
+    db   $04, $f0, $f0                                 ;; 04:6dac
+    db   $05, $00, $f0
+    db   $03, $f0, $00
+    db   $03, $f0, $00
+    db   $03, $f0, $00
+    db   $ff
 
-data_04_6dbc:
-    db   $08, $f0, $f0, $0b, $00, $f0, $09, $f0        ;; 04:6dbc ........
-    db   $00, $09, $f0, $00, $09, $f0, $00, $ff        ;; 04:6dc4 .......?
+bodyJackalGolemCharge:
+    db   $08, $f0, $f0                                 ;; 04:6dbc
+    db   $0b, $00, $f0
+    db   $09, $f0, $00
+    db   $09, $f0, $00
+    db   $09, $f0, $00
+    db   $ff
 
 data_04_6dcc:
     db   $00, $e0, $f0, $01, $f0, $f0, $08, $00        ;; 04:6dcc ????????
@@ -3840,35 +3891,59 @@ data_04_6e86:
     db   $08, $06, $0f, $10, $00, $0c, $f1, $10        ;; 04:6e96 ????????
     db   $0b, $00, $10, $0c, $04, $0f, $ff             ;; 04:6e9e ???????
 
-data_04_6ea5:
-    db   $06, $10, $f0, $09, $10, $00, $05, $00        ;; 04:6ea5 ????????
-    db   $10, $08, $10, $10, $0e, $30, $f0, $0f        ;; 04:6ead ????????
-    db   $20, $f0, $ff                                 ;; 04:6eb5 ???
+bodyCyclopsStarFarBack:
+    db   $06, $10, $f0                                 ;; 04:6ea5
+    db   $09, $10, $00
+    db   $05, $00, $10
+    db   $08, $10, $10
+    db   $0e, $30, $f0
+    db   $0f, $20, $f0
+    db   $ff
 
-data_04_6eb8:
-    db   $06, $10, $f0, $09, $10, $00, $01, $00        ;; 04:6eb8 ????????
-    db   $10, $04, $10, $10, $0e, $20, $f0, $0e        ;; 04:6ec0 ????????
-    db   $20, $f0, $ff                                 ;; 04:6ec8 ???
+bodyCyclopsStarBack:
+    db   $06, $10, $f0                                 ;; 04:6eb8
+    db   $09, $10, $00
+    db   $01, $00, $10
+    db   $04, $10, $10
+    db   $0e, $20, $f0
+    db   $0e, $20, $f0
+    db   $ff
 
-data_04_6ecb:
-    db   $02, $10, $f0, $03, $10, $00, $05, $00        ;; 04:6ecb ????????
-    db   $10, $08, $10, $10, $0d, $00, $f0, $0d        ;; 04:6ed3 ????????
-    db   $00, $f0, $ff                                 ;; 04:6edb ???
+bodyCyclopsStarForward:
+    db   $02, $10, $f0                                 ;; 04:6ecb
+    db   $03, $10, $00
+    db   $05, $00, $10
+    db   $08, $10, $10
+    db   $0d, $00, $f0
+    db   $0d, $00, $f0
+    db   $ff
 
-data_04_6ede:
-    db   $02, $10, $f0, $03, $10, $00, $01, $00        ;; 04:6ede ????????
-    db   $10, $04, $10, $10, $0d, $f0, $f0, $0f        ;; 04:6ee6 ????????
-    db   $00, $f0, $ff                                 ;; 04:6eee ???
+bodyCyclopsStarFarForward:
+    db   $02, $10, $f0                                 ;; 04:6ede
+    db   $03, $10, $00
+    db   $01, $00, $10
+    db   $04, $10, $10
+    db   $0d, $f0, $f0
+    db   $0f, $00, $f0
+    db   $ff
 
-data_04_6ef1:
-    db   $0b, $10, $00, $0a, $00, $10, $0c, $10        ;; 04:6ef1 ????????
-    db   $10, $0d, $f0, $0c, $0d, $f0, $0c, $0d        ;; 04:6ef9 ????????
-    db   $f0, $0c, $ff                                 ;; 04:6f01 ???
+bodyCyclopsStrikeShort:
+    db   $0b, $10, $00                                 ;; 04:6ef1
+    db   $0a, $00, $10
+    db   $0c, $10, $10
+    db   $0d, $f0, $0c
+    db   $0d, $f0, $0c
+    db   $0d, $f0, $0c
+    db   $ff
 
-data_04_6f04:
-    db   $0b, $10, $00, $0a, $00, $10, $0c, $10        ;; 04:6f04 ????????
-    db   $10, $0d, $e0, $0c, $0f, $f0, $0c, $0f        ;; 04:6f0c ????????
-    db   $f0, $0c, $ff                                 ;; 04:6f14 ???
+bodyCyclopsStrikeLong:
+    db   $0b, $10, $00                                 ;; 04:6f04
+    db   $0a, $00, $10
+    db   $0c, $10, $10
+    db   $0d, $e0, $0c
+    db   $0f, $f0, $0c
+    db   $0f, $f0, $0c
+    db   $ff
 
 data_04_6f17:
     db   $01, $e0, $f0, $0f, $f0, $f0, $05, $00        ;; 04:6f17 ????????
@@ -3954,35 +4029,65 @@ data_04_7056:
     db   $00, $13, $08, $00, $13, $08, $00, $13        ;; 04:705e ????????
     db   $08, $00, $ff                                 ;; 04:7066 ???
 
-data_04_7069:
-    db   $03, $f0, $f0, $06, $00, $f0, $08, $10        ;; 04:7069 ????????
-    db   $f0, $05, $f0, $00, $09, $10, $00, $07        ;; 04:7071 ????????
-    db   $00, $10, $0a, $10, $10, $ff                  ;; 04:7079 ??????
+bodyGarudaFaceRightWingsUp:
+    db   $03, $f0, $f0                                 ;; 04:7069
+    db   $06, $00, $f0
+    db   $08, $10, $f0
+    db   $05, $f0, $00
+    db   $09, $10, $00
+    db   $07, $00, $10
+    db   $0a, $10, $10
+    db   $ff
 
-data_04_707f:
-    db   $18, $f0, $f0, $15, $00, $f0, $13, $10        ;; 04:707f ????????
-    db   $f0, $19, $f0, $00, $14, $10, $00, $1a        ;; 04:7087 ????????
-    db   $f0, $10, $17, $00, $10, $ff                  ;; 04:708f ??????
+bodyGarudaFaceLeftWingsUp:
+    db   $18, $f0, $f0                                 ;; 04:707f
+    db   $15, $00, $f0
+    db   $13, $10, $f0
+    db   $19, $f0, $00
+    db   $14, $10, $00
+    db   $1a, $f0, $10
+    db   $17, $00, $10
+    db   $ff
 
-data_04_7095:
-    db   $0b, $f0, $00, $10, $10, $00, $0e, $f0        ;; 04:7095 ????????
-    db   $10, $0f, $00, $10, $11, $10, $10, $12        ;; 04:709d ????????
-    db   $20, $10, $12, $20, $10, $ff                  ;; 04:70a5 ??????
+bodyGarudaFaceRightWingsDown:
+    db   $0b, $f0, $00                                 ;; 04:7095
+    db   $10, $10, $00
+    db   $0e, $f0, $10
+    db   $0f, $00, $10
+    db   $11, $10, $10
+    db   $12, $20, $10
+    db   $12, $20, $10
+    db   $ff
 
-data_04_70ab:
-    db   $1d, $f0, $00, $00, $10, $00, $1f, $e0        ;; 04:70ab ????????
-    db   $10, $1e, $f0, $10, $1c, $00, $10, $01        ;; 04:70b3 ????????
-    db   $10, $10, $01, $10, $10, $ff                  ;; 04:70bb ??????
+bodyGarudaFaceLeftWingsDown:
+    db   $1d, $f0, $00                                 ;; 04:70ab
+    db   $00, $10, $00
+    db   $1f, $e0, $10
+    db   $1e, $f0, $10
+    db   $1c, $00, $10
+    db   $01, $10, $10
+    db   $01, $10, $10
+    db   $ff
 
-data_04_70c1:
-    db   $0b, $f0, $00, $10, $10, $00, $4e, $f0        ;; 04:70c1 ????????
-    db   $10, $0f, $00, $10, $11, $10, $10, $52        ;; 04:70c9 ????????
-    db   $20, $10, $12, $20, $10, $ff                  ;; 04:70d1 ??????
+bodyGarudaFaceRightWingsDown_fire:
+    db   $0b, $f0, $00                                 ;; 04:70c1
+    db   $10, $10, $00
+    db   $4e, $f0, $10
+    db   $0f, $00, $10
+    db   $11, $10, $10
+    db   $52, $20, $10
+    db   $12, $20, $10
+    db   $ff
 
-data_04_70d7:
-    db   $1b, $f0, $00, $17, $10, $00, $5d, $e0        ;; 04:70d7 ????????
-    db   $10, $1c, $f0, $10, $1a, $00, $10, $58        ;; 04:70df ????????
-    db   $10, $10, $18, $10, $10, $ff                  ;; 04:70e7 ??????
+bodyGarudaFaceLeftWingsDown_fire:
+    db   $1b, $f0, $00                                 ;; 04:70d7
+    db   $17, $10, $00
+    db   $5d, $e0, $10
+    db   $1c, $f0, $10
+    db   $1a, $00, $10
+    db   $58, $10, $10
+    db   $18, $10, $10
+    db   $ff
 
 data_04_70ed:
     db   $01, $f0, $f0, $03, $00, $f0, $04, $10        ;; 04:70ed ????????
@@ -4291,8 +4396,8 @@ data_04_766f:
 
 ; The first frame of the Jackal/Golem death animation.
 ; There was a chunk missing at the bottom right that was possible to easily restore.
-data_04_7685:
-    db   $80, $f0, $f0
+bodyJackalGolemDeathFrame1:
+    db   $80, $f0, $f0                                 ;; 04:7685
     db   $02, $00, $f0
     db   $01, $f0, $00
     db   $06, $00, $00
