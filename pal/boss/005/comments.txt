@@ -1,0 +1,13 @@
+Palette for Golem.
+
+Background colors are white, green, blue, and black.
+
+Only the first background palette is populated, the rest are monochrome and unused.
+
+Golem shares sprite frame structures with Jackal, which includes what palettes are asigned to what areas.
+
+Two boss palettes are loaded--obj5 and obj6, but they are both identical.
+
+The boss damage flash effect is is a washed-out version of the colors. Close to but not quite white.
+
+The explosion effect--obj4--is currently set to some brown colors. 

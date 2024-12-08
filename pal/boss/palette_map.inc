@@ -8,7 +8,7 @@
     COLOR_PALETTE_BOSS blue             ; Medusa         $02
     COLOR_PALETTE_BOSS blue             ; Megapede       $03
     COLOR_PALETTE_BOSS blue             ; Davias         $04
-    COLOR_PALETTE_BOSS blue             ; Golem          $05
+    COLOR_PALETTE_BOSS 005              ; Golem          $05
     COLOR_PALETTE_BOSS blue             ; Cyclops        $06
     COLOR_PALETTE_BOSS blue             ; Chimera        $07
     COLOR_PALETTE_BOSS blue             ; Kary           $08
