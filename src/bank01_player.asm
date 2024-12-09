@@ -4723,10 +4723,10 @@ attackFrames:
     dw   attackFireIceThnderNukeFrame1                 ;; 01:5e39 ?? $0e
     dw   attackFireIceThnderNukeFrame1                 ;; 01:5e3b ?? $0f
     dw   data_01_6861                                  ;; 01:5e3d ?? $10
-    dw   data_01_641d                                  ;; 01:5e3f ?? $11
+    dw   attackSwordFrame2                             ;; 01:5e3f ?? $11
     dw   $0000                                         ;; 01:5e41 ?? $12
-    dw   data_01_66bd                                  ;; 01:5e43 ?? $13
-    dw   data_01_678f                                  ;; 01:5e45 ?? $14
+    dw   attackChainFrame2                             ;; 01:5e43 ?? $13
+    dw   attackSickleFrame2                            ;; 01:5e45 ?? $14
     dw   attackSpearFrame2                             ;; 01:5e47 ?? $15
     dw   data_01_6711                                  ;; 01:5e49 ?? $16
     dw   $0000                                         ;; 01:5e4b ?? $17
@@ -4741,7 +4741,7 @@ attackFrames:
     dw   data_01_688b                                  ;; 01:5e5d ?? $20
     dw   $0000                                         ;; 01:5e5f ?? $21
     dw   $0000                                         ;; 01:5e61 ?? $22
-    dw   data_01_66e7                                  ;; 01:5e63 ?? $23
+    dw   attackChainFrame3                             ;; 01:5e63 ?? $23
     dw   $0000                                         ;; 01:5e65 ?? $24
     dw   $0000                                         ;; 01:5e67 ?? $25
     dw   data_01_673b                                  ;; 01:5e69 ?? $26
@@ -4776,7 +4776,7 @@ attackFrames:
     dw   data_01_673b                                  ;; 01:5ea3 ?? $43
     dw   $0000                                         ;; 01:5ea5 ?? $44
     dw   $0000                                         ;; 01:5ea7 ?? $45
-    dw   data_01_6837                                  ;; 01:5ea9 pP $46
+    dw   attackMattokFrame                             ;; 01:5ea9 pP $46
     dw   $0000                                         ;; 01:5eab ?? $47
     dw   $0000                                         ;; 01:5ead ?? $48
     dw   data_01_63f3                                  ;; 01:5eaf ?? $49
@@ -5108,7 +5108,7 @@ data_01_63f3:
     dw   data_01_7375, data_01_7375, data_01_7375, data_01_7375 ;; 01:640d ????????
     dw   data_01_7375, data_01_7375, data_01_7375, data_01_7375 ;; 01:6415 ????????
 
-data_01_641d:
+attackSwordFrame2:
     db   $04, $48, $00, $04, $ff, $00                  ;; 01:641d ??????
     dw   gfxPlayer, data_01_6957                       ;; 01:6423 ????
     dw   data_01_69a1, data_01_69b0, data_01_69bf, data_01_69ce ;; 01:6427 ????????
@@ -5230,13 +5230,13 @@ attackAxeFrame1:
 
 attackChainFrame1:
     db   $04, $48, $02, $06, $0a, $00                  ;; 01:6693 ??????
-    dw   data_08_7300, data_01_6963                    ;; 01:6699 ????
+    dw   gfxAttackChain, data_01_6963                  ;; 01:6699 ????
     dw   data_01_6f30, data_01_6f4b, data_01_6f66, data_01_6f81 ;; 01:669d ????????
     dw   data_01_6f30, data_01_6f4b, data_01_6f66, data_01_6f81 ;; 01:66a5 ????????
     dw   data_01_6f9c, data_01_6fbf, data_01_6fe2, data_01_7005 ;; 01:66ad ????????
     dw   data_01_6f9c, data_01_6fbf, data_01_6fe2, data_01_7005 ;; 01:66b5 ????????
 
-data_01_66bd:
+attackChainFrame2:
     db   $04, $40, $03, $05, $ff, $00                  ;; 01:66bd ??????
     dw   gfxAttackSickle, data_01_6987                 ;; 01:66c3 ????
     dw   data_01_7160, data_01_7167, data_01_716e, data_01_7175 ;; 01:66c7 ????????
@@ -5244,7 +5244,7 @@ data_01_66bd:
     dw   data_01_7160, data_01_7167, data_01_716e, data_01_7175 ;; 01:66d7 ????????
     dw   data_01_7160, data_01_7167, data_01_716e, data_01_7175 ;; 01:66df ????????
 
-data_01_66e7:
+attackChainFrame3:
     db   $04, $40, $03, $03, $ff, $00                  ;; 01:66e7 ??????
     dw   gfxAttackSickle, data_01_6987                 ;; 01:66ed ????
     dw   data_01_7198, data_01_71a7, data_01_71b6, data_01_71c5 ;; 01:66f1 ????????
@@ -5276,7 +5276,7 @@ attackSickleFrame1:
     dw   data_01_6da0, data_01_6dcf, data_01_6dfe, data_01_6e2d ;; 01:677f ????????
     dw   data_01_6da0, data_01_6dcf, data_01_6dfe, data_01_6e2d ;; 01:6787 ????????
 
-data_01_678f:
+attackSickleFrame2:
     db   $03, $40, $03, $05, $ff, $00                  ;; 01:678f ??????
     dw   gfxAttackSickle, data_01_697b                 ;; 01:6795 ????
     dw   data_01_6ce4, data_01_6d13, data_01_6d42, data_01_6d71 ;; 01:6799 ????????
@@ -5312,7 +5312,7 @@ attackMorningstarFrame1:
     dw   data_01_70b4, data_01_70df, data_01_710a, data_01_7135 ;; 01:6827 ????????
     dw   data_01_70b4, data_01_70df, data_01_710a, data_01_7135 ;; 01:682f ????????
 
-data_01_6837:
+attackMattokFrame:
     db   $06, $48, $02, $05, $0c, $00                  ;; 01:6837 .....?
     dw   gfxAttackMattok, data_01_68df                 ;; 01:683d ....
     dw   data_01_69dd, data_01_69f0, data_01_6a03, data_01_6a16 ;; 01:6841 ????????

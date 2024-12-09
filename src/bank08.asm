@@ -102,8 +102,8 @@ gfxAttackSickle:
     INCBIN "attack/sickle.bin"                         ;; 08:7240
 
 ;@gfximg name=attacks1 width=6 height=1
-data_08_7300:
-    INCBIN "attacks1.bin"                              ;; 08:7300
+gfxAttackChain:
+    INCBIN "attack/chain.bin"                          ;; 08:7300
 
 ;@gfximg name=attack/spear width=14 height=1
 gfxAttackSpear:
