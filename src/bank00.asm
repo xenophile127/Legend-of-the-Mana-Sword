@@ -114,6 +114,7 @@ ENDC
 
 lotmsInit:
 ; Set the stack pointer to its final location before any calls.
+;    ld sp, STARTOF("wram0") + SIZEOF("wram0")
     ld sp, STARTOF(WRAM0) + SIZEOF(WRAM0)
 ; Capture the state of registers that can be used to detect the model of Game Boy.
     ldh [hBootup.a], a
@@ -2766,8 +2767,8 @@ scriptOpCodeScrollRoomLeft:
     ld   B, $00                                        ;; 00:0f2d $06 $00
     ld   A, $82                                        ;; 00:0f2f $3e $82
     call playerSpritesLoadPlayerSpriteTiles_trampoline ;; 00:0f31 $cd $32 $02
-    ld   D, $04                                        ;; 00:0f34 $16 $04
-    ld   A, $01                                        ;; 00:0f36 $3e $01
+    ld   D, ROOM_SCROLL_SPEED                          ;; 00:0f34 $16 $04
+    ld   A, DIRECTIONF_EAST                            ;; 00:0f36 $3e $01
     call scrollRoom_trampoline                         ;; 00:0f38 $cd $9e $04
     pop  HL                                            ;; 00:0f3b $e1
     cp   A, $00                                        ;; 00:0f3c $fe $00
@@ -2780,8 +2781,8 @@ scriptOpCodeScrollRoomRight:
     ld   B, $00                                        ;; 00:0f44 $06 $00
     ld   A, $81                                        ;; 00:0f46 $3e $81
     call playerSpritesLoadPlayerSpriteTiles_trampoline ;; 00:0f48 $cd $32 $02
-    ld   D, $04                                        ;; 00:0f4b $16 $04
-    ld   A, $02                                        ;; 00:0f4d $3e $02
+    ld   D, ROOM_SCROLL_SPEED                          ;; 00:0f4b $16 $04
+    ld   A, DIRECTIONF_WEST                            ;; 00:0f4d $3e $02
     call scrollRoom_trampoline                         ;; 00:0f4f $cd $9e $04
     pop  HL                                            ;; 00:0f52 $e1
     cp   A, $00                                        ;; 00:0f53 $fe $00
@@ -2794,8 +2795,8 @@ scriptOpCodeScrollRoomDown:
     ld   B, $00                                        ;; 00:0f5b $06 $00
     ld   A, $88                                        ;; 00:0f5d $3e $88
     call playerSpritesLoadPlayerSpriteTiles_trampoline ;; 00:0f5f $cd $32 $02
-    ld   D, $04                                        ;; 00:0f62 $16 $04
-    ld   A, $04                                        ;; 00:0f64 $3e $04
+    ld   D, ROOM_SCROLL_SPEED                          ;; 00:0f62 $16 $04
+    ld   A, DIRECTIONF_NORTH                           ;; 00:0f64 $3e $04
     call scrollRoom_trampoline                         ;; 00:0f66 $cd $9e $04
     pop  HL                                            ;; 00:0f69 $e1
     cp   A, $00                                        ;; 00:0f6a $fe $00
@@ -2808,8 +2809,8 @@ scriptOpCodeScrollRoomUp:
     ld   B, $00                                        ;; 00:0f72 $06 $00
     ld   A, $84                                        ;; 00:0f74 $3e $84
     call playerSpritesLoadPlayerSpriteTiles_trampoline ;; 00:0f76 $cd $32 $02
-    ld   D, $04                                        ;; 00:0f79 $16 $04
-    ld   A, $08                                        ;; 00:0f7b $3e $08
+    ld   D, ROOM_SCROLL_SPEED                          ;; 00:0f79 $16 $04
+    ld   A, DIRECTIONF_SOUTH                           ;; 00:0f7b $3e $08
     call scrollRoom_trampoline                         ;; 00:0f7d $cd $9e $04
     pop  HL                                            ;; 00:0f80 $e1
     cp   A, $00                                        ;; 00:0f81 $fe $00
@@ -5341,6 +5342,7 @@ returnFromBankCall:
 Init:
     di                                                 ;; 00:1fca $f3
     ld sp, STARTOF(WRAM0) + SIZEOF(WRAM0)
+    ;ld sp, STARTOF("wram0") + SIZEOF("wram0")
     call DisableLCD
     call InitPreIntEnable                              ;; 00:1fce $cd $f0 $1f
     ei                                                 ;; 00:1fd1 $fb
