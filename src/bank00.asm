@@ -114,8 +114,7 @@ ENDC
 
 lotmsInit:
 ; Set the stack pointer to its final location before any calls.
-;    ld sp, STARTOF("wram0") + SIZEOF("wram0")
-    ld sp, STARTOF(WRAM0) + SIZEOF(WRAM0)
+    ld sp, STARTOF("wram0") + $2000
 ; Capture the state of registers that can be used to detect the model of Game Boy.
     ldh [hBootup.a], a
     ld a, b
@@ -5341,8 +5340,7 @@ returnFromBankCall:
 
 Init:
     di                                                 ;; 00:1fca $f3
-    ld sp, STARTOF(WRAM0) + SIZEOF(WRAM0)
-    ;ld sp, STARTOF("wram0") + SIZEOF("wram0")
+    ld sp, STARTOF("wram0") + $2000
     call DisableLCD
     call InitPreIntEnable                              ;; 00:1fce $cd $f0 $1f
     ei                                                 ;; 00:1fd1 $fb
@@ -5364,7 +5362,9 @@ HaltLoop:
     dec [hl]
     ret nz
 .loop:
-    halt
+; Explicitly add a halt and only a halt (no nop) so that older and newer versions of rgbasm
+; produce the same output.
+    db $76                                             ;; halt
     jr .loop
 
 ; Do various initialization before interrupts are enabled.

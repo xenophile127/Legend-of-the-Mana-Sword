@@ -6125,7 +6125,8 @@ jp_02_71fb:
     ld   DE, wDialogX                                  ;; 02:727e $11 $a7 $d4
     ld   B, $08                                        ;; 02:7281 $06 $08
     call writeDEtimesBtoSRAM                           ;; 02:7283 $cd $48 $74
-    ld   A, LOW((SAVE_MAGIC_NUMBER >>> 4) | (SAVE_MAGIC_NUMBER << 4)) ;; 02:7286 $3e $c6
+; Every save game ends with the magic number with nibbles swapped.
+    ld   A, LOW(((SAVE_MAGIC_NUMBER >> 4) & $0f) | (SAVE_MAGIC_NUMBER << 4)) ;; 02:7286 $3e $c6
     call writeSRAMByte                                 ;; 02:7288 $cd $64 $74
     call disableSRAM                                   ;; 02:728b $cd $5e $74
     ld   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:728e $3e $1b
