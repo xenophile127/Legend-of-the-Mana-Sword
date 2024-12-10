@@ -38,19 +38,16 @@ clean:
 debug: DEFS += $(DEBUG)
 debug: $(ROM)
 
-amanda: clean
 amanda: DEFS = -DPLAYER_GRAPHICS_AMANDA -DPLAYER_GENDER_FEMALE -DGLADIATOR_DUKE -DMANA -DDEBUG
 amanda: $(ROM)
 	-rm -f LotMS-Amanda-*.gb
 	mv $(ROM) LotMS-Amanda-`date +%F`.gb
 
-duke: clean
 duke: DEFS = -DPLAYER_GRAPHICS_ORIGINAL -DPLAYER_GENDER_MALE -DGLADIATOR_AMANDA -DMANA -DDEBUG
 duke: $(ROM)
 	-rm -f LotMS-Duke-*.gb
 	mv $(ROM) LotMS-Duke-`date +%F`.gb
 
-color: clean
 color: DEFS += $(COLOR) $(DEBUG) $(DOUBLE_SPEED)
 color: $(ROM)
 
