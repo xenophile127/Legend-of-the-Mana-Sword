@@ -5453,7 +5453,7 @@ initMisc:
     or   A, LCDCF_WINON | LCDCF_WIN9C00                ;; 00:2095 $f6 $60
     ld   [wVideoLCDC], A                               ;; 00:2097 $ea $a5 $c0
     call initLCDCEffect                                ;; 00:209a $cd $eb $02
-    ld   A, $07                                        ;; 00:209d $3e $07
+    ld   A, WX_OFS                                     ;; 00:209d $3e $07
     ld   [wVideoWX], A                                 ;; 00:209f $ea $a8 $c0
     ld   A, $80                                        ;; 00:20a2 $3e $80
     ld   [wVideoWY], A                                 ;; 00:20a4 $ea $a9 $c0
@@ -7194,7 +7194,7 @@ earlyInit:
 colorInit:
 ; Refuse to run unless color capable hardware is found.
     ldh a, [hBootup.a]
-    cp $11
+    cp BOOTUP_A_CGB
     jr nz, .fatal
 IF DEF(DOUBLE_SPEED)
 ; Perform switch to Double Speed Mode
