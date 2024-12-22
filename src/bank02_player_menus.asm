@@ -2437,12 +2437,10 @@ menuLevelupYesNoChoice:
 ; New equation is (Wisdom + 4),  capped at 99.
 ; The plus four keeps the same starting MP (6).
     add  A, $04
-    nop
-    nop
-    nop
-    nop
-    nop
-    nop
+
+; Log message on levelup.
+    ld hl, debugMsgLevelUp
+    call logger.hl
     nop
     nop
     nop
