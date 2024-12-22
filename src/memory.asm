@@ -1353,6 +1353,7 @@ wScriptPlayerFacingDirection:
 ; bit 3: Save 1
 ; bit 4: Save 2
 ; bit 5: naming screen Girl (instead of Boy)
+; bit 6: Uknown
 ; bit 7: running script
 wWindowFlags:
     ds 2                                               ;; d874

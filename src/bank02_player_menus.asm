@@ -765,8 +765,8 @@ menuTrashCanTileLoads:
 gameStateMenuJumptable:
     dw   windowInitMenu                                ;; 02:47c8 pP $00
     dw   windowInitMain                                ;; 02:47ca pP $01
-    dw   call_02_49c7                                  ;; 02:47cc pP $02
-    dw   call_02_4a79                                  ;; 02:47ce pP $03
+    dw   windowInitAdjustments                         ;; 02:47cc pP $02
+    dw   windowMenuIdle                                ;; 02:47ce pP $03
     dw   call_02_4ae4                                  ;; 02:47d0 pP $04
     dw   call_02_4c0e                                  ;; 02:47d2 pP $05
     dw   call_02_4c53                                  ;; 02:47d4 pP $06
@@ -903,7 +903,7 @@ windowInitExistingFrame:
     jr   Z, call_02_48f0                               ;; 02:48bf $28 $2f
     cp   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:48c1 $fe $12
     jr   Z, call_02_48f0                               ;; 02:48c3 $28 $2b
-    jp   call_02_49c7                                  ;; 02:48c5 $c3 $c7 $49
+    jp   windowInitAdjustments                         ;; 02:48c5 $c3 $c7 $49
 .saveload_top_window:
     ld   A, $33                                        ;; 02:48c8 $3e $33
     jp   jp_02_5877                                    ;; 02:48ca $c3 $77 $58
@@ -1052,11 +1052,11 @@ data_02_49af:
     data_pbbp statusScreenHPLabel, $1a, $01, $d612     ;; 02:49bb ....pP $02
     data_pbbp wStatusScreenAPDP, $15, $ff, $0000       ;; 02:49c1 ...... $03
 
-call_02_49c7:
+windowInitAdjustments:
     ld   A, [wDialogType]                              ;; 02:49c7 $fa $4a $d8
     push AF                                            ;; 02:49ca $f5
     cp   A, WINDOW_EQUIP_BOTTOM                        ;; 02:49cb $fe $04
-    call Z, call_02_57b9                               ;; 02:49cd $cc $b9 $57
+    call Z, windowEquipScreenSetBottomWindowActive     ;; 02:49cd $cc $b9 $57
     call windowInitContents                            ;; 02:49d0 $cd $93 $76
     call saveRegisterState2                            ;; 02:49d3 $cd $80 $6d
     pop  AF                                            ;; 02:49d6 $f1
@@ -1094,7 +1094,7 @@ jp_02_49f7:
 call_02_4a14:
     ld   A, [wDialogType]                              ;; 02:4a14 $fa $4a $d8
     cp   A, WINDOW_LEVELUP_FANFARE                     ;; 02:4a17 $fe $21
-    jr   Z, .jr_02_4a71                                ;; 02:4a19 $28 $56
+    jr   Z, .wait_music                                ;; 02:4a19 $28 $56
     ld   H, $01                                        ;; 02:4a1b $26 $01
     ld   DE, $400                                      ;; 02:4a1d $11 $00 $04
     cp   A, WINDOW_TITLE_SCREEN                        ;; 02:4a20 $fe $1f
@@ -1137,13 +1137,13 @@ call_02_4a14:
     ld   HL, $0b                                       ;; 02:4a6a $21 $0b $00
     call runScriptByIndex                              ;; 02:4a6d $cd $ad $31
     ret                                                ;; 02:4a70 $c9
-.jr_02_4a71:
+.wait_music:
     ld   HL, wLevelUpFanfareDelay                      ;; 02:4a71 $21 $7f $d8
     dec  [HL]                                          ;; 02:4a74 $35
     ret  NZ                                            ;; 02:4a75 $c0
     jp   openLevelUpStatusScreen                       ;; 02:4a76 $c3 $e1 $4e
 
-call_02_4a79:
+windowMenuIdle:
     ld   A, [wDialogType]                              ;; 02:4a79 $fa $4a $d8
     cp   A, WINDOW_TITLE_SCREEN                        ;; 02:4a7c $fe $1f
     jr   NZ, .jr_02_4a85                               ;; 02:4a7e $20 $05
@@ -1240,7 +1240,7 @@ call_02_4ae4:
     dw   call_02_522d                                  ;; 02:4b15 ?? $02
     dw   call_02_522d                                  ;; 02:4b17 pP $03
     dw   fullscreenWindowShowGameScreen                ;; 02:4b19 ?? $04
-    dw   call_02_4a79                                  ;; 02:4b1b ?? $05
+    dw   windowMenuIdle                                ;; 02:4b1b ?? $05
     dw   call_02_4a14                                  ;; 02:4b1d ?? $06
     dw   reopenSelectWindowAfterSaveScreen             ;; 02:4b1f pP $07
 .not_matched:
@@ -1395,8 +1395,6 @@ call_02_4c0e:
     bit  1, A                                          ;; 02:4c1a $cb $4f
     ret  Z                                             ;; 02:4c1c $c8
     call loadRegisterState1                            ;; 02:4c1d $cd $5b $6d
-
-data_02_4c20:
     call call_02_6be8                                  ;; 02:4c20 $cd $e8 $6b
     ld   A, D                                          ;; 02:4c23 $7a
     ld   [wD89D], A                                    ;; 02:4c24 $ea $9d $d8
@@ -1511,13 +1509,13 @@ call_02_4cf7:
     ret  NZ                                            ;; 02:4cff $c0
     ld   A, [wDialogType]                              ;; 02:4d00 $fa $4a $d8
     cp   A, WINDOW_SELECT_MENU                         ;; 02:4d03 $fe $11
-    jp   Z, jp_02_4ea7                                 ;; 02:4d05 $ca $a7 $4e
+    jp   Z, menuSelectChoice                           ;; 02:4d05 $ca $a7 $4e
     cp   A, WINDOW_STATUS_SCREEN_TOP                   ;; 02:4d08 $fe $15
-    jp   Z, jp_02_503a                                 ;; 02:4d0a $ca $3a $50
+    jp   Z, menuStatusScreenChoice                     ;; 02:4d0a $ca $3a $50
     cp   A, WINDOW_LEVELUP_YES_NO                      ;; 02:4d0d $fe $19
-    jp   Z, jp_02_531c                                 ;; 02:4d0f $ca $1c $53
+    jp   Z, menuLevelupYesNoChoice                     ;; 02:4d0f $ca $1c $53
     cp   A, WINDOW_SAVE_LOAD_FILE_1                    ;; 02:4d12 $fe $1b
-    jp   Z, jp_02_71fb                                 ;; 02:4d14 $ca $fb $71
+    jp   Z, menuSaveLoadChoice                         ;; 02:4d14 $ca $fb $71
     cp   A, WINDOW_NAMING_SCREEN_BOTTOM                ;; 02:4d17 $fe $1e
     jp   Z, windowNamingEntryAddLetter                 ;; 02:4d19 $ca $c6 $52
     cp   A, WINDOW_TITLE_SCREEN                        ;; 02:4d1c $fe $1f
@@ -1672,13 +1670,13 @@ swapActiveEquipment:
 ds 1 ; Free space
 
 call_02_4e14:
-    ld   A, $04                                        ;; 02:4e14 $3e $04
+    ld   A, WINDOW_EQUIP_BOTTOM                        ;; 02:4e14 $3e $04
     call windowInitContents                            ;; 02:4e16 $cd $93 $76
     ld   A, [wD84F]                                    ;; 02:4e19 $fa $4f $d8
     ld   [wD848], A                                    ;; 02:4e1c $ea $48 $d8
     ld   [wD846], A                                    ;; 02:4e1f $ea $46 $d8
     rrca                                               ;; 02:4e22 $0f
-    call call_02_57b9                                  ;; 02:4e23 $cd $b9 $57
+    call windowEquipScreenSetBottomWindowActive        ;; 02:4e23 $cd $b9 $57
     call Z, windowInitContents                         ;; 02:4e26 $cc $93 $76
     ld   A, [wD869]                                    ;; 02:4e29 $fa $69 $d8
     ld   [wD868], A                                    ;; 02:4e2c $ea $68 $d8
@@ -1745,7 +1743,7 @@ jp_02_4e9b:
     call runVirtualScriptOpCodeFF                      ;; 02:4ea3 $cd $69 $3c
     ret                                                ;; 02:4ea6 $c9
 
-jp_02_4ea7:
+menuSelectChoice:
     ld   A, [wDialogType]                              ;; 02:4ea7 $fa $4a $d8
     ld   [wSelectedMenuIndex], A                       ;; 02:4eaa $ea $4b $d8
     ld   A, [wSelectedMenuIndex2]                      ;; 02:4ead $fa $4c $d8
@@ -1965,7 +1963,7 @@ call_02_4fff:
     rrca                                               ;; 02:5038 $0f
     ret                                                ;; 02:5039 $c9
 
-jp_02_503a:
+menuStatusScreenChoice:
     ld   HL, wWindowSecondaryFlags                     ;; 02:503a $21 $72 $d8
     bit  0, [HL]                                       ;; 02:503d $cb $46
     jr   NZ, fullscreenWindowShowGameScreen            ;; 02:503f $20 $21
@@ -2393,7 +2391,7 @@ windowNamingEntryAddLetter:
     ld   [wMenuStateCurrentFunction], A                ;; 02:5318 $ea $53 $d8
     ret                                                ;; 02:531b $c9
 
-jp_02_531c:
+menuLevelupYesNoChoice:
     call getSelectedMenuIndexes                        ;; 02:531c $cd $b0 $57
     dec  A                                             ;; 02:531f $3d
     ld   B, $31                                        ;; 02:5320 $06 $31
@@ -3182,7 +3180,8 @@ getSelectedMenuIndexes:
     ld   C, A                                          ;; 02:57b7 $4f
     ret                                                ;; 02:57b8 $c9
 
-call_02_57b9:
+; On the Equipment screen the top window is drawn in front but the bottom window is the menu.
+windowEquipScreenSetBottomWindowActive:
     ld   A, WINDOW_EQUIP_BOTTOM                        ;; 02:57b9 $3e $04
     push AF                                            ;; 02:57bb $f5
     ld   HL, windowData.equipmentScreenBottom          ;; 02:57bc $21 $d2 $5b
@@ -6062,7 +6061,7 @@ openLoadSaveScreen_common:
     call setMenuStateCurrentFunction                   ;; 02:71f7 $cd $98 $6c
     ret                                                ;; 02:71fa $c9
 
-jp_02_71fb:
+menuSaveLoadChoice:
     ld   HL, wWindowFlags                              ;; 02:71fb $21 $74 $d8
     bit  2, [HL]                                       ;; 02:71fe $cb $56
     jp   NZ, jp_02_72be                                ;; 02:7200 $c2 $be $72
