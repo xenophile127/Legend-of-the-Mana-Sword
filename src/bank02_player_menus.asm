@@ -2438,9 +2438,10 @@ menuLevelupYesNoChoice:
 ; The plus four keeps the same starting MP (6).
     add  A, $04
 
-; Log message on levelup.
+; Log message on level up.
     ld hl, debugMsgLevelUp
     call logger.hl
+
     nop
     nop
     nop
@@ -5275,7 +5276,9 @@ copyStatsToLevelUpTmp:
     ld   [wStatStaminaLevelUpTmp], A                   ;; 02:6d22 $ea $8f $d7
     ret                                                ;; 02:6d25 $c9
 
-ds 13 ; Free space
+ds 14 ; Free space
+
+SECTION "bank02_align_6d34", ROMX[$6d34], BANK[$02]
 
 ; save all registers to a backup state (dialog related?)
 saveRegisterState1:
@@ -6099,11 +6102,16 @@ menuSaveLoadChoice:
     ld   DE, wSRAMSaveHeader._3                        ;; 02:7244 $11 $aa $d7
     ld   HL, wBoyName                                  ;; 02:7247 $21 $9d $d7
     ld   B, SAVE_MAX_NAME_LENGTH                       ;; 02:724a $06 $04
-    call copyHLtoDEtimesB                              ;; 02:724c $cd $51 $74
+    call copyHLtoDE.loop                               ;; 02:724c $cd $51 $74
     ld   HL, wGirlName                                 ;; 02:724f $21 $a2 $d7
     ld   B, SAVE_MAX_NAME_LENGTH                       ;; 02:7252 $06 $04
-    call copyHLtoDEtimesB                              ;; 02:7254 $cd $51 $74
+    call copyHLtoDE.loop                               ;; 02:7254 $cd $51 $74
     call getGraphicsAndMusicState                      ;; 02:7257 $cd $35 $77
+
+; Log message on save game.
+    ld hl, debugMsgSaveGame
+    call logger.hl
+
     ld   HL, wSRAMSaveHeader                           ;; 02:725a $21 $a7 $d7
     call formatSaveHeader                              ;; 02:725d $cd $72 $77
     push HL                                            ;; 02:7260 $e5
@@ -6144,7 +6152,7 @@ menuSaveLoadChoice:
     pop  BC                                            ;; 02:72aa $c1
     ret                                                ;; 02:72ab $c9
 
-ds 7 ; Free space
+ds 1 ; Free space
 
 ; Swap out the memory blocks at HL and DE with the size in B
 swapHL_DE:
@@ -6213,12 +6221,12 @@ loadSRAMInitGame:
     ld   HL, wSRAMSaveHeader._3                        ;; 02:7326 $21 $aa $d7
     ld   DE, wBoyName                                  ;; 02:7329 $11 $9d $d7
     ld   B, SAVE_MAX_NAME_LENGTH                       ;; 02:732c $06 $04
-    call copyHLtoDEtimesB                              ;; 02:732e $cd $51 $74
+    call copyHLtoDE.loop                               ;; 02:732e $cd $51 $74
     xor  A, A                                          ;; 02:7331 $af
     ld   [DE], A                                       ;; 02:7332 $12
     inc  DE                                            ;; 02:7333 $13
     ld   B, SAVE_MAX_NAME_LENGTH                       ;; 02:7334 $06 $04
-    call copyHLtoDEtimesB                              ;; 02:7336 $cd $51 $74
+    call copyHLtoDE.loop                               ;; 02:7336 $cd $51 $74
     xor  A, A                                          ;; 02:7339 $af
     ld   [DE], A                                       ;; 02:733a $12
 ; Init the attack gauge.
@@ -6394,14 +6402,17 @@ loadGameFinish:
     call hideAndSaveMenuMetasprites                    ;; 02:7430 $cd $51 $6b
 ; These next two calls have been switched in order to prevent a brief visual glitch.
     call hideFullscreenWindow
+
+; Log message on load game.
+    ld hl, debugMsgLoadGame
+    call logger.hl
+
     call clearSaveLoadScreen
     ld   B, $00                                        ;; 02:7439 $06 $00
     call setMenuStateCurrentFunction                   ;; 02:743b $cd $98 $6c
     ret                                                ;; 02:743e $c9
 
-ds 3 ; Free space
-
-SECTION "bank02_align_743f", ROMX[$743f], BANK[$02]
+ds 4 ; Free space
 
 ; Read a block of SRAM into memory pointing at DE
 readDEtimesBtoSRAM:
@@ -6421,13 +6432,7 @@ writeDEtimesBtoSRAM:
     jr   NZ, writeDEtimesBtoSRAM                       ;; 02:744e $20 $f8
     ret                                                ;; 02:7450 $c9
 
-copyHLtoDEtimesB:
-    ld   A, [HL+]                                      ;; 02:7451 $2a
-    ld   [DE], A                                       ;; 02:7452 $12
-    inc  DE                                            ;; 02:7453 $13
-    dec  B                                             ;; 02:7454 $05
-    jr   NZ, copyHLtoDEtimesB                          ;; 02:7455 $20 $fa
-    ret                                                ;; 02:7457 $c9
+SECTION "bank02_align_7458", ROMX[$7458], BANK[$02]
 
 enableSRAM:
     ld   A, CART_SRAM_ENABLE                           ;; 02:7458 $3e $0a

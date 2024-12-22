@@ -63,4 +63,10 @@ debugMsgGameOver:
     DBG_STR "[INFO] Restarting due to game over."
 
 debugMsgLevelUp:
-    DBG_STR "[INFO] Level up: Level %($d7ba)%, Stamina %($d7c1)%, Power %($d7c2)%, Wisdom %($d7c3)%, Will %($d7c4)%."
+    DBG_STR "[INFO] Level up!: Level %($d7ba)%, Stamina %($d7c1)%, Power %($d7c2)%, Wisdom %($d7c3)%, Will %($d7c4)%"
+
+debugMsgSaveGame:
+    DBG_STR "[INFO] Save game: Level %($d7ba)%, Stamina %($d7c1)%, Power %($d7c2)%, Wisdom %($d7c3)%, Will %($d7c4)%"
+
+debugMsgLoadGame:
+    DBG_STR "[INFO] Load game: Level %($d7ba)%, Stamina %($d7c1)%, Power %($d7c2)%, Wisdom %($d7c3)%, Will %($d7c4)%"
