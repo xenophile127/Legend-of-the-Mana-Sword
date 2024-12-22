@@ -1374,7 +1374,7 @@ reopenSelectWindowAfterSaveScreen:
     ld   HL, wWindowFlags                              ;; 02:4bf0 $21 $74 $d8
     bit  2, [HL]                                       ;; 02:4bf3 $cb $56
     jr   NZ, .jr_02_4c08                               ;; 02:4bf5 $20 $11
-    call dismissSaveScreen                             ;; 02:4bf7 $cd $ac $72
+    call clearSaveLoadScreen                           ;; 02:4bf7 $cd $ac $72
     call fullscreenWindowShowGameScreen                ;; 02:4bfa $cd $62 $50
     ld   A, WINDOW_SELECT_MENU                         ;; 02:4bfd $3e $11
     ld   [wDialogType], A                              ;; 02:4bff $ea $4a $d8
@@ -6062,7 +6062,7 @@ openLoadSaveScreen_common:
 menuSaveLoadChoice:
     ld   HL, wWindowFlags                              ;; 02:71fb $21 $74 $d8
     bit  2, [HL]                                       ;; 02:71fe $cb $56
-    jp   NZ, jp_02_72be                                ;; 02:7200 $c2 $be $72
+    jp   NZ, menuLoadScreenChoice                      ;; 02:7200 $c2 $be $72
     ld   HL, wWindowSecondaryFlags                     ;; 02:7203 $21 $72 $d8
     res  5, [HL]                                       ;; 02:7206 $cb $ae
     ld   HL, sSave1Header                              ;; 02:7208 $21 $00 $a0
@@ -6144,10 +6144,7 @@ menuSaveLoadChoice:
     pop  BC                                            ;; 02:72aa $c1
     ret                                                ;; 02:72ab $c9
 
-dismissSaveScreen:
-    call hideAndSaveMenuMetasprites                    ;; 02:72ac $cd $51 $6b
-    call clearSaveLoadScreen                           ;; 02:72af $cd $4c $56
-    ret                                                ;; 02:72b2 $c9
+ds 7 ; Free space
 
 ; Swap out the memory blocks at HL and DE with the size in B
 swapHL_DE:
@@ -6162,7 +6159,7 @@ swapHL_DE:
     jr   NZ, swapHL_DE                                 ;; 02:72bb $20 $f6
     ret                                                ;; 02:72bd $c9
 
-jp_02_72be:
+menuLoadScreenChoice:
     ld   DE, wWindowSecondaryFlags                     ;; 02:72be $11 $72 $d8
     ld   A, [DE]                                       ;; 02:72c1 $1a
     res  5, A                                          ;; 02:72c2 $cb $af
