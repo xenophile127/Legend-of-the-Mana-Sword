@@ -805,7 +805,7 @@ gameStateMenuJumptable:
     dw   windowVendorCantCarryOpen                     ;; 02:4816 ?? $27
     dw   windowVendorCantCarryShowText                 ;; 02:4818 ?? $28
     dw   windowVendorCantCarryWaitAnyButton            ;; 02:481a ?? $29
-    dw   call_02_48f0                                  ;; 02:481c pP $2a
+    dw   windowInitMoreWindows                         ;; 02:481c pP $2a
     dw   call_02_498c                                  ;; 02:481e pP $2b
     dw   call_02_492b                                  ;; 02:4820 pP $2c
     dw   openStatusScreen                              ;; 02:4822 pP $2d
@@ -900,9 +900,9 @@ windowInitExistingFrame:
     cp   A, WINDOW_VENDOR_TEXT_TOP                     ;; 02:48b9 $fe $0f
     jr   Z, vendor_text_menu                           ;; 02:48bb $28 $22
     cp   A, WINDOW_NAMING_SCREEN_TOP                   ;; 02:48bd $fe $1d
-    jr   Z, call_02_48f0                               ;; 02:48bf $28 $2f
+    jr   Z, windowInitMoreWindows                      ;; 02:48bf $28 $2f
     cp   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:48c1 $fe $12
-    jr   Z, call_02_48f0                               ;; 02:48c3 $28 $2b
+    jr   Z, windowInitMoreWindows                      ;; 02:48c3 $28 $2b
     jp   windowInitAdjustments                         ;; 02:48c5 $c3 $c7 $49
 .saveload_top_window:
     ld   A, $33                                        ;; 02:48c8 $3e $33
@@ -923,12 +923,16 @@ openLoadSaveBottomWindow:
 ; DE = where to move it to.
 start_menu_status_effect_window:
     ld b, (4 + (8 * 4))
-    ld   DE, wWindowBackgroundSaveBuffer._101          ;; 02:48da $11 $ac $d5
+    ld   DE, wWindowBackgroundSaveBuffer + $0101       ;; 02:48da $11 $ac $d5
     jr   jr_02_48e4                                    ;; 02:48dd $18 $05
 
+; Used to move the vendors' text window's backup entry before the other windows are drawn.
+; b = number of bytes to copy, four (for x,y,w,h) plus w*h (20*10).
+; There is a bug because the source area and the destination area overlap,
+; but the backup seems to never be restored.
 vendor_text_menu:
-    ld   B, $cc                                        ;; 02:48df $06 $cc
-    ld   DE, wWindowBackgroundSaveBuffer._09b          ;; 02:48e1 $11 $46 $d5
+    ld   B, (4 + (20 * 10))                            ;; 02:48df $06 $cc
+    ld   DE, wWindowBackgroundSaveBuffer.end - $cc - 1 ;; 02:48e1 $11 $46 $d5
 
 jr_02_48e4:
     ld   HL, wDialogX                                  ;; 02:48e4 $21 $a7 $d4
@@ -937,22 +941,23 @@ jr_02_48e4:
     call setMenuStateCurrentFunction                   ;; 02:48ec $cd $98 $6c
     ret                                                ;; 02:48ef $c9
 
-call_02_48f0:
+windowInitMoreWindows:
     ld   A, [wDialogType]                              ;; 02:48f0 $fa $4a $d8
-    ld   HL, data_02_4997                              ;; 02:48f3 $21 $97 $49
+    ld   HL, window_list_start                         ;; 02:48f3 $21 $97 $49
     cp   A, WINDOW_START_MENU_STATUS                   ;; 02:48f6 $fe $09
-    jr   Z, .jr_02_4911                                ;; 02:48f8 $28 $17
-    ld   HL, data_02_49a3                              ;; 02:48fa $21 $a3 $49
+    jr   Z, .load                                      ;; 02:48f8 $28 $17
+    ld   HL, window_list_vendor                        ;; 02:48fa $21 $a3 $49
     cp   A, WINDOW_VENDOR_TEXT_TOP                     ;; 02:48fd $fe $0f
-    jr   Z, .jr_02_4911                                ;; 02:48ff $28 $10
-    ld   HL, data_02_49af                              ;; 02:4901 $21 $af $49
+    jr   Z, .load                                      ;; 02:48ff $28 $10
+    ld   HL, window_list_status                        ;; 02:4901 $21 $af $49
     cp   A, WINDOW_STATUS_SCREEN_RIGHT                 ;; 02:4904 $fe $12
-    jr   Z, .jr_02_4911                                ;; 02:4906 $28 $09
-    ld   HL, data_02_4991                              ;; 02:4908 $21 $91 $49
+    jr   Z, .load                                      ;; 02:4906 $28 $09
+    ld   HL, window_list_naming                        ;; 02:4908 $21 $91 $49
     cp   A, WINDOW_NAMING_SCREEN_TOP                   ;; 02:490b $fe $1d
-    jr   Z, .jr_02_4911                                ;; 02:490d $28 $02
+    jr   Z, .load                                      ;; 02:490d $28 $02
+; Dead code. Never reached.
     jr   call_02_492b                                  ;; 02:490f $18 $1a
-.jr_02_4911:
+.load:
     ld   E, [HL]                                       ;; 02:4911 $5e
     inc  HL                                            ;; 02:4912 $23
     ld   D, [HL]                                       ;; 02:4913 $56
@@ -1031,26 +1036,59 @@ call_02_498c:
     ld   A, $2c                                        ;; 02:498c $3e $2c
     jp   jp_02_5877                                    ;; 02:498e $c3 $77 $58
 
-;@data format=pbbp amount=1
-data_02_4991:
-    data_pbbp nameLabel, $1e, $ff, nameEntryInputOptions ;; 02:4991 ......
 
-;@data format=pbbp amount=2
-data_02_4997:
-    data_pbbp statusEffectLabels, $0a, $54, $d558      ;; 02:4997 ....pP $00
-    data_pbbp wEquippedItemAndWeaponCopy, $00, $ff, startMenuOptions ;; 02:499d ...... $01
+; Lists are one or more entries with:
+; offset 0: pointer to the menu options for the previous window.
+; offset 2: window id to open
+; offset 3: size of the window's backup record,
+;           or $ff to indicate the final entry in the list,
+;           or $01 if moving the backup record is not needed.
+;           This code actually uses a copy routine that is safe to use for a zero length copy.
+; offset 4: If not the final entry then the location to copy the backup record to,
+;           else pointer to the menu options for this window.
+window_list_naming:
+    data_pbbp nameLabel, \                             ;; 02:4991 ......
+              WINDOW_NAMING_SCREEN_BOTTOM, \
+              $ff, \
+              nameEntryInputOptions
 
-;@data format=pbbp amount=2
-data_02_49a3:
-    data_pbbp venderGreetingText, $0c, $01, $d612      ;; 02:49a3 ....pP $00
-    data_pbbp $0000, $0b, $ff, vendorOptions           ;; 02:49a9 ...... $01
+window_list_start:
+    data_pbbp statusEffectLabels, \                    ;; 02:4997 ....pP $00
+              WINDOW_START_MENU_EQUIPPED, \
+              $54, \ 
+              wWindowBackgroundSaveBuffer + $0101 - $54
+    data_pbbp wEquippedItemAndWeaponCopy, \            ;; 02:499d ...... $01
+              WINDOW_START_MENU, \
+              $ff, \
+              startMenuOptions
 
-;@data format=pbbp amount=4
-data_02_49af:
-    data_pbbp statusScreenStatLabels, $13, $01, $d612  ;; 02:49af ....pP $00
-    data_pbbp $0000, $14, $01, $d612                   ;; 02:49b5 ....pP $01
-    data_pbbp statusScreenHPLabel, $1a, $01, $d612     ;; 02:49bb ....pP $02
-    data_pbbp wStatusScreenAPDP, $15, $ff, $0000       ;; 02:49c1 ...... $03
+window_list_vendor:
+    data_pbbp venderGreetingText, \                    ;; 02:49a3 ....pP $00
+              WINDOW_VENDOR_MONEY, \
+              $01, \
+              wWindowBackgroundSaveBuffer.end - 1
+    data_pbbp $0000, \                                 ;; 02:49a9 ...... $01
+              WINDOW_VENDOR_BUY_SELL_EXIT, \
+              $ff, \
+              vendorOptions
+
+window_list_status:
+    data_pbbp statusScreenStatLabels, \                ;; 02:49af ....pP $00
+              WINDOW_STATUS_SCREEN_MONEY, \
+              $01, \
+              wWindowBackgroundSaveBuffer.end - 1
+    data_pbbp $0000, \                                 ;; 02:49b5 ....pP $01
+              WINDOW_STATUS_SCREEN_HP_MP, \
+              $01, \
+              wWindowBackgroundSaveBuffer.end - 1
+    data_pbbp statusScreenHPLabel, \                   ;; 02:49bb ....pP $02
+              WINDOW_STATUS_SCREEN_AP_DP, \
+              $01, \
+              wWindowBackgroundSaveBuffer.end - 1
+    data_pbbp wStatusScreenAPDP, \                     ;; 02:49c1 ...... $03
+              WINDOW_STATUS_SCREEN_TOP, \
+              $ff, \
+              $0000
 
 windowInitAdjustments:
     ld   A, [wDialogType]                              ;; 02:49c7 $fa $4a $d8
@@ -1292,11 +1330,11 @@ call_02_4b4b:
 .data_02_4b6c:
 ; Used when closing multiple windows to shuffle backed up tile ids to where they need to be.
 ; Format is a pointer to the data and a length. Data is four bytes (x,y,w,h) plus w*h bytes long.
-    dw $d558
+    dw wWindowBackgroundSaveBuffer + $0101 - $54
     db $54
 ; For the Start menu status effect window
 ; This window has been slightly enlarged to show longer status effect names.
-    dw wWindowBackgroundSaveBuffer._101
+    dw wWindowBackgroundSaveBuffer + $0101
     db 4 + (8 * 4)
 
 call_02_4b72:

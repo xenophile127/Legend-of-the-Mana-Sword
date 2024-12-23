@@ -8993,7 +8993,7 @@ opCodeFFWaitInput:
 textCtrlCodeYesNo:
     push HL                                            ;; 00:351a $e5
     ld   B, $a4                                        ;; 00:351b $06 $a4
-    ld   DE, wWindowBackgroundSaveBuffer._0c3          ;; 00:351d $11 $6e $d5
+    ld   DE, wWindowBackgroundSaveBuffer.end - $a4 - 1 ;; 00:351d $11 $6e $d5
     ld   HL, wDialogX                                  ;; 00:3520 $21 $a7 $d4
     call copyHLtoDE                                    ;; 00:3523 $cd $49 $2b
     ld   A, [wMainGameState]                           ;; 00:3526 $fa $a0 $c0
@@ -9015,7 +9015,7 @@ textCtrlCodeYesNo:
 yesNoWindowFinish:
     ld   B, $a4                                        ;; 00:3547 $06 $a4
     ld   DE, wDialogX                                  ;; 00:3549 $11 $a7 $d4
-    ld   HL, wWindowBackgroundSaveBuffer._0c3          ;; 00:354c $21 $6e $d5
+    ld   HL, wWindowBackgroundSaveBuffer.end - $a4 - 1 ;; 00:354c $21 $6e $d5
     call copyHLtoDE                                    ;; 00:354f $cd $49 $2b
     ld   A, [wScriptFlags0F]                           ;; 00:3552 $fa $d5 $d7
     and  A, $fe                                        ;; 00:3555 $e6 $fe

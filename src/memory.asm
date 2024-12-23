@@ -873,15 +873,10 @@ wDialogW:
 wDialogH:
     ds 1                                               ;; d4aa
 
-; 360 bytes long so it can store the full screen
+; 360 (SCRN_X_B * SCRN_Y_B) bytes long so it can store the full screen
 wWindowBackgroundSaveBuffer:
-    ds 155                                             ;; d4ab
-._09b:
-    ds 40                                              ;; d546
-._0c3:
-    ds 62                                              ;; d56e
-._101:
-    ds 103                                             ;; d5ac
+    ds 360                                             ;; d4ab
+.end:
 
 ; Script that is run when you open a chest. Actual script code is stored in here,
 ; but with only 3 bytes storage, it just calls an actual script in one of the script banks.
