@@ -612,6 +612,11 @@ ENDC
     call bossNextHeadAction                            ;; 04:4330 $cd $09 $42
     ret                                                ;; 04:4333 $c9
 
+; Calculate initial boss HP.
+; The value stored in the boss data is multipled by some random factor between $0f and $10.
+; This is stored in wCurrentBossHP.
+; Also clears wDamageDoneToBoss in order to fix a bug with late damage passing on to the next boss.
+; de = wCurrentBossDataPointer
 rollBossHP:
     push DE                                            ;; 04:4334 $d5
     call getRandomByte                                 ;; 04:4335 $cd $1e $2b
@@ -622,10 +627,9 @@ rollBossHP:
     ld   L, [HL]                                       ;; 04:433e $6e
     ld   H, $00                                        ;; 04:433f $26 $00
     ld   C, L                                          ;; 04:4341 $4d
-    srl  A                                             ;; 04:4342 $cb $3f
-    srl  A                                             ;; 04:4344 $cb $3f
-    srl  A                                             ;; 04:4346 $cb $3f
-    srl  A                                             ;; 04:4348 $cb $3f
+; Replace four srl a instructions with equivalent swap logic, for space.
+    swap a
+    and $0f
     cpl                                                ;; 04:434a $2f
     inc  A                                             ;; 04:434b $3c
     jr   Z, .jr_04_4353                                ;; 04:434c $28 $05
@@ -646,10 +650,18 @@ rollBossHP:
     add  A, A                                          ;; 04:4364 $87
     rl   C                                             ;; 04:4365 $cb $11
     rl   B                                             ;; 04:4367 $cb $10
-    ld   A, B                                          ;; 04:4369 $78
-    ld   [wCurrentBossHP.high], A                      ;; 04:436a $ea $f5 $d3
-    ld   A, C                                          ;; 04:436d $79
-    ld   [wCurrentBossHP], A                           ;; 04:436e $ea $f4 $d3
+; Set boss HP.
+    ld hl, wCurrentBossHP
+    ld a, c
+    ld [hl+], a
+    ld [hl], b
+; Zero out incoming damage.
+; A well-timed hit during a boss' explosion animation can leave this non-zero,
+; which will get processed when the next boss is spawned.
+    xor a
+    ld hl, wDamageDoneToBoss
+    ld [hl+], a
+    ld [hl+], a
     pop  DE                                            ;; 04:4371 $d1
     ret                                                ;; 04:4372 $c9
 
