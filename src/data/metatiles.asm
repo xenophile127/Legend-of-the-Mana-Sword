@@ -435,8 +435,6 @@ metatilesIndoor:
     METATILE $48, $25, $2a, $2b, $00, $00                  ;; $6c
     METATILE $26, $4f, $28, $29, $00, $00                  ;; $6d
 
-    ds   $12 * 6
-
 metatilesCaves:
     METATILE $1b, $1c, $1d, $1e, $30, $05                  ;; $00
     METATILE $44, $21, $22, $46, $00, $00                  ;; $01
@@ -563,8 +561,6 @@ metatilesCaves:
     METATILE $12, $12, $12, $12, $00, $00                  ;; $79
     METATILE $12, $12, $12, $12, $00, $00                  ;; $7a
 
-    ds   5 * 6
-
 metatilesTitle:
     METATILE $11, $11, $11, $11, $30, $00                  ;; $00
     METATILE $21, $11, $11, $11, $30, $00                  ;; $01
@@ -640,8 +636,6 @@ metatilesTitle:
     METATILE $25, $25, $bf, $25, $00, $00                  ;; $47
     METATILE $bc, $bd, $25, $25, $00, $00                  ;; $48
     METATILE $be, $25, $25, $25, $00, $00                  ;; $49
-
-    ds   $36 * 6
 
 metatilesWorldmap:
     METATILE $2e, $2f, $2e, $2f, $30, $05                  ;; $00
