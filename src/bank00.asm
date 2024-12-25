@@ -4792,24 +4792,26 @@ initMapGraphicsState:
     call fillMemory                                    ;; 00:1b15 $cd $5d $2b
     ret                                                ;; 00:1b18 $c9
 
-; Input A: room tile number
-; Output HL: Pointer to 6 bytes of tile info.
+; a = metatile number
+; Return: hl = pointer to the metatile entry
 getTileInfoPointer:
+; Get the base pointer for the current metatile data table.
+    ld hl, wTileDataTablePointer
+    ld e, [hl]
+    inc hl
+    ld d, [hl]
+; Calculate the offset for the metatile entry (a * 16).
     ld   L, A                                          ;; 00:1b19 $6f
     ld   H, $00                                        ;; 00:1b1a $26 $00
     add hl, hl
-    ld d, h
-    ld e, l
-    ld hl, wTileDataTablePointer
-    ld a, [hl+]
-    ld h, [hl]
-    ld l, a
-    add hl, de
-    add hl, de
+    add hl, hl
+    add hl, hl
+    add hl, hl
+; Add the two together.
     add  HL, DE                                        ;; 00:1b29 $19
     ret                                                ;; 00:1b2a $c9
 
-ds 2 ; Free space
+ds 3 ; Free space
 
 ; Any tile that are already cached have their timer refreshed.
 ; HL = wRoomTiles
@@ -5133,17 +5135,14 @@ cacheMetatileAttributesAndLoadRoomTiles:
     ld A, [BC]
 
     ; Locate the metatile attributes
-    ; getTileInfoPointer is too slow to be used in this function
-    ; Instead, pointer is solved by HL=2*(2*(A+1)+A)+DE=DE+6*A+4
+    ; Instead of calling getTileInfoPointer optimize this to:
+    ; HL=4*((4*A)+1)+DE=DE+16*A+4
     ld L, A
     ld H, $00
+    add HL, HL
+    add HL, HL
     inc HL
     add HL, HL
-    add A, L
-    ld L, A
-    jr NC, .finish_index
-    inc H
-.finish_index:
     add HL, HL
     add HL, DE
 
@@ -5175,7 +5174,7 @@ cacheMetatileAttributesAndLoadRoomTiles:
 scanRoomForNpcPlacementOptions_trampoline:
     jp_to_bank 11, scanRoomForNpcPlacementOptions
 
-ds 28 ; Free space
+ds 31 ; Free space
 
 ; Speeds up script execution by whitelisting certain opcodes to ignore the limit of one opcode per frame.
 speedUpScripts:
