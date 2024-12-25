@@ -31,6 +31,11 @@ DEF IDX = STRSUB("\1", STRLEN("\1")) - "0"
   db (LBL - wScriptFlags) * 8 + (IDX)
 PURGE LBL
 ENDM
+MACRO METATILE
+
+assert _NARG == 6
+    db \1, \2, \3, \4, \5, \6
+ENDM
 MACRO ITEM_DATA
 
         db \1
