@@ -627,7 +627,12 @@ wSpecialAttackTimerNumber:
 
 ; One byte long
 wCurrentPlayerAttackWillCharge:
-    ds 269                                             ;; cf63
+    ds 157                                             ;; cf63
+
+SECTION "wram1", WRAMX[$d000], BANK[$01]
+
+; Free space
+    ds 112                                             ;; d000
 
 ; Loopup of graphics tile number -> VRAM tile number
 wBackgroundGraphicsTileMapping:
