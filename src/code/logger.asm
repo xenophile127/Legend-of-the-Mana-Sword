@@ -13,7 +13,7 @@ copy_logger_to_ram:
     jp copyHLtoDE
 
 logger_ram_code:
-LOAD "RAM code", WRAM0
+LOAD "RAM code", WRAMX, BANK[$01]
 
 logger:
     ld d, d
