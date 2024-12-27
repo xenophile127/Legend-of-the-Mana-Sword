@@ -35,7 +35,8 @@ MACRO METATILE
 
 assert _NARG == 6
     db \1, \2, \3, \4, \5, \6
-    ds align [4]
+    ds 2
+    ds 8
 ENDM
 MACRO ITEM_DATA
 
