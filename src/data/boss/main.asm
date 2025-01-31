@@ -4080,13 +4080,13 @@ bodyGarudaFaceRightWingsDown_fire:
     db   $ff
 
 bodyGarudaFaceLeftWingsDown_fire:
-    db   $1b, $f0, $00                                 ;; 04:70d7
-    db   $17, $10, $00
-    db   $5d, $e0, $10
-    db   $1c, $f0, $10
-    db   $1a, $00, $10
-    db   $58, $10, $10
-    db   $18, $10, $10
+    db   $1d, $f0, $00                                 ;; 04:70d7
+    db   $00, $10, $00
+    db   $5f, $e0, $10
+    db   $1e, $f0, $10
+    db   $1c, $00, $10
+    db   $41, $10, $10
+    db   $01, $10, $10
     db   $ff
 
 data_04_70ed:
