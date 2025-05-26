@@ -794,8 +794,7 @@ projectileCollisionHandling:
     ld   HL, $03                                       ;; 09:441a $21 $03 $00
     add  HL, DE                                        ;; 09:441d $19
     ld   C, [HL]                                       ;; 09:441e $4e
-    ld   HL, $04                                       ;; 09:441f $21 $04 $00
-    add  HL, DE                                        ;; 09:4422 $19
+    inc  HL
     ld   B, [HL]                                       ;; 09:4423 $46
     pop  AF                                            ;; 09:4424 $f1
     and  A, C                                          ;; 09:4425 $a1
@@ -838,8 +837,8 @@ getProjectileDataTableEntry:
 
 getProjectileSize:
     call getProjectileDataTableEntry                   ;; 09:445e $cd $51 $44
-    inc hl
-    inc hl
+    ld   HL, $02                                       ;; 09:4461 $21 $02 $00
+    add  HL, DE                                        ;; 09:4464 $19
     ld   A, [HL]                                       ;; 09:4465 $7e
     ret                                                ;; 09:4466 $c9
 
