@@ -8314,7 +8314,8 @@ attackWithWeaponUseWill_trampoline:
 giveStatusEffect_trampoline:
     jp_to_bank 02, giveStatusEffect                    ;; 00:312f $f5 $3e $2a $c3 $06 $1f
 
-ds 6 ; Free space
+windowMoveBackup_trampoline:
+    jp_to_bank 02, windowMoveBackup
 
 updateStatusEffects_trampoline:
     jp_to_bank 02, updateStatusEffects                 ;; 00:313b $f5 $3e $2c $c3 $06 $1f
@@ -8994,7 +8995,7 @@ textCtrlCodeYesNo:
     ld   B, $a4                                        ;; 00:351b $06 $a4
     ld   DE, wWindowBackgroundSaveBuffer.end - $a4 - 1 ;; 00:351d $11 $6e $d5
     ld   HL, wDialogX                                  ;; 00:3520 $21 $a7 $d4
-    call copyHLtoDE                                    ;; 00:3523 $cd $49 $2b
+    call windowMoveBackup_trampoline
     ld   A, [wMainGameState]                           ;; 00:3526 $fa $a0 $c0
     ld   [wWindowMainGameStateBackup], A               ;; 00:3529 $ea $62 $d8
     pop  HL                                            ;; 00:352c $e1
@@ -9015,7 +9016,7 @@ yesNoWindowFinish:
     ld   B, $a4                                        ;; 00:3547 $06 $a4
     ld   DE, wDialogX                                  ;; 00:3549 $11 $a7 $d4
     ld   HL, wWindowBackgroundSaveBuffer.end - $a4 - 1 ;; 00:354c $21 $6e $d5
-    call copyHLtoDE                                    ;; 00:354f $cd $49 $2b
+    call windowMoveBackup_trampoline
     ld   A, [wScriptFlags0F]                           ;; 00:3552 $fa $d5 $d7
     and  A, $fe                                        ;; 00:3555 $e6 $fe
     ld   B, A                                          ;; 00:3557 $47

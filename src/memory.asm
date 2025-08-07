@@ -879,6 +879,7 @@ wDialogH:
     ds 1                                               ;; d4aa
 
 ; 360 (SCRN_X_B * SCRN_Y_B) bytes long so it can store the full screen
+; This is used to store tile ids while wWindowBackupAttributes in bank 2 is used to store attribtues.
 wWindowBackgroundSaveBuffer:
     ds 360                                             ;; d4ab
 .end:
@@ -1681,6 +1682,20 @@ wCurrentProjectilePalette:
 
 ; After this is RAM code--currently the logging code--and the stack.
 ; The stack is placed at the end of wram. It is unknown how far down it can grow.
+
+SECTION "wram2", WRAMX[$d000], BANK[$02]
+
+    ds 1191                                            ;; d000
+
+wWindowBackupAttributes:
+.header:
+    ds 4                                               ;; d4a7
+
+; Placed in the same location as wWindowBackgroundSaveBuffer but in WRAM bank 2.
+; Used to store tile attributes, whereas wWindowBackgroundSaveBuffer is used to store tile ids.
+.buffer:
+    ds 360                                             ;; d4ab
+.end:
 
 SECTION "hram", HRAM[$ff80]
 

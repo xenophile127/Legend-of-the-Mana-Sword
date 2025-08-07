@@ -5,6 +5,7 @@ INCLUDE "include/macros.inc"
 INCLUDE "include/charmaps.inc"
 INCLUDE "include/constants.inc"
 INCLUDE "include/oam_attributes.inc"
+INCLUDE "include/bgp_attributes.inc"
 
 SECTION "bank02", ROMX[$4000], BANK[$02]
 
@@ -53,7 +54,7 @@ ds 2 ; Unused trampoline target
 ds 2 ; Unused trampoline target
     call_to_bank_target attackWithWeaponUseWill        ;; 02:4052 pP
     call_to_bank_target giveStatusEffect               ;; 02:4054 pP
-ds 2 ; Unused trampoline target
+    call_to_bank_target windowMoveBackup
     call_to_bank_target updateStatusEffects            ;; 02:4058 pP
     call_to_bank_target getSpellOffset0band0cinHL      ;; 02:405a ??
     call_to_bank_target drawWillBarCharge              ;; 02:405c pP
@@ -69,7 +70,127 @@ ds 2 ; Unused trampoline target
     call_to_bank_target endFujiStatusEffect            ;; 02:4070 ??
     call_to_bank_target getEquippedArmorElementalResistances ;; 02:4072 pP
 
-ds 464 ; Free space
+; Restores a tile id from the backup.
+; If color is enabled it also restores the tile attributes.
+; hl = pointer to the location of the tile information.
+; Return: hl = hl + 1
+windowRestoreTile:
+    push de
+; Get the address to draw to.
+    push hl
+    call tilePositionToVRAMAddress
+    ld d, h
+    ld e, l
+    pop hl
+; Wait until VRAM is writeable.
+.loop:
+    ldh a, [rSTAT]
+    and STATF_BUSY
+    jr nz, .loop
+IF DEF(COLOR)
+; Copy the tile id.
+    ld a, [hl]
+    ld [de], a
+; Now switch banks.
+    ld a, $01
+; DISABLE INTERRUPTS WHILE USING OTHER BANKS.
+    di
+    ldh [rVBK], a
+    ld a, BANK(wWindowBackupAttributes)
+    ldh [rSVBK], a
+; Copy the tile attributes.
+    ld a, [hl+]
+    ld [de], a
+; Switch back to the main banks.
+    xor a
+    ldh [rVBK], a
+    ldh [rSVBK], a
+; ENABLE INTERRUPTS.
+    ei
+ELSE
+    ld a, [hl+]
+    ld [de], a
+ENDC
+    pop de
+    ret
+
+; Stores the tile id and backups the previous tile id.
+; If color is enabled it also sets and backs up the tile attributes.
+; a = tile id
+; de = y and x tile position on screen
+; hl = location to backup to
+; Return: hl = hl + 1
+windowDrawTile:
+    ld b, a
+; Get the address to draw to.
+    push hl
+    call tilePositionToVRAMAddress
+; Wait until VRAM is writeable.
+.loop:
+    ldh a, [rSTAT]
+    and STATF_BUSY
+    jr nz, .loop
+; Read the old tile id.
+    ld a, [hl]
+; Write the new tile id.
+    ld [hl], b
+IF DEF(COLOR)
+; Now take care of the tile attributes.
+    ld b, a
+    ld a, $01
+; DISABLE INTERRUPTS WHILE USING OTHER BANKS.
+    di
+    ldh [rVBK], a
+; Read the old tile attributes.
+    ld a, [hl]
+; Write the new tile attributes.
+    ld [hl], BGP_SPECIAL
+; Backup the old tile id.
+    pop hl
+    ld [hl], b
+; Backup the old tile attributes.
+    ld b, a
+    ld a, BANK(wWindowBackupAttributes)
+    ldh [rSVBK], a
+    ld a, b
+    ld [hl+], a
+; Switch back to the main banks.
+    xor a
+    ldh [rVBK], a
+    ldh [rSVBK], a
+; ENABLE INTERRUPTS.
+    ei
+ELSE
+; Backup the old tile id.
+    pop hl
+    ld [hl+], a
+ENDC
+    ret
+
+; Wrapper for copyHLtoDE.
+; For the color target this also moves tile attributes.
+windowMoveBackup:
+IF DEF(COLOR)
+    push hl
+    push de
+    push bc
+    ld a, BANK(wWindowBackupAttributes)
+; DISABLE INTERRUPTS WHILE USING OTHER BANKS.
+    di
+    ldh [rSVBK], a
+    call copyHLtoDE
+    xor a
+    ldh [rSVBK], a
+; ENABLE INTERRUPTS.
+    ei
+    pop bc
+    pop de
+    pop hl
+ENDC
+    call copyHLtoDE
+    ret
+
+SECTION "bank02_align_4244", ROMX[$4244], BANK[$02]
 
 ; Given an object, check if it overlaps any of the Npc objects (objects 7 and up).
 ; Technically, this includes followers, non-player projectiles, and bosses as well.
@@ -936,7 +1057,7 @@ vendor_text_menu:
 
 jr_02_48e4:
     ld   HL, wDialogX                                  ;; 02:48e4 $21 $a7 $d4
-    call copyHLtoDE                                    ;; 02:48e7 $cd $49 $2b
+    call windowMoveBackup
     ld   B, $2a                                        ;; 02:48ea $06 $2a
     call setMenuStateCurrentFunction                   ;; 02:48ec $cd $98 $6c
     ret                                                ;; 02:48ef $c9
@@ -1017,7 +1138,7 @@ call_02_492b:
     inc  HL                                            ;; 02:496e $23
     push HL                                            ;; 02:496f $e5
     ld   HL, wDialogX                                  ;; 02:4970 $21 $a7 $d4
-    call copyHLtoDE                                    ;; 02:4973 $cd $49 $2b
+    call windowMoveBackup
     pop  HL                                            ;; 02:4976 $e1
     ld   E, [HL]                                       ;; 02:4977 $5e
     inc  HL                                            ;; 02:4978 $23
@@ -1322,7 +1443,7 @@ call_02_4b4b:
     push DE                                            ;; 02:4b5e $d5
     pop  HL                                            ;; 02:4b5f $e1
     ld   DE, wDialogX                                  ;; 02:4b60 $11 $a7 $d4
-    call copyHLtoDE                                    ;; 02:4b63 $cd $49 $2b
+    call windowMoveBackup
     ld   B, $21                                        ;; 02:4b66 $06 $21
     call setMenuStateCurrentFunction                   ;; 02:4b68 $cd $98 $6c
     ret                                                ;; 02:4b6b $c9
@@ -4225,8 +4346,7 @@ windowCloseMain:
     push DE                                            ;; 02:66ae $d5
     push BC                                            ;; 02:66af $c5
 .loop:
-    ld   A, [HL+]                                      ;; 02:66b0 $2a
-    call storeTileAatScreenPositionDE                  ;; 02:66b1 $cd $91 $38
+    call windowRestoreTile
     inc  E                                             ;; 02:66b4 $1c
     dec  C                                             ;; 02:66b5 $0d
     jr   NZ, .loop                                     ;; 02:66b6 $20 $f8
@@ -4391,20 +4511,17 @@ windowDrawMiddle:
     push BC                                            ;; 02:679c $c5
 ; Inlined from drawDialogCenterLine (now removed)
     ld   a, $7a
-    call storeTileAatScreenPositionDE
-    ld   [hl+], a
+    call windowDrawTile
     dec  c
     inc  e
 .loop:
     ld   a, $7f
-    call storeTileAatScreenPositionDE
-    ld   [hl+], a
+    call windowDrawTile
     inc  e
     dec  c
     jr   nz, .loop
     ld   a, $7b
-    call storeTileAatScreenPositionDE
-    ld   [hl+], a
+    call windowDrawTile
     pop  BC                                            ;; 02:67a0 $c1
     pop  DE                                            ;; 02:67a1 $d1
     inc  D                                             ;; 02:67a2 $14
@@ -4509,8 +4626,7 @@ call_02_6840:
 drawDialogTopOrBottomLine:
     ld   A, [wDialogBorderTile]                        ;; 02:686e $fa $63 $d8
     push AF                                            ;; 02:6871 $f5
-    call storeTileAatScreenPositionDE                  ;; 02:6872 $cd $91 $38
-    ld   [HL+], A                                      ;; 02:6875 $22
+    call windowDrawTile
     pop  AF                                            ;; 02:6876 $f1
     inc  A                                             ;; 02:6877 $3c
     ld   [wDialogBorderTile], A                        ;; 02:6878 $ea $63 $d8
@@ -4518,16 +4634,16 @@ drawDialogTopOrBottomLine:
     dec  C                                             ;; 02:687c $0d
 .loop:
     ld   A, [wDialogBorderTile]                        ;; 02:687d $fa $63 $d8
-    call storeTileAatScreenPositionDE                  ;; 02:6881 $cd $91 $38
-    ld   [HL+], A                                      ;; 02:6884 $22
+    call windowDrawTile
     inc  E                                             ;; 02:6886 $1c
     dec  C                                             ;; 02:6887 $0d
     jr   NZ, .loop                                     ;; 02:6888 $20 $f3
     ld   A, [wDialogBorderTile]                        ;; 02:688a $fa $63 $d8
     inc  A                                             ;; 02:688d $3c
-    call storeTileAatScreenPositionDE                  ;; 02:688e $cd $91 $38
-    ld   [HL+], A                                      ;; 02:6891 $22
+    call windowDrawTile
     ret                                                ;; 02:6892 $c9
+
+SECTION "bank02_align_6893", ROMX[$6893], BANK[$02]
 
 processWindowInput:
     ld   A, [wDialogType]                              ;; 02:6893 $fa $4a $d8
