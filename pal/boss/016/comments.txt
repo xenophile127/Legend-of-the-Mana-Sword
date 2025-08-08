@@ -1,6 +1,6 @@
 Palette for Jackal. 
 
-Background colors are white, green, blue, and black.
+Background colors are the same as pal/00.
 
 Only the first background palette is populated, the rest are monochrome and unused.
 
