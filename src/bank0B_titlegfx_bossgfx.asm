@@ -10,7 +10,14 @@ SECTION "bank0b", ROMX[$4000], BANK[$0b]
 ; Moved to bank 1b
 ;tilesetGfxTitle:
 ;    INCBIN "title_end.bin"                             ;; 0b:4000
-    ds $0c00, $ff
+
+bossGfxGolemOverlay:
+    INCBIN "boss/golem_overlay.bin"
+
+bossGfxJackalOverlay:
+    INCBIN "boss/jackal_overlay.bin"                           ;; 0b:7e00
+
+SECTION "bank0b_align_4c00", ROMX[$4c00], BANK[$0b]
 
 trashcanGfx:
     INCBIN "trashcan.bin"                              ;; 0b:4c00

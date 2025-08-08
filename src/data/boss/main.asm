@@ -44,7 +44,11 @@ bossDataTable:
       BOSS_HEADER_GFX $40, $14, bossGfxDavias, tileorderDavias, metaspritesDavias ;; 04:47a1 ????????
       dw statsDavias, data_04_4edb, data_04_4edb, data_04_5575 ;; 04:47a9 ????????
     BOSS_HEADER $04, $8f, $60, $a0, $06, $16, script_0246 ;; 04:47b1 ????????
+IF DEF(COLOR)
+      BOSS_HEADER_GFX $40, $14, bossGfxGolemOverlay, tileorderCommon, metaspritesGolemJackal ;; 04:47b9 ????????
+ELSE
       BOSS_HEADER_GFX $40, $10, bossGfxGolem, tileorderCommon, metaspritesGolemJackal ;; 04:47b9 ????????
+ENDC
       dw statsGolem, data_04_4ee7, data_04_4ee7, data_04_5473 ;; 04:47c1 ????????
     BOSS_HEADER $06, $6f, $46, $3c, $07, $ff, script_0247 ;; 04:47c9 ????????
       BOSS_HEADER_GFX $30, $1d, bossGfxCyclops, tileorderCyclops, metaspritesCyclops ;; 04:47d1 ????????
@@ -78,7 +82,11 @@ bossDataTable:
       dw statsDragonZombie, data_04_4e37, data_04_4e37, data_04_54bb ;; 04:48b1 ????????
 ; Give Jackal a bit of money to drop.
     BOSS_HEADER $05, $02, $00, $18, $06, $16, script_0246 ;; 04:48b9 ........
+IF DEF(COLOR)
+      BOSS_HEADER_GFX $40, $14, bossGfxJackalOverlay, tileorderCommon, metaspritesGolemJackal ;; 04:48c1 ........
+ELSE
       BOSS_HEADER_GFX $40, $10, bossGfxJackal, tileorderCommon, metaspritesGolemJackal ;; 04:48c1 ........
+ENDC
       dw statsJackal, data_04_4f4d, data_04_4e15, data_04_5473 ;; 04:48c9 ........
     BOSS_HEADER $04, $ff, $00, $a0, $08, $25, script_0246 ;; 04:48d1 ????????
       BOSS_HEADER_GFX $40, $10, bossGfxJulius3, tileorderJulius3, metaspritesJulius3 ;; 04:48d9 ????????
@@ -3826,27 +3834,46 @@ data_04_6d86:
     db   $e0, $f3, $0c, $f4, $11, $ff                  ;; 04:6d96 ??????
 
 bodyJackalGolemRightFootForward:
+IF DEF(COLOR)
+    db   $0e, $f8, $f0 ; Overlay eye.                  ;; 04:6d9c
+ELSE
     db   $00, $f0, $f0                                 ;; 04:6d9c
+ENDC
+    db   $00, $f0, $f0
     db   $02, $00, $f0
     db   $01, $f0, $00
     db   $01, $f0, $00
+IF !DEF(COLOR)
     db   $01, $f0, $00
+ENDC
     db   $ff
 
 bodyJackalGolemLeftFootForward :
+IF DEF(COLOR)
+    db   $0f, $f8, $f0 ; Overlay eye.                  ;; 04:6dac
+ELSE
     db   $04, $f0, $f0                                 ;; 04:6dac
+ENDC
+    db   $04, $f0, $f0
     db   $05, $00, $f0
     db   $03, $f0, $00
     db   $03, $f0, $00
+IF !DEF(COLOR)
     db   $03, $f0, $00
+ENDC
     db   $ff
 
 bodyJackalGolemCharge:
-    db   $08, $f0, $f0                                 ;; 04:6dbc
+IF DEF(COLOR)
+    db   $10, $f8, $f0 ; Overlay eye.                  ;; 04:6dbc
+ENDC
+    db   $08, $f0, $f0
     db   $0b, $00, $f0
     db   $09, $f0, $00
     db   $09, $f0, $00
+IF !DEF(COLOR)
     db   $09, $f0, $00
+ENDC
     db   $ff
 
 data_04_6dcc:

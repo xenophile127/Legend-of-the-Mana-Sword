@@ -92,6 +92,10 @@ metaspritesGolemJackal:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $58, $5a                                 ;; 04:7c91 ... $0b
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $38, $3a                                 ;; 04:7c94 ... $0c
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $3c, $3e                                 ;; 04:7c97 ... $0d
+; Added for overlay:
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $60, $62
+    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_NPC3, $62, $60
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $64, $66
 
 metaspritesJulius2:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42                                 ;; 04:7c9a ??? $00

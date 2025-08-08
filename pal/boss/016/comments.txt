@@ -2,10 +2,18 @@ Palette for Jackal.
 
 Background colors are the same as pal/00.
 
-Only the first background palette is populated, the rest are monochrome and unused.
+All three boss palettes are used--obj5, obj6, and obj7.
 
-Two boss palettes are loaded--obj5 and obj6.
+Jackal and Golem share a lot of data internally. An overlay sprite has been added to give Golem a distinctive eye. It's position is mostly dictated by Golem's needs, however it's used to give Jackal some facial details.
 
-The boss damage flash effect is is a washed-out version of the colors. Close to but not quite white.
+The position of the overlay sprite is also constrained by two technical limitations:
+1. Due to the game's concept of a "head" metasprite for bosses which is created before all the others. What that means here is that Jackal's bottom right quadrant cannot be overlayed. That happens to contain Jackal's face during it's opening charge. This constraint is why the overlay is positioned at the top during the charge instead of slightly lower.
+2. If overlays are used in the non-color target then the DMG's different sprite priority rules require positioning the overlay horizontally on an eight pixel aligned location. This is why the overlay is exactly centered.
+
+obj5 - The "base" colors. Three quarters of Jackal use this palette.
+obj6 - A highlight on Jackal's ear is the only thing using the light shade in one of the metasprites, so it is set to this palette so it can be given its own color.
+obj7 - The overlay sprite. It is positioned centered at the top of Jackal's sprite. Used to give Jackal black eyes and nose, and white whiskers. There is a third color available, currently unused.
+
+The boss damage flash effect is a washed-out version of the colors. Close to but not quite white.
 
 The explosion effect--obj4--is currently set to some of the same colors Jackal uses.
