@@ -911,12 +911,10 @@ bossCollisionHandling_trampoline:
 processPhysicsForObject_4_trampoline:
     jp_to_bank 04, processPhysicsForObject_4           ;; 00:0517 $f5 $3e $04 $c3 $64 $1f
 
-ds 14 ; Free space
-
-SECTION "bank00_align_056c", ROM0[$056c]
-
 ; Draw the meta tile A (metatile index) at DE (YX tile number)
 ; Transfers the bytes during HBlank
+; Drawing a metatile means writing four tile ids.
+; On the color target it also means writing four tile attributes.
 drawMetatile:
     sla  D
     sla  E
@@ -929,6 +927,28 @@ drawMetatile:
     ld   A, BANK(metatilesOutdoor) ;@=bank metatilesOutdoor ;; 00:0571 $3e $08
     call pushBankNrAndSwitch                           ;; 00:0573 $cd $fb $29
     pop  HL                                            ;; 00:0576 $e1
+IF DEF(COLOR)
+; Start by loading and pushing the attributes
+    pop de
+; Metatiles are aligned 16 and the attributes are at that plus eight so use a set.
+    set 3, l
+
+    ld a, [hl+]
+    ld b, a
+    ld a, [hl+]
+    ld c, a
+    push bc
+    ld a, [hl+]
+    ld b, a
+    ld c, [hl]
+    push bc
+
+; Reset back to the beginning of the metatile entry.
+    ld a, l
+    and $f0
+    ld l, a
+    push de
+ENDC
     ld   A, [HL+]
     ld   B, A
     ld   A, [HL+]
@@ -958,6 +978,18 @@ drawMetatile:
     pop  DE
     pop  HL
     call storeMetatileInVRAM
+IF DEF(COLOR)
+; storeMetatileInVRAM returns hl += $20 and always starts with bit 5 clear so use a reset to restore.
+    res 5, l
+    pop de
+    pop bc
+; Switch to the VRAM bank with the attributes.
+    ld a, $01
+    ldh  [rVBK], a
+    call storeMetatileInVRAM
+    xor a
+    ldh  [rVBK], a
+ENDC
     call popBankNrAndSwitch                            ;; 00:05b7 $cd $0a $2a
     ret                                                ;; 00:05ba $c9
 
@@ -9589,19 +9621,28 @@ windowTilePositionToScreenTilePosition:
 
 ; a = tile id
 ; de = Y and X tile positions on screen
-; Return: a = old tile id
+; For the color target it always uses BGP_SPECIAL by xor to zero.
 storeTileAatScreenPositionDE:
     push hl
-    push bc
-    ld b, a
+    push af
     call tilePositionToVRAMAddress
-    ld a, b
-    call storeAatHLinVRAM
-    pop bc
+.loop:
+    ldh a, [rSTAT]
+    and STATF_BUSY
+    jr nz, .loop
+IF DEF(COLOR)
+    ld a, $01
+    ldh [rVBK], a
+    xor a
+    ld [hl], a
+    ldh [rVBK], a
+ENDC
+    pop af
+    ld [hl], a
     pop hl
     ret
 
-ds 24 ; Free space
+ds 12 ; Free space
 
 ; Convert de (Y,X) screen tile position into VRAM memory location.
 ; Takes into account window position and the position of screen scrolling.
@@ -9649,6 +9690,8 @@ tilePositionToVRAMAddress:
     ld l, a
     ret
 
+SECTION "bank00_align_38de", ROM0[$38de]
+
 ; A jumptable implemented as a script opcode.
 ; Never used directly from scripts, but it gets used from code.
 ; Sort of a virtual script opcode.
@@ -9658,8 +9701,7 @@ scriptOpCodeFF:
     ld   HL, scriptOpCodeFFJumpTable                   ;; 00:38e2 $21 $a1 $3b
     jp callJumptable
 
-; Free space
-db $00, $00, $00, $00, $00, $00
+ds 6 ; Free space
 
 ;@jumptable amount=16
 textCtrlCodes:

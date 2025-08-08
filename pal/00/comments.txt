@@ -1,9 +1,14 @@
 The main palette for the color target, loaded at startup.
 
-Mimicks the BIOS auto-colorization ("lazy DX") of non-colorized Legend of the Mana Sword.
+Background palettes based off of the default BIOS auto-colorization of Final Fantasy Adventure (white, green, blue, black) and Mystic Quest (white, green, dark green, black).
 
-Background colors are white, green, blue, and black.
-
-Only the first background palette is populated, the rest are monochrome and unused.
+ - bgp0.pal: Used by windows and menus only. Set to monochrome for testing but may change in the future.
+ - bgp1.pal: The default palette for any tiles that do not have something set explicitly yet. Set to the Mystic Quest colors.
+ - bgp2.pal: Green (white, green, dark green, black). These are the Mystic Quest colors. The GBC BIOS uses these if a game's name stored in the header matches Mystic Quest. These are the same colors as bgp1.pal but semantically this is used for tiles that should be green no matter what the default palette is.
+ - bgp3.pal: Blue (white, green, blue, black). These are the default background palette colors in the GBC BIOS. The non-colorized Legend of the Mana Sword uses these for everything instead of the Mystic Quest color palette because the blue palette allows for water and sky that are blue rather than green. This palette is used for those same sorts of things, mostly water and sky.
+ - pal4.pal: Unused.
+ - pal5.pal: Unused.
+ - pal6.pal: Unused.
+ - pal7.pal: Unused.
 
 Sprite palettes are unused at this point. While they are loaded, all sprites should be dynamically loading their own palettes as they are needed.

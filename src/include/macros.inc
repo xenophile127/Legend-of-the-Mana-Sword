@@ -31,12 +31,23 @@ DEF IDX = STRSUB("\1", STRLEN("\1")) - "0"
   db (LBL - wScriptFlags) * 8 + (IDX)
 PURGE LBL
 ENDM
+; Metatiles now have attributes for each of the four tiles.
+; To ease transition the attributes can be omitted, or one attribute can be used for all four.
 MACRO METATILE
 
-assert _NARG == 6
+assert _NARG >= 6
     db \1, \2, \3, \4, \5, \6
+shift 6
     ds 2
-    ds 8
+IF _NARG == 1
+    db \1, \1, \1, \1
+ELIF _NARG != 0
+assert _NARG == 4
+    db \1, \2, \3, \4
+ELSE
+    db BGP_DEFAULT, BGP_DEFAULT, BGP_DEFAULT, BGP_DEFAULT
+ENDC
+    ds 4
 ENDM
 MACRO ITEM_DATA
 

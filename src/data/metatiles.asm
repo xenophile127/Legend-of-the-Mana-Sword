@@ -2,6 +2,8 @@
 ; Mystic Editor is available from:
 ; https://github.com/arathron123/mystic-editor
 
+INCLUDE "include/bgp_attributes.inc"
+
 ; Each metatile is six bytes.
 ;  offset 0-3: Tile graphic indexes.
 ;  4-5: Behavior and collision info.
@@ -46,8 +48,8 @@ metatilesOutdoor:
     METATILE $3f, $2d, $44, $40, $20, $06                  ;; $04
     METATILE $2d, $2d, $2d, $2d, $30, $05                  ;; $05
     METATILE $56, $2d, $57, $58, $20, $06                  ;; $06
-    METATILE $6c, $6d, $10, $10, $c0, $07                  ;; $07
-    METATILE $6e, $6f, $10, $71, $c0, $07                  ;; $08
+    METATILE $6c, $6d, $10, $10, $c0, $07, BGP_RIVER       ;; $07
+    METATILE $6e, $6f, $10, $71, $c0, $07, BGP_RIVER       ;; $08
     METATILE $db, $d4, $db, $d4, $00, $04                  ;; $09
     METATILE $d7, $dc, $d7, $dc, $00, $04                  ;; $0a
     METATILE $3a, $3b, $4c, $7e, $30, $0d                  ;; $0b
@@ -56,14 +58,14 @@ metatilesOutdoor:
     METATILE $f2, $f3, $f2, $f3, $00, $04                  ;; $0e
     METATILE $e5, $e5, $e5, $e5, $00, $04                  ;; $0f
     METATILE $56, $b3, $57, $58, $20, $06                  ;; $10
-    METATILE $0c, $0d, $0e, $0f, $c0, $07                  ;; $11
+    METATILE $0c, $0d, $0e, $0f, $c0, $07, BGP_OCEAN       ;; $11
     METATILE $b2, $59, $5a, $5b, $20, $02                  ;; $12
     METATILE $4a, $4b, $2d, $4d, $10, $04                  ;; $13
     METATILE $4e, $41, $55, $2d, $10, $04                  ;; $14
     METATILE $52, $53, $54, $2d, $10, $04                  ;; $15
-    METATILE $72, $10, $74, $10, $c0, $07                  ;; $16
-    METATILE $10, $10, $10, $10, $c0, $07                  ;; $17
-    METATILE $10, $73, $10, $75, $c0, $07                  ;; $18
+    METATILE $72, $10, $74, $10, $c0, $07, BGP_RIVER       ;; $16
+    METATILE $10, $10, $10, $10, $c0, $07, BGP_RIVER       ;; $17
+    METATILE $10, $73, $10, $75, $c0, $07, BGP_RIVER       ;; $18
     METATILE $d3, $d4, $d5, $d6, $10, $04                  ;; $19
     METATILE $d7, $d8, $d9, $da, $10, $04                  ;; $1a
 ; Curved tower base tiles with stone pattern floor.
@@ -78,9 +80,9 @@ metatilesOutdoor:
     METATILE $2b, $2c, $48, $49, $00, $74                  ;; $23
     METATILE $32, $33, $34, $35, $30, $05                  ;; $24
     METATILE $25, $25, $25, $25, $30, $05                  ;; $25
-    METATILE $76, $10, $78, $79, $c0, $07                  ;; $26
-    METATILE $10, $10, $7a, $7b, $c0, $07                  ;; $27
-    METATILE $10, $77, $7c, $7d, $c0, $07                  ;; $28
+    METATILE $76, $10, $78, $79, $c0, $07, BGP_RIVER       ;; $26
+    METATILE $10, $10, $7a, $7b, $c0, $07, BGP_RIVER       ;; $27
+    METATILE $10, $77, $7c, $7d, $c0, $07, BGP_RIVER       ;; $28
     METATILE $84, $85, $86, $87, $f0, $07                  ;; $29
     METATILE $2e, $3e, $36, $37, $28, $04                  ;; $2a
     METATILE $7f, $7f, $7f, $7f, $30, $05                  ;; $2b
@@ -95,15 +97,15 @@ metatilesOutdoor:
     METATILE $25, $59, $5a, $5b, $20, $02                  ;; $34
     METATILE $2e, $59, $5a, $5b, $20, $02                  ;; $35
     METATILE $2d, $59, $5a, $5b, $20, $02                  ;; $36
-    METATILE $96, $97, $98, $99, $04, $04                  ;; $37
-    METATILE $88, $89, $8b, $8c, $00, $05                  ;; $38
-    METATILE $89, $8a, $8c, $8d, $00, $05                  ;; $39
-    METATILE $8a, $b5, $8d, $8e, $00, $05                  ;; $3a
+    METATILE $96, $97, $98, $99, $04, $04, BGP_TREE        ;; $37
+    METATILE $88, $89, $8b, $8c, $00, $05, BGP_SKY         ;; $38
+    METATILE $89, $8a, $8c, $8d, $00, $05, BGP_SKY         ;; $39
+    METATILE $8a, $b5, $8d, $8e, $00, $05, BGP_SKY         ;; $3a
     METATILE $1f, $7f, $1f, $7f, $30, $05                  ;; $3b
     METATILE $eb, $25, $25, $25, $30, $05                  ;; $3c
     METATILE $20, $de, $20, $dd, $30, $05                  ;; $3d
 ; Fancy parapet with sky.
-    METATILE $b5, $b5, $cf, $d0, $20, $04                  ;; $3e
+    METATILE $b5, $b5, $cf, $d0, $20, $04, BGP_SKY, BGP_SKY, BGP_DEFAULT, BGP_DEFAULT ;; $3e
     METATILE $ea, $ea, $cf, $d0, $20, $04                  ;; $3f
     METATILE $3f, $25, $44, $40, $20, $06                  ;; $40
     METATILE $42, $43, $44, $45, $00, $04                  ;; $41
@@ -112,7 +114,7 @@ metatilesOutdoor:
     METATILE $5f, $60, $26, $61, $00, $04                  ;; $44
     METATILE $ae, $af, $b0, $b1, $06, $04                  ;; $45
     METATILE $aa, $ab, $ac, $ad, $00, $04                  ;; $46
-    METATILE $96, $97, $b4, $31, $20, $04                  ;; $47
+    METATILE $96, $97, $b4, $31, $20, $04, BGP_TREE, BGP_TREE, BGP_DEFAULT, BGP_DEFAULT ;; $47
     METATILE $b2, $b3, $b4, $31, $20, $04                  ;; $48
     METATILE $b2, $b3, $b3, $b2, $30, $05                  ;; $49
     METATILE $3f, $2f, $44, $40, $20, $06                  ;; $4a
@@ -132,9 +134,9 @@ metatilesOutdoor:
     METATILE $dd, $de, $de, $dd, $30, $05                  ;; $58
     METATILE $80, $81, $82, $83, $30, $85                  ;; $59
     METATILE $cf, $d0, $d2, $d2, $00, $04                  ;; $5a
-    METATILE $08, $09, $08, $09, $00, $05                  ;; $5b
-    METATILE $0a, $0b, $0a, $0b, $c0, $07                  ;; $5c
-    METATILE $8c, $8d, $8e, $8f, $00, $04                  ;; $5d
+    METATILE $08, $09, $08, $09, $00, $05, BGP_FALLS       ;; $5b
+    METATILE $0a, $0b, $0a, $0b, $c0, $07, BGP_FALLS       ;; $5c
+    METATILE $8c, $8d, $8e, $8f, $00, $04                  ;; $5d Unused?
     METATILE $90, $91, $90, $91, $00, $04                  ;; $5e
     METATILE $a0, $a1, $44, $45, $00, $04                  ;; $5f
     METATILE $35, $11, $12, $37, $20, $04                  ;; $60
@@ -150,25 +152,25 @@ metatilesOutdoor:
     METATILE $26, $26, $26, $26, $30, $85                  ;; $6a
     METATILE $7f, $7f, $7f, $7f, $30, $85                  ;; $6b
     METATILE $30, $31, $d1, $d1, $00, $04                  ;; $6c
-    METATILE $10, $10, $b4, $31, $80, $04                  ;; $6d
+    METATILE $10, $10, $b4, $31, $80, $04, BGP_RIVER, BGP_RIVER, BGP_DEFAULT, BGP_DEFAULT ;; $6d
     METATILE $c6, $2f, $c6, $2f, $30, $05                  ;; $6e
     METATILE $3a, $3b, $4c, $7e, $30, $8d                  ;; $6f
     METATILE $2e, $2f, $2e, $2f, $30, $85                  ;; $70
     METATILE $dd, $de, $de, $dd, $30, $85                  ;; $71
     METATILE $52, $53, $54, $2f, $10, $04                  ;; $72
     METATILE $cf, $d0, $26, $26, $00, $04                  ;; $73
-    METATILE $08, $09, $08, $09, $f0, $87                  ;; $74
+    METATILE $08, $09, $08, $09, $f0, $87, BGP_FALLS       ;; $74
     METATILE $52, $19, $1a, $33, $10, $04                  ;; $75
     METATILE $56, $2f, $57, $58, $20, $06                  ;; $76
-    METATILE $b5, $b5, $b5, $b5, $00, $05                  ;; $77
-    METATILE $08, $09, $08, $09, $f0, $07                  ;; $78
+    METATILE $b5, $b5, $b5, $b5, $00, $05, BGP_SKY         ;; $77
+    METATILE $08, $09, $08, $09, $f0, $07, BGP_FALLS       ;; $78
     METATILE $d1, $d1, $cf, $d0, $00, $04                  ;; $79
     METATILE $2d, $2d, $2d, $2d, $30, $85                  ;; $7a
     METATILE $1f, $7f, $1f, $7f, $30, $85                  ;; $7b
     METATILE $2e, $2f, $2e, $2f, $00, $05                  ;; $7c
-    METATILE $88, $89, $8a, $8b, $f0, $87                  ;; $7d
+    METATILE $88, $89, $8a, $8b, $f0, $87, BGP_SKY         ;; $7d
     METATILE $25, $25, $25, $25, $00, $05                  ;; $7e
-    METATILE $96, $97, $98, $99, $05, $04                  ;; $7f
+    METATILE $96, $97, $98, $99, $05, $04, BGP_TREE        ;; $7f
 
 metatilesTown:
     METATILE $70, $71, $70, $71, $30, $05                  ;; $00
@@ -177,10 +179,10 @@ metatilesTown:
     METATILE $f2, $f2, $f2, $f2, $30, $05                  ;; $03
     METATILE $56, $25, $57, $58, $20, $05                  ;; $04
     METATILE $25, $59, $5a, $5b, $20, $05                  ;; $05
-    METATILE $27, $10, $10, $10, $00, $07                  ;; $06
-    METATILE $10, $28, $10, $10, $00, $07                  ;; $07
+    METATILE $27, $10, $10, $10, $00, $07, BGP_RIVER       ;; $06
+    METATILE $10, $28, $10, $10, $00, $07, BGP_RIVER       ;; $07
     METATILE $1e, $1f, $1f, $1e, $30, $05                  ;; $08
-    METATILE $08, $09, $08, $09, $30, $77                  ;; $09
+    METATILE $08, $09, $08, $09, $30, $77, BGP_FALLS       ;; $09
     METATILE $74, $75, $76, $77, $00, $05                  ;; $0a
     METATILE $3a, $3b, $4c, $7e, $30, $0d                  ;; $0b
     METATILE $26, $26, $26, $26, $00, $05                  ;; $0c
@@ -193,13 +195,13 @@ metatilesTown:
     METATILE $f3, $f2, $f3, $f2, $30, $05                  ;; $13
     METATILE $5c, $5d, $5e, $26, $00, $04                  ;; $14
     METATILE $5f, $60, $26, $61, $00, $04                  ;; $15
-    METATILE $10, $10, $29, $10, $00, $07                  ;; $16
-    METATILE $10, $10, $10, $2a, $00, $07                  ;; $17
+    METATILE $10, $10, $29, $10, $00, $07, BGP_RIVER       ;; $16
+    METATILE $10, $10, $10, $2a, $00, $07, BGP_RIVER       ;; $17
     METATILE $22, $23, $24, $2b, $30, $05                  ;; $18
-    METATILE $0a, $0b, $0a, $0b, $30, $77                  ;; $19
+    METATILE $0a, $0b, $0a, $0b, $30, $77, BGP_FALLS       ;; $19
     METATILE $78, $79, $7a, $7b, $30, $05                  ;; $1a
     METATILE $96, $97, $98, $99, $30, $0d                  ;; $1b
-    METATILE $34, $35, $c8, $c9, $04, $04                  ;; $1c
+    METATILE $34, $35, $c8, $c9, $04, $04, BGP_TREE        ;; $1c
     METATILE $7c, $7d, $7f, $80, $00, $05                  ;; $1d
     METATILE $c3, $c4, $c5, $c6, $00, $04                  ;; $1e
     METATILE $00, $01, $02, $03, $30, $05                  ;; $1f
@@ -207,7 +209,7 @@ metatilesTown:
     METATILE $4e, $4f, $50, $51, $00, $04                  ;; $21
     METATILE $52, $53, $54, $25, $10, $04                  ;; $22
     METATILE $4e, $41, $55, $25, $10, $04                  ;; $23
-    METATILE $f4, $f5, $f6, $f7, $30, $05                  ;; $24
+    METATILE $f4, $f5, $f6, $f7, $30, $05, BGP_DOCK        ;; $24
     METATILE $cc, $cd, $ce, $cf, $30, $05                  ;; $25
     METATILE $d1, $d1, $d2, $d2, $00, $04                  ;; $26
     METATILE $d4, $d5, $d4, $d5, $00, $04                  ;; $27
@@ -254,8 +256,8 @@ metatilesTown:
     METATILE $94, $94, $94, $94, $00, $05                  ;; $50
     METATILE $94, $94, $95, $95, $00, $05                  ;; $51
     METATILE $a1, $a2, $a3, $a4, $00, $05                  ;; $52
-    METATILE $8c, $8d, $8f, $90, $00, $75                  ;; $53
-    METATILE $8d, $8e, $90, $91, $00, $75                  ;; $54
+    METATILE $8c, $8d, $8f, $90, $00, $75, BGP_SKY         ;; $53
+    METATILE $8d, $8e, $90, $91, $00, $75, BGP_SKY         ;; $54
     METATILE $73, $86, $88, $89, $00, $05                  ;; $55
     METATILE $87, $62, $73, $86, $00, $05                  ;; $56
     METATILE $6c, $6c, $87, $bd, $00, $05                  ;; $57
@@ -270,8 +272,8 @@ metatilesTown:
     METATILE $11, $12, $13, $14, $00, $04                  ;; $60
     METATILE $1c, $1c, $1d, $1d, $00, $04                  ;; $61
     METATILE $1d, $1d, $1d, $1d, $00, $04                  ;; $62
-    METATILE $8e, $93, $91, $92, $00, $75                  ;; $63
-    METATILE $93, $93, $93, $93, $00, $75                  ;; $64
+    METATILE $8e, $93, $91, $92, $00, $75, BGP_SKY         ;; $63
+    METATILE $93, $93, $93, $93, $00, $75, BGP_SKY         ;; $64
     METATILE $8a, $8b, $70, $71, $10, $05                  ;; $65
     METATILE $88, $89, $8a, $8b, $00, $05                  ;; $66
     METATILE $73, $e2, $70, $71, $10, $05                  ;; $67
@@ -292,7 +294,7 @@ metatilesTown:
     METATILE $20, $23, $20, $2b, $30, $05                  ;; $76
     METATILE $20, $23, $21, $2b, $30, $05                  ;; $77
     METATILE $22, $23, $9c, $9b, $20, $05                  ;; $78
-    METATILE $10, $10, $10, $10, $00, $07                  ;; $79
+    METATILE $10, $10, $10, $10, $00, $07, BGP_RIVER       ;; $79
     METATILE $9d, $9e, $9c, $9b, $20, $05                  ;; $7a
     METATILE $d1, $d1, $d2, $d2, $30, $05                  ;; $7b
     METATILE $d4, $d5, $d4, $d5, $30, $05                  ;; $7c
@@ -319,7 +321,7 @@ metatilesTown:
     METATILE $4a, $4b, $1f, $4d, $10, $04                  ;; $8a ($20)
     METATILE $52, $53, $54, $1e, $10, $04                  ;; $8b ($22)
 ; Mountain with cloud, used in the outside area of Kary's cave.
-    METATILE $3f, $d0, $44, $40, $20, $05                  ;; $8c ($10)
+    METATILE $3f, $d0, $44, $40, $20, $05, BGP_DEFAULT, BGP_SKY, BGP_DEFAULT, BGP_DEFAULT ;; $8c ($10)
 
 metatilesIndoor:
     METATILE $1b, $1c, $1d, $1e, $30, $05                  ;; $00
@@ -329,8 +331,8 @@ metatilesIndoor:
     METATILE $21, $45, $47, $22, $00, $00                  ;; $04
     METATILE $21, $24, $33, $34, $00, $00                  ;; $05
     METATILE $20, $21, $30, $31, $00, $00                  ;; $06
-    METATILE $10, $10, $10, $10, $c0, $07                  ;; $07
-    METATILE $0c, $0d, $0e, $0f, $c0, $07                  ;; $08
+    METATILE $10, $10, $10, $10, $c0, $07, BGP_RIVER       ;; $07
+    METATILE $0c, $0d, $0e, $0f, $c0, $07, BGP_OCEAN       ;; $08
     METATILE $12, $12, $12, $12, $00, $05                  ;; $09
     METATILE $11, $11, $11, $11, $30, $05                  ;; $0a
     METATILE $c4, $c5, $c6, $c7, $00, $04                  ;; $0b
@@ -366,8 +368,8 @@ metatilesIndoor:
     METATILE $b4, $b5, $b6, $b7, $30, $85                  ;; $29
     METATILE $b2, $b2, $b3, $b3, $00, $00                  ;; $2a
     METATILE $9a, $9b, $9c, $9d, $03, $04                  ;; $2b
-    METATILE $08, $09, $08, $09, $00, $05                  ;; $2c
-    METATILE $0a, $0b, $0a, $0b, $00, $05                  ;; $2d
+    METATILE $08, $09, $08, $09, $00, $05, BGP_FALLS       ;; $2c
+    METATILE $0a, $0b, $0a, $0b, $00, $05, BGP_FALLS       ;; $2d
     METATILE $cc, $cd, $ce, $cf, $31, $05                  ;; $2e
     METATILE $d0, $d1, $d2, $d3, $30, $05                  ;; $2f
     METATILE $1b, $1c, $3a, $3b, $08, $00                  ;; $30
@@ -381,7 +383,7 @@ metatilesIndoor:
     METATILE $db, $dc, $dd, $de, $30, $05                  ;; $38
     METATILE $d9, $d9, $d9, $d9, $30, $05                  ;; $39
     METATILE $da, $da, $da, $da, $30, $05                  ;; $3a
-    METATILE $e0, $e1, $e2, $e3, $04, $04                  ;; $3b
+    METATILE $e0, $e1, $e2, $e3, $04, $04, BGP_TREE        ;; $3b
     METATILE $e4, $e5, $e6, $e7, $30, $05                  ;; $3c
     METATILE $e8, $e9, $ea, $eb, $30, $05                  ;; $3d
     METATILE $d4, $d4, $8c, $8d, $20, $04                  ;; $3e
@@ -390,7 +392,7 @@ metatilesIndoor:
     METATILE $70, $71, $72, $73, $30, $05                  ;; $41
     METATILE $54, $55, $64, $65, $00, $00                  ;; $42
     METATILE $56, $57, $66, $67, $00, $00                  ;; $43
-    METATILE $c0, $c1, $c2, $c3, $00, $05                  ;; $44
+    METATILE $c0, $c1, $c2, $c3, $00, $05, BGP_CASKET      ;; $44
     METATILE $4c, $34, $26, $4d, $00, $00                  ;; $45
     METATILE $ec, $ed, $ee, $ef, $00, $04                  ;; $46
     METATILE $12, $12, $12, $12, $30, $85                  ;; $47
@@ -428,7 +430,7 @@ metatilesIndoor:
     METATILE $bc, $bd, $be, $bf, $30, $71                  ;; $67
     METATILE $bc, $bd, $be, $bf, $30, $41                  ;; $68
     METATILE $bc, $bd, $be, $bf, $30, $51                  ;; $69
-    METATILE $c0, $c1, $c2, $c3, $30, $05                  ;; $6a
+    METATILE $c0, $c1, $c2, $c3, $30, $05, BGP_CASKET      ;; $6a
     METATILE $1b, $1c, $1d, $1e, $00, $05                  ;; $6b
 ; Two new metatiles for a room in Castle Granz with a stairway behind a wall.
 ; This brings the wall out to a whole metatile border, which allows walking closer to it.
@@ -445,9 +447,9 @@ metatilesCaves:
     METATILE $11, $11, $11, $11, $30, $05                  ;; $06
     METATILE $12, $12, $12, $12, $00, $05                  ;; $07
     METATILE $21, $2e, $46, $3e, $00, $00                  ;; $08
-    METATILE $10, $10, $10, $10, $00, $07                  ;; $09
+    METATILE $10, $10, $10, $10, $00, $07, BGP_RIVER       ;; $09
     METATILE $2f, $21, $3f, $47, $00, $00                  ;; $0a
-    METATILE $0c, $0d, $0e, $0f, $c0, $05                  ;; $0b
+    METATILE $0c, $0d, $0e, $0f, $c0, $05, BGP_OCEAN       ;; $0b
     METATILE $74, $75, $76, $77, $00, $05                  ;; $0c
     METATILE $84, $85, $86, $87, $30, $05                  ;; $0d
     METATILE $1b, $1c, $8c, $8d, $20, $04                  ;; $0e
@@ -475,8 +477,8 @@ metatilesCaves:
     METATILE $04, $05, $06, $07, $30, $37                  ;; $23
     METATILE $58, $59, $68, $69, $00, $00                  ;; $24
     METATILE $28, $29, $1d, $1e, $08, $00                  ;; $25
-    METATILE $08, $09, $08, $09, $00, $77                  ;; $26
-    METATILE $0a, $0b, $0a, $0b, $00, $77                  ;; $27
+    METATILE $08, $09, $08, $09, $00, $77, BGP_FALLS       ;; $26
+    METATILE $0a, $0b, $0a, $0b, $00, $77, BGP_FALLS       ;; $27
     METATILE $ff, $ff, $ff, $ff, $30, $05                  ;; $28
     METATILE $b4, $b5, $b6, $b7, $30, $05                  ;; $29
     METATILE $9a, $9b, $9c, $9d, $02, $04                  ;; $2a
@@ -583,25 +585,25 @@ metatilesTitle:
     METATILE $30, $25, $31, $25, $30, $00                  ;; $12
     METATILE $25, $25, $25, $25, $30, $00                  ;; $13
     METATILE $25, $2f, $25, $2f, $30, $00                  ;; $14
-    METATILE $3f, $48, $3f, $3f, $30, $00                  ;; $15
-    METATILE $49, $4a, $50, $51, $30, $00                  ;; $16
-    METATILE $4b, $4c, $52, $53, $30, $00                  ;; $17
-    METATILE $4d, $4e, $54, $55, $30, $00                  ;; $18
-    METATILE $4f, $3f, $56, $3f, $30, $00                  ;; $19
+    METATILE $3f, $48, $3f, $3f, $30, $00, BGP_END         ;; $15
+    METATILE $49, $4a, $50, $51, $30, $00, BGP_END         ;; $16
+    METATILE $4b, $4c, $52, $53, $30, $00, BGP_END         ;; $17
+    METATILE $4d, $4e, $54, $55, $30, $00, BGP_END         ;; $18
+    METATILE $4f, $3f, $56, $3f, $30, $00, BGP_END         ;; $19
     METATILE $3f, $30, $3f, $31, $30, $00                  ;; $1a
     METATILE $30, $25, $31, $25, $30, $00                  ;; $1b
     METATILE $3f, $30, $3f, $31, $30, $00                  ;; $1c
-    METATILE $23, $24, $33, $34, $30, $00                  ;; $1d
-    METATILE $25, $25, $35, $25, $30, $00                  ;; $1e
+    METATILE $23, $24, $33, $34, $30, $00, BGP_SPROUT      ;; $1d
+    METATILE $25, $25, $35, $25, $30, $00, BGP_SPROUT      ;; $1e
     METATILE $26, $27, $36, $37, $30, $00                  ;; $1f
     METATILE $28, $29, $38, $39, $30, $00                  ;; $20
-    METATILE $43, $44, $3a, $3a, $30, $00                  ;; $21
-    METATILE $45, $2c, $3b, $3c, $30, $00                  ;; $22
+    METATILE $43, $44, $3a, $3a, $30, $00, BGP_SPROUT      ;; $21
+    METATILE $45, $2c, $3b, $3c, $30, $00, BGP_SPROUT      ;; $22
     METATILE $2d, $2e, $3d, $3e, $30, $00                  ;; $23
-    METATILE $25, $25, $35, $25, $30, $00                  ;; $24
-    METATILE $25, $25, $32, $25, $30, $00                  ;; $25
-    METATILE $46, $25, $47, $25, $30, $00                  ;; $26
-    METATILE $40, $41, $42, $25, $30, $00                  ;; $27
+    METATILE $25, $25, $35, $25, $30, $00, BGP_SPROUT      ;; $24
+    METATILE $25, $25, $32, $25, $30, $00, BGP_SPROUT      ;; $25
+    METATILE $46, $25, $47, $25, $30, $00, BGP_SPROUT      ;; $26
+    METATILE $40, $41, $42, $25, $30, $00, BGP_SPROUT      ;; $27
     METATILE $25, $25, $25, $5b, $30, $00                  ;; $28
     METATILE $25, $25, $5c, $25, $00, $00                  ;; $29
     METATILE $25, $5d, $25, $6d, $00, $00                  ;; $2a
@@ -640,13 +642,13 @@ metatilesTitle:
 metatilesWorldmap:
     METATILE $2e, $2f, $2e, $2f, $30, $05                  ;; $00
     METATILE $2e, $2f, $9e, $9f, $00, $05                  ;; $01
-    METATILE $16, $17, $0e, $18, $60, $07                  ;; $02
-    METATILE $27, $10, $10, $10, $c0, $07                  ;; $03
-    METATILE $10, $28, $10, $10, $c0, $07                  ;; $04
-    METATILE $2d, $2d, $2d, $2d, $30, $05                  ;; $05
-    METATILE $6a, $6b, $70, $10, $c0, $07                  ;; $06
-    METATILE $6c, $6d, $10, $10, $c0, $07                  ;; $07
-    METATILE $6e, $6f, $10, $71, $c0, $07                  ;; $08
+    METATILE $16, $17, $0e, $18, $60, $07, BGP_OCEAN       ;; $02
+    METATILE $27, $10, $10, $10, $c0, $07, BGP_RIVER       ;; $03
+    METATILE $10, $28, $10, $10, $c0, $07, BGP_RIVER       ;; $04
+    METATILE $2d, $2d, $2d, $2d, $30, $05, BGP_SAND        ;; $05
+    METATILE $6a, $6b, $70, $10, $c0, $07, BGP_RIVER       ;; $06
+    METATILE $6c, $6d, $10, $10, $c0, $07, BGP_RIVER       ;; $07
+    METATILE $6e, $6f, $10, $71, $c0, $07, BGP_RIVER       ;; $08
     METATILE $db, $d4, $db, $d4, $00, $04                  ;; $09
     METATILE $d7, $dc, $d7, $dc, $00, $04                  ;; $0a
     METATILE $3a, $3b, $4c, $7e, $30, $0d                  ;; $0b
@@ -654,15 +656,15 @@ metatilesWorldmap:
     METATILE $56, $2f, $57, $58, $20, $06                  ;; $0d
     METATILE $4e, $41, $55, $2f, $10, $04                  ;; $0e
     METATILE $2e, $3e, $36, $37, $28, $04                  ;; $0f
-    METATILE $19, $0d, $1a, $0f, $c0, $07                  ;; $10
-    METATILE $0c, $0d, $0e, $0f, $c0, $07                  ;; $11
-    METATILE $0c, $1b, $0e, $1c, $c0, $07                  ;; $12
-    METATILE $10, $10, $29, $10, $c0, $07                  ;; $13
-    METATILE $10, $10, $10, $2a, $c0, $07                  ;; $14
-    METATILE $11, $12, $13, $0f, $60, $07                  ;; $15
-    METATILE $72, $10, $74, $10, $c0, $07                  ;; $16
-    METATILE $10, $10, $10, $10, $c0, $07                  ;; $17
-    METATILE $10, $73, $10, $75, $c0, $07                  ;; $18
+    METATILE $19, $0d, $1a, $0f, $c0, $07, BGP_OCEAN       ;; $10
+    METATILE $0c, $0d, $0e, $0f, $c0, $07, BGP_OCEAN       ;; $11
+    METATILE $0c, $1b, $0e, $1c, $c0, $07, BGP_OCEAN       ;; $12
+    METATILE $10, $10, $29, $10, $c0, $07, BGP_RIVER       ;; $13
+    METATILE $10, $10, $10, $2a, $c0, $07, BGP_RIVER       ;; $14
+    METATILE $11, $12, $13, $0f, $60, $07, BGP_OCEAN       ;; $15
+    METATILE $72, $10, $74, $10, $c0, $07, BGP_RIVER       ;; $16
+    METATILE $10, $10, $10, $10, $c0, $07, BGP_RIVER       ;; $17
+    METATILE $10, $73, $10, $75, $c0, $07, BGP_RIVER       ;; $18
     METATILE $d3, $d4, $d5, $d6, $10, $04                  ;; $19
     METATILE $d7, $d8, $d9, $da, $10, $04                  ;; $1a
     METATILE $fc, $fd, $fe, $ff, $00, $04                  ;; $1b
@@ -670,45 +672,45 @@ metatilesWorldmap:
     METATILE $4a, $4b, $2e, $4d, $10, $04                  ;; $1d
     METATILE $52, $53, $54, $2f, $10, $04                  ;; $1e
     METATILE $e5, $e5, $e6, $e6, $00, $04                  ;; $1f
-    METATILE $1d, $0d, $1e, $1f, $90, $07                  ;; $20
-    METATILE $0c, $0d, $20, $21, $80, $07                  ;; $21
-    METATILE $0c, $22, $23, $24, $90, $07                  ;; $22
+    METATILE $1d, $0d, $1e, $1f, $90, $07, BGP_OCEAN       ;; $20
+    METATILE $0c, $0d, $20, $21, $80, $07, BGP_OCEAN       ;; $21
+    METATILE $0c, $22, $23, $24, $90, $07, BGP_OCEAN       ;; $22
     METATILE $2b, $2c, $48, $49, $00, $74                  ;; $23
     METATILE $32, $33, $34, $35, $30, $05                  ;; $24
     METATILE $25, $25, $25, $25, $30, $05                  ;; $25
-    METATILE $76, $10, $78, $79, $c0, $07                  ;; $26
-    METATILE $10, $10, $7a, $7b, $c0, $07                  ;; $27
-    METATILE $10, $77, $7c, $7d, $c0, $07                  ;; $28
-    METATILE $84, $85, $86, $87, $f0, $07                  ;; $29
-    METATILE $88, $89, $8a, $8b, $f0, $07                  ;; $2a
+    METATILE $76, $10, $78, $79, $c0, $07, BGP_RIVER       ;; $26
+    METATILE $10, $10, $7a, $7b, $c0, $07, BGP_RIVER       ;; $27
+    METATILE $10, $77, $7c, $7d, $c0, $07, BGP_RIVER       ;; $28
+    METATILE $84, $85, $86, $87, $f0, $07, BGP_DOCK        ;; $29
+    METATILE $88, $89, $8a, $8b, $f0, $07, BGP_DOCK        ;; $2a
     METATILE $7f, $7f, $7f, $7f, $30, $05                  ;; $2b
     METATILE $3f, $2f, $44, $40, $20, $06                  ;; $2c
-    METATILE $4a, $4b, $2d, $4d, $10, $04                  ;; $2d
+    METATILE $4a, $4b, $2d, $4d, $10, $04, BGP_DEFAULT, BGP_DEFAULT, BGP_SAND, BGP_DEFAULT ;; $2d
     METATILE $c2, $c3, $c4, $c5, $30, $84                  ;; $2e
-    METATILE $4e, $41, $55, $2d, $10, $04                  ;; $2f
+    METATILE $4e, $41, $55, $2d, $10, $04, BGP_DEFAULT, BGP_DEFAULT, BGP_DEFAULT, BGP_SAND ;; $2f
     METATILE $25, $3e, $36, $37, $28, $04                  ;; $30
     METATILE $38, $39, $44, $45, $00, $04                  ;; $31
-    METATILE $3c, $2d, $47, $3d, $20, $04                  ;; $32
+    METATILE $3c, $2d, $47, $3d, $20, $04, BGP_DEFAULT, BGP_SAND, BGP_DEFAULT, BGP_DEFAULT ;; $32
     METATILE $56, $25, $57, $58, $20, $06                  ;; $33
     METATILE $2e, $59, $5a, $5b, $20, $02                  ;; $34
-    METATILE $a2, $a3, $a4, $a5, $00, $04                  ;; $35
+    METATILE $a2, $a3, $a4, $a5, $00, $04, BGP_SNAG        ;; $35
     METATILE $a6, $a7, $a8, $a9, $00, $05                  ;; $36
-    METATILE $96, $97, $98, $99, $04, $04                  ;; $37
-    METATILE $14, $15, $0e, $0f, $40, $07                  ;; $38
-    METATILE $2d, $3e, $36, $37, $28, $04                  ;; $39
-    METATILE $3f, $2d, $44, $40, $20, $06                  ;; $3a
-    METATILE $00, $01, $02, $03, $02, $04                  ;; $3b
+    METATILE $96, $97, $98, $99, $04, $04, BGP_TREE        ;; $37
+    METATILE $14, $15, $0e, $0f, $40, $07, BGP_OCEAN       ;; $38
+    METATILE $2d, $3e, $36, $37, $28, $04, BGP_SAND, BGP_DEFAULT, BGP_DEFAULT, BGP_DEFAULT ;; $39
+    METATILE $3f, $2d, $44, $40, $20, $06, BGP_DEFAULT, BGP_SAND, BGP_DEFAULT, BGP_DEFAULT ;; $3a
+    METATILE $00, $01, $02, $03, $02, $04, BGP_FLOATROCK   ;; $3b
     METATILE $3c, $2f, $47, $3d, $20, $04                  ;; $3c
-    METATILE $be, $bf, $c0, $c1, $00, $04                  ;; $3d
-    METATILE $ba, $bb, $bc, $bd, $00, $04                  ;; $3e
-    METATILE $52, $53, $54, $2d, $10, $04                  ;; $3f
+    METATILE $be, $bf, $c0, $c1, $00, $04, BGP_SNOW        ;; $3d
+    METATILE $ba, $bb, $bc, $bd, $00, $04, BGP_SNOW        ;; $3e
+    METATILE $52, $53, $54, $2d, $10, $04, BGP_DEFAULT, BGP_DEFAULT, BGP_DEFAULT, BGP_SAND ;; $3f
     METATILE $3f, $25, $44, $40, $20, $06                  ;; $40
     METATILE $42, $43, $44, $45, $00, $04                  ;; $41
     METATILE $46, $47, $48, $49, $00, $04                  ;; $42
     METATILE $5c, $5d, $5e, $26, $00, $04                  ;; $43
     METATILE $5f, $60, $26, $61, $00, $04                  ;; $44
     METATILE $ae, $af, $b0, $b1, $06, $04                  ;; $45
-    METATILE $aa, $ab, $ac, $ad, $00, $04                  ;; $46
+    METATILE $aa, $ab, $ac, $ad, $00, $04, BGP_CRYSTAL     ;; $46
     METATILE $9a, $9b, $9c, $9d, $00, $04                  ;; $47
     METATILE $b6, $b7, $b8, $b9, $00, $04                  ;; $48
     METATILE $b2, $b3, $b3, $b2, $30, $05                  ;; $49
@@ -717,7 +719,7 @@ metatilesWorldmap:
     METATILE $66, $67, $68, $69, $30, $85                  ;; $4c
     METATILE $62, $63, $64, $65, $30, $84                  ;; $4d
     METATILE $92, $93, $94, $95, $31, $04                  ;; $4e
-    METATILE $cd, $cd, $ce, $ce, $00, $04                  ;; $4f
+    METATILE $cd, $cd, $ce, $ce, $00, $04, BGP_PALISADE    ;; $4f
     METATILE $4a, $4b, $25, $4d, $10, $04                  ;; $50
     METATILE $4e, $4f, $50, $51, $00, $04                  ;; $51
     METATILE $52, $53, $54, $25, $10, $04                  ;; $52
@@ -729,7 +731,7 @@ metatilesWorldmap:
     METATILE $b2, $3e, $36, $37, $28, $04                  ;; $58
     METATILE $3f, $b3, $44, $40, $20, $04                  ;; $59
     METATILE $4a, $4b, $b3, $4d, $10, $04                  ;; $5a
-    METATILE $08, $09, $08, $09, $00, $05                  ;; $5b
+    METATILE $08, $09, $08, $09, $00, $05, BGP_FALLS       ;; $5b
     METATILE $4e, $41, $55, $b2, $10, $04                  ;; $5c
     METATILE $8c, $8d, $8e, $8f, $00, $04                  ;; $5d
     METATILE $90, $91, $90, $91, $00, $04                  ;; $5e
@@ -741,39 +743,39 @@ metatilesWorldmap:
     METATILE $4e, $f6, $f7, $33, $10, $04                  ;; $63
     METATILE $a0, $a1, $44, $45, $00, $04                  ;; $64
     METATILE $ea, $ea, $ea, $ea, $30, $05                  ;; $65
-    METATILE $2d, $2d, $b4, $31, $20, $04                  ;; $66
+    METATILE $2d, $2d, $b4, $31, $20, $04, BGP_SAND, BGP_SAND, BGP_DEFAULT, BGP_DEFAULT ;; $66
     METATILE $52, $53, $54, $b2, $10, $04                  ;; $67
     METATILE $fa, $b3, $fb, $b2, $30, $05                  ;; $68
     METATILE $c6, $2f, $c7, $2f, $30, $05                  ;; $69
     METATILE $26, $26, $26, $26, $30, $85                  ;; $6a
     METATILE $7f, $7f, $7f, $7f, $30, $85                  ;; $6b
     METATILE $30, $31, $d1, $d1, $00, $04                  ;; $6c
-    METATILE $10, $10, $b4, $31, $80, $04                  ;; $6d
+    METATILE $10, $10, $b4, $31, $80, $04, BGP_RIVER       ;; $6d
     METATILE $c6, $2f, $c6, $2f, $30, $05                  ;; $6e
 ; Curved tower base with swamp for Kett's:
     METATILE $d7, $d8, $d9, $de, $10, $04                  ;; $6f
     METATILE $2e, $2f, $2e, $2f, $30, $85                  ;; $70
-    METATILE $80, $12, $13, $0f, $60, $07                  ;; $71
+    METATILE $80, $12, $13, $0f, $60, $07, BGP_OCEAN       ;; $71
     METATILE $ea, $ea, $b4, $31, $20, $05                  ;; $72
     METATILE $cf, $d0, $26, $26, $00, $04                  ;; $73
-    METATILE $16, $81, $0e, $18, $60, $07                  ;; $74
+    METATILE $16, $81, $0e, $18, $60, $07, BGP_OCEAN       ;; $74
     METATILE $52, $f8, $f9, $33, $10, $04                  ;; $75
-    METATILE $1d, $0d, $82, $1f, $90, $07                  ;; $76
-    METATILE $0c, $22, $23, $83, $90, $07                  ;; $77
-    METATILE $56, $2d, $57, $58, $20, $06                  ;; $78
+    METATILE $1d, $0d, $82, $1f, $90, $07, BGP_OCEAN       ;; $76
+    METATILE $0c, $22, $23, $83, $90, $07, BGP_OCEAN       ;; $77
+    METATILE $56, $2d, $57, $58, $20, $06, BGP_DEFAULT, BGP_SAND, BGP_DEFAULT, BGP_DEFAULT ;; $78
     METATILE $d1, $d1, $cf, $d0, $00, $04                  ;; $79
 ; Chain post with swamp:
     METATILE $ec, $ed, $ee, $ef, $31, $04                  ;; $7a
-    METATILE $84, $85, $86, $87, $f0, $87                  ;; $7b
+    METATILE $84, $85, $86, $87, $f0, $87, BGP_DOCK        ;; $7b
     METATILE $2e, $2f, $2e, $2f, $00, $05                  ;; $7c
-    METATILE $88, $89, $8a, $8b, $f0, $87                  ;; $7d
+    METATILE $88, $89, $8a, $8b, $f0, $87, BGP_DOCK        ;; $7d
     METATILE $25, $25, $25, $25, $00, $05                  ;; $7e
-    METATILE $96, $97, $98, $99, $05, $04                  ;; $7f
+    METATILE $96, $97, $98, $99, $05, $04, BGP_TREE        ;; $7f
 ; Expansion:
 ; Dime Tower rises in front of crystals:
-    METATILE $aa, $ab, $b4, $31, $20, $04                  ;; $80 ($66)
+    METATILE $aa, $ab, $b4, $31, $20, $04, BGP_CRYSTAL, BGP_CRYSTAL, BGP_DEFAULT, BGP_DEFAULT ;; $80 ($66)
 ; Vertical bridge that blocks Chocoboat for the bridge to the Snowfields.
-    METATILE $88, $89, $8a, $8b, $30, $07                  ;; $81 ($2a)
+    METATILE $88, $89, $8a, $8b, $30, $07, BGP_DOCK        ;; $81 ($2a)
 
 metatilesManaland:
     METATILE $70, $71, $70, $71, $30, $05                  ;; $00
@@ -782,11 +784,11 @@ metatilesManaland:
     METATILE $f2, $f2, $f2, $f2, $30, $05                  ;; $03
     METATILE $56, $71, $57, $58, $20, $05                  ;; $04
     METATILE $70, $59, $5a, $5b, $20, $05                  ;; $05
-    METATILE $27, $10, $10, $10, $00, $07                  ;; $06
-    METATILE $10, $28, $10, $10, $00, $07                  ;; $07
+    METATILE $27, $10, $10, $10, $00, $07, BGP_RIVER       ;; $06
+    METATILE $10, $28, $10, $10, $00, $07, BGP_RIVER       ;; $07
     METATILE $1e, $1f, $1f, $1e, $30, $05                  ;; $08
 ; Waterfalls in this tileset originally were set to walkable, slide south. Changed to not be walkable.
-    METATILE $08, $09, $08, $09, $00, $05                  ;; $09
+    METATILE $08, $09, $08, $09, $00, $05, BGP_FALLS       ;; $09
     METATILE $74, $75, $76, $77, $00, $05                  ;; $0a
     METATILE $3a, $3b, $4c, $7e, $30, $0d                  ;; $0b
     METATILE $26, $26, $26, $26, $00, $05                  ;; $0c
@@ -801,14 +803,14 @@ metatilesManaland:
     METATILE $db, $d4, $db, $d4, $00, $04                  ;; $14
 ; Castle tower right
     METATILE $d7, $dc, $d7, $dc, $00, $04                  ;; $15
-    METATILE $10, $10, $29, $10, $00, $07                  ;; $16
-    METATILE $10, $10, $10, $2a, $00, $07                  ;; $17
+    METATILE $10, $10, $29, $10, $00, $07, BGP_RIVER       ;; $16
+    METATILE $10, $10, $10, $2a, $00, $07, BGP_RIVER       ;; $17
     METATILE $22, $23, $24, $2b, $30, $05                  ;; $18
 ; Castle tower bottom left
     METATILE $d3, $d4, $d5, $d6, $10, $04                  ;; $19
     METATILE $78, $79, $7a, $7b, $30, $05                  ;; $1a
     METATILE $96, $97, $98, $99, $30, $0d                  ;; $1b
-    METATILE $34, $35, $c8, $c9, $04, $04                  ;; $1c
+    METATILE $34, $35, $c8, $c9, $04, $04, BGP_TREE        ;; $1c
     METATILE $7c, $7d, $7f, $80, $00, $05                  ;; $1d
     METATILE $c3, $c4, $c5, $c6, $00, $04                  ;; $1e
 ; Castle tower bottom right
@@ -818,7 +820,7 @@ metatilesManaland:
     METATILE $52, $53, $54, $71, $10, $04                  ;; $22
     METATILE $4e, $41, $55, $71, $10, $04                  ;; $23
     METATILE $f4, $f5, $f6, $f7, $30, $05                  ;; $24
-    METATILE $cc, $cd, $ce, $cf, $30, $05                  ;; $25
+    METATILE $cc, $cd, $ce, $cf, $30, $05, BGP_DOCK        ;; $25
     METATILE $d1, $d1, $d2, $d2, $00, $04                  ;; $26
     METATILE $d4, $d5, $d4, $d5, $00, $04                  ;; $27
     METATILE $ac, $ad, $b3, $b4, $00, $04                  ;; $28
@@ -832,15 +834,15 @@ metatilesManaland:
     METATILE $94, $b6, $94, $b6, $00, $05                  ;; $2f
     METATILE $9a, $9b, $94, $94, $00, $05                  ;; $30
     METATILE $9d, $9e, $9c, $9b, $20, $05                  ;; $31
-    METATILE $93, $93, $9a, $9b, $20, $05                  ;; $32
+    METATILE $93, $93, $9a, $9b, $20, $05, BGP_SKY, BGP_SKY, BGP_DEFAULT, BGP_DEFAULT ;; $32
     METATILE $d6, $d7, $d8, $d9, $30, $85                  ;; $33
     METATILE $de, $df, $e0, $e1, $30, $85                  ;; $34
-    METATILE $6a, $6b, $6a, $6b, $00, $05                  ;; $35
-    METATILE $ee, $ef, $f0, $f1, $00, $05                  ;; $36
+    METATILE $6a, $6b, $6a, $6b, $00, $05, BGP_BARK        ;; $35
+    METATILE $ee, $ef, $f0, $f1, $00, $05, BGP_LEAVES      ;; $36
     METATILE $15, $16, $17, $18, $30, $85                  ;; $37
     METATILE $da, $db, $dc, $dd, $30, $85                  ;; $38
-    METATILE $6f, $6e, $6f, $6e, $00, $05                  ;; $39
-    METATILE $6f, $6f, $6f, $6f, $00, $04                  ;; $3a
+    METATILE $6f, $6e, $6f, $6e, $00, $05, BGP_BARK        ;; $39
+    METATILE $6f, $6f, $6f, $6f, $00, $04, BGP_BARK        ;; $3a
     METATILE $25, $3e, $36, $37, $20, $04                  ;; $3b
     METATILE $a6, $b8, $25, $a6, $00, $04                  ;; $3c
     METATILE $ca, $ca, $cb, $cb, $30, $05                  ;; $3d
@@ -850,14 +852,14 @@ metatilesManaland:
     METATILE $9c, $9b, $95, $95, $00, $05                  ;; $41
     METATILE $9c, $9b, $94, $94, $00, $05                  ;; $42
     METATILE $9d, $9e, $9f, $a0, $30, $05                  ;; $43
-    METATILE $2e, $2f, $70, $71, $10, $05                  ;; $44
-    METATILE $62, $6b, $72, $62, $00, $05                  ;; $45
-    METATILE $6c, $6b, $6c, $6b, $00, $05                  ;; $46
-    METATILE $6c, $6c, $6c, $6c, $00, $05                  ;; $47
-    METATILE $6d, $6e, $6d, $6e, $00, $05                  ;; $48
-    METATILE $6f, $6e, $6f, $e5, $00, $05                  ;; $49
-    METATILE $6f, $e6, $e6, $e7, $00, $05                  ;; $4a
-    METATILE $e3, $e4, $70, $71, $10, $05                  ;; $4b
+    METATILE $2e, $2f, $70, $71, $10, $05, BGP_BARK, BGP_BARK, BGP_DEFAULT, BGP_DEFAULT ;; $44
+    METATILE $62, $6b, $72, $62, $00, $05, BGP_BARK        ;; $45
+    METATILE $6c, $6b, $6c, $6b, $00, $05, BGP_BARK        ;; $46
+    METATILE $6c, $6c, $6c, $6c, $00, $05, BGP_BARK        ;; $47
+    METATILE $6d, $6e, $6d, $6e, $00, $05, BGP_BARK        ;; $48
+    METATILE $6f, $6e, $6f, $e5, $00, $05, BGP_BARK        ;; $49
+    METATILE $6f, $e6, $e6, $e7, $00, $05, BGP_BARK        ;; $4a
+    METATILE $e3, $e4, $70, $71, $10, $05, BGP_BARK, BGP_BARK, BGP_DEFAULT, BGP_DEFAULT ;; $4b
     METATILE $26, $26, $26, $26, $30, $85                  ;; $4c
     METATILE $f8, $f9, $fa, $fb, $30, $85                  ;; $4d
     METATILE $bf, $c0, $c1, $c2, $30, $85                  ;; $4e
@@ -865,14 +867,14 @@ metatilesManaland:
     METATILE $94, $94, $94, $94, $00, $05                  ;; $50
     METATILE $94, $94, $95, $95, $00, $05                  ;; $51
     METATILE $a1, $a2, $a3, $a4, $00, $05                  ;; $52
-    METATILE $8c, $8d, $8f, $90, $00, $75                  ;; $53
-    METATILE $8d, $8e, $90, $91, $00, $75                  ;; $54
-    METATILE $73, $86, $88, $89, $00, $05                  ;; $55
-    METATILE $87, $62, $73, $86, $00, $05                  ;; $56
-    METATILE $6c, $6c, $87, $bd, $00, $05                  ;; $57
-    METATILE $6d, $e5, $be, $e8, $00, $05                  ;; $58
-    METATILE $e6, $e8, $e9, $ea, $00, $05                  ;; $59
-    METATILE $e9, $ea, $ec, $ed, $00, $05                  ;; $5a
+    METATILE $8c, $8d, $8f, $90, $00, $75, BGP_SKY         ;; $53
+    METATILE $8d, $8e, $90, $91, $00, $75, BGP_SKY         ;; $54
+    METATILE $73, $86, $88, $89, $00, $05, BGP_BARK        ;; $55
+    METATILE $87, $62, $73, $86, $00, $05, BGP_BARK        ;; $56
+    METATILE $6c, $6c, $87, $bd, $00, $05, BGP_BARK        ;; $57
+    METATILE $6d, $e5, $be, $e8, $00, $05, BGP_BARK        ;; $58
+    METATILE $e6, $e8, $e9, $ea, $00, $05, BGP_BARK        ;; $59
+    METATILE $e9, $ea, $ec, $ed, $00, $05, BGP_BARK        ;; $5a
     METATILE $84, $71, $84, $71, $30, $05                  ;; $5b
     METATILE $b8, $b8, $b8, $b8, $00, $04                  ;; $5c
     METATILE $22, $23, $24, $2b, $30, $85                  ;; $5d
@@ -881,14 +883,14 @@ metatilesManaland:
     METATILE $11, $12, $13, $14, $00, $04                  ;; $60
     METATILE $1c, $1c, $1d, $1d, $00, $04                  ;; $61
     METATILE $1d, $1d, $1d, $1d, $00, $04                  ;; $62
-    METATILE $8e, $93, $91, $92, $00, $75                  ;; $63
-    METATILE $93, $93, $93, $93, $00, $75                  ;; $64
-    METATILE $8a, $8b, $70, $71, $10, $05                  ;; $65
-    METATILE $88, $89, $8a, $8b, $00, $05                  ;; $66
-    METATILE $73, $e2, $70, $71, $10, $05                  ;; $67
-    METATILE $e2, $ea, $70, $71, $10, $05                  ;; $68
-    METATILE $ec, $ed, $fc, $fd, $00, $05                  ;; $69
-    METATILE $fc, $fd, $70, $71, $10, $05                  ;; $6a
+    METATILE $8e, $93, $91, $92, $00, $75, BGP_SKY         ;; $63
+    METATILE $93, $93, $93, $93, $00, $75, BGP_SKY         ;; $64
+    METATILE $8a, $8b, $70, $71, $10, $05, BGP_BARK, BGP_BARK, BGP_DEFAULT, BGP_DEFAULT ;; $65
+    METATILE $88, $89, $8a, $8b, $00, $05, BGP_BARK        ;; $66
+    METATILE $73, $e2, $70, $71, $10, $05, BGP_BARK, BGP_BARK, BGP_DEFAULT, BGP_DEFAULT ;; $67
+    METATILE $e2, $ea, $70, $71, $10, $05, BGP_BARK, BGP_BARK, BGP_DEFAULT, BGP_DEFAULT ;; $68
+    METATILE $ec, $ed, $fc, $fd, $00, $05, BGP_BARK        ;; $69
+    METATILE $fc, $fd, $70, $71, $10, $05, BGP_BARK, BGP_BARK, BGP_DEFAULT, BGP_DEFAULT ;; $6a
     METATILE $84, $71, $85, $71, $30, $05                  ;; $6b
     METATILE $b9, $ba, $9c, $9b, $20, $05                  ;; $6c
     METATILE $38, $39, $44, $45, $00, $04                  ;; $6d
@@ -903,7 +905,7 @@ metatilesManaland:
     METATILE $20, $23, $20, $2b, $30, $05                  ;; $76
     METATILE $20, $23, $21, $2b, $30, $05                  ;; $77
     METATILE $22, $23, $9c, $9b, $20, $05                  ;; $78
-    METATILE $10, $10, $10, $10, $00, $07                  ;; $79
+    METATILE $10, $10, $10, $10, $00, $07, BGP_RIVER       ;; $79
     METATILE $9d, $9e, $9c, $9b, $20, $05                  ;; $7a
     METATILE $d1, $d1, $d2, $d2, $30, $05                  ;; $7b
     METATILE $d4, $d5, $d4, $d5, $30, $05                  ;; $7c
@@ -912,16 +914,16 @@ metatilesManaland:
     METATILE $3a, $3b, $4c, $7e, $30, $8d                  ;; $7f
 ; Expansion:
 ; Parapet with cloud, used in Castle Granz.
-    METATILE $8e, $93, $9a, $9b, $00, $75                  ;; $80 ($63)
+    METATILE $8e, $93, $9a, $9b, $00, $75, BGP_SKY, BGP_SKY, BGP_DEFAULT, BGP_DEFAULT ;; $80 ($63)
 ; Parapet with shadowed grass, used in Castle Granz.
     METATILE $84, $71, $9c, $9b, $20, $05                  ;; $81 ($75)
 ; Parapet with shaddowed stone, used in Castle Granz.
     METATILE $20, $23, $9c, $9b, $20, $05                  ;; $82 ($78)
 ; Parapet with tree, used in Castle Granz.
-    METATILE $34, $35, $9c, $9b, $20, $05                  ;; $83 ($75)
+    METATILE $34, $35, $9c, $9b, $20, $05, BGP_TREE, BGP_TREE, BGP_DEFAULT, BGP_DEFAULT ;; $83 ($75)
 ; Parapet with decerative bricks below but unshaded, used in Castle Granz and when Dime tower falls.
     METATILE $9a, $9b, $95, $95, $20, $05                  ;; $84 ($41)
 ; Mountain with cloud, used in the Mana Land sky.
-    METATILE $3f, $d0, $44, $40, $20, $05                  ;; $85 ($10)
+    METATILE $3f, $d0, $44, $40, $20, $05, BGP_DEFAULT, BGP_SKY, BGP_DEFAULT, BGP_DEFAULT ;; $85 ($10)
 ; Parapet with stones but unshaded, used when Dime tower falls.
     METATILE $9d, $9e, $9a, $9b, $20, $05                  ;; $86 ($7a)
