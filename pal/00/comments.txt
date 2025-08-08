@@ -6,7 +6,7 @@ Background palettes based off of the default BIOS auto-colorization of Final Fan
  - bgp1.pal: The default palette for any tiles that do not have something set explicitly yet. Set to the Mystic Quest colors.
  - bgp2.pal: Green (white, green, dark green, black). These are the Mystic Quest colors. The GBC BIOS uses these if a game's name stored in the header matches Mystic Quest. These are the same colors as bgp1.pal but semantically this is used for tiles that should be green no matter what the default palette is.
  - bgp3.pal: Blue (white, green, blue, black). These are the default background palette colors in the GBC BIOS. The non-colorized Legend of the Mana Sword uses these for everything instead of the Mystic Quest color palette because the blue palette allows for water and sky that are blue rather than green. This palette is used for those same sorts of things, mostly water and sky.
- - pal4.pal: Unused.
+ - pal4.pal: Brown (white, tan, brown, black). Sort of an easter-egg at the moment. This is used for the trunks of the trees in the Manaland. The colors are based off of a pretty widely used palette in the GBC BIOS. It has also been considered for the palisades, dead trees, sand, rubble, and floatrocks on the worldmap but it seems too attention grabbing.
  - pal5.pal: Unused.
  - pal6.pal: Unused.
  - pal7.pal: Unused.

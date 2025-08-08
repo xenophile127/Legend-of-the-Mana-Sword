@@ -3,8 +3,6 @@ RSRESET
 DEF BGP_SPECIAL    RB 1
 
 ; Default palette. While there are a limited number palettes available it makes sense to have a catch-all.
-DEF BGP_BARK       RB 0
-DEF BGP_END        RB 0
 DEF BGP_FLOATROCK  RB 0
 DEF BGP_PALISADE   RB 0
 DEF BGP_SAND       RB 0
@@ -27,3 +25,8 @@ DEF BGP_RIVER      RB 0
 DEF BGP_SKY        RB 0
 DEF BGP_SNOW       RB 0
 DEF BGP_BLUE       RB 1
+
+; Brown is currently used very limitedly.
+DEF BGP_BARK       RB 0
+DEF BGP_END        RB 0
+DEF BGP_BROWN      RB 1
