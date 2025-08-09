@@ -1,6 +1,6 @@
 # Colorizing Legend of the Mana Sword
 
-Every fan-made Game Boy Color (GBC) conversion has gotten criticism about color choices. Legend of the Mana Sword (LotMS) is being colorized with the goal of allowing relatively non-technical people to make whatever changes they like. However, colorization is currently at an early stage--currently all background graphics use a single palette.
+Every fan-made Game Boy Color (GBC) conversion has gotten criticism about color choices. Legend of the Mana Sword (LotMS) is being colorized with the goal of allowing relatively non-technical people to make whatever changes they like. However, colorization is currently at an early stage.-
 
 ## Setup
 You *will* need to be able to assemble the source. The main requirements are [RGBDS](https://rgbds.gbdev.io/) and `make`. The color version of Legend of the Mana Sword is built with `make color`.
@@ -42,7 +42,17 @@ Palettes almost always come in sets of four: `blind`, `damage`, `flash`, and `ma
 ## Organization of the `pal` directory
 
 Currently there are these subdirectories within `pal`:
-1. **`00` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files (only `bgp0.pal` is currently used) and eight sprite (`obj`) `.pal` files. Most palette loading is now done dynamically so currently the only portions of this that should have any effect are the `bgp0.pal` files.
+1. **`00` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files and eight sprite (`obj`) `.pal` files. All sprite palette loading is now done dynamically so the `obj` pal files are obsolete. Currently the first four `bgp` files are loaded at startup but will be replaced if a boss is loaded.
+
+    Background palettes are planned to eventually be loaded dynamically as well but for now these palettes are in use:
+        - `bgp0.pal` for windows and line effects,
+        - `bgp1.pal` is the default if a metatile has not been given specific colors. It is set to the colors that Mystic Quest used when running on a GBC.
+        - `bgp2.pal` is two shades of green, black, and white. Currently this is the same as `bgp1.pal` but semantically use of this palette is for objects that should be green even if a different default palette is set.
+        - `bgp3.pal` is set to the old LotMS Lazy DX colors, green, blue, black, and white. This is used mostly for things like water and sky that greatly benefitted from having blue in the palette.
+        - `bgp4.pal` is set to two shades of brown, black, and white. It is a pretty commonly used palette from the GBC BIOS. This palette is currently used very sparingly with the only two uses being the trees in the Mana Land (including the Mana Tree) and the words "The End" on the final screen.
+        - `bgp5.pal` is unused.
+        - `bgp6.pal` is unused.
+        - `bgp7.pal` is unused.
 
     The file `pal/palette_list.inc` has an entry that causes this to be compiled in. Originally most colorization was going to be done with full palette sets like this loaded with script commands, but that is no longer the plan.
 2. **`attack`-** Contains palettes for each spell, item, and weapon that Hero can have. The file `pal/attack/palette_map.inc` needs to have an entry for each. Each entry specifies the directory that contains the palettes needed: `blind.pal`, `damage.pal`, `flash.pal`, and `main.pal`.
@@ -51,6 +61,7 @@ Currently there are these subdirectories within `pal`:
 3. **`boss`-** Complete palette sets for each boss, including both sprites and backgrounds. Currently the `obj0.pal` files are not loaded, and the `obj1.pal` will be overwritten by any player attack. If a companion is present for a boss fight then the colors in `obj3.pal` will be used for them. Other than those, all other sprite palettes (`obj2.pal`, `obj4.pal`, `obj5.pal`, `obj6.pal`, and `obj7.pal`) can be used.
 
     Bosses are mapped to palettes in `src/data/boss/metasprites.asm`. It shouldn't be necessary to edit that but more advanced custom boss colorizations can be achieved by doing so.
+    Each boss directory should have a `comments.txt` file with information specific to that boss, such as which palettes are being used and for what.
 4. **`hero`-** Palettes for each of the negative status effects that Hero can get, except Blind which is handled very differently. It contains four directories:
     - **`hero` -** Used when you have no negative status effect.
     - **`moogle` -** Used when you have the Moogle status effect. This is the lowest priority of the three.
@@ -86,3 +97,10 @@ Currently there are these subdirectories within `pal`:
     > ⚠️ **Note:** Technical limitations make supporting two types of enemy projectiles on one screen challenging. At the moment there are times where both are mapped to the same palette.
 10. **`sgb` -**  Contains palettes used during the credits and end screen on Super Game Boy.
     > 💡**Note:** Aside from loading a border at startup Super Game Boy support is disabled when assembling with Game Boy Color/Advance support with `make color`.
+
+## Backgrounds
+Background colorization is currently very primative. The palettes that have been added are documented in the `pal` section of this document under `00`. Currently there is a limit of seven palettes for colorizing bagrounds (with one of the eight hardware palettes reserved for windows and line effects, and line effects will cause visual glitches if you use this). The list is also in `src/include/bgp_attributes.inc` where constants are defined.
+
+Mapping background graphics to those palettes is done in `src/data/metatiles.asm`. Each entry in that file is for a metatile which ties four 8x8 pixel tiles--each of which can be given their own palette-into a logical 16x16 pixel tile. For convenience sake the macro that assembles this file will accept one palette constant (which will be duplicated four times) or four.
+
+End-to-end adding and using a background palette should start in `pal/00` (with the new palette(s) copied into bosses in the `boss` directory), touch `src/include/bgp_attributes.inc`, and then can be used by adding or changing constants in `src/data/metatiles.asm`.
