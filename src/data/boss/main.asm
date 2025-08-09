@@ -3609,10 +3609,10 @@ data_04_6b3f:
     db   $0d, $00, $ff                                 ;; 04:6b3f ...
 
 bodyVampireCapeClosed:
-    db   $0c, $00, $80                                 ;; 04:6b42
-    db   $0c, $f0, $80
-    db   $0c, $f0, $80
-    db   $0c, $00, $80
+    db   $0c, $00, $81                                 ;; 04:6b42
+    db   $0c, $f0, $81
+    db   $0c, $f0, $81
+    db   $0c, $00, $81
     db   $01, $00, $f0
     db   $02, $f0, $00
     db   $00, $f0, $f0
@@ -3629,10 +3629,10 @@ bodyVampireCopeOpenFull:
     db   $ff
 
 bodyVampireCapeOpenLeft:
-    db   $0c, $00, $80                                 ;; 04:6b6e
+    db   $0c, $00, $81                                 ;; 04:6b6e
     db   $03, $f0, $00
     db   $04, $f0, $f0
-    db   $0c, $00, $80
+    db   $0c, $00, $81
     db   $01, $00, $f0
     db   $0a, $e0, $00
     db   $09, $e0, $f0
@@ -3640,8 +3640,8 @@ bodyVampireCapeOpenLeft:
 
 bodyVampireCapeOpenRight:
     db   $05, $00, $f0                                 ;; 04:6b84
-    db   $0c, $f0, $80
-    db   $0c, $f0, $80
+    db   $0c, $f0, $81
+    db   $0c, $f0, $81
     db   $0b, $10, $00
     db   $08, $10, $f0
     db   $02, $f0, $00
@@ -3659,10 +3659,10 @@ bodyVampireCopeOpenFull_fire:
     db   $ff
 
 bodyVampireCapeOpenLeft_fire:
-    db   $0c, $00, $80                                 ;; 04:6bb0
+    db   $0c, $00, $81                                 ;; 04:6bb0
     db   $03, $f0, $00
     db   $04, $f0, $f0
-    db   $0c, $00, $80
+    db   $0c, $00, $81
     db   $01, $00, $f0
     db   $0a, $e0, $00
     db   $49, $e0, $f0
@@ -3670,8 +3670,8 @@ bodyVampireCapeOpenLeft_fire:
 
 bodyVampireCapeOpenRight_fire:
     db   $05, $00, $f0                                 ;; 04:6bc6
-    db   $0c, $f0, $80
-    db   $0c, $f0, $80
+    db   $0c, $f0, $81
+    db   $0c, $f0, $81
     db   $0b, $10, $00
     db   $48, $10, $f0
     db   $02, $f0, $00
