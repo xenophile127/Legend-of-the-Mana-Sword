@@ -6,7 +6,7 @@
     COLOR_PALETTE_BOSS 000              ; Vampire        $00
     COLOR_PALETTE_BOSS 001              ; Hydra          $01
     COLOR_PALETTE_BOSS blue             ; Medusa         $02
-    COLOR_PALETTE_BOSS blue             ; Megapede       $03
+    COLOR_PALETTE_BOSS 003              ; Megapede       $03
     COLOR_PALETTE_BOSS blue             ; Davias         $04
     COLOR_PALETTE_BOSS 005              ; Golem          $05
     COLOR_PALETTE_BOSS blue             ; Cyclops        $06

@@ -1,0 +1,11 @@
+Palettes for Megapede.
+
+Background colors are the same as pal/00.
+
+Megapede uses the first reserved palette--obj5--for its head, and the second--obj6--for its body segments.
+
+The projectile palette is used for its death explosion. It is set to its head palette with the dark color changed to a red..
+
+Watts is expected to be present for this battle so obj3 is given the proper palette.
+
+The boss damage flash effect has the head (the only vulnerable spot) use very washed out shades of its colors--close to but not quite white. The tail segments lighten but only a very small amount.
