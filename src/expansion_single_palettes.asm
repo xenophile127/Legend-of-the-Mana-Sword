@@ -39,6 +39,7 @@ loadSinglePalette_expansion:
     add a
     add a
     add a
+    push af
     ld de, wColorPalettes.obj_main
     add e
     ld e, a
@@ -81,14 +82,34 @@ loadSinglePalette_expansion:
 ; Check whether the Blind/Dark effect is active.
     ld hl, wPlayerSpecialFlags
     bit 1, [hl]
-    ld hl, wColorPalettes.main
+    ld hl, wColorPalettes.obj_main
     jr z, .activate
-    ld hl, wColorPalettes.blind
+    ld hl, wColorPalettes.obj_blind
 ; Activate the palette if the screen isn't currently faded to black or white.
 .activate:
     ld a, [wLastFade]
     or a
-    call z, setPalettes
-; And finish.
+    pop de
+    jr nz, .finish
+; Avoid using setPalettes and instead activate only this palette.
+; This is a performance optimization, but more importantly it fixes a bug with letterbox mode.
+    ld a, d
+    add l
+    ld l, a
+    ld a, h
+    adc $00
+    ld h, a
+    ld a, d
+    ld de, wColorPalettes.obj_active
+    add e
+    ld e, a
+    ld a, d
+    adc $00
+    ld d, a
+    ld b, $08
+    call copyHLtoDE
+    ld a, $01
+    ldh [hPalettesDirty], a
+.finish:
     pop de
     ret
