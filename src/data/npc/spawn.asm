@@ -56,7 +56,7 @@ NPCSpawnPointers:
     dw   data_03_7808, minecart,     injured           ;; 03:7262 ??????      number 48 $30
     dw   data_03_77d6, data_03_78c2, data_03_78ca      ;; 03:7268 ??????
     dw   data_03_77ea, data_03_7a8e, data_03_7a8e      ;; 03:726e ??????
-    dw   data_03_78d2, data_03_78ee, data_03_78f8      ;; 03:7274 ??????
+    dw   womanWendel,  girlWendel,   oldmanWendel      ;; 03:7274 ??????      number 51 $33
     dw   data_03_78dc, data_03_78e6, data_03_7530      ;; 03:727a ??????
     dw   data_03_77fe, data_03_7530, data_03_7530      ;; 03:7280 ??????
     dw   data_03_7530, data_03_7530, data_03_7530      ;; 03:7286 ??????      number 54 $36 (unused)
@@ -700,8 +700,8 @@ data_03_78ca:
     db   1, 1, NPC_GIRL_KETTS, NPC_GIRL_KETTS, NPC_GIRL_KETTS, NPC_GIRL_KETTS ;; 03:78ca ??????
     db   $80, $80                                      ;; 03:78d0 ??
 
-data_03_78d2:
-    db   1, 1, NPC_GIRL_CIBBA, NPC_GIRL_CIBBA, NPC_GIRL_CIBBA, NPC_GIRL_CIBBA ;; 03:78d2 ??????
+womanWendel:
+    db   1, 1, NPC_WOMAN_WENDEL, NPC_WOMAN_WENDEL, NPC_WOMAN_WENDEL, NPC_WOMAN_WENDEL ;; 03:78d2 ??????
     db   $0c, $0c, $80, $80                            ;; 03:78d8 ????
 
 data_03_78dc:
@@ -712,11 +712,11 @@ data_03_78e6:
     db   1, 1, NPC_GUY_WENDEL_HOUSE, NPC_GUY_WENDEL_HOUSE, NPC_GUY_WENDEL_HOUSE, NPC_GUY_WENDEL_HOUSE ;; 03:78e6 ??????
     db   $80, $80                                      ;; 03:78ec ??
 
-data_03_78ee:
-    db   1, 1, NPC_WOMAN_CIBBA, NPC_WOMAN_CIBBA, NPC_WOMAN_CIBBA, NPC_WOMAN_CIBBA ;; 03:78ee ??????
+girlWendel:
+    db   1, 1, NPC_GIRL_WENDEL, NPC_GIRL_WENDEL, NPC_GIRL_WENDEL, NPC_GIRL_WENDEL ;; 03:78ee ??????
     db   $04, $06, $80, $80                            ;; 03:78f4 ????
 
-data_03_78f8:
+oldmanWendel:
     db   1, 1, NPC_OLDMAN_WENDEL, NPC_OLDMAN_WENDEL, NPC_OLDMAN_WENDEL, NPC_OLDMAN_WENDEL ;; 03:78f8 ??????
     db   $80, $80                                      ;; 03:78fe ??
 
@@ -987,5 +987,5 @@ hasim:
     db   $08, $08, $80, $80
 
 injured:
-    db   1, 1, NPC_INJURED, NPC_INJURED, NPC_INJURED, NPC_INJURED
+    db   1, 1, NPC_HURT_WENDEL, NPC_HURT_WENDEL, NPC_HURT_WENDEL, NPC_HURT_WENDEL
     db   $08, $08, $80, $80

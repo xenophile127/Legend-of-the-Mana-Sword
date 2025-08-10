@@ -159,10 +159,10 @@ ENDC
     NPC_DATA $81, $61, $60, $08, data_09_6400, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_026a, $0000 ;; 03:6b42 NPC_OLDMAN_TOPPLE
     NPC_DATA $81, $0b, $50, $08, data_09_5f00, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01e1, $0000 ;; 03:6b5a NPC_GUY_KETTS
     NPC_DATA $81, $0b, $60, $08, data_09_6600, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01e2, $0000 ;; 03:6b72 NPC_GIRL_KETTS
-    NPC_DATA $81, $61, $40, $08, data_09_6000, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01e9, $0000 ;; 03:6b8a NPC_GIRL_CIBBA
+    NPC_DATA $81, $61, $40, $08, data_09_6000, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01e9, $0000 ;; 03:6b8a NPC_WOMAN_WENDEL
     NPC_DATA $81, $0b, $40, $08, data_09_6100, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01ea, $0000 ;; 03:6ba2 NPC_GUY_WENDEL2
     NPC_DATA $81, $0b, $50, $08, data_09_5f00, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01eb, $0000 ;; 03:6bba NPC_GUY_WENDEL_HOUSE
-    NPC_DATA $81, $0b, $50, $08, data_09_6200, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01ec, $0000 ;; 03:6bd2 NPC_WOMAN_CIBBA
+    NPC_DATA $81, $0b, $50, $08, data_09_6200, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01ec, $0000 ;; 03:6bd2 NPC_GIRL_WENDEL
     NPC_DATA $81, $61, $60, $08, data_09_6400, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01ed, $0000 ;; 03:6bea NPC_OLDMAN_WENDEL
     NPC_DATA $81, $0b, $40, $08, data_09_6700, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01f2, $0000 ;; 03:6c02 NPC_DWARF_1
     NPC_DATA $81, $61, $40, $08, data_09_6700, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_01f3, $0000 ;; 03:6c1a NPC_DWARF_2
