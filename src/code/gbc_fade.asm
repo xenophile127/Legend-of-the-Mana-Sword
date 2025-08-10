@@ -57,7 +57,7 @@ fadeBlack:
     inc de
     pop bc
     dec b
-    jr nz, .loop_bgp
+    jr nz, .loop_bgp0
 ; Run the normal loop starting with BGP1.
     ld de, wColorPalettes.bgp_active+$08
     ld b, $1c
