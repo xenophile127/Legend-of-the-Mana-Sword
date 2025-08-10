@@ -557,7 +557,7 @@ IF DEF(COLOR)
     jr c, .loop_until_target_line
     jr z, .ready
     DBG_MSG_LABEL debugMsgLCDCInterruptLate
-.ready:.
+.ready:
 ; Save one cycle in mode 0 by pre-loading this address.
     ld b, LOW(rBCPD)
 ENDC
