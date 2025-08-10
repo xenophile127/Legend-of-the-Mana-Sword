@@ -498,6 +498,12 @@ LCDCInterrupt:
     push bc
     push de
     push hl
+IF DEF(COLOR)
+; Save the target line to write.
+    ld a, [rLYC]
+    inc a
+    ld b, a
+ENDC
 ; Each entry in the line effect buffer is four bytes long.
     ld   A, [wLCDCEffectIndex]                         ;; 00:032d $fa $e2 $d3
     add  A, A                                          ;; 00:0330 $87
@@ -543,6 +549,15 @@ IF DEF(COLOR)
 ; Reset the address and set autoinc before waiting for time to write.
     ld a, BCPSF_AUTOINC
     ldh [rBCPS], a
+; With the color lookup table it's possible to get here earlier than intended so guard and check.
+; It may also be possible to get here too late.
+.loop_until_target_line:
+    ldh a, [rLY]
+    cp b
+    jr c, .loop_until_target_line
+    jr z, .ready
+    DBG_MSG_LABEL debugMsgLCDCInterruptLate
+.ready:.
 ; Save one cycle in mode 0 by pre-loading this address.
     ld b, LOW(rBCPD)
 ENDC

@@ -70,3 +70,6 @@ debugMsgSaveGame:
 
 debugMsgLoadGame:
     DBG_STR "[INFO] Load game: Level %($d7ba)%, Stamina %($d7c1)%, Power %($d7c2)%, Wisdom %($d7c3)%, Will %($d7c4)%"
+
+debugMsgLCDCInterruptLate:
+    DBG_STR "[ERROR] LCDC Interrupt writing late. Target line: %B% Actual: %A%"
