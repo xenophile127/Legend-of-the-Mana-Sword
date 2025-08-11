@@ -29,4 +29,5 @@ DEF BGP_BLUE       RB 1
 ; Brown is currently used very limitedly.
 DEF BGP_BARK       RB 0
 DEF BGP_END        RB 0
+DEF BGP_LIGHT      RB 0
 DEF BGP_BROWN      RB 1

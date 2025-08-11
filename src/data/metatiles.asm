@@ -582,24 +582,24 @@ metatilesTitle:
     METATILE $21, $21, $21, $21, $30, $00                  ;; $0f
     METATILE $22, $22, $22, $22, $f0, $00                  ;; $10
     METATILE $3f, $3f, $3f, $3f, $30, $00                  ;; $11
-    METATILE $30, $25, $31, $25, $30, $00                  ;; $12
-    METATILE $25, $25, $25, $25, $30, $00                  ;; $13
-    METATILE $25, $2f, $25, $2f, $30, $00                  ;; $14
+    METATILE $30, $25, $31, $25, $30, $00, BGP_LIGHT       ;; $12
+    METATILE $25, $25, $25, $25, $30, $00, BGP_LIGHT       ;; $13
+    METATILE $25, $2f, $25, $2f, $30, $00, BGP_LIGHT       ;; $14
     METATILE $3f, $48, $3f, $3f, $30, $00, BGP_END         ;; $15
     METATILE $49, $4a, $50, $51, $30, $00, BGP_END         ;; $16
     METATILE $4b, $4c, $52, $53, $30, $00, BGP_END         ;; $17
     METATILE $4d, $4e, $54, $55, $30, $00, BGP_END         ;; $18
     METATILE $4f, $3f, $56, $3f, $30, $00, BGP_END         ;; $19
-    METATILE $3f, $30, $3f, $31, $30, $00                  ;; $1a
-    METATILE $30, $25, $31, $25, $30, $00                  ;; $1b
-    METATILE $3f, $30, $3f, $31, $30, $00                  ;; $1c
+    METATILE $3f, $30, $3f, $31, $30, $00, BGP_LIGHT       ;; $1a
+    METATILE $30, $25, $31, $25, $30, $00, BGP_LIGHT       ;; $1b
+    METATILE $3f, $30, $3f, $31, $30, $00, BGP_LIGHT       ;; $1c
     METATILE $23, $24, $33, $34, $30, $00, BGP_SPROUT      ;; $1d
     METATILE $25, $25, $35, $25, $30, $00, BGP_SPROUT      ;; $1e
-    METATILE $26, $27, $36, $37, $30, $00                  ;; $1f
-    METATILE $28, $29, $38, $39, $30, $00                  ;; $20
-    METATILE $43, $44, $3a, $3a, $30, $00, BGP_SPROUT      ;; $21
-    METATILE $45, $2c, $3b, $3c, $30, $00, BGP_SPROUT      ;; $22
-    METATILE $2d, $2e, $3d, $3e, $30, $00                  ;; $23
+    METATILE $26, $27, $36, $37, $30, $00, BGP_LIGHT       ;; $1f
+    METATILE $28, $29, $38, $39, $30, $00, BGP_LIGHT       ;; $20
+    METATILE $43, $44, $3a, $3a, $30, $00, BGP_LIGHT       ;; $21
+    METATILE $45, $2c, $3b, $3c, $30, $00, BGP_LIGHT       ;; $22
+    METATILE $2d, $2e, $3d, $3e, $30, $00, BGP_LIGHT       ;; $23
     METATILE $25, $25, $35, $25, $30, $00, BGP_SPROUT      ;; $24
     METATILE $25, $25, $32, $25, $30, $00, BGP_SPROUT      ;; $25
     METATILE $46, $25, $47, $25, $30, $00, BGP_SPROUT      ;; $26
@@ -613,9 +613,9 @@ metatilesTitle:
     METATILE $64, $65, $74, $75, $00, $00                  ;; $2e
     METATILE $66, $67, $76, $77, $00, $00                  ;; $2f
     METATILE $68, $69, $78, $79, $00, $00                  ;; $30
-    METATILE $3f, $57, $3f, $31, $00, $00                  ;; $31
-    METATILE $58, $58, $25, $25, $30, $00                  ;; $32
-    METATILE $58, $58, $25, $2f, $30, $00                  ;; $33
+    METATILE $3f, $57, $3f, $31, $00, $00, BGP_LIGHT       ;; $31
+    METATILE $58, $58, $25, $25, $30, $00, BGP_LIGHT       ;; $32
+    METATILE $58, $58, $25, $2f, $30, $00, BGP_LIGHT       ;; $33
     METATILE $25, $25, $25, $5f, $30, $00                  ;; $34
     METATILE $6a, $6b, $7a, $7b, $30, $00                  ;; $35
     METATILE $6c, $6f, $7c, $7d, $30, $00                  ;; $36
