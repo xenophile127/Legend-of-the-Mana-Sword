@@ -140,11 +140,11 @@
     COLOR_PALETTE_NPC 132              ; NPC_GUY_WENDEL_HOUSE = $84
     COLOR_PALETTE_NPC 133              ; NPC_GIRL_WENDEL = $85
     COLOR_PALETTE_NPC 134              ; NPC_OLDMAN_WENDEL = $86
-    COLOR_PALETTE_NPC blue             ; NPC_DWARF_1 = $87
-    COLOR_PALETTE_NPC blue             ; NPC_DWARF_2 = $88
-    COLOR_PALETTE_NPC blue             ; NPC_DWARF_3 = $89
-    COLOR_PALETTE_NPC blue             ; NPC_DWARF_4 = $8a
-    COLOR_PALETTE_NPC blue             ; NPC_DWARF_5 = $8b
+    COLOR_PALETTE_NPC 135              ; NPC_DWARF_1 = $87
+    COLOR_PALETTE_NPC 136              ; NPC_DWARF_2 = $88
+    COLOR_PALETTE_NPC 137              ; NPC_DWARF_3 = $89
+    COLOR_PALETTE_NPC 138              ; NPC_DWARF_4 = $8a
+    COLOR_PALETTE_NPC 139              ; NPC_DWARF_5 = $8b
     COLOR_PALETTE_NPC blue             ; NPC_GUY_AIRSHIP_1 = $8c
     COLOR_PALETTE_NPC blue             ; NPC_GUY_AIRSHIP_2 = $8d
     COLOR_PALETTE_NPC blue             ; NPC_GUY_AIRSHIP_3 = $8e
