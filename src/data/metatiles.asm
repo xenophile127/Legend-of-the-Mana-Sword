@@ -48,8 +48,8 @@ metatilesOutdoor:
     METATILE $3f, $2d, $44, $40, $20, $06                  ;; $04
     METATILE $2d, $2d, $2d, $2d, $30, $05, BGP_SAND        ;; $05
     METATILE $56, $2d, $57, $58, $20, $06                  ;; $06
-    METATILE $6c, $6d, $10, $10, $c0, $07, BGP_RIVER       ;; $07
-    METATILE $6e, $6f, $10, $71, $c0, $07, BGP_RIVER       ;; $08
+    METATILE $6c, $6d, $10, $10, $c0, $07, BGP_SHORE, BGP_SHORE, BGP_RIVER, BGP_RIVER ;; $07
+    METATILE $6e, $6f, $10, $71, $c0, $07, BGP_SHORE, BGP_SHORE, BGP_RIVER, BGP_SHORE ;; $08
     METATILE $db, $d4, $db, $d4, $00, $04                  ;; $09
     METATILE $d7, $dc, $d7, $dc, $00, $04                  ;; $0a
     METATILE $3a, $3b, $4c, $7e, $30, $0d                  ;; $0b
@@ -63,9 +63,9 @@ metatilesOutdoor:
     METATILE $4a, $4b, $2d, $4d, $10, $04                  ;; $13
     METATILE $4e, $41, $55, $2d, $10, $04                  ;; $14
     METATILE $52, $53, $54, $2d, $10, $04                  ;; $15
-    METATILE $72, $10, $74, $10, $c0, $07, BGP_RIVER       ;; $16
+    METATILE $72, $10, $74, $10, $c0, $07, BGP_SHORE, BGP_RIVER, BGP_SHORE, BGP_RIVER ;; $16
     METATILE $10, $10, $10, $10, $c0, $07, BGP_RIVER       ;; $17
-    METATILE $10, $73, $10, $75, $c0, $07, BGP_RIVER       ;; $18
+    METATILE $10, $73, $10, $75, $c0, $07, BGP_RIVER, BGP_SHORE, BGP_RIVER, BGP_SHORE ;; $18
     METATILE $d3, $d4, $d5, $d6, $10, $04                  ;; $19
     METATILE $d7, $d8, $d9, $da, $10, $04                  ;; $1a
 ; Curved tower base tiles with stone pattern floor.
@@ -80,9 +80,9 @@ metatilesOutdoor:
     METATILE $2b, $2c, $48, $49, $00, $74                  ;; $23
     METATILE $32, $33, $34, $35, $30, $05                  ;; $24
     METATILE $25, $25, $25, $25, $30, $05                  ;; $25
-    METATILE $76, $10, $78, $79, $c0, $07, BGP_RIVER       ;; $26
-    METATILE $10, $10, $7a, $7b, $c0, $07, BGP_RIVER       ;; $27
-    METATILE $10, $77, $7c, $7d, $c0, $07, BGP_RIVER       ;; $28
+    METATILE $76, $10, $78, $79, $c0, $07, BGP_SHORE, BGP_RIVER, BGP_SHORE, BGP_SHORE ;; $26
+    METATILE $10, $10, $7a, $7b, $c0, $07, BGP_RIVER, BGP_RIVER, BGP_SHORE, BGP_SHORE ;; $27
+    METATILE $10, $77, $7c, $7d, $c0, $07, BGP_RIVER, BGP_SHORE, BGP_SHORE, BGP_SHORE ;; $28
     METATILE $84, $85, $86, $87, $f0, $07, BGP_DOCK        ;; $29
     METATILE $2e, $3e, $36, $37, $28, $04                  ;; $2a
     METATILE $7f, $7f, $7f, $7f, $30, $05                  ;; $2b
@@ -646,9 +646,9 @@ metatilesWorldmap:
     METATILE $27, $10, $10, $10, $c0, $07, BGP_RIVER       ;; $03
     METATILE $10, $28, $10, $10, $c0, $07, BGP_RIVER       ;; $04
     METATILE $2d, $2d, $2d, $2d, $30, $05, BGP_SAND        ;; $05
-    METATILE $6a, $6b, $70, $10, $c0, $07, BGP_RIVER       ;; $06
-    METATILE $6c, $6d, $10, $10, $c0, $07, BGP_RIVER       ;; $07
-    METATILE $6e, $6f, $10, $71, $c0, $07, BGP_RIVER       ;; $08
+    METATILE $6a, $6b, $70, $10, $c0, $07, BGP_SHORE, BGP_SHORE, BGP_SHORE, BGP_RIVER ;; $06
+    METATILE $6c, $6d, $10, $10, $c0, $07, BGP_SHORE, BGP_SHORE, BGP_RIVER, BGP_RIVER ;; $07
+    METATILE $6e, $6f, $10, $71, $c0, $07, BGP_SHORE, BGP_SHORE, BGP_RIVER, BGP_SHORE ;; $08
     METATILE $db, $d4, $db, $d4, $00, $04                  ;; $09
     METATILE $d7, $dc, $d7, $dc, $00, $04                  ;; $0a
     METATILE $3a, $3b, $4c, $7e, $30, $0d                  ;; $0b
@@ -678,9 +678,9 @@ metatilesWorldmap:
     METATILE $2b, $2c, $48, $49, $00, $74                  ;; $23
     METATILE $32, $33, $34, $35, $30, $05                  ;; $24
     METATILE $25, $25, $25, $25, $30, $05                  ;; $25
-    METATILE $76, $10, $78, $79, $c0, $07, BGP_RIVER       ;; $26
-    METATILE $10, $10, $7a, $7b, $c0, $07, BGP_RIVER       ;; $27
-    METATILE $10, $77, $7c, $7d, $c0, $07, BGP_RIVER       ;; $28
+    METATILE $76, $10, $78, $79, $c0, $07, BGP_SHORE, BGP_RIVER, BGP_SHORE, BGP_SHORE ;; $26
+    METATILE $10, $10, $7a, $7b, $c0, $07, BGP_RIVER, BGP_RIVER, BGP_SHORE, BGP_SHORE ;; $27
+    METATILE $10, $77, $7c, $7d, $c0, $07, BGP_RIVER, BGP_SHORE, BGP_SHORE, BGP_SHORE ;; $28
     METATILE $84, $85, $86, $87, $f0, $07, BGP_DOCK        ;; $29
     METATILE $88, $89, $8a, $8b, $f0, $07, BGP_DOCK        ;; $2a
     METATILE $7f, $7f, $7f, $7f, $30, $05                  ;; $2b
