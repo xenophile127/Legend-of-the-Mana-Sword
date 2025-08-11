@@ -370,11 +370,11 @@ metaspritesMegapede:
     db   OAMF_YFLIP  | OAMF_PAL1 | PAL_NPC1, $40, $42                                 ;; 04:7f2e ??? $03
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $46, $44                                 ;; 04:7f31 ??? $04
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4a, $48                                 ;; 04:7f34 ??? $05
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $50, $52                                 ;; 04:7f37 ??? $06
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e                                 ;; 04:7f3a ??? $07
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $54, $56                                 ;; 04:7f3d ??? $08
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $58, $5a                                 ;; 04:7f40 ??? $09
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $5c, $5e                                 ;; 04:7f43 ??? $0a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $50, $52                                 ;; 04:7f37 ??? $06
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $4c, $4e                                 ;; 04:7f3a ??? $07
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $54, $56                                 ;; 04:7f3d ??? $08
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a                                 ;; 04:7f40 ??? $09
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e                                 ;; 04:7f43 ??? $0a
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $38, $3a                                 ;; 04:7f46 ??? $0b
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $38, $3a                                 ;; 04:7f49 ??? $0c
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $3c, $3e                                 ;; 04:7f4c ??? $0d
