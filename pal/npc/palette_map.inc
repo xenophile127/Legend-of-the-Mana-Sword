@@ -41,13 +41,13 @@
     COLOR_PALETTE_NPC blue             ; NPC_CLOUD = $21
     COLOR_PALETTE_NPC 034              ; NPC_PIG = $22
     COLOR_PALETTE_NPC 035              ; NPC_CRAB = $23
-    COLOR_PALETTE_NPC blue             ; NPC_SPIDER = $24
+    COLOR_PALETTE_NPC 036              ; NPC_SPIDER = $24
     COLOR_PALETTE_NPC blue             ; NPC_INV_OPEN_NORTH = $25
     COLOR_PALETTE_NPC blue             ; NPC_INV_OPEN_SOUTH = $26
     COLOR_PALETTE_NPC blue             ; NPC_INV_OPEN_EAST = $27
     COLOR_PALETTE_NPC blue             ; NPC_INV_OPEN_WEST = $28
-    COLOR_PALETTE_NPC blue             ; NPC_MIMIC_CHEST = $29
-    COLOR_PALETTE_NPC blue             ; NPC_HOPPING_BUG = $2a
+    COLOR_PALETTE_NPC 041              ; NPC_MIMIC_CHEST = $29
+    COLOR_PALETTE_NPC 042              ; NPC_HOPPING_BUG = $2a
     COLOR_PALETTE_NPC blue             ; NPC_PORCUPINE = $2b
     COLOR_PALETTE_NPC blue             ; NPC_CARROT = $2c
     COLOR_PALETTE_NPC blue             ; NPC_EYE_SPY = $2d

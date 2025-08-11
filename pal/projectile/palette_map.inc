@@ -27,7 +27,7 @@
     COLOR_PALETTE_PROJECTILE 013              ; Ice            $0d NPC_WALRUS
 
     COLOR_PALETTE_PROJECTILE red              ; Lightning Bolt $0e NPC_CLOUD
-    COLOR_PALETTE_PROJECTILE red              ; Poison Thread  $0f NPC_SPIDER, NPC_MEGA_FLYTRAP
+    COLOR_PALETTE_PROJECTILE 015              ; Poison Thread  $0f NPC_SPIDER, NPC_MEGA_FLYTRAP
     COLOR_PALETTE_PROJECTILE ../npc/022       ; Spear          $10 NPC_LIZARDMAN
     COLOR_PALETTE_PROJECTILE red              ; Sword          $11 NPC_GLAIVE_KNIGHT, NPC_SHADOWKNIGHT, NPC_DUCK_SOLDIER
     COLOR_PALETTE_PROJECTILE 018              ; Rapier         $12 NPC_SKELETON, NPC_GARASHA_DUCK
@@ -35,4 +35,5 @@
     COLOR_PALETTE_PROJECTILE red              ; Unused         $14 Only used by bosses. Included as a spacer.
     COLOR_PALETTE_PROJECTILE red              ; Claw           $15 NPC_MOLEBEAR, NPC_KETTS_BUTTLER_WEREWOLF, NPC_WEREWOLF_2
     COLOR_PALETTE_PROJECTILE ../attack/008    ; Nuke           $16 NPC_JULIUS
-    COLOR_PALETTE_PROJECTILE red              ; Mimic Bite     $17 NPC_MIMIC_CHEST
+; Mimic could have a separate palette for its projectile but it's fine with the same colors.
+    COLOR_PALETTE_PROJECTILE ../npc/041       ; Mimic Bite     $17 NPC_MIMIC_CHEST
