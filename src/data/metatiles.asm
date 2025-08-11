@@ -46,7 +46,7 @@ metatilesOutdoor:
     METATILE $b2, $3e, $36, $37, $28, $04                  ;; $02
     METATILE $2d, $3e, $36, $37, $28, $04                  ;; $03
     METATILE $3f, $2d, $44, $40, $20, $06                  ;; $04
-    METATILE $2d, $2d, $2d, $2d, $30, $05                  ;; $05
+    METATILE $2d, $2d, $2d, $2d, $30, $05, BGP_SAND        ;; $05
     METATILE $56, $2d, $57, $58, $20, $06                  ;; $06
     METATILE $6c, $6d, $10, $10, $c0, $07, BGP_RIVER       ;; $07
     METATILE $6e, $6f, $10, $71, $c0, $07, BGP_RIVER       ;; $08
@@ -83,7 +83,7 @@ metatilesOutdoor:
     METATILE $76, $10, $78, $79, $c0, $07, BGP_RIVER       ;; $26
     METATILE $10, $10, $7a, $7b, $c0, $07, BGP_RIVER       ;; $27
     METATILE $10, $77, $7c, $7d, $c0, $07, BGP_RIVER       ;; $28
-    METATILE $84, $85, $86, $87, $f0, $07                  ;; $29
+    METATILE $84, $85, $86, $87, $f0, $07, BGP_DOCK        ;; $29
     METATILE $2e, $3e, $36, $37, $28, $04                  ;; $2a
     METATILE $7f, $7f, $7f, $7f, $30, $05                  ;; $2b
     METATILE $ea, $ea, $ea, $eb, $30, $05                  ;; $2c
@@ -113,7 +113,7 @@ metatilesOutdoor:
     METATILE $5c, $5d, $5e, $26, $00, $04                  ;; $43
     METATILE $5f, $60, $26, $61, $00, $04                  ;; $44
     METATILE $ae, $af, $b0, $b1, $06, $04                  ;; $45
-    METATILE $aa, $ab, $ac, $ad, $00, $04                  ;; $46
+    METATILE $aa, $ab, $ac, $ad, $00, $04, BGP_CRYSTAL     ;; $46
     METATILE $96, $97, $b4, $31, $20, $04, BGP_TREE, BGP_TREE, BGP_DEFAULT, BGP_DEFAULT ;; $47
     METATILE $b2, $b3, $b4, $31, $20, $04                  ;; $48
     METATILE $b2, $b3, $b3, $b2, $30, $05                  ;; $49
@@ -750,7 +750,7 @@ metatilesWorldmap:
     METATILE $26, $26, $26, $26, $30, $85                  ;; $6a
     METATILE $7f, $7f, $7f, $7f, $30, $85                  ;; $6b
     METATILE $30, $31, $d1, $d1, $00, $04                  ;; $6c
-    METATILE $10, $10, $b4, $31, $80, $04, BGP_RIVER       ;; $6d
+    METATILE $10, $10, $b4, $31, $80, $04, BGP_RIVER, BGP_RIVER, BGP_DEFAULT, BGP_DEFAULT ;; $6d
     METATILE $c6, $2f, $c6, $2f, $30, $05                  ;; $6e
 ; Curved tower base with swamp for Kett's:
     METATILE $d7, $d8, $d9, $de, $10, $04                  ;; $6f
