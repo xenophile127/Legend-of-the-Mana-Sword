@@ -10,11 +10,23 @@ SECTION "bank1c", ROMX[$4000], BANK[$1c]
 
 tilesets:
 
+IF DEF(COLOR)
+
+tilesetGfxOutdoor:
+    INCBIN "tileset/outdoor_color.bin"
+
+tilesetGfxTown:
+    INCBIN "tileset/town_airship_mountain_color.bin"
+
+ELSE
+
 tilesetGfxOutdoor:
     INCBIN "tileset/outdoor.bin"
 
 tilesetGfxTown:
     INCBIN "tileset/town_airship_mountain.bin"
+
+ENDC
 
 tilesetGfxIndoor:
     INCBIN "tileset/indoor.bin"

@@ -11,8 +11,21 @@ SECTION "bank1b", ROMX[$4000], BANK[$1b]
 tilesetGfxTitle:
     INCBIN "tileset/title_end.bin"
 
+IF DEF(COLOR)
+
+tilesetGfxWorldmap:
+    INCBIN "tileset/worldmap_color.bin"
+
+tilesetGfxManaland:
+    INCBIN "tileset/manaland_color.bin"
+
+ELSE
+
 tilesetGfxWorldmap:
     INCBIN "tileset/worldmap.bin"
 
 tilesetGfxManaland:
     INCBIN "tileset/manaland.bin"
+
+ENDC
+
