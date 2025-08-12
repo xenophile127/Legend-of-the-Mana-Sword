@@ -23,8 +23,8 @@ NPCSpawnPointers:
     dw   data_03_758a, data_03_759a, data_03_75a2      ;; 03:719c ??????
     dw   data_03_758a, data_03_75b2, gargoyle          ;; 03:71a2 ??????
     dw   zombie,       zombie,       data_03_75aa      ;; 03:71a8 ??????
-    dw   data_03_75c2, data_03_75ca, data_03_7528      ;; 03:71ae ??????
-    dw   data_03_75d2, data_03_75da, data_03_7528      ;; 03:71b4 ??????
+    dw   ape,          molebear,     gallfish          ;; 03:71ae ??????
+    dw   ogre,         spring,       gallfish          ;; 03:71b4 ??????
     dw   phantasm,     minotaur_x1,  gargoyle          ;; 03:71ba ??????      number 20 $14
     dw   phantasm,     phantasm,     mattockWest       ;; 03:71c0 ??????      number 21 $15
     dw   mattockNorth, wizard,       darkStalker       ;; 03:71c6 ??????      number 22 $16
@@ -273,7 +273,7 @@ data_03_7520:
     db   1, 3, NPC_SEA_DRAGON, NPC_SEA_DRAGON, NPC_SEA_DRAGON, NPC_SEA_DRAGON ;; 03:7520 ??????
     db   $80, $80                                      ;; 03:7526 ??
 
-data_03_7528:
+gallfish:
     db   1, 1, NPC_GALL_FISH, NPC_GALL_FISH, NPC_GALL_FISH, NPC_GALL_FISH ;; 03:7528 ??????
     db   $80, $80                                      ;; 03:752e ??
 
@@ -349,19 +349,19 @@ gargoyle:
     db   1, 2, NPC_GARGOYLE, NPC_GARGOYLE, NPC_GARGOYLE, NPC_GARGOYLE ;; 03:75ba ??????
     db   $80, $80                                      ;; 03:75c0 ??
 
-data_03_75c2:
+ape:
     db   1, 1, NPC_MONKEY, NPC_MONKEY, NPC_MONKEY, NPC_MONKEY ;; 03:75c2 ??????
     db   $80, $80                                      ;; 03:75c8 ??
 
-data_03_75ca:
+molebear:
     db   1, 2, NPC_MOLEBEAR, NPC_MOLEBEAR, NPC_MOLEBEAR, NPC_MOLEBEAR ;; 03:75ca ??????
     db   $80, $80                                      ;; 03:75d0 ??
 
-data_03_75d2:
+ogre:
     db   1, 1, NPC_OGRE, NPC_OGRE, NPC_OGRE, NPC_OGRE  ;; 03:75d2 ??????
     db   $80, $80                                      ;; 03:75d8 ??
 
-data_03_75da:
+spring:
     db   1, 2, NPC_BARNACLEJACK, NPC_BARNACLEJACK, NPC_BARNACLEJACK, NPC_BARNACLEJACK ;; 03:75da ??????
     db   $80, $80                                      ;; 03:75e0 ??
 
