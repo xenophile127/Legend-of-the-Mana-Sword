@@ -94,7 +94,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_GAUNTLET = $56
     COLOR_PALETTE_NPC blue             ; NPC_GARASHA_DUCK = $57
     COLOR_PALETTE_NPC blue             ; NPC_FUZZY_WONDER = $58
-    COLOR_PALETTE_NPC blue             ; NPC_ELEPHANT = $59
+    COLOR_PALETTE_NPC 089              ; NPC_ELEPHANT = $59
     COLOR_PALETTE_NPC blue             ; NPC_NINJA = $5a
     COLOR_PALETTE_NPC 091              ; NPC_JULIUS = $5b
     COLOR_PALETTE_NPC blue             ; NPC_DEMON_HEAD = $5c
