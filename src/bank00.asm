@@ -7147,7 +7147,10 @@ getCurrentBankNrAndSwitch:
 
 INCLUDE "code/rand.asm"
 
+; Hero's skin color changes when poisoned, moogled, or stoned.
+; This sets Hero's palette accordingly.
 loadHeroPaletteForStatus:
+    ld a, [wStatusEffect]
     push bc
     rra
     ld b, PALETTE_SET_HERO_POISON
@@ -7331,7 +7334,6 @@ setPalettes:
     ld b, $80
     call copyHLtoDE
 ; Set the Hero palette based on current status.
-    ld a, [wStatusEffect]
     call loadHeroPaletteForStatus
 ; Set the Follower's palette.
 ; Currently this doesn't check if there is a follower.
