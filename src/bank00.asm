@@ -7083,14 +7083,10 @@ snapObjectToNearestTile8:
     call updateObjectPosition                          ;; 00:29d8 $cd $11 $06
     ret                                                ;; 00:29db $c9
 
-ds 2 ; Free space
-
 snapPositionToNearestTile8:
     add $04
     and $f8
     ret
-
-ds 3 ; Free space
 
 ; Takes a facing direction and returns the opposite.
 ; Used, for instance, to make characters walk backwards in cutscenes.
@@ -7327,11 +7323,22 @@ loadPalettesToCRAM:
     ret
 
 ; Load all palettes and flag them to be transferred during the next VBlank.
+; Also make sure that the correct Hero and Follower palettes are used.
 ; hl = background palette address
 setPalettes:
+; Load all palettes.
     ld de, wColorPalettes.active
     ld b, $80
     call copyHLtoDE
+; Set the Hero palette based on current status.
+    ld a, [wStatusEffect]
+    call loadHeroPaletteForStatus
+; Set the Follower's palette.
+; Currently this doesn't check if there is a follower.
+    ld a, [wCurrentFollower]
+    ld b, PAL_FOLLOWER
+    call loadSinglePalette
+; Set the dirty flag.
     ld a, $01
     ldh [hPalettesDirty], a
     ret
