@@ -779,7 +779,7 @@ npcLoadTiles:
     ld   DE, npcDataTable                              ;; 03:43e6 $11 $5a $5f
     add  HL, DE                                        ;; 03:43e9 $19
     push HL                                            ;; 03:43ea $e5
-    inc [hl]
+    inc hl
     ld   A, [HL]                                       ;; 03:43ef $7e
     call getNpcStatsEntry                              ;; 03:43f0 $cd $ac $42
     ld   DE, $09                                       ;; 03:43f3 $11 $09 $00
