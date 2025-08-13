@@ -750,8 +750,11 @@ destroyNPC:
     call fillMemory                                    ;; 03:43b1 $cd $5d $2b
     ret                                                ;; 03:43b4 $c9
 
+; a = NPC id
 giveFollower:
     ld   C, A                                          ;; 03:43c5 $4f
+; Back up the id so palettes can be restored when needed.
+    ld [wCurrentFollowerPalette], a
     push BC                                            ;; 03:43c6 $c5
     ld   A, [wNpcRuntimeData]                          ;; 03:43c7 $fa $e0 $c4
     ld   C, A                                          ;; 03:43ca $4f
@@ -776,8 +779,7 @@ npcLoadTiles:
     ld   DE, npcDataTable                              ;; 03:43e6 $11 $5a $5f
     add  HL, DE                                        ;; 03:43e9 $19
     push HL                                            ;; 03:43ea $e5
-    ld   DE, $01                                       ;; 03:43eb $11 $01 $00
-    add  HL, DE                                        ;; 03:43ee $19
+    inc [hl]
     ld   A, [HL]                                       ;; 03:43ef $7e
     call getNpcStatsEntry                              ;; 03:43f0 $cd $ac $42
     ld   DE, $09                                       ;; 03:43f3 $11 $09 $00

@@ -1680,6 +1680,9 @@ wLastFade:
 wCurrentProjectilePalette:
     ds 1                                               ;; dd99
 
+wCurrentFollowerPalette:
+    ds 1                                               ;; dd9a
+
 ; After this is RAM code--currently the logging code--and the stack.
 ; The stack is placed at the end of wram. It is unknown how far down it can grow.
 

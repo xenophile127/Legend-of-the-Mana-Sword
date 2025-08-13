@@ -545,8 +545,6 @@ setBossMovement:
     ld   [wBossCurrentPatternStep], A                  ;; 04:42e2 $ea $ec $d3
     ret                                                ;; 04:42e5 $c9
 
-ds 1 ; Free space
-
 ; A = object number
 ; Return: HL = Stats Runtime Data pointer
 ; Return: Z on success, NZ if not found
@@ -570,14 +568,11 @@ spawnBoss:
     call logger.hl
     ld   L, A                                          ;; 04:42f7 $6f
 ; Load a full set of palettes when a boss is spawned.
-; Then reload the Hero's palette.
 ; This is absolutely overkill but seems to work fine.
 ; Loading background palettes is a conscious choice to enable effects that may never end up being used.
 IF DEF(COLOR)
     add HIGH((color_palette_boss_00 - $4000) / 2)
     call loadPalettes
-    ld a, [wStatusEffect]
-    call loadHeroPaletteForStatus
 ENDC
     ld   H, $00                                        ;; 04:42f8 $26 $00
     ld   E, L                                          ;; 04:42fa $5d
@@ -589,12 +584,12 @@ ENDC
     add  HL, HL                                        ;; 04:4300 $29
     ld   DE, bossDataTable                             ;; 04:4301 $11 $39 $47
     add  HL, DE                                        ;; 04:4304 $19
-    ld   A, H                                          ;; 04:4305 $7c
-    ld   [wCurrentBossDataPointer.high], A             ;; 04:4306 $ea $39 $d4
-    ld   A, L                                          ;; 04:4309 $7d
-    ld   [wCurrentBossDataPointer], A                  ;; 04:430a $ea $38 $d4
-    ld   D, H                                          ;; 04:430d $54
-    ld   E, L                                          ;; 04:430e $5d
+    ld d, h
+    ld e, l
+    ld hl, wCurrentBossDataPointer
+    ld [hl], e
+    inc hl
+    ld [hl], d
     call bossLoadTiles                                 ;; 04:430f $cd $73 $43
     call bossCreateObjects                             ;; 04:4312 $cd $cd $43
     call bossInitStatsObjectsRuntimeData               ;; 04:4315 $cd $ff $43
@@ -804,6 +799,8 @@ bossInitStatsObjectsRuntimeData:
     pop  DE                                            ;; 04:4423 $d1
     ret                                                ;; 04:4424 $c9
 
+; Clear boss objects.
+; Also restore default color palette set.
 bossClearStatsObjects:
     ld   A, $ff                                        ;; 04:4425 $3e $ff
     ld   [wBossFirstObjectID], A                       ;; 04:4427 $ea $e8 $d3
@@ -812,7 +809,7 @@ bossClearStatsObjects:
 .loop:
     ld   A, [HL]                                       ;; 04:442f $7e
     cp   A, $ff                                        ;; 04:4430 $fe $ff
-    jr   Z, .jr_04_443e                                ;; 04:4432 $28 $0a
+    jr   Z, .next                                      ;; 04:4432 $28 $0a
     push HL                                            ;; 04:4434 $e5
     push BC                                            ;; 04:4435 $c5
     ld   C, A                                          ;; 04:4436 $4f
@@ -820,11 +817,15 @@ bossClearStatsObjects:
     pop  BC                                            ;; 04:443a $c1
     pop  HL                                            ;; 04:443b $e1
     ld   [HL], $ff                                     ;; 04:443c $36 $ff
-.jr_04_443e:
+.next:
     ld   DE, $06                                       ;; 04:443e $11 $06 $00
     add  HL, DE                                        ;; 04:4441 $19
     dec  B                                             ;; 04:4442 $05
     jr   NZ, .loop                                     ;; 04:4443 $20 $ea
+IF DEF(COLOR)
+    ld a, $00
+    call loadPalettes
+ENDC
     ret                                                ;; 04:4445 $c9
 
 bossCollisionHandling:
@@ -1020,9 +1021,6 @@ processBossDeath:
     ld   [wVideoOBP1], A                               ;; 04:4596 $ea $ac $c0
     xor  A, A                                          ;; 04:4599 $af
     ret                                                ;; 04:459a $c9
-    db   $f5, $cd, $1e, $2b, $6f, $26, $00, $f1        ;; 04:459b ????????
-    db   $cd, $7b, $2b, $cb, $3c, $cb, $3c, $6c        ;; 04:45a3 ????????
-    db   $26, $00, $c9                                 ;; 04:45ab ???
 
 ; HL = A + ((A * RND()) >> 11)
 ; Add 12.5% randomness to A and store in HL
@@ -1317,4 +1315,4 @@ INCLUDE "data/boss/main.asm"
 
 INCLUDE "data/boss/metasprites.asm"
 
-;ds 129 ; Free space
+ds 132 ; Free space

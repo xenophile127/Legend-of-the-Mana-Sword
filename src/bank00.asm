@@ -7335,7 +7335,7 @@ setPalettes:
     call loadHeroPaletteForStatus
 ; Set the Follower's palette.
 ; Currently this doesn't check if there is a follower.
-    ld a, [wCurrentFollower]
+    ld a, [wCurrentFollowerPalette]
     ld b, PAL_FOLLOWER
     call loadSinglePalette
 ; Set the dirty flag.
