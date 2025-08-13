@@ -121,8 +121,10 @@ lotmsInit:
     ldh [hBootup.b], a
     ld a, c
     ldh [hBootup.c], a
-; Do some cold boot initialization.
-    jp earlyInit
+; Do some cold boot initialization including Super Game Boy border.
+    ld a, BANK(early_init)
+    ld [rROMB0], a
+    jp early_init
 
 SECTION "entry", ROM0[$0100]
 
@@ -7230,12 +7232,6 @@ loadPalettes:
     pop hl
     DBG_MSG_LABEL debugMsgLoadPalette
     ret
-
-; Does some cold boot initialization including Super Game Boy border.
-earlyInit:
-    ld a, BANK(early_init)
-    ld [rROMB0], a
-    jp early_init
 
 colorInit:
 ; Refuse to run unless color capable hardware is found.
