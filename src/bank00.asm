@@ -6880,19 +6880,7 @@ checkForFollower:
 hideFollower:
     call checkForFollower                              ;; 00:28d5 $cd $c2 $28
     ret  NZ                                            ;; 00:28d8 $c0
-    ld   A, $00                                        ;; 00:28d9 $3e $00
-    ld   L, A                                          ;; 00:28db $6f
-    add  A, L                                          ;; 00:28dc $85
-    add  A, L                                          ;; 00:28dd $85
-    add  A, A                                          ;; 00:28de $87
-    add  A, A                                          ;; 00:28df $87
-    add  A, A                                          ;; 00:28e0 $87
-    ld   L, A                                          ;; 00:28e1 $6f
-    ld   H, $00                                        ;; 00:28e2 $26 $00
-    ld   DE, wNpcRuntimeData                           ;; 00:28e4 $11 $e0 $c4
-    add  HL, DE                                        ;; 00:28e7 $19
-    ld   DE, $0c                                       ;; 00:28e8 $11 $0c $00
-    add  HL, DE                                        ;; 00:28eb $19
+    ld hl, wNpcRuntimeData + $000c
     xor  A, A                                          ;; 00:28ec $af
     ld   [HL+], A                                      ;; 00:28ed $22
     ld   [HL+], A                                      ;; 00:28ee $22
@@ -6902,19 +6890,7 @@ hideFollower:
 showFollower:
     call checkForFollower                              ;; 00:28f0 $cd $c2 $28
     ret  NZ                                            ;; 00:28f3 $c0
-    ld   A, $00                                        ;; 00:28f4 $3e $00
-    ld   L, A                                          ;; 00:28f6 $6f
-    add  A, L                                          ;; 00:28f7 $85
-    add  A, L                                          ;; 00:28f8 $85
-    add  A, A                                          ;; 00:28f9 $87
-    add  A, A                                          ;; 00:28fa $87
-    add  A, A                                          ;; 00:28fb $87
-    ld   L, A                                          ;; 00:28fc $6f
-    ld   H, $00                                        ;; 00:28fd $26 $00
-    ld   DE, wNpcRuntimeData                           ;; 00:28ff $11 $e0 $c4
-    add  HL, DE                                        ;; 00:2902 $19
-    ld   DE, $0c                                       ;; 00:2903 $11 $0c $00
-    add  HL, DE                                        ;; 00:2906 $19
+    ld hl, wNpcRuntimeData + $000c
     ld   A, $55                                        ;; 00:2907 $3e $55
     ld   [HL+], A                                      ;; 00:2909 $22
     ld   [HL+], A                                      ;; 00:290a $22
@@ -7205,6 +7181,10 @@ loadNPCPalette_and_createObject:
     ret
 
 ; Load a set of palettes from ROM into RAM, and setup the transer to CRAM.
+; This loads the main palettes, flash palettes, dark palettes, and boss damage flash palettes.
+; Each has eight OBJ palettes and eight BGP palettes.
+; The Hero and Follower palettes are exceptions--they are set separately.
+; a = palette set number
 loadPalettes:
     push hl
     push af
@@ -7223,8 +7203,21 @@ loadPalettes:
     ld de, wColorPalettes
     ld bc, $0200
     call copyHLtoDE_long
+; Set the Hero palette based on current status.
+    call loadHeroPaletteForStatus
+; Set the Follower's palette.
+; Currently this doesn't check if there is a follower.
+    ld a, [wCurrentFollowerPalette]
+    ld b, PAL_FOLLOWER
+    call loadSinglePalette
+; Check whether the Blind/Dark effect is active.
+    ld hl, wPlayerSpecialFlags
+    bit 1, [hl]
+    ld hl, wColorPalettes.main
+    jr z, .activate
+    ld hl, wColorPalettes.blind
+.activate:
 ; Prepare the copy to CRAM.
-    ld hl, wColorPalettes.normal
     call setPalettes
     call popBankNrAndSwitch
     pop af
@@ -7325,21 +7318,14 @@ loadPalettesToCRAM:
     jr nz, .loop_obj
     ret
 
-; Load all palettes and flag them to be transferred during the next VBlank.
-; Also make sure that the correct Hero and Follower palettes are used.
+; Set active palettes and flag them to be transferred during the next VBlank.
+; Used whenever switching between main, blind, flash, or boss damage palettes.
 ; hl = background palette address
 setPalettes:
 ; Load all palettes.
     ld de, wColorPalettes.active
     ld b, $80
     call copyHLtoDE
-; Set the Hero palette based on current status.
-    call loadHeroPaletteForStatus
-; Set the Follower's palette.
-; Currently this doesn't check if there is a follower.
-    ld a, [wCurrentFollowerPalette]
-    ld b, PAL_FOLLOWER
-    call loadSinglePalette
 ; Set the dirty flag.
     ld a, $01
     ldh [hPalettesDirty], a
