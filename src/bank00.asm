@@ -5223,7 +5223,7 @@ cacheMetatileAttributesAndLoadRoomTiles:
 scanRoomForNpcPlacementOptions_trampoline:
     jp_to_bank 11, scanRoomForNpcPlacementOptions
 
-ds 31 ; Free space
+ds 29 ; Free space
 
 ; Speeds up script execution by whitelisting certain opcodes to ignore the limit of one opcode per frame.
 speedUpScripts:
@@ -5241,13 +5241,14 @@ speedUpScripts:
     ret nz
 ; Check that the next command is in the whitelist.
     ld a, [wScriptCommand]
-    ld b, a
+    ld c, a
+    ld b, (.speedupList - .speedupListEnd)
     ld hl, .speedupList
 .search:
     ld a, [hl+]
     cp b
     jr z, .run
-    inc a
+    dec b
     jr nz, .search
     ret
 .run:
@@ -5272,7 +5273,9 @@ speedUpScripts:
     db $db ; ClearFlag
     db $ec ; RunRoomScript
     db $f8 ; SetMusic
-    db $ff ; Terminate list
+.speedupListEnd:
+
+SECTION "bank00_align_1d1b", ROM0[$1d1b]
 
 ; checks for death, increases charge bar, and handles expiring Nectar/Stamina buffs
 playerHousekeeping:
@@ -5299,6 +5302,8 @@ playerHousekeeping:
     ret  Z                                             ;; 00:1d3f $c8
     call timerCheckExpiredOrTickAllTimers              ;; 00:1d40 $cd $0a $30
     ret  NZ                                            ;; 00:1d43 $c0
+
+ds 1 ; Free space
 
 clearItemBuff:
     ld   HL, wStatStaminaBuffBackup                    ;; 00:1d44 $21 $d8 $d7
