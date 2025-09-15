@@ -9300,7 +9300,25 @@ jr_00_36a8:
     call saveRegisterState2_bank0                      ;; 00:36be $cd $73 $3c
     ret                                                ;; 00:36c1 $c9
 
+; Used by dialog windows to slow down text display.
+; Controller input to speed up text display is now handled here.
+; Return: z = no delay, nz = delay
 textDelay:
+; Check for text lock, used during the ending.
+    ld a, [wWindowFlags]
+    bit 1, a
+    jr nz, .strict
+; Check for controller input.
+    push hl
+    push bc
+    call updateJoypadInput
+    or a
+    pop bc
+    pop hl
+    jr z, .strict
+    xor a
+    ret
+.strict:
     ld   A, [wTextSpeedTimer]                          ;; 00:36c2 $fa $64 $d8
     dec  A                                             ;; 00:36c5 $3d
     ld   [wTextSpeedTimer], A                          ;; 00:36c6 $ea $64 $d8
@@ -9478,21 +9496,7 @@ drawText:
 .checkDialog:
     pop  AF                                            ;; 00:37a1 $f1
 ; Windows other than the script dialog window print continuously until finished.
-    jr   NZ, .print_more_text                          ;; 00:37a2 $20 $14
-    ld   A, [wWindowFlags]                             ;; 00:37a4 $fa $74 $d8
-    bit  1, A                                          ;; 00:37a7 $cb $4f
-    jr   NZ, .finished                                 ;; 00:37a9 $20 $29
-    push HL                                            ;; 00:37ab $e5
-    push DE                                            ;; 00:37ac $d5
-    push BC                                            ;; 00:37ad $c5
-    call updateJoypadInput
-    ld   A, B                                          ;; 00:37b1 $78
-    or   A, C                                          ;; 00:37b2 $b1
-    pop  BC                                            ;; 00:37b3 $c1
-    pop  DE                                            ;; 00:37b4 $d1
-    pop  HL                                            ;; 00:37b5 $e1
     jr   Z, .finished                                  ;; 00:37b6 $28 $1c
-.print_more_text:
     inc  E                                             ;; 00:37b8 $1c
     dec  B                                             ;; 00:37b9 $05
     jr   NZ, .loop_1                                   ;; 00:37ba $20 $be
@@ -9500,11 +9504,7 @@ drawText:
     ld   [wWindowTextInsertionPointFinalY], A          ;; 00:37bd $ea $c6 $d8
     ld   A, E                                          ;; 00:37c0 $7b
     ld   [wWindowTextInsertionPointFinalX], A          ;; 00:37c1 $ea $c5 $d8
-    ld   A, [wDialogType]                              ;; 00:37c4 $fa $4a $d8
-    cp   A, WINDOW_DIALOG                              ;; 00:37c7 $fe $06
-    call NZ, menuNextItemPosition                      ;; 00:37c9 $c4 $0b $38
-    xor  A, A                                          ;; 00:37cc $af
-    ld   [wDualCharacterPosition], A                   ;; 00:37cd $ea $83 $d8
+    call menuNextItemPosition
     call setDialogTextInsertionPoint                   ;; 00:37d0 $cd $36 $37
     ret                                                ;; 00:37d3 $c9
 .finished:
@@ -9543,6 +9543,8 @@ drawText:
     ld   [wDualCharacterPosition], A                   ;; 00:3806 $ea $83 $d8
     pop  AF                                            ;; 00:3809 $f1
     ret                                                ;; 00:380a $c9
+
+SECTION "bank00_align_380b", ROM0[$380b]
 
 ; Handles special cases for the SELECT menu (three columns), the dialog and intro scroll (less indented).
 menuNextItemPosition:
