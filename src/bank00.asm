@@ -9095,17 +9095,18 @@ printName:
 
 opCodeFFPrintName:
     call textDelay                                     ;; 00:3597 $cd $c2 $36
-    jr   NZ, .jr_00_35ae                               ;; 00:359a $20 $12
+    jr   NZ, .return
     call loadRegisterState2_bank0                      ;; 00:359c $cd $87 $3c
     call drawText                                      ;; 00:359f $cd $77 $37
     call saveRegisterState2_bank0                      ;; 00:35a2 $cd $73 $3c
-    jr   NZ, .jr_00_35ae                               ;; 00:35a5 $20 $07
-    ld   A, $01                                        ;; 00:35a7 $3e $01
-    ld   [wTextSpeedTimer], A                          ;; 00:35a9 $ea $64 $d8
-    jr   moveInsertionPointCommon                      ;; 00:35ac $18 $36
-.jr_00_35ae:
+    ld a, [hl]
+    or a
+    jr z, moveInsertionPointCommon
+.return:
     pop  HL                                            ;; 00:35ae $e1
     ret                                                ;; 00:35af $c9
+
+SECTION "bank00_align_35b0", ROM0[$35b0]
 
 textCtrlCodeNewline:
     call loadRegisterState2_bank0                      ;; 00:35b0 $cd $87 $3c
@@ -9517,7 +9518,6 @@ drawText:
     ld   A, E                                          ;; 00:37e0 $7b
     ld   [wWindowTextInsertionPointFinalX], A          ;; 00:37e1 $ea $c5 $d8
     call setDialogTextInsertionPoint                   ;; 00:37e4 $cd $36 $37
-    jr   Z, .jr_00_3804                                ;; 00:37e7 $28 $1b
     ld   A, [wDialogType]                              ;; 00:37e9 $fa $4a $d8
     cp   A, WINDOW_SELECT_MENU                         ;; 00:37ec $fe $11
     jr   Z, .jr_00_3800                                ;; 00:37ee $28 $10
@@ -9533,9 +9533,6 @@ drawText:
     jr   NZ, .loop_2                                   ;; 00:37fe $20 $f0
 .jr_00_3800:
     call menuNextItemPosition                          ;; 00:3800 $cd $0b $38
-    inc  HL                                            ;; 00:3803 $23
-.jr_00_3804:
-    dec  HL                                            ;; 00:3804 $2b
     pop  AF                                            ;; 00:3809 $f1
     ret                                                ;; 00:380a $c9
 
