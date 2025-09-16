@@ -8964,38 +8964,30 @@ scriptOpCodeMsg_HandleDualCharacters:
     push AF                                            ;; 00:34ad $f5
     call loadRegisterState2_bank0                      ;; 00:34ae $cd $87 $3c
     pop  AF                                            ;; 00:34b1 $f1
+; This loads the character position, increments it in RAM, and if it is equal to two sets it to zero.
+    ld hl, wDualCharacterPosition
+    ld c, [hl]
+    inc [hl]
+    res 1, [hl]
     ld   HL, dualCharMapping                           ;; 00:34b2 $21 $1d $3f
     sub  A, $20                                        ;; 00:34b5 $d6 $20
     add  A, A                                          ;; 00:34b7 $87
+    add c
     ld   C, A                                          ;; 00:34b8 $4f
     ld   B, $00                                        ;; 00:34b9 $06 $00
     add  HL, BC                                        ;; 00:34bb $09
-    ld   BC, wDualCharacterScratch                     ;; 00:34bc $01 $db $d8
-    ld   A, [HL+]                                      ;; 00:34bf $2a
-    ld   [BC], A                                       ;; 00:34c0 $02
-    inc  BC                                            ;; 00:34c1 $03
-    ld   A, [HL+]                                      ;; 00:34c2 $2a
-    ld   [BC], A                                       ;; 00:34c3 $02
-    inc  BC                                            ;; 00:34c4 $03
-    xor  A, A                                          ;; 00:34c5 $af
-    ld   [BC], A                                       ;; 00:34c6 $02
-    ld   B, $00                                        ;; 00:34c7 $06 $00
-    ld   A, [wDualCharacterPosition]                   ;; 00:34c9 $fa $83 $d8
-    ld   HL, wDualCharacterScratch                     ;; 00:34cc $21 $db $d8
-    ld   C, A                                          ;; 00:34cf $4f
-    add  HL, BC                                        ;; 00:34d0 $09
-    inc  A                                             ;; 00:34d1 $3c
-    ld   [wDualCharacterPosition], A                   ;; 00:34d2 $ea $83 $d8
     call drawText                                      ;; 00:34d5 $cd $77 $37
     call saveRegisterState2_bank0                      ;; 00:34d8 $cd $73 $3c
     pop  HL                                            ;; 00:34db $e1
     ld   A, [wDualCharacterPosition]                   ;; 00:34dc $fa $83 $d8
     and  A, A                                          ;; 00:34df $a7
-    jr   Z, .jr_00_34e3                                ;; 00:34e0 $28 $01
+    jr z, .finished
     dec  HL                                            ;; 00:34e2 $2b
-.jr_00_34e3:
+.finished:
     call startDialog                                   ;; 00:34e3 $cd $d0 $36
     ret                                                ;; 00:34e6 $c9
+
+SECTION "bank00_align_34e7", ROM0[$34e7]
 
 textCtrlCodeOpenDialogWindow:
     ld   A, WINDOW_DIALOG                              ;; 00:34e7 $3e $06
@@ -9544,8 +9536,6 @@ drawText:
     inc  HL                                            ;; 00:3803 $23
 .jr_00_3804:
     dec  HL                                            ;; 00:3804 $2b
-    xor  A, A                                          ;; 00:3805 $af
-    ld   [wDualCharacterPosition], A                   ;; 00:3806 $ea $83 $d8
     pop  AF                                            ;; 00:3809 $f1
     ret                                                ;; 00:380a $c9
 
