@@ -11124,14 +11124,14 @@ script_053b:
     sSFX 20                                            ;; 0e:6bfc $f9 $14
     sFLASH_SCREEN                                      ;; 0e:6bfe $bf
     sSFX 20                                            ;; 0e:6bff $f9 $14
-    sCREATE_EFFECT $10, $08, $0c, $00
-    sCREATE_EFFECT $10, $0a, $0a, $00
+    sCREATE_EFFECT $10, $08, $0c, INV_MAGIC_NUKE
+    sCREATE_EFFECT $10, $0a, $0a, INV_MAGIC_NUKE
     sSET_FAST_MOVEMENT                                 ;; 0e:6c09 $88
     sSET_PLAYER_HURT_SPRITE                            ;; 0e:6c0a $a5
     sLOOP 7
       sPLAYER_STEP_BACKWARD                            ;; 0e:6c0e $81
     sEND                                               ;; 0e:6c0f $00
-    sCREATE_EFFECT $10, $09, $03, $00
+    sCREATE_EFFECT $10, $09, $03, INV_ITEM_MATTOK
     sSFX 12                                            ;; 0e:6c14 $f9 $0c
     sLOOP 7
       sPLAYER_STEP_FORWARD                             ;; 0e:6c19 $80
