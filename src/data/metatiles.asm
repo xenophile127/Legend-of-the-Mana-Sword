@@ -129,8 +129,8 @@ metatilesOutdoor:
     METATILE $4e, $41, $55, $25, $10, $04                  ;; $53
     METATILE $d1, $d1, $d2, $d2, $00, $04                  ;; $54
     METATILE $d1, $d1, $d1, $d1, $00, $04                  ;; $55
-    METATILE $e7, $e8, $e7, $e8, $30, $05                  ;; $56
-    METATILE $e8, $e9, $e8, $e9, $30, $05                  ;; $57
+    METATILE $e7, $e8, $e7, $e8, $30, $05, BGP_BRIDGE      ;; $56
+    METATILE $e8, $e9, $e8, $e9, $30, $05, BGP_BRIDGE      ;; $57
     METATILE $dd, $de, $de, $dd, $30, $05                  ;; $58
     METATILE $80, $81, $82, $83, $30, $85                  ;; $59
     METATILE $cf, $d0, $d2, $d2, $00, $04                  ;; $5a
@@ -726,8 +726,8 @@ metatilesWorldmap:
     METATILE $4e, $41, $55, $25, $10, $04                  ;; $53
     METATILE $d1, $d1, $d2, $d2, $00, $04                  ;; $54
     METATILE $d1, $d1, $d1, $d1, $00, $04                  ;; $55
-    METATILE $e7, $e8, $e7, $e8, $30, $05                  ;; $56
-    METATILE $e8, $e9, $e8, $e9, $30, $05                  ;; $57
+    METATILE $e7, $e8, $e7, $e8, $30, $05, BGP_BRIDGE      ;; $56
+    METATILE $e8, $e9, $e8, $e9, $30, $05, BGP_BRIDGE      ;; $57
     METATILE $b2, $3e, $36, $37, $28, $04                  ;; $58
     METATILE $3f, $b3, $44, $40, $20, $04                  ;; $59
     METATILE $4a, $4b, $b3, $4d, $10, $04                  ;; $5a
