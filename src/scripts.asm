@@ -3413,9 +3413,12 @@ script_01f0:
     sEND                                               ;; 0d:5b6d $00
 
 script_01f1:
-    sCREATE_EFFECT $08, $09, $0b, $00
+; Recovery pond script.
+; Since you're being healed by water use Ice's palette for Undine's magic.
+    sCREATE_EFFECT $08, $09, $0b, INV_MAGIC_ICE
     sFULL_HP                                           ;; 0d:5b72 $c0
     sFULL_MANA                                         ;; 0d:5b73 $c1
+    sPLAYER_CURE_STATUS %00001111
     sEND                                               ;; 0d:5b74 $00
 
 script_01f2:
