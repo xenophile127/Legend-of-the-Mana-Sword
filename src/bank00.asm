@@ -5246,7 +5246,7 @@ speedUpScripts:
     ld hl, .speedupList
 .search:
     ld a, [hl+]
-    cp b
+    cp c
     jr z, .run
     dec b
     jr nz, .search
