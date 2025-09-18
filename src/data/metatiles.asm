@@ -88,7 +88,7 @@ metatilesOutdoor:
     METATILE $7f, $7f, $7f, $7f, $30, $05                  ;; $2b
     METATILE $ea, $ea, $ea, $eb, $30, $05                  ;; $2c
     METATILE $62, $63, $c4, $65, $30, $84                  ;; $2d
-    METATILE $c2, $c3, $c4, $c5, $30, $84                  ;; $2e
+    METATILE $c2, $c3, $c4, $c5, $30, $84, BGP_DOOR        ;; $2e
     METATILE $cf, $d0, $d2, $d2, $00, $04                  ;; $2f
     METATILE $25, $3e, $36, $37, $28, $04                  ;; $30
     METATILE $38, $39, $44, $45, $00, $04                  ;; $31
@@ -228,8 +228,8 @@ metatilesTown:
     METATILE $de, $df, $e0, $e1, $30, $85                  ;; $34
     METATILE $6a, $6b, $6a, $6b, $00, $05                  ;; $35
     METATILE $ee, $ef, $f0, $f1, $00, $05                  ;; $36
-    METATILE $15, $16, $17, $18, $30, $85                  ;; $37
-    METATILE $da, $db, $dc, $dd, $30, $85                  ;; $38
+    METATILE $15, $16, $17, $18, $30, $85, BGP_DOOR        ;; $37
+    METATILE $da, $db, $dc, $dd, $30, $85                  ;; $38 Unused
     METATILE $6f, $6e, $6f, $6e, $00, $05                  ;; $39
     METATILE $6f, $6f, $6f, $6f, $00, $04                  ;; $3a
     METATILE $25, $3e, $36, $37, $20, $04                  ;; $3b
@@ -686,7 +686,7 @@ metatilesWorldmap:
     METATILE $7f, $7f, $7f, $7f, $30, $05                  ;; $2b
     METATILE $3f, $2f, $44, $40, $20, $06                  ;; $2c
     METATILE $4a, $4b, $2d, $4d, $10, $04, BGP_DEFAULT, BGP_DEFAULT, BGP_SAND, BGP_DEFAULT ;; $2d
-    METATILE $c2, $c3, $c4, $c5, $30, $84                  ;; $2e
+    METATILE $c2, $c3, $c4, $c5, $30, $84, BGP_DOOR        ;; $2e
     METATILE $4e, $41, $55, $2d, $10, $04, BGP_DEFAULT, BGP_DEFAULT, BGP_DEFAULT, BGP_SAND ;; $2f
     METATILE $25, $3e, $36, $37, $28, $04                  ;; $30
     METATILE $38, $39, $44, $45, $00, $04                  ;; $31
@@ -733,8 +733,8 @@ metatilesWorldmap:
     METATILE $4a, $4b, $b3, $4d, $10, $04                  ;; $5a
     METATILE $08, $09, $08, $09, $00, $05, BGP_FALLS       ;; $5b
     METATILE $4e, $41, $55, $b2, $10, $04                  ;; $5c
-    METATILE $8c, $8d, $8e, $8f, $00, $04                  ;; $5d
-    METATILE $90, $91, $90, $91, $00, $04                  ;; $5e
+    METATILE $8c, $8d, $8e, $8f, $00, $04, BGP_CABIN_ROOF  ;; $5d
+    METATILE $90, $91, $90, $91, $00, $04, BGP_CABIN_WALL  ;; $5e
 ; Curved tower base with swamp for Kett's:
     METATILE $d3, $d4, $dd, $d6, $10, $04                  ;; $5f
     METATILE $35, $f0, $f1, $37, $20, $04                  ;; $60
@@ -839,7 +839,7 @@ metatilesManaland:
     METATILE $de, $df, $e0, $e1, $30, $85                  ;; $34
     METATILE $6a, $6b, $6a, $6b, $00, $05, BGP_BARK        ;; $35
     METATILE $ee, $ef, $f0, $f1, $00, $05, BGP_LEAVES      ;; $36
-    METATILE $15, $16, $17, $18, $30, $85                  ;; $37
+    METATILE $15, $16, $17, $18, $30, $85, BGP_DOOR        ;; $37
     METATILE $da, $db, $dc, $dd, $30, $85                  ;; $38
     METATILE $6f, $6e, $6f, $6e, $00, $05, BGP_BARK        ;; $39
     METATILE $6f, $6f, $6f, $6f, $00, $04, BGP_BARK        ;; $3a

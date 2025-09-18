@@ -4,6 +4,9 @@ DEF BGP_SPECIAL    RB 1
 
 ; Default palette. While there are a limited number palettes available it makes sense to have a catch-all.
 DEF BGP_BRIDGE     RB 0
+DEF BGP_CABIN_ROOF RB 0
+DEF BGP_CABIN_WALL RB 0
+DEF BGP_DOOR       RB 0
 DEF BGP_FLOATROCK  RB 0
 DEF BGP_PALISADE   RB 0
 DEF BGP_SAND       RB 0
