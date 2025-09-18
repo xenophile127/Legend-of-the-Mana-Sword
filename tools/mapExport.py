@@ -25,6 +25,13 @@ class ROM:
 
 rom = ROM(sys.argv[1])
 
+if (rom.getByte(0x00, 0x0143) == 0x80):
+    color = True
+    stride = 16
+else:
+    color = False
+    stride = 6
+
 tile_cache = {}
 def drawTile(img, tx, ty, bank, addr):
     global tile_cache
@@ -50,14 +57,14 @@ def drawTile(img, tx, ty, bank, addr):
 def drawText(img, x, y, str):
     img.draw.text((x, y), str, fill=4)
 
-def drawMetaTile(img, x, y, metatile_data_addr, gfx_offset, meta_tile):
+def drawMetaTile(img, x, y, metatile_data_addr, gfx_offset, meta_tile, stride):
     for ty in range(2):
         for tx in range(2):
-            tile_nr = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * 6 + tx + ty * 2)
+            tile_nr = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * stride + tx + ty * 2)
             drawTile(img, x * 16 + tx * 8, y * 16 + ty * 8, gfx_bank, gfx_offset + tile_nr * 16)
 
-    metatile_type_info1 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * 6 + 4)
-    metatile_type_info2 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * 6 + 5)
+    metatile_type_info1 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * stride + 4)
+    metatile_type_info2 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * stride + 5)
     # Draw metatile type info
     #if metatile_type_info2 not in {0x04, 0x05}:
     #    drawText(img, x * 32, y * 32 + 8, "%02x %02x" % (metatile_type_info1, metatile_type_info2))
@@ -70,12 +77,6 @@ for map_nr in range(16):
     metatile_data_addr = rom.getWord(0x08, addr + 3) - 0x4000
     
     print("Map %02x" % (map_nr))
-    r = {}
-    for n in range(256):
-        d = rom.getByte(metatile_bank, metatile_data_addr + n * 6 + 5)
-        r[d] = r.get(d, 0) + 1
-    # for k, v in sorted(r.items()):
-    #     print("%02x: %d" % (k, v))
 
     map_bank = rom.getByte(0x08, addr + 6)
     map_data_addr = rom.getWord(0x08, addr + 7) - 0x4000
@@ -146,7 +147,7 @@ for map_nr in range(16):
 
             for y in range(8):
                 for x in range(10):
-                    drawMetaTile(img, rx * 10 + x, ry * 8 + y, metatile_data_addr, gfx_offset, tiles[x+y*10])
+                    drawMetaTile(img, rx * 10 + x, ry * 8 + y, metatile_data_addr, gfx_offset, tiles[x+y*10], stride)
 
             enter_map_script_index = rom.getWord(map_bank, map_script_addr)
             map_script_addr += 2
