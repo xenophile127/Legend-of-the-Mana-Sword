@@ -52,6 +52,12 @@ def drawTile(img, tx, ty, bank, addr):
         tile_cache[addr] = tile
     else:
         tile = tile_cache[addr]
+    pal = tile.getpalette()
+    pal[0:3] = [0xff,0xff,0xff]
+    pal[3:6] = [0x95,0xe0,0x2d]
+    pal[6:9] = [0x00,0x9a,0xe8]
+    pal[9:12] = [0x00,0x00,0x00]
+    tile.putpalette(pal)
     img.paste(tile, (tx, ty))
 
 def drawText(img, x, y, str):
@@ -93,7 +99,7 @@ for map_nr in range(16):
         door_data_addr = map_data_addr
         map_data_addr += 3 * 4 * 2
 
-    img = PIL.Image.new("P", (16 * 10 * w, 16 * 8 * h))
+    img = PIL.Image.new("RGB", (16 * 10 * w, 16 * 8 * h))
     img.draw = PIL.ImageDraw.Draw(img)
     
     for ry in range(h):
@@ -161,11 +167,5 @@ for map_nr in range(16):
                 y = xy >> 4
                 drawText(img, (rx * 10 + x) * 32, (ry * 8 + y) * 32, "%04x" % (script_index))
 
-    pal = img.getpalette()
-    pal[0:3] = [0xff,0xff,0xff]
-    pal[3:6] = [0x95,0xe0,0x2d]
-    pal[6:9] = [0x00,0x9a,0xe8]
-    pal[9:12] = [0x00,0x00,0x00]
-    pal[12:15] = [0xff,0x00,0x00]
-    img.putpalette(pal)
+    img = img.convert(mode='P', palette=PIL.Image.Palette.ADAPTIVE)
     img.save("map%02x.png" % (map_nr))
