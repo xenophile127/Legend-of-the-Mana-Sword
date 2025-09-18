@@ -25,9 +25,13 @@ class ROM:
         return struct.unpack("<B", self.data[addr:addr+1])[0]
 
     def readColor(self, bank, addr):
+        curve = [0,2,5,9,15,20,27,34,42,50,58,67,76,85,94,104,114,123,133,143,153,163,173,182,192,202,211,220,229,238,247,255]
         addr += 0x4000 * bank
         raw = struct.unpack("<H", self.data[addr:addr+2])[0]
-        return [((raw&0x1f)<<3)|((raw&0x1f)>>2), ((raw&0x3e0)>>2)|((raw&0x3e0)>>7), ((raw&0x7c00)>>7)|((raw&0x7c00)>>12)]
+        color = [curve[(raw&0x1f)], curve[((raw&0x3e0)>>5)], curve[((raw&0x7c00)>>10)]]
+        gamma = 1.6
+        color[1] = round(pow((pow(color[1] / 255.0, gamma) * 3 + pow(color[2] / 255.0, gamma)) / 4, 1 / gamma) * 255)
+        return color
 
 rom = ROM(sys.argv[1])
 
