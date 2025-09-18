@@ -8,6 +8,7 @@ import sys
 
 metatile_bank = 0x10
 gfx_bank = 0x1c
+pal_bank = 0x18
 
 show_scripts = False
 
@@ -23,6 +24,11 @@ class ROM:
         addr += 0x4000 * bank
         return struct.unpack("<B", self.data[addr:addr+1])[0]
 
+    def readColor(self, bank, addr):
+        addr += 0x4000 * bank
+        raw = struct.unpack("<H", self.data[addr:addr+2])[0]
+        return [((raw&0x1f)<<3)|((raw&0x1f)>>2), ((raw&0x3e0)>>2)|((raw&0x3e0)>>7), ((raw&0x7c00)>>7)|((raw&0x7c00)>>12)]
+
 rom = ROM(sys.argv[1])
 
 if (rom.getByte(0x00, 0x0143) == 0x80):
@@ -30,10 +36,10 @@ if (rom.getByte(0x00, 0x0143) == 0x80):
     stride = 16
 else:
     color = False
-    stride = 6
+    stride = 16
 
 tile_cache = {}
-def drawTile(img, tx, ty, bank, addr):
+def drawTile(img, tx, ty, bank, addr, color, palette):
     global tile_cache
     addr += bank * 0x4000
     if addr not in tile_cache:
@@ -50,13 +56,16 @@ def drawTile(img, tx, ty, bank, addr):
                 buffer[x+y*8] = v
         tile = PIL.Image.frombytes('P', (8, 8), bytes(buffer))
         tile_cache[addr] = tile
-    else:
-        tile = tile_cache[addr]
+    tile = tile_cache[addr].copy()
     pal = tile.getpalette()
-    pal[0:3] = [0xff,0xff,0xff]
-    pal[3:6] = [0x95,0xe0,0x2d]
-    pal[6:9] = [0x00,0x9a,0xe8]
-    pal[9:12] = [0x00,0x00,0x00]
+    if color:
+        for i in range(4):
+            pal[i*3:i+3] = rom.readColor(pal_bank, palette * 4 * 2 + i * 2)
+    else:
+        pal[0:3] = [0xff,0xff,0xff]
+        pal[3:6] = [0x95,0xe0,0x2d]
+        pal[6:9] = [0x00,0x9a,0xe8]
+        pal[9:12] = [0x00,0x00,0x00]
     tile.putpalette(pal)
     img.paste(tile, (tx, ty))
 
@@ -64,10 +73,13 @@ def drawText(img, x, y, str):
     img.draw.text((x, y), str, fill=4)
 
 def drawMetaTile(img, x, y, metatile_data_addr, gfx_offset, meta_tile, stride):
+    palette = 0
     for ty in range(2):
         for tx in range(2):
             tile_nr = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * stride + tx + ty * 2)
-            drawTile(img, x * 16 + tx * 8, y * 16 + ty * 8, gfx_bank, gfx_offset + tile_nr * 16)
+            if (color):
+                palette = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * stride + 8 + tx + ty * 2)
+            drawTile(img, x * 16 + tx * 8, y * 16 + ty * 8, gfx_bank, gfx_offset + tile_nr * 16, color, palette)
 
     metatile_type_info1 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * stride + 4)
     metatile_type_info2 = rom.getByte(metatile_bank, metatile_data_addr + meta_tile * stride + 5)
