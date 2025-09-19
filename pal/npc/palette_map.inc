@@ -38,7 +38,7 @@
     COLOR_PALETTE_NPC 030              ; NPC_PUMPKIN = $1e
     COLOR_PALETTE_NPC 031              ; NPC_OWL = $1f
     COLOR_PALETTE_NPC 032              ; NPC_BEE = $20
-    COLOR_PALETTE_NPC blue             ; NPC_CLOUD = $21
+    COLOR_PALETTE_NPC 033              ; NPC_CLOUD = $21
     COLOR_PALETTE_NPC 034              ; NPC_PIG = $22
     COLOR_PALETTE_NPC 035              ; NPC_CRAB = $23
     COLOR_PALETTE_NPC 036              ; NPC_SPIDER = $24

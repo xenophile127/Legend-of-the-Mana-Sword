@@ -26,7 +26,7 @@
 ; Note: Ice does ice damage, and can be blocked by Flame Shield, or reduced by Ice Armor.
     COLOR_PALETTE_PROJECTILE 013              ; Ice            $0d NPC_WALRUS
 
-    COLOR_PALETTE_PROJECTILE red              ; Lightning Bolt $0e NPC_CLOUD
+    COLOR_PALETTE_PROJECTILE ../attack/007    ; Lightning Bolt $0e NPC_CLOUD
     COLOR_PALETTE_PROJECTILE 015              ; Poison Thread  $0f NPC_SPIDER, NPC_MEGA_FLYTRAP
     COLOR_PALETTE_PROJECTILE ../npc/022       ; Spear          $10 NPC_LIZARDMAN
     COLOR_PALETTE_PROJECTILE red              ; Sword          $11 NPC_GLAIVE_KNIGHT, NPC_SHADOWKNIGHT, NPC_DUCK_SOLDIER
