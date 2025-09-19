@@ -927,3 +927,5 @@ metatilesManaland:
     METATILE $3f, $d0, $44, $40, $20, $05, BGP_DEFAULT, BGP_SKY, BGP_DEFAULT, BGP_DEFAULT ;; $85 ($10)
 ; Parapet with stones but unshaded, used when Dime tower falls.
     METATILE $9d, $9e, $9a, $9b, $20, $05                  ;; $86 ($7a)
+; Bridge for Marsh Cave which should not have a blue background.
+    METATILE $cc, $cd, $ce, $cf, $30, $05, BGP_DEFAULT     ;; $87 ($25)
