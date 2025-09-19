@@ -7929,7 +7929,7 @@ loadAttackPalette:
     ld a, [wEquippedWeapon]
     ld h, (INV_SWORD_BROAD - 1)
     jr nz, .set_palette
-    ld a, [wEquippedItem]
+    ld a, [wCurrentItemOrSpellInUse]
     and $7f
     ld h, $00
 .set_palette:
