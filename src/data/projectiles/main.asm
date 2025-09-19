@@ -22,7 +22,7 @@
 ; 14-15) ?
 projectileDataTable:
     data_bbbbbbbbpppp $62, $08, $08, $01, $0a, $00, $30, $04, gfxProjectileKnife, data_09_46f9, metasprites30FourDirections, pattern_simple ;; 09:4479 ................ $00
-    data_bbbbbbbbpppp $72, $08, $08, $04, $20, $00, $30, $04, gfxProjectileSun, data_09_46f9, metasprites30Static, pattern_simple ;; 09:4489 ???????????????? $01
+    data_bbbbbbbbpppp $72, $08, $08, $04, $20, $00, $30, $04, gfxProjectileSun, data_09_46f9, metasprites30Static_npc_pal2, pattern_simple ;; 09:4489 ???????????????? $01
     data_bbbbbbbbpppp $62, $08, $08, $04, $1e, $00, $38, $04, gfxProjectileNeedles, data_09_46f9, metasprites38FourDirections, pattern_simple ;; 09:4499 ???????????????? $02
     data_bbbbbbbbpppp $62, $08, $08, $04, $1e, $00, $30, $04, gfxProjectilePitchfork, data_09_46f9, metasprites30FourDirections, pattern_simple ;; 09:44a9 ..????.......... $03
     data_bbbbbbbbpppp $72, $08, $08, $40, $50, $00, $38, $04, gfxProjectileMirrorImage, data_09_46f9, metasprites38Static, pattern_simple ;; 09:44b9 ???????????????? $04

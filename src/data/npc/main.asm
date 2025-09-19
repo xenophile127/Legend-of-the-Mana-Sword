@@ -65,7 +65,7 @@ ENDC
     NPC_DATA $91, $26, $60, $06, gfxEnemyMimic, tileorderNpc, metaspritesTable60FrontFacing, $00, $01, $00, $00, $02, $00, $1b, $1b, $0f, $0f, script_003d, script_0445 ;; 03:6332 NPC_MIMIC_CHEST
     NPC_DATA $91, $27, $50, $04, gfxEnemyRuster, tileorderNpc, metaspritesTable50FrontFacing, $00, $00, $01, $00, $00, $00, $0f, $10, $0f, $0f, script_003d, $0000 ;; 03:634a NPC_HOPPING_BUG
     NPC_DATA $91, $28, $50, $0a, gfxEnemyPorcupine, tileorderNpc, metaspritesPakkunPorcupine, $00, $01, $02, $00, $02, $00, $02, $03, $03, $03, script_003d, script_0445 ;; 03:6362 NPC_PORCUPINE
-    NPC_DATA $91, $29, $40, $06, gfxEnemyMandrake, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $02, $02, $02, $02, $01, $00, $03, $03, script_003d, $0000 ;; 03:637a NPC_CARROT
+    NPC_DATA $91, $29, $40, $06, gfxEnemyMandrake, tileorderNpc, metaspritesTable40FrontFacing, $00, $01, $02, $02, $02, $02, $01, $00, $03, $03, script_003d, $0000 ;; 03:637a NPC_MANDRAKE
     NPC_DATA $91, $2a, $40, $08, gfxEnemyEyeSpy, tileorderNpc, metaspritesEyeSpy, $00, $01, $01, $02, $02, $00, $00, $00, $01, $01, script_003d, script_044b ;; 03:6392 NPC_EYE_SPY
     NPC_DATA $91, $2b, $50, $08, gfxEnemyWerewolf, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $11, $05, $03, $03, script_003d, script_043a ;; 03:63aa NPC_WEREWOLF_2
     NPC_DATA $93, $2c, $60, $04, gfxEnemyGhost, tileorderNpc, metaspritesTable60FrontFacing, $00, $01, $01, $00, $00, $00, $0b, $12, $12, $12, script_003d, script_0439 ;; 03:63c2 NPC_GHOST

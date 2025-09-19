@@ -53,6 +53,17 @@ metasprites30Static:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $30, $32
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $30, $32
 
+; Modified so that the Mandrake can use Voice while Porcupine uses Needle.
+metasprites30Static_npc_pal2:
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
+
 ; Used by Doppel Mirror.
 ; One frame, no flipping.
 metasprites38Static:
@@ -142,8 +153,6 @@ metaspritesCompanionFourDirections:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $18, $1a
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_FOLLOWER, $1c, $1e
     db   OAMF_YFLIP  | OAMF_PAL0 | PAL_FOLLOWER, $1c, $1e
-
-ds 12 ; Free space
 
 ; Used by Watts' axe attack.
 ; One graphic drawn with diagonal symetry allows rotation for the four directions.

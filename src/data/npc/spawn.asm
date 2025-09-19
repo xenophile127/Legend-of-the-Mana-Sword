@@ -16,7 +16,7 @@ NPCSpawnPointers:
     dw   killerBee,    gasCloud,     sahagin           ;; 03:7172 ??????      number 08 $08
     dw   orc,          deathCrab,    deathCrab         ;; 03:7178 ??????      number 09 $09
     dw   tarantula,    ruster,       mimic             ;; 03:717e ??????      number 10 $0a
-    dw   data_03_7552, data_03_7552, data_03_754a      ;; 03:7184 ??????
+    dw   mandrake,     mandrake,     porcupine         ;; 03:7184 ??????      number 11 $0b
     dw   eyeSpy,       data_03_7562, ghost             ;; 03:718a ??????      number 12 $0c
     dw   data_03_7572, data_03_757a, data_03_7582      ;; 03:7190 ??????
     dw   data_03_758a, data_03_758a, data_03_7592      ;; 03:7196 ??????
@@ -289,12 +289,12 @@ ruster:
     db   1, 2, NPC_HOPPING_BUG, NPC_HOPPING_BUG, NPC_HOPPING_BUG, NPC_HOPPING_BUG ;; 03:7542 ??????
     db   $80, $80                                      ;; 03:7548 ??
 
-data_03_754a:
+porcupine:
     db   1, 2, NPC_PORCUPINE, NPC_PORCUPINE, NPC_PORCUPINE, NPC_PORCUPINE ;; 03:754a ??????
     db   $80, $80                                      ;; 03:7550 ??
 
-data_03_7552:
-    db   1, 1, NPC_CARROT, NPC_CARROT, NPC_CARROT, NPC_CARROT ;; 03:7552 ??????
+mandrake:
+    db   1, 1, NPC_MANDRAKE, NPC_MANDRAKE, NPC_MANDRAKE, NPC_MANDRAKE ;; 03:7552 ??????
     db   $80, $80                                      ;; 03:7558 ??
 
 eyeSpy:

@@ -48,8 +48,8 @@
     COLOR_PALETTE_NPC blue             ; NPC_INV_OPEN_WEST = $28
     COLOR_PALETTE_NPC 041              ; NPC_MIMIC_CHEST = $29
     COLOR_PALETTE_NPC 042              ; NPC_HOPPING_BUG = $2a
-    COLOR_PALETTE_NPC blue             ; NPC_PORCUPINE = $2b
-    COLOR_PALETTE_NPC blue             ; NPC_CARROT = $2c
+    COLOR_PALETTE_NPC 043              ; NPC_PORCUPINE = $2b
+    COLOR_PALETTE_NPC 044              ; NPC_MANDRAKE = $2c
     COLOR_PALETTE_NPC blue             ; NPC_EYE_SPY = $2d
     COLOR_PALETTE_NPC 046              ; NPC_WEREWOLF_2 = $2e
     COLOR_PALETTE_NPC blue             ; NPC_GHOST = $2f

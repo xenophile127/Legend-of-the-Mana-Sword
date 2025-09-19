@@ -919,7 +919,7 @@ projectileLoadColorPalette:
     pop bc
     ret
 
-SECTION "bank09_align_4900", ROMX[$4900], BANK[$09]
+SECTION "bank09_align_4910", ROMX[$4910], BANK[$09]
 
 ;@gfximg name=boss/julius2 width=2 height=16
 bossGfxJulius2:
@@ -930,8 +930,7 @@ bossGfxJulius2:
     db   $c1, $c1, $c3, $c3, $e2, $e3, $f7, $f4        ;; 09:4b18 ????????
     db   $3f, $fd, $ff, $ef, $7f, $eb, $af, $f9        ;; 09:4b20 ????????
     db   $76, $bf, $f8, $df, $3d, $ef, $9c, $7f        ;; 09:4b28 ????????
-    db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 09:4b30 ????????
-    db   $00, $00, $00, $00, $02, $02, $03, $03        ;; 09:4b38 ????????
+
     db   $00, $00, $00, $00, $00, $00, $01, $01        ;; 09:4b40 ????????
     db   $01, $01, $03, $02, $03, $02, $03, $02        ;; 09:4b48 ????????
     db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 09:4b50 ????????
