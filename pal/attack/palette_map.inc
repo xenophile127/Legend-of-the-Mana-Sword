@@ -32,7 +32,7 @@
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_SPELL_FROST = $1a
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_SPELL_LITBLT = $1b
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_SPELL_THUNDR = $1c
-    COLOR_PALETTE_ATTACK gray             ; INV_ITEM_CANDY = $1d
+    COLOR_PALETTE_ATTACK 029              ; INV_ITEM_CANDY = $1d
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_DUMMY_SPARE_2 = $1e ; Unused
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_KEY = $1f
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_BONE_KEY = $20
