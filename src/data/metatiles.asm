@@ -234,7 +234,7 @@ metatilesTown:
     METATILE $6f, $6f, $6f, $6f, $00, $04                  ;; $3a
     METATILE $25, $3e, $36, $37, $20, $04                  ;; $3b
     METATILE $a6, $b8, $91, $a6, $00, $04                  ;; $3c
-    METATILE $ca, $ca, $cb, $cb, $30, $05                  ;; $3d
+    METATILE $ca, $ca, $cb, $cb, $30, $05                  ;; $3d Unused
     METATILE $af, $b0, $b1, $b2, $00, $04                  ;; $3e
     METATILE $a5, $94, $a5, $94, $00, $05                  ;; $3f
     METATILE $94, $94, $9a, $9b, $00, $05                  ;; $40
@@ -845,7 +845,7 @@ metatilesManaland:
     METATILE $6f, $6f, $6f, $6f, $00, $04, BGP_BARK        ;; $3a
     METATILE $25, $3e, $36, $37, $20, $04                  ;; $3b
     METATILE $a6, $b8, $25, $a6, $00, $04                  ;; $3c
-    METATILE $ca, $ca, $cb, $cb, $30, $05                  ;; $3d
+    METATILE $ca, $ca, $cb, $cb, $30, $05, BGP_LOG         ;; $3d
     METATILE $af, $b0, $b1, $b2, $00, $04                  ;; $3e
     METATILE $a5, $94, $a5, $94, $00, $05                  ;; $3f
     METATILE $94, $94, $9a, $9b, $00, $05                  ;; $40
