@@ -19,6 +19,7 @@
 ; bit 6: has shield
 ;offset6: Touch damage
 ;offset7: Defense
+;offset8: Magic Defense
 ;offset9: Projectile type
 ;offset11: Touch Status Effect inflicted
 ;offset12: XP on kill
