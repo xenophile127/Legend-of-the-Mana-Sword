@@ -5487,6 +5487,14 @@ ENDC
     ldh  [rLCDC], A                                    ;; 00:208f $e0 $40
     ret                                                ;; 00:2091 $c9
 
+OAM_DMA_Routine:
+    ld [rDMA], a
+    ld a, $28
+.loop:
+    dec a
+    jr nz, .loop
+    ret
+
 IF DEF(COLOR)
 ; Init GBC palettes to match bios colorization.
 initPalettes:
@@ -5497,7 +5505,7 @@ initPalettes:
     ret
 ENDC
 
-ds 29 ; Free space
+ds 21 ; Free space
 
 SECTION "bank00_align_2092", ROM0[$2092]
 
@@ -5529,6 +5537,8 @@ initMisc:
 ;@bank 8 size=112
 ;@data format=pp amount=28
 ; List graphics to load into VRAM at startup. Copies 1 tile from 2nd pointer in bank8 to VRAM first pointer
+; Modified to have the VRAM bank number in the bottom bit of the destination.
+; This allows freeing up 16 tiles of VRAM bank 0 space for bosses.
 initialVRAMLoad:
     dw   $8040, gfxBlankTiles08                        ;; 00:20d0 pP.. $00
     dw   $8050, gfxBlankTiles08                        ;; 00:20d4 pP.. $01
@@ -5542,50 +5552,57 @@ initialVRAMLoad:
     dw   $8150, gfxHand + $30                          ;; 00:20f4 pP.. $09
     dw   $8160, gfxHand + $40                          ;; 00:20f8 pP.. $0a
     dw   $8170, gfxHand + $30                          ;; 00:20fc pP.. $0b
-    dw   $8700, gfxHand + $50                          ;; 00:2100 .P.. $0c
-    dw   $8710, gfxHand + $70                          ;; 00:2104 pP.. $0d
-    dw   $8720, gfxHand + $60                          ;; 00:2108 pP.. $0e
-    dw   $8730, gfxHand + $80                          ;; 00:210c pP.. $0f
-    dw   $8740, gfxSnowman                             ;; 00:2110 pP.. $10
-    dw   $8750, gfxSnowman + $20                       ;; 00:2114 pP.. $11
-    dw   $8760, gfxSnowman + $10                       ;; 00:2118 pP.. $12
-    dw   $8770, gfxSnowman + $30                       ;; 00:211c pP.. $13
-    dw   $8780, gfxChest                               ;; 00:2120 pP.. $14
-    dw   $8790, gfxChest + $20                         ;; 00:2124 pP.. $15
-    dw   $87a0, gfxChest + $10                         ;; 00:2128 pP.. $16
-    dw   $87b0, gfxChest + $30                         ;; 00:212c pP.. $17
-    dw   $87c0, gfxChest + $40                         ;; 00:2130 pP.. $18
-    dw   $87d0, gfxChest + $20                         ;; 00:2134 pP.. $19
-    dw   $87e0, gfxChest + $50                         ;; 00:2138 pP.. $1a
-    dw   $87f0, gfxChest + $30                         ;; 00:213c pP.. $1b
+    dw   $8700 + 1, gfxHand + $50                          ;; 00:2100 .P.. $0c
+    dw   $8710 + 1, gfxHand + $70                          ;; 00:2104 pP.. $0d
+    dw   $8720 + 1, gfxHand + $60                          ;; 00:2108 pP.. $0e
+    dw   $8730 + 1, gfxHand + $80                          ;; 00:210c pP.. $0f
+    dw   $8740 + 1, gfxSnowman                             ;; 00:2110 pP.. $10
+    dw   $8750 + 1, gfxSnowman + $20                       ;; 00:2114 pP.. $11
+    dw   $8760 + 1, gfxSnowman + $10                       ;; 00:2118 pP.. $12
+    dw   $8770 + 1, gfxSnowman + $30                       ;; 00:211c pP.. $13
+    dw   $8780 + 1, gfxChest                               ;; 00:2120 pP.. $14
+    dw   $8790 + 1, gfxChest + $20                         ;; 00:2124 pP.. $15
+    dw   $87a0 + 1, gfxChest + $10                         ;; 00:2128 pP.. $16
+    dw   $87b0 + 1, gfxChest + $30                         ;; 00:212c pP.. $17
+    dw   $87c0 + 1, gfxChest + $40                         ;; 00:2130 pP.. $18
+    dw   $87d0 + 1, gfxChest + $20                         ;; 00:2134 pP.. $19
+    dw   $87e0 + 1, gfxChest + $50                         ;; 00:2138 pP.. $1a
+    dw   $87f0 + 1, gfxChest + $30                         ;; 00:213c pP.. $1b
 
 copyInitialVRAMTiles:
     ld   A, BANK(gfxHand) ;@=bank gfxHand              ;; 00:2140 $3e $08
     ld   [rROMB0], A                                   ;; 00:2142 $ea $00 $20
     ld   HL, initialVRAMLoad                           ;; 00:2145 $21 $d0 $20
-    ld   B, $1c                                        ;; 00:2148 $06 $1c
+    ld c, $1c
 .loop:
-    push BC                                            ;; 00:214a $c5
-    ld   E, [HL]                                       ;; 00:214b $5e
-    inc  HL                                            ;; 00:214c $23
+    ld a, [hl+]
+    ld e, a
+; The VRAM bank is stored in bit 0 and needs to be stripped even in B&W.
+    and $01
+IF DEF(COLOR)
+    ld [rVBK], a
+ENDC
+    xor e
+    ld e, a
     ld   D, [HL]                                       ;; 00:214d $56
     inc  HL                                            ;; 00:214e $23
-    push HL                                            ;; 00:214f $e5
     ld   A, [HL+]                                      ;; 00:2150 $2a
+    push hl
     ld   H, [HL]                                       ;; 00:2151 $66
     ld   L, A                                          ;; 00:2152 $6f
     ld   B, $10                                        ;; 00:2153 $06 $10
     call copyHLtoDE                                    ;; 00:2155 $cd $49 $2b
     pop  HL                                            ;; 00:2158 $e1
     inc  HL                                            ;; 00:2159 $23
-    inc  HL                                            ;; 00:215a $23
-    pop  BC                                            ;; 00:215b $c1
-    dec  B                                             ;; 00:215c $05
+    dec c
     jr   NZ, .loop                                     ;; 00:215d $20 $eb
+IF DEF(COLOR)
+    xor a
+    ld [rVBK], a
+ENDC
     ret                                                ;; 00:215f $c9
 
-OAM_DMA_Routine:
-    db   $e0, $46, $3e, $28, $3d, $20, $fd, $c9        ;; 00:2160 ........
+SECTION "bank00_align_2168", ROM0[$2168]
 
 DisableLCD:
     ldh  A, [rLY]                                      ;; 00:2168 $f0 $44
