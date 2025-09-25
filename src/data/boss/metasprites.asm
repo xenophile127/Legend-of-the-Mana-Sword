@@ -36,9 +36,9 @@ metaspritesHydraDragonZombie:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $3c, $3e                                 ;; 04:7bfb ??? $0e
 
 metaspritesMedusa:
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e                                 ;; 04:7bfe ??? $00
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46                                 ;; 04:7c01 ??? $01
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $46, $44                                 ;; 04:7c04 ??? $02
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $4c, $4e                                 ;; 04:7bfe ??? $00
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $44, $46                                 ;; 04:7c01 ??? $01
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $46, $44                                 ;; 04:7c04 ??? $02
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $6c, $6e                                 ;; 04:7c07 ??? $03
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $64, $66                                 ;; 04:7c0a ??? $04
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $66, $64                                 ;; 04:7c0d ??? $05
@@ -46,16 +46,18 @@ metaspritesMedusa:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $58, $5a                                 ;; 04:7c13 ??? $07
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $62, $60                                 ;; 04:7c16 ??? $08
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $60, $62                                 ;; 04:7c19 ??? $09
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $5c, $5e                                 ;; 04:7c1c ??? $0a
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $74, $76 ; Overlay                       ;; 04:7c1c ??? $0a
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $5c, $5e                                 ;; 04:7c1f ??? $0b
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $38, $3a                                 ;; 04:7c22 ??? $0c
-    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $3c, $3e                                 ;; 04:7c25 ??? $0d
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_SNOW, $38, $3a                                 ;; 04:7c22 ??? $0c
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_SNOW, $3c, $3e                                 ;; 04:7c25 ??? $0d
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $68, $6a                                 ;; 04:7c28 ??? $0e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $58, $5a                                 ;; 04:7c2b ??? $0f
+    db   OAMF_XFLIP  | OAMF_PAL0 | PAL_NPC3, $76, $74 ; Overlay                       ;; 04:7c2e ??? $0f
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $54, $56                                 ;; 04:7c2e ??? $10
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4e, $4c                                 ;; 04:7c31 ??? $11
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $4e, $4c                                 ;; 04:7c31 ??? $11
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42                                 ;; 04:7c34 ??? $12
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a                                 ;; 04:7c37 ??? $13
+; Added for overlay:
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $70, $72 ; $14
 
 metaspritesDavias:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e                                 ;; 04:7c3a ??? $00

@@ -20,8 +20,8 @@
 ; * offset 2: weaknesses (see npc/stats.asm)
 ; * offset 3: attack power
 ; * offset 4: defense power
-; * offset 5: unknown
-; * offset 6: tatus Effect on touch
+; * offset 5: magic defense power
+; * offset 6: Status Effect on touch
 ; * offset 7: unknown
 ; offset 12-13: attack movement pattern
 ; offset 14-15: spawn movement pattern
@@ -34,8 +34,13 @@ bossDataTable:
     BOSS_HEADER $0a, $14, $0a, $5a, $07, $1f, script_0246 ;; 04:4751 ????????
       BOSS_HEADER_GFX $40, $18, gfxBossHydra, tileorderHydraDragonZombie, metaspritesHydraDragonZombie ;; 04:4759 ????????
       dw statsHydra, data_04_4e37, data_04_4e37, data_04_54bb ;; 04:4761 ????????
+IF DEF(COLOR)
+    BOSS_HEADER $06, $3b, $55, $46, $04+2, $20, script_0246 ;; 04:4769 ????????
+      BOSS_HEADER_GFX $40, $18+6, bossGfxMedusaOverlay, tileorderCommon, metaspritesMedusa ;; 04:4771 ????????
+ELSE
     BOSS_HEADER $06, $3b, $55, $46, $04, $20, script_0246 ;; 04:4769 ????????
       BOSS_HEADER_GFX $40, $18, bossGfxMedusa, tileorderCommon, metaspritesMedusa ;; 04:4771 ????????
+ENDC
       dw statsMedusa, data_04_4e75, data_04_4e75, data_04_5503 ;; 04:4779 ????????
     BOSS_HEADER $0a, $1c, $2c, $96, $0b, $16, script_0246 ;; 04:4781 ????????
       BOSS_HEADER_GFX $40, $10, bossGfxMegapede, tileorderCommon, metaspritesMegapede ;; 04:4789 ????????
@@ -130,10 +135,16 @@ statsDragonZombie:
     db   $20, $ff, $00, $be, $08, $08, $00, $00        ;; 04:49d9 ????????
 
 statsMedusa:
+IF DEF(COLOR)
+    db   $20, $f0, $00, $00, $32, $32, $00, $04
+ENDC
     db   $20, $f0, $00, $4e, $32, $32, $00, $04        ;; 04:49e1 ????????
     db   $20, $f0, $00, $4e, $08, $12, $00, $04        ;; 04:49e9 ????????
     db   $20, $f0, $00, $4e, $08, $12, $00, $04        ;; 04:49f1 ????????
     db   $20, $f0, $00, $4e, $32, $32, $00, $04        ;; 04:49f9 ????????
+IF DEF(COLOR)
+    db   $20, $f0, $00, $00, $32, $32, $00, $04
+ENDC
 
 statsDavias:
     db   $20, $10, $00, $5d, $0a, $01, $00, $00        ;; 04:4a01 ????????
@@ -3733,46 +3744,88 @@ bodyHydraDragonZombieFrontMidBackLow_dup:
     db   $ff
 
 bodyMedusaEyesOpen:
+IF DEF(COLOR)
+    db   $14, $f8, $f0 ; Overlay
+ENDC
     db   $12, $f0, $f0                                 ;; 04:6c4e
     db   $13, $00, $f0
     db   $01, $f0, $00
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
     db   $ff
 
 bodyMedusaEyesClosed:
+IF DEF(COLOR)
+    db   $14, $f8, $f0 ; Overlay
+ENDC
     db   $06, $f0, $f0                                 ;; 04:6c58
     db   $10, $00, $f0
     db   $11, $f0, $00
+IF DEF(COLOR)
+    db   $11, $f0, $00
+ENDC
     db   $ff
 
 bodyMedusaEyesGlowing:
-    db   $0f, $f0, $f0                                 ;; 04:6c62
-    db   $0a, $00, $f0
+IF DEF(COLOR)
+    db   $14, $f8, $f0 ; Overlay
+ENDC
+    db   $07, $f0, $f0
+    db   $0b, $00, $f0
     db   $01, $f0, $00
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
     db   $ff
 
 bodyMedusaEyesGlowingFacingLeft_fire:
+IF DEF(COLOR)
+    db   $0a, $f8, $f0 ; Overlay
+ENDC
     db   $49, $f0, $f0                                 ;; 04:6c6c
     db   $04, $00, $f0
     db   $01, $f0, $00
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
     db   $ff
 
 bodyMedusaEyesCoveredWithSnakes:
-    db   $0e, $f0, $f0                                 ;; 04:6c76
+IF DEF(COLOR)
+    db   $0e, $f0, $f0
+ENDC
+    db   $0e, $f0, $f0
     db   $03, $00, $f0
     db   $01, $f0, $00
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
     db   $ff
 
 bodyMedusaEyesGlowingFacingRight:
+IF DEF(COLOR)
+    db   $0f, $f8, $f0 ; Overlay
+ENDC
     db   $05, $f0, $f0                                 ;; 04:6c80
     db   $48, $00, $f0
     db   $01, $f0, $00
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
     db   $ff
 
 ; $07 ($47) is a duplicate of $0f and $0b ($4b) is a duplicate of $0a.
 bodyMedusaEyesGlowing_fire:
+IF DEF(COLOR)
+    db   $14, $f8, $f0
+ENDC
     db   $47, $f0, $f0                                 ;; 04:6c8a
     db   $4b, $00, $f0
     db   $01, $f0, $00
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
     db   $ff
 
 data_04_6c94:
@@ -4473,20 +4526,52 @@ data_04_7721:
     db   $f0, $00, $ff                                 ;; 04:7731 ???
 
 data_04_7734:
-    db   $87, $f0, $f0, $0b, $00, $f0, $01, $f0        ;; 04:7734 ????????
-    db   $00, $ff                                      ;; 04:773c ??
+IF DEF(COLOR)
+    db   $14, $f8, $f0
+ENDC
+    db   $87, $f0, $f0
+    db   $0b, $00, $f0
+    db   $01, $f0, $00
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
+    db   $ff
 
 data_04_773e:
-    db   $07, $f0, $f0, $0c, $03, $f1, $01, $f0        ;; 04:773e ????????
-    db   $00, $ff                                      ;; 04:7746 ??
+    db   $0c, $03, $f1
+IF DEF(COLOR)
+    db   $14, $f8, $f0
+ENDC
+    db   $07, $f0, $f0
+    db   $0b, $00, $f0
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
+    db   $ff
 
 data_04_7748:
-    db   $0d, $f2, $ee, $0b, $00, $f0, $01, $f0        ;; 04:7748 ????????
-    db   $00, $ff                                      ;; 04:7750 ??
+    db   $0d, $f2, $ee
+IF DEF(COLOR)
+    db   $14, $f8, $f0
+ENDC
+    db   $07, $f0, $f0
+    db   $0b, $00, $f0
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
+    db   $ff
 
 data_04_7752:
-    db   $0c, $f0, $f0, $0b, $00, $f0, $0d, $ef        ;; 04:7752 ????????
-    db   $04, $ff                                      ;; 04:775a ??
+    db   $0c, $f0, $f0
+IF DEF(COLOR)
+    db   $07, $f0, $f0
+ENDC
+    db   $0b, $00, $f0
+    db   $0d, $ef, $04
+IF DEF(COLOR)
+    db   $01, $f0, $00
+ENDC
+    db   $ff
 
 data_04_775c:
     db   $01, $f0, $00, $02, $f0, $10, $03, $00        ;; 04:775c ????????

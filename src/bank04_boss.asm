@@ -1315,4 +1315,4 @@ INCLUDE "data/boss/main.asm"
 
 INCLUDE "data/boss/metasprites.asm"
 
-ds 132 ; Free space
+ds 47 ; Free space

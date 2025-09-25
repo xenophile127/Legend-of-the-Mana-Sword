@@ -17,6 +17,9 @@ bossGfxGolemOverlay:
 bossGfxJackalOverlay:
     INCBIN "boss/jackal_overlay.bin"                           ;; 0b:7e00
 
+bossGfxMedusaOverlay:
+    INCBIN "boss/medusa_overlay.bin"                   ;; 0b:6100
+
 SECTION "bank0b_align_4c00", ROMX[$4c00], BANK[$0b]
 
 trashcanGfx:
