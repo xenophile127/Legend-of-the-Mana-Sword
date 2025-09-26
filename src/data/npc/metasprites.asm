@@ -195,8 +195,8 @@ metaspritesEyeSpy:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $42, $40
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $40, $42
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4a, $48
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $46, $44
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $48, $4a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $44, $46
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4e, $4c
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC1, $4c, $4e
