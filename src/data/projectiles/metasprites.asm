@@ -64,6 +64,17 @@ metasprites30Static_npc_pal2:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $30, $32
 
+; Modified so that Fuzzy Wonder can use Ring Beam while Garasha Duck uses Rapier.
+metasprites30Static_npc_pal3:
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+
 ; Used by Doppel Mirror.
 ; One frame, no flipping.
 metasprites38Static:

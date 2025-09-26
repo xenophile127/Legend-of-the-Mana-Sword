@@ -14,8 +14,7 @@
     COLOR_PALETTE_PROJECTILE red              ; Laser          $05 NPC_GUARDIAN
     COLOR_PALETTE_PROJECTILE red              ; Axe            $06 NPC_MINOTAUR
     COLOR_PALETTE_PROJECTILE 007              ; Scissors       $07 NPC_CRAB
-; Ring Beam and Rapier are used together. It may be safe to move Ring Beam to PAL_NPC3.
-    COLOR_PALETTE_PROJECTILE red              ; Ring Beam      $08 NPC_EYE_SPY, NPC_FUZZY_WONDER
+    COLOR_PALETTE_PROJECTILE 008              ; Ring Beam      $08 NPC_EYE_SPY, NPC_FUZZY_WONDER
     COLOR_PALETTE_PROJECTILE 009              ; Rock           $09 NPC_OGRE, NPC_ELEPHANT
     COLOR_PALETTE_PROJECTILE red              ; Shuriken       $0a NPC_NINJA
     COLOR_PALETTE_PROJECTILE red              ; Beam           $0b NPC_PHANTASM, NPC_GLAIVE_MAGE
