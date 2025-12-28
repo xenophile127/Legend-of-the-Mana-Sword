@@ -5488,7 +5488,7 @@ ENDC
     ret                                                ;; 00:2091 $c9
 
 OAM_DMA_Routine:
-    ld [rDMA], a
+    ldh [rDMA], a
     ld a, $28
 .loop:
     dec a
