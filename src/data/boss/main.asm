@@ -3901,7 +3901,7 @@ IF !DEF(COLOR)
 ENDC
     db   $ff
 
-bodyJackalGolemLeftFootForward :
+bodyJackalGolemLeftFootForward:
 IF DEF(COLOR)
     db   $0f, $f8, $f0 ; Overlay eye.                  ;; 04:6dac
 ELSE
