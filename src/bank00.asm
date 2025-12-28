@@ -2015,6 +2015,11 @@ createObject:
     sub  A, B
     ld   C, A
     ret
+.failed:
+    DBG_MSG_LABEL debugMsgCreateObjectFail
+    ld   A, $ff                                        ;; 00:0adf $3e $ff
+    ld   C, A                                          ;; 00:0ae1 $4f
+    ret                                                ;; 00:0ae2 $c9
 
 ; c = Object ID
 destroyObject:
