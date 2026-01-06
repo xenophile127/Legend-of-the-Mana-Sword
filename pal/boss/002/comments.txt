@@ -1,0 +1,20 @@
+Palettes for Medusa.
+
+Background colors are the same as pal/00.
+
+All available obj palettes are used:
+2. (Snowman) used for death explosion. Colors set to the same as the Fire spell.
+3. Duke/Amanda.
+4. Snake projectiles.
+5. Medusa's head. Green snakes, yellow skin, dark gray outline. Same colors as obj4.
+6. Medusa's body. Purple for her dress replaces the snake green.
+7. The crown. This is an overlay. Gray, dark gray, and black (but black is currently unused).
+
+Overlay:
+Eight additional tiles have been added. The always-loaded sprite tiles (enemy defeated explosion, snowman, and chests) have been moved to VRAM bank 1 to allow more space for bosses to load tiles.
+
+Medusa has been modified to use six metasprites instead of four, bringing her more in line with Jackal and Golem. The overlay is positioned in the top on the centerline, just like Jackal and Golem. The sixth metasprite is only used in the death explosion.
+
+The boss damage flash effect is set to darkened versions of the normal colors, unlike most other bosses which (so far) use washed-out (nearly white) colors.
+
+It is possible to reach Medusa with the Blind effect active--though the timing for this is tight--so her snake projectiles are set to the same palette in blind and main.
