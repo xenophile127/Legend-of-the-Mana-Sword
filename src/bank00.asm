@@ -1973,31 +1973,48 @@ createObject:
     add  A, A                                          ;; 00:0ab9 $87
     add  A, A                                          ;; 00:0aba $87
     ld   E, A                                          ;; 00:0abb $5f
-; The purpose of this flag is unknown, but the script system  also uses it.
-    ld   A, [wMainGameStateFlags]                      ;; 00:0abc $fa $a1 $c0
-    push AF                                            ;; 00:0abf $f5
-    set  1, A                                          ;; 00:0ac0 $cb $cf
-    ld   [wMainGameStateFlags], A                      ;; 00:0ac2 $ea $a1 $c0
-; Set the object postion.
-    push BC                                            ;; 00:0ac5 $c5
-    call moveObject                                    ;; 00:0ac6 $cd $61 $09
-    pop  BC                                            ;; 00:0ac9 $c1
-    ld   A, $14                                        ;; 00:0aca $3e $14
-    jr   C, .move_failed                               ;; 00:0acc $38 $08
-    sub  A, B                                          ;; 00:0ace $90
-    ld   C, A                                          ;; 00:0acf $4f
-    pop  AF                                            ;; 00:0ad0 $f1
-    ld   [wMainGameStateFlags], A                      ;; 00:0ad1 $ea $a1 $c0
-    ld   A, C                                          ;; 00:0ad4 $79
-    ret                                                ;; 00:0ad5 $c9
-.move_failed:
-; Destroy the object if it could not be reposistioned from 0,0.
-; This is likely dead code but it is difficult to prove.
-    sub  A, B                                          ;; 00:0ad6 $90
-    ld   C, A                                          ;; 00:0ad7 $4f
-    call destroyObject                                 ;; 00:0ad8 $cd $e3 $0a
-    pop  AF                                            ;; 00:0adb $f1
-    ld   [wMainGameStateFlags], A                      ;; 00:0adc $ea $a1 $c0
+
+    ; Instead of calling moveObject, set the object position and OAM positions.
+    ; This prevents moveObject calling collision handling before initialization is
+    ; complete (e.g., in spawnProjectile). This assumes there is no good reason to
+    ; include the prior error checking on moveObject's carry flag return. Upon
+    ; investigation, it looks like this condition either should never be met, or
+    ; would only be met upon collision at creation (which is what we are trying to
+    ; avoid).
+    inc  HL
+    inc  HL
+    inc  HL
+    inc  HL
+    ld   [HL], D ; position Y
+    inc  HL
+    ld   [HL], E ; position X
+
+    ; Load OAM memory location
+    inc  HL
+    inc  HL
+    inc  HL
+    ld   A, [HL+]
+    ld   H, [HL]
+    ld   L, A
+
+    ; Set object locations in OAM
+    ld   A, E
+    add  A, $08
+    ld   [HL], D
+    inc  HL
+    ld   [HL], E
+    inc  HL
+    inc  HL
+    inc  HL
+    ld   [HL], D
+    inc  HL
+    ld   [HL], A
+
+    ; Set A and C to the object ID
+    ld   A, $14
+    sub  A, B
+    ld   C, A
+    ret
 .failed:
     DBG_MSG_LABEL debugMsgCreateObjectFail
     ld   A, $ff                                        ;; 00:0adf $3e $ff
