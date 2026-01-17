@@ -24,6 +24,7 @@ DEF BGP_GREEN      RB 1
 ; The original general GBC auto-colorization palette.
 ; It has a light green and a dark blue.
 ; This has been used for the Lazy DX colorization for quite some time.
+DEF BGP_AIRSHIP    RB 0
 DEF BGP_CASKET     RB 0
 DEF BGP_CRYSTAL    RB 0
 DEF BGP_DOCK       RB 0

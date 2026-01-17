@@ -216,8 +216,8 @@ metatilesTown:
     METATILE $ac, $ad, $b3, $b4, $00, $04                  ;; $28
     METATILE $ae, $ae, $ae, $ae, $30, $05                  ;; $29
     METATILE $b5, $b5, $b7, $b7, $00, $04                  ;; $2a
-    METATILE $a8, $a9, $aa, $ab, $30, $0d                  ;; $2b
-    METATILE $a7, $b8, $93, $a7, $00, $04                  ;; $2c
+    METATILE $a8, $a9, $aa, $ab, $30, $0d, BGP_AIRSHIP     ;; $2b
+    METATILE $a7, $d3, $93, $a7, $00, $04, BGP_AIRSHIP     ;; $2c
     METATILE $b9, $ba, $bb, $bc, $30, $05                  ;; $2d
     METATILE $af, $b0, $af, $b0, $00, $04                  ;; $2e
     METATILE $94, $b6, $94, $b6, $00, $05                  ;; $2f
@@ -233,7 +233,7 @@ metatilesTown:
     METATILE $6f, $6e, $6f, $6e, $00, $05                  ;; $39
     METATILE $6f, $6f, $6f, $6f, $00, $04                  ;; $3a
     METATILE $25, $3e, $36, $37, $20, $04                  ;; $3b
-    METATILE $a6, $b8, $91, $a6, $00, $04                  ;; $3c
+    METATILE $a6, $d3, $91, $a6, $00, $04, BGP_AIRSHIP     ;; $3c
     METATILE $ca, $ca, $cb, $cb, $30, $05                  ;; $3d Unused
     METATILE $af, $b0, $b1, $b2, $00, $04                  ;; $3e
     METATILE $a5, $94, $a5, $94, $00, $05                  ;; $3f
@@ -265,7 +265,7 @@ metatilesTown:
     METATILE $e6, $e8, $e9, $ea, $00, $05                  ;; $59
     METATILE $e9, $ea, $ec, $ed, $00, $05                  ;; $5a
     METATILE $84, $71, $84, $71, $30, $05                  ;; $5b
-    METATILE $b8, $b8, $b8, $b8, $00, $04                  ;; $5c
+    METATILE $b8, $b8, $b8, $b8, $00, $04, BGP_AIRSHIP     ;; $5c
     METATILE $22, $23, $24, $2b, $30, $85                  ;; $5d
     METATILE $70, $71, $70, $71, $30, $85                  ;; $5e
     METATILE $84, $85, $70, $71, $30, $05                  ;; $5f
