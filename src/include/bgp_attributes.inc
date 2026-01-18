@@ -3,6 +3,7 @@ RSRESET
 DEF BGP_SPECIAL    RB 1
 
 ; Default palette. While there are a limited number palettes available it makes sense to have a catch-all.
+DEF BGP_AIRSHIP    RB 0
 DEF BGP_BRIDGE     RB 0
 DEF BGP_CABIN_ROOF RB 0
 DEF BGP_CABIN_WALL RB 0
@@ -24,7 +25,7 @@ DEF BGP_GREEN      RB 1
 ; The original general GBC auto-colorization palette.
 ; It has a light green and a dark blue.
 ; This has been used for the Lazy DX colorization for quite some time.
-DEF BGP_AIRSHIP    RB 0
+DEF BGP_AIRSHIPSKY RB 0
 DEF BGP_CASKET     RB 0
 DEF BGP_CRYSTAL    RB 0
 DEF BGP_DOCK       RB 0

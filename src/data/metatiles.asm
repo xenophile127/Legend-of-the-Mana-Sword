@@ -217,7 +217,7 @@ metatilesTown:
     METATILE $ae, $ae, $ae, $ae, $30, $05                  ;; $29
     METATILE $b5, $b5, $b7, $b7, $00, $04                  ;; $2a
     METATILE $a8, $a9, $aa, $ab, $30, $0d, BGP_AIRSHIP     ;; $2b
-    METATILE $a7, $d3, $93, $a7, $00, $04, BGP_AIRSHIP     ;; $2c
+    METATILE $a7, $d3, $93, $a7, $00, $04, BGP_AIRSHIPSKY, BGP_AIRSHIP, BGP_SKY, BGP_AIRSHIPSKY ;; $2c
     METATILE $b9, $ba, $bb, $bc, $30, $05                  ;; $2d
     METATILE $af, $b0, $af, $b0, $00, $04                  ;; $2e
     METATILE $94, $b6, $94, $b6, $00, $05                  ;; $2f
@@ -233,7 +233,7 @@ metatilesTown:
     METATILE $6f, $6e, $6f, $6e, $00, $05                  ;; $39
     METATILE $6f, $6f, $6f, $6f, $00, $04                  ;; $3a
     METATILE $25, $3e, $36, $37, $20, $04                  ;; $3b
-    METATILE $a6, $d3, $91, $a6, $00, $04, BGP_AIRSHIP     ;; $3c
+    METATILE $a6, $d3, $91, $a6, $00, $04, BGP_AIRSHIPSKY, BGP_AIRSHIP, BGP_SKY, BGP_AIRSHIPSKY ;; $3c
     METATILE $ca, $ca, $cb, $cb, $30, $05                  ;; $3d Unused
     METATILE $af, $b0, $b1, $b2, $00, $04                  ;; $3e
     METATILE $a5, $94, $a5, $94, $00, $05                  ;; $3f
@@ -322,6 +322,8 @@ metatilesTown:
     METATILE $52, $53, $54, $1e, $10, $04                  ;; $8b ($22)
 ; Mountain with cloud, used in the outside area of Kary's cave.
     METATILE $3f, $d0, $44, $40, $20, $05, BGP_DEFAULT, BGP_SKY, BGP_DEFAULT, BGP_DEFAULT ;; $8c ($10)
+; Variant of the ship siding with a new rivet tile to interface with the edited prow for color.
+    METATILE $b8, $b8, $d3, $b8, $00, $04, BGP_AIRSHIP     ;; $8d ($5c)
 
 metatilesIndoor:
     METATILE $1b, $1c, $1d, $1e, $30, $05                  ;; $00
