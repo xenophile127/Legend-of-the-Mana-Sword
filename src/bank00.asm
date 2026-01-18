@@ -1711,9 +1711,10 @@ moveObject:
     push BC                                            ;; 00:0975 $c5
     push DE                                            ;; 00:0976 $d5
     push HL                                            ;; 00:0977 $e5
-; $3dfc = -$c204
-    ld   DE, $3dfc                                     ;; 00:0978 $11 $fc $3d
+; Subtract the address of the y position of the first object from hl.
+    ld de, $10000 - wObjectRuntimeData - 4
     add  HL, DE                                        ;; 00:097b $19
+; Take advantage of 256 bit alignment and 16 bit stride to replace division by 16 with an or and a swap.
     ld   A, L                                          ;; 00:097c $7d
     or   A, H                                          ;; 00:097d $b4
     swap A                                             ;; 00:097e $cb $37
