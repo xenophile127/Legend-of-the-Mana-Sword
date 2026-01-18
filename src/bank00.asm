@@ -10017,8 +10017,8 @@ scriptOpCodeTakeMoney:
     pop  HL                                            ;; 00:3a96 $e1
     call getNextScriptInstruction                      ;; 00:3a97 $cd $27 $37
     ret                                                ;; 00:3a9a $c9
-    db   $00, $00, $00, $00, $00, $00, $00, $00
-    db   $00
+
+ds 9 ; Free space
 
 scriptOpCodeHalt:
     dec  HL                                            ;; 00:3a9b $2b
