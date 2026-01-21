@@ -3124,7 +3124,7 @@ clearSaveLoadScreen:
 
 ; This clears a section of VRAM. This code takes a rather brute-force approach.
 ; Originally it cleared the entire memory area even though the part past the 20th tile on a line was never used.
-; It also used a the VBlank tile transfer function to transfer tile ids, which is why it was worth rewriting.
+; It also used the VBlank tile transfer function to transfer tile ids, which is why it was worth rewriting.
 ; Its fake tile was not aligned to a 16 byte boundary, which prevented optimizing VBlank tile transfer.
 ; b = number of lines of tiles to clear.
 ; hl = VRAM address to begin at.
@@ -7964,7 +7964,7 @@ titleScreenIntroScrollLoop:
     ld   [wTitleScreenState], A                        ;; 02:7cb7 $ea $86 $d8
     ret                                                ;; 02:7cba $c9
 .a_button:
-    ld b, $12
+    ld b, SCRN_Y_B
     ld hl, _SCRN0
     call clearVRAMArea                                 ;; 02:7cc0 $cd $6a $56
     ld   A, $03                                        ;; 02:7cc3 $3e $03
