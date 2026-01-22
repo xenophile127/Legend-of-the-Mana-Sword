@@ -7855,13 +7855,12 @@ gameStateTitleScreen:
 ;@jumptable
 .titleScreenStatesJumptable:
     dw   titleScreenIntroScrollStart                   ;; 02:7bec pP $00
-    dw   titleScreenIntroScrollPrintLine               ;; 02:7bee pP $01
+    dw   titleScreenIntroScrollPrintLine               ;; 02:7bee pP $01 ; Now called directly.
     dw   titleScreenIntroScrollLoop                    ;; 02:7bf0 pP $02
     dw   titleScreenIntroScrollInterupted              ;; 02:7bf2 pP $03
     dw   titleScreenShowMenu                           ;; 02:7bf4 pP $04
 
-; Free space
-db $00, $00, $00, $00, $00, $00
+ds 6 ; Free space
 
 ; Called when New Game is selected
 titleScreenIntroScrollStart:
@@ -7889,9 +7888,10 @@ titleScreenIntroScrollStart:
     ld   [wIntroScrollTextPointer.high], A             ;; 02:7c25 $ea $8f $d8
     ld   A, L                                          ;; 02:7c28 $7d
     ld   [wIntroScrollTextPointer], A                  ;; 02:7c29 $ea $8e $d8
-    ld   A, $01                                        ;; 02:7c2c $3e $01
+; Start with the loop function instead of text printing
+    ld a, $02
     ld   [wTitleScreenState], A                        ;; 02:7c2e $ea $86 $d8
-    ld   A, $0f                                        ;; 02:7c31 $3e $0f
+    ld a, $01
     ld   [wIntroScrollCounter2], A                     ;; 02:7c33 $ea $87 $d8
     ld   A, $05                                        ;; 02:7c36 $3e $05
     ld   [wIntroScrollCounter1], A                     ;; 02:7c38 $ea $89 $d8
@@ -7899,13 +7899,7 @@ titleScreenIntroScrollStart:
     ret                                                ;; 02:7c3e $c9
 
 titleScreenIntroScrollPrintLine:
-    ld   A, [wIntroScrollTextPointer.high]             ;; 02:7c3f $fa $8f $d8
-    ld   H, A                                          ;; 02:7c42 $67
-    ld   A, [wIntroScrollTextPointer]                  ;; 02:7c43 $fa $8e $d8
-    ld   L, A                                          ;; 02:7c46 $6f
-    ld   A, [HL]                                       ;; 02:7c47 $7e
-    cp   A, $01                                        ;; 02:7c48 $fe $01
-    jp   Z, titleScreenIntroScrollEnd                  ;; 02:7c4a $ca $d8 $7c
+; Terminator is now checked before calling this.
     ld   BC, $1301                                     ;; 02:7c4d $01 $01 $13
     ld   A, [wRegisterSave2.D]                         ;; 02:7c50 $fa $ad $d8
     ld   D, A                                          ;; 02:7c53 $57
@@ -7937,33 +7931,41 @@ titleScreenIntroScrollPrintLine:
     ld   [wRegisterSave2.D], A                         ;; 02:7c82 $ea $ad $d8
     ld   A, E                                          ;; 02:7c85 $7b
     ld   [wRegisterSave2.E], A                         ;; 02:7c86 $ea $ac $d8
-    ld   A, $02                                        ;; 02:7c89 $3e $02
-    ld   [wTitleScreenState], A                        ;; 02:7c8b $ea $86 $d8
     ret                                                ;; 02:7c8e $c9
 
+ds 19 ; Free space
+
 titleScreenIntroScrollLoop:
-; Joypad input is in d.
+; Joypad input is in d. Bit 4 is the A button.
     bit 4, d
-    jr   NZ, .a_button                                 ;; 02:7c94 $20 $25
+    jr   NZ, .end_scroll                               ;; 02:7c94 $20 $25
     ld   HL, wIntroScrollCounter1                      ;; 02:7c96 $21 $89 $d8
     dec  [HL]                                          ;; 02:7c99 $35
     ret  NZ                                            ;; 02:7c9a $c0
     ld   A, $05                                        ;; 02:7c9b $3e $05
     ld   [HL], A                                       ;; 02:7c9d $77
-    call introScrollEffectUpdateLCDEffect_trampoline   ;; 02:7c9e $cd $b0 $0d
-    ld   A, [wVideoSCY]                                ;; 02:7ca1 $fa $a7 $c0
-    inc  A                                             ;; 02:7ca4 $3c
-    ld   [wVideoSCY], A                                ;; 02:7ca5 $ea $a7 $c0
-    ld   A, [wIntroScrollCounter2]                     ;; 02:7ca8 $fa $87 $d8
-    dec  A                                             ;; 02:7cab $3d
-    ld   [wIntroScrollCounter2], A                     ;; 02:7cac $ea $87 $d8
-    ret  NZ                                            ;; 02:7caf $c0
-    ld   A, $0f                                        ;; 02:7cb0 $3e $0f
-    ld   [wIntroScrollCounter2], A                     ;; 02:7cb2 $ea $87 $d8
-    ld   A, $01                                        ;; 02:7cb5 $3e $01
-    ld   [wTitleScreenState], A                        ;; 02:7cb7 $ea $86 $d8
+; Originally every 16 frames titleScreenIntroScrollPrintLine was called instead
+; of this this function. That meant one frame out of 16 wouldn't update the scroll.
+; Since there is enough time in a frame it's now called directly so eliminate the delay.
+    ld hl, wIntroScrollCounter2
+    dec [hl]
+    jr nz, .update_effect
+    ld [hl], $10
+; Exit early if all text lines have been printed.
+    ld hl, wIntroScrollTextPointer
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
+    ld a, [hl]
+    cp $01
+    jr z, .end_scroll
+    call titleScreenIntroScrollPrintLine
+.update_effect:
+    call introScrollEffectUpdateLCDEffect_trampoline
+    ld hl, wVideoSCY
+    inc [hl]
     ret                                                ;; 02:7cba $c9
-.a_button:
+.end_scroll:
     ld b, SCRN_Y_B
     ld hl, _SCRN0
     call clearVRAMArea                                 ;; 02:7cc0 $cd $6a $56
@@ -7971,7 +7973,7 @@ titleScreenIntroScrollLoop:
     ld   [wTitleScreenState], A                        ;; 02:7cc5 $ea $86 $d8
     ret                                                ;; 02:7cc8 $c9
 
-ds 3 ; Free space
+ds 2 ; Free space
 
 titleScreenIntroScrollInterupted:
     ld   A, [wIntroScrollSCYBackup]                    ;; 02:7cc9 $fa $88 $d8
