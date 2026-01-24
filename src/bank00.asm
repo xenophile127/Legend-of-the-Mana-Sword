@@ -500,12 +500,10 @@ LCDCInterrupt:
     push bc
     push de
     push hl
-IF DEF(COLOR)
 ; Save the target line to write.
     ld a, [rLYC]
     inc a
     ld b, a
-ENDC
 ; Each entry in the line effect buffer is four bytes long.
     ld   A, [wLCDCEffectIndex]                         ;; 00:032d $fa $e2 $d3
     add  A, A                                          ;; 00:0330 $87
@@ -551,7 +549,9 @@ IF DEF(COLOR)
 ; Reset the address and set autoinc before waiting for time to write.
     ld a, BCPSF_AUTOINC
     ldh [rBCPS], a
+ENDC
 ; With the color lookup table it's possible to get here earlier than intended so guard and check.
+; Also happens in black and white on scanline zero due to vblank mode behavior.
 ; It may also be possible to get here too late.
 .loop_until_target_line:
     ldh a, [rLY]
@@ -560,9 +560,6 @@ IF DEF(COLOR)
     jr z, .ready
     DBG_MSG_LABEL debugMsgLCDCInterruptLate
 .ready:
-; Save one cycle in mode 0 by pre-loading this address.
-    ld b, LOW(rBCPD)
-ENDC
 ; Nothing should ever turn off the LCD/PPU with this interrupt on, but guard against it anyway.
 ; This condition will now trigger a debug message.
 ; If it is not seen in testing this check will be removed.
@@ -585,7 +582,7 @@ ENDC
     ldh [rLCDC], a
 IF DEF(COLOR)
 ; Write the first background palette.
-    ld c, b
+    ld c, LOW(rBCPD)
     ld a, [hl+]
     ldh [c], a
     ld a, [hl+]
