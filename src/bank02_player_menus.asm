@@ -7907,9 +7907,14 @@ titleScreenIntroScrollPrintLine:
     ld   A, [wRegisterSave2.E]                         ;; 02:7c54 $fa $ac $d8
     ld   E, A                                          ;; 02:7c57 $5f
     dec  E                                             ;; 02:7c58 $1d
+; Clear tiles at the very left of the screen.
+; These aren't actually visible except if you are using modified palettes in the color target.
     dec  E                                             ;; 02:7c59 $1d
     ld   A, $7f                                        ;; 02:7c5a $3e $7f
     call storeTileAatDialogPositionDE                  ;; 02:7c5c $cd $44 $38
+    inc d
+    call storeTileAatDialogPositionDE
+    dec d
     inc  E                                             ;; 02:7c5f $1c
     call drawText                                      ;; 02:7c60 $cd $77 $37
     ld   A, H                                          ;; 02:7c63 $7c
@@ -7934,7 +7939,7 @@ titleScreenIntroScrollPrintLine:
     ld   [wRegisterSave2.E], A                         ;; 02:7c86 $ea $ac $d8
     ret                                                ;; 02:7c8e $c9
 
-ds 17 ; Free space
+ds 12 ; Free space
 
 titleScreenIntroScrollLoop:
 ; Joypad input is in d. Bit 4 is the A button.
