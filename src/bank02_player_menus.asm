@@ -7898,6 +7898,7 @@ titleScreenIntroScrollStart:
     call prepareIntroScrollEffect_trampoline           ;; 02:7c3b $cd $aa $0d
     ret                                                ;; 02:7c3e $c9
 
+; hl = text pointer
 titleScreenIntroScrollPrintLine:
 ; Terminator is now checked before calling this.
     ld   BC, $1301                                     ;; 02:7c4d $01 $01 $13
@@ -7933,7 +7934,7 @@ titleScreenIntroScrollPrintLine:
     ld   [wRegisterSave2.E], A                         ;; 02:7c86 $ea $ac $d8
     ret                                                ;; 02:7c8e $c9
 
-ds 19 ; Free space
+ds 17 ; Free space
 
 titleScreenIntroScrollLoop:
 ; Joypad input is in d. Bit 4 is the A button.
@@ -7957,13 +7958,18 @@ titleScreenIntroScrollLoop:
     ld h, [hl]
     ld l, a
     ld a, [hl]
-    cp $01
+; The text is terminated with $01.
+    dec a
     jr z, .end_scroll
     call titleScreenIntroScrollPrintLine
 .update_effect:
-    call introScrollEffectUpdateLCDEffect_trampoline
     ld hl, wVideoSCY
     inc [hl]
+; Calculate the lower nibble for the scanline to trigger interrupts.
+    ld a, $16
+    sub [hl]
+    and $0f
+    call introScrollEffectUpdateLCDEffect_trampoline
     ret                                                ;; 02:7cba $c9
 .end_scroll:
     ld b, SCRN_Y_B
@@ -7972,8 +7978,6 @@ titleScreenIntroScrollLoop:
     ld   A, $03                                        ;; 02:7cc3 $3e $03
     ld   [wTitleScreenState], A                        ;; 02:7cc5 $ea $86 $d8
     ret                                                ;; 02:7cc8 $c9
-
-ds 2 ; Free space
 
 titleScreenIntroScrollInterupted:
     ld   A, [wIntroScrollSCYBackup]                    ;; 02:7cc9 $fa $88 $d8

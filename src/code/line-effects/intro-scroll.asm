@@ -31,13 +31,16 @@ ELSE
 ENDC
     ret                                                ;; 01:40d7 $c9
 
+; a = lower nibble of scanline for the effect.
 introScrollEffectUpdateLCDEffect:
-    ld   A, [wVideoSCY]                                ;; 01:40d8 $fa $a7 $c0
-; Adjust to exact tile boundaries to get rid of one miscolored line of pixels.
-    add a, $0a
-    cpl                                                ;; 01:40dd $2f
-    and  A, $0f                                        ;; 01:40de $e6 $0f
     ld   C, A                                          ;; 01:40e0 $4f
+; Wait until the final step of the effect is queued up for this frame.
+; This prevents scroll and line effect mismatches.
+    ld a, $7f
+    ld hl, rLYC
+.wait:
+    cp [hl]
+    jr nc, .wait
     ld   HL, wLCDCEffectBuffer                         ;; 01:40e1 $21 $a0 $d3
     ld   B, $06                                        ;; 01:40e4 $06 $06
     ld   DE, $04                                       ;; 01:40e6 $11 $04 $00
