@@ -50,9 +50,9 @@ NPCSpawnPointers:
     dw   fuji_by_hasim, myconid,     hasim             ;; 03:723e ......      number 42 $2a
     dw   data_03_78a2, data_03_789a, data_03_78ba      ;; 03:7244 ......
     dw   data_03_78aa, data_03_78b2, data_03_77b8      ;; 03:724a ......
-    dw   data_03_7908, data_03_7910, data_03_7910      ;; 03:7250 ??????
-    dw   data_03_7900, data_03_7900, data_03_7900      ;; 03:7256 ??????
-    dw   data_03_7918, data_03_7920, data_03_7920      ;; 03:725c ??????
+    dw   dwarf2,       dwarf3,       dwarf3            ;; 03:7250 ??????      number 45 $2d
+    dw   dwarf1,       dwarf1,       dwarf1            ;; 03:7256 ??????      number 46 $2e
+    dw   dwarf4,       dwarf5,       dwarf5            ;; 03:725c ??????      number 57 $2f
     dw   data_03_7808, minecart,     injured           ;; 03:7262 ??????      number 48 $30
     dw   data_03_77d6, data_03_78c2, data_03_78ca      ;; 03:7268 ??????
     dw   data_03_77ea, data_03_7a8e, data_03_7a8e      ;; 03:726e ??????
@@ -68,8 +68,8 @@ NPCSpawnPointers:
     dw   data_03_7990, data_03_7998, data_03_79a0      ;; 03:72aa ??????
     dw   data_03_79a8, data_03_79b0, data_03_79b0      ;; 03:72b0 ??????
     dw   data_03_7844, data_03_7844, data_03_784e      ;; 03:72b6 ??????
-    dw   data_03_7928, data_03_7928, data_03_7928      ;; 03:72bc ??????
-    dw   data_03_7930, data_03_7938, data_03_7940      ;; 03:72c2 ??????
+    dw   airshipCrew1, airshipCrew1, airshipCrew1      ;; 03:72bc ??????      number 63 $3f
+    dw   airshipCrew2, airshipCrew3, airshipCrew4      ;; 03:72c2 ??????      number 64 $40
     dw   data_03_783a, data_03_7858, data_03_7862      ;; 03:72c8 ??????
     dw   data_03_7768, data_03_7772, data_03_7772      ;; 03:72ce ??????
     dw   data_03_79e8, data_03_79f2, data_03_79fc      ;; 03:72d4 ??????
@@ -720,39 +720,39 @@ oldmanWendel:
     db   1, 1, NPC_OLDMAN_WENDEL, NPC_OLDMAN_WENDEL, NPC_OLDMAN_WENDEL, NPC_OLDMAN_WENDEL ;; 03:78f8 ??????
     db   $80, $80                                      ;; 03:78fe ??
 
-data_03_7900:
+dwarf1:
     db   1, 1, NPC_DWARF_1, NPC_DWARF_1, NPC_DWARF_1, NPC_DWARF_1 ;; 03:7900 ??????
     db   $80, $80                                      ;; 03:7906 ??
 
-data_03_7908:
+dwarf2:
     db   1, 1, NPC_DWARF_2, NPC_DWARF_2, NPC_DWARF_2, NPC_DWARF_2 ;; 03:7908 ??????
     db   $80, $80                                      ;; 03:790e ??
 
-data_03_7910:
+dwarf3:
     db   1, 1, NPC_DWARF_3, NPC_DWARF_3, NPC_DWARF_3, NPC_DWARF_3 ;; 03:7910 ??????
     db   $80, $80                                      ;; 03:7916 ??
 
-data_03_7918:
+dwarf4:
     db   1, 1, NPC_DWARF_4, NPC_DWARF_4, NPC_DWARF_4, NPC_DWARF_4 ;; 03:7918 ??????
     db   $80, $80                                      ;; 03:791e ??
 
-data_03_7920:
+dwarf5:
     db   1, 1, NPC_DWARF_5, NPC_DWARF_5, NPC_DWARF_5, NPC_DWARF_5 ;; 03:7920 ??????
     db   $80, $80                                      ;; 03:7926 ??
 
-data_03_7928:
+airshipCrew1:
     db   1, 1, NPC_GUY_AIRSHIP_1, NPC_GUY_AIRSHIP_1, NPC_GUY_AIRSHIP_1, NPC_GUY_AIRSHIP_1 ;; 03:7928 ??????
     db   $80, $80                                      ;; 03:792e ??
 
-data_03_7930:
+airshipCrew2:
     db   1, 1, NPC_GUY_AIRSHIP_2, NPC_GUY_AIRSHIP_2, NPC_GUY_AIRSHIP_2, NPC_GUY_AIRSHIP_2 ;; 03:7930 ??????
     db   $80, $80                                      ;; 03:7936 ??
 
-data_03_7938:
+airshipCrew3:
     db   1, 1, NPC_GUY_AIRSHIP_3, NPC_GUY_AIRSHIP_3, NPC_GUY_AIRSHIP_3, NPC_GUY_AIRSHIP_3 ;; 03:7938 ??????
     db   $80, $80                                      ;; 03:793e ??
 
-data_03_7940:
+airshipCrew4:
     db   1, 1, NPC_GUY_AIRSHIP_4, NPC_GUY_AIRSHIP_4, NPC_GUY_AIRSHIP_4, NPC_GUY_AIRSHIP_4 ;; 03:7940 ??????
     db   $80, $80                                      ;; 03:7946 ??
 
