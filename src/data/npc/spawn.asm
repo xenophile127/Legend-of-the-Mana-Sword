@@ -93,7 +93,7 @@ NPCSpawnPointers:
     dw   data_03_7a66, data_03_7a70, data_03_7a70      ;; 03:7340 ......
     dw   data_03_7880, nukeTrigger,  nukeTrigger       ;; 03:7346 ??????      number 86 $56 (unused)
     dw   nukeTrigger,  nukeTrigger,  data_03_77f4      ;; 03:734c ??????      number 87 $57
-    dw   data_03_777c, data_03_7b0c, data_03_77b8      ;; 03:7352 ??????
+    dw   data_03_777c, prisonBars,   data_03_77b8      ;; 03:7352 ??????      number 88 $58
     dw   data_03_7b28, data_03_7b32, data_03_7b3c      ;; 03:7358 ......
     dw   nukeTrigger,  data_03_77d6, data_03_77e0      ;; 03:735e ??????      number 90 $5a
     dw   data_03_7a5c, data_03_7a84, data_03_7a84      ;; 03:7364 ......
@@ -956,7 +956,7 @@ data_03_7b02:
     db   1, 1, NPC_PRISION_BARS, NPC_PRISION_BARS, NPC_PRISION_BARS, NPC_PRISION_BARS ;; 03:7b02 ??????
     db   $0a, $07, $80, $80                            ;; 03:7b08 ????
 
-data_03_7b0c:
+prisonBars:
     db   2, 2, NPC_PRISION_BARS, NPC_PRISION_BARS, NPC_PRISION_BARS, NPC_PRISION_BARS ;; 03:7b0c ??????
     db   $0a, $07, $09, $0e, $80, $80                  ;; 03:7b12 ??????
 
