@@ -3658,11 +3658,12 @@ script_0207:
     sSFX 20                                            ;; 0d:5f6b $f9 $14
     sFLASH_SCREEN                                      ;; 0d:5f6d $bf
     sFLASH_SCREEN                                      ;; 0d:5f6e $bf
-    sCREATE_EFFECT $2c, $02, $08, $00
-    sCREATE_EFFECT $2c, $04, $08, $00
-    sCREATE_EFFECT $2c, $06, $08, $00
-    sCREATE_EFFECT $2c, $08, $08, $00
-    sCREATE_EFFECT $10, $0a, $08, $00
+; To give Julius' fire its own palette an unused item is used.
+    sCREATE_EFFECT $2c, $02, $08, INV_ITEM_FLARE_BAZOOKA
+    sCREATE_EFFECT $2c, $04, $08, INV_ITEM_FLARE_BAZOOKA
+    sCREATE_EFFECT $2c, $06, $08, INV_ITEM_FLARE_BAZOOKA
+    sCREATE_EFFECT $2c, $08, $08, INV_ITEM_FLARE_BAZOOKA
+    sCREATE_EFFECT $10, $0a, $08, INV_ITEM_FLARE_BAZOOKA
     sFLASH_SCREEN                                      ;; 0d:5f83 $bf
     sSET_PLAYER_POSITION 10, 9                         ;; 0d:5f84 $8a $0a $09
     sSET_PLAYER_DIRECTION_UP                           ;; 0d:5f87 $84
@@ -3693,7 +3694,7 @@ script_0207:
       sPLAYER_STEP_FORWARD                             ;; 0d:5fc8 $80
     sEND                                               ;; 0d:5fc9 $00
     sSET_PLAYER_POSITION 20, 0                         ;; 0d:5fca $8a $14 $00
-    sCREATE_EFFECT $10, $0e, $05, $00
+    sCREATE_EFFECT $10, $0e, $05, INV_ITEM_MATTOK
 ; Fill tiles just outside the screen before the shake effect.
     sSET_ROOM_TILE $21, 10, 0
     sSET_ROOM_TILE $73, 10, 1

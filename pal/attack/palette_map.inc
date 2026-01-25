@@ -25,7 +25,7 @@
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_SPELL_SILENCE = $13
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_SPELL_PILLOW = $14
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_FLARE_WAVE = $15 ; Unused
-    COLOR_PALETTE_ATTACK gray             ; INV_ITEM_FLARE_BAZOOKA = $16 ; Unused
+    COLOR_PALETTE_ATTACK 022              ; INV_ITEM_FLARE_BAZOOKA = $16 ; Unused, except by script effects.
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_SPELL_FLAME = $17
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_SPELL_BLAZE = $18
     COLOR_PALETTE_ATTACK gray             ; INV_ITEM_SPELL_BLIZRD = $19
