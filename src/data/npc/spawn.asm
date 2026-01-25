@@ -18,13 +18,13 @@ NPCSpawnPointers:
     dw   tarantula,    ruster,       mimic             ;; 03:717e ??????      number 10 $0a
     dw   mandrake,     mandrake,     porcupine         ;; 03:7184 ??????      number 11 $0b
     dw   eyeSpy,       werewolf,     ghost             ;; 03:718a ??????      number 12 $0c
-    dw   data_03_7572, data_03_757a, data_03_7582      ;; 03:7190 ??????
-    dw   data_03_758a, data_03_758a, data_03_7592      ;; 03:7196 ??????
-    dw   data_03_758a, data_03_759a, data_03_75a2      ;; 03:719c ??????
-    dw   data_03_758a, data_03_75b2, gargoyle          ;; 03:71a2 ??????
+    dw   basilisk,     scorpion,     saurus            ;; 03:7190 ??????      number 13 $0d
+    dw   mummy,        mummy,        pakkunLizard      ;; 03:7196 ??????      number 14 $0e
+    dw   mummy,        cobra,        shadowZero        ;; 03:719c ??????      number 15 $0f
+    dw   mummy,        redWisp,      gargoyle          ;; 03:71a2 ??????      number 16 $10
     dw   zombie,       zombie,       data_03_75aa      ;; 03:71a8 ??????
     dw   ape,          molebear,     gallfish          ;; 03:71ae ??????      number 18 $12
-    dw   ogre,         spring,       gallfish          ;; 03:71b4 ??????
+    dw   ogre,         spring,       gallfish          ;; 03:71b4 ??????      number 19 $13
     dw   phantasm,     minotaur_x1,  gargoyle          ;; 03:71ba ??????      number 20 $14
     dw   phantasm,     phantasm,     mattockWest       ;; 03:71c0 ??????      number 21 $15
     dw   mattockNorth, wizard,       darkStalker       ;; 03:71c6 ??????      number 22 $16
@@ -33,14 +33,14 @@ NPCSpawnPointers:
     dw   data_03_762e, data_03_7636, walrus            ;; 03:71d8 ??????      number 25 $19
     dw   duckSoldier,  poto,         walrus            ;; 03:71de ??????      number 26 $1a
     dw   data_03_7656, data_03_765e, walrus            ;; 03:71e4 ??????      number 27 $1b
-    dw   data_03_7666, data_03_766e, data_03_7520      ;; 03:71ea ??????
-    dw   data_03_7676, data_03_766e, data_03_7520      ;; 03:71f0 ??????
+    dw   mandari,      griffonHand,  seaDragon         ;; 03:71ea ??????      number 28 $1c
+    dw   tortoise,     griffonHand,  seaDragon         ;; 03:71f0 ??????      number 29 $1d
     dw   fireMoth,     earthElement, gargoyle          ;; 03:71f6 ??????      number 30 $1e
-    dw   denden,       doppelMirror, guardian          ;; 03:71fc ??????
-    dw   mattockEast,  data_03_76a6, data_03_76ae      ;; 03:7202 ??????      number 32 $20
+    dw   denden,       doppelMirror, guardian          ;; 03:71fc ??????      number 31 $1f
+    dw   mattockEast,  evilSword,    deathGauntlet     ;; 03:7202 ??????      number 32 $20
     dw   garasha,      wonder,       guardian          ;; 03:7208 ??????      number 33 $21
-    dw   mammoo,       ninja,        guardian          ;; 03:720e ??????
-    dw   data_03_76e0, data_03_76e0, data_03_76d6      ;; 03:7214 ??????
+    dw   mammoo,       ninja,        guardian          ;; 03:720e ??????      number 34 $22
+    dw   demon,        demon,        data_03_76d6      ;; 03:7214 ??????      number 35 $23
     dw   data_03_7738, data_03_7738, willy             ;; 03:721a ......      number 36 $24
     dw   gladiator,    shieldlessPC, data_03_7756      ;; 03:7220 ......      number 37 $25
     dw   data_03_779a, data_03_771a, data_03_771a      ;; 03:7226 ??????
@@ -113,7 +113,7 @@ NPCSpawnPointers:
     dw   minotaur_x2,  minotaur_x2,  minotaur_x2       ;; 03:73b8 ??????
     dw   data_03_73d0, data_03_73d0, data_03_73d0      ;; 03:73be ??????
     dw   data_03_77ae, data_03_77ae, data_03_77ae      ;; 03:73c4 ??????
-    dw   data_03_7724, data_03_7724, data_03_7724      ;; 03:73ca ??????
+    dw   juliusBoss,   juliusBoss,   juliusBoss        ;; 03:73ca ??????      number 108 $6c
 
 ; Spawn tables:
 ; MinSpawn, MaxSpawn, 4x ID (picked at random), Y, X (repeated, $80 $80 indicates random position and ends list)
@@ -269,7 +269,7 @@ sahagin:
     db   1, 2, NPC_SAHAGIN, NPC_SAHAGIN, NPC_SAHAGIN, NPC_SAHAGIN ;; 03:7518 ??....
     db   $80, $80                                      ;; 03:751e ??
 
-data_03_7520:
+seaDragon:
     db   1, 3, NPC_SEA_DRAGON, NPC_SEA_DRAGON, NPC_SEA_DRAGON, NPC_SEA_DRAGON ;; 03:7520 ??????
     db   $80, $80                                      ;; 03:7526 ??
 
@@ -309,31 +309,31 @@ ghost:
     db   1, 2, NPC_GHOST, NPC_GHOST, NPC_GHOST, NPC_GHOST ;; 03:756a ??????
     db   $80, $80                                      ;; 03:7570 ??
 
-data_03_7572:
+basilisk:
     db   1, 2, NPC_BASILISK, NPC_BASILISK, NPC_BASILISK, NPC_BASILISK ;; 03:7572 ??????
     db   $80, $80                                      ;; 03:7578 ??
 
-data_03_757a:
+scorpion:
     db   1, 1, NPC_SCORPION, NPC_SCORPION, NPC_SCORPION, NPC_SCORPION ;; 03:757a ??????
     db   $80, $80                                      ;; 03:7580 ??
 
-data_03_7582:
+saurus:
     db   1, 2, NPC_SAURUS, NPC_SAURUS, NPC_SAURUS, NPC_SAURUS ;; 03:7582 ??????
     db   $80, $80                                      ;; 03:7588 ??
 
-data_03_758a:
+mummy:
     db   2, 3, NPC_MUMMY, NPC_MUMMY, NPC_MUMMY, NPC_MUMMY ;; 03:758a ??????
     db   $80, $80                                      ;; 03:7590 ??
 
-data_03_7592:
+pakkunLizard:
     db   1, 1, NPC_PAKKUN_LIZARD, NPC_PAKKUN_LIZARD, NPC_PAKKUN_LIZARD, NPC_PAKKUN_LIZARD ;; 03:7592 ??????
     db   $80, $80                                      ;; 03:7598 ??
 
-data_03_759a:
+cobra:
     db   1, 2, NPC_SNAKE, NPC_SNAKE, NPC_SNAKE, NPC_SNAKE ;; 03:759a ??????
     db   $80, $80                                      ;; 03:75a0 ??
 
-data_03_75a2:
+shadowZero:
     db   1, 2, NPC_SHADOW, NPC_SHADOW, NPC_SHADOW, NPC_SHADOW ;; 03:75a2 ??????
     db   $80, $80                                      ;; 03:75a8 ??
 
@@ -341,7 +341,7 @@ data_03_75aa:
     db   1, 2, NPC_BLACK_WIZARD, NPC_BLACK_WIZARD, NPC_BLACK_WIZARD, NPC_BLACK_WIZARD ;; 03:75aa ??????
     db   $80, $80                                      ;; 03:75b0 ??
 
-data_03_75b2:
+redWisp:
     db   1, 1, NPC_FLAME, NPC_FLAME, NPC_FLAME, NPC_FLAME ;; 03:75b2 ??????
     db   $80, $80                                      ;; 03:75b8 ??
 
@@ -429,15 +429,15 @@ data_03_765e:
     db   1, 2, NPC_BEHOLDER_EYE, NPC_BEHOLDER_EYE, NPC_BEHOLDER_EYE, NPC_BEHOLDER_EYE ;; 03:765e ??????
     db   $80, $80                                      ;; 03:7664 ??
 
-data_03_7666:
+mandari:
     db   1, 2, NPC_MANTA_RAY, NPC_MANTA_RAY, NPC_MANTA_RAY, NPC_MANTA_RAY ;; 03:7666 ??????
     db   $80, $80                                      ;; 03:766c ??
 
-data_03_766e:
+griffonHand:
     db   1, 1, NPC_JUMPING_HAND, NPC_JUMPING_HAND, NPC_JUMPING_HAND, NPC_JUMPING_HAND ;; 03:766e ??????
     db   $80, $80                                      ;; 03:7674 ??
 
-data_03_7676:
+tortoise:
     db   1, 2, NPC_TORTOISE, NPC_TORTOISE, NPC_TORTOISE, NPC_TORTOISE ;; 03:7676 ??????
     db   $80, $80                                      ;; 03:767c ??
 
@@ -461,11 +461,11 @@ guardian:
     db   1, 3, NPC_GUARDIAN, NPC_GUARDIAN, NPC_GUARDIAN, NPC_GUARDIAN ;; 03:769e ??????
     db   $80, $80                                      ;; 03:76a4 ??
 
-data_03_76a6:
+evilSword:
     db   1, 2, NPC_EVIL_SWORD, NPC_EVIL_SWORD, NPC_EVIL_SWORD, NPC_EVIL_SWORD ;; 03:76a6 ??????
     db   $80, $80                                      ;; 03:76ac ??
 
-data_03_76ae:
+deathGauntlet:
     db   1, 2, NPC_GAUNTLET, NPC_GAUNTLET, NPC_GAUNTLET, NPC_GAUNTLET ;; 03:76ae ??????
     db   $80, $80                                      ;; 03:76b4 ??
 
@@ -489,7 +489,7 @@ data_03_76d6:
     db   1, 1, NPC_JULIUS, NPC_JULIUS, NPC_JULIUS, NPC_JULIUS ;; 03:76d6 ??????
     db   $0a, $07, $80, $80                            ;; 03:76dc ????
 
-data_03_76e0:
+demon:
     db   1, 3, NPC_DEMON_HEAD, NPC_DEMON_HEAD, NPC_DEMON_HEAD, NPC_DEMON_HEAD ;; 03:76e0 ??????
     db   $80, $80                                      ;; 03:76e6 ??
 
@@ -517,7 +517,7 @@ data_03_771a:
     db   1, 1, NPC_JULIUS, NPC_JULIUS, NPC_JULIUS, NPC_JULIUS ;; 03:771a ??????
     db   $08, $09, $80, $80                            ;; 03:7720 ????
 
-data_03_7724:
+juliusBoss:
     db   3, 3, NPC_JULIUS, NPC_JULIUS, NPC_JULIUS, NPC_JULIUS ;; 03:7724 ??????
     db   $09, $04, $80, $80                            ;; 03:772a ????
 
