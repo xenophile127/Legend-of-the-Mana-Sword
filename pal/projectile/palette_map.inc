@@ -32,7 +32,7 @@
     COLOR_PALETTE_PROJECTILE 018              ; Rapier         $12 NPC_SKELETON, NPC_GARASHA_DUCK
     COLOR_PALETTE_PROJECTILE red              ; Scorpion Tail  $13 NPC_SCORPION
     COLOR_PALETTE_PROJECTILE red              ; Unused         $14 Only used by bosses. Included as a spacer.
-    COLOR_PALETTE_PROJECTILE red              ; Claw           $15 NPC_MOLEBEAR, NPC_KETTS_BUTTLER_WEREWOLF, NPC_WEREWOLF_2
+    COLOR_PALETTE_PROJECTILE 021              ; Claw           $15 NPC_MOLEBEAR, NPC_KETTS_BUTTLER_WEREWOLF, NPC_WEREWOLF_2
     COLOR_PALETTE_PROJECTILE ../attack/008    ; Nuke           $16 NPC_JULIUS
 ; Mimic could have a separate palette for its projectile but it's fine with the same colors.
     COLOR_PALETTE_PROJECTILE ../npc/041       ; Mimic Bite     $17 NPC_MIMIC_CHEST

@@ -17,13 +17,13 @@ NPCSpawnPointers:
     dw   orc,          deathCrab,    deathCrab         ;; 03:7178 ??????      number 09 $09
     dw   tarantula,    ruster,       mimic             ;; 03:717e ??????      number 10 $0a
     dw   mandrake,     mandrake,     porcupine         ;; 03:7184 ??????      number 11 $0b
-    dw   eyeSpy,       data_03_7562, ghost             ;; 03:718a ??????      number 12 $0c
+    dw   eyeSpy,       werewolf,     ghost             ;; 03:718a ??????      number 12 $0c
     dw   data_03_7572, data_03_757a, data_03_7582      ;; 03:7190 ??????
     dw   data_03_758a, data_03_758a, data_03_7592      ;; 03:7196 ??????
     dw   data_03_758a, data_03_759a, data_03_75a2      ;; 03:719c ??????
     dw   data_03_758a, data_03_75b2, gargoyle          ;; 03:71a2 ??????
     dw   zombie,       zombie,       data_03_75aa      ;; 03:71a8 ??????
-    dw   ape,          molebear,     gallfish          ;; 03:71ae ??????
+    dw   ape,          molebear,     gallfish          ;; 03:71ae ??????      number 18 $12
     dw   ogre,         spring,       gallfish          ;; 03:71b4 ??????
     dw   phantasm,     minotaur_x1,  gargoyle          ;; 03:71ba ??????      number 20 $14
     dw   phantasm,     phantasm,     mattockWest       ;; 03:71c0 ??????      number 21 $15
@@ -54,7 +54,7 @@ NPCSpawnPointers:
     dw   dwarf1,       dwarf1,       dwarf1            ;; 03:7256 ??????      number 46 $2e
     dw   dwarf4,       dwarf5,       dwarf5            ;; 03:725c ??????      number 57 $2f
     dw   data_03_7808, minecart,     injured           ;; 03:7262 ??????      number 48 $30
-    dw   data_03_77d6, data_03_78c2, data_03_78ca      ;; 03:7268 ??????
+    dw   buttler,      data_03_78c2, data_03_78ca      ;; 03:7268 ??????      number 49 $31
     dw   data_03_77ea, data_03_7a8e, data_03_7a8e      ;; 03:726e ??????
     dw   womanWendel,  girlWendel,   oldmanWendel      ;; 03:7274 ??????      number 51 $33
     dw   data_03_78dc, data_03_78e6, nukeTrigger       ;; 03:727a ??????      number 52 $34
@@ -95,11 +95,11 @@ NPCSpawnPointers:
     dw   nukeTrigger,  nukeTrigger,  data_03_77f4      ;; 03:734c ??????      number 87 $57
     dw   data_03_777c, prisonBars,   data_03_77b8      ;; 03:7352 ??????      number 88 $58
     dw   data_03_7b28, data_03_7b32, data_03_7b3c      ;; 03:7358 ......
-    dw   nukeTrigger,  data_03_77d6, data_03_77e0      ;; 03:735e ??????      number 90 $5a
+    dw   nukeTrigger,  buttler,      werewolfBoss      ;; 03:735e ??????      number 90 $5a
     dw   data_03_7a5c, data_03_7a84, data_03_7a84      ;; 03:7364 ......
     dw   data_03_7710, data_03_7786, data_03_7786      ;; 03:736a ??????
     dw   data_03_7706, data_03_7786, data_03_7786      ;; 03:7370 ??????      number 93 $5d (unused)
-    dw   data_03_7b18, data_03_7b46, data_03_7b46      ;; 03:7376 ??????
+    dw   werewolfPack, data_03_7b46, data_03_7b46      ;; 03:7376 ??????      number 94 $5e
     dw   data_03_742c, wererat,      data_03_7436      ;; 03:737c ??????      number 95 $5f
     dw   data_03_7790, nukeTrigger,  data_03_76fc      ;; 03:7382 ??????      number 96 $60
     dw   data_03_7ac0, data_03_7ac0, data_03_7ac0      ;; 03:7388 ??????      number 97 $61 (unused)
@@ -301,7 +301,7 @@ eyeSpy:
     db   1, 3, NPC_EYE_SPY, NPC_EYE_SPY, NPC_EYE_SPY, NPC_EYE_SPY ;; 03:755a ??????
     db   $80, $80                                      ;; 03:7560 ??
 
-data_03_7562:
+werewolf:
     db   1, 2, NPC_WEREWOLF_2, NPC_WEREWOLF_2, NPC_WEREWOLF_2, NPC_WEREWOLF_2 ;; 03:7562 ??????
     db   $80, $80                                      ;; 03:7568 ??
 
@@ -591,11 +591,11 @@ data_03_77cc:
     db   1, 1, NPC_BOGARD_3, NPC_BOGARD_3, NPC_BOGARD_3, NPC_BOGARD_3 ;; 03:77cc ??????
     db   $06, $07, $80, $80                            ;; 03:77d2 ????
 
-data_03_77d6:
+buttler:
     db   1, 1, NPC_KETTS_BUTTLER, NPC_KETTS_BUTTLER, NPC_KETTS_BUTTLER, NPC_KETTS_BUTTLER ;; 03:77d6 ??????
     db   $10, $07, $80, $80                            ;; 03:77dc ????
 
-data_03_77e0:
+werewolfBoss:
     db   1, 1, NPC_KETTS_BUTTLER_WEREWOLF, NPC_KETTS_BUTTLER_WEREWOLF, NPC_KETTS_BUTTLER_WEREWOLF, NPC_KETTS_BUTTLER_WEREWOLF ;; 03:77e0 ??????
     db   $10, $07, $80, $80                            ;; 03:77e6 ????
 
@@ -960,7 +960,7 @@ prisonBars:
     db   2, 2, NPC_PRISION_BARS, NPC_PRISION_BARS, NPC_PRISION_BARS, NPC_PRISION_BARS ;; 03:7b0c ??????
     db   $0a, $07, $09, $0e, $80, $80                  ;; 03:7b12 ??????
 
-data_03_7b18:
+werewolfPack:
     db   4, 4, NPC_WEREWOLF_2, NPC_WEREWOLF_2, NPC_WEREWOLF_2, NPC_WEREWOLF_2 ;; 03:7b18 ??????
     db   $02, $04, $02, $06, $02, $08, $02, $0a        ;; 03:7b1e ????????
     db   $80, $80                                      ;; 03:7b26 ??
