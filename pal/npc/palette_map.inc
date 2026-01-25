@@ -192,7 +192,7 @@
     COLOR_PALETTE_NPC 008              ; NPC_CHOCOBOT = $b8
     COLOR_PALETTE_NPC 185              ; NPC_CHOCOBO_1 = $b9
     COLOR_PALETTE_NPC 009              ; NPC_CHOCOBO_2 = $ba
-    COLOR_PALETTE_NPC blue             ; NPC_PRISION_BARS = $bb
+    COLOR_PALETTE_NPC 187              ; NPC_PRISION_BARS = $bb
     COLOR_PALETTE_NPC blue             ; NPC_MUSIC_NOTES = $bc
     COLOR_PALETTE_NPC blue             ; NPC_MAGIC_SALESMAN = $bd
     COLOR_PALETTE_NPC ../hero/good     ; NPC_HERO_SHIELDLESS = $be
