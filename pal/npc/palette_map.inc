@@ -98,7 +98,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_NINJA = $5a
     COLOR_PALETTE_NPC 091              ; NPC_JULIUS = $5b
     COLOR_PALETTE_NPC blue             ; NPC_DEMON_HEAD = $5c
-    COLOR_PALETTE_NPC blue             ; NPC_INV_DESSERT_CAVE_STONE = $5d
+    COLOR_PALETTE_NPC ../attack/008    ; NPC_INV_DESSERT_CAVE_STONE = $5d
     COLOR_PALETTE_NPC 094              ; NPC_SAHAGIN = $5e
     COLOR_PALETTE_NPC blue             ; NPC_SEA_DRAGON = $5f
     COLOR_PALETTE_NPC blue             ; NPC_GALL_FISH = $60

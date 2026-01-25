@@ -3259,7 +3259,7 @@ script_01e4:
     sEND                                               ;; 0d:576f $00
 
 script_01e5:
-    sCREATE_EFFECT $10, $0e, $0a, $00
+    sCREATE_EFFECT $10, $0e, $0a, INV_MAGIC_NUKE
     sSET_ROOM_TILE $4b, 7, 5                           ;; 0d:5774 $b0 $4b $07 $05
     sSET_FLAG wScriptFlags06.6                         ;; 0d:5778 $da $36
     sEND                                               ;; 0d:577a $00

@@ -57,13 +57,13 @@ NPCSpawnPointers:
     dw   data_03_77d6, data_03_78c2, data_03_78ca      ;; 03:7268 ??????
     dw   data_03_77ea, data_03_7a8e, data_03_7a8e      ;; 03:726e ??????
     dw   womanWendel,  girlWendel,   oldmanWendel      ;; 03:7274 ??????      number 51 $33
-    dw   data_03_78dc, data_03_78e6, data_03_7530      ;; 03:727a ??????
-    dw   data_03_77fe, data_03_7530, data_03_7530      ;; 03:7280 ??????
-    dw   data_03_7530, data_03_7530, data_03_7530      ;; 03:7286 ??????      number 54 $36 (unused)
+    dw   data_03_78dc, data_03_78e6, nukeTrigger       ;; 03:727a ??????      number 52 $34
+    dw   data_03_77fe, nukeTrigger,  nukeTrigger       ;; 03:7280 ??????      number 53 $35
+    dw   nukeTrigger,  nukeTrigger,  nukeTrigger       ;; 03:7286 ??????      number 54 $36 (unused)
     dw   data_03_7706, data_03_77a4, data_03_77f4      ;; 03:728c ??????
-    dw   data_03_7948, data_03_7950, data_03_7530      ;; 03:7292 ??????
-    dw   data_03_7958, data_03_7960, data_03_7530      ;; 03:7298 ??????
-    dw   data_03_7970, data_03_7968, data_03_7530      ;; 03:729e ??????
+    dw   data_03_7948, data_03_7950, nukeTrigger       ;; 03:7292 ??????      number 56 $38
+    dw   data_03_7958, data_03_7960, nukeTrigger       ;; 03:7298 ??????      number 57 $39
+    dw   data_03_7970, data_03_7968, nukeTrigger       ;; 03:729e ??????      number 58 $3a
     dw   data_03_7980, data_03_7988, data_03_7978      ;; 03:72a4 ??????
     dw   data_03_7990, data_03_7998, data_03_79a0      ;; 03:72aa ??????
     dw   data_03_79a8, data_03_79b0, data_03_79b0      ;; 03:72b0 ??????
@@ -77,10 +77,10 @@ NPCSpawnPointers:
     dw   data_03_7a24, data_03_7a2e, data_03_7a2e      ;; 03:72e0 ??????
     dw   data_03_7a42, data_03_7a38, data_03_7888      ;; 03:72e6 ??????
     dw   data_03_7a4a, data_03_7a38, data_03_7a38      ;; 03:72ec ??????
-    dw   data_03_79b8, data_03_79c0, data_03_7530      ;; 03:72f2 ??????
-    dw   data_03_79c8, data_03_79d0, data_03_7530      ;; 03:72f8 ??????
-    dw   data_03_7530, npcChocobotIsh, npcProfIsh      ;; 03:72fe ??????      number 74 $4a
-    dw   data_03_79d8, data_03_79e0, data_03_7530      ;; 03:7304 ??????      number 75 $4b (unused)
+    dw   data_03_79b8, data_03_79c0, nukeTrigger       ;; 03:72f2 ??????      number 72 $48
+    dw   data_03_79c8, data_03_79d0, nukeTrigger       ;; 03:72f8 ??????      number 73 $49
+    dw   nukeTrigger,  npcChocobotIsh, npcProfIsh      ;; 03:72fe ??????      number 74 $4a
+    dw   data_03_79d8, data_03_79e0, nukeTrigger       ;; 03:7304 ??????      number 75 $4b (unused)
     dw   data_03_77c2, data_03_7876, shieldlessPC      ;; 03:730a ??????
     dw   data_03_772e, data_03_7aee, data_03_7aee      ;; 03:7310 ??????
     dw   data_03_781c, data_03_7b02, data_03_7812      ;; 03:7316 ??????
@@ -91,17 +91,17 @@ NPCSpawnPointers:
     dw   data_03_7aa2, npcChocobo2Offscreen, willy     ;; 03:7334 ??????       number 83 $53
     dw   data_03_7a52, data_03_7a7a, data_03_7a7a      ;; 03:733a ......
     dw   data_03_7a66, data_03_7a70, data_03_7a70      ;; 03:7340 ......
-    dw   data_03_7880, data_03_7530, data_03_7530      ;; 03:7346 ??????      number 86 $56 (unused)
-    dw   data_03_7530, data_03_7530, data_03_77f4      ;; 03:734c ??????
+    dw   data_03_7880, nukeTrigger,  nukeTrigger       ;; 03:7346 ??????      number 86 $56 (unused)
+    dw   nukeTrigger,  nukeTrigger,  data_03_77f4      ;; 03:734c ??????      number 87 $57
     dw   data_03_777c, data_03_7b0c, data_03_77b8      ;; 03:7352 ??????
     dw   data_03_7b28, data_03_7b32, data_03_7b3c      ;; 03:7358 ......
-    dw   data_03_7530, data_03_77d6, data_03_77e0      ;; 03:735e ??????
+    dw   nukeTrigger,  data_03_77d6, data_03_77e0      ;; 03:735e ??????      number 90 $5a
     dw   data_03_7a5c, data_03_7a84, data_03_7a84      ;; 03:7364 ......
     dw   data_03_7710, data_03_7786, data_03_7786      ;; 03:736a ??????
     dw   data_03_7706, data_03_7786, data_03_7786      ;; 03:7370 ??????      number 93 $5d (unused)
     dw   data_03_7b18, data_03_7b46, data_03_7b46      ;; 03:7376 ??????
     dw   data_03_742c, wererat,      data_03_7436      ;; 03:737c ??????      number 95 $5f
-    dw   data_03_7790, data_03_7530, data_03_76fc      ;; 03:7382 ??????
+    dw   data_03_7790, nukeTrigger,  data_03_76fc      ;; 03:7382 ??????      number 96 $60
     dw   data_03_7ac0, data_03_7ac0, data_03_7ac0      ;; 03:7388 ??????      number 97 $61 (unused)
     dw   data_03_779a, data_03_77a4, data_03_77a4      ;; 03:738e ??????
     dw   data_03_7416, data_03_7416, data_03_7416      ;; 03:7394 ??????
@@ -277,7 +277,7 @@ gallfish:
     db   1, 1, NPC_GALL_FISH, NPC_GALL_FISH, NPC_GALL_FISH, NPC_GALL_FISH ;; 03:7528 ??????
     db   $80, $80                                      ;; 03:752e ??
 
-data_03_7530:
+nukeTrigger:
     db   1, 1, NPC_INV_DESSERT_CAVE_STONE, NPC_INV_DESSERT_CAVE_STONE, NPC_INV_DESSERT_CAVE_STONE, NPC_INV_DESSERT_CAVE_STONE ;; 03:7530 ??????
     db   $0e, $0a, $80, $80                            ;; 03:7536 ????
 
