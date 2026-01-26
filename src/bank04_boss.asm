@@ -824,7 +824,7 @@ bossClearStatsObjects:
     jr   NZ, .loop                                     ;; 04:4443 $20 $ea
 IF DEF(COLOR)
     ld a, $00
-    call loadPalettes
+    call loadPalettesBackground
 ENDC
     ret                                                ;; 04:4445 $c9
 

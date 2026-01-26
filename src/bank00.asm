@@ -7217,6 +7217,25 @@ loadNPCPalette_and_createObject:
     call createObject_speed2
     ret
 
+; Load a set of background palettes from ROM into RAM, and setup the transer to CRAM.
+; This loads the main palettes, flash palettes, dark palettes, and boss damage flash palettes.
+; Each has eight BGP palettes.
+; The OBJ palettes are untouched.
+; a = palette set number
+loadPalettesBackground:
+    push hl
+    push af
+    ; Switch to the palette bank
+    ld a, BANK(ColorPalettesROM)
+    call pushBankNrAndSwitch
+    pop af
+    call loadPalettesBackground_expansion
+    call popBankNrAndSwitch
+    ld hl, debugMsgLoadPaletteBackground
+    call logger
+    pop hl
+    ret
+
 ; Load a set of palettes from ROM into RAM, and setup the transer to CRAM.
 ; This loads the main palettes, flash palettes, dark palettes, and boss damage flash palettes.
 ; Each has eight OBJ palettes and eight BGP palettes.
@@ -7230,7 +7249,6 @@ loadPalettes:
     call pushBankNrAndSwitch
     ; Calculate the address of the palette
     pop af
-    push af
     add a, a
     add HIGH(ColorPalettesROM)
     ld h, a
@@ -7257,9 +7275,9 @@ loadPalettes:
 ; Prepare the copy to CRAM.
     call setPalettes
     call popBankNrAndSwitch
-    pop af
+    ld hl, debugMsgLoadPalette
+    call logger.hl
     pop hl
-    DBG_MSG_LABEL debugMsgLoadPalette
     ret
 
 colorInit:
