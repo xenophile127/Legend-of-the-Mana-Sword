@@ -53,8 +53,8 @@
     COLOR_PALETTE_NPC 045              ; NPC_EYE_SPY = $2d
     COLOR_PALETTE_NPC 046              ; NPC_WEREWOLF_2 = $2e
     COLOR_PALETTE_NPC 047              ; NPC_GHOST = $2f
-    COLOR_PALETTE_NPC blue             ; NPC_BASILISK = $30
-    COLOR_PALETTE_NPC red              ; NPC_SCORPION = $31
+    COLOR_PALETTE_NPC 048              ; NPC_BASILISK = $30
+    COLOR_PALETTE_NPC 049              ; NPC_SCORPION = $31
     COLOR_PALETTE_NPC blue             ; NPC_SAURUS = $32
     COLOR_PALETTE_NPC blue             ; NPC_MUMMY = $33
     COLOR_PALETTE_NPC blue             ; NPC_PAKKUN_LIZARD = $34

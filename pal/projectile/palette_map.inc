@@ -30,7 +30,7 @@
     COLOR_PALETTE_PROJECTILE ../npc/022       ; Spear          $10 NPC_LIZARDMAN
     COLOR_PALETTE_PROJECTILE red              ; Sword          $11 NPC_GLAIVE_KNIGHT, NPC_SHADOW_KNIGHT, NPC_DUCK_SOLDIER
     COLOR_PALETTE_PROJECTILE 018              ; Rapier         $12 NPC_SKELETON, NPC_GARASHA_DUCK
-    COLOR_PALETTE_PROJECTILE red              ; Scorpion Tail  $13 NPC_SCORPION
+    COLOR_PALETTE_PROJECTILE ../npc/049       ; Scorpion Tail  $13 NPC_SCORPION
     COLOR_PALETTE_PROJECTILE red              ; Unused         $14 Only used by bosses. Included as a spacer.
     COLOR_PALETTE_PROJECTILE 021              ; Claw           $15 NPC_MOLEBEAR, NPC_KETTS_BUTTLER_WEREWOLF, NPC_WEREWOLF_2
     COLOR_PALETTE_PROJECTILE ../attack/008    ; Nuke           $16 NPC_JULIUS
