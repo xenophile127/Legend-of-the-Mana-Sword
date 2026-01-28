@@ -8343,7 +8343,7 @@ script_040b:
 script_040c:
     sIF_TRIGGERED_ON_BY $c9, $c1, $e1, $f1
       sIF_FLAG wScriptFlags0F.0, wScriptFlags0F.1, wScriptFlags0F.2, !wScriptFlags0F.3 ;; 0e:52a4 $08 $78 $79 $7a $fb $00 $0a
-        sCREATE_EFFECT $10, $0e, $02, $00
+        sCREATE_EFFECT $10, $0e, $02, INV_ITEM_MATTOK
         sSET_ROOM_TILE $4c, 7, 1                       ;; 0e:52af $b0 $4c $07 $01
       sELSE                                            ;; 0e:52b3 $01 $08
         sCLEAR_FLAG wScriptFlags0F.0                   ;; 0e:52b5 $db $78
@@ -10787,7 +10787,7 @@ script_0537:
       sSFX 20                                          ;; 0e:6666 $f9 $14
       sFLASH_SCREEN                                    ;; 0e:6668 $bf
     sEND                                               ;; 0e:6669 $00
-    sCREATE_EFFECT $10, $0c, $0c, $00
+    sCREATE_EFFECT $10, $0c, $0c, INV_MAGIC_NUKE
     sSET_PLAYER_HURT_SPRITE                            ;; 0e:666e $a5
     sLOOP 5
       sPLAYER_STEP_BACKWARD                            ;; 0e:6672 $81
