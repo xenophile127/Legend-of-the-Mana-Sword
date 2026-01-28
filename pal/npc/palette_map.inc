@@ -89,7 +89,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_EARTH_DIGGER = $51
     COLOR_PALETTE_NPC blue             ; NPC_DENDEN_SNAIL = $52
     COLOR_PALETTE_NPC blue             ; NPC_DOPPEL_MIRROR = $53
-    COLOR_PALETTE_NPC blue             ; NPC_GUARDIAN = $54
+    COLOR_PALETTE_NPC 084              ; NPC_GUARDIAN = $54
     COLOR_PALETTE_NPC blue             ; NPC_EVIL_SWORD = $55
     COLOR_PALETTE_NPC blue             ; NPC_GAUNTLET = $56
     COLOR_PALETTE_NPC 087              ; NPC_GARASHA_DUCK = $57

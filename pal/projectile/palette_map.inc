@@ -11,7 +11,7 @@
     COLOR_PALETTE_PROJECTILE 002              ; Needle         $02 NPC_PORCUPINE
     COLOR_PALETTE_PROJECTILE 003              ; Harpoon        $03 NPC_CHIBIDEVIL, NPC_ORC, NPC_TORTOISE, NPC_SAHAGIN
     COLOR_PALETTE_PROJECTILE ../hero/good     ; Reflection     $04 NPC_DOPPEL_MIRROR
-    COLOR_PALETTE_PROJECTILE red              ; Laser          $05 NPC_GUARDIAN
+    COLOR_PALETTE_PROJECTILE 005              ; Laser          $05 NPC_GUARDIAN
     COLOR_PALETTE_PROJECTILE red              ; Axe            $06 NPC_MINOTAUR
     COLOR_PALETTE_PROJECTILE 007              ; Scissors       $07 NPC_CRAB
     COLOR_PALETTE_PROJECTILE 008              ; Ring Beam      $08 NPC_EYE_SPY, NPC_FUZZY_WONDER
