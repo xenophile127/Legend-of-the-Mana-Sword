@@ -100,7 +100,7 @@ ENDC
       BOSS_HEADER_GFX $40, $18, bossGfxMetalCrab, tileorderIflyteMetalCrab, metaspritesIflyteMetalCrab ;; 04:48f1 ????????
       dw statsMetalCrab, data_04_50fd, data_04_50fd, data_04_566d ;; 04:48f9 ????????
     BOSS_HEADER $08, $af, $c7, $dc, $06, $ff, script_0246 ;; 04:4901 ????????
-      BOSS_HEADER_GFX $40, $18, bossGfxMantisAnt, tileorderCommon, metaspritesChimeraMantisAnt ;; 04:4909 ????????
+      BOSS_HEADER_GFX $38, $1c, bossGfxMantisAnt, tileorderCommon, metaspritesChimeraMantisAnt ;; 04:4909 ????????
       dw statsMantisAnt, data_04_504d, data_04_504d, data_04_55b3 ;; 04:4911 ????????
     BOSS_HEADER $08, $bb, $00, $fa, $09, $14, script_024f ;; 04:4919 ????????
       BOSS_HEADER_GFX $38, $1c, bossGfxDragon, tileorderDragon, metaspritesDragon ;; 04:4921 ????????
