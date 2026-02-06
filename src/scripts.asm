@@ -4043,14 +4043,11 @@ script_0219:
     sIF_EQUIPED INV_ITEM_POTION_AMANDA                 ;; 0d:65ed $09 $2a $00 $53
       sSET_MUSIC 0                                     ;; 0d:65f1 $f8 $00
       sMSG                                             ;; 0d:65f3 $04
-        db "<10><BOY> used <POT>Tears,\nthe tears of\n", $00
+        db "<10><BOY> uses <POT>Tears,\nthe tears of\n", $00
       sCALL script_0433
       sMSG
-        db "__", $00
-      sDELAY 120                                       ;; 0d:660e $f0 $78
+        db "__<12><11>", $00
       sTAKE_EQUIPED_ITEM                               ;; 0d:6610 $de
-      sMSG                                             ;; 0d:6611 $04
-        db "<11>", $00                                 ;; 0d:6612
       sDEL_NPC_1                                       ;; 0d:6614 $18
       sSFX 6                                           ;; 0d:6615 $f9 $06
       sSPAWN_NPC 2                                     ;; 0d:6617 $fd $02
