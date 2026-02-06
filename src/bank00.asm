@@ -5257,7 +5257,7 @@ speedUpScripts:
 ; Check that the next command is in the whitelist.
     ld a, [wScriptCommand]
     ld c, a
-    ld b, (.speedupList - .speedupListEnd)
+    ld b, (.speedupListEnd - .speedupList)
     ld hl, .speedupList
 .search:
     ld a, [hl+]
