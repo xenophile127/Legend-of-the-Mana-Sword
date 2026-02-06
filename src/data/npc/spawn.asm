@@ -72,9 +72,9 @@ NPCSpawnPointers:
     dw   airshipCrew2, airshipCrew3, airshipCrew4      ;; 03:72c2 ??????      number 64 $40
     dw   data_03_783a, data_03_7858, data_03_7862      ;; 03:72c8 ??????
     dw   data_03_7768, data_03_7772, data_03_7772      ;; 03:72ce ??????
-    dw   data_03_79e8, data_03_79f2, data_03_79fc      ;; 03:72d4 ??????
-    dw   data_03_7a06, data_03_7a10, data_03_7a1a      ;; 03:72da ??????
-    dw   data_03_7a24, data_03_7a2e, data_03_7a2e      ;; 03:72e0 ??????
+    dw   tablet1,      tablet2,      tablet3           ;; 03:72d4 ??????      number 67 $43
+    dw   tablet4,      tablet5,      tablet6           ;; 03:72da ??????      number 68 $44
+    dw   tablet7,      tablet8,      tablet8           ;; 03:72e0 ??????      number 69 $45
     dw   data_03_7a42, data_03_7a38, data_03_7888      ;; 03:72e6 ??????
     dw   data_03_7a4a, data_03_7a38, data_03_7a38      ;; 03:72ec ??????
     dw   data_03_79b8, data_03_79c0, nukeTrigger       ;; 03:72f2 ??????      number 72 $48
@@ -101,7 +101,7 @@ NPCSpawnPointers:
     dw   data_03_7706, data_03_7786, data_03_7786      ;; 03:7370 ??????      number 93 $5d (unused)
     dw   werewolfPack, data_03_7b46, data_03_7b46      ;; 03:7376 ??????      number 94 $5e
     dw   data_03_742c, wererat,      data_03_7436      ;; 03:737c ??????      number 95 $5f
-    dw   data_03_7790, nukeTrigger,  data_03_76fc      ;; 03:7382 ??????      number 96 $60
+    dw   fujiWindow,   nukeTrigger,  data_03_76fc      ;; 03:7382 ??????      number 96 $60
     dw   data_03_7ac0, data_03_7ac0, data_03_7ac0      ;; 03:7388 ??????      number 97 $61 (unused)
     dw   data_03_779a, data_03_77a4, data_03_77a4      ;; 03:738e ??????
     dw   data_03_7416, data_03_7416, data_03_7416      ;; 03:7394 ??????
@@ -563,7 +563,7 @@ data_03_7786:
     db   1, 1, NPC_FUJI_2, NPC_FUJI_2, NPC_FUJI_2, NPC_FUJI_2 ;; 03:7786 ??????
     db   $08, $0e, $80, $80                            ;; 03:778c ????
 
-data_03_7790:
+fujiWindow:
     db   1, 1, NPC_FUJI_WINDOW, NPC_FUJI_WINDOW, NPC_FUJI_WINDOW, NPC_FUJI_WINDOW ;; 03:7790 ??????
     db   $0a, $06, $80, $80                            ;; 03:7796 ????
 
@@ -836,35 +836,35 @@ data_03_79e0:
     db   1, 1, NPC_GUY_ISH_4, NPC_GUY_ISH_4, NPC_GUY_ISH_4, NPC_GUY_ISH_4 ;; 03:79e0 ??????
     db   $80, $80                                      ;; 03:79e6 ??
 
-data_03_79e8:
+tablet1:
     db   1, 1, NPC_INV_STONE_1, NPC_INV_STONE_1, NPC_INV_STONE_1, NPC_INV_STONE_1 ;; 03:79e8 ??????
-    db   $09, $04, $80, $80                            ;; 03:79ee ????
+    db   $09, $1c, $80, $80                            ;; 03:79ee ????
 
-data_03_79f2:
+tablet2:
     db   1, 1, NPC_INV_STONE_2, NPC_INV_STONE_2, NPC_INV_STONE_2, NPC_INV_STONE_2 ;; 03:79f2 ??????
     db   $09, $04, $80, $80                            ;; 03:79f8 ????
 
-data_03_79fc:
+tablet3:
     db   1, 1, NPC_INV_STONE_3, NPC_INV_STONE_3, NPC_INV_STONE_3, NPC_INV_STONE_3 ;; 03:79fc ??????
     db   $09, $06, $80, $80                            ;; 03:7a02 ????
 
-data_03_7a06:
+tablet4:
     db   1, 1, NPC_INV_STONE_4, NPC_INV_STONE_4, NPC_INV_STONE_4, NPC_INV_STONE_4 ;; 03:7a06 ??????
     db   $09, $06, $80, $80                            ;; 03:7a0c ????
 
-data_03_7a10:
+tablet5:
     db   1, 1, NPC_INV_STONE_5, NPC_INV_STONE_5, NPC_INV_STONE_5, NPC_INV_STONE_5 ;; 03:7a10 ??????
     db   $09, $02, $80, $80                            ;; 03:7a16 ????
 
-data_03_7a1a:
+tablet6:
     db   1, 1, NPC_INV_STONE_6, NPC_INV_STONE_6, NPC_INV_STONE_6, NPC_INV_STONE_6 ;; 03:7a1a ??????
     db   $09, $02, $80, $80                            ;; 03:7a20 ????
 
-data_03_7a24:
+tablet7:
     db   1, 1, NPC_INV_STONE_7, NPC_INV_STONE_7, NPC_INV_STONE_7, NPC_INV_STONE_7 ;; 03:7a24 ??????
     db   $09, $06, $80, $80                            ;; 03:7a2a ????
 
-data_03_7a2e:
+tablet8:
     db   1, 1, NPC_INV_STONE_8, NPC_INV_STONE_8, NPC_INV_STONE_8, NPC_INV_STONE_8 ;; 03:7a2e ??????
     db   $09, $06, $80, $80                            ;; 03:7a34 ????
 
