@@ -3119,7 +3119,7 @@ script_01c9:
     sSET_FLAG wScriptFlags05.6                         ;; 0d:54fc $da $2e
     ; Jackal's flag was reused for Bone Key logic. Set it back to its usual state.
     sSET_FLAG wScriptFlags01.0
-    sCREATE_EFFECT $10, $10, $04, $00
+    sCREATE_EFFECT $10, $10, $04, INV_ITEM_MATTOK
     sSET_ROOM_TILE $4c, 8, 2                           ;; 0d:5502 $b0 $4c $08 $02
     sDELAY 30                                          ;; 0d:5506 $f0 $1e
     sSET_MUSIC 7                                       ;; 0d:5508 $f8 $07
