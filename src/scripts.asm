@@ -2983,19 +2983,14 @@ script_01bd:
     sSET_ROOM_TILE $6b, 8, 7                           ;; 0d:53c9 $b0 $6b $08 $07
     sMSG                                               ;; 0d:53cd $04
       db "<10>Defeated\n   Shadow Knight!<12>"
-      db "<1b>Received <PENDANT>Pendant_", $00
-    sDELAY 100                                         ;; 0d:53eb $f0 $64
-    sMSG                                               ;; 0d:53ed $04
+      db "<1b>Received <PENDANT>Pendant_<12>"
       db "<1b><BOY>:_", $00                            ;; 0d:53ee
     sDELAY 100                                         ;; 0d:53f3 $f0 $64
     sMSG                                               ;; 0d:53f5 $04
       db "_", $00                                      ;; 0d:53f6
     sDELAY 60                                          ;; 0d:53f8 $f0 $3c
     sMSG                                               ;; 0d:53fa $04
-      db " It's fake!\n _ Then, where is\n the real Pendant?", $00 ;; 0d:53fb
-    sDELAY 80                                          ;; 0d:541b $f0 $50
-    sMSG                                               ;; 0d:541d $04
-      db "<11>", $00                                   ;; 0d:541e
+      db " It's fake!\n _ Then, where is\n the real Pendant?<12><11>", $00
     sCLEAR_FLAG wScriptFlags0A.1                       ;; 0d:5420 $db $51
     sSET_FLAG wScriptFlags05.4                         ;; 0d:5422 $da $2c
     sSET_MUSIC 14                                      ;; 0d:5424 $f8 $0e
