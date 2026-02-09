@@ -7932,10 +7932,10 @@ script_03e8:
         sSFX 37                                        ;; 0e:4fc5 $f9 $25
         sFLASH_SCREEN                                  ;; 0e:4fc7 $bf
         sFLASH_SCREEN                                  ;; 0e:4fc8 $bf
-        sCREATE_EFFECT $10, $06, $04, $00
-        sCREATE_EFFECT $10, $0a, $03, $00
-        sCREATE_EFFECT $10, $08, $05, $00
-        sCREATE_EFFECT $10, $0c, $04, $00
+        sCREATE_EFFECT $10, $06, $04, INV_ITEM_MATTOK
+        sCREATE_EFFECT $10, $0a, $03, INV_MAGIC_FIRE
+        sCREATE_EFFECT $10, $08, $05, INV_ITEM_FLARE_BAZOOKA
+        sCREATE_EFFECT $10, $0c, $04, INV_MAGIC_NUKE
         sSFX 37                                        ;; 0e:4fd9 $f9 $25
         sSET_ROOM_TILE $6c, 3, 2                       ;; 0e:4fdb $b0 $6c $03 $02
         sSET_ROOM_TILE $66, 4, 2                       ;; 0e:4fdf $b0 $66 $04 $02
@@ -11256,9 +11256,9 @@ script_053d:
 script_053e:
     sSET_NPC_1_DIRECTION_LEFT                          ;; 0e:6ec6 $17
     sSET_MUSIC 0                                       ;; 0e:6ec7 $f8 $00
-    sCREATE_EFFECT $10, $03, $02, $00
-    sCREATE_EFFECT $10, $05, $04, $00
-    sCREATE_EFFECT $10, $04, $03, $00
+    sCREATE_EFFECT $10, $03, $02, INV_ITEM_CANDY
+    sCREATE_EFFECT $10, $05, $04, INV_MAGIC_CURE
+    sCREATE_EFFECT $10, $04, $03, INV_MAGIC_HEAL
     sDELAY 40                                          ;; 0e:6ed5 $f0 $28
     sLOOP 6
       sPLAYER_STEP_FORWARD                             ;; 0e:6eda $80
