@@ -7225,6 +7225,8 @@ loadNPCPalette_and_createObject:
 ; a = palette set number
 loadPalettesBackground:
     push hl
+    ld hl, debugMsgLoadPaletteBackground
+    call logger.hl
     push af
     ; Switch to the palette bank
     ld a, BANK(ColorPalettesROM)
@@ -7232,8 +7234,6 @@ loadPalettesBackground:
     pop af
     call loadPalettesBackground_expansion
     call popBankNrAndSwitch
-    ld hl, debugMsgLoadPaletteBackground
-    call logger
     pop hl
     ret
 
