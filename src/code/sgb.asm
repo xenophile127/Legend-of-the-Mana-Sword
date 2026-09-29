@@ -68,19 +68,19 @@ checkSGB:
     ld c, LOW(rP1)
 .loop:
     ld a, P1F_GET_DPAD
-    ld [c], a ; Set P1.4 low to simulate normal reading.
-    ld a, [c]
-    ld a, [c]
+    ldh [c], a ; Set P1.4 low to simulate normal reading.
+    ldh a, [c]
+    ldh a, [c]
     ld a, P1F_GET_BTN
-    ld [c], a ; Set P1.5 low to advance to the next joypad.
-    ld a, [c]
-    ld a, [c]
+    ldh [c], a ; Set P1.5 low to advance to the next joypad.
+    ldh a, [c]
+    ldh a, [c]
     ld a, P1F_GET_NONE
-    ld [c], a ; Set P1.4 and P1.5 high to read the joypad id.
-    ld a, [c]
-    ld a, [c]
-    ld a, [c]
-    ld a, [c]
+    ldh [c], a ; Set P1.4 and P1.5 high to read the joypad id.
+    ldh a, [c]
+    ldh a, [c]
+    ldh a, [c]
+    ldh a, [c]
     and $03
     cp $03
     jp nz, .is_sgb
