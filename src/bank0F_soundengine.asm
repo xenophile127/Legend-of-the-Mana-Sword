@@ -1413,28 +1413,46 @@ musicVibratoAndVolumeJump:
     ld   A, [HL+]                                      ;; 0f:493a $2a
     ret                                                ;; 0f:493b $c9
 
+; Start a sound effect.
+; a = sound effect number.
+; Sound effects can use channel 1 and channel 4. Channel 1 is also used by music.
+; Originally, any sound effect would affect channel 1 of music,
+; even if it did not play anything on channel 1.
+; This has been changed to support a $0000 pointer for channel 1 to skip the code that affected music.
+; Channel 4 does not have this handling (and a pointer of $0000 would cause problems).
+; This code is a little more clever than I would like in order to fit in the original space.
 soundEffectPlay:
     dec  A                                             ;; 0f:493c $3d
     add  A, A                                          ;; 0f:493d $87
-    ld   E, A                                          ;; 0f:493e $5f
-    ld   D, $00                                        ;; 0f:493f $16 $00
-    ld   HL, soundEffectDataChannel1                   ;; 0f:4941 $21 $3c $7b
-    add  HL, DE                                        ;; 0f:4944 $19
-    ld   A, [HL+]                                      ;; 0f:4945 $2a
-    ld   [wSoundEffectInstructionPointerChannel1], A   ;; 0f:4946 $ea $c4 $c1
-    ld   A, [HL]                                       ;; 0f:4949 $7e
-    ld   [wSoundEffectInstructionPointerChannel1.high], A ;; 0f:494a $ea $c5 $c1
-    ld   HL, soundEffectDataChannel4                   ;; 0f:494d $21 $86 $7b
-    add  HL, DE                                        ;; 0f:4950 $19
-    ld   A, [HL+]                                      ;; 0f:4951 $2a
-    ld   [wSoundEffectInstructionPointerChannel4], A   ;; 0f:4952 $ea $c6 $c1
-    ld   A, [HL+]                                      ;; 0f:4955 $2a
-    ld   [wSoundEffectInstructionPointerChannel4.high], A ;; 0f:4956 $ea $c7 $c1
-    ld   A, $01                                        ;; 0f:4959 $3e $01
-    ld   [wSoundEffectDurationChannel1], A             ;; 0f:495b $ea $1a $c1
-    ld   [wSoundEffectDurationChannel4], A             ;; 0f:495e $ea $4a $c1
-    xor  A, A                                          ;; 0f:4961 $af
-    ldh  [hSFX], A                                     ;; 0f:4962 $e0 $92
+    ld e, a
+    xor a
+    ld d, a
+; Clear the sound effect request while a is zero.
+    ldh [hSFX], a
+; Sound effect duration is set to 1 so that the sound channel is started immediately by soundEffectPlayStep.
+    inc a
+    ld [wSoundEffectDurationChannel4], a
+    ld hl, soundEffectDataChannel4
+    add hl, de
+    ld a, [hl+]
+    ld b, [hl]
+    ld hl, wSoundEffectInstructionPointerChannel4
+    ld [hl+], a
+    ld [hl], b
+; Channel 1 is conditional on the high byte of the pointer being non-zero.
+; Low byte is not checked as an optimization. This means loading the high byte first.
+    ld hl, (soundEffectDataChannel1 + 1)
+    add hl, de
+    ld a, [hl-]
+; If the pointer high byte is $00 then skip setup of channel 1.
+    or a
+    ret z
+    ld d, [hl]
+    ld hl, wSoundEffectInstructionPointerChannel1.high
+    ld [hl-], a
+    ld [hl], d
+    ld a, $01
+    ld [wSoundEffectDurationChannel1], a
     ret                                                ;; 0f:4964 $c9
 
 soundEffectPlayStep:
@@ -12371,12 +12389,15 @@ data_0f_7b1c:
     db   $bb, $bb, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00 ;; 0f:7b1c ???????????????? $05
     db   $ff, $cc, $99, $66, $99, $cc, $ff, $00, $00, $00, $00, $00, $00, $00, $00, $00 ;; 0f:7b2c ???????????????? $06
 
+; Sounds that do not use channel 1 now use $0000 instead of soundEffectChannelUnused.
+; This is checked for when they are playing and prevents audio glitches with music channel 1.
+; Sound $22 ($21) is an exception since it is used as a mute.
 ;@data format=p amount=37
 soundEffectDataChannel1:
     dw   soundEffect00_Channel1                        ;; 0f:7b3c .. $00
     dw   soundEffect01_Channel1                        ;; 0f:7b3e .. $01
-    dw   soundEffectChannelUnused                      ;; 0f:7b40 ?? $02
-    dw   soundEffectChannelUnused                      ;; 0f:7b42 ?? $03
+    dw   $0000                                         ;; 0f:7b40 ?? $02
+    dw   $0000                                         ;; 0f:7b42 ?? $03
     dw   soundEffect04_Channel1                        ;; 0f:7b44 .. $04
     dw   soundEffect05_Channel1                        ;; 0f:7b46 ?? $05
     dw   data_0f_7c4c                                  ;; 0f:7b48 ?? $06
@@ -12385,20 +12406,20 @@ soundEffectDataChannel1:
     dw   data_0f_7c93                                  ;; 0f:7b4e ?? $09
     dw   data_0f_7cb4                                  ;; 0f:7b50 .. $0a
     dw   data_0f_7cd1                                  ;; 0f:7b52 .. $0b
-    dw   soundEffectChannelUnused                      ;; 0f:7b54 .. $0c
+    dw   $0000                                         ;; 0f:7b54 .. $0c
     dw   data_0f_7ce2                                  ;; 0f:7b56 .. $0d
     dw   data_0f_7cf3                                  ;; 0f:7b58 .. $0e
-    dw   soundEffectChannelUnused                      ;; 0f:7b5a .. $0f
-    dw   soundEffectChannelUnused                      ;; 0f:7b5c .. $10
+    dw   $0000                                         ;; 0f:7b5a .. $0f
+    dw   $0000                                         ;; 0f:7b5c .. $10
     dw   data_0f_7d21                                  ;; 0f:7b5e .. $11
     dw   data_0f_7d2e                                  ;; 0f:7b60 ?? $12
-    dw   soundEffectChannelUnused                      ;; 0f:7b62 .. $13
+    dw   $0000                                         ;; 0f:7b62 .. $13
     dw   data_0f_7d3f                                  ;; 0f:7b64 .. $14
     dw   data_0f_7d4c                                  ;; 0f:7b66 ?? $15
-    dw   soundEffectChannelUnused                      ;; 0f:7b68 ?? $16
+    dw   $0000                                         ;; 0f:7b68 ?? $16
     dw   data_0f_7d9e                                  ;; 0f:7b6a ?? $17
-    dw   soundEffectChannelUnused                      ;; 0f:7b6c ?? $18
-    dw   soundEffectChannelUnused                      ;; 0f:7b6e ?? $19
+    dw   $0000                                         ;; 0f:7b6c ?? $18
+    dw   $0000                                         ;; 0f:7b6e ?? $19
     dw   data_0f_7dbf                                  ;; 0f:7b70 ?? $1a
     dw   data_0f_7de1                                  ;; 0f:7b72 ?? $1b
     dw   data_0f_7df5                                  ;; 0f:7b74 ?? $1c
@@ -12406,10 +12427,10 @@ soundEffectDataChannel1:
     dw   data_0f_7e2f                                  ;; 0f:7b78 ?? $1e
     dw   data_0f_7e52                                  ;; 0f:7b7a .. $1f
     dw   data_0f_7e66                                  ;; 0f:7b7c ?? $20
-    dw   soundEffectChannelUnused                      ;; 0f:7b7e ?? $21
+    dw   soundEffectChannelUnused                      ;; 0f:7b7e ?? $21 Used to mute the sword spin special.
     dw   data_0f_7ea2                                  ;; 0f:7b80 .. $22
     dw   data_0f_7ea9                                  ;; 0f:7b82 .. $23
-    dw   soundEffectChannelUnused                      ;; 0f:7b84 ?? $24
+    dw   $0000                                         ;; 0f:7b84 ?? $24
 
 ;@data format=p amount=37
 soundEffectDataChannel4:
@@ -12657,17 +12678,14 @@ data_0f_7e66:
     db   $00                                           ;; 0f:7e96 ?
 
 ; Sound effect 21 used zero-length play commands in its channels.
+; It did that because it was a "mute" sound used to stop repeating sounds.
 ; Functionally, this is no different than using soundEffectChannelUnused
 ; so they are now unused.
+soundEffect21_Channel1:
+    db   $00, $00, $00, $00, $00, $80, $00             ;; 0f:7e97 ???????
 
-ds 11 ; Free space
-
-;soundEffect21_Channel1:
-;    db   $00, $00, $00, $00, $00, $80, $00             ;; 0f:7e97 ???????
-
-;soundEffect21_Channel4:
-;    db   $00, $00, $00, $00                            ;; 0f:7e9e ????
-
+soundEffect21_Channel4:
+    db   $00, $00, $00, $00                            ;; 0f:7e9e ????
 
 data_0f_7ea2:
     db   $16, $27, $40, $f0, $4a, $86, $00             ;; 0f:7ea2 .......
