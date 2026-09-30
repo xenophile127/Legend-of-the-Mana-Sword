@@ -5465,7 +5465,7 @@ InitPreIntEnable:
     call FillHL_with_A_times_BC                        ;; 00:2035 $cd $54 $2b
     ld   A, $00                                        ;; 00:2038 $3e $00
     ld   HL, _OAMRAM ;@=ptr _OAMRAM                    ;; 00:203a $21 $00 $fe
-    ld   B, $a0                                        ;; 00:203d $06 $a0
+    ld   B, (OAM_COUNT * sizeof_OAM_ATTRS)             ;; 00:203d $06 $a0
     call fillMemory                                    ;; 00:203f $cd $5d $2b
     ld   HL, OAM_DMA_Routine                           ;; 00:2047 $21 $60 $21
     ld   DE, hOAM_DMA_Routine                          ;; 00:204a $11 $80 $ff

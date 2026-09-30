@@ -2644,12 +2644,12 @@ attackTileGrassCommon:
 attackTileCheckTile:
     ret nz
 ; Check y range
-    ld a, $0f
+    ld a, (SCRN_Y_B - 3)
     cp a, d
     ret c
 
 ; Check x range
-    ld a, $13
+    ld a, (SCRN_X_B - 1)
     cp e
     ret c
 
