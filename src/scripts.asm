@@ -11307,10 +11307,18 @@ script_053e:
 
 script_053f:
     sSET_MUSIC 0                                       ;; 0e:6fba $f8 $00
-    sCREATE_EFFECT $10, $04, $04, $00
-    sCREATE_EFFECT $10, $0a, $08, $00
-    sCREATE_EFFECT $10, $07, $03, $00
-    sCREATE_EFFECT $10, $0d, $02, $00
+; The ending explosion effect. Originally four explosions.
+; For color make it eight and use the Mana Spirit colors.
+    sCREATE_EFFECT $10, $04, $04, INV_MAGIC_CURE
+    sCREATE_EFFECT $10, $0a, $08, INV_MAGIC_HEAL
+    sCREATE_EFFECT $10, $07, $03, INV_MAGIC_MUTE
+    sCREATE_EFFECT $10, $0d, $02, INV_MAGIC_SLEP
+IF DEF(COLOR)
+    sCREATE_EFFECT $10, $04, $04, INV_MAGIC_FIRE
+    sCREATE_EFFECT $10, $0a, $08, INV_MAGIC_ICE
+    sCREATE_EFFECT $10, $07, $03, INV_MAGIC_LIT
+    sCREATE_EFFECT $10, $0d, $02, INV_MAGIC_NUKE
+ENDC
     sLOOP 10
       sFLASH_SCREEN                                    ;; 0e:6fcf $bf
       sSFX 20                                          ;; 0e:6fd0 $f9 $14
@@ -11860,6 +11868,9 @@ script_0543:
     sSET_ROOM_TILE $5c, 6, 0                           ;; 0e:77ac $b0 $5c $06 $00
     sEND                                               ;; 0e:77b0 $00
 
+; Start of the third script bank.
+SECTION "script bank 3", ROMX[$4000], BANK[SCRIPT_BANK_1 + 2]
+
 script_0544:
     sSET_ROOM_TILE $6c, 3, 0                           ;; 0e:77b1 $b0 $6c $03 $00
     sSET_ROOM_TILE $72, 4, 0                           ;; 0e:77b5 $b0 $72 $04 $00
@@ -11903,9 +11914,6 @@ script_0544:
     sFLASH_SCREEN                                      ;; 0e:783b $bf
     sSFX 37                                            ;; 0e:783c $f9 $25
     sEND                                               ;; 0e:783e $00
-
-; Start of the third script bank.
-SECTION "script bank 3", ROMX[$4000], BANK[SCRIPT_BANK_1 + 2]
 
 script_0545:
     sLOOP 4
