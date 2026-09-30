@@ -1704,7 +1704,7 @@ moveObject:
 ; Skip collision handling if in a script or otherwise non-interactive.
     ld   A, [wMainGameStateFlags]                      ;; 00:096e $fa $a1 $c0
     bit  2, A                                          ;; 00:0971 $cb $57
-    jr   NZ, .jr_00_099f                               ;; 00:0973 $20 $2a
+    jr   NZ, .move                                     ;; 00:0973 $20 $2a
 ; Calculate the object id from hl, which currently points to the object's y position.
     push BC                                            ;; 00:0975 $c5
     push DE                                            ;; 00:0976 $d5
@@ -1740,7 +1740,7 @@ moveObject:
     ld   A, [HL-]                                      ;; 00:099c $3a
     add  A, E                                          ;; 00:099d $83
     ld   E, A                                          ;; 00:099e $5f
-.jr_00_099f:
+.move:
 ; Move the object to the new position and calculate the move vectors.
     ld   A, D                                          ;; 00:099f $7a
     ld   B, [HL]                                       ;; 00:09a0 $46
@@ -1811,48 +1811,52 @@ moveObject:
     ld   C, A                                          ;; 00:09e7 $4f
 ; c = object collision flags.
     pop  HL                                            ;; 00:09e8 $e1
+; hl = YX movement deltas.
+; Check for movement in the Y direction.
     ld   A, $00                                        ;; 00:09e9 $3e $00
     cp   A, H                                          ;; 00:09eb $bc
-    jr   Z, .jr_00_0a0e                                ;; 00:09ec $28 $20
+    jr   Z, .check_x                                   ;; 00:09ec $28 $20
     bit  7, H                                          ;; 00:09ee $cb $7c
     jr   Z, .jr_00_0a01                                ;; 00:09f0 $28 $0f
     ld   A, H                                          ;; 00:09f2 $7c
     and  A, $f0                                        ;; 00:09f3 $e6 $f0
     cp   A, $f0                                        ;; 00:09f5 $fe $f0
-    jr   Z, .jr_00_09fd                                ;; 00:09f7 $28 $04
+    jr   Z, .north                                     ;; 00:09f7 $28 $04
     bit  3, H                                          ;; 00:09f9 $cb $5c
-    jr   NZ, .jr_00_0a0a                               ;; 00:09fb $20 $0d
-.jr_00_09fd:
-    ld   A, $04                                        ;; 00:09fd $3e $04
-    jr   .jr_00_0a1b                                   ;; 00:09ff $18 $1a
+    jr   NZ, .south                                    ;; 00:09fb $20 $0d
+.north:
+    ld   A, DIRECTIONF_NORTH                           ;; 00:09fd $3e $04
+    jr   .check_script                                 ;; 00:09ff $18 $1a
 .jr_00_0a01:
     ld   A, H                                          ;; 00:0a01 $7c
     and  A, $f0                                        ;; 00:0a02 $e6 $f0
-    jr   Z, .jr_00_0a0a                                ;; 00:0a04 $28 $04
+    jr   Z, .south                                     ;; 00:0a04 $28 $04
     bit  3, H                                          ;; 00:0a06 $cb $5c
-    jr   Z, .jr_00_09fd                                ;; 00:0a08 $28 $f3
-.jr_00_0a0a:
-    ld   A, $08                                        ;; 00:0a0a $3e $08
-    jr   .jr_00_0a1b                                   ;; 00:0a0c $18 $0d
-.jr_00_0a0e:
+    jr   Z, .north                                     ;; 00:0a08 $28 $f3
+.south:
+    ld   A, DIRECTIONF_SOUTH                           ;; 00:0a0a $3e $08
+    jr   .check_script                                 ;; 00:0a0c $18 $0d
+; Check for movement in the X direction.
+.check_x:
     cp   A, L                                          ;; 00:0a0e $bd
-    jr   Z, .jr_00_0a2a                                ;; 00:0a0f $28 $19
+    jr   Z, .unmoved                                   ;; 00:0a0f $28 $19
     bit  7, L                                          ;; 00:0a11 $cb $7d
-    jr   Z, .jr_00_0a19                                ;; 00:0a13 $28 $04
-    ld   A, $02                                        ;; 00:0a15 $3e $02
-    jr   .jr_00_0a1b                                   ;; 00:0a17 $18 $02
-.jr_00_0a19:
-    ld   A, $01                                        ;; 00:0a19 $3e $01
-.jr_00_0a1b:
+    jr   Z, .east                                      ;; 00:0a13 $28 $04
+    ld   A, DIRECTIONF_WEST                            ;; 00:0a15 $3e $02
+    jr   .check_script                                 ;; 00:0a17 $18 $02
+.east:
+    ld   A, DIRECTIONF_EAST                            ;; 00:0a19 $3e $01
+.check_script:
+; wMainGameStateFlags bit 1 is set during scripts.
     ld   HL, wMainGameStateFlags                       ;; 00:0a1b $21 $a1 $c0
     bit  1, [HL]                                       ;; 00:0a1e $cb $4e
-    jr   NZ, .jr_00_0a25                               ;; 00:0a20 $20 $03
+    jr   NZ, .moved                                    ;; 00:0a20 $20 $03
     call call_00_1815                                  ;; 00:0a22 $cd $15 $18
-.jr_00_0a25:
+.moved:
     call call_00_177e                                  ;; 00:0a25 $cd $7e $17
     xor  A, A                                          ;; 00:0a28 $af
     ret                                                ;; 00:0a29 $c9
-.jr_00_0a2a:
+.unmoved:
     call call_00_177e                                  ;; 00:0a2a $cd $7e $17
     xor  A, A                                          ;; 00:0a2d $af
     scf                                                ;; 00:0a2e $37
@@ -4347,6 +4351,9 @@ call_00_177e:
     ld   B, A                                          ;; 00:1812 $47
     jr   .finish                                       ;; 00:1813 $18 $e0
 
+; A = direction (1:east, 2:west, 4:north, 8:south)
+; C = object collision flags
+; DE = object pixel location
 call_00_1815:
     push DE                                            ;; 00:1815 $d5
     push AF                                            ;; 00:1816 $f5
@@ -4367,42 +4374,42 @@ call_00_1815:
     srl  E                                             ;; 00:182d $cb $3b
     dec  E                                             ;; 00:182f $1d
     push DE                                            ;; 00:1830 $d5
-    bit  0, A                                          ;; 00:1831 $cb $47
-    jr   NZ, .jr_00_1843                               ;; 00:1833 $20 $0e
-    bit  1, A                                          ;; 00:1835 $cb $4f
-    jr   NZ, .jr_00_1857                               ;; 00:1837 $20 $1e
-    bit  2, A                                          ;; 00:1839 $cb $57
-    jr   NZ, .jr_00_186b                               ;; 00:183b $20 $2e
-    bit  3, A                                          ;; 00:183d $cb $5f
-    jr   NZ, .jr_00_1892                               ;; 00:183f $20 $51
-    jr   .jr_00_18b9                                   ;; 00:1841 $18 $76
-.jr_00_1843:
+    bit  DIRECTIONB_EAST, A                            ;; 00:1831 $cb $47
+    jr   NZ, .east                                     ;; 00:1833 $20 $0e
+    bit  DIRECTIONB_WEST, A                            ;; 00:1835 $cb $4f
+    jr   NZ, .west                                     ;; 00:1837 $20 $1e
+    bit  DIRECTIONB_NORTH, A                           ;; 00:1839 $cb $57
+    jr   NZ, .north                                    ;; 00:183b $20 $2e
+    bit  DIRECTIONB_SOUTH, A                           ;; 00:183d $cb $5f
+    jr   NZ, .south                                    ;; 00:183f $20 $51
+    jr   .return                                       ;; 00:1841 $18 $76
+.east:
     bit  0, E                                          ;; 00:1843 $cb $43
     jr   NZ, .jr_00_184f                               ;; 00:1845 $20 $08
     dec  E                                             ;; 00:1847 $1d
     ld   B, $81                                        ;; 00:1848 $06 $81
     call tileScriptOrSpikeDamage                       ;; 00:184a $cd $00 $17
-    jr   .jr_00_18b9                                   ;; 00:184d $18 $6a
+    jr   .return                                       ;; 00:184d $18 $6a
 .jr_00_184f:
     inc  E                                             ;; 00:184f $1c
     ld   B, $01                                        ;; 00:1850 $06 $01
     call tileScriptOrSpikeDamage                       ;; 00:1852 $cd $00 $17
-    jr   .jr_00_18b9                                   ;; 00:1855 $18 $62
-.jr_00_1857:
+    jr   .return                                       ;; 00:1855 $18 $62
+.west:
     bit  0, E                                          ;; 00:1857 $cb $43
     jr   NZ, .jr_00_1864                               ;; 00:1859 $20 $09
     inc  E                                             ;; 00:185b $1c
     inc  E                                             ;; 00:185c $1c
     ld   B, $82                                        ;; 00:185d $06 $82
     call tileScriptOrSpikeDamage                       ;; 00:185f $cd $00 $17
-    jr   .jr_00_18b9                                   ;; 00:1862 $18 $55
+    jr   .return                                       ;; 00:1862 $18 $55
 .jr_00_1864:
     ld   B, $02                                        ;; 00:1864 $06 $02
     call tileScriptOrSpikeDamage                       ;; 00:1866 $cd $00 $17
-    jr   .jr_00_18b9                                   ;; 00:1869 $18 $4e
-.jr_00_186b:
+    jr   .return                                       ;; 00:1869 $18 $4e
+.north:
     bit  0, D                                          ;; 00:186b $cb $42
-    jr   Z, .jr_00_18b9                                ;; 00:186d $28 $4a
+    jr   Z, .return                                    ;; 00:186d $28 $4a
     bit  0, E                                          ;; 00:186f $cb $43
     jr   Z, .jr_00_1883                                ;; 00:1871 $28 $10
     push DE                                            ;; 00:1873 $d5
@@ -4423,10 +4430,10 @@ call_00_1815:
     inc  D                                             ;; 00:188a $14
     ld   B, $84                                        ;; 00:188b $06 $84
     call tileScriptOrSpikeDamage                       ;; 00:188d $cd $00 $17
-    jr   .jr_00_18b9                                   ;; 00:1890 $18 $27
-.jr_00_1892:
+    jr   .return                                       ;; 00:1890 $18 $27
+.south:
     bit  0, D                                          ;; 00:1892 $cb $42
-    jr   NZ, .jr_00_18b9                               ;; 00:1894 $20 $23
+    jr   NZ, .return                                   ;; 00:1894 $20 $23
     bit  0, E                                          ;; 00:1896 $cb $43
     jr   Z, .jr_00_18aa                                ;; 00:1898 $28 $10
     push DE                                            ;; 00:189a $d5
@@ -4447,8 +4454,8 @@ call_00_1815:
     dec  D                                             ;; 00:18b1 $15
     ld   B, $88                                        ;; 00:18b2 $06 $88
     call tileScriptOrSpikeDamage                       ;; 00:18b4 $cd $00 $17
-    jr   .jr_00_18b9                                   ;; 00:18b7 $18 $00
-.jr_00_18b9:
+    jr   .return                                       ;; 00:18b7 $18 $00
+.return:
     call popBankNrAndSwitch                            ;; 00:18b9 $cd $0a $2a
     pop  DE                                            ;; 00:18bc $d1
     pop  BC                                            ;; 00:18bd $c1
