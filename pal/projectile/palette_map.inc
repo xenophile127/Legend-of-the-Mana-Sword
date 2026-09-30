@@ -17,7 +17,7 @@
     COLOR_PALETTE_PROJECTILE 008              ; Ring Beam      $08 NPC_EYE_SPY, NPC_FUZZY_WONDER
     COLOR_PALETTE_PROJECTILE 009              ; Rock           $09 NPC_OGRE, NPC_ELEPHANT
     COLOR_PALETTE_PROJECTILE 010              ; Shuriken       $0a NPC_NINJA
-    COLOR_PALETTE_PROJECTILE red              ; Beam           $0b NPC_PHANTASM, NPC_GLAIVE_MAGE
+    COLOR_PALETTE_PROJECTILE 011              ; Beam           $0b NPC_PHANTASM, NPC_GLAIVE_MAGE
 
 ; ; Note: Fire does fire damage, and can be blocked by Ice Shield, or reduced by Flame Armor..
     COLOR_PALETTE_PROJECTILE 012              ; Fire           $0c NPC_DRAGONFLY, NPC_SEA_DRAGON

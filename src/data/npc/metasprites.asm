@@ -309,14 +309,14 @@ metaspritesDeathGauntlet:
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $54, $56
 
 metaspritesDarkStalker:
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $6a, $68
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $68, $6a
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $60, $62
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $58, $5a
-    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $6e, $6c
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6c, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $64, $66
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $5c, $5e
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $6a, $68
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $68, $6a
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $60, $62
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $58, $5a
+    db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC2, $6e, $6c
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $6c, $6e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $64, $66
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC2, $5c, $5e
 
 metaspritesShadowKnight:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $52, $50

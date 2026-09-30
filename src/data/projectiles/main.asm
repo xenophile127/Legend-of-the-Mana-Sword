@@ -32,7 +32,7 @@ projectileDataTable:
     data_bbbbbbbbpppp $72, $08, $08, $08, $32, $08, $30, $04, gfxProjectileRing, data_09_46f9, metasprites30Static_npc_pal3, pattern_simple ;; 09:44f9 ???????????????? $08
     data_bbbbbbbbpppp $62, $08, $08, $08, $46, $00, $30, $04, gfxProjectileRock, data_09_46f9, metasprites30BiasRotate, pattern_simple ;; 09:4509 ???????????????? $09
     data_bbbbbbbbpppp $72, $08, $08, $40, $89, $00, $38, $04, gfxProjectileNinjaStar, data_09_46f9, metasprites38Pulsing, pattern_simple ;; 09:4519 ???????????????? $0a
-    data_bbbbbbbbpppp $72, $08, $08, $40, $3e, $04, $30, $04, gfxProjectileOrb, data_09_46f9, metasprites30Pulsing, pattern_simple ;; 09:4529 ???????????????? $0b
+    data_bbbbbbbbpppp $72, $08, $08, $40, $3e, $04, $30, $04, gfxProjectileOrb, data_09_46f9, metasprites30Pulsing_pal_npc3, pattern_simple ;; 09:4529 ???????????????? $0b
     data_bbbbbbbbpppp $72, $08, $08, $10, $50, $00, $38, $04, gfxProjectileFire, data_09_46f9, metasprites38FourDirections, pattern_simple ;; 09:4539 ???????????????? $0c
     data_bbbbbbbbpppp $62, $08, $08, $20, $5f, $00, $30, $04, gfxProjectileIce, data_09_46f9, projectileIceMetatileTable, pattern_simple ;; 09:4549 ???????????????? $0d
     data_bbbbbbbbpppp $62, $08, $08, $40, $30, $00, $38, $04, gfxProjectileLightning, data_09_46f9, metasprites38FourDirections, pattern_simple ;; 09:4559 ???????????????? $0e

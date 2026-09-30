@@ -133,6 +133,19 @@ metasprites38Pulsing:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $3c, $3e
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_PROJECTILE, $3c, $3e
 
+; Alternate between two static frames;
+; Modified so that Mage can use Beam while Knight uses Sword,
+; and Phantasm can use Beam while Minotaur uses Axe.
+metasprites30Pulsing_pal_npc3:
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $30, $32
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $34, $36
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $34, $36
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $34, $36
+    db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC3, $34, $36
+
 ; Used by Scorpions and Mimic Chests, though chests only attack north.
 ; One frame, mirrored only east/west.
 metasprites38XMirror:
