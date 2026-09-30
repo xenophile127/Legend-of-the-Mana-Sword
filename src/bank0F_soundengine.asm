@@ -12406,7 +12406,7 @@ soundEffectDataChannel1:
     dw   data_0f_7e2f                                  ;; 0f:7b78 ?? $1e
     dw   data_0f_7e52                                  ;; 0f:7b7a .. $1f
     dw   data_0f_7e66                                  ;; 0f:7b7c ?? $20
-    dw   data_0f_7e97                                  ;; 0f:7b7e ?? $21
+    dw   soundEffectChannelUnused                      ;; 0f:7b7e ?? $21
     dw   data_0f_7ea2                                  ;; 0f:7b80 .. $22
     dw   data_0f_7ea9                                  ;; 0f:7b82 .. $23
     dw   soundEffectChannelUnused                      ;; 0f:7b84 ?? $24
@@ -12415,7 +12415,7 @@ soundEffectDataChannel1:
 soundEffectDataChannel4:
     dw   soundEffect00_Channel4                        ;; 0f:7b86 .. $00
     dw   soundEffect01_Channel4                        ;; 0f:7b88 .. $01
-    dw   soundEffect02_Channel1                        ;; 0f:7b8a ?? $02
+    dw   soundEffect02_Channel4                        ;; 0f:7b8a ?? $02
     dw   soundEffect03_Channel4                        ;; 0f:7b8c ?? $03
     dw   soundEffectChannelUnused                      ;; 0f:7b8e .. $04
     dw   soundEffect05_Channel4                        ;; 0f:7b90 ?? $05
@@ -12446,7 +12446,7 @@ soundEffectDataChannel4:
     dw   data_0f_7e42                                  ;; 0f:7bc2 ?? $1e
     dw   data_0f_7e5f                                  ;; 0f:7bc4 .. $1f
     dw   soundEffectChannelUnused                      ;; 0f:7bc6 ?? $20
-    dw   data_0f_7e9e                                  ;; 0f:7bc8 ?? $21
+    dw   soundEffectChannelUnused                      ;; 0f:7bc8 ?? $21
     dw   soundEffectChannelUnused                      ;; 0f:7bca .. $22
     dw   soundEffectChannelUnused                      ;; 0f:7bcc .. $23
     dw   soundEffect24_Channel4                        ;; 0f:7bce ?? $24
@@ -12468,7 +12468,7 @@ soundEffect01_Channel1:
 soundEffect01_Channel4:
     db   $02, $8a, $2f, $04, $7a, $32, $00             ;; 0f:7bf2 .......
 
-soundEffect02_Channel1:
+soundEffect02_Channel4:
     db   $2a, $f8, $56, $00                            ;; 0f:7bf9 ????
 
 soundEffect03_Channel4:
@@ -12656,11 +12656,18 @@ data_0f_7e66:
     db   $df, $87, $05, $2f, $80, $f8, $ff, $87        ;; 0f:7e8e ????????
     db   $00                                           ;; 0f:7e96 ?
 
-data_0f_7e97:
-    db   $00, $00, $00, $00, $00, $80, $00             ;; 0f:7e97 ???????
+; Sound effect 21 used zero-length play commands in its channels.
+; Functionally, this is no different than using soundEffectChannelUnused
+; so they are now unused.
 
-data_0f_7e9e:
-    db   $00, $00, $00, $00                            ;; 0f:7e9e ????
+ds 11 ; Free space
+
+;soundEffect21_Channel1:
+;    db   $00, $00, $00, $00, $00, $80, $00             ;; 0f:7e97 ???????
+
+;soundEffect21_Channel4:
+;    db   $00, $00, $00, $00                            ;; 0f:7e9e ????
+
 
 data_0f_7ea2:
     db   $16, $27, $40, $f0, $4a, $86, $00             ;; 0f:7ea2 .......
@@ -12669,4 +12676,4 @@ data_0f_7ea9:
     db   $16, $2f, $40, $f8, $4a, $87, $00             ;; 0f:7ea9 .......
 
 soundEffect24_Channel4:
-    db   $3a, $f0, $8a                                 ;; 0f:7eb0 ???
+    db   $3a, $f0, $8a, $00                            ;; 0f:7eb0 ????
