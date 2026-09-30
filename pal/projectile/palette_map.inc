@@ -12,7 +12,7 @@
     COLOR_PALETTE_PROJECTILE 003              ; Harpoon        $03 NPC_CHIBIDEVIL, NPC_ORC, NPC_TORTOISE, NPC_SAHAGIN
     COLOR_PALETTE_PROJECTILE ../hero/good     ; Reflection     $04 NPC_DOPPEL_MIRROR
     COLOR_PALETTE_PROJECTILE 005              ; Laser          $05 NPC_GUARDIAN
-    COLOR_PALETTE_PROJECTILE red              ; Axe            $06 NPC_MINOTAUR
+    COLOR_PALETTE_PROJECTILE 006              ; Axe            $06 NPC_MINOTAUR
     COLOR_PALETTE_PROJECTILE 007              ; Scissors       $07 NPC_CRAB
     COLOR_PALETTE_PROJECTILE 008              ; Ring Beam      $08 NPC_EYE_SPY, NPC_FUZZY_WONDER
     COLOR_PALETTE_PROJECTILE 009              ; Rock           $09 NPC_OGRE, NPC_ELEPHANT
@@ -28,7 +28,7 @@
     COLOR_PALETTE_PROJECTILE ../attack/007    ; Lightning Bolt $0e NPC_CLOUD
     COLOR_PALETTE_PROJECTILE 015              ; Poison Thread  $0f NPC_SPIDER, NPC_MEGA_FLYTRAP
     COLOR_PALETTE_PROJECTILE ../npc/022       ; Spear          $10 NPC_LIZARDMAN
-    COLOR_PALETTE_PROJECTILE red              ; Sword          $11 NPC_GLAIVE_KNIGHT, NPC_SHADOW_KNIGHT, NPC_DUCK_SOLDIER
+    COLOR_PALETTE_PROJECTILE 017              ; Sword          $11 NPC_GLAIVE_KNIGHT, NPC_SHADOW_KNIGHT, NPC_DUCK_SOLDIER
     COLOR_PALETTE_PROJECTILE 018              ; Rapier         $12 NPC_SKELETON, NPC_GARASHA_DUCK
     COLOR_PALETTE_PROJECTILE ../npc/049       ; Scorpion Tail  $13 NPC_SCORPION
     COLOR_PALETTE_PROJECTILE red              ; Unused         $14 Only used by bosses. Included as a spacer.
