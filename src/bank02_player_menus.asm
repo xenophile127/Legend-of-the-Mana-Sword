@@ -3131,9 +3131,9 @@ clearSaveLoadScreen:
 clearVRAMArea:
     ld   A, $7f                                        ;; 02:566a $3e $7f
 ; de is used to skip from the end of one line to the beginning of the next.
-    ld de, $0020 - $0014
+    ld de, (SCRN_VX_B - SCRN_X_B)
 .loop_outer:
-    ld c, $14
+    ld c, SCRN_X_B
 .loop_inner:
 ; Rather than checking PPU mode this loop just keeps trying to write until successful.
     ld [hl], a
@@ -7860,10 +7860,15 @@ gameStateTitleScreen:
     dw   titleScreenIntroScrollInterupted              ;; 02:7bf2 pP $03
     dw   titleScreenShowMenu                           ;; 02:7bf4 pP $04
 
-ds 6 ; Free space
+ds 2 ; Free space
 
 ; Called when New Game is selected
 titleScreenIntroScrollStart:
+; First clear the menu and copyright text.
+    ld hl, _SCRN0 + (11 * SCRN_VX_B)
+    ld b, $06
+    call clearVRAMArea
+; Scroll Y is already 0 but it backs it up and sets it to 0 anyway.
     ld   HL, wVideoSCY                                 ;; 02:7bf6 $21 $a7 $c0
     ld   A, [HL]                                       ;; 02:7bf9 $7e
     ld   [wIntroScrollSCYBackup], A                    ;; 02:7bfa $ea $88 $d8
