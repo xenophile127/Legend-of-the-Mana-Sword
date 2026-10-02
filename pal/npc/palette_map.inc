@@ -64,7 +64,7 @@
     COLOR_PALETTE_NPC red              ; NPC_FLAME = $38
     COLOR_PALETTE_NPC blue             ; NPC_GARGOYLE = $39
     COLOR_PALETTE_NPC blue             ; NPC_MONKEY = $3a
-    COLOR_PALETTE_NPC blue             ; NPC_MOLEBEAR = $3b
+    COLOR_PALETTE_NPC 059              ; NPC_MOLEBEAR = $3b
     COLOR_PALETTE_NPC blue             ; NPC_OGRE = $3c
     COLOR_PALETTE_NPC blue             ; NPC_BARNACLEJACK = $3d
     COLOR_PALETTE_NPC 062              ; NPC_PHANTASM = $3e
@@ -101,7 +101,7 @@
     COLOR_PALETTE_NPC ../attack/008    ; NPC_INV_DESSERT_CAVE_STONE = $5d
     COLOR_PALETTE_NPC 094              ; NPC_SAHAGIN = $5e
     COLOR_PALETTE_NPC blue             ; NPC_SEA_DRAGON = $5f
-    COLOR_PALETTE_NPC blue             ; NPC_GALL_FISH = $60
+    COLOR_PALETTE_NPC 096              ; NPC_GALL_FISH = $60
     COLOR_PALETTE_NPC 097              ; NPC_WILLY = $61
     COLOR_PALETTE_NPC 002              ; NPC_MYSTERYMAN_1 = $62
     COLOR_PALETTE_NPC 005              ; NPC_AMANDA_1 = $63
