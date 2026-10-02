@@ -462,12 +462,16 @@ getMainGameStateForPlayerForm:
 .chocoboat:
     ld   A, $0e                                        ;; 00:02e7 $3e $0e
     ret                                                ;; 00:02e9 $c9
-    db   $c9                                           ;; 00:02ea ?
 
+; Initialize the LCDC interrupt.
 initLCDCEffect:
     ld   A, STATF_LYC                                  ;; 00:02eb $3e $40
     ldh  [rSTAT], A                                    ;; 00:02ed $e0 $41
     call setDefaultLCDCEffect                          ;; 00:02ef $cd $13 $03
+; Set the status bar to the default palette to prevent it from affecting the title screen.
+; Although this is a DMG palette, it is used to lookup the color palette.
+    ld a, $e4
+    ld [wLCDCEffectBuffer + 3], a
     ret                                                ;; 00:02f2 $c9
 
 ; Load a new effect.
