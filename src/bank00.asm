@@ -1855,7 +1855,7 @@ moveObject:
     ld   HL, wMainGameStateFlags                       ;; 00:0a1b $21 $a1 $c0
     bit  1, [HL]                                       ;; 00:0a1e $cb $4e
     jr   NZ, .moved                                    ;; 00:0a20 $20 $03
-    call call_00_1815                                  ;; 00:0a22 $cd $15 $18
+    call prepareTileScriptOrSpikeDamage
 .moved:
     call call_00_177e                                  ;; 00:0a25 $cd $7e $17
     xor  A, A                                          ;; 00:0a28 $af
@@ -4358,7 +4358,7 @@ call_00_177e:
 ; A = direction (1:east, 2:west, 4:north, 8:south)
 ; C = object collision flags
 ; DE = object pixel location
-call_00_1815:
+prepareTileScriptOrSpikeDamage:
     push DE                                            ;; 00:1815 $d5
     push AF                                            ;; 00:1816 $f5
     push BC                                            ;; 00:1817 $c5
@@ -7088,25 +7088,32 @@ HLandDE:
     or   A, H                                          ;; 00:29b8 $b4
     ret                                                ;; 00:29b9 $c9
 
+; This function snaps object C to the nearest 8px boundary.
+; It has been modified to check for tile interactions.
 snapObjectToNearestTile8:
-    ld e, c
-    call GetObjectY                                    ;; 00:29bb $cd $3e $0c
+    push BC                                            ;; 00:29ba $c5
+    call getObjectDirection ; sets HL to entry in wObjectRuntimeData
+    and  A, $0f ; retain just facing direction
+    push AF
+    inc  HL
+    inc  HL
+    ld   A, [HL+] ; collision flags
+    inc  HL
+    ld   C, A
+    ld   A, [HL+] ; y position
     call snapPositionToNearestTile8                    ;; 00:29be $cd $dc $29
-    ld c, e
-    ld d, a
-    call GetObjectX                                    ;; 00:29c4 $cd $2d $0c
+    ld   D, A
+    ld   A, [HL] ; x position
     call snapPositionToNearestTile8                    ;; 00:29c7 $cd $dc $29
-    ld c, e
     ld   E, A                                          ;; 00:29cb $5f
-    push DE                                            ;; 00:29cd $d5
-    push BC                                            ;; 00:29ce $c5
-    call getObjectDirection                            ;; 00:29cf $cd $99 $0c
-    and  A, $0f                                        ;; 00:29d2 $e6 $0f
+    pop  AF
+    push AF
+    ; check for tile or spike damage interactions on 8px snaps
+    call prepareTileScriptOrSpikeDamage
+    pop  AF
     pop  BC                                            ;; 00:29d4 $c1
-    pop  DE                                            ;; 00:29d5 $d1
     ld   B, $00                                        ;; 00:29d6 $06 $00
-    call updateObjectPosition                          ;; 00:29d8 $cd $11 $06
-    ret                                                ;; 00:29db $c9
+    jp   updateObjectPosition
 
 snapPositionToNearestTile8:
     add $04
