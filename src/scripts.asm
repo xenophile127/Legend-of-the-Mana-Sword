@@ -1080,6 +1080,17 @@ script_00b8:
       sSPAWN_NPC 0                                     ;; 0d:45ee $fd $00
       sSPAWN_NPC 1                                     ;; 0d:45f0 $fd $01
     sENDIF                                             ;; 0d:45f2
+; Clear the temporary flags.
+; This script is used by the room where you have to put snowmen on two switches
+; just before Ifrit.
+; Since the temporary flags weren't being cleared it was possible to save the
+; game after activating one switch and have your progress be saved.
+; This also meant that (under most conditions) if you returned to this
+; room you would only have to hit one switch.
+; Another way to fix this would be to give the room its own entry script and flag
+; so that the stairway would be permanently enabled after the puzzle.
+    sCLEAR_FLAG wScriptFlags0F.1
+    sCLEAR_FLAG wScriptFlags0F.0
     sEND                                               ;; 0d:45f2 $00
 
 script_00b9:
