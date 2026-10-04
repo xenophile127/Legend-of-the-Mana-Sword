@@ -155,9 +155,9 @@
     COLOR_PALETTE_NPC 147              ; NPC_OLDMAN_MENOS_2 = $93
     COLOR_PALETTE_NPC 148              ; NPC_GIRL_MENOS = $94
     COLOR_PALETTE_NPC 149              ; NPC_WOMAN_MENOS_2 = $95
-    COLOR_PALETTE_NPC blue             ; NPC_GIRL_JADD_1 = $96
-    COLOR_PALETTE_NPC blue             ; NPC_OLDMAN_JADD = $97
-    COLOR_PALETTE_NPC blue             ; NPC_GIRL_JADD_2 = $98
+    COLOR_PALETTE_NPC 150              ; NPC_GIRL_JADD_1 = $96
+    COLOR_PALETTE_NPC 151              ; NPC_OLDMAN_JADD = $97
+    COLOR_PALETTE_NPC 152              ; NPC_GIRL_JADD_2 = $98
     COLOR_PALETTE_NPC blue             ; NPC_GUY_JADD = $99
     COLOR_PALETTE_NPC blue             ; NPC_DWARF_JADD = $9a
     COLOR_PALETTE_NPC 155              ; NPC_SALESMAN_JADD = $9b

@@ -64,10 +64,10 @@ NPCSpawnPointers:
     dw   data_03_7948, data_03_7950, nukeTrigger       ;; 03:7292 ??????      number 56 $38
     dw   data_03_7958, data_03_7960, nukeTrigger       ;; 03:7298 ??????      number 57 $39
     dw   data_03_7970, data_03_7968, nukeTrigger       ;; 03:729e ??????      number 58 $3a
-    dw   data_03_7980, data_03_7988, data_03_7978      ;; 03:72a4 ??????
+    dw   oldmanJadd,   lesterGFJadd, haterJadd         ;; 03:72a4 ??????      number 59 $3b
     dw   data_03_7990, data_03_7998, data_03_79a0      ;; 03:72aa ??????
     dw   data_03_79a8, data_03_79b0, data_03_79b0      ;; 03:72b0 ??????
-    dw   data_03_7844, data_03_7844, data_03_784e      ;; 03:72b6 ??????
+    dw   data_03_7844, data_03_7844, lesterMusic       ;; 03:72b6 ??????      number 62 $3e
     dw   airshipCrew1, airshipCrew1, airshipCrew1      ;; 03:72bc ??????      number 63 $3f
     dw   airshipCrew2, airshipCrew3, airshipCrew4      ;; 03:72c2 ??????      number 64 $40
     dw   data_03_783a, data_03_7858, data_03_7862      ;; 03:72c8 ??????
@@ -108,7 +108,7 @@ NPCSpawnPointers:
     dw   npcProfEnd,   data_03_7402, data_03_740c      ;; 03:739a ??????      number 100 $64
     dw   data_03_7aca, data_03_7aca, data_03_7ad2      ;; 03:73a0 ??????
     dw   data_03_73ee, data_03_73ee, data_03_73ee      ;; 03:73a6 ??????
-    dw   data_03_73e4, data_03_7844, data_03_7844      ;; 03:73ac ??????
+    dw   lesterGFEnd,  data_03_7844, data_03_7844      ;; 03:73ac ??????      number 103 $67
     dw   data_03_7ac0, data_03_73da, data_03_73da      ;; 03:73b2 ??????
     dw   minotaur_x2,  minotaur_x2,  minotaur_x2       ;; 03:73b8 ??????
     dw   data_03_73d0, data_03_73d0, data_03_73d0      ;; 03:73be ??????
@@ -125,8 +125,8 @@ data_03_73da:
     db   1, 1, NPC_CHOCOBO_1, NPC_CHOCOBO_1, NPC_CHOCOBO_1, NPC_CHOCOBO_1 ;; 03:73da ??????
     db   $10, $06, $80, $80                            ;; 03:73e0 ????
 
-data_03_73e4:
-    db   1, 1, NPC_WOMAN_MENOS_2, NPC_WOMAN_MENOS_2, NPC_WOMAN_MENOS_2, NPC_WOMAN_MENOS_2 ;; 03:73e4 ??????
+lesterGFEnd:
+    db   1, 1, NPC_GIRL_JADD_2, NPC_GIRL_JADD_2, NPC_GIRL_JADD_2, NPC_GIRL_JADD_2 ;; 03:73e4 ??????
     db   $14, $04, $80, $80                            ;; 03:73ea ????
 
 data_03_73ee:
@@ -639,7 +639,7 @@ data_03_7844:
     db   1, 1, NPC_LESTER_1, NPC_LESTER_1, NPC_LESTER_1, NPC_LESTER_1 ;; 03:7844 ??????
     db   $0c, $08, $80, $80                            ;; 03:784a ????
 
-data_03_784e:
+lesterMusic:
     db   1, 1, NPC_MUSIC_NOTES, NPC_MUSIC_NOTES, NPC_MUSIC_NOTES, NPC_MUSIC_NOTES ;; 03:784e ??????
     db   $0e, $08, $80, $80                            ;; 03:7854 ????
 
@@ -780,15 +780,15 @@ data_03_7970:
     db   1, 1, NPC_WOMAN_MENOS_2, NPC_WOMAN_MENOS_2, NPC_WOMAN_MENOS_2, NPC_WOMAN_MENOS_2 ;; 03:7970 ??????
     db   $80, $80                                      ;; 03:7976 ??
 
-data_03_7978:
+haterJadd:
     db   1, 1, NPC_GIRL_JADD_1, NPC_GIRL_JADD_1, NPC_GIRL_JADD_1, NPC_GIRL_JADD_1 ;; 03:7978 ??????
     db   $80, $80                                      ;; 03:797e ??
 
-data_03_7980:
+oldmanJadd:
     db   1, 1, NPC_OLDMAN_JADD, NPC_OLDMAN_JADD, NPC_OLDMAN_JADD, NPC_OLDMAN_JADD ;; 03:7980 ??????
     db   $80, $80                                      ;; 03:7986 ??
 
-data_03_7988:
+lesterGFJadd:
     db   1, 1, NPC_GIRL_JADD_2, NPC_GIRL_JADD_2, NPC_GIRL_JADD_2, NPC_GIRL_JADD_2 ;; 03:7988 ??????
     db   $80, $80                                      ;; 03:798e ??
 

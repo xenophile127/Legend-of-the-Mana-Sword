@@ -180,8 +180,8 @@ ENDC
     NPC_DATA $81, $0b, $50, $08, data_09_6000, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0215, $0000 ;; 03:6d3a NPC_GIRL_MENOS
     NPC_DATA $81, $0b, $40, $08, data_09_6200, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_0216, $0000 ;; 03:6d52 NPC_WOMAN_MENOS_2
     NPC_DATA $81, $0b, $60, $08, data_09_5e00, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_021a, $0000 ;; 03:6d6a NPC_GIRL_JADD_1
-    NPC_DATA $81, $61, $40, $08, data_09_6400, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_021b, $0000 ;; 03:6d82 NPC_OLDMAN_JADD
-    NPC_DATA $81, $0b, $50, $08, data_09_6200, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_021c, $0000 ;; 03:6d9a NPC_GIRL_JADD_2
+    NPC_DATA $81, $61, $50, $08, data_09_6400, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_021b, $0000 ;; 03:6d82 NPC_OLDMAN_JADD
+    NPC_DATA $81, $0b, $40, $08, data_09_6200, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_021c, $0000 ;; 03:6d9a NPC_GIRL_JADD_2
     NPC_DATA $81, $0b, $40, $08, data_09_6100, tileorderNpc, metaspritesTabel40Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_021d, $0000 ;; 03:6db2 NPC_GUY_JADD
     NPC_DATA $81, $0b, $50, $08, data_09_6700, tileorderNpc, metaspritesTabel50Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_021e, $0000 ;; 03:6dca NPC_DWARF_JADD
     NPC_DATA $81, $0b, $60, $08, data_09_6300, tileorderNpc, metaspritesTabel60Normal, $00, $01, $01, $00, $00, $00, $04, $04, $04, $04, script_021f, $0000 ;; 03:6de2 NPC_SALESMAN_JADD
