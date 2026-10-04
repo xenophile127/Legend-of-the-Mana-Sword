@@ -1683,6 +1683,18 @@ wCurrentProjectilePalette:
 wCurrentFollowerPalette:
     ds 1                                               ;; dd9a
 
+; Number of script actions on stack
+wScriptActionCount:
+    ds 1                                               ;; dd9b
+
+; Script stack from tileScriptOrSpikeDamage
+; Set to 4 bytes times 18 entries (8 NPCs + 1 player)*2 possible tiles.
+; offset 0: triggering object facing direction
+; offset 1: triggering object collision flags
+; offset 2-3: script index
+wScriptActionStack:
+    ds 72                                              ;; dd9c
+
 ; After this is RAM code--currently the logging code--and the stack.
 ; The stack is placed at the end of wram. It is unknown how far down it can grow.
 
