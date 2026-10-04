@@ -1000,7 +1000,7 @@ spawnNpcsFromTable:
     ld   D, $00                                        ;; 03:452b $16 $00
     ld   HL, wNPCSpawnTypes                            ;; 03:452d $21 $a8 $c5
     add  HL, DE                                        ;; 03:4530 $19
-	; Load the NPC type into C
+; Load the NPC type into C
     ld   C, [HL]                                       ;; 03:4531 $4e
     pop  HL                                            ;; 03:4532 $e1
 .loop:

@@ -7094,7 +7094,7 @@ snapObjectToNearestTile8:
     push BC                                            ;; 00:29ba $c5
     call getObjectDirection ; sets HL to entry in wObjectRuntimeData
     and  A, $0f ; retain just facing direction
-	ld   B, A
+    ld   B, A
     inc  HL
     inc  HL
     ld   A, [HL+] ; collision flags
@@ -7106,14 +7106,14 @@ snapObjectToNearestTile8:
     ld   A, [HL] ; x position
     call snapPositionToNearestTile8                    ;; 00:29c7 $cd $dc $29
     ld   E, A                                          ;; 00:29cb $5f
-	ld   A, B
+    ld   A, B
     ; check for tile or spike damage interactions on 8px snaps
     call prepareTileScriptOrSpikeDamage
-	ld   A, B
+    ld   A, B
     pop  BC                                            ;; 00:29d4 $c1
     ld   B, $00                                        ;; 00:29d6 $06 $00
-	call updateObjectPosition                          ;; 00:29d8 $cd $11 $06
-	ret                                                ;; 00:29db $c9
+    call updateObjectPosition                          ;; 00:29d8 $cd $11 $06
+    ret                                                ;; 00:29db $c9
 
 snapPositionToNearestTile8:
     add $04
