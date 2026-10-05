@@ -158,11 +158,11 @@
     COLOR_PALETTE_NPC 150              ; NPC_GIRL_JADD_1 = $96
     COLOR_PALETTE_NPC 151              ; NPC_OLDMAN_JADD = $97
     COLOR_PALETTE_NPC 152              ; NPC_GIRL_JADD_2 = $98
-    COLOR_PALETTE_NPC blue             ; NPC_GUY_JADD = $99
-    COLOR_PALETTE_NPC blue             ; NPC_DWARF_JADD = $9a
+    COLOR_PALETTE_NPC 153              ; NPC_GUY_JADD = $99
+    COLOR_PALETTE_NPC 154              ; NPC_DWARF_JADD = $9a
     COLOR_PALETTE_NPC 155              ; NPC_SALESMAN_JADD = $9b
-    COLOR_PALETTE_NPC blue             ; NPC_GIRL_JADD_3 = $9c
-    COLOR_PALETTE_NPC blue             ; NPC_BOY_JADD = $9d
+    COLOR_PALETTE_NPC 156              ; NPC_GIRL_JADD_3 = $9c
+    COLOR_PALETTE_NPC 157              ; NPC_BOY_JADD = $9d
     COLOR_PALETTE_NPC blue             ; NPC_OLDMAN_ISH = $9e
     COLOR_PALETTE_NPC blue             ; NPC_GUY_ISH_1 = $9f
     COLOR_PALETTE_NPC blue             ; NPC_GUY_ISH_2 = $a0
