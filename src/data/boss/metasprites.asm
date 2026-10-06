@@ -10,6 +10,8 @@
 ; 4. Left tile index. Sprites are 8x16 so tile indexes are always even.
 ; 5. Right tile index. Sprites are 8x16 so tile indexes are always even.
 ; 6. CGB OBP color palette number.
+; 7. Future: Second CGB OBP color palette number for the right sprite.
+; 8. Optional: CGB VRAM bank number.
 
 metaspritesVampire:
     METASPRITE $00, OAMF_NOFLIP, OAMF_PAL1, $40, $42, PAL_NPC1

@@ -58,17 +58,36 @@ ENDM
 ; 4. Left tile index. Sprites are 8x16 so tile indexes are always even.
 ; 5. Right tile index. Sprites are 8x16 so tile indexes are always even.
 ; 6. CGB OBP color palette number.
+; 7. Future: Second CGB OBP color palette number for the right sprite.
+; 8. Optional: CGB VRAM bank number.
 ; Output format:
 ; 1. OAM Attributes
 ; 2. Left tile index
 ; 3. Right tile index
 MACRO METASPRITE
-; Make sure additional OAM flags are unused.
-assert (\2 + \3 + \6) == (\2 | \3 | \6)
+assert _NARG >= 6
+assert _NARG <= 8
 ; Check that the LSB of the tile indexes are zero.
 assert (\4 & $01) == 0
 assert (\5 & $01) == 0
+
+; The biggest motivation of this macro format is assigning individual CGB color palettes to each sprite,
+; but for the moment there is no game code to handle that so assert that if two color palettes are specified
+; that they are equal.
+IF _NARG > 6
+assert \6 == \7
+ENDC
+
+; Make sure OAM flags are used correctly.
+IF _NARG == 8
+assert (\2 + \3 + \6 + \8) == (\2 | \3 | \6 | \8)
+assert ((\2 | \3 | \6 | \8) & OAMF_PRI) == 0
+        db \2 | \3 | \6 | \8
+ELSE
+assert (\2 + \3 + \6) == (\2 | \3 | \6)
+assert ((\2 | \3 | \6) & OAMF_PRI) == 0
         db \2 | \3 | \6
+ENDC
         db \4, \5
 ENDM
 
