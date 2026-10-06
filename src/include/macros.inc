@@ -49,6 +49,29 @@ ELSE
 ENDC
     ds 4
 ENDM
+
+; METASPRITE macro format:
+; 1. Index in the metasprite table. Informative only for use in other structures; not recorded in the rom.
+;    Boss explosion animations (for bosses that have them) use $0c and $0d.
+; 2. OAM Attributes - X/Y flip bits.
+; 3. OAM Attributes - DMG OBP palette number.
+; 4. Left tile index. Sprites are 8x16 so tile indexes are always even.
+; 5. Right tile index. Sprites are 8x16 so tile indexes are always even.
+; 6. CGB OBP color palette number.
+; Output format:
+; 1. OAM Attributes
+; 2. Left tile index
+; 3. Right tile index
+MACRO METASPRITE
+; Make sure additional OAM flags are unused.
+assert (\2 + \3 + \6) == (\2 | \3 | \6)
+; Check that the LSB of the tile indexes are zero.
+assert (\4 & $01) == 0
+assert (\5 & $01) == 0
+        db \2 | \3 | \6
+        db \4, \5
+ENDM
+
 MACRO ITEM_DATA
 
         db \1
