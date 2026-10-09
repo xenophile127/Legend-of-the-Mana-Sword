@@ -2757,6 +2757,8 @@ specialEffectJumptable:
     dw   specialEffectInit                             ;; 00:0eca ?? $00
     dw   specialEffectAnimate                          ;; 00:0ecc ?? $01
 
+; Creates an invisible metasprite, presumably in place of the player to
+; anchor the effect at a yx location.
 ; For the color target this also loads a palette.
 specialEffectInit:
     ld   H, D                                          ;; 00:0ece $62
