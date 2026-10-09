@@ -104,7 +104,7 @@ NPCSpawnPointers:
     dw   fujiWindow,   nukeTrigger,  data_03_76fc      ;; 03:7382 ??????      number 96 $60
     dw   data_03_7ac0, data_03_7ac0, data_03_7ac0      ;; 03:7388 ??????      number 97 $61 (unused)
     dw   data_03_779a, data_03_77a4, data_03_77a4      ;; 03:738e ??????
-    dw   data_03_7416, data_03_7416, data_03_7416      ;; 03:7394 ??????
+    dw   curePond,     curePond,     curePond          ;; 03:7394 ??????      number 99 $63
     dw   npcProfEnd,   data_03_7402, data_03_740c      ;; 03:739a ??????      number 100 $64
     dw   data_03_7aca, data_03_7aca, data_03_7ad2      ;; 03:73a0 ??????
     dw   data_03_73ee, data_03_73ee, data_03_73ee      ;; 03:73a6 ??????
@@ -145,7 +145,7 @@ data_03_740c:
     db   1, 1, NPC_BOGARD_3, NPC_BOGARD_3, NPC_BOGARD_3, NPC_BOGARD_3 ;; 03:740c ??????
     db   $0a, $08, $80, $80                            ;; 03:7412 ????
 
-data_03_7416:
+curePond:
     db   1, 1, NPC_INV_CURE, NPC_INV_CURE, NPC_INV_CURE, NPC_INV_CURE ;; 03:7416 ??????
     db   $09, $0a, $80, $80                            ;; 03:741c ????
 

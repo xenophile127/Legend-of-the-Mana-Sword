@@ -360,15 +360,19 @@ metaspritesTable5cUnmovingRed:
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
     db   OAMF_NOFLIP | OAMF_PAL0 | PAL_NPC2, $5c, $5e
 
+; Tile number $10 is considered magic by the sprite flash routine
+; that is used to work around the hardware limit of ten sprites per line.
+; Using tile number $10 (and only $10) tells the routine that your sprite
+; can always be hidden.
 metaspritesInvisible:
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6e, $6e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $10, $10
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $10, $10
 
 metaspritesCompanion:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_FOLLOWER, $2a, $28
