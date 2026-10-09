@@ -460,7 +460,7 @@ wSpriteScrollSpeed:
 
 ; Sprites are hidden by moving them offscreen vertically.
 ; This is used to hide sprites behind windows and to flash sprites when the line limit is exceeded.
-hiddenSpritesYPositions:
+wHiddenSpritesYPositions:
     ds 46                                              ;; c4a2
 
 wFlyingSwordSpecialOriginalLocationX:

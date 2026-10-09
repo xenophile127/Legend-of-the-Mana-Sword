@@ -587,7 +587,7 @@ hideSpritesBehindWindow:
     srl  L                                             ;; 02:4450 $cb $3d
     srl  L                                             ;; 02:4452 $cb $3d
     ld   H, $00                                        ;; 02:4454 $26 $00
-    ld   DE, hiddenSpritesYPositions                   ;; 02:4456 $11 $a2 $c4
+    ld   DE, wHiddenSpritesYPositions                   ;; 02:4456 $11 $a2 $c4
     add  HL, DE                                        ;; 02:4459 $19
     ld   [HL], A                                       ;; 02:445a $77
     pop  HL                                            ;; 02:445b $e1
@@ -614,7 +614,7 @@ showSpritesBehindWindow:
     ret  NC                                            ;; 02:4470 $d0
     call windowBorderConvertToPixelCoords              ;; 02:4471 $cd $f8 $43
     push BC                                            ;; 02:4474 $c5
-    ld   HL, hiddenSpritesYPositions                   ;; 02:4475 $21 $a2 $c4
+    ld   HL, wHiddenSpritesYPositions                   ;; 02:4475 $21 $a2 $c4
     ld   B, $28                                        ;; 02:4478 $06 $28
 .loop:
     ld   A, [HL+]                                      ;; 02:447a $2a
@@ -629,7 +629,7 @@ showSpritesBehindWindow:
     dec  HL                                            ;; 02:4485 $2b
     push HL                                            ;; 02:4486 $e5
     push BC                                            ;; 02:4487 $c5
-    ld   DE, hiddenSpritesYPositions                   ;; 02:4488 $11 $a2 $c4
+    ld   DE, wHiddenSpritesYPositions                   ;; 02:4488 $11 $a2 $c4
     call sub_HL_DE                                     ;; 02:448b $cd $ab $2b
     pop  BC                                            ;; 02:448e $c1
     sla  L                                             ;; 02:448f $cb $25
@@ -667,7 +667,7 @@ spriteShuffleShowSprite:
     srl  L                                             ;; 02:44b4 $cb $3d
     srl  L                                             ;; 02:44b6 $cb $3d
     ld   H, $00                                        ;; 02:44b8 $26 $00
-    ld   DE, hiddenSpritesYPositions                   ;; 02:44ba $11 $a2 $c4
+    ld   DE, wHiddenSpritesYPositions                   ;; 02:44ba $11 $a2 $c4
     add  HL, DE                                        ;; 02:44bd $19
     ld   A, [HL]                                       ;; 02:44be $7e
     pop  HL                                            ;; 02:44bf $e1
@@ -711,7 +711,7 @@ spriteShuffleHideSprite:
     srl  L                                             ;; 02:44ed $cb $3d
     srl  L                                             ;; 02:44ef $cb $3d
     ld   H, $00                                        ;; 02:44f1 $26 $00
-    ld   DE, hiddenSpritesYPositions                   ;; 02:44f3 $11 $a2 $c4
+    ld   DE, wHiddenSpritesYPositions                   ;; 02:44f3 $11 $a2 $c4
     add  HL, DE                                        ;; 02:44f6 $19
     ld   [HL], A                                       ;; 02:44f7 $77
     ret                                                ;; 02:44f9 $c9
