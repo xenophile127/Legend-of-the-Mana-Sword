@@ -766,6 +766,7 @@ giveFollower:
     call spawnNPC                                      ;; 03:43d8 $cd $bd $42
     ret                                                ;; 03:43db $c9
 
+; a = NPC id
 npcLoadTiles:
     ld   L, A                                          ;; 03:43dc $6f
     ld   H, $00                                        ;; 03:43dd $26 $00
@@ -789,6 +790,7 @@ npcLoadTiles:
     pop  HL                                            ;; 03:43fb $e1
     ld   DE, $02                                       ;; 03:43fc $11 $02 $00
     add  HL, DE                                        ;; 03:43ff $19
+; de = VRAM load address
     ld   A, [HL+]                                      ;; 03:4400 $2a
     swap A                                             ;; 03:4401 $cb $37
     ld   E, A                                          ;; 03:4403 $5f
@@ -798,19 +800,22 @@ npcLoadTiles:
     ld   A, E                                          ;; 03:4409 $7b
     and  A, $f0                                        ;; 03:440a $e6 $f0
     ld   E, A                                          ;; 03:440c $5f
-    push DE                                            ;; 03:440d $d5
+; A: Number of tiles to load divided by two.
     ld   A, [HL+]                                      ;; 03:440e $2a
-    ld   E, A                                          ;; 03:440f $5f
+    push af
+; BC: Start address of tiles.
     ld   C, [HL]                                       ;; 03:4410 $4e
     inc  HL                                            ;; 03:4411 $23
     ld   B, [HL]                                       ;; 03:4412 $46
     inc  HL                                            ;; 03:4413 $23
+; HL: Load order address.
     ld   A, [HL+]                                      ;; 03:4414 $2a
     ld   H, [HL]                                       ;; 03:4415 $66
     ld   L, A                                          ;; 03:4416 $6f
-    ld   A, E                                          ;; 03:4417 $7b
+    pop af
     add  A, A                                          ;; 03:4418 $87
-    pop  DE                                            ;; 03:4419 $d1
+; Allow NPCs that use zero tiles. Specifically, the invisible NPCs.
+    ret z
 .loop:
     push AF                                            ;; 03:441a $f5
     ld   A, [HL+]                                      ;; 03:441b $2a
@@ -823,8 +828,6 @@ npcLoadTiles:
     and  A, $f0                                        ;; 03:4424 $e6 $f0
     ld   L, A                                          ;; 03:4426 $6f
     add  HL, BC                                        ;; 03:4427 $09
-    push BC                                            ;; 03:4428 $c5
-    push DE                                            ;; 03:4429 $d5
     ld   A, B                                          ;; 03:442a $78
     swap A                                             ;; 03:442b $cb $37
     srl  A                                             ;; 03:442d $cb $3f
@@ -834,17 +837,17 @@ npcLoadTiles:
     res  7, H                                          ;; 03:4435 $cb $bc
     set  6, H                                          ;; 03:4437 $cb $f4
     call addTileGraphicCopyRequest                     ;; 03:4439 $cd $f5 $2d
-    pop  DE                                            ;; 03:443c $d1
     ld   HL, $10                                       ;; 03:443d $21 $10 $00
     add  HL, DE                                        ;; 03:4440 $19
     ld   E, L                                          ;; 03:4441 $5d
     ld   D, H                                          ;; 03:4442 $54
-    pop  BC                                            ;; 03:4443 $c1
     pop  HL                                            ;; 03:4444 $e1
     pop  AF                                            ;; 03:4445 $f1
     dec  A                                             ;; 03:4446 $3d
     jr   NZ, .loop                                     ;; 03:4447 $20 $d1
     ret                                                ;; 03:4449 $c9
+
+ds 4 ; Free space
 
 setNpcSpawnTable:
     push HL                                            ;; 03:444a $e5
