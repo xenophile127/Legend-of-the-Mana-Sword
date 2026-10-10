@@ -239,8 +239,8 @@ checkNpcsForCollisions:
     cp   A, $10                                        ;; 02:4273 $fe $10
     jr   NC, .next                                     ;; 02:4275 $30 $1d
     push DE                                            ;; 02:4277 $d5
-    push HL                                            ;; 02:4278 $e5
-    pop  DE                                            ;; 02:4279 $d1
+    ld d, h
+    ld e, l
     push BC                                            ;; 02:427a $c5
     push DE                                            ;; 02:427b $d5
     ld   HL, SP+9                                      ;; 02:427c $f8 $09
@@ -1300,8 +1300,8 @@ call_02_4b4b:
     ld   D, [HL]                                       ;; 02:4b5b $56
     inc  HL                                            ;; 02:4b5c $23
     ld   B, [HL]                                       ;; 02:4b5d $46
-    push DE                                            ;; 02:4b5e $d5
-    pop  HL                                            ;; 02:4b5f $e1
+    ld h, d
+    ld l, e
     ld   DE, wDialogX                                  ;; 02:4b60 $11 $a7 $d4
     call windowMoveBackup
     ld   B, $21                                        ;; 02:4b66 $06 $21
@@ -2094,8 +2094,8 @@ finalizePurchase:
     ld   [wDialogY], A                                 ;; 02:50f0 $ea $a8 $d4
     ld   A, L                                          ;; 02:50f3 $7d
     ld   [wDialogX], A                                 ;; 02:50f4 $ea $a7 $d4
-    push HL                                            ;; 02:50f7 $e5
-    pop  DE                                            ;; 02:50f8 $d1
+    ld d, h
+    ld e, l
     ld   B, $05                                        ;; 02:50f9 $06 $05
 .loop_1:
     ld   A, $7f                                        ;; 02:50fb $3e $7f
@@ -2264,8 +2264,8 @@ sellToVendor:
     ld   [HL+], A                                      ;; 02:520f $22
     ld   B, [HL]                                       ;; 02:5210 $46
     ld   [HL+], A                                      ;; 02:5211 $22
-    push BC                                            ;; 02:5212 $c5
-    pop  HL                                            ;; 02:5213 $e1
+    ld h, b
+    ld l, c
     call addMoneyAdjustValues
     call vendorRemoveSoldItem                          ;; 02:522a $cd $3c $52
     jr   call_02_522d
@@ -2613,8 +2613,8 @@ giveEquipmentItemMagic:
     pop  BC                                            ;; 02:5448 $c1
     push DE                                            ;; 02:5449 $d5
     push HL                                            ;; 02:544a $e5
-    push BC                                            ;; 02:544b $c5
-    pop  HL                                            ;; 02:544c $e1
+    ld h, b
+    ld l, c
     call indexIntoTable                                ;; 02:544d $cd $82 $76
     ld   A, [HL+]                                      ;; 02:5450 $2a
     ld   B, [HL]                                       ;; 02:5451 $46
@@ -2849,13 +2849,13 @@ jp_02_54a6:
     dec  HL                                            ;; 02:559d $2b
     pop  AF                                            ;; 02:559e $f1
     push HL                                            ;; 02:559f $e5
-    push BC                                            ;; 02:55a0 $c5
-    pop  HL                                            ;; 02:55a1 $e1
+    ld h, b
+    ld l, c
     push DE                                            ;; 02:55a2 $d5
     call MultiplyHL_by_A                               ;; 02:55a3 $cd $7b $2b
     pop  DE                                            ;; 02:55a6 $d1
-    push HL                                            ;; 02:55a7 $e5
-    pop  BC                                            ;; 02:55a8 $c1
+    ld b, h
+    ld c, l
     pop  HL                                            ;; 02:55a9 $e1
     ld   [HL], C                                       ;; 02:55aa $71
     inc  HL                                            ;; 02:55ab $23
@@ -2883,8 +2883,8 @@ call_02_55c6:
     add  HL, HL                                        ;; 02:55cd $29
     add  HL, HL                                        ;; 02:55ce $29
     add  HL, HL                                        ;; 02:55cf $29
-    push HL                                            ;; 02:55d0 $e5
-    pop  BC                                            ;; 02:55d1 $c1
+    ld b, h
+    ld c, l
     ld   HL, vendorInventories + $02                   ;; 02:55d2 $21 $ec $64
     add  HL, BC                                        ;; 02:55d5 $09
     ld   B, $07                                        ;; 02:55d6 $06 $07
@@ -2918,8 +2918,8 @@ call_02_55c6:
     add  HL, BC                                        ;; 02:55fe $09
     ld   A, [HL]                                       ;; 02:55ff $7e
     call getBuyFromVendorPrice                         ;; 02:5600 $cd $b1 $56
-    push HL                                            ;; 02:5603 $e5
-    pop  DE                                            ;; 02:5604 $d1
+    ld d, h
+    ld e, l
     ld   HL, wVendorBuyPrices                          ;; 02:5605 $21 $01 $d7
     add  HL, BC                                        ;; 02:5608 $09
     add  HL, BC                                        ;; 02:5609 $09
@@ -3515,8 +3515,8 @@ jp_02_5959:
 drawNumber24bitOnDialog:
     push BC                                            ;; 02:59ae $c5
     push DE                                            ;; 02:59af $d5
-    push HL                                            ;; 02:59b0 $e5
-    pop  DE                                            ;; 02:59b1 $d1
+    ld d, h
+    ld e, l
     ld   A, C                                          ;; 02:59b2 $79
     or   A, D                                          ;; 02:59b3 $b2
     jr   NZ, .not_zero                                 ;; 02:59b4 $20 $11
@@ -4227,8 +4227,8 @@ windowCloseMain:
     call getWindowDimensions                           ;; 02:66d5 $cd $67 $7a
     inc  B                                             ;; 02:66d8 $04
     inc  C                                             ;; 02:66d9 $0c
-    push BC                                            ;; 02:66da $c5
-    pop  HL                                            ;; 02:66db $e1
+    ld h, b
+    ld l, c
     ld   A, [wDialogType]                              ;; 02:66dc $fa $4a $d8
     cp   A, WINDOW_EQUIP_BOTTOM                        ;; 02:66df $fe $04
     jr   Z, .jr_02_66ee                                ;; 02:66e1 $28 $0b
@@ -4320,8 +4320,8 @@ drawWindowStart:
     call saveRegisterState2                            ;; 02:6740 $cd $80 $6d
     inc  B                                             ;; 02:6743 $04
     inc  C                                             ;; 02:6744 $0c
-    push BC                                            ;; 02:6745 $c5
-    pop  HL                                            ;; 02:6746 $e1
+    ld h, b
+    ld l, c
     ld   A, [wDialogType]                              ;; 02:6747 $fa $4a $d8
     cp   A, WINDOW_EQUIP_TOP                           ;; 02:674a $fe $03
     jr   Z, .jr_02_675a                                ;; 02:674c $28 $0c
@@ -5252,8 +5252,8 @@ menuSelectButtonBItemOrSpell:
 call_02_6ce4:
     ld   B, $21                                        ;; 02:6ce4 $06 $21
     ld   C, $20                                        ;; 02:6ce6 $0e $20
-    push HL                                            ;; 02:6ce8 $e5
-    pop  DE                                            ;; 02:6ce9 $d1
+    ld d, h
+    ld e, l
 .loop_1:
     ld   A, [HL+]                                      ;; 02:6cea $2a
     dec  B                                             ;; 02:6ceb $05
@@ -5774,8 +5774,8 @@ doSpellOrItemEffect:
     cp   A, E                                          ;; 02:702d $bb
     jr   C, .jr_02_7032                                ;; 02:702e $38 $02
 .jr_02_7030:
-    push DE                                            ;; 02:7030 $d5
-    pop  HL                                            ;; 02:7031 $e1
+    ld h, d
+    ld l, e
 .jr_02_7032:
     ld   A, H                                          ;; 02:7032 $7c
     ld   [wHPHigh], A                                  ;; 02:7033 $ea $b3 $d7
@@ -6128,8 +6128,8 @@ menuSaveLoadChoice:
 
     ld   HL, wSRAMSaveHeader                           ;; 02:725a $21 $a7 $d7
     call formatSaveHeader                              ;; 02:725d $cd $72 $77
-    push HL                                            ;; 02:7260 $e5
-    pop  DE                                            ;; 02:7261 $d1
+    ld d, h
+    ld e, l
     pop  HL                                            ;; 02:7262 $e1
     call enableSRAM                                    ;; 02:7263 $cd $58 $74
     ld   DE, wSRAMSaveHeader                           ;; 02:7266 $11 $a7 $d7
@@ -6544,8 +6544,8 @@ getSRAMChecksum:
     ld   D, A                                          ;; 02:74cd $57
     dec  B                                             ;; 02:74ce $05
     jr   NZ, getSRAMChecksum                           ;; 02:74cf $20 $f3
-    push DE                                            ;; 02:74d1 $d5
-    pop  HL                                            ;; 02:74d2 $e1
+    ld h, d
+    ld l, e
     ld   A, C                                          ;; 02:74d3 $79
     ret                                                ;; 02:74d4 $c9
 
@@ -6563,8 +6563,8 @@ drawSaveNameFromSRAM:
     ld   [DE], A                                       ;; 02:74e4 $12
     pop  DE                                            ;; 02:74e5 $d1
     push HL                                            ;; 02:74e6 $e5
-    push DE                                            ;; 02:74e7 $d5
-    pop  HL                                            ;; 02:74e8 $e1
+    ld h, d
+    ld l, e
     ld   DE, $202                                      ;; 02:74e9 $11 $02 $02
     ld   BC, $404                                      ;; 02:74ec $01 $04 $04
     call drawText                                      ;; 02:74ef $cd $77 $37
@@ -6583,8 +6583,8 @@ drawSaveHPFromSRAM:
     call readSRAMByte                                  ;; 02:7505 $cd $6f $74
     ld   D, A                                          ;; 02:7508 $57
     push HL                                            ;; 02:7509 $e5
-    push DE                                            ;; 02:750a $d5
-    pop  HL                                            ;; 02:750b $e1
+    ld h, d
+    ld l, e
     ld   DE, $20c                                      ;; 02:750c $11 $0c $02
     push DE                                            ;; 02:750f $d5
     call drawNumberAtDialogPositionDE                  ;; 02:7510 $cd $18 $5b
@@ -6598,8 +6598,8 @@ drawSaveHPFromSRAM:
     call readSRAMByte                                  ;; 02:751f $cd $6f $74
     ld   D, A                                          ;; 02:7522 $57
     push HL                                            ;; 02:7523 $e5
-    push DE                                            ;; 02:7524 $d5
-    pop  HL                                            ;; 02:7525 $e1
+    ld h, d
+    ld l, e
     ld   DE, $211                                      ;; 02:7526 $11 $11 $02
     call drawNumberAtDialogPositionDE                  ;; 02:7529 $cd $18 $5b
     pop  HL                                            ;; 02:752c $e1
@@ -6667,8 +6667,8 @@ drawExperienceFromSRAM:
     ld   D, A                                          ;; 02:7590 $57
     call readSRAMByte                                  ;; 02:7591 $cd $6f $74
     ld   C, A                                          ;; 02:7594 $4f
-    push DE                                            ;; 02:7595 $d5
-    pop  HL                                            ;; 02:7596 $e1
+    ld h, d
+    ld l, e
     ld   DE, $40b                                      ;; 02:7597 $11 $0b $04
     call drawNumber24bitOnDialog                       ;; 02:759a $cd $ae $59
     ld   DE, $509                                      ;; 02:759d $11 $09 $05
@@ -7258,8 +7258,8 @@ tickFujiStatusEffect:
     ld   A, D                                          ;; 02:7946 $7a
     sbc  A, H                                          ;; 02:7947 $9c
     jr   C, tickFujiPoisStatusEffectUpdateHP           ;; 02:7948 $38 $1a
-    push HL                                            ;; 02:794a $e5
-    pop  DE                                            ;; 02:794b $d1
+    ld d, h
+    ld e, l
     jr   tickFujiPoisStatusEffectUpdateHP              ;; 02:794c $18 $16
 
 tickPoisStatusEffect:

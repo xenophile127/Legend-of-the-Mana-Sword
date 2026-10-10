@@ -602,8 +602,8 @@ musicOpCodeIfChannel2LoopCounter1Equal:
     ld   A, [wMusicLoopCounter1Channel2]               ;; 0f:443a $fa $0f $c1
     cp   A, C                                          ;; 0f:443d $b9
     jr   NZ, .write                                    ;; 0f:443e $20 $02
-    push DE                                            ;; 0f:4440 $d5
-    pop  HL                                            ;; 0f:4441 $e1
+    ld h, d
+    ld l, e
 .write:
     ld   A, L                                          ;; 0f:4442 $7d
     ld   [wMusicInstructionPointerChannel2], A         ;; 0f:4443 $ea $04 $c1
@@ -625,8 +625,8 @@ musicOpCodeIfChannel1LoopCounter1Equal:
     ld   A, [wMusicLoopCounter1Channel1]               ;; 0f:445b $fa $27 $c1
     cp   A, C                                          ;; 0f:445e $b9
     jr   NZ, .write                                    ;; 0f:445f $20 $02
-    push DE                                            ;; 0f:4461 $d5
-    pop  HL                                            ;; 0f:4462 $e1
+    ld h, d
+    ld l, e
 .write:
     ld   A, L                                          ;; 0f:4463 $7d
     ld   [wMusicInstructionPointerChannel1], A         ;; 0f:4464 $ea $1c $c1
@@ -648,8 +648,8 @@ musicOpCodeIfChannel3LoopCounter1Equal:
     ld   A, [wMusicLoopCounter1Channel3]               ;; 0f:447c $fa $3f $c1
     cp   A, C                                          ;; 0f:447f $b9
     jr   NZ, .write                                    ;; 0f:4480 $20 $02
-    push DE                                            ;; 0f:4482 $d5
-    pop  HL                                            ;; 0f:4483 $e1
+    ld h, d
+    ld l, e
 .write:
     ld   A, L                                          ;; 0f:4484 $7d
     ld   [wMusicInstructionPointerChannel3], A         ;; 0f:4485 $ea $34 $c1
@@ -1150,8 +1150,9 @@ musicOpCodeChannel3LoadWaveTable:
     ld   [HL], D                                       ;; 0f:47a8 $72
     dec  HL                                            ;; 0f:47a9 $2b
     ld   [HL], E                                       ;; 0f:47aa $73
-    push BC                                            ;; 0f:47ab $c5
-    pop  HL                                            ;; 0f:47ac $e1
+    ld h, b
+    ld l, c
+; Fall through to musicLoadWaveTable
 
 musicLoadWaveTable:
     xor  A, A                                          ;; 0f:47ad $af

@@ -8530,8 +8530,8 @@ runScriptFromScriptByIndex:
     sub  A, $04                                        ;; 00:31e2 $d6 $04
     jr   NZ, .normal_script                            ;; 00:31e4 $20 $04
 .dynamic_script:
-    push DE                                            ;; 00:31e6 $d5
-    pop  HL                                            ;; 00:31e7 $e1
+    ld h, d
+    ld l, e
     jr   .setup_script                                 ;; 00:31e8 $18 $07
 .normal_script:
     call getScriptPointerFromScriptPointerTable        ;; 00:31ea $cd $82 $32
@@ -8695,8 +8695,8 @@ scriptOpCodeEND:
     jr   Z, .return_from_call                          ;; 00:32cc $28 $01
     ret                                                ;; 00:32ce $c9
 .return_from_call:
-    push DE                                            ;; 00:32cf $d5
-    pop  HL                                            ;; 00:32d0 $e1
+    ld h, d
+    ld l, e
     ld   A, H                                          ;; 00:32d1 $7c
     ld   [wScriptPointerHigh], A                       ;; 00:32d2 $ea $b7 $d8
     ld   A, L                                          ;; 00:32d5 $7d
@@ -8708,8 +8708,8 @@ scriptOpCodeEND:
 .loop:
     dec  C                                             ;; 00:32e3 $0d
     jr   Z, .loop_end                                  ;; 00:32e4 $28 $09
-    push DE                                            ;; 00:32e6 $d5
-    pop  HL                                            ;; 00:32e7 $e1
+    ld h, d
+    ld l, e
     call pushBCHLtoScriptStack                         ;; 00:32e8 $cd $df $36
     call getNextScriptInstruction                      ;; 00:32eb $cd $27 $37
     ret                                                ;; 00:32ee $c9
@@ -9948,18 +9948,20 @@ scriptOpCodeStartNameEntry:
 
 ds 5 ; Free space
 
+; Unused
 scriptOpCodeAltNOP:
     call getNextScriptInstruction                      ;; 00:3a01 $cd $27 $37
     ret                                                ;; 00:3a04 $c9
 
+; Unused
 scriptOpCodeGiveXP:
     ld   E, [HL]                                       ;; 00:3a05 $5e
     inc  HL                                            ;; 00:3a06 $23
     ld   D, [HL]                                       ;; 00:3a07 $56
     inc  HL                                            ;; 00:3a08 $23
     push HL                                            ;; 00:3a09 $e5
-    push DE                                            ;; 00:3a0a $d5
-    pop  HL                                            ;; 00:3a0b $e1
+    ld h, d
+    ld l, e
     call addXP                                         ;; 00:3a0c $cd $16 $3d
     pop  HL                                            ;; 00:3a0f $e1
     call getNextScriptInstruction                      ;; 00:3a10 $cd $27 $37
@@ -10001,6 +10003,7 @@ scriptOpCodeTakeXP:
     call getNextScriptInstruction                      ;; 00:3a43 $cd $27 $37
     ret                                                ;; 00:3a46 $c9
 
+; Unused
 scriptOpCodeGiveMoney:
     ld   E, [HL]                                       ;; 00:3a47 $5e
     inc  HL                                            ;; 00:3a48 $23
@@ -10672,8 +10675,8 @@ addHP:
     ld   A, H                                          ;; 00:3e12 $7c
     sbc  A, D                                          ;; 00:3e13 $9a
     jr   C, .set                                       ;; 00:3e14 $38 $02
-    push DE                                            ;; 00:3e16 $d5
-    pop  HL                                            ;; 00:3e17 $e1
+    ld h, d
+    ld l, e
 .set:
     ld   A, H                                          ;; 00:3e18 $7c
     ld   [wHPHigh], A                                  ;; 00:3e19 $ea $b3 $d7
