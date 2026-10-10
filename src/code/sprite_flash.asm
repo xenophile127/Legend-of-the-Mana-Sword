@@ -41,6 +41,7 @@ spriteShuffleShowHidden:
 .loop:
     cp a, [hl]
     jr nz, .show
+.next:
     dec l
     dec b
     jr nz, .loop
@@ -55,6 +56,11 @@ spriteShuffleShowHidden:
 ; Use that to get its entry in the array.
     ld d, HIGH(wOAMBuffer)
     ld e, a
+; Sprites are also hidden by the window routines using the magic number $cf instead of $ce.
+; Check that the sprite under consideration is hidden by the shuffle routine and if not then skip it.
+    ld a, [de]
+    cp $ce
+    jr nz, .next
 ; Restore the saved y position.
     ld a, [hl]
     ld [de], a
