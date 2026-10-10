@@ -58,8 +58,8 @@
     COLOR_PALETTE_NPC 050              ; NPC_SAURUS = $32
     COLOR_PALETTE_NPC blue             ; NPC_MUMMY = $33
     COLOR_PALETTE_NPC blue             ; NPC_PAKKUN_LIZARD = $34
-    COLOR_PALETTE_NPC blue             ; NPC_SNAKE = $35
-    COLOR_PALETTE_NPC blue             ; NPC_SHADOW = $36
+    COLOR_PALETTE_NPC 053              ; NPC_SNAKE = $35
+    COLOR_PALETTE_NPC 054              ; NPC_SHADOW = $36
     COLOR_PALETTE_NPC blue             ; NPC_BLACK_WIZARD = $37
     COLOR_PALETTE_NPC red              ; NPC_FLAME = $38
     COLOR_PALETTE_NPC blue             ; NPC_GARGOYLE = $39
