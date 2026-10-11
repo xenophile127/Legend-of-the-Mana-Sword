@@ -4216,7 +4216,6 @@ tileScriptOrSpikeDamage:
     ld   A, [HL+]                                      ;; 00:173b $2a
     ld   D, [HL]
     ld   E, A
-    ld   A, B                                          ;; 00:173e $78
     call enqueueScriptAction
 .pop_bank_and_return:
     call popBankNrAndSwitch                            ;; 00:1742 $cd $0a $2a
@@ -4252,6 +4251,8 @@ tileScriptOrSpikeDamage:
     ld   A, $33                                        ;; 00:1778 $3e $33
     ld   [wPlayerDamagedTimer], A                      ;; 00:177a $ea $d2 $c4
     ret                                                ;; 00:177d $c9
+
+ds 1 ; Free space
 
 ; b = object id
 ; c = object collision flags
@@ -6179,9 +6180,8 @@ runRoomScriptOnRoomExit:
     jr   roomScriptExecute
 
 runRoomScriptOnAllEnemiesDefeated:
-    ld   A, [wRoomClearedStatus]
-    set  7, A
-    ld   [wRoomClearedStatus], A
+    ld   HL, wRoomClearedStatus
+    set  7, [HL]
     call roomScriptSetup
     inc  HL
     inc  HL
@@ -6204,7 +6204,8 @@ runRoomAllKilledScript:
 
 roomScriptExecute:
     call runScriptByIndex
-    jp   popBankNrAndSwitch
+    call popBankNrAndSwitch
+    ret
 
 roomSubScriptExecute:
     call runSubScriptFromScriptByIndex
@@ -6235,19 +6236,19 @@ checkScriptActions:
     ld   A, [wMainGameStateFlags]
     bit  1, A
     ret  NZ
-    ld   HL, wScriptActionCount
+    ld   HL, wScriptActionStack
     ld   A, [HL]
     or   A, A
     jr   Z, .done_with_tile_scripts
     dec  A
-    sla  A
-    sla  A
+    ld   [HL], A
+    add  A, A
+    add  A, A
     inc  A
-    dec  [HL]
     ld   D, 0
     ld   E, A
     add  HL, DE
-    ldi  A, [HL]
+    ld   A, [HL+]
     ld   C, [HL]
     inc  HL
     ld   E, [HL]
@@ -6256,19 +6257,20 @@ checkScriptActions:
     ld   H, E
     call runScriptByIndex
 .done_with_tile_scripts:
-    jp   runRoomScriptIfAllEnemiesDefeated_trampoline
+    call runRoomScriptIfAllEnemiesDefeated_trampoline
+    ret
 
 ; B: player facing direction
 ; C: trigger collision flags
 ; DE: script index
 enqueueScriptAction:
-    ld   HL, wScriptActionCount
+    ld   HL, wScriptActionStack
     ld   A, [HL]
     cp   A, 18 ; set to the size of the stack
     ret  NC ; not enough space
     inc  A
-    sla  A
-    sla  A
+    add  A, A
+    add  A, A
     push DE
     ld   D, 0
     ld   E, A
@@ -6282,50 +6284,50 @@ enqueueScriptAction:
     dec  HL
     ld   [HL], B
     dec  HL
+    ; A player/NPC can step in between two triggers with the same script.
+    ; We do not want to run the same script twice. Check here for duplicates.
     cp   A, 4 ; A only equals 4 if the queue was empty
     jr   Z, .increment_count
     ld   A, [HL-]
     cp   A, E
-    jr   NZ, .increment_count
+    jr   NZ, .not_duplicate
     ld   A, [HL-]
     cp   A, D
-    jr   NZ, .increment_count
+    jr   NZ, .not_duplicate
     ld   A, [HL-]
     cp   A, C
-    jr   NZ, .increment_count
+    jr   NZ, .not_duplicate
     ld   A, [HL-]
     cp   A, B
     ret  Z
+.not_duplicate:
+    ld   HL, wScriptActionStack
 .increment_count:
-    ld   HL, wScriptActionCount
     inc  [HL]
     ret
 
 ; A: number of script actions on the stack A>=1
 startNextScriptAction:
     dec  A
-    sla  A
-    sla  A
+    add  A, A
+    add  A, A
     inc  A
-    ld   HL, wScriptActionCount
+    ld   HL, wScriptActionStack
     dec  [HL]
     ld   D, 0
     ld   E, A
     add  HL, DE
     ld   A, [HL+]
-    ld   C, [HL]
-    inc  HL
-    ld   E, [HL]
-    inc  HL
-    ld   L, [HL]
-    ld   H, E
     ld   [wScriptPlayerFacingDirection], A
     call setDirectionScriptFlags
-    ld   A, C
+    ld   A, [HL+]
     ld   [wScriptTriggerCollisionFlags], A
-    ld   A, $05
-    ld   [wTextSpeedTimer], A
+    ld   A, [HL+]
+    ld   L, [HL]
+    ld   H, A
     call getScriptPointerFromScriptPointerTable
+    ld   A, TEXT_SPEED
+    ld   [wTextSpeedTimer], A
     ld   A, H
     add  A, $40
     ld   [wScriptPointerHigh], A
@@ -6333,9 +6335,10 @@ startNextScriptAction:
     ld   [wScriptPointerLow], A
     call popBankNrAndSwitch
     call getBankNrForScript
-    jp   getNextScriptInstruction
+    call getNextScriptInstruction
+    ret
 
-ds 1 ; Free space
+ds 10 ; Free space
 
 ; A = YX tile location (Y in top nibble, X in bottom nibble)
 ; Return: HL pointer to the metatile in wRoomTiles
@@ -8704,7 +8707,8 @@ scriptOpCodeEND:
     ld   A, [wScriptStackCount]                        ;; 00:329d $fa $65 $d8
     and  A, A                                          ;; 00:32a0 $a7
     jr   NZ, .script_stack_not_empty                   ;; 00:32a1 $20 $1d
-    ld   A, [wScriptActionCount]
+    ; Check for additional scripts waiting to be executed
+    ld   A, [wScriptActionStack]
     and  A, A
     jp   NZ, startNextScriptAction
     xor  A, A ; not necessary, but left for alignment
@@ -8714,7 +8718,7 @@ scriptOpCodeEND:
     ld   HL, wMainGameStateFlags
     ld   A, $f1
     and  A, [HL]
-    ldi  [HL], A; move HL to wMainGameStateFlags.next_frame
+    ld   [HL+], A; move HL to wMainGameStateFlags.nextFrame
     ld   A, $f1
     and  A, [HL]
     ld   [HL], A
