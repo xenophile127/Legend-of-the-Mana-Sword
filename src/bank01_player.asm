@@ -635,11 +635,14 @@ LoadMapEnd:
     ld   A, $c9
     call setPlayerCollisionFlags
 .clear_counters:
-    ld   A, $00
-    ld   [wScriptActionCount], A
+    xor  A, A
+    ; Loading a map likely invalidates any other script actions. Cancel them.
+    ld   [wScriptActionStack], A
     ld   [wScriptOpCounter], A                         ;; 01:44a0 $ea $99 $d4
     pop  HL                                            ;; 01:44a3 $e1
     ret                                                ;; 01:44a4 $c9
+
+ds 1 ; Free space
 
 ; BC = yx tile location
 showPlayerAtTile:
