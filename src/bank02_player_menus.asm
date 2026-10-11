@@ -661,7 +661,7 @@ showSpritesBehindWindow:
 
 INCLUDE "code/sprite_flash.asm"
 
-ds 24 ; Free space
+ds 19 ; Free space
 
 getScriptOpcodeFunction:
     ld   A, [wScriptCommand]                           ;; 02:4567 $fa $5a $d8
