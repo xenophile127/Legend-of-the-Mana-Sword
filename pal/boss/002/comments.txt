@@ -2,6 +2,8 @@ Palettes for Medusa.
 
 Background colors are the same as pal/00.
 
+Her skin tone is currently used for your companion when ill after the battle. 
+
 All available obj palettes are used:
 2. (Snowman) used for death explosion. Colors set to the same as the Fire spell.
 3. Duke/Amanda.
