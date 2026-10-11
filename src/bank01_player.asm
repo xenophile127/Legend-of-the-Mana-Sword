@@ -629,14 +629,14 @@ ds 8 ; Free space
 LoadMapEnd:
     push DE                                            ;; 01:448c $d5
     call getMainGameStateForPlayerForm                 ;; 01:448d $cd $cf $02
-    cp   A, $00                                        ;; 01:4490 $fe $00
-    jr   NZ, .jr_01_449b                               ;; 01:4492 $20 $07
-    ld   A, $c9                                        ;; 01:4494 $3e $c9
-    call setPlayerCollisionFlags                       ;; 01:4496 $cd $bd $02
-    ld   A, $00                                        ;; 01:4499 $3e $00
-.jr_01_449b:
-    ld [wScriptMainGameStateBackup], a
-    ld   A, $00                                        ;; 01:449e $3e $00
+    ld   [wScriptMainGameStateBackup], A
+    or   A, A
+    jr   NZ, .clear_counters
+    ld   A, $c9
+    call setPlayerCollisionFlags
+.clear_counters:
+    ld   A, $00
+    ld   [wScriptActionCount], A
     ld   [wScriptOpCounter], A                         ;; 01:44a0 $ea $99 $d4
     pop  HL                                            ;; 01:44a3 $e1
     ret                                                ;; 01:44a4 $c9
