@@ -2688,6 +2688,8 @@ script_01ae:
       sSFX 34                                          ;; 0d:4fd6 $f9 $22
       sDELAY 180                                       ;; 0d:4fd8 $f0 $b4
       sFADE_TO_BLACK                                   ;; 0d:4fda $bd
+; Looks a little weird in color if you are walking around with the Stone effect.
+      sPLAYER_CURE_STATUS 4
       sLOAD_ROOM_INSTANT 15, $55, 20, 0                ;; 0d:4fdb $f3 $0f $55 $14 $00
       sSET_MUSIC 10                                    ;; 0d:4fe0 $f8 $0a
       sFADE_TO_NORMAL                                  ;; 0d:4fe2 $bc
