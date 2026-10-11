@@ -67,7 +67,12 @@ gfxEnemyBasilisk:
 
 ;@gfximg name=enemy/mummy width=2 height=4
 gfxEnemyMummy:
+IF DEF(COLOR)
+    ; Colored eyes, black stripes.
+    INCBIN "enemy/mummy_color.bin"
+ELSE
     INCBIN "enemy/mummy.bin"                           ;; 0a:4680
+ENDC
 
 ;@gfximg name=enemy/red_wisp width=2 height=4
 gfxEnemyRedWisp:
