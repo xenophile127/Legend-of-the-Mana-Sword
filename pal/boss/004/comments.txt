@@ -1,0 +1,13 @@
+Palettes for Davias (Mind Flayer).
+
+Background colors are the same as pal/00.
+
+All available object palettes are used:
+2. (Snowman) Spinning projectile shield alternating color.
+3. Lester.
+4. Projectile (the real ones, not its shield) and death explosion.
+5. Spinning projectile shield alternating color.
+6. Body (lower half).
+7. Head (upper half).
+
+The boss damage flash effect is set to washed out colors for the head and body, with the gold trim body color less washed out. All other palettes are unchanged during during its boss flash.
