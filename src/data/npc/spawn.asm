@@ -22,7 +22,7 @@ NPCSpawnPointers:
     dw   mummy,        mummy,        pakkunLizard      ;; 03:7196 ??????      number 14 $0e
     dw   mummy,        cobra,        shadowZero        ;; 03:719c ??????      number 15 $0f
     dw   mummy,        redWisp,      gargoyle          ;; 03:71a2 ??????      number 16 $10
-    dw   zombie,       zombie,       data_03_75aa      ;; 03:71a8 ??????
+    dw   zombie,       zombie,       magician          ;; 03:71a8 ??????      number 17 $11
     dw   ape,          molebear,     gallfish          ;; 03:71ae ??????      number 18 $12
     dw   ogre,         spring,       gallfish          ;; 03:71b4 ??????      number 19 $13
     dw   phantasm,     minotaur_x1,  gargoyle          ;; 03:71ba ??????      number 20 $14
@@ -30,9 +30,9 @@ NPCSpawnPointers:
     dw   mattockNorth, wizard,       darkStalker       ;; 03:71c6 ??????      number 22 $16
     dw   shadowKnight, darkStalker,  darkStalker       ;; 03:71cc ??????      number 23 $17
     dw   megaXorn,     dragonfly,    bulette           ;; 03:71d2 ??????      number 24 $18
-    dw   data_03_762e, data_03_7636, walrus            ;; 03:71d8 ??????      number 25 $19
+    dw   snowmanMove,  saberCat,     walrus            ;; 03:71d8 ??????      number 25 $19
     dw   duckSoldier,  poto,         walrus            ;; 03:71de ??????      number 26 $1a
-    dw   data_03_7656, data_03_765e, walrus            ;; 03:71e4 ??????      number 27 $1b
+    dw   airElemental, beholder,     walrus            ;; 03:71e4 ??????      number 27 $1b
     dw   mandari,      griffonHand,  seaDragon         ;; 03:71ea ??????      number 28 $1c
     dw   tortoise,     griffonHand,  seaDragon         ;; 03:71f0 ??????      number 29 $1d
     dw   fireMoth,     earthElement, gargoyle          ;; 03:71f6 ??????      number 30 $1e
@@ -70,7 +70,7 @@ NPCSpawnPointers:
     dw   data_03_7844, data_03_7844, lesterMusic       ;; 03:72b6 ??????      number 62 $3e
     dw   airshipCrew1, airshipCrew1, airshipCrew1      ;; 03:72bc ??????      number 63 $3f
     dw   airshipCrew2, airshipCrew3, airshipCrew4      ;; 03:72c2 ??????      number 64 $40
-    dw   data_03_783a, data_03_7858, data_03_7862      ;; 03:72c8 ??????
+    dw   data_03_783a, lesterParrot, data_03_7862      ;; 03:72c8 ??????
     dw   data_03_7768, data_03_7772, data_03_7772      ;; 03:72ce ??????
     dw   tablet1,      tablet2,      tablet3           ;; 03:72d4 ??????      number 67 $43
     dw   tablet4,      tablet5,      tablet6           ;; 03:72da ??????      number 68 $44
@@ -85,12 +85,12 @@ NPCSpawnPointers:
     dw   data_03_772e, data_03_7aee, data_03_7aee      ;; 03:7310 ??????
     dw   data_03_781c, data_03_7b02, data_03_7812      ;; 03:7316 ??????
     dw   data_03_77cc, data_03_77cc, data_03_77cc      ;; 03:731c ??????
-    dw   data_03_7830, data_03_7ab6, data_03_7adc      ;; 03:7322 ??????
+    dw   chocoboEgg,   data_03_7ab6, data_03_7adc      ;; 03:7322 ??????
     dw   data_03_775e, data_03_775e, data_03_775e      ;; 03:7328 ??????
     dw   data_03_7af8, data_03_7af8, data_03_7af8      ;; 03:732e ??????
-    dw   data_03_7aa2, npcChocobo2Offscreen, willy     ;; 03:7334 ??????       number 83 $53
+    dw   data_03_7aa2, npcChocobo2Offscreen, willy     ;; 03:7334 ??????      number 83 $53
     dw   data_03_7a52, data_03_7a7a, data_03_7a7a      ;; 03:733a ......
-    dw   data_03_7a66, data_03_7a70, data_03_7a70      ;; 03:7340 ......
+    dw   data_03_7a66, innkeeper,    innkeeper         ;; 03:7340 ......      number 85 $55
     dw   data_03_7880, nukeTrigger,  nukeTrigger       ;; 03:7346 ??????      number 86 $56 (unused)
     dw   nukeTrigger,  nukeTrigger,  data_03_77f4      ;; 03:734c ??????      number 87 $57
     dw   data_03_777c, prisonBars,   data_03_77b8      ;; 03:7352 ??????      number 88 $58
@@ -99,8 +99,8 @@ NPCSpawnPointers:
     dw   data_03_7a5c, data_03_7a84, data_03_7a84      ;; 03:7364 ......
     dw   data_03_7710, data_03_7786, data_03_7786      ;; 03:736a ??????
     dw   data_03_7706, data_03_7786, data_03_7786      ;; 03:7370 ??????      number 93 $5d (unused)
-    dw   werewolfPack, data_03_7b46, data_03_7b46      ;; 03:7376 ??????      number 94 $5e
-    dw   data_03_742c, wererat,      data_03_7436      ;; 03:737c ??????      number 95 $5f
+    dw   werewolfPack, chestEmpty_x4, chestEmpty_x4    ;; 03:7376 ??????      number 94 $5e
+    dw   chestEmpty,   wererat,      snowmanPush       ;; 03:737c ??????      number 95 $5f
     dw   fujiWindow,   nukeTrigger,  data_03_76fc      ;; 03:7382 ??????      number 96 $60
     dw   data_03_7ac0, data_03_7ac0, data_03_7ac0      ;; 03:7388 ??????      number 97 $61 (unused)
     dw   data_03_779a, data_03_77a4, data_03_77a4      ;; 03:738e ??????
@@ -153,11 +153,11 @@ minotaur_x2:
     db   2, 2, NPC_MINOTAUR, NPC_MINOTAUR, NPC_MINOTAUR, NPC_MINOTAUR ;; 03:7420 ??????
     db   $0c, $0c, $06, $0c, $80, $80                  ;; 03:7426 ??????
 
-data_03_742c:
+chestEmpty:
     db   1, 1, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY ;; 03:742c ??????
     db   $0a, $08, $80, $80                            ;; 03:7432 ????
 
-data_03_7436:
+snowmanPush:
     db   1, 1, NPC_SNOWMAN_STILL, NPC_SNOWMAN_STILL, NPC_SNOWMAN_STILL, NPC_SNOWMAN_STILL ;; 03:7436 ??????
     db   $08, $08, $80, $80                            ;; 03:743c ????
 
@@ -337,7 +337,7 @@ shadowZero:
     db   1, 2, NPC_SHADOW, NPC_SHADOW, NPC_SHADOW, NPC_SHADOW ;; 03:75a2 ??????
     db   $80, $80                                      ;; 03:75a8 ??
 
-data_03_75aa:
+magician:
     db   1, 2, NPC_BLACK_WIZARD, NPC_BLACK_WIZARD, NPC_BLACK_WIZARD, NPC_BLACK_WIZARD ;; 03:75aa ??????
     db   $80, $80                                      ;; 03:75b0 ??
 
@@ -401,11 +401,11 @@ bulette:
     db   1, 3, NPC_ARMADILLO, NPC_ARMADILLO, NPC_ARMADILLO, NPC_ARMADILLO ;; 03:7626 ??????
     db   $80, $80                                      ;; 03:762c ??
 
-data_03_762e:
+snowmanMove:
     db   1, 2, NPC_SNOWMAN_MOVING, NPC_SNOWMAN_MOVING, NPC_SNOWMAN_MOVING, NPC_SNOWMAN_MOVING ;; 03:762e ??????
     db   $80, $80                                      ;; 03:7634 ??
 
-data_03_7636:
+saberCat:
     db   1, 2, NPC_SABER_CAT, NPC_SABER_CAT, NPC_SABER_CAT, NPC_SABER_CAT ;; 03:7636 ??????
     db   $80, $80                                      ;; 03:763c ??
 
@@ -421,11 +421,11 @@ poto:
     db   1, 2, NPC_POTO_RABBIT, NPC_POTO_RABBIT, NPC_POTO_RABBIT, NPC_POTO_RABBIT ;; 03:764e ??????
     db   $80, $80                                      ;; 03:7654 ??
 
-data_03_7656:
+airElemental:
     db   1, 2, NPC_CYCLONE, NPC_CYCLONE, NPC_CYCLONE, NPC_CYCLONE ;; 03:7656 ??????
     db   $80, $80                                      ;; 03:765c ??
 
-data_03_765e:
+beholder:
     db   1, 2, NPC_BEHOLDER_EYE, NPC_BEHOLDER_EYE, NPC_BEHOLDER_EYE, NPC_BEHOLDER_EYE ;; 03:765e ??????
     db   $80, $80                                      ;; 03:7664 ??
 
@@ -627,7 +627,7 @@ minecart:
     db   1, 1, NPC_MINECART, NPC_MINECART, NPC_MINECART, NPC_MINECART ;; 03:7826 ??????
     db   $00, $06, $80, $80                            ;; 03:782c ????
 
-data_03_7830:
+chocoboEgg:
     db   1, 1, NPC_CHOCOBO_EGG, NPC_CHOCOBO_EGG, NPC_CHOCOBO_EGG, NPC_CHOCOBO_EGG ;; 03:7830 ??????
     db   $0c, $06, $80, $80                            ;; 03:7836 ????
 
@@ -643,7 +643,7 @@ lesterMusic:
     db   1, 1, NPC_MUSIC_NOTES, NPC_MUSIC_NOTES, NPC_MUSIC_NOTES, NPC_MUSIC_NOTES ;; 03:784e ??????
     db   $0e, $08, $80, $80                            ;; 03:7854 ????
 
-data_03_7858:
+lesterParrot:
     db   1, 1, NPC_LESTER_PARROT, NPC_LESTER_PARROT, NPC_LESTER_PARROT, NPC_LESTER_PARROT ;; 03:7858 ??????
     db   $0e, $04, $80, $80                            ;; 03:785e ????
 
@@ -892,7 +892,7 @@ data_03_7a66:
     db   1, 1, NPC_SALESMAN, NPC_SALESMAN, NPC_SALESMAN, NPC_SALESMAN ;; 03:7a66 ..???.
     db   $09, $08, $80, $80                            ;; 03:7a6c ..??
 
-data_03_7a70:
+innkeeper:
     db   1, 1, NPC_INV_INN, NPC_INV_INN, NPC_INV_INN, NPC_INV_INN ;; 03:7a70 ..??..
     db   $09, $0a, $80, $80                            ;; 03:7a76 ..??
 
@@ -977,7 +977,7 @@ data_03_7b3c:
     db   1, 1, NPC_CHEST_2, NPC_CHEST_2, NPC_CHEST_2, NPC_CHEST_2 ;; 03:7b3c ???.??
     db   $0c, $08, $80, $80                            ;; 03:7b42 ????
 
-data_03_7b46:
+chestEmpty_x4:
     db   4, 4, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY, NPC_CHEST_EMPTY ;; 03:7b46 ??????
     db   $06, $04, $06, $0a, $0c, $0a, $0c, $04        ;; 03:7b4c ????????
     db   $80, $80                                      ;; 03:7b54 ??
