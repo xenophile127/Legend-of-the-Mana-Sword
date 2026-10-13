@@ -2,7 +2,7 @@ Palettes for Medusa.
 
 Background colors are the same as pal/00.
 
-Her skin tone is currently used for your companion when ill after the battle. 
+Note: Her skin tone is currently used for your companion when ill after the battle. This was done by copy and paste.
 
 All available obj palettes are used:
 2. (Snowman) used for death explosion. Colors set to the same as the Fire spell.
