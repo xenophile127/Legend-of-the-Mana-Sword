@@ -41,7 +41,6 @@ spriteShuffleShowHidden:
 .loop:
     cp a, [hl]
     jr nz, .show
-.next:
     dec l
     dec b
     jr nz, .loop
@@ -56,11 +55,6 @@ spriteShuffleShowHidden:
 ; Use that to get its entry in the array.
     ld d, HIGH(wOAMBuffer)
     ld e, a
-; Sprites are also hidden by the window routines using the magic number $cf instead of $ce.
-; Check that the sprite under consideration is hidden by the shuffle routine and if not then skip it.
-    ld a, [de]
-    cp $ce
-    jr nz, .next
 ; Restore the saved y position.
     ld a, [hl]
     ld [de], a
@@ -88,9 +82,7 @@ spriteShuffleDoFlash:
     ld d, HIGH(wOAMBuffer)
     ld e, [hl]
     ld [hl], $ff
-; Because the game's metasprite abstraction is so consistent, all the tests on one sprite of a metasprite pair
-; can be applied to the other. That means this loop can run on 20 metasprites instead of 40 sprites.
-    ld b, OAM_COUNT / 2
+    ld b, OAM_COUNT
 .loop:
 ; Test if this sprite is already hidden (y position is zero or greater than or equal to 144) and if so skip it.
 ; Normally the test would be (SCRN_Y + OAM_Y_OFS) for 160, but the status bar covers the last 16 lines.
@@ -124,8 +116,8 @@ spriteShuffleDoFlash:
 ; Check whether the sprite occupies three sections.
     ld a, $07
     and c
-; Maximum of ten sprites per line, so five metasprites.
-    ld a, $05 - 1
+; Maximum of ten sprites per line.
+    ld a, $0a - 1
     jr z, .on_grid_check
     cp [hl]
     jr c, .flash
@@ -165,28 +157,19 @@ spriteShuffleDoFlash:
     ld a, e
     rrca
     rrca
-; Store the original y position for both sprites.
-; This is done twice so the restoration routine can be kept simpler.
+; Store the original y position.
     ld hl, wHiddenSpritesYPositions
     add l
     ld l, a
     ld [hl], c
-    inc l
-    ld [hl], c
-; Set both sprites' position to the magic number $ce, moving it offscreen and
+; Set the sprite's position to the magic number $ce, moving it offscreen and
 ; indicating it should be restored next frame.
     ld a, $ce
-    ld h, d
-    ld l, e
-    ld [hl+], a
-    inc l
-    inc l
-    inc l
-    ld [hl], a
+    ld [de], a
 .next:
     dec b
     jr z, .finished
-    ld a, sizeof_OAM_ATTRS * 2
+    ld a, sizeof_OAM_ATTRS
     add e
     ld e, a
 ; Since the loop potentially starts mid way through the list,
