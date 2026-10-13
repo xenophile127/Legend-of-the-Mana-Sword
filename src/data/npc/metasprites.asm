@@ -281,8 +281,8 @@ metaspritesJulius:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $5a, $58
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC3, $6e, $6c
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $6c, $6e
+    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $5c, $5e
     db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $68, $6a
-    db   OAMF_NOFLIP | OAMF_PAL1 | PAL_NPC3, $5c, $5a
 
 metaspritesWizard:
     db   OAMF_XFLIP  | OAMF_PAL1 | PAL_NPC1, $4a, $48
