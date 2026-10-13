@@ -61,8 +61,8 @@
     COLOR_PALETTE_NPC 053              ; NPC_SNAKE = $35
     COLOR_PALETTE_NPC 054              ; NPC_SHADOW = $36
     COLOR_PALETTE_NPC 055              ; NPC_BLACK_WIZARD = $37
-    COLOR_PALETTE_NPC red              ; NPC_FLAME = $38
-    COLOR_PALETTE_NPC blue             ; NPC_GARGOYLE = $39
+    COLOR_PALETTE_NPC 056              ; NPC_FLAME = $38
+    COLOR_PALETTE_NPC 057              ; NPC_GARGOYLE = $39
     COLOR_PALETTE_NPC blue             ; NPC_MONKEY = $3a
     COLOR_PALETTE_NPC 059              ; NPC_MOLEBEAR = $3b
     COLOR_PALETTE_NPC blue             ; NPC_OGRE = $3c
@@ -119,7 +119,7 @@
     COLOR_PALETTE_NPC 003              ; NPC_WATTS = $6f
     COLOR_PALETTE_NPC ../hero/good     ; NPC_MINECART = $70
     COLOR_PALETTE_NPC blue             ; NPC_CHOCOBO_EGG = $71
-    COLOR_PALETTE_NPC blue             ; NPC_DAVIAS = $72
+    COLOR_PALETTE_NPC 114              ; NPC_DAVIAS = $72
     COLOR_PALETTE_NPC 006              ; NPC_LESTER_1 = $73
     COLOR_PALETTE_NPC blue             ; NPC_LESTER_PARROT = $74
     COLOR_PALETTE_NPC blue             ; NPC_BOWOW = $75
