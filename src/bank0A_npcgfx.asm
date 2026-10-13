@@ -345,7 +345,12 @@ gfxEnemyPakkunLizard:
 
 ;@gfximg name=enemy/magician width=2 height=12
 gfxEnemyMagician:
+IF DEF(COLOR)
+; Changed the shading on the hat to the outline color so the hat can have its own color.
+    INCBIN "enemy/magician_color.bin"
+ELSE
     INCBIN "enemy/magician.bin"                        ;; 0a:7580
+ENDC
 
 ;@gfximg name=enemy/death_gauntlet width=2 height=12
 gfxEnemyDeathGauntlet:

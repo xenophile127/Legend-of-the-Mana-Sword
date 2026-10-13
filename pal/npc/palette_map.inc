@@ -60,7 +60,7 @@
     COLOR_PALETTE_NPC 052              ; NPC_PAKKUN_LIZARD = $34
     COLOR_PALETTE_NPC 053              ; NPC_SNAKE = $35
     COLOR_PALETTE_NPC 054              ; NPC_SHADOW = $36
-    COLOR_PALETTE_NPC blue             ; NPC_BLACK_WIZARD = $37
+    COLOR_PALETTE_NPC 055              ; NPC_BLACK_WIZARD = $37
     COLOR_PALETTE_NPC red              ; NPC_FLAME = $38
     COLOR_PALETTE_NPC blue             ; NPC_GARGOYLE = $39
     COLOR_PALETTE_NPC blue             ; NPC_MONKEY = $3a
