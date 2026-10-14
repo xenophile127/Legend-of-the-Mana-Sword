@@ -80,7 +80,13 @@ gfxEnemyRedWisp:
 
 ;@gfximg name=enemy/barnaclejack width=2 height=4
 gfxEnemyBarnaclejack:
+IF DEF(COLOR)
+    ; Invert dark and light shades so the treasure chest looks better.
+    INCBIN "enemy/barnaclejack_color.bin"
+ELSE
     INCBIN "enemy/barnaclejack.bin"                    ;; 0a:4780
+ENDC
+
     db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 0a:4800 ????????
     db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 0a:4808 ????????
     db   $00, $00, $00, $00, $00, $00, $00, $00        ;; 0a:4810 ????????
