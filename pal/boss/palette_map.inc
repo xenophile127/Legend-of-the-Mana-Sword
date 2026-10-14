@@ -21,6 +21,6 @@
     COLOR_PALETTE_BOSS blue             ; Dragon Zombie  $0f
     COLOR_PALETTE_BOSS 016              ; Jackal         $10
     COLOR_PALETTE_BOSS blue             ; Julius 3       $11
-    COLOR_PALETTE_BOSS blue             ; Metal Crab     $12
+    COLOR_PALETTE_BOSS 018              ; Metal Crab     $12
     COLOR_PALETTE_BOSS blue             ; Mantis Ant     $13
     COLOR_PALETTE_BOSS 020              ; Red Dragon     $14

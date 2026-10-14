@@ -1,0 +1,15 @@
+Palette for Metal Crab.
+
+Background colors are the same as pal/00, except the flash palettes.
+
+Currently using two palettes:
+5. Body, legs, claws.
+7. Face.
+
+Hopefully with sprite-level (instead of metasprite-level) attributes more colors can be added.
+
+The boss damage flash effect is a washed-out version of the colors.
+
+The projectile palette is a backwards blue set (white, light-blue, dark-blue), used for the boss defeated explosions to make them look like splashes of water.
+
+The script flash effect is changed to a simple blue from the boss' main skin tone applied to the background. This is used at the beginning and end of the fight.
