@@ -63,7 +63,7 @@
     COLOR_PALETTE_NPC 055              ; NPC_BLACK_WIZARD = $37
     COLOR_PALETTE_NPC 056              ; NPC_FLAME = $38
     COLOR_PALETTE_NPC 057              ; NPC_GARGOYLE = $39
-    COLOR_PALETTE_NPC blue             ; NPC_MONKEY = $3a
+    COLOR_PALETTE_NPC 058              ; NPC_MONKEY = $3a
     COLOR_PALETTE_NPC 059              ; NPC_MOLEBEAR = $3b
     COLOR_PALETTE_NPC blue             ; NPC_OGRE = $3c
     COLOR_PALETTE_NPC blue             ; NPC_BARNACLEJACK = $3d
