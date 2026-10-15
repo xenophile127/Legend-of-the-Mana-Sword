@@ -5636,12 +5636,17 @@ script_0299:
 
 script_029a:
     sIF_TRIGGERED_ON_BY $c9                            ;; 0e:407b $0b $c9 $00 $37
-      sLOAD_ROOM 0, $8d, 6, 8                          ;; 0e:407f $f4 $00 $8d $06 $08
-      sSET_MUSIC 20                                    ;; 0e:4084 $f8 $14
+    ; Load the player sprite offscreen so the direction can be set before showing it.
+    ; This means seeing the character appear in the cave, which works nicely for the cutscene.
+      sLOAD_ROOM 0, $8d, 20, 0
+      sSET_MUSIC 20
+      sSET_PLAYER_DIRECTION_DOWN
+      sSET_PLAYER_POSITION 6, 6
+      sDELAY 15
       sIF_FLAG !wScriptFlags0A.4, !wScriptFlags02.6    ;; 0e:4086 $08 $d4 $96 $00 $2a
         sSET_NPC_TYPES 79                              ;; 0e:408b $fc $4f
         sSET_PLAYER_DIRECTION_DOWN                     ;; 0e:408d $85
-        sLOOP 4
+        sLOOP 6
           sPLAYER_STEP_FORWARD                         ;; 0e:4091 $80
         sEND                                           ;; 0e:4092 $00
         sMSG                                           ;; 0e:4093 $04
