@@ -106,6 +106,18 @@ ENDC
       BOSS_HEADER_GFX $38, $1c, bossGfxDragon, tileorderDragon, metaspritesDragon ;; 04:4921 ????????
       dw statsDragon, data_04_5165, data_04_5165, data_04_56ab ;; 04:4929 ????????
 
+; Stat object format:
+; * offset 0: collision flags (unused--$20 is always used regardless of the value in the table)
+; * offset 1: elemental immunities
+; * offset 2: weaknesses (see npc/stats.asm)
+; * offset 3: attack power
+; * offset 4: defense power
+; * offset 5: magic defense power
+; * offset 6: Status Effect on touch
+; * offset 7: unknown (likely unused)
+
+; Vampire has low AP, low physical DP, but high magical DP on his head and body,
+; high AP, high phsical DP, but low magical DP on his extended cape sections.  
 statsVampire:
     db   $20, $90, $01, $1a, $08, $11, $00, $01        ;; 04:4931 ????????
     db   $20, $90, $01, $1a, $08, $11, $00, $01        ;; 04:4939 ????????
@@ -134,9 +146,11 @@ statsDragonZombie:
     db   $20, $ff, $00, $be, $08, $08, $00, $00        ;; 04:49d1 ????????
     db   $20, $ff, $00, $be, $08, $08, $00, $00        ;; 04:49d9 ????????
 
+; Medusa has lower DP (both types) on her head.
+; For color she has an overlay for her crown.
 statsMedusa:
 IF DEF(COLOR)
-    db   $20, $f0, $00, $00, $32, $32, $00, $04
+    db   $20, $f0, $00, $4e, $32, $32, $00, $04
 ENDC
     db   $20, $f0, $00, $4e, $32, $32, $00, $04        ;; 04:49e1 ????????
     db   $20, $f0, $00, $4e, $08, $12, $00, $04        ;; 04:49e9 ????????
@@ -3620,13 +3634,13 @@ data_04_6b3f:
     db   $0d, $00, $ff                                 ;; 04:6b3f ...
 
 bodyVampireCapeClosed:
-    db   $0c, $00, $81                                 ;; 04:6b42
-    db   $0c, $f0, $81
-    db   $0c, $f0, $81
-    db   $0c, $00, $81
-    db   $01, $00, $f0
+    db   $01, $00, $f0                                 ;; 04:6b42
     db   $02, $f0, $00
     db   $00, $f0, $f0
+    db   $0c, $00, $81
+    db   $0c, $00, $81
+    db   $0c, $f0, $81
+    db   $0c, $f0, $81
     db   $ff
 
 bodyVampireCapeOpenFull:
@@ -3640,23 +3654,23 @@ bodyVampireCapeOpenFull:
     db   $ff
 
 bodyVampireCapeOpenLeft:
-    db   $0c, $00, $81                                 ;; 04:6b6e
+    db   $01, $00, $f0                                 ;; 04:6b6e
     db   $03, $f0, $00
     db   $04, $f0, $f0
     db   $0c, $00, $81
-    db   $01, $00, $f0
+    db   $0c, $00, $81
     db   $0a, $e0, $00
     db   $09, $e0, $f0
     db   $ff
 
 bodyVampireCapeOpenRight:
     db   $05, $00, $f0                                 ;; 04:6b84
-    db   $0c, $f0, $81
-    db   $0c, $f0, $81
-    db   $0b, $10, $00
-    db   $08, $10, $f0
     db   $02, $f0, $00
     db   $00, $f0, $f0
+    db   $0b, $10, $00
+    db   $08, $10, $f0
+    db   $02, $f0, $81
+    db   $00, $f0, $81
     db   $ff
 
 bodyVampireCapeOpenFull_fire:
@@ -3670,23 +3684,23 @@ bodyVampireCapeOpenFull_fire:
     db   $ff
 
 bodyVampireCapeOpenLeft_fire:
-    db   $0c, $00, $81                                 ;; 04:6bb0
+    db   $01, $00, $f0                                 ;; 04:6bb0
     db   $03, $f0, $00
     db   $04, $f0, $f0
-    db   $0c, $00, $81
-    db   $01, $00, $f0
+    db   $06, $00, $81
+    db   $01, $00, $81
     db   $0a, $e0, $00
     db   $49, $e0, $f0
     db   $ff
 
 bodyVampireCapeOpenRight_fire:
     db   $05, $00, $f0                                 ;; 04:6bc6
-    db   $0c, $f0, $81
-    db   $0c, $f0, $81
-    db   $0b, $10, $00
-    db   $48, $10, $f0
     db   $02, $f0, $00
     db   $00, $f0, $f0
+    db   $0b, $10, $00
+    db   $48, $10, $f0
+    db   $02, $f0, $81
+    db   $00, $f0, $81
     db   $ff
 
 bodyHydraDragonZombieFrontHighBackMid:
