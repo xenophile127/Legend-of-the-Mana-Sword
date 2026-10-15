@@ -7204,15 +7204,7 @@ popBankNrAndSwitch:
     ld   [rROMB0], A                                   ;; 00:2a13 $ea $00 $20
     ret                                                ;; 00:2a16 $c9
 
-; Load A from the bank stack (without modifying the bank stack) and switch to that bank.
-; Not interrupt safe.
-getCurrentBankNrAndSwitch:
-    ldh  A, [hBankStackPointer]                        ;; 00:2a17 $f0 $8a
-    ld   L, A                                          ;; 00:2a19 $6f
-    ld   H, HIGH(wBankStack)                           ;; 00:2a1a $26 $c0
-    ld   A, [HL]                                       ;; 00:2a1c $7e
-    ld [rROMB0], a
-    ret                                                ;; 00:2a1d $c9
+ds 10 ; Free space
 
 ; A linear congruential generator RNG.
 ; The original RNG has issues with some values coming up more often than others.
@@ -7966,8 +7958,13 @@ ENDC
     ld h, [hl]
     ld l, a
     ld sp, hl
-    call getCurrentBankNrAndSwitch
     pop de
+; Switch back to the original ROM bank.
+    ldh a, [hBankStackPointer]
+    ld l, a
+    ld h, HIGH(wBankStack)
+    ld a, [hl]
+    ld [rROMB0], a
 ; Restore the VRAM bank and reset the mutex.
     ld hl, wTileCopyRequestMutex
     ld a, [hl]
