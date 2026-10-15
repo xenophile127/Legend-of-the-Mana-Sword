@@ -7972,7 +7972,7 @@ ENDC
     ld [hl], $00
     ret
 
-ds 23 ; Free space
+ds 5 ; Free space
 
 SECTION "bank00_align_2df5", ROM0[$2df5]
 
