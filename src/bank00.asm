@@ -38,7 +38,6 @@ isrJoypad:
 VBlankInterruptHandler:
     push AF                                            ;; 00:0064 $f5
     push BC                                            ;; 00:0065 $c5
-    push DE                                            ;; 00:0066 $d5
     push HL                                            ;; 00:0067 $e5
     ld a, HIGH(wOAMBuffer)
     call hOAM_DMA_Routine                              ;; 00:006b $cd $80 $ff
@@ -93,13 +92,16 @@ ELSE
     ldh [rOBP1], a
 ENDC
 .finish:
-    call vblankGraphicsVRAMCopy                        ;; 00:0071 $cd $57 $2d
+; Transfer tiles if there are any in the queue.
+    ld a, [wTileCopyRequestCount]
+    or a
+    call nz, vblankGraphicsVRAMCopy
+; Advance the random number generator.
     call getRandomByte                                 ;; 00:0074 $cd $1e $2b
     ld   HL, wVBlankDone                               ;; 00:007e $21 $ad $c0
     ld a, [hl]
     inc  [HL]                                          ;; 00:0081 $34
     pop  HL                                            ;; 00:0082 $e1
-    pop  DE                                            ;; 00:0083 $d1
     pop  BC                                            ;; 00:0084 $c1
 ; If wVBlankDone was zero then the main loop has reached an infinite halt loop.
 ; The only way out of that infinite loop is to muck with the stack.
@@ -5610,7 +5612,7 @@ copyInitialVRAMTiles:
 ; The VRAM bank is stored in bit 0 and needs to be stripped even in B&W.
     and $01
 IF DEF(COLOR)
-    ld [rVBK], a
+    ldh [rVBK], a
 ENDC
     xor e
     ld e, a
@@ -5628,7 +5630,7 @@ ENDC
     jr   NZ, .loop                                     ;; 00:215d $20 $eb
 IF DEF(COLOR)
     xor a
-    ld [rVBK], a
+    ldh [rVBK], a
 ENDC
     ret                                                ;; 00:215f $c9
 
@@ -7823,14 +7825,24 @@ pushableCollisionHandling:
     ld   A, $c9                                        ;; 00:2d54 $3e $c9
     ret                                                ;; 00:2d56 $c9
 
+; Copy tiles to VRAM during VBlank.
+; a = number of tile copy requests in the queue.
 vblankGraphicsVRAMCopy:
-    ld   A, [wTileCopyRequestCount]                    ;; 00:2d57 $fa $e0 $c8
-    or a
-    ret  Z                                             ;; 00:2d5c $c8
     ld b, a
-    ld a, [wTileCopyRequestMutex]
+; The queue must be locked when requests are being added.
+    ld hl, wTileCopyRequestMutex
+    ld a, [hl]
     or a
     ret  NZ                                            ;; 00:2d63 $c0
+    push de
+; Save the current VRAM bank number.
+; Since the mutex is 0 it makes a good temporary location.
+    ldh a, [rVBK]
+    ld [hl], a
+; Set the VRAM bank to 0.
+; So far there has been no need for this function to load tiles to bank 1.
+    xor a
+    ldh [rVBK], a
 ; Use the stack pointer for speed. This is simplified by being in an interrupt.
     ld [wStackPointerBackup], sp
     ld sp, wTileCopyRequestData
@@ -7955,6 +7967,12 @@ ENDC
     ld l, a
     ld sp, hl
     call getCurrentBankNrAndSwitch
+    pop de
+; Restore the VRAM bank and reset the mutex.
+    ld hl, wTileCopyRequestMutex
+    ld a, [hl]
+    ldh [rVBK], a
+    ld [hl], $00
     ret
 
 ds 23 ; Free space
