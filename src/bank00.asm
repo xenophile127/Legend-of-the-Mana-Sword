@@ -8047,10 +8047,14 @@ loadMenuSpritePalette:
 loadAttackPalette:
     push af
     ld a, [wJoypadInput]
-    bit 4, a
+; Are you using a weapon, or an item/spell?
+; If the B button is not down assume weapon.
+; Basing the logic on the A button leads to the sword flying special return using
+; the palette of the last B button item/spell.
+    bit (PADB_B + 4), a
     ld a, [wEquippedWeapon]
     ld h, (INV_SWORD_BROAD - 1)
-    jr nz, .set_palette
+    jr z, .set_palette
     ld a, [wCurrentItemOrSpellInUse]
     and $7f
     ld h, $00
