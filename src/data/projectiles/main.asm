@@ -13,6 +13,13 @@
 ; 2) Size (for collision calculations)
 ; 3) Element
 ; 4) Damage
+; bit 0: level 1 projectiles (weakest)
+; bit 1: level 2 projectiles
+; bit 2: level 3 projectiles
+; bit 3: level 4 projectiles
+; bit 4: ice
+; bit 5: fire
+; bit 6: level 5 projectiles
 ; 5) Status Effect inflicted
 ; 6) Graphics Tile Load Index
 ; 7) Graphics Tile Load Count
