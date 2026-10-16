@@ -259,6 +259,7 @@ shutterEffectClose:
     and  A, $fc                                        ;; 01:41f7 $e6 $fc
     ld   HL, rLCDC                                     ;; 01:41f9 $21 $40 $ff
     call storeAatHLinVRAM                              ;; 01:41fc $cd $5e $1d
+.increment:
     ld   HL, wScriptOpCounter                          ;; 01:41ff $21 $99 $d4
     inc  [HL]                                          ;; 01:4202 $34
     pop  HL                                            ;; 01:4203 $e1
@@ -281,17 +282,18 @@ shutterEffectOpen:
 .finished:
 ; Ensure the effect isn't switched off before the final step sets the normal palette.
 ; Without this turning on CPU Double Speed Mode results in a white flash at the end.
+; Also target the first half of the frame as with optimizations this code can now be
+; reached at least as early as line 152 (still in VBlank).
 .loop:
     ldh a, [rLY]
     cp $04
     jr c, .loop
+    cp (SCRN_Y - 16) / 2
+    jr nc, .loop
     call setDefaultLCDCEffectAndPalette
     ld   A, [wVideoLCDCBackup]                         ;; 01:421f $fa $9c $d4
     ld   [wVideoLCDC], A                               ;; 01:4222 $ea $a5 $c0
-    ld   HL, wScriptOpCounter                          ;; 01:4225 $21 $99 $d4
-    inc  [HL]                                          ;; 01:4228 $34
-    pop  HL                                            ;; 01:4229 $e1
-    ret                                                ;; 01:422a $c9
+    jr shutterEffectClose.increment
 
 loadMinimapToBackground:
     push DE                                            ;; 01:422b $d5
