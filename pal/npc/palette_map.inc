@@ -90,14 +90,14 @@
     COLOR_PALETTE_NPC blue             ; NPC_DENDEN_SNAIL = $52
     COLOR_PALETTE_NPC blue             ; NPC_DOPPEL_MIRROR = $53
     COLOR_PALETTE_NPC 084              ; NPC_GUARDIAN = $54
-    COLOR_PALETTE_NPC blue             ; NPC_EVIL_SWORD = $55
-    COLOR_PALETTE_NPC blue             ; NPC_GAUNTLET = $56
+    COLOR_PALETTE_NPC 085              ; NPC_EVIL_SWORD = $55
+    COLOR_PALETTE_NPC 086              ; NPC_GAUNTLET = $56
     COLOR_PALETTE_NPC 087              ; NPC_GARASHA_DUCK = $57
     COLOR_PALETTE_NPC 088              ; NPC_FUZZY_WONDER = $58
     COLOR_PALETTE_NPC 089              ; NPC_ELEPHANT = $59
     COLOR_PALETTE_NPC 090              ; NPC_NINJA = $5a
     COLOR_PALETTE_NPC 091              ; NPC_JULIUS = $5b
-    COLOR_PALETTE_NPC blue             ; NPC_DEMON_HEAD = $5c
+    COLOR_PALETTE_NPC 092              ; NPC_DEMON_HEAD = $5c
     COLOR_PALETTE_NPC ../attack/008    ; NPC_INV_DESSERT_CAVE_STONE = $5d
     COLOR_PALETTE_NPC 094              ; NPC_SAHAGIN = $5e
     COLOR_PALETTE_NPC blue             ; NPC_SEA_DRAGON = $5f
