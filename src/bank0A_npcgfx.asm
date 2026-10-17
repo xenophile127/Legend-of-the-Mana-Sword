@@ -243,7 +243,11 @@ gfxNpcDukeDead:
 
 ;@gfximg name=enemy/sea_dragon width=2 height=6
 gfxEnemySeaDragon:
+IF DEF(COLOR)
+    INCBIN "enemy/sea_dragon_color.bin"
+ELSE
     INCBIN "enemy/sea_dragon.bin"                      ;; 0a:5b40
+ENDC
 
 ;@gfximg name=enemy/goblin width=2 height=8
 gfxEnemyGoblin:
