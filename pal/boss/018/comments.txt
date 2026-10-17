@@ -13,3 +13,5 @@ The boss damage flash effect is a washed-out version of the colors.
 The projectile palette is a backwards blue set (white, light-blue, dark-blue), used for the boss defeated explosions to make them look like splashes of water.
 
 The script flash effect is changed to a simple blue from the boss' main skin tone applied to the background. This is used at the beginning and end of the fight.
+
+Shares metasprites with Ifrit.

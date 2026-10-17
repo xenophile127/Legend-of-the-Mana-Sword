@@ -13,7 +13,7 @@
     COLOR_PALETTE_BOSS blue             ; Chimera        $07
     COLOR_PALETTE_BOSS blue             ; Kary           $08
     COLOR_PALETTE_BOSS blue             ; Kraken         $09
-    COLOR_PALETTE_BOSS blue             ; Ifrit          $0a
+    COLOR_PALETTE_BOSS 010              ; Ifrit          $0a
     COLOR_PALETTE_BOSS blue             ; Lich           $0b
     COLOR_PALETTE_BOSS blue             ; Garuda         $0c
     COLOR_PALETTE_BOSS blue             ; Dragon         $0d
