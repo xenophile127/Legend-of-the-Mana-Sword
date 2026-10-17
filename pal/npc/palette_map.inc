@@ -85,8 +85,8 @@
     COLOR_PALETTE_NPC blue             ; NPC_MANTA_RAY = $4d
     COLOR_PALETTE_NPC blue             ; NPC_JUMPING_HAND = $4e
     COLOR_PALETTE_NPC blue             ; NPC_TORTOISE = $4f
-    COLOR_PALETTE_NPC blue             ; NPC_FIRE_MOTH = $50
-    COLOR_PALETTE_NPC blue             ; NPC_EARTH_DIGGER = $51
+    COLOR_PALETTE_NPC 080              ; NPC_FIRE_MOTH = $50
+    COLOR_PALETTE_NPC 081              ; NPC_EARTH_DIGGER = $51
     COLOR_PALETTE_NPC blue             ; NPC_DENDEN_SNAIL = $52
     COLOR_PALETTE_NPC blue             ; NPC_DOPPEL_MIRROR = $53
     COLOR_PALETTE_NPC 084              ; NPC_GUARDIAN = $54
