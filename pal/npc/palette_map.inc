@@ -194,7 +194,7 @@
     COLOR_PALETTE_NPC 009              ; NPC_CHOCOBO_2 = $ba
     COLOR_PALETTE_NPC 187              ; NPC_PRISION_BARS = $bb
     COLOR_PALETTE_NPC blue             ; NPC_MUSIC_NOTES = $bc
-    COLOR_PALETTE_NPC blue             ; NPC_MAGIC_SALESMAN = $bd
+    COLOR_PALETTE_NPC 189              ; NPC_MAGIC_SALESMAN = $bd
     COLOR_PALETTE_NPC ../hero/good     ; NPC_HERO_SHIELDLESS = $be
     COLOR_PALETTE_NPC 066              ; NPC_SHADOW_KNIGHT_FAST = $bf
     COLOR_PALETTE_NPC 192              ; NPC_HASIM = $c0
