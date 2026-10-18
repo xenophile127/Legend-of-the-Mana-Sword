@@ -460,6 +460,8 @@ npcChooseBehaviorSet:
     ld   DE, $13                                       ;; 03:4243 $11 $13 $00
     ret                                                ;; 03:4246 $c9
 
+; a = behavior index
+; de = wNpcRuntimeData entry pointer
 call_03_4247:
     call call_03_425b                                  ;; 03:4247 $cd $5b $42
     ld   HL, $12                                       ;; 03:424a $21 $12 $00
@@ -475,17 +477,22 @@ call_03_4247:
     ld   A, [HL]                                       ;; 03:4259 $7e
     ret                                                ;; 03:425a $c9
 
+; a = behavior index
+; de = wNpcRuntimeData entry pointer
+; Return: a = 0, 1, 2, or 4 depending on behavior number.
 call_03_425b:
     ld   C, A                                          ;; 03:425b $4f
+; Return early if the NPC is attacking (with melee?).
     ld   HL, $03                                       ;; 03:425c $21 $03 $00
     add  HL, DE                                        ;; 03:425f $19
     ld   A, [HL]                                       ;; 03:4260 $7e
     cp   A, $ff                                        ;; 03:4261 $fe $ff
-    jr   Z, .jr_03_4268                                ;; 03:4263 $28 $03
+    jr   Z, .ready                                     ;; 03:4263 $28 $03
     ld   [HL], $ff                                     ;; 03:4265 $36 $ff
     ret                                                ;; 03:4267 $c9
-.jr_03_4268:
+.ready:
     ld   A, C                                          ;; 03:4268 $79
+; Check the top three bits of the behavior number.
     and  A, $e0                                        ;; 03:4269 $e6 $e0
     cp   A, $20                                        ;; 03:426b $fe $20
     jr   Z, .jr_03_4288                                ;; 03:426d $28 $19

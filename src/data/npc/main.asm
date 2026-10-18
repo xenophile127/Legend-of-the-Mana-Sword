@@ -10,7 +10,8 @@
 ; Offset $04: Pointer to graphics (bank 8 and up)
 ; Offset $06: Pointer to tile index order to load
 ; Offset $08: Pointer to metasprites
-; Offset $0A-$0F: Unknown
+; Offset $0a-$0e: Unknown
+; Offest $0f: Unused?
 ; Offset $10: Movement pattern, one selected at random (4 bytes)
 ; Offset $14: script index value (2 bytes)
 ; Offset $16: chest script index value, or zero if never drops a chest (2 bytes)
