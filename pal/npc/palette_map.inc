@@ -72,9 +72,9 @@
     COLOR_PALETTE_NPC 064              ; NPC_GLAIVE_MAGE = $40
     COLOR_PALETTE_NPC 065              ; NPC_GLAIVE_KNIGHT = $41
     COLOR_PALETTE_NPC 066              ; NPC_SHADOW_KNIGHT = $42
-    COLOR_PALETTE_NPC blue             ; NPC_MEGA_FLYTRAP = $43
-    COLOR_PALETTE_NPC blue             ; NPC_DRAGONFLY = $44
-    COLOR_PALETTE_NPC blue             ; NPC_ARMADILLO = $45
+    COLOR_PALETTE_NPC 067              ; NPC_MEGA_FLYTRAP = $43
+    COLOR_PALETTE_NPC 068              ; NPC_DRAGONFLY = $44
+    COLOR_PALETTE_NPC 069              ; NPC_ARMADILLO = $45
     COLOR_PALETTE_NPC blue             ; NPC_SNOWMAN_MOVING = $46
     COLOR_PALETTE_NPC blue             ; NPC_SABER_CAT = $47
     COLOR_PALETTE_NPC blue             ; NPC_WALRUS = $48
