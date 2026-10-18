@@ -177,7 +177,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_INV_STONE_6 = $a9
     COLOR_PALETTE_NPC blue             ; NPC_INV_STONE_7 = $aa
     COLOR_PALETTE_NPC blue             ; NPC_INV_STONE_8 = $ab
-    COLOR_PALETTE_NPC blue             ; NPC_GUY_LORIM_FROZEN = $ac
+    COLOR_PALETTE_NPC 000              ; NPC_GUY_LORIM_FROZEN = $ac
     COLOR_PALETTE_NPC blue             ; NPC_GUY_LORIM_1 = $ad
     COLOR_PALETTE_NPC blue             ; NPC_GUY_LORIM_2 = $ae
     COLOR_PALETTE_NPC 175              ; NPC_SALESMAN = $af

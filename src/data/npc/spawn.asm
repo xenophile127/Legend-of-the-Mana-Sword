@@ -75,8 +75,8 @@ NPCSpawnPointers:
     dw   tablet1,      tablet2,      tablet3           ;; 03:72d4 ??????      number 67 $43
     dw   tablet4,      tablet5,      tablet6           ;; 03:72da ??????      number 68 $44
     dw   tablet7,      tablet8,      tablet8           ;; 03:72e0 ??????      number 69 $45
-    dw   data_03_7a42, data_03_7a38, data_03_7888      ;; 03:72e6 ??????
-    dw   data_03_7a4a, data_03_7a38, data_03_7a38      ;; 03:72ec ??????
+    dw   data_03_7a42, frozen,       data_03_7888      ;; 03:72e6 ??????
+    dw   data_03_7a4a, frozen,       frozen            ;; 03:72ec ??????
     dw   data_03_79b8, data_03_79c0, nukeTrigger       ;; 03:72f2 ??????      number 72 $48
     dw   data_03_79c8, data_03_79d0, nukeTrigger       ;; 03:72f8 ??????      number 73 $49
     dw   nukeTrigger,  npcChocobotIsh, npcProfIsh      ;; 03:72fe ??????      number 74 $4a
@@ -868,9 +868,9 @@ tablet8:
     db   1, 1, NPC_INV_STONE_8, NPC_INV_STONE_8, NPC_INV_STONE_8, NPC_INV_STONE_8 ;; 03:7a2e ??????
     db   $09, $06, $80, $80                            ;; 03:7a34 ????
 
-data_03_7a38:
+frozen:
     db   1, 1, NPC_GUY_LORIM_FROZEN, NPC_GUY_LORIM_FROZEN, NPC_GUY_LORIM_FROZEN, NPC_GUY_LORIM_FROZEN ;; 03:7a38 ??????
-    db   $06, $07, $80, $80                            ;; 03:7a3e ????
+    db   $06, $08, $80, $80                            ;; 03:7a3e ????
 
 data_03_7a42:
     db   1, 1, NPC_GUY_LORIM_1, NPC_GUY_LORIM_1, NPC_GUY_LORIM_1, NPC_GUY_LORIM_1 ;; 03:7a42 ??????
