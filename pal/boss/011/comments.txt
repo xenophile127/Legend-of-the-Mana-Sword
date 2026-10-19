@@ -1,0 +1,9 @@
+Palettes for Lich
+
+Background colors are the same as pal/00.
+
+Lich only uses palette 5 (and palette 4 for projectiles and ending explosion).
+
+Damage flash mostly darkens colors, but with the outline color brightening slightly.
+
+The flash effect (used at the start and end) is unmodified because black and white fits Lich well.
