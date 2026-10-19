@@ -1489,28 +1489,30 @@ roomExitScreenScrollPrep:
 
 ; Being damaged causes two effects. First comes knockback with loss of control.
 ; Then for almost a second the player sprite blinks and is invulnerable.
+; Originally there was special (buggy?) treatment when facing north.
 ; A = wPlayerDamagedTimer
 ; Return: B = base sprite offset in the table
+; Return: C = direction bits ored with $b0 (some of the time)
 ; Return: D = direction bits at least some of the time. Unusued except one caller starts to use them but then throws them away.
 playerDamagedEffect:
     cp   A, $34                                        ;; 01:4b38 $fe $34
     jr   C, .blinking                                  ;; 01:4b3a $38 $13
     jr   Z, .stop_knockback                            ;; 01:4b3c $28 $34
-    push DE                                            ;; 01:4b3e $d5
-    push BC                                            ;; 01:4b3f $c5
     ld   C, $04                                        ;; 01:4b40 $0e $04
     call getObjectDirection                            ;; 01:4b42 $cd $99 $0c
-    pop  BC                                            ;; 01:4b45 $c1
-    pop  DE                                            ;; 01:4b46 $d1
     and  A, $0f                                        ;; 01:4b47 $e6 $0f
     ld   D, A                                          ;; 01:4b49 $57
     or   A, $b0                                        ;; 01:4b4a $f6 $b0
     ld   C, A                                          ;; 01:4b4c $4f
+; Load the player damaged frame ($20)
     ld   B, $20                                        ;; 01:4b4d $06 $20
+; Prevent blink during the knockback period by zeroing out the direction bits.
+    xor a
 .blinking:
 ; Double the blinking rate compared to the original. Looks better on faster refresh rate screens and still looks fine on DMG.
     bit  2, A
     jr   Z, .handle_timer                              ;; 01:4b51 $28 $02
+; Load the player invisible frame ($30)
     ld   B, $30                                        ;; 01:4b53 $06 $30
 .handle_timer:
     ld   HL, wPlayerDamagedTimer                       ;; 01:4b55 $21 $d2 $c4
@@ -1547,6 +1549,8 @@ playerDamagedEffect:
     ld   HL, wPlayerDamagedTimer                       ;; 01:4b8f $21 $d2 $c4
     dec  [HL]                                          ;; 01:4b92 $35
     ret                                                ;; 01:4b93 $c9
+
+ds 3 ; Free space
 
 gameStateChocobo:
     push DE                                            ;; 01:4b94 $d5
