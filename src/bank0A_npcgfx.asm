@@ -327,7 +327,11 @@ gfxEnemyBeholder:
 
 ;@gfximg name=enemy/tortoise_knight width=2 height=8
 gfxEnemyTortoiseKnight:
+IF DEF(COLOR)
+    INCBIN "enemy/tortoise_knight_color.bin"
+ELSE
     INCBIN "enemy/tortoise_knight.bin"                 ;; 0a:6e00
+ENDC
 
 ;@gfximg name=enemy/garasha width=2 height=8
 gfxEnemyGarasha:

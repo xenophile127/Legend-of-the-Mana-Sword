@@ -84,7 +84,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_BEHOLDER_EYE = $4c
     COLOR_PALETTE_NPC blue             ; NPC_MANTA_RAY = $4d
     COLOR_PALETTE_NPC blue             ; NPC_JUMPING_HAND = $4e
-    COLOR_PALETTE_NPC blue             ; NPC_TORTOISE = $4f
+    COLOR_PALETTE_NPC 079              ; NPC_TORTOISE = $4f
     COLOR_PALETTE_NPC 080              ; NPC_FIRE_MOTH = $50
     COLOR_PALETTE_NPC 081              ; NPC_EARTH_DIGGER = $51
     COLOR_PALETTE_NPC blue             ; NPC_DENDEN_SNAIL = $52
