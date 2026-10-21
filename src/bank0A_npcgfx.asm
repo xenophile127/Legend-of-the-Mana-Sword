@@ -319,7 +319,11 @@ gfxEnemyMinotaur:
 
 ;@gfximg name=enemy/duck_soldier width=2 height=8
 gfxEnemyDuckSolder:
+IF DEF(COLOR)
+    INCBIN "enemy/duck_soldier_color.bin"
+ELSE
     INCBIN "enemy/duck_soldier.bin"                    ;; 0a:6c00
+ENDC
 
 ;@gfximg name=enemy/beholder width=2 height=8
 gfxEnemyBeholder:

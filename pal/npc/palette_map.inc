@@ -78,7 +78,7 @@
     COLOR_PALETTE_NPC blue             ; NPC_SNOWMAN_MOVING = $46
     COLOR_PALETTE_NPC blue             ; NPC_SABER_CAT = $47
     COLOR_PALETTE_NPC blue             ; NPC_WALRUS = $48
-    COLOR_PALETTE_NPC blue             ; NPC_DUCK_SOLDIER = $49
+    COLOR_PALETTE_NPC 073              ; NPC_DUCK_SOLDIER = $49
     COLOR_PALETTE_NPC blue             ; NPC_POTO_RABBIT = $4a
     COLOR_PALETTE_NPC blue             ; NPC_CYCLONE = $4b
     COLOR_PALETTE_NPC blue             ; NPC_BEHOLDER_EYE = $4c
