@@ -717,7 +717,7 @@ metatilesWorldmap:
     METATILE $b6, $b7, $b8, $b9, $00, $04                  ;; $48
     METATILE $b2, $b3, $b3, $b2, $30, $05                  ;; $49
     METATILE $c9, $ca, $cb, $cc, $30, $05                  ;; $4a
-    METATILE $e1, $e2, $e3, $e4, $30, $85                  ;; $4b
+    METATILE $e1, $e2, $e3, $e4, $30, $85, BGP_DIRT        ;; $4b
     METATILE $66, $67, $68, $69, $30, $85                  ;; $4c
     METATILE $62, $63, $64, $65, $30, $84                  ;; $4d
     METATILE $92, $93, $94, $95, $31, $04                  ;; $4e
