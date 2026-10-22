@@ -42,7 +42,7 @@ INCLUDE "include/bgp_attributes.inc"
 ;    bit 7: Trigger a script when stepped on.
 metatilesOutdoor:
     METATILE $2e, $2f, $2e, $2f, $30, $05                  ;; $00
-    METATILE $2e, $2f, $9e, $9f, $00, $05                  ;; $01
+    METATILE $2e, $2f, $9e, $9f, $00, $05, BGP_DEFAULT, BGP_DEFAULT, BGP_STUMP, BGP_STUMP ;; $01
     METATILE $b2, $3e, $36, $37, $28, $04                  ;; $02
     METATILE $2d, $3e, $36, $37, $28, $04                  ;; $03
     METATILE $3f, $2d, $44, $40, $20, $06                  ;; $04
@@ -643,7 +643,7 @@ metatilesTitle:
 
 metatilesWorldmap:
     METATILE $2e, $2f, $2e, $2f, $30, $05                  ;; $00
-    METATILE $2e, $2f, $9e, $9f, $00, $05                  ;; $01
+    METATILE $2e, $2f, $9e, $9f, $00, $05, BGP_DEFAULT, BGP_DEFAULT, BGP_STUMP, BGP_STUMP ;; $01
     METATILE $16, $17, $0e, $18, $60, $07, BGP_OCEAN       ;; $02
     METATILE $27, $10, $10, $10, $c0, $07, BGP_RIVER       ;; $03
     METATILE $10, $28, $10, $10, $c0, $07, BGP_RIVER       ;; $04

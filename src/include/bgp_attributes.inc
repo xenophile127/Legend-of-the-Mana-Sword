@@ -14,6 +14,7 @@ DEF BGP_LOG        RB 0
 DEF BGP_PALISADE   RB 0
 DEF BGP_SAND       RB 0
 DEF BGP_SNAG       RB 0
+DEF BGP_STUMP      RB 0
 DEF BGP_DEFAULT    RB 1
 
 ; Anything green.
