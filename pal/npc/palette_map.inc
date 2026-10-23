@@ -163,7 +163,7 @@
     COLOR_PALETTE_NPC 155              ; NPC_SALESMAN_JADD = $9b
     COLOR_PALETTE_NPC 156              ; NPC_GIRL_JADD_3 = $9c
     COLOR_PALETTE_NPC 157              ; NPC_BOY_JADD = $9d
-    COLOR_PALETTE_NPC blue             ; NPC_OLDMAN_ISH = $9e
+    COLOR_PALETTE_NPC 158              ; NPC_OLDMAN_ISH = $9e
     COLOR_PALETTE_NPC blue             ; NPC_GUY_ISH_1 = $9f
     COLOR_PALETTE_NPC blue             ; NPC_GUY_ISH_2 = $a0
     COLOR_PALETTE_NPC blue             ; NPC_GIRL_ISH = $a1
