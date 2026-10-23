@@ -46,7 +46,7 @@ Currently there are these subdirectories within `pal`:
 1. **`00` -** The main palette(s), loaded at startup. Contains four sub directories, each of which contains eight background (`bgp`) `.pal` files and eight sprite (`obj`) `.pal` files. All sprite palette loading is now done dynamically so the `obj` pal files are obsolete. Currently the first four `bgp` files are loaded at startup but will be replaced if a boss is loaded.
 
     Background palettes are planned to eventually be loaded dynamically as well but for now these palettes are in use:
-    - `bgp0.pal` for windows and line effects,
+    - `bgp0.pal` for windows and line effects. As it is used for windows it may eventually be moved to the `menu/` directory.
     - `bgp1.pal` is the default if a metatile has not been given specific colors. It is set to the colors that Mystic Quest used when running on a GBC.
     - `bgp2.pal` is two shades of green, black, and white. Currently this is the same as `bgp1.pal` but semantically use of this palette is for objects that should be green even if a different default palette is set.
     - `bgp3.pal` is set to the old LotMS Lazy DX colors, green, blue, black, and white. This is used mostly for things like water and sky that greatly benefitted from having blue in the palette.
