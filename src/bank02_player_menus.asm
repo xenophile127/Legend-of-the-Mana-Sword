@@ -755,7 +755,7 @@ gameStateMenuJumptable:
     dw   call_02_4cf7                                  ;; 02:47d8 pP $08
     dw   call_02_4c9a                                  ;; 02:47da ?? $09
     dw   call_02_4cc7                                  ;; 02:47dc ?? $0a
-    dw   call_02_4d36                                  ;; 02:47de pP $0b
+    dw   windowTrashcanHandling                        ;; 02:47de pP $0b
     dw   call_02_4d89                                  ;; 02:47e0 pP $0c
     dw   swapActiveEquipment                           ;; 02:47e2 pP $0d
     dw   call_02_4e5b                                  ;; 02:47e4 pP $0e
@@ -1549,32 +1549,35 @@ call_02_4cf7:
     call setMenuStateCurrentFunction                   ;; 02:4d32 $cd $98 $6c
     ret                                                ;; 02:4d35 $c9
 
-call_02_4d36:
+windowTrashcanHandling:
     call loadRegisterState1                            ;; 02:4d36 $cd $5b $6d
     call getSelectedMenuIndexes                        ;; 02:4d39 $cd $b0 $57
+; Check whether the trashcan is selected. The value $fe is used for this.
     ld   A, $fe                                        ;; 02:4d3c $3e $fe
     cp   A, B                                          ;; 02:4d3e $b8
-    jr   Z, .jr_02_4d45                                ;; 02:4d3f $28 $04
+    jr   Z, .trashcan                                  ;; 02:4d3f $28 $04
     cp   A, C                                          ;; 02:4d41 $b9
     jr   NZ, jr_02_4d83                                ;; 02:4d42 $20 $3f
     ld   C, B                                          ;; 02:4d44 $48
-.jr_02_4d45:
+.trashcan:
     ld   B, $00                                        ;; 02:4d45 $06 $00
-    ld   A, [wWindowSecondPointer.high]                ;; 02:4d47 $fa $95 $d8
-    ld   H, A                                          ;; 02:4d4a $67
-    ld   A, [wWindowSecondPointer]                     ;; 02:4d4b $fa $94 $d8
-    ld   L, A                                          ;; 02:4d4e $6f
+    ld hl, wWindowSecondPointer
+    ld a, [hl+]
+    ld h, [hl]
+    ld l, a
     add  HL, BC                                        ;; 02:4d4f $09
     ld   A, [HL]                                       ;; 02:4d50 $7e
+; Check the item or equipment's bit that prevents trashing or vending.
     push BC                                            ;; 02:4d51 $c5
     call getEquipmentFlags1And2                        ;; 02:4d52 $cd $8a $56
-    ld   A, C                                          ;; 02:4d55 $79
-    bit  6, A                                          ;; 02:4d56 $cb $77
+    bit 6, c
     pop  BC                                            ;; 02:4d58 $c1
-    jr   NZ, .jr_02_4d6f                               ;; 02:4d59 $20 $14
+    jr nz, .error
     ld   A, [HL]                                       ;; 02:4d5b $7e
-    cp   A, $80                                        ;; 02:4d5c $fe $80
-    jr   Z, .jr_02_4d6f                                ;; 02:4d5e $28 $0f
+; Check if the selected slot is currently empty ($00) or equipped ($80).
+    and $7f
+    jr z, .error
+; Trash the item or equipment.
     push BC                                            ;; 02:4d60 $c5
     xor  A, A                                          ;; 02:4d61 $af
     ld   [HL], A                                       ;; 02:4d62 $77
@@ -1586,10 +1589,15 @@ call_02_4d36:
     add  HL, BC                                        ;; 02:4d6c $09
     xor  A, A                                          ;; 02:4d6d $af
     ld   [HL], A                                       ;; 02:4d6e $77
-.jr_02_4d6f:
+    jr .finish
+.error:
+    call playWindowErrorSound
+.finish:
     call call_02_4fd3                                  ;; 02:4d6f $cd $d3 $4f
     ld   A, $1d                                        ;; 02:4d72 $3e $1d
     jp   jp_02_5877                                    ;; 02:4d74 $c3 $77 $58
+
+ds 1 ; Free space
 
 call_02_4d77:
     call call_02_4fe8                                  ;; 02:4d77 $cd $e8 $4f
