@@ -4441,7 +4441,10 @@ call_02_67f9:
     ret                                                ;; 02:680d $c9
 
 call_02_680e:
-    ld   A, B                                          ;; 02:680e $78
+; Originally called by a different jumptable function that set B=0 as a side effect.
+; Without this the error sound on the Load menu when selecting an empty slot
+; will repeat continuously.
+    xor a
     ld   [wMenuStateFunctionNew], A                    ;; 02:680f $ea $50 $d8
     call loadRegisterState2                            ;; 02:6812 $cd $a7 $6d
     ld   A, [wMenuFlags]                               ;; 02:6815 $fa $49 $d8
