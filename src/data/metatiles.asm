@@ -931,3 +931,6 @@ metatilesManaland:
     METATILE $9d, $9e, $9a, $9b, $20, $05                  ;; $86 ($7a)
 ; Bridge for Marsh Cave which should not have a blue background.
     METATILE $cc, $cd, $ce, $cf, $30, $05, BGP_DEFAULT     ;; $87 ($25)
+; Edges for the bottom of the stairway before Chimera.
+    METATILE $94, $b6, $95, $95, $00, $05                  ;; $88 ($2f/$51)
+    METATILE $a5, $94, $95, $95, $00, $05                  ;; $89 ($3f/$51)
