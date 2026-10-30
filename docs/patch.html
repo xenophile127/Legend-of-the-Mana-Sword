@@ -22,22 +22,36 @@
 					allowDropFiles: true,
 				};
 				RomPatcherWeb.initialize(myPatcherSettings, {
-					file: 'https://xenophile127.github.io/Legend-of-the-Mana-Sword/releases/LotMS-2024-11-04.zip', //zip containing patches
+					file: 'https://xenophile127.github.io/Legend-of-the-Mana-Sword/releases/LotMS-2026-10-30.zip', //zip containing patches
 					patches: [
 						{
-							file: 'LotMS-Amanda-2024-11-04.ips',
+							file: 'LotMS-Amanda-2026-10-30.ips',
 							name: 'Legend of the Mana Sword Amanda version',
 							inputMd5: ['24cd3bdf490ef2e1aa6a8af380eccd78', '8c1c4b2e451fb7d695441b9be03e4d30'],
 							description: 'Legend of the Mana Sword Amanda version. Play as Amanda.',
-							outputName: 'lotms-amanda-2024-11-04',
+							outputName: 'lotms-amanda-2026-10-30',
 							outputExtension: 'gb'
 						}, {
-							file: 'LotMS-Duke-2024-11-04.ips',
+							file: 'LotMS-Amanda-Color-2026-10-30.ips',
+							name: 'Legend of the Mana Sword Amanda Color (beta) version',
+							inputMd5: ['24cd3bdf490ef2e1aa6a8af380eccd78', '8c1c4b2e451fb7d695441b9be03e4d30'],
+							description: 'BETA: Legend of the Mana Sword Amanda Color version. Play as Amanda. Requires Game Boy Color or Game Boy Advance',
+							outputName: 'lotms-amanda-color-2026-10-30',
+							outputExtension: 'gbc'
+						}, {
+							file: 'LotMS-Duke-2026-10-30.ips',
 							name: 'Legend of the Mana Sword Duke version',
 							inputMd5: ['24cd3bdf490ef2e1aa6a8af380eccd78', '8c1c4b2e451fb7d695441b9be03e4d30'],
 							description: 'Legend of the Mana Sword Duke version. Play as the original character, Duke.',
-							outputName: 'lotms-duke-2024-11-04',
+							outputName: 'lotms-duke-2026-10-30',
 							outputExtension: 'gb'
+						}, {
+							file: 'LotMS-Duke-Color-2026-10-30.ips',
+							name: 'Legend of the Mana Sword Duike Color (beta) version',
+							inputMd5: ['24cd3bdf490ef2e1aa6a8af380eccd78', '8c1c4b2e451fb7d695441b9be03e4d30'],
+							description: 'BETA: Legend of the Mana Sword Duke Color version. Play as Duke. Requires Game Boy Color or Game Boy Advance',
+							outputName: 'lotms-duke-color-2026-10-30',
+							outputExtension: 'gbc'
 						}
 					]
 				});

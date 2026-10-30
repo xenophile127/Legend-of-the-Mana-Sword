@@ -18,9 +18,12 @@ Gameplay and Bug Fixes:
 * Magic Power is set correctly when loading a save.
 * Followers now move with player across chain post transits.
 * Nuke has been buffed to its original Japanese power.
+* Projectiles fired from point-blank range no longer do random damage.
+* Damage done to a bosses' explosins no longer transfers to the next boss.
 * New-and-improved Random Number Generator (RNG)!
 
 Graphics:
+* Beta: In progress Game Boy Color full colorization.
 * New title screen.
 * "Shieldless" main character sprites used in a few cutscenes.
 * Choice between two main characters.
@@ -44,6 +47,34 @@ Script and Text:
 * Changes to the "Bag of Fang" quest to make it less frustrating and to make the hint actually useful.
 * Changes to the Ruins quest so people might be able to do it without searching the web.
 * A large number of typos, misspellings, grammar mistakes, awkward phrasings, bad translations, unnecessary verbosity, incorrect pluralization, and unintelligible uninteresting nonsense fixed. (If nonsense is interesting or intelligible it's likely left as is.)
+* Text speed increased. Text speed glitches (related to character names and the Dual Tile Encoding system) fixed. Lines that would auto-clear changed to wait for input.
+
+Changes 2026-10-30:
+* More changes to prevent puzzle room glitches.
+* Projectiles fired at point-blank were not initialized correctly.
+* Don't transfer extra damage done to one boss to the next boss.
+* Spear now makes the same sound when regardless of which direction you are facing.
+* Sounds that don't use channel 1 no longer affect music.
+* Error sounds in all cases when the trash can does not work.
+* Fix error sound when trying to load an empty save slot caused by a previous change (oops).
+* More consistent dialog text speed.
+* Move Select menu to not cover the status bar.
+* Improve intro story scroll effect by clearing the title screen text and fixing a flashing line at the top of the screen.
+* Improvements to character entrances and exits in some cutscenes.
+* Correct a corrupted casting frame used by Magician and Julius.
+* Fix knockback animation when facing North.
+* Optimize sprite shuffle so invisible sprites do not cause other sprites to flash.
+* Healing pond now heals status effects.
+* Cure Stone status effect after the Medusa fight.
+* Minor improvement to Jackal/Golem defeated explosion.
+* Change Vampire to move extra sprites offscreen so the bats are visible in more cases.
+* Fix Mantis Ant explosion when loading from a save game in its room.
+* Improvements to the puzzle room just before Ifrit.
+* Make Bone Key single use like Silver Key.
+* Move Lorimar frozen guy so he can't be hidden by the dialog window.
+* Fix Garuda projectile frame, caused by a previous change (oops).
+* Slight graphic improvement to the screen before Chimera.
+* Fix Gold (the item) to not be consumed on attempted use.
 
 Changes 2024-11-04:
 * Fix the Moogle item fix. (Oops.)
@@ -177,4 +208,4 @@ Thanks you to:
 * amaturehr for coining the term "Lazy DX" and moving the bar forward on this facinating technology.
 * Everyone who has played!
 
--xenophile 2024-11-04
+-xenophile 2026-11-30
