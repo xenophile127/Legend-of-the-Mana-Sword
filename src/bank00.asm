@@ -4271,10 +4271,8 @@ call_00_177e:
     dec  E                                             ;; 00:178b $1d
 ; Load the metatile bank.
     push DE                                            ;; 00:178c $d5
-    push BC                                            ;; 00:178d $c5
     ld   A, BANK(metatilesOutdoor) ;@=bank metatilesOutdoor ;; 00:178e $3e $08
     call pushBankNrAndSwitch                           ;; 00:1790 $cd $fb $29
-    pop  BC                                            ;; 00:1793 $c1
 ; Init sliding (ice and minecart tracks) to zero and save the previous value in L.
     push BC                                            ;; 00:1794 $c5
     ld   A, $00                                        ;; 00:1795 $3e $00
@@ -4360,18 +4358,16 @@ call_00_177e:
     ld   B, A                                          ;; 00:1812 $47
     jr   .finish                                       ;; 00:1813 $18 $e0
 
+ds 2 ; Free space
+
 ; A = direction (1:east, 2:west, 4:north, 8:south)
 ; C = object collision flags
 ; DE = object pixel location
 prepareTileScriptOrSpikeDamage:
     push DE                                            ;; 00:1815 $d5
     push AF                                            ;; 00:1816 $f5
-    push BC                                            ;; 00:1817 $c5
-    push DE                                            ;; 00:1818 $d5
     ld   A, $08                                        ;; 00:1819 $3e $08
     call pushBankNrAndSwitch                           ;; 00:181b $cd $fb $29
-    pop  DE                                            ;; 00:181e $d1
-    pop  BC                                            ;; 00:181f $c1
     pop  AF                                            ;; 00:1820 $f1
     push BC                                            ;; 00:1821 $c5
     srl  D                                             ;; 00:1822 $cb $3a
@@ -4470,6 +4466,8 @@ prepareTileScriptOrSpikeDamage:
     pop  BC                                            ;; 00:18bd $c1
     pop  DE                                            ;; 00:18be $d1
     ret                                                ;; 00:18bf $c9
+
+ds 4 ; Free space
 
 ; Used for player, NPCs, enemies, and companions
 ; A = object collision flags
@@ -6037,10 +6035,8 @@ getDoorStatus:
     cp   A, $00                                        ;; 00:23bc $fe $00
     ld   B, $00                                        ;; 00:23be $06 $00
     ret  Z                                             ;; 00:23c0 $c8
-    push DE                                            ;; 00:23c1 $d5
     ld   A, [wMapTableBankNr]                          ;; 00:23c2 $fa $f0 $c3
     call pushBankNrAndSwitch                           ;; 00:23c5 $cd $fb $29
-    pop  DE                                            ;; 00:23c8 $d1
     call checkMovingInPossibleDoorLocation             ;; 00:23c9 $cd $85 $23
     jr   NZ, .not_possible_door_location               ;; 00:23cc $20 $1c
     ld   E, A                                          ;; 00:23ce $5f
@@ -6057,9 +6053,7 @@ getDoorStatus:
     add  HL, DE                                        ;; 00:23e1 $19
     ld   B, [HL]                                       ;; 00:23e2 $46
 .jr_00_23e3:
-    push BC                                            ;; 00:23e3 $c5
     call popBankNrAndSwitch                            ;; 00:23e4 $cd $0a $2a
-    pop  BC                                            ;; 00:23e7 $c1
     xor  A, A                                          ;; 00:23e8 $af
     ret                                                ;; 00:23e9 $c9
 .not_possible_door_location:
@@ -6068,6 +6062,8 @@ getDoorStatus:
     ld   B, A                                          ;; 00:23ee $47
     inc  A                                             ;; 00:23ef $3c
     ret                                                ;; 00:23f0 $c9
+
+ ds 4 ; Free space
 
 ; Param: DE = XY position
 ; Return: HL = pointer to metatile
@@ -6090,10 +6086,8 @@ getRoomMetatilePointer:
 ; DE = XY position
 setRoomTile:
     push AF                                            ;; 00:2400 $f5
-    push DE                                            ;; 00:2401 $d5
     ld   A, [wMapTableBankNr]                          ;; 00:2402 $fa $f0 $c3
     call pushBankNrAndSwitch                           ;; 00:2405 $cd $fb $29
-    pop  DE                                            ;; 00:2408 $d1
     push DE                                            ;; 00:2409 $d5
     call getRoomMetatilePointer                        ;; 00:240a $cd $f1 $23
     pop  DE                                            ;; 00:240d $d1
@@ -6111,6 +6105,8 @@ setRoomTile:
     call updateMetatileAttributeCacheAndDrawImmediate
     call popBankNrAndSwitch                            ;; 00:2422 $cd $0a $2a
     ret                                                ;; 00:2425 $c9
+
+ds 2 ; Free space
 
 ; Param: DE = XY position
 ; Return: A = meta tile number
@@ -6633,11 +6629,11 @@ call_00_2617:
     call getRoomPointerTemplatedRoom                   ;; 00:26d1 $cd $d1 $25
 .jr_00_26d4:
     push HL                                            ;; 00:26d4 $e5
-    push DE                                            ;; 00:26d5 $d5
     call popBankNrAndSwitch                            ;; 00:26d6 $cd $0a $2a
-    pop  DE                                            ;; 00:26d9 $d1
     pop  HL                                            ;; 00:26da $e1
     ret                                                ;; 00:26db $c9
+
+ds 2 ; Free space
 
 ; A=Map number
 ; DE=room XY
