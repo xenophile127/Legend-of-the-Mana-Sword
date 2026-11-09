@@ -1,0 +1,15 @@
+Palette for Ifrit.
+
+Background colors are the same as pal/00, except the flash palettes.
+
+Currently using two palettes:
+5. Main palette.
+7. Face.
+
+The boss damage flash effect is a darkened version of the colors, unlike most bosses which use a brighter palette. This is attempting to show the flames being momentarily quenched.
+
+The projectile palette is the same as the main palette--this is only used for the explosions at the end.
+
+The script flash effect is changed to the darkened brown from the the damage palette applied to the background, and yellow for the boss objects.. This is used at the beginning and end of the fight.
+
+Shares metasprites with Metal Crab.
