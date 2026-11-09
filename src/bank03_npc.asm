@@ -2319,10 +2319,10 @@ npcBehaviorJumptable:
     dw   npcWalkSpeedDefault                           ;; 03:4c73 pP $0f
     dw   npcBehaviorDelay30                            ;; 03:4c75 pP $10
     dw   npcBehaviorDelay60                            ;; 03:4c77 pP $11
-    dw   npcBehaviorSpecialSnowmanChest                ;; 03:4c79 ?? $12
+    dw   npcBehaviorDelay90 ; unused                   ;; 03:4c79 ?? $12
     dw   npcBehaviorDelay120                           ;; 03:4c7b pP $13
-    dw   npcBehaviorDelay150                           ;; 03:4c7d ?? $14
-    dw   npcBehaviorDelay180                           ;; 03:4c7f ?? $15
+    dw   npcBehaviorSpecialSnowmanChest                ;; 03:4c7d ?? $14
+    dw   ld_C_into_A ; unused                          ;; 03:4c7f ?? $15
     dw   ld_C_into_A                                   ;; 03:4c81 ?? $16
     dw   ld_C_into_A                                   ;; 03:4c83 ?? $17
     dw   ld_C_into_A                                   ;; 03:4c85 ?? $18
@@ -2900,12 +2900,12 @@ npcBehaviorDelay60:
     call npcBehaviorProcessDelayAction                 ;; 03:5021 $cd $df $55
     ret                                                ;; 03:5024 $c9
 
-npcBehaviorSpecialSnowmanChest:
+npcBehaviorDelay90:
     ld   A, C                                          ;; 03:5025 $79
     cp   A, $00                                        ;; 03:5026 $fe $00
-    ld   C, $3c
+    ld   C, $5a                                        ;; 03:5028 $0e $5a
     call Z, call_03_55cb                               ;; 03:502a $cc $cb $55
-    call delayWithMovingHold
+    call npcBehaviorProcessDelayAction                 ;; 03:502d $cd $df $55
     ret                                                ;; 03:5030 $c9
 
 npcBehaviorDelay120:
@@ -2916,21 +2916,28 @@ npcBehaviorDelay120:
     call npcBehaviorProcessDelayAction                 ;; 03:5039 $cd $df $55
     ret                                                ;; 03:503c $c9
 
-npcBehaviorDelay150:
+npcBehaviorSpecialSnowmanChest:
     ld   A, C                                          ;; 03:503d $79
     cp   A, $00                                        ;; 03:503e $fe $00
-    ld   C, $96                                        ;; 03:5040 $0e $96
+    ld   C, $3c
     call Z, call_03_55cb                               ;; 03:5042 $cc $cb $55
-    call npcBehaviorProcessDelayAction                 ;; 03:5045 $cd $df $55
+    call npcBehaviorProcessDelayActionWithMovingHold
     ret                                                ;; 03:5048 $c9
 
-npcBehaviorDelay180:
-    ld   A, C                                          ;; 03:5049 $79
-    cp   A, $00                                        ;; 03:504a $fe $00
-    ld   C, $b4                                        ;; 03:504c $0e $b4
-    call Z, call_03_55cb                               ;; 03:504e $cc $cb $55
-    call npcBehaviorProcessDelayAction                 ;; 03:5051 $cd $df $55
-    ret                                                ;; 03:5054 $c9
+; Same intent as npcBehaviorProcessDelayAction, but prevent
+; delay timer hitting 0 while the object is moving. This is done by
+; incrementing the delay timer by 2 when on an even delay timer value.
+; It is not appropriate to increment the timer on every tick since the
+; game uses the even/odd nature of the timer to govern animations.
+npcBehaviorProcessDelayActionWithMovingHold:
+    call npcBehaviorProcessDelayAction
+    bit  0, A
+    ret  NZ
+    bit  4, B
+    ret  Z
+    inc  A
+    inc  A
+    ret
 
 npcFaceEast:
     ld   A, [DE]                                       ;; 03:5055 $1a
@@ -4085,26 +4092,28 @@ call_03_55cb:
     ld   A, L                                          ;; 03:55dd $7d
     ret                                                ;; 03:55de $c9
 
+; Decrement delay timer and handle walk in place action
+; Updated to keep first flag byte from the wObjectRuntimeData entry in B
 npcBehaviorProcessDelayAction:
     dec  A                                             ;; 03:55df $3d
-    push AF                                            ;; 03:55e0 $f5
-    push DE                                            ;; 03:55e1 $d5
-    ld   A, [DE]                                       ;; 03:55e2 $1a
-    ld   C, A                                          ;; 03:55e3 $4f
-    push BC                                            ;; 03:55e4 $c5
-    call getObjectDirection                            ;; 03:55e5 $cd $99 $0c
-    and  A, $0f                                        ;; 03:55e8 $e6 $0f
-    pop  BC                                            ;; 03:55ea $c1
-    call processPhysicsForObject                       ;; 03:55eb $cd $95 $06
-    pop  DE                                            ;; 03:55ee $d1
-    pop  AF                                            ;; 03:55ef $f1
-    bit  0, A                                          ;; 03:55f0 $cb $47
-    ret  Z                                             ;; 03:55f2 $c8
-    push AF                                            ;; 03:55f3 $f5
-    ld   A, $01                                        ;; 03:55f4 $3e $01
-    call npcSetMeleeState                              ;; 03:55f6 $cd $bc $28
-    pop  AF                                            ;; 03:55f9 $f1
-    ret                                                ;; 03:55fa $c9
+    push AF
+    and  A, $01
+    call NZ, npcSetMeleeState
+    push DE
+    ld   A, [DE]
+    ld   C, A
+    push BC
+    call getObjectDirection
+    pop  BC
+    push AF
+    and  A, $0f
+    call processPhysicsForObject
+    pop  BC
+    pop  DE
+    pop  AF
+    ret
+
+ds 3 ; Free space
 
 call_03_55fb:
     or   A, $90                                        ;; 03:55fb $f6 $90
@@ -4182,7 +4191,7 @@ behaviorSets:
     db   $b4, $b5, $06, $07, $06, $07, $06, $4c, $4d, $24, $24, $28, $28, $28, $0f, $0f, $b0, $b0, $b2, $b3, $b4, $b5, $b4, $b5, $b8, $b9, $ba, $bb, $b4, $b5, $b4, $b5 ;; 03:58fe .....?...?.??...????????.????.?? $16
     db   $b4, $b5, $06, $07, $06, $07, $06, $02, $02, $02, $02, $28, $28, $28, $0f, $0f, $b0, $b0, $b2, $b3, $b4, $b5, $b4, $b5, $b8, $b9, $ba, $bb, $b4, $b5, $b4, $b5 ;; 03:591e ???????????????????????????????? $17
     db   $09, $09, $09, $09, $09, $09, $09, $09, $0e, $0f, $06, $07, $74, $75, $6e, $6f, $6c, $6d, $6e, $6f, $70, $69, $72, $73, $64, $65, $66, $67, $68, $69, $6a, $6b ;; 03:593e ???????????????????????????????? $18
-    db   $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12, $12 ;; 03:595e ???????????????????????????????? $19
+    db   $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14, $14 ;; 03:595e ???????????????????????????????? $19
     db   $04, $04, $06, $07, $06, $07, $04, $04, $64, $65, $0e, $0e, $0e, $0e, $0e, $0e, $04, $04, $04, $04, $05, $06, $07, $08, $0e, $0e, $0e, $0e, $0e, $0e, $0e, $0e ;; 03:597e ???????????????????????????????? $1a
     db   $11, $11, $11, $11, $11, $11, $11, $11, $11, $02, $02, $02, $02, $02, $02, $02, $74, $75, $6e, $6f, $78, $79, $7a, $7b, $11, $11, $11, $11, $11, $11, $11, $11 ;; 03:599e ???????????????????????????????? $1b
     db   $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $0b, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10, $10 ;; 03:59be ???????????????????????????????? $1c
@@ -4202,38 +4211,4 @@ INCLUDE "data/npc/metasprites.asm"
 ; For the explosion when an enemy is defeated.
 INCLUDE "data/npc/metasprites_defeated.asm"
 
-ds 8 ; Free space
-
-; Same intent as npcBehaviorProcessDelayAction, but prevent
-; delay timer hitting 0 while the object is moving. This is done by
-; incrementing the delay timer by 2 when on an even delay timer value.
-; It is not appropriate to increment the timer on every tick since the
-; game uses the even/odd nature of the timer to govern animations.
-delayWithMovingHold:
-    dec  A
-    push AF
-    push DE
-    ld   A, [DE]
-    ld   C, A
-    push BC
-    call getObjectDirection
-    pop  BC
-    push AF
-    and  A, $0f
-    call processPhysicsForObject
-    pop  BC
-    pop  DE
-    pop  AF
-    bit  0, A
-    jr   Z, .check_if_moving
-    push AF
-    ld   A, $01
-    call npcSetMeleeState
-    pop  AF
-    ret
-.check_if_moving:
-    bit  4, B
-    ret  Z
-    inc  A
-    inc  A
-    ret
+ds 46 ; Free space
